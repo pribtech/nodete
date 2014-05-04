@@ -1,0 +1,160 @@
+.tableTitleElement {
+	overflow:hidden;
+	postition:relative;
+}
+
+.columnDivider {
+	cursor:e-resize;
+	background-image:URL("images/tableTitleDiv.gif");
+	background-position:center center;
+	width:4px;
+	height:20px;
+}
+
+.tableRowNumbering {
+	background-image: url(images/generalTitleBarBack.gif);
+	background-repeat: repeat-x;
+	border-bottom: 1px solid black;
+	padding-left:0px;
+
+}
+
+.tableRow {
+	padding:0px;
+	margin:0px;
+}
+
+.tableHeader td{
+}
+
+.tableHeader td:hover {
+	background:#FFFFCC; 
+ }
+
+
+.tableCell td{
+
+	padding-left:4px;
+}
+
+.tableCell td:hover {
+	background:#FFFFCC; 
+ }
+
+
+.sort-UP-ENABLED {
+	background-image: url(images/table-sort/up-on.gif);
+	background-repeat: no-repeat;
+	background-position:center center;
+	width:11px;
+	height:10px;
+}
+
+.sort-UP-ENABLED:hover {
+	background-image: url(images/table-sort/up-on-over.gif);
+	background-repeat: no-repeat;
+	background-position:center center;
+	width:11px;
+	height:10px;
+}
+
+.sort-UP-DISABLED {
+	background-image: url(images/table-sort/up-off.gif);
+	background-repeat: no-repeat;
+	background-position:center center;
+	width:11px;
+	height:10px;
+}
+
+.sort-UP-DISABLED:hover {
+	background-image: url(images/table-sort/up-off-over.gif);
+	background-repeat: no-repeat;
+	background-position:center center;
+	width:11px;
+	height:10px;
+}
+
+.sort-DOWN-ENABLED {
+	background-image: url(images/table-sort/down-on.gif);
+	background-repeat: no-repeat;
+	background-position:center center;
+	width:11px;
+	height:10px;
+}
+
+.sort-DOWN-ENABLED:hover {
+	background-image: url(images/table-sort/down-on-over.gif);
+	background-repeat: no-repeat;
+	background-position:center center;
+	width:11px;
+	height:10px;
+}
+
+.sort-DOWN-DISABLED {
+	background-image: url(images/table-sort/down-off.gif);
+	background-repeat: no-repeat;
+	background-position:center center;
+	width:11px;
+	height:10px;
+}
+
+.sort-DOWN-DISABLED:hover {
+	background-image: url(images/table-sort/down-off-over.gif);
+	background-repeat: no-repeat;
+	background-position:center center;
+	width:11px;
+	height:10px;
+}
+
+.sort-Index {
+	width:10px;
+	padding-left:2px;
+	padding-right:2px;
+}
+
+.sort-Box-Blank td{
+
+	color:transparent;
+}
+
+.sort-Box-Blank td:hover{
+
+	color:gray;
+}
+
+.tableMoveColumn {
+	position:absolute; 
+	background-color:red;  
+	opacity: 0.5; 
+	overflow:hidden;
+	border: 1px solid #a4a4a4;
+}
+
+.tableAction {
+	cursor: pointer;
+}
+
+.table-Number {
+	text-align:right;
+}
+
+.table-LOBText {
+
+}
+
+.table-NormalText {
+
+}
+
+.table-Object {
+	text-align:center;
+}
+
+.prefillImage {
+	background-image: url(images/select/selectNormal.gif);
+	background-repeat: no-repeat;
+	background-position:center center;
+	width:19px;
+	height:22px;
+	padding-left:2px;
+}
