@@ -1,0 +1,14 @@
+<menu type="leaf" branchDirectory="">
+	<!--<JSAction><![CDATA[onClick="FLOATINGPANEL_activeFloatingPanels.get('DBConnectionScreenBase_Panel').show_and_size('DBConnection', false);Event.stop(event);"]]></JSAction>-->
+	<menuGUID>DBConnection</menuGUID>
+	<floatingPanel>
+		<link type="action">
+			<parameterList>
+				<parameter name="action">connectionManager</parameter>
+			</parameterList>
+		</link>
+	</floatingPanel>
+	<description>
+		Connections...
+	</description>
+</menu>

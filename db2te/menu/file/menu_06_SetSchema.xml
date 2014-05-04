@@ -1,0 +1,21 @@
+<menu type="leaf" branchDirectory="">
+	<description>Set Default Schema</description>
+	<actionScript  name="setSchema" type="form">
+		<parameterList>
+			<parameter name="action" type="fixed">
+				<value>setschema</value>
+			</parameter>
+			<parameter name="buttonA" type="fixed">
+				<value>Apply</value>
+			</parameter>
+			<parameter name="buttonB" type="fixed">
+				<value>Close</value>
+			</parameter>
+		</parameterList>
+		<followOnAction condition="true">
+			<task>
+				<gotoAction name="setSchema"/>
+			</task>
+		</followOnAction>
+	</actionScript>
+</menu>

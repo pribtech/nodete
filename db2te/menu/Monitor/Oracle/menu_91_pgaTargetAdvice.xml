@@ -1,0 +1,51 @@
+<!--
+  Peter Prib, Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2012 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<menu type="leaf" branchDirectory="">
+	<description>PGA Target Advice</description>
+	<pageWindow target="_active">
+		<splitPane direction="h">
+			<topPane>
+				<panel name="main" PrimaryContainer="true">
+					<link type="action" target="_self" window="_self" connectionRequired="y">
+						<parameterList>
+							<parameter name="table">Oracle/Monitor/pgaTargetAdvice</parameter>
+							<parameter name="$action">list_table</parameter>
+						</parameterList>
+					</link>				
+				</panel>
+			</topPane>
+			<bottomPane>
+				<panel name="pgaTargetAdvice">
+							<link type="action" target="_self" window="_self" connectionRequired="y">
+								<parameterList>
+									<parameter name="table">Oracle/Monitor/pgaTargetAdvice</parameter>
+									<parameter name="action">chart</parameter>
+									<parameter name="$chartName">pgaTargetAdvice</parameter>
+									<parameter name="$chartTitle">PGA Target AdvicePct</parameter>
+									<parameter name="$type">bar</parameter>
+									<parameter name="$yScale">FIXED</parameter>
+									<parameter name="$yAxisUpperBound">100</parameter>
+									<parameter name="$yAxisLowerBound">0</parameter>
+									<parameter name="$xAxis">PGA_TARGET_FOR_ESTIMATE</parameter>
+									<parameter name="$yAxis">ESTD_PGA_CACHE_HIT_PERCENTAGE</parameter>
+								</parameterList>
+							</link>
+				</panel>
+			</bottomPane>
+		</splitPane>
+	</pageWindow>
+</menu>

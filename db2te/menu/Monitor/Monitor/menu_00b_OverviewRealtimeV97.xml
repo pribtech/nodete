@@ -1,0 +1,125 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2009 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+
+<menu type="leaf" branchDirectory="" minVersion="9.7">
+	<description>Monitor Overview Realtime</description>
+	<pageWindow target="_active">
+		<title>Monitor Overview</title> <info>Monitoring overview</info>
+		<panelHeaders refreshEnabled="true">
+          	<autoRefreshControls>
+            	<countdownVisible>true</countdownVisible>
+            	<timeVisible>true</timeVisible> 
+                <time>10</time>
+                <timeOptions>[1,5,10,20,60]</timeOptions>
+        	</autoRefreshControls> 
+		</panelHeaders>
+		<splitPane direction="h" splitPercent="0.5">
+			<topPane>
+				<splitPane direction="v" splitPercent="0.5">
+					<leftPane>
+						<panel name="DB" >
+							<link type="action" target="_self" window="_self" connectionRequired="y">
+								<parameterList>
+									<parameter name="table">Performance/topdatabase</parameter>
+									<parameter name="action">chart</parameter>
+									<parameter name="refresh">append</parameter>
+									<parameter name="$chartName">DB</parameter>
+									<parameter name="$chartTitle">Database</parameter>
+									<parameter name="$type">line</parameter>
+									<parameter name="$xAxis">snapshot_timestamp</parameter>
+									<parameter name="$yAxis">direct_reads,direct_writes,lock_escals,deadlocks,lock_escals,sort_heap_allocated,total_sorts,pool_data_l_reads,pool_index_l_reads</parameter>
+									<parameter name="$legend">hide</parameter>
+									<parameter name="$yScale">EXPONENTIAL</parameter>
+									<parameter name="$highlight">first</parameter>
+									<parameter name="maxResultsToFetch">100</parameter>
+								</parameterList>
+							</link>				
+						</panel>
+					</leftPane>
+					<rightPane>
+						<panel name="CPU" >
+							<link type="action" target="_self" window="_self" connectionRequired="y">
+								<parameterList>
+									<parameter name="table">Monitor/sysResourcesRow</parameter>
+									<parameter name="action">chart</parameter>
+									<parameter name="refresh">prepend</parameter>
+									<parameter name="$chartName">CPU</parameter>
+									<parameter name="$chartTitle">CPU</parameter>
+									<parameter name="$type">line</parameter>
+									<parameter name="$xAxis">SAMPLE_TS</parameter>
+									<parameter name="$yAxis">CPU_TOTAL,CPU_ONLINE,CPU_LOAD_SHORT,CPU_LOAD_MEDIUM,CPU_LOAD_LONG,CPU_USAGE_TOTAL</parameter>
+									<parameter name="$legend">hide</parameter>
+									<parameter name="$yScale">EXPONENTIAL</parameter>
+									<parameter name="$highlight">first</parameter>
+									<parameter name="maxResultsToFetch">100</parameter>
+								</parameterList>
+							</link>				
+						</panel>
+					</rightPane>
+				</splitPane>
+			</topPane>
+			<bottomPane>
+				<splitPane direction="v" splitPercent="0.5">
+					<leftPane>
+						<panel name="bufferpool" >
+							<link type="action" target="_self" window="_self" connectionRequired="y">
+								<parameterList>
+									<parameter name="table">Performance/topbufferpool</parameter>
+									<parameter name="action">chart</parameter>
+									<parameter name="refresh">append</parameter>
+									<parameter name="$chartName">Bufferpool</parameter>
+									<parameter name="$chartTitle">Buffer pools</parameter>
+									<parameter name="$type">line</parameter>
+									<parameter name="$xAxis">snapshot_timestamp</parameter>
+									<parameter name="$yAxis">files_closed,direct_reads,direct_writes,pool_data_l_reads,pool_data_p_reads,pool_index_l_reads,pool_index_p_reads</parameter>
+									<parameter name="$delta">direct_reads,direct_writes,pool_async_data_reads,pool_async_data_writes,pool_async_index_reads,pool_async_index_writes,pool_data_l_reads,pool_data_p_reads,pool_data_writes,pool_index_l_reads,pool_index_p_reads,pool_index_writes,pool_no_victim_buffer,pool_temp_data_l_reads,pool_temp_data_p_reads,pool_temp_index_l_reads,pool_temp_index_p_reads,unread_prefetch_pages,vectored_ios,files_closed</parameter>
+									<parameter name="$legend">hide</parameter>
+									<parameter name="$grouping">bp_name</parameter>
+									<parameter name="$yScale">EXPONENTIAL</parameter>
+									<parameter name="$highlight">first</parameter>
+									<parameter name="maxResultsToFetch">1000</parameter>
+								</parameterList>
+							</link>				
+						</panel>
+					</leftPane>
+					<rightPane>
+						<panel name="DBM" >
+							<link type="action" target="_self" window="_self" connectionRequired="y">
+								<parameterList>
+									<parameter name="table">Performance/snapDBM</parameter>
+									<parameter name="action">chart</parameter>
+									<parameter name="refresh">append</parameter>
+									<parameter name="$chartName">Instance</parameter>
+									<parameter name="$chartTitle">Instance</parameter>
+									<parameter name="$type">line</parameter>
+									<parameter name="$xAxis">SNAPSHOT_TIMESTAMP</parameter>
+									<parameter name="$yAxis">AGENTS_CREATED_EMPTY_POOL,AGENTS_WAITING_ON_TOKEN,PIPED_SORTS_REQUESTED,PIPED_SORTS_ACCEPTED</parameter>
+									<parameter name="$delta">POST_THRESHOLD_SORTS,PIPED_SORTS_REQUESTED,PIPED_SORTS_ACCEPTED,AGENTS_REGISTERED,AGENTS_WAITING_ON_TOKEN,AGENTS_FROM_POOL,AGENTS_CREATED_EMPTY_POOL,AGENTS_STOLEN,GW_TOTAL_CONS,GW_CUR_CONS,GW_CONS_WAIT_HOST,GW_CONS_WAIT_CLIENT,POST_THRESHOLD_HASH_JOINS,NUM_GW_CONN_SWITCHES</parameter>
+									<parameter name="$legend">hide</parameter>
+									<parameter name="$yScale">EXPONENTIAL</parameter>
+									<parameter name="$highlight">first</parameter>
+									<parameter name="maxResultsToFetch">100</parameter>
+								</parameterList>
+							</link>				
+						</panel>
+					</rightPane>
+				</splitPane>
+			</bottomPane>
+		</splitPane>
+	</pageWindow>
+</menu>

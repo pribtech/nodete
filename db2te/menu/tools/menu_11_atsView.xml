@@ -1,0 +1,121 @@
+<menu type="leaf" branchDirectory="" minVersion="9.5" DBMS="DB2">
+   <description>Task Scheduler</description>
+  
+	<actionScript name="CheckForTaskViews" type="serverAction" lockScreen="true">
+    	<parameterList>
+			<parameter name="action" type="fixed">
+				<value>checkForObject</value>
+			</parameter>
+			<parameter name="objectType" type="fixed">
+				<value>table</value>
+			</parameter>
+			<parameter name="object[schema]" type="fixed">
+				<value>SYSTOOLS</value>
+			</parameter>
+			<parameter name="object[table]" type="fixed">
+				<value>ADMIN_TASK_LIST</value>
+			</parameter>
+		</parameterList>
+		<if condition="?????" compareOn="CheckForTaskViews.returnCode" compareOnType="returnObject">
+			<task>
+				<assignSharedConstant name="ERROR_MESSAGE" type="returnObject">
+					<value>CheckForTaskViews.returnObject</value>
+				</assignSharedConstant>
+				<alert>Failed: ?ERROR_MESSAGE?</alert>
+			</task>
+		</if>
+		<if condition="false">
+			<task>
+				<action name="alertTablesNotCreated" type="confirm">
+					<message>Warning!
+The required tables to use this view do not exist.
+These views can be created by adding an admin task to your database.
+
+Add a dummy admin task to your database now?</message>
+					<if condition="true">
+						<task>
+							<action name="CreateTask" type="serverAction">
+								<parameterList>
+									<parameter name="action" type="fixed">
+										<value>executeSQL</value>
+									</parameter>
+									<parameter name="SQL" type="fixed">
+										<value>CALL SYSPROC.ADMIN_TASK_ADD('TempJob', NULL, NULL, 0, NULL, 'SQLJ', 'REFESH_CLASSES', NULL, NULL, NULL);</value>
+									</parameter>
+								</parameterList>
+								<if condition="true">
+									<task>
+										<loadPage>
+   <pageWindow target="_final">
+      <splitPane direction="h" splitPercent="0.5">
+         <topPane>
+            <panel name="main" PrimaryContainer="true">
+               <link type="action" target="_self" window="_self" connectionRequired="y">
+                  <parameterList>
+                     <parameter name="table">AdminTask/atsBaseView</parameter>
+                     <parameter name="action">list_table</parameter>
+                  </parameterList>
+               </link>         
+            </panel>
+         </topPane>
+         <bottomPane>
+            <splitPane direction="v" splitPercent="0.3">
+               <leftPane>
+                  <panel name="adminTaskDetail"/>
+               </leftPane>
+               <rightPane> 
+                  <panel name="adminStatusDetail"/>
+               </rightPane>
+            </splitPane>
+         </bottomPane>
+      </splitPane>
+   </pageWindow>				
+										</loadPage>
+									</task>
+								</if>
+								<if condition="false">
+									<task>
+										<assignLocalParameter name="ERROR_MSG" type="returnObject">
+											<value>CreateTask.returnValue.STMTMSG</value>
+										</assignLocalParameter>
+										<alert>Unable to create Admin task: ?ERROR_MSG?</alert>
+									</task>
+								</if>
+							</action>
+						</task>
+					</if>
+				</action>
+			</task>
+		</if>
+		<if condition="true">
+			<task>
+				<loadPage>
+				   <pageWindow target="_blank">
+				      <splitPane direction="h" splitPercent="0.5">
+				         <topPane>
+				            <panel name="main" PrimaryContainer="true">
+				               <link type="action" target="_self" window="_self" connectionRequired="y">
+				                  <parameterList>
+				                     <parameter name="table">AdminTask/atsBaseView</parameter>
+				                     <parameter name="action">list_table</parameter>
+				                  </parameterList>
+				               </link>         
+				            </panel>
+				         </topPane>
+				         <bottomPane>
+				            <splitPane direction="v" splitPercent="0.3">
+				               <leftPane>
+				                  <panel name="adminTaskDetail"/>
+				               </leftPane>
+				               <rightPane> 
+				                  <panel name="adminStatusDetail"/>
+				               </rightPane>
+				            </splitPane>
+				         </bottomPane>
+				      </splitPane>
+				   </pageWindow>				
+				</loadPage>
+			</task>
+		</if>
+	</actionScript>
+</menu>

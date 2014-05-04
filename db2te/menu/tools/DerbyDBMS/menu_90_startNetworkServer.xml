@@ -1,0 +1,66 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2012 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+<menu type="leaf" branchDirectory="" GUID="createDerbyDB">
+   <description>Start Network Server</description>
+
+	<actionScript name="startDerbyNetworkServer" type="form">
+		<message>
+<![CDATA[
+<div style='width:500px'>
+<h1>Start Derby Network Server</h1>
+<table>
+	<tr><td>Port</td><td>:</td><td>1527</td></tr>
+</table>
+</div>
+]]>
+ 	   </message>
+		<parameterList>
+        	<parameter name="HOST" type="blockValue">
+				<value>HOST</value>
+			</parameter>
+			<parameter name="buttonOK" type="raw">
+				<value>Start</value>
+			</parameter>
+		</parameterList>
+		<if condition="true">
+			<task>
+				<action name="startServer" type="serverAction">
+					<parameterList>
+						<parameter name="action" type="fixed">
+							<value>startDerbyNetworkServer</value>
+						</parameter>
+					</parameterList>
+					<if condition="true" negCondition="true">
+						<task>
+							<assignSharedConstant name="ERROR_MESSAGE" type="returnObject">
+								<value>startServer.returnValue</value>
+							</assignSharedConstant>
+							<alert>Failed to start network Derby server : ?ERROR_MESSAGE?</alert>
+							<retry name="startServer"/>
+						</task>
+					</if>
+					<if condition="true">
+						<task>
+							<alert>Started Derby Server</alert>
+						</task>
+					</if>
+				</action>
+			</task>
+		</if>
+	</actionScript>
+</menu>
