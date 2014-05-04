@@ -36,8 +36,7 @@ Java Bridge <?php if(JAVA_BRIDGE_ACTIVE) $v=java_get_version_info(); echo (JAVA_
 <p>
 PHP database driver check:<br/><br/>
 <?php
-if(DEBUG_LOG_2_CONSOLE)
-	error_log("Loading connection drivers started in Welcome");
+if(DEBUG_LOG_2_CONSOLE)	error_log("Loading connection drivers started in Welcome",0);
 
 try {
 	$fileInDir = scandir(PHP_INCLUDE_BASE_DIRECTORY, 0);
@@ -46,11 +45,11 @@ try {
 	foreach($fileInDir as $currentFile) {
 		// Look for XML files that start with 'menu_' and end with '.xml' while ignoring case
 		if(preg_match('/^DBConnection_.*\.php$/i', $currentFile )) {
-			if(DEBUG_LOG_2_CONSOLE)
-				error_log("Loading connection driver ".$currentFile);
+			if(DEBUG_LOG_2_CONSOLE)	error_log("Loading connection driver ".$currentFile,0);
 			try {
 				include_once(PHP_INCLUDE_BASE_DIRECTORY . $currentFile);
 			} catch (Exception $e){
+				if(DEBUG_LOG_2_CONSOLE) error_log("error ".$e->getMessage(),0)
 				echo '<font style="background-color:RED;padding:5px;">';
 				echo $currentFile . ' PHP module has problem loading. Error: '.$e->getMessage();
 				echo '</font><br/><br/>';
@@ -108,10 +107,9 @@ try {
 		}
 	}
 } catch (Exception $e){
-	error_log('Error loading DBConnections, exception: '.$e->getMessage());
+	error_log('Error loading DBConnections, exception: '.$e->getMessage(),0);
 }
-if(DEBUG_LOG_2_CONSOLE)
-	error_log("Loading connection drivers finished ");
+if(DEBUG_LOG_2_CONSOLE)	error_log("Loading connection drivers finished ",0);
 ?>
 <p>
 Loaded PHP extensions:<br/><br/>

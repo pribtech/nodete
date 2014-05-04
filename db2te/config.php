@@ -51,7 +51,17 @@ function setDefineDirectory($var,$valueWindows,$valueLinux=null) {
  * END - VERSION INFORMATION
  *****************************************************************************/
 require_once("./config.bluemix.php");
-
+if( isset($_SERVER['TE_SETTINGS']) )
+	try{
+		$settings =  json_decode($_SERVER['TE_SETTINGS'], true);
+		foreach ($settings as $key => $value) {
+			error_log("Env set ".$key." = ".$value,0);
+			@define($key,$value);
+		}
+	} catch (Exception $e){
+		error_log('Error loading env settings, exception: '.$e->getMessage(),0);
+	}
+	
 /*********************************************************************************
  *********************************************************************************
  *********************************************************************************
