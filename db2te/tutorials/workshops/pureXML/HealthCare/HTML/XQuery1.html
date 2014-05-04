@@ -1,0 +1,55 @@
+<p>The right pane allows you to find out the average query time for the XML Query with index used in the previous page. You can also see the execution time of the same query with and without index in a graph.</p>
+
+<p>If you are interested in looking at the explain plan and see how the index is being used, follow the steps below.
+<BR><BR>
+
+<B>Explain Snapshot</B>
+<p>Run the following steps on the DB2 CLP window to view the explain snapshot. If you have already created the explain tables, skip to step #5.</p>
+<ol>
+<li><b>On Windows</b> change to directory <b>DB2_install_directory\sqllib\misc</b></li>
+<li><b>On UNIX/Linux</b> change to directory <b>DB2 instance home directory/sqllib/misc</b></li>
+<li>Connect to the database you are working on.</li>
+<li>Run <b>db2 -tvf EXPLAIN.DDL</b>. This creates the explain tables.</li>
+<li>Run <b>db2 SET CURRENT EXPLAIN MODE=YES</b></li>
+<li>Go the Ad Hoc SQL tab, Select Options. Note the Default Schema used for this workshop.</li>
+<li>If you have not completed the previous pages, copy the file <b>TE_install_directory\tutorials\workshops\pureXML\HealthCare\SQL\PerformanceXQuery.sql to the current working directory.</b></li>
+<li>Edit the working copy of <CODE><b>PerformanceXQuery.sql</b></CODE> and replace '~~~SCHEMA~~~' with the Default Schema.</li>
+Run <b>db2 -tvf <CODE>PerformanceXQuery.sql</CODE></b></li>
+<li>Run <b>db2 SET CURRENT EXPLAIN MODE=NO</b></li>
+<li>Run <b>db2exfmt -d <CODE><FONT style="BACKGROUND-COLOR: yellow">DBNAME</FONT></CODE> -1 -o <CODE>explain_xmlquery_ind.out</CODE></b>. Replace <code><FONT style="BACKGROUND-COLOR: yellow">DBNAME</FONT></code> with the database you are working on. The Explain Plan can be viewed in the output file <CODE><b>explain_xmlquery_ind.out</b></CODE>.</li>
+</ol>
+</p><br>
+<p>Click here to view the sample output of the Explain Access Plan : <a onclick="OpenURLInFloatingWindow('?BASE_DIRECTORY?/HTML/explain_xmlquery_ind.html');"><b>Sample Explain Access Plan</b></a></p>
+
+<P align='Justify'>
+<B> Total cost captured in access plan </B>
+<BR><BR>
+Review the explain output and locate the <code>Total Cost</code> right above the access graph. The sample plan above shows a total cost of 37.86.
+<BR>
+
+<P align='Justify'>
+<B> Operation in access plan </B>
+<BR><BR>
+The access plan shows the XISCAN operator scanning the XML document with reference to the INDEX
+and a TBSCAN scanning the relational data and then joining the result
+set of two operations.
+<BR><BR>
+
+<B>XISCAN operator</B>
+<BR>
+<P align='justify'>
+This operation is performed for a single query predicate. Its evaluation narrows down the qualifying return set of rows IDs and XML node IDs by range scanning any associated index over XML data before accessing the base table. The use of an index can improve the performance of a query because the compiler determines whether and how to use index information to complete the query. This typically results in:
+<BR><BR>
+	<ul>
+    <li>The sorting of nodes by document and the elimination of any duplicates.</li>
+    <li>The fetching of each row of the table that contains the qualifying documents.</li>
+    <li>An XSCAN operation on the XML document.</li>
+    </ul>
+<BR><BR>
+<B>Best Practice</B>
+<BR><BR>
+	<ul>
+    <li>Over time, database updates might cause an index to become fragmented, resulting in more index pages than necessary. This can be corrected by dropping and recreating the index, or reorganizing the index.</li>
+    <li>When two or more tables are being accessed, access to the inner table via an index can be made more efficient by providing an index on the join column of the outer table.</li>
+    <li>If statistics are not current, update them using the RUNSTATS command.</li>
+	</ul>

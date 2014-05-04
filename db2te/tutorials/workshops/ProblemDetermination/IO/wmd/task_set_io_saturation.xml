@@ -1,0 +1,5 @@
+<task_set autocommit="true" isolation_level="CS" currently_committed="ON">
+    <statement type="statement" group="read">
+		<text>select * from table(select BOOKISBN, cast(BOOKABSTRACT as varchar(32)) AS DATA FROM ?SCHEMA?.ABSTRACTS) ORDER BY DATA </text>
+    </statement>
+</task_set>

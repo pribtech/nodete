@@ -1,0 +1,19 @@
+<p>
+	This tutorial will show you how to change default behaviour of DB2 when connecting to a database.
+	By default when you connect to DB2, your <a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v9r5/topic/com.ibm.db2.luw.admin.dbobj.doc/doc/c0004105.html&noFrames="true"');">SCHEMA</a> 
+	is set to the username you logged in with.
+</p>	
+<p>
+	The CURRENT SCHEMA special register contains the default qualifier to be used for unqualified object 
+  references for dynamic SQL statements issued within a specific DB2 connection. 
+  The qualifier can be changed by the SET SCHEMA statement. 
+</p>
+<p>
+	You can also use the QUALIFIER option of the BIND command to control the schema name used to qualify 
+  unqualified database object references for static SQL statements. 
+</p>
+<p>
+	This tutorial shows how the default SCHEMA can be changed so that
+  table references will use the schema name rather than the user
+  name that is connected.
+</p>

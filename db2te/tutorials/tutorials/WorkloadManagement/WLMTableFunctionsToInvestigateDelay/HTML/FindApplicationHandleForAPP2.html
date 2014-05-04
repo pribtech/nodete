@@ -1,0 +1,24 @@
+<p>To find out what the agents for app2.db2 are doing use the
+  <a onclick="OpenURLInFloatingWindow
+('http://publib.boulder.ibm.com/infocenter/db2luw/v9r7/topic/com.ibm.db2.luw.sql.rtn.doc/doc/r0054928.html?noframes=true');">
+WLM_GET_SERVICE_CLASS_AGENTS_V97</a> table function.
+  </p>
+  <p>
+If you are using a 9.5 database, you will need to run the 
+<a onclick="OpenURLInFloatingWindow
+('http://publib.boulder.ibm.com/infocenter/db2luw/v9r7/topic/com.ibm.db2.luw.sql.rtn.doc/doc/r0052915.html?noframes=true');">
+WLM_GET_SERVICE_CLASS_AGENTS</a> table function instead.  Since DB2 9.7, this table function has been deprecated and replaced by the WLM_GET_SERVICE_CLASS_AGENTS_V97 table function.  
+Click on the 'Edit mode' button in the top right panel, and edit the SQL before clicking on 'Run.'
+</p> <p>This table function
+  shows information on agents working in a service class.  Since we want
+  to see the agents working for application handle 17 (or whatever
+  the number was from the previous query), we specify this
+  in the application_handle input parameter.  For this example, we are
+  not interested in agents for a particular service class, so we specify
+  wildcards for the service_superclass_name and service_subclass_name
+  input parameters.
+  <p>
+  From the output, you can see that the coordinator agent for application
+  number we got from the previous query is idle waiting to acquire a lock.  
+  This is the reason why 'WLM_tut_app2' appears to be hung.
+  </p>

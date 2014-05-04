@@ -1,0 +1,5 @@
+You can also update values within a <a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v9r7/topic/com.ibm.dwe.sqw.doc/designing/data_flow/copunion.html');">UNION ALL</a> view, but you cannot make the value in the
+  <a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v9r7/topic/com.ibm.db2.luw.admin.dbobj.doc/doc/c0004111.html');">constraint</a> column move outside the constraint range if you are running a version
+  of DB2 prior to V8 Fixpak 4.  This update tries to change a date
+  value outside the range of the constraint. It <b>will not</b> work without an additional 
+  clause being used in the creation of the view.  For an example of an update statement that succeeds, please refer to the 'UNION Migration' tutorial.

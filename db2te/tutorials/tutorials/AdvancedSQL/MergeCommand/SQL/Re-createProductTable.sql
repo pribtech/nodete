@@ -1,0 +1,6 @@
+DELETE FROM PRODUCTS;
+
+INSERT INTO PRODUCTS
+VALUES (1,'Pants',10),(2,'Shorts',5),(3,'Shirts',20),(4,'Socks',12),(5,'Ties',5);
+
+SELECT * FROM PRODUCTS;

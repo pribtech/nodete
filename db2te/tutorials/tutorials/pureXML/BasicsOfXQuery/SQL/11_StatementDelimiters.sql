@@ -1,0 +1,3 @@
+XQUERY 'Hello'
+#
+XQUERY 'World'

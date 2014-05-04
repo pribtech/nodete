@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tutorial name="Searched INSERT-UPDATE-DELETE and MERGE statements against fullselects">
+	<FlowRestriction>forwardExploration</FlowRestriction>
+	<openAction />
+	<closeAction/>
+    <globalCodeHighlightOptions highlightCode = "true" />
+	<pageList>
+		<page name="Searched INSERT-UPDATE-DELETE and MERGE statements against fullselects" type="intro">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>SearchedINSERT-UPDATE-DELETEAndMERGEStatementsAgainstFullselects.html</contentFile>
+		</page>
+		
+		<page name="Create a sample table to use for INSERT-UPDATE-DELETE statements" type="general">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>CreateASampleTableToUseForDELETE-INSERT-UPDATEStatements.html</contentFile>
+			<SQLFile>CreateATableForDELETE-INSERTStatements.sql</SQLFile>
+		</page>
+		
+		<page name="Insert some values into the EMP_Profile table" type="general">
+			<entryAction name="checkForFirstTable" type="serverAction">
+				<parameterList>
+					<parameter name="action" type="serverAction">
+						<value>checkForObject</value>
+					</parameter>
+					
+					<parameter name="objectType" type="raw">
+						<value>table</value>
+					</parameter>
+					
+					<parameter name="object[schema]" type="constant">
+						<value>SCHEMA</value>
+					</parameter>
+					
+					<parameter name="object[table]" type="fixed">
+						<value>EMP_Profile</value>
+					</parameter>
+				</parameterList>
+				
+				<followOnAction condition="false">
+					<task>
+						<action name="displayMsg" type="alert">
+							<message>Required table EMP_Profile hasn't been created. Please execute this step again.</message>
+						</action>
+					</task>
+					
+					<task>
+						<setActionReturn>false</setActionReturn>
+					</task>
+				</followOnAction>
+				
+			</entryAction>       
+			
+			<exitAction/>
+			<contentFile>InsertSomeValuesIntoTheEMP_ProfileTable.html</contentFile>
+			<SQLFile>InsertSomeValuesIntoTheEMP_ProfileTable.sql</SQLFile>
+		</page>
+		
+		<page name="Show contents of the table" type="general">
+			<entryAction name="checkForInsert" type="serverAction">
+				<parameterList>
+					<parameter name="action" type="fixed">
+						<value>checkForRow</value>
+					</parameter>
+					<parameter name="schema" type="constant">
+						<value>SCHEMA</value>
+					</parameter>
+					<parameter name="name" type="fixed">
+						<value>EMP_Profile</value>
+					</parameter>
+				</parameterList>
+				<followOnAction condition="true"  negCondition="true">
+					<task>
+						<action name="displayMsgForFailedInsert" type="alert">
+							<message>Data hasn't been inserted in table EMP_Profile. Please try this step again.</message>
+						</action>
+					</task>
+					<task>
+						<setActionReturn>false</setActionReturn>
+					</task>
+				</followOnAction>
+			</entryAction>
+			<exitAction/>
+			<contentFile>ShowContentsOfTheTable.html</contentFile>
+			<SQLFile>ShowContentsOfTheTable.sql</SQLFile>
+		</page>
+		
+		<page name="Show Average salary" type="general">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>ShowAverageSalary.html</contentFile>
+			<SQLFile>ShowAverageSalary.sql</SQLFile>
+		</page>
+		
+		<page name="Update Bonuses based on average salary calculation" type="general">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>UpdateBonusesBasedOnAverageSalaryCalculation.html</contentFile>
+			<SQLFile>UpdateBonusesBasedOnAverageSalaryCalculation.sql</SQLFile>
+		</page>
+		
+		<page name="Delete only the first person with an A in their name" type="general">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>DeleteOnlyTheFirstPersonWithAnAInTheirName.html</contentFile>
+			<SQLFile>DeleteOnlyTheFirstPersonWithAnAInTheirName.sql</SQLFile>
+		</page>
+		
+		<page name="Create product table" type="general">
+			<entryAction/>  
+			<exitAction/>
+			<contentFile>CreateProductTable.html</contentFile>
+			<SQLFile>CreateProductTable.sql</SQLFile>
+		</page>
+		
+		<page name="Create Transaction Table" type="general">
+			<entryAction name="checkForProductTable" type="serverAction">
+				<parameterList>
+					<parameter name="action" type="serverAction">
+						<value>checkForObject</value>
+					</parameter>
+					
+					<parameter name="objectType" type="raw">
+						<value>table</value>
+					</parameter>
+					
+					<parameter name="object[schema]" type="constant">
+						<value>SCHEMA</value>
+					</parameter>
+					
+					<parameter name="object[table]" type="fixed">
+						<value>PRODUCTS</value>
+					</parameter>
+				</parameterList>
+				
+				<followOnAction condition="false">
+					<task>
+						<action name="displayMsg" type="alert">
+							<message>Required table "PRODUCTS" hasn't been created. Please execute this step again.</message>
+						</action>
+					</task>
+					
+					<task>
+						<setActionReturn>false</setActionReturn>
+					</task>
+				</followOnAction>
+				
+				<followOnAction condition="true">
+					<task>
+						<action name="checkForProductInsert" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="fixed">
+									<value>checkForRow</value>
+								</parameter>
+								<parameter name="schema" type="constant">
+									<value>SCHEMA</value>
+								</parameter>
+								<parameter name="name" type="fixed">
+									<value>PRODUCTS</value>
+								</parameter>
+							</parameterList>
+							<followOnAction condition="true"  negCondition="true">
+								<task>
+									<action name="displayMsgForFailedInsert" type="alert">
+										<message>Data hasn't been inserted in table "PRODUCTS". Please try this step again.</message>
+									</action>
+								</task>
+								<task>
+									<setActionReturn>false</setActionReturn>
+								</task>
+							</followOnAction>
+							
+						</action>
+					</task>
+				</followOnAction>
+			</entryAction>     
+			<exitAction/>
+			<contentFile>CreateTransactionTable.html</contentFile>
+			<SQLFile>CreateTransactionTable.sql</SQLFile>
+		</page>
+		
+		<page name="Merge transactions into product table" type="last">
+			<entryAction name="checkForTransactionTable" type="serverAction">
+				<parameterList>
+					<parameter name="action" type="serverAction">
+						<value>checkForObject</value>
+					</parameter>
+					
+					<parameter name="objectType" type="raw">
+						<value>table</value>
+					</parameter>
+					
+					<parameter name="object[schema]" type="constant">
+						<value>SCHEMA</value>
+					</parameter>
+					
+					<parameter name="object[table]" type="fixed">
+						<value>product_txs</value>
+					</parameter>
+				</parameterList>
+				
+				<followOnAction condition="false">
+					<task>
+						<action name="displayMsg" type="alert">
+							<message>Required table "product_txs" hasn't been created. Please execute this step again.</message>
+						</action>
+					</task>
+					
+					<task>
+						<setActionReturn>false</setActionReturn>
+					</task>
+				</followOnAction>
+				
+				<followOnAction condition="true">
+					<task>
+						<action name="checkForProductInsert" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="fixed">
+									<value>checkForRow</value>
+								</parameter>
+								<parameter name="schema" type="constant">
+									<value>SCHEMA</value>
+								</parameter>
+								<parameter name="name" type="fixed">
+									<value>product_txs</value>
+								</parameter>
+							</parameterList>
+							<followOnAction condition="true"  negCondition="true">
+								<task>
+									<action name="displayMsgForFailedInsert" type="alert">
+										<message>Data hasn't been inserted in table "product_txs". Please try this step again.</message>
+									</action>
+								</task>
+								<task>
+									<setActionReturn>false</setActionReturn>
+								</task>
+							</followOnAction>
+							
+						</action>
+					</task>
+				</followOnAction>
+				
+			</entryAction>       
+			<exitAction/>
+			<contentFile>MergeTransactionsIntoProductTable.html</contentFile>
+			<SQLFile>MergeTransactionsIntoProductTable.sql</SQLFile>
+		</page>
+		
+	</pageList>
+</tutorial>

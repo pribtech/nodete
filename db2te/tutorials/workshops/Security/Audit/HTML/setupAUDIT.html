@@ -1,0 +1,23 @@
+<br><h2>Setup audit policies</h2><hr><br>
+<p><b>You must log into the database as Pat before proceeding with this page.</b></p>
+
+<p>The <font face="courier"> 'credit_card' </font> table is accessed by different users for different purpose. SECADM Pat wants to
+audit the employees, managers, and administrators for any activities on that table.</p>
+
+<h4>Operation</h4><br>
+
+<p>Auditing can be enabled on different objects like tables, roles, trusted context objects, authorities (SYSADM, DBADM, SECADM) and database.</p>
+<p> Pat would like to audit the <font face="courier"> 'credit_card' </font> table, 'custService' role, SYSADM and DBADM authorities. Based on this requirement, he performs the following:
+ <ul>
+<li>Create audit policies</li>
+<li>Enable audit on access to <font face="courier">'credit_card'</font> table</li>
+<li>Enable audit on role 'custService' accessing <font face="courier">'credit_card'</font> table</li>
+<li>Enable audit on SYSADM and DBADM authorities</li>
+<li>Archive audit logs and extract information from the archived logs to audit tables</li>
+<li>Monitor the audit logs for any unauthorized and unusual access</li>
+</ul>
+</p>
+
+<br>
+<h4>Solution</h4><br>
+<p>All required audit policies are now set.</p>

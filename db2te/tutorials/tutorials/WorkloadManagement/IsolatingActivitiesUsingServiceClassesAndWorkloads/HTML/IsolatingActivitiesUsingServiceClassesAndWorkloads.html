@@ -1,0 +1,45 @@
+This section demonstrates how to create service classes
+  and how to send activities to a service class using a
+  workload.
+  In addition, it also demonstrates how to use some of the
+  WLM monitoring features to determine the workload that
+  activities  are being mapped to and to get information about
+  activities being run in a service class and under a
+  workload.
+  <p>
+  Service classes are the primary point of resource control
+  for database activities. They are also useful for
+  monitoring. For example, you can collect statistics for
+  activities in a particular service class to determine
+  whether the performance goals for that service class are
+  being met. Since DB2 9.5, <a onclick="OpenURLInFloatingWindow
+('http://publib.boulder.ibm.com/infocenter/db2luw/v9r5/topic/com.ibm.db2.luw.admin.wlm.doc/doc/c0051412.html?noframes=true');">three default service classes
+  (SYSDEFAULTSYSTEMCLASS, SYSDEFAULTMAINTENANCECLASS, and
+  SYSDEFAULTUSERCLASS)</a> are created for each database.  If no
+  user defined service classes are created, user activities
+  are run under the default user service class
+  (SYSDEFAULTUSERCLASS).
+  </p>
+  <p>
+  A workload is an entity that groups one or more units of
+  work based on criteria such as system user ID, session user
+  ID, etc.  Workloads provide a means of assigning work to a
+  service class so that the work can later be managed. Since DB2
+  9.5, <a onclick="OpenURLInFloatingWindow
+('http://publib.boulder.ibm.com/infocenter/db2luw/v9r7/topic/com.ibm.db2.luw.admin.wlm.doc/doc/c0051473.html?noframes=true');">a default user workload (SYSDEFAULTUSERWORKLOAD) and a
+  default administration workload (SYSDEFAULTADMWORKLOAD)</a> are
+  created for each database.  If no user defined workloads are
+  created, all user activities are associated with the default
+  user workload.
+  </p>
+  <p>
+  There are four separate features that are demonstrated in
+  this section:
+  <ul>
+  <li>How to create a service class. </li>
+  <li>How to create a workload. </li>
+  <li>How to examine basic workload statistics. </li>
+  <li>How to collect activity information for activities
+   run under an individual workload. </li>
+  </ul>
+  </p>

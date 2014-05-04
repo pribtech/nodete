@@ -1,0 +1,20 @@
+<p>
+	Run the SQL statements to the right.
+</p>
+<p>
+	<b>Scenario: Online changes to the base table</b><BR>
+	Later, the company is audited and auditors find two mistakes in the definition
+	of the EMPLOYEE table. First, the EMPLOYEE_ID column is misplelled and, second, the type of this 
+	column should be SMALLINT instead of INTEGER to save some space.
+	
+	While this would have previously required dropping all of the objects, and data,
+	in the database related to the mistakes, now it's only necessary
+	to rename the column and alter the datatype.  This step accomplishes both.  
+	It is important to note that the name and data type changes are made online. <BR><BR>
+	None of the views that depend on the EMPLOYEE table have to be changed, because the changes do not affect the view definitions and
+	views are revalidated automatically.
+</p>
+<p>
+	You should see successful completion messages in the lower right
+	as well as a second tab with a result set in it.
+</p>

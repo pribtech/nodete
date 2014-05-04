@@ -1,0 +1,39 @@
+<p><b>Scenario</b></p>
+<p align = "justify">
+	The health care provider was initially not compliant to any medical industry standard. 
+	All PMD documents were inserted into the out_patient_data table in any form the clinic liked. 
+	
+	The clinic then realizes many advantages to conform to the PMD standard. Hence, they begin to 
+	validate all PMD documents based on the standard, when inserting and updating the document.
+</p>
+
+<p><b>Operation</b></p>
+<p>
+	XML schema validation is demonstrated here. 
+	<ul>
+		<li>XML documents are inserted into the tables.</li>
+		<li>Use SYSPROC.XSR_REGISTER stored procedure to register an XML schema file.</li>
+		<li>Complete the registration with the SYSPROC.XSR_COMPLETE stored procedure.</li>
+		<li>Insert an XML document and validate it against the XML schema file with the XMLVALIDATE function. </li>
+	</ul>
+</p>
+<BR>
+
+<p><b>Solution</b></p>
+<p align = "justify">
+	XML schema for the PMD document is registered in DB2. Any PMD documents inserted 
+	and updated in the out_patient_data table are validated against the registered XML schema. 
+</p>
+<P>
+
+
+<p><b>Best Practices</b></p>
+<p align = "justify">
+	<ul>
+		<li>
+		For high performance inserts avoid performing schema 
+		validation in DB2 if it is not really needed. </li>
+	</ul>
+</p>
+
+

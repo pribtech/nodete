@@ -1,0 +1,28 @@
+<p><b>Scenario</b></p>
+<p>
+	The doctor needs a report where on giving a particular symptom the report gives details of 
+	all patients having that symptom and their complete medical history. One patient can have many symptoms related to a disease, 
+	hence to fetch all patients having a particular symptom, 
+	need loop through each patient's PMD is needed and then repeat for all patients.
+</p>
+<p>This report will help to group patient with similar symptoms and hence the doctor could identify how a 
+patient could be treated by comparing with other patient who had similar symptom.</p>
+<p><b>Operation</b></p>
+<p>
+	SQL cursors allow iteration through rows in table. Also it supports cursors on XQuery expressions. 
+	In the following scenario to get patients with a given symptom we can loop through the <component> section use expression
+<ul>
+<li><b><code>CREATE PROCEDURE </code></b>--> creates a SQL procedure inside which a cursor will be declared.</li>
+<li><b><code>Xquery FLOWR</code></b> --> To iterate through individual patient medical history to get the particular symptom.</li>
+<li><b><code>DECLARE curSymptom CURSOR</code></b> --> to iterate all those patients who have that symptom and consolidate into one report.</li>
+</ul></br>
+
+</p>
+<p><b>Solution</b></p>
+<p>
+	All the patients who have a particular symptom is fetched and given as a consolidated report.
+</p>
+<p><b></b></p>
+<p>
+
+</p>

@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tutorial name="UNION Migration">
+	<FlowRestriction>forwardExploration</FlowRestriction>
+	<openAction />
+    <globalCodeHighlightOptions highlightCode = "true" />
+	<pageList>
+		<page name="UNION Migration" type="intro">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>UNIONMigration.html</contentFile>
+		</page>
+		
+		<page name="Create the tables with constraints within them" type="general">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>CreateTheTablesWithConstraintsWithinThem.html</contentFile>
+			<SQLFile>CreateTheTablesWithConstraintsWithinThem.sql</SQLFile>
+		</page>
+		
+		<page name="Insert some values into the base tables" type="general">
+			
+			<entryAction name="checkForFirstTable" type="serverAction">
+				<parameterList>
+					<parameter name="action" type="serverAction">
+						<value>checkForObject</value>
+					</parameter>
+					
+					<parameter name="objectType" type="raw">
+						<value>table</value>
+					</parameter>
+					
+					<parameter name="object[schema]" type="constant">
+						<value>SCHEMA</value>
+					</parameter>
+					
+					<parameter name="object[table]" type="fixed">
+						<value>H1</value>
+					</parameter>
+				</parameterList>
+				
+				<followOnAction condition="false">
+					<task>
+						<action name="displayMsg" type="alert">
+							<message>Required table "H1" hasn't been created. Please execute this step again.</message>
+						</action>
+					</task>
+					
+					<task>
+						<setActionReturn>false</setActionReturn>
+					</task>
+				</followOnAction>
+				
+				<followOnAction condition="true">
+					<task>
+						<action name="checkForSecondTable" type="serverAction">
+							<parameterList>
+								
+								<parameter name="action" type="serverAction">
+									<value>CheckForObject</value>
+								</parameter>
+								
+								<parameter name="objectType" type="raw">
+									<value>table</value>
+								</parameter>
+								
+								<parameter name="object[schema]" type="constant">
+									<value>SCHEMA</value>
+								</parameter>
+								
+								<parameter name="object[table]" type="fixed">
+									<value>H2 </value>
+								</parameter>
+							</parameterList>
+							
+							<followOnAction condition="false">
+								<task>
+									<action name="displayMsg" type="alert">
+										<message>Required table "H2"  hasn't been created. Please execute this step again.</message>
+									</action>
+								</task>
+								<task>
+									<setActionReturn>false</setActionReturn>
+								</task>
+							</followOnAction>
+						</action>
+					</task>
+				</followOnAction>
+				
+			</entryAction>       
+			
+			
+			<exitAction/>
+			<contentFile>InsertSomeValuesIntoTheBaseTables.html</contentFile>
+			<SQLFile>InsertSomeValuesIntoTheBaseTables.sql</SQLFile>
+		</page>
+		
+		<page name="Create a Union of these 2 tables" type="general">
+			
+			<entryAction name="checkForInsert" type="serverAction">
+				<parameterList>
+					<parameter name="action" type="fixed">
+						<value>checkForRow</value>
+					</parameter>
+					<parameter name="schema" type="constant">
+						<value>SCHEMA</value>
+					</parameter>
+					<parameter name="name" type="fixed">
+						<value>H1</value>
+					</parameter>
+				</parameterList>
+				<followOnAction condition="true"  negCondition="true">
+					<task>
+						<action name="displayMsgForFailedInsert" type="alert">
+							<message>Data hasn't been inserted in table H1. Please try this step again.</message>
+						</action>
+					</task>
+					<task>
+						<setActionReturn>false</setActionReturn>
+					</task>
+				</followOnAction>
+				
+				
+				<followOnAction condition="true">
+					<task>
+						<action name="checkForSecondInsert" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="fixed">
+									<value>checkForRow</value>
+								</parameter>
+								<parameter name="schema" type="constant">
+									<value>SCHEMA</value>
+								</parameter>
+								<parameter name="name" type="fixed">
+									<value>H2</value>
+								</parameter>
+							</parameterList>
+							
+							<followOnAction condition="true"  negCondition="true">
+								<task>
+									<action name="displayMsgForFailedInsert" type="alert">
+										<message>Data hasn't been inserted in table H2. Please try this step again.</message>
+									</action>
+								</task>
+								<task>
+									<setActionReturn>false</setActionReturn>
+								</task>
+							</followOnAction>
+						</action>
+					</task>
+				</followOnAction>
+			</entryAction> 
+			
+			<exitAction/>
+			<contentFile>CreateAUnionOfThese2Tables.html</contentFile>
+			<SQLFile>CreateAUnionOfThese2Tables.sql</SQLFile>
+		</page>
+		
+		<page name="Now do a select across some ranges" type="general">
+			<entryAction name="checkForView" type="serverAction">
+				<parameterList>
+					<parameter name="action" type="serverAction">
+						<value>checkForObject</value>
+					</parameter>
+					<parameter name="objectType" type="raw">
+						<value>view</value>
+					</parameter>
+					<parameter name="object[schema]" type="constant">
+						<value>SCHEMA</value>
+					</parameter>
+					<parameter name="object[view]" type="fixed">
+						<value>Y2004</value>
+					</parameter>
+				</parameterList>
+				<followOnAction condition="false">
+					<task>
+						<action name="displayMsg" type="alert">
+							<message>Required View "Y2004" hasn't been created. Please execute this step again.</message>
+						</action>
+					</task>
+					<task>
+						<setActionReturn>false</setActionReturn>
+					</task>
+				</followOnAction>
+				
+			</entryAction>
+			<exitAction/>
+			<contentFile>NowDoASelectAcrossSomeRanges.html</contentFile>
+			<SQLFile>NowDoASelectAcrossSomeRanges.sql</SQLFile>
+		</page>
+		
+		<!--<page name="Show DB2 Explain" type="general">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>ShowDB2Explain.html</contentFile>
+			<SQLFile>ShowDB2Explain.sql</SQLFile>
+		</page>-->
+		
+		<page name="Try inserting into this view" type="general">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>TryInsertingIntoThisView.html</contentFile>
+			<SQLFile>TryInsertingIntoThisView.sql</SQLFile>
+		</page>
+		
+		<page name="View the results" type="general">
+			<entryAction name="checkForInsert" type="serverAction">
+				<parameterList>
+					<parameter name="action" type="fixed">
+						<value>checkForRow</value>
+					</parameter>
+					<parameter name="schema" type="constant">
+						<value>SCHEMA</value>
+					</parameter>
+					<parameter name="name" type="fixed">
+						<value>Y2004 </value>
+					</parameter>
+					<parameter name="minrow" type="fixed">
+						<value>24</value>
+					</parameter>
+				</parameterList>
+				<followOnAction condition="true"  negCondition="true">
+					<task>
+						<action name="displayMsgForFailedInsert" type="alert">
+							<message>New Data hasn't been inserted in the table "Y2004". Please try this step again.</message>
+						</action>
+					</task>
+					<task>
+						<setActionReturn>false</setActionReturn>
+					</task>
+				</followOnAction>
+			</entryAction> 
+			
+			<exitAction/>
+			<contentFile>ViewTheResults.html</contentFile>
+			<SQLFile>ViewTheResults.sql</SQLFile>
+		</page>
+		
+		<page name="Maintenance of UNION ALL - Update" type="general">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>MaintenanceOfUNIONALL-Update.html</contentFile>
+			<SQLFile>MaintenanceOfUNIONALL-Update.sql</SQLFile>
+		</page>
+		
+		<page name="Recreate the View" type="general">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>RecreateTheView.html</contentFile>
+			<SQLFile>RecreateTheView.sql</SQLFile>
+		</page>
+		
+		<page name="Try Maintenance Again" type="general">
+			<entryAction name="checkForView" type="serverAction">
+				<parameterList>
+					<parameter name="action" type="serverAction">
+						<value>checkForObject</value>
+					</parameter>
+					<parameter name="objectType" type="raw">
+						<value>view</value>
+					</parameter>
+					<parameter name="object[schema]" type="constant">
+						<value>SCHEMA</value>
+					</parameter>
+					<parameter name="object[view]" type="fixed">
+						<value>Y2004_2</value>
+					</parameter>
+				</parameterList>
+				<followOnAction condition="false">
+					<task>
+						<action name="displayMsg" type="alert">
+							<message>Required View "Y2004_2" hasn't been created. Please execute this step again.</message>
+						</action>
+					</task>
+					<task>
+						<setActionReturn>false</setActionReturn>
+					</task>
+				</followOnAction>
+			</entryAction>
+			<exitAction/>
+			<contentFile>TryMaintenanceAgain.html</contentFile>
+			<SQLFile>TryMaintenanceAgain.sql</SQLFile>
+		</page>
+		
+	</pageList>
+</tutorial>

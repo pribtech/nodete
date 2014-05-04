@@ -1,0 +1,3 @@
+<p>Summary tables can be used to improve SQL queries performance. Typically, they store the results of simple queries, or collections of table joins.</p>
+
+<p>You can create a summary table that holds results from running a specific query and keeps that result updated. For example, you could monitor the highest salary in your company (<em>SELECT MAX(salary) FROM employee</em>) and keep that information up-to-date in a summary table. Then, whenever a user requests the highest employee salary, the entry from the summary table is returned. This way you don't need to recalculate the result using the employee table every time you want to check what the highest salary is.</p>

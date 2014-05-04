@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tutorial name="Range Clustered tables">
+<FlowRestriction>forwardExploration</FlowRestriction>
+    <closeAction/>
+    <openAction />
+    <globalCodeHighlightOptions highlightCode = "true" />
+    <pageList>
+    	<page name="Range Clustered tables" type="intro">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>RangeClusteredTables.html</contentFile>
+    		<autoLoadLink>
+    			<pageWindow target="informationWindow">
+    				<panel name="main">
+    					<URL>http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.datatools.datamining.doc/c_opclusterertable.html?noframes=true</URL>
+    				</panel>
+    			</pageWindow>
+    		</autoLoadLink>
+        </page>
+        
+    <page name="Example of range-clustered tables" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>ExampleOfRange-clusteredTables.html</contentFile>
+    	<SQLFile>ExampleOfRange-clusteredTables.sql</SQLFile>>
+    </page>
+    	
+    	<page name="Generate 100 rows of student records" type="general">
+    		
+    		<entryAction name="checkForStudentsTable" type="serverAction">
+    			<parameterList>
+    				<parameter name="action" type="serverAction">
+    					<value>checkForObject</value>
+    				</parameter>
+    				
+    				<parameter name="objectType" type="raw">
+    					<value>table</value>
+    				</parameter>
+    				
+    				<parameter name="object[schema]" type="constant">
+    					<value>SCHEMA</value>
+    				</parameter>
+    				
+    				<parameter name="object[table]" type="fixed">
+    					<value>STUDENTS</value>
+    				</parameter>
+    			</parameterList>
+    			
+    			<followOnAction condition="false">
+    				<task>
+    					<action name="displayMsg" type="alert">
+    						<message>Required table "STUDENTS" hasn't been created. Please execute this step again.</message>
+    					</action>
+    				</task>
+    				
+    				<task>
+    					<setActionReturn>false</setActionReturn>
+    				</task>
+    			</followOnAction>
+    		</entryAction>       
+            <exitAction/>
+            <contentFile>Generate100RowsOfStudentRecords.html</contentFile>
+        	<SQLFile>Generate100RowsOfStudentRecords.sql</SQLFile>>
+    	<SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar="#" cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+    	</page>
+    	
+    	<page name="Show the contents of the Students table" type="general">
+    		<entryAction name="checkForInsert" type="serverAction">
+    			<parameterList>
+    				<parameter name="action" type="fixed">
+    					<value>checkForRow</value>
+    				</parameter>
+    				<parameter name="schema" type="constant">
+    					<value>SCHEMA</value>
+    				</parameter>
+    				<parameter name="name" type="fixed">
+    					<value>STUDENTS</value>
+    				</parameter>
+    			</parameterList>
+    			<followOnAction condition="true"  negCondition="true">
+    				<task>
+    					<action name="displayMsgForFailedInsert" type="alert">
+    						<message>Data hasn't been inserted in table STUDENTS. Please try this step again.</message>
+    					</action>
+    				</task>
+    				<task>
+    					<setActionReturn>false</setActionReturn>
+    				</task>
+    			</followOnAction>
+    		</entryAction> 
+            <exitAction/>
+            <contentFile>ShowTheContentsOfTheStudentsTable.html</contentFile>
+        	<SQLFile>ShowTheContentsOfTheStudentsTable.sql</SQLFile>
+    	</page>
+    	
+    	<page name="Trying selecting a particular student." type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>TryingSelectingAParticularStudent..html</contentFile>
+        	<SQLFile>TryingSelectingAParticularStudent.sql</SQLFile>
+    	</page>
+    	
+    	<page name="Insert an additional student whose ID exceeds the size of the table" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>InsertAnAdditionalStudentWhoseIDExceedsTheSizeOfTheTable.html</contentFile>
+        	<SQLFile>InsertAnAdditionalStudentWhoseIDExceedsTheSizeOfTheTable.sql</SQLFile>
+        </page>
+    	
+    	<page name="Range-clustered table with 3 different dimensions" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>Range-clusteredTableWith3DifferentDimensions.html</contentFile>
+        	<SQLFile>Range-clusteredTableWith3DifferentDimensions.sql</SQLFile>
+        </page>
+    	
+    	<page name="Generate 1000 rows of student records" type="general">
+    		<entryAction name="checkForStudentsTable" type="serverAction">
+    			<parameterList>
+    				<parameter name="action" type="serverAction">
+    					<value>checkForObject</value>
+    				</parameter>
+    				
+    				<parameter name="objectType" type="raw">
+    					<value>table</value>
+    				</parameter>
+    				
+    				<parameter name="object[schema]" type="constant">
+    					<value>SCHEMA</value>
+    				</parameter>
+    				
+    				<parameter name="object[table]" type="fixed">
+    					<value>STUDENTS_NEW</value>
+    				</parameter>
+    			</parameterList>
+    			
+    			<followOnAction condition="false">
+    				<task>
+    					<action name="displayMsg" type="alert">
+    						<message>Required table "STUDENTS_NEW" hasn't been created. Please execute this step again.</message>
+    					</action>
+    				</task>
+    				
+    				<task>
+    					<setActionReturn>false</setActionReturn>
+    				</task>
+    			</followOnAction>
+    		</entryAction>
+            <exitAction/>
+            <contentFile>Generate1000RowsOfStudentRecords.html</contentFile>
+        	<SQLFile>Generate1000RowsOfStudentRecords.sql</SQLFile>
+    	<SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar="#" cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+    	</page>
+    	
+    	<page name="Show the contents of the Students table" type="general">
+    		<entryAction name="checkForInsert" type="serverAction">
+    			<parameterList>
+    				<parameter name="action" type="fixed">
+    					<value>checkForRow</value>
+    				</parameter>
+    				<parameter name="schema" type="constant">
+    					<value>SCHEMA</value>
+    				</parameter>
+    				<parameter name="name" type="fixed">
+    					<value>STUDENTS_NEW</value>
+    				</parameter>
+    			</parameterList>
+    			<followOnAction condition="true"  negCondition="true">
+    				<task>
+    					<action name="displayMsgForFailedInsert" type="alert">
+    						<message>Data hasn't been inserted in table STUDENTS_NEW. Please try this step again.</message>
+    					</action>
+    				</task>
+    				<task>
+    					<setActionReturn>false</setActionReturn>
+    				</task>
+    			</followOnAction>
+    		</entryAction>
+            <exitAction/>
+            <contentFile>ShowTheContentsOfTheStudentsTable.html</contentFile>
+        	<SQLFile>ShowTheContentsOfTheStudentsNewTable.sql</SQLFile>
+    	</page>
+    	
+    	<page name="Insert a new Student into a school" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>InsertANewStudentIntoASchool.html</contentFile>
+        	<SQLFile>InsertANewStudentIntoASchool.sql</SQLFile>
+    	</page>
+    	
+    	<page name="Check that the student did get added" type="last">
+    		<entryAction name="checkForInsert" type="serverAction">
+    			<parameterList>
+    				<parameter name="action" type="fixed">
+    					<value>checkForRow</value>
+    				</parameter>
+    				<parameter name="schema" type="constant">
+    					<value>SCHEMA</value>
+    				</parameter>
+    				<parameter name="name" type="fixed">
+    					<value>STUDENTS_NEW </value>
+    				</parameter>
+    				<parameter name="minrow" type="fixed">
+    					<value>1001</value>
+    				</parameter>
+    			</parameterList>
+    			<followOnAction condition="true"  negCondition="true">
+    				<task>
+    					<action name="displayMsgForFailedInsert" type="alert">
+    						<message>New Data hasn't been inserted in the table "STUDENTS_NEW". Please try this step again.</message>
+    					</action>
+    				</task>
+    				<task>
+    					<setActionReturn>false</setActionReturn>
+    				</task>
+    			</followOnAction>
+    		</entryAction> 
+            <exitAction/>
+            <contentFile>CheckThatTheStudentDidGetAdded.html</contentFile>
+        	<SQLFile>CheckThatTheStudentDidGetAdded.sql</SQLFile>
+        </page></pageList>
+</tutorial>

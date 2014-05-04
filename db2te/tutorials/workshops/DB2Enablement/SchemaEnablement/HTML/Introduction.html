@@ -1,0 +1,33 @@
+<H2>Step 1: Schema Enablement</H2><HR>
+<p>
+The first step of the enablement process is <br><b class="sourceChange">Schema Enablement</b> which data definition language (DDLs) are enabled to run on DB2. 
+</p>
+
+<br><H2>Business Problem: Other RDBMS using non-standard data types</H2><HR>
+<p>The heart of every database is its data. Mismatched types or mismatched semantics of these types can seriously impact the ability to enable an application to another RDBMS. So to allow Oracle applications to run on DB2, it is crucial to support its non-standard basic types, such as strings, dates, and numerics. </p>
+
+<BR><BR><H2>DB2 new data types</H2><HR>
+<p>
+	DB2 9.7 supports some Oracle data types to make DB2 enablement more easily and quickly.
+
+	DB2 new data types are:
+	<ul>
+	<li><a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v9r7/topic/com.ibm.db2.luw.apdv.porting.doc/doc/r0052879.html');">NUMBER</a></li>
+	<li>
+	<a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v9r7/topic/com.ibm.db2.luw.apdv.porting.doc/doc/r0052880.html');">VARCHAR2</a></li>
+	<li>
+	<a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v9r7/topic/com.ibm.db2.luw.apdv.porting.doc/doc/r0053667.html');">DATE</a> that also includes the TIME component</li>
+	<li>
+	<a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v9r7/topic/com.ibm.db2.luw.apdv.porting.doc/doc/r0053667.html');">TIMESTAMP(n)</a></li>
+	<li>
+	<a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v9r7/topic/com.ibm.db2.luw.wn.doc/doc/c0054724.html');">BOOLEAN</a></li>
+	<li>
+	<a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v9r7/topic/com.ibm.db2.luw.wn.doc/doc/c0054725.html');">ASSOCIATIVE ARRAY</a></li>
+	<li>
+	<a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v9r7/topic/com.ibm.db2.luw.wn.doc/doc/c0053510.html');">ANCHORED TYPE</a></li>
+	<li>
+	<a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v9r7/topic/com.ibm.db2.luw.wn.doc/doc/c0053523.html');">ROWTYPE</a></li>
+	<li>
+	<a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v9r7/topic/com.ibm.db2.luw.wn.doc/doc/c0053524.html');">CURSOR TYPE</a></li>
+
+</p>

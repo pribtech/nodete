@@ -1,0 +1,28 @@
+<H2>Compare performance</H2><HR>
+<p>
+You can also move the table with LOAD option.
+</p>
+<p>
+	This example moves the same ORDER_DETAILS table, but it uses the LOAD option instead of the INSERT FROM
+	CURSOR option, which is the default. Many factors contribute to making the LOAD option faster than INSERT FROM
+	CURSOR option:
+	<ul>
+	<li>LOAD does not log the changes on the target per record.</li>
+	<li>LOAD is highly parallelized for CPU and I/O processing.</li>
+	<li>LOAD performs large block writes to the target table. This provides additional I/O efficiencies.</li>
+	</ul>
+<p/>
+<p>
+	Here you will move table ORDER_DETAILS to tablespace TBS3 using INSERT FROM CURSOR option and
+	after that you will move the table ORDER_DETAILS to tablespace TBS2 with LOAD option. 
+	After the successful movement of table you will compare the results.
+
+<p>
+<span style="background-color: green"><b>Note:-</b></span> Timing of ADMIN_MOVE_TABLE with LOAD option depends on the number of rows.
+</p>
+
+
+
+
+
+

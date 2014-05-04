@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tutorial name="Date and Time Duration Values" autoCloseWindowsInRightStage="true" autoClearAdhocResults="true">
+    <flowRestriction>Free</flowRestriction>
+    <closeAction/>
+    <openAction />
+    <globalCodeHighlightOptions highlightCode = "true" />
+    <pageList>
+    	<page name="Date and Time Duration Values" type="intro">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>01_DateAndTimeDurationValues.html</contentFile>
+            <autoLoadLink>
+    	        <pageWindow target="informationWindow">
+    	            <panel name="main">
+    	                <URL>http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.xml.doc/doc/xqrtypesys.html?noframes=true</URL>
+    	            </panel>
+    	        </pageWindow>
+    	      </autoLoadLink>
+        </page>
+        
+    <page name="Time Duration" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>02_TimeDuration.html</contentFile>
+    	<SQLFile>01_TimeDuration.sql</SQLFile>
+    	<SQLExecutionOptions xmlinline="true" xml="true" clob="false" blob="false" dbclob="false" termChar=";" cursor="forward" commitPerStmt="true" numRowReturned="100" /> 
+        </page><page name="Year-Month Duration" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>03_Year-MonthDuration.html</contentFile>
+        	<SQLFile>02_Year-MonthDuration.sql</SQLFile>
+        	<SQLExecutionOptions xmlinline="true" xml="true" clob="false" blob="false" dbclob="false" termChar=";" cursor="forward" commitPerStmt="true" numRowReturned="100" />
+        </page><page name="Day-Time Duration" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>04_Day-TimeDuration.html</contentFile>
+        	<SQLFile>03_Day-TimeDuration.sql</SQLFile>
+        	<SQLExecutionOptions xmlinline="true" xml="true" clob="false" blob="false" dbclob="false" termChar=";" cursor="forward" commitPerStmt="true" numRowReturned="100" />
+        </page><page name="Date Time Values" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>05_DateTimeValues.html</contentFile>
+        	<SQLFile>04_DateTimeValues.sql</SQLFile>
+        	<SQLExecutionOptions xmlinline="true" xml="true" clob="false" blob="false" dbclob="false" termChar=";" cursor="forward" commitPerStmt="true" numRowReturned="100" />
+        </page><page name="Date Value" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>06_DateValue.html</contentFile>
+        	<SQLFile>05_DateValue.sql</SQLFile>
+        	<SQLExecutionOptions xmlinline="true" xml="true" clob="false" blob="false" dbclob="false" termChar=";" cursor="forward" commitPerStmt="true" numRowReturned="100" />
+        </page><page name="Time value" type="last">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>07_TimeValue.html</contentFile>
+        	<SQLFile>06_TimeValue.sql</SQLFile>
+        	<SQLExecutionOptions xmlinline="true" xml="true" clob="false" blob="false" dbclob="false" termChar=";" cursor="forward" commitPerStmt="true" numRowReturned="100" />
+        </page></pageList>
+</tutorial>

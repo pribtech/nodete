@@ -1,0 +1,10 @@
+<p>A table is in <b>Third Normal Form (3NF)</b> if it is 1NF, 2NF and no non-key field functionally depends on any other non-key field. <br>Such indirect dependencies are known as <b>transitive dependencies</b>. </p>
+
+<H2><B>Problem Description</B></H2><HR>
+<p>The 'order_status_desc' column of the 'order_master' table is dependent on the non-key column 'order_status'.</p>
+
+<H2><B>Operation</B></H2><HR>
+<p>To make the 'order_master' table 3NF compliant, a separate table is created to eliminate this transitive dependency.</p>
+
+<H2><B>Result</B></H2><HR>
+<p>Tables 'order_status' is created.</p>

@@ -1,0 +1,483 @@
+<actionPanel>
+	<flow>controlled</flow>
+	<useConsole>yes</useConsole>
+	<overview></overview>
+	<taskList>
+				
+		<task name="Get Compressed size">
+			<description>
+			This collects table statistics and estimates the size of the Fact tables with and without compression
+			</description>
+			<action name="runUncompress" type="blank">
+				<followOnAction condition="true" compareOn="true" compareOnType="raw">
+				<task>
+					<echo>Fact tables without compression</echo>
+					<echo>-------------------------------</echo>
+					<echo></echo>
+					<echo></echo>
+						<echo>Collecting statistics for SUBSCRIBER_RATED_USAGE_MDC table</echo>
+						<action name="runstats4" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="raw">
+									<value>executeSQL</value>
+								</parameter>
+								<parameter name="SQL" type="fixed">
+									<value>call admin_cmd('RUNSTATS ON TABLE ?SCHEMA?.SUBSCRIBER_RATED_USAGE_MDC')</value>			 						
+								</parameter>
+							</parameterList>
+							<followOnAction condition="true">
+								<task>
+									<action name="estimateUnCompressedSize4" type="serverAction">
+										<parameterList>
+											<parameter name="action" type="fixed">
+												<value>executeSQL</value>
+											</parameter>
+											<parameter name="SQL" type="fixed">
+												<value>SELECT CAST(CAST(NPAGES AS DOUBLE)/256 AS DECIMAL(5,3)) FROM SYSIBM.SYSTABLES WHERE CREATOR= '?SCHEMA?' AND NAME='SUBSCRIBER_RATED_USAGE_MDC'</value>
+											</parameter>
+										</parameterList>
+										<followOnAction condition="true">
+											<task>
+												<assignSharedConstant name="size_Uncompressed4" type="returnObject">
+													<value>estimateUnCompressedSize4.returnValue.resultSet.0.data.0.0</value>																
+												</assignSharedConstant>
+												<echo>Size of Uncompressed Table: ?size_Uncompressed4? MB</echo>
+											</task>
+										</followOnAction>
+										<followOnAction condition="false">
+											<task>
+												<echo>Error in run!</echo>
+											</task>
+										</followOnAction>
+									</action>
+								</task>
+			
+								<task>
+									<echo></echo>
+									<echo>Calculating the compression ratio of SUBSCRIBER_RATED_USAGE_MDC table.
+									</echo>
+									<action name="compressRatio4" type="serverAction">
+										<parameterList>
+											<parameter name="action" type="fixed">
+												<value>executeSQL</value>
+											</parameter>
+											<parameter name="SQL" type="fixed">
+												<value>SELECT PAGES_SAVED_PERCENT, CAST (TABSIZE*(CAST(100 - PAGES_SAVED_PERCENT AS DOUBLE)/100) AS DECIMAL (5,3)) FROM TABLE(SELECT CAST(CAST(NPAGES AS DOUBLE)/256 AS DECIMAL(5,3)) AS TABSIZE FROM SYSIBM.SYSTABLES WHERE CREATOR= '?SCHEMA?' AND NAME='SUBSCRIBER_RATED_USAGE_MDC') AS T1, TABLE (SYSPROC.ADMIN_GET_TAB_COMPRESS_INFO('?SCHEMA?', 'SUBSCRIBER_RATED_USAGE_MDC', 'ESTIMATE')) AS T2</value>
+											</parameter>
+										</parameterList>
+										<followOnAction condition="true">
+											<task>
+												<assignSharedConstant name="compression_ratio4" type="returnObject">
+													<value>compressRatio4.returnValue.resultSet.0.data.0.0				   
+													</value>
+												</assignSharedConstant>
+												<assignSharedConstant name="compressed_size_estimate4" type="returnObject">
+													<value>compressRatio4.returnValue.resultSet.0.data.0.1					
+													</value>
+												</assignSharedConstant>
+												<assignSharedConstant name="query1" type="returnObject">
+													<value>compressRatio4.returnValue.STMT</value>
+												</assignSharedConstant>
+												<echo>Estimated compression ratio: ?compression_ratio4?%</echo>									   								
+												<echo>Estimate size : ?compressed_size_estimate4?</echo> 								  											
+											</task>
+										</followOnAction>
+										<followOnAction condition="false">
+											<task>
+												<echo>Error in run!</echo>
+											</task>
+										</followOnAction>
+									</action>
+								</task>					
+						
+
+					<task>	
+						<echo></echo>
+						<echo>Collecting statistics for SUBSCRIBER_DEDICATED_ACCOUNT_USAGE_MDC table</echo>					
+						<action name="runstats3" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="raw">
+									<value>executeSQL</value>
+								</parameter>
+								<parameter name="SQL" type="fixed">
+									<value>call admin_cmd('RUNSTATS ON TABLE ?SCHEMA?.SUBSCRIBER_DEDICATED_ACCOUNT_USAGE_MDC')</value>		
+								</parameter>
+							</parameterList>
+							<followOnAction condition="true">
+								<task>
+									<action name="estimateUnCompressedSize3" type="serverAction">
+										<parameterList>
+											<parameter name="action" type="fixed">
+												<value>executeSQL</value>
+											</parameter>
+											<parameter name="SQL" type="fixed">
+												<value>SELECT CAST(CAST(NPAGES AS DOUBLE)/256 AS DECIMAL(5,3)) FROM SYSIBM.SYSTABLES WHERE creator='?SCHEMA?' AND NAME='SUBSCRIBER_DEDICATED_ACCOUNT_USAGE_MDC'</value>
+											</parameter>
+										</parameterList>
+										<followOnAction condition="true">
+											<task>
+												<assignSharedConstant name="size_Uncompressed3" type="returnObject">
+													<value>estimateUnCompressedSize3.returnValue.resultSet.0.data.0.0</value>
+												</assignSharedConstant>
+												<assignSharedConstant name="query1" type="returnObject">
+													<value>estimateUnCompressedSize3.returnValue.STMT</value>																												
+												</assignSharedConstant>											
+												<echo>Size of Uncompressed Table: ?size_Uncompressed3? MB</echo>																										
+											</task>
+										</followOnAction>
+										<followOnAction condition="false">
+											<task>
+												<echo>Error in run!</echo>
+											</task>
+										</followOnAction>
+									</action>
+								</task>
+				
+								<task>
+									<echo></echo>
+									<echo>Calculating the compression ratio of SUBSCRIBER_DEDICATED_ACCOUNT_USAGE_MDC table</echo>																	
+									<action name="compressRatio3" type="serverAction">
+										<parameterList>
+											<parameter name="action" type="fixed">
+												<value>executeSQL</value>
+											</parameter>
+											<parameter name="SQL" type="fixed">
+												<value>SELECT PAGES_SAVED_PERCENT, CAST (TABSIZE*(CAST(100 - PAGES_SAVED_PERCENT AS DOUBLE)/100) AS DECIMAL (5,3)) FROM TABLE(SELECT CAST(CAST(NPAGES AS DOUBLE)/256 AS DECIMAL(5,3)) AS TABSIZE FROM SYSIBM.SYSTABLES WHERE CREATOR= '?SCHEMA?' AND NAME='SUBSCRIBER_DEDICATED_ACCOUNT_USAGE_MDC') AS T1, TABLE (SYSPROC.ADMIN_GET_TAB_COMPRESS_INFO('?SCHEMA?', 'SUBSCRIBER_DEDICATED_ACCOUNT_USAGE_MDC', 'ESTIMATE')) AS T2</value>																								
+											</parameter>
+										</parameterList>
+										<followOnAction condition="true">
+											<task>
+												<assignSharedConstant name="compression_ratio3" type="returnObject">
+													<value>compressRatio3.returnValue.resultSet.0.data.0.0</value>
+												</assignSharedConstant>
+												<assignSharedConstant name="compressed_size_estimate3" type="returnObject">
+													<value>compressRatio3.returnValue.resultSet.0.data.0.1</value>
+												</assignSharedConstant>
+												<assignSharedConstant name="query1" type="returnObject">
+													<value>compressRatio3.returnValue.STMT</value>
+												</assignSharedConstant>
+												<echo>Estimated compression ratio: ?compression_ratio3?%</echo>
+												<echo>Estimate size : ?compressed_size_estimate3? </echo>
+											</task>
+										</followOnAction>
+										<followOnAction condition="false">
+											<task>
+												<echo>Error in run!</echo>
+											</task>
+										</followOnAction>
+									</action>
+								</task>
+								
+							</followOnAction>
+						</action>
+					</task>			
+
+					
+				</followOnAction>
+			</action>
+		</task>							
+		
+		<task>	
+			<echo></echo>
+			<echo>Fact tables with compression</echo>
+			<echo>----------------------------</echo>
+			<echo></echo>
+			<echo>Collecting statistics for the compressed Fact tables</echo>			
+				<action name="runstats2" type="serverAction">
+					<parameterList>
+						<parameter name="action" type="raw">
+							<value>executeSQL</value>
+						</parameter>
+						<parameter name="SQL" type="fixed">
+							<value>call admin_cmd('RUNSTATS ON TABLE ?SCHEMA?.SUBSCRIBER_RATED_USAGE_COMPRESS')</value>							
+						</parameter>
+					</parameterList>
+					<followOnAction condition="true">
+						<task>
+							<action name="estimateCompressedSize2" type="serverAction">
+								<parameterList>
+									<parameter name="action" type="fixed">
+										<value>executeSQL</value>
+									</parameter>
+									<parameter name="SQL" type="fixed">
+										<value>SELECT CAST(CAST(NPAGES AS DOUBLE)/256 AS DECIMAL(5,3)) FROM SYSIBM.SYSTABLES WHERE CREATOR= '?SCHEMA?' AND NAME='SUBSCRIBER_RATED_USAGE_COMPRESS'</value>																																					
+									</parameter>
+								</parameterList>
+								<followOnAction condition="true">
+									<task>
+										<assignSharedConstant name="size_compressed2" type="returnObject">
+											<value>estimateCompressedSize2.returnValue.resultSet.0.data.0.0</value>																								
+										</assignSharedConstant>
+										<assignSharedConstant name="query1" type="returnObject">
+											<value>estimateCompressedSize2.returnValue.STMT</value>																												
+										</assignSharedConstant>
+										<echo></echo>
+										<echo>Size of Compressed Table SUBSCRIBER_RATED_USAGE_COMPRESS: ?size_compressed2? MB
+										</echo>
+									</task>
+								</followOnAction>
+								<followOnAction condition="false">
+									<task>
+										<echo>Error in run!</echo>
+									</task>
+								</followOnAction>
+							</action>
+						</task>
+					</followOnAction>
+				</action>
+			</task>						
+						
+			<task>		
+				<echo> </echo>
+				<action name="runstats1" type="serverAction">
+					<parameterList>
+						<parameter name="action" type="raw">
+							<value>executeSQL</value>
+						</parameter>
+						<parameter name="SQL" type="fixed">
+							<value>call admin_cmd('RUNSTATS ON TABLE ?SCHEMA?.SUBSCRIBER_DEDICATED_ACCOUNT_USAGE_COMPRESS')</value>																		
+						</parameter>
+					</parameterList>
+					<followOnAction condition="true">
+						<task>
+							<action name="estimateCompressedSize1" type="serverAction">
+								<parameterList>
+									<parameter name="action" type="fixed">
+										<value>executeSQL</value>
+									</parameter>
+									<parameter name="SQL" type="fixed">
+										<value>SELECT CAST(CAST(NPAGES AS DOUBLE)/256 AS DECIMAL(5,3)) FROM SYSIBM.SYSTABLES WHERE CREATOR= '?SCHEMA?' AND NAME='SUBSCRIBER_DEDICATED_ACCOUNT_USAGE_COMPRESS'</value>
+									</parameter>
+								</parameterList>
+								<followOnAction condition="true">
+									<task>
+										<assignSharedConstant name="size_compressed1" type="returnObject">
+											<value>estimateCompressedSize1.returnValue.resultSet.0.data.0.0</value>	
+										</assignSharedConstant>
+										<assignSharedConstant name="query1" type="returnObject">
+											<value>estimateCompressedSize1.returnValue.STMT</value>
+										</assignSharedConstant>
+											<echo>Size of Compressed Table SUBSCRIBER_DEDICATED_ACCOUNT_USAGE_COMPRESS: ?size_compressed1? MB
+											</echo>
+									</task>
+								</followOnAction>
+								<followOnAction condition="false">
+									<task>
+										<echo>Error in run!</echo>
+									</task>
+								</followOnAction>
+							</action>
+						</task>
+					</followOnAction>
+				</action>
+			</task>
+	
+
+				</followOnAction>
+			</action>
+		</task>							
+		
+				<task name="Size Comparison">
+					<description>
+						This generates a graph of uncompressed and compressed sizes of the fact tables
+					</description>
+					<action name="sizeCompare" type="blank">
+						<followOnAction condition="true" compareOn="true" compareOnType="raw">	
+							<task>
+								<loadPage>
+									<pageWindow target="informationWindow">
+										<panel name="main" PrimaryContainer="true">
+											<link type="action" target="_self" window="_self" connectionRequired="y">
+
+												<parameterList>
+													<parameter name="action">
+														graphYUI
+													</parameter>
+													<parameter name="graph">
+														<![CDATA[					       				
+					       				
+ {
+	"Graph":
+	{
+		"title": "Table Size Comparison (in MB)",
+		"graphType": "column",
+		"xField": "TableState",
+		"xTitle": "Number of Pages",
+		"yTitle": "Un Table",
+		"dataSourceType": "data_from_raw",
+		"responseSchema": {"fields": ["TableState","TableSize"]},
+		"style":{	"legend": { "display": "right" }, "animationEnabled" : "false"},
+		"seriesDef": [{ "displayName": "Size (MB)", "yField": "TableSize", "style": {"color": "0x454586"}}],
+		"datasets":
+		 [ 
+			    { "TableState": "R_Uncomp", "TableSize": ?size_Uncompressed4? },
+			    { "TableState": "R_EstiComp", "TableSize": ?compressed_size_estimate4? },
+			    { "TableState": "R_Comp", "TableSize": ?size_compressed2?},
+			    { "TableState": "D_Uncomp", "TableSize": ?size_Uncompressed3? },
+			    { "TableState": "D_EstiComp", "TableSize": ?compressed_size_estimate3? },
+ 			    { "TableState": "D_Comp", "TableSize": ?size_compressed1?}
+
+			]
+	}
+
+
+}
+							
+
+]]>
+
+													</parameter>
+												</parameterList>
+											</link>
+										</panel>
+									</pageWindow>
+								</loadPage>
+							</task>
+						</followOnAction>
+					</action>
+				</task>
+
+					<task name="Get Query Execution times">
+		<description>
+			This computes the average time taken for query execution with and without Compression
+		</description>
+		<action name="runUncompress" type="blank">
+			<followOnAction condition="true" compareOn="true" compareOnType="raw">
+				<task>
+					<echo></echo>
+					<echo>Running the sample query on the Uncompressed tables 5 times...</echo>
+					<action name="runMdc" type="serverAction">
+						<parameterList>
+							<parameter name="action" type="fixed">
+								<value>run_workload</value>
+							</parameter>
+							<parameter name="SQL[1]" type="fixed">
+								<value>SELECT EVENT_START_DT, SUBSCRIBER_KEY, SUBSCRIBER_MSISDN, SUBSCRIBER_CIRCLE_ID, TRF_PLAN_KEY, SUM (VOICE_LOCAL_OG_HOME_MOU)  LOCAL_OG_MOU, SUM(VOICE_LOCAL_OG_HOME_PULSE_60) LOCAL_OG_PULSE_60, SUM(VOICE_LOCAL_OG_HOME_COUNT) LOCAL_OG_COUNT,  SUM(VOICE_LOCAL_OG_HOME_CORE_INR) LOCAL_OG_CORE_AMT, SUM (VOICE_LOCAL_OG_HOME_DED_INR) LOCAL_OG_DED_AMT, SUM (VOICE_LOCAL_IC_OR_MOU) LOCAL_IC_OR_MOU, SUM (VOICE_LOCAL_IC_OR_PULSE_60) LOCAL_IC_OR_PULSE_60, SUM (VOICE_LOCAL_IC_OR_COUNT)  LOCAL_IC_OR_COUNT, SUM (VOICE_LOCAL_IC_OR_CORE_INR) LOCAL_IC_OR_CORE_AMT, SUM (VOICE_LOCAL_IC_OR_DED_INR)  LOCAL_IC_OR_DED_AMT, SUM (VOICE_STD_OG_HOME_MOU) STD_OG_MOU, SUM (VOICE_STD_OG_HOME_PULSE_60) STD_OG_PULSE_60, SUM  (VOICE_STD_OG_HOME_COUNT) STD_OG_COUNT, SUM (VOICE_STD_OG_HOME_CORE_INR) STD_OG_CORE_AMT, SUM (VOICE_STD_OG_HOME_DED_INR)  STD_OG_DED_AMT, SUM(VOICE_STD_IC_OR_MOU) STD_IC_OR_MOU, SUM(VOICE_STD_IC_OR_PULSE_60) STD_IC_OR_PULSE_60,  SUM(VOICE_STD_IC_OR_COUNT) STD_IC_OR_COUNT, SUM (VOICE_STD_IC_OR_CORE_INR) STD_IC_OR_CORE_AMT, SUM (VOICE_STD_IC_OR_DED_INR)  STD_IC_OR_DED_AMT FROM ( SELECT A.EVENT_START_DT, D.SUBSCRIBER_KEY, A.SUBSCRIBER_MSISDN, A.SUBSCRIBER_CIRCLE_ID,  A.TRF_PLAN_KEY, CASE WHEN EVENT_TYPE_KEY = 0 AND EVENT_TYPE_CLSF_KEY = 0 AND EVENT_DIR = 1 AND OUT_ROAMING_IND = 1 THEN SUM  (A.EVENT_DURATION)/60 ELSE 0 END AS VOICE_LOCAL_OG_HOME_MOU, CASE WHEN EVENT_TYPE_KEY = 0 AND EVENT_TYPE_CLSF_KEY = 0 AND  EVENT_DIR = 1 AND OUT_ROAMING_IND = 1 THEN SUM (CALL_PULSE_60) ELSE 0 END AS VOICE_LOCAL_OG_HOME_PULSE_60, CASE WHEN  EVENT_TYPE_KEY = 0 AND EVENT_TYPE_CLSF_KEY = 0 AND EVENT_DIR = 1 AND OUT_ROAMING_IND = 0 THEN COUNT(A.CDR_ID_KEY) ELSE 0 END  AS VOICE_LOCAL_OG_HOME_COUNT, CASE WHEN EVENT_TYPE_KEY = 0 AND EVENT_TYPE_CLSF_KEY = 0 AND EVENT_DIR = 1 AND OUT_ROAMING_IND  = 0 THEN SUM(CORE_ACC_CHARGE_AMT) ELSE 0 END AS VOICE_LOCAL_OG_HOME_CORE_INR, CASE WHEN EVENT_TYPE_KEY = 0 AND  EVENT_TYPE_CLSF_KEY = 0 AND EVENT_DIR = 1 AND OUT_ROAMING_IND = 0 THEN SUM(DED_ACC_CHARGE_AMT * DED_ACC_CONVERSION_FACTOR)  ELSE 0 END AS VOICE_LOCAL_OG_HOME_DED_INR, CASE WHEN EVENT_TYPE_KEY = 0 AND EVENT_TYPE_CLSF_KEY = 0 AND EVENT_DIR = 0 AND  OUT_ROAMING_IND = 1 THEN SUM (A.EVENT_DURATION)/60 ELSE 0 END AS VOICE_LOCAL_IC_OR_MOU, CASE WHEN EVENT_TYPE_KEY = 0 AND EVENT_TYPE_CLSF_KEY = 0  AND EVENT_DIR = 0 AND OUT_ROAMING_IND = 1 THEN SUM (CALL_PULSE_60) ELSE 0 END AS VOICE_LOCAL_IC_OR_PULSE_60, CASE WHEN  EVENT_TYPE_KEY = 0 AND EVENT_TYPE_CLSF_KEY = 0 AND EVENT_DIR = 0 AND OUT_ROAMING_IND = 1 THEN COUNT(A.CDR_ID_KEY)   ELSE 0  END AS VOICE_LOCAL_IC_OR_COUNT, CASE WHEN EVENT_TYPE_KEY = 0 AND EVENT_TYPE_CLSF_KEY = 0 AND EVENT_DIR = 0 AND  OUT_ROAMING_IND = 1 THEN SUM(CORE_ACC_CHARGE_AMT) ELSE 0 END AS VOICE_LOCAL_IC_OR_CORE_INR, CASE WHEN EVENT_TYPE_KEY = 0 AND  EVENT_TYPE_CLSF_KEY = 0 AND EVENT_DIR = 0 AND OUT_ROAMING_IND = 1 THEN SUM (DED_ACC_CHARGE_AMT * DED_ACC_CONVERSION_FACTOR)  ELSE 0 END AS VOICE_LOCAL_IC_OR_DED_INR, CASE WHEN EVENT_TYPE_KEY = 0 AND EVENT_TYPE_CLSF_KEY = 1 AND EVENT_DIR = 1 AND  OUT_ROAMING_IND = 0 THEN SUM (A.EVENT_DURATION)/60 ELSE 0 END AS VOICE_STD_OG_HOME_MOU, CASE WHEN EVENT_TYPE_KEY = 0  AND  EVENT_TYPE_CLSF_KEY = 1 AND EVENT_DIR = 1 AND OUT_ROAMING_IND = 0 THEN SUM (CALL_PULSE_60) ELSE 0 END AS VOICE_STD_OG_HOME_PULSE_60, CASE WHEN EVENT_TYPE_KEY = 0 AND EVENT_TYPE_CLSF_KEY = 1 AND EVENT_DIR = 1 AND  OUT_ROAMING_IND = 0 THEN COUNT(A.CDR_ID_KEY) ELSE 0 END AS VOICE_STD_OG_HOME_COUNT, CASE WHEN EVENT_TYPE_KEY = 0 AND EVENT_TYPE_CLSF_KEY = 1 AND EVENT_DIR = 1 AND  OUT_ROAMING_IND = 1 THEN SUM(CORE_ACC_CHARGE_AMT) ELSE 0 END AS VOICE_STD_OG_HOME_CORE_INR, CASE WHEN EVENT_TYPE_KEY = 0 AND  EVENT_TYPE_CLSF_KEY = 1 AND EVENT_DIR = 1 AND OUT_ROAMING_IND = 0 THEN SUM(DED_ACC_CHARGE_AMT * DED_ACC_CONVERSION_FACTOR)  ELSE 0 END AS VOICE_STD_OG_HOME_DED_INR, CASE WHEN EVENT_TYPE_KEY = 0 AND EVENT_TYPE_CLSF_KEY = 1 AND EVENT_DIR = 0 AND  OUT_ROAMING_IND = 1 THEN SUM (A.EVENT_DURATION)/60 ELSE 0 END AS VOICE_STD_IC_OR_MOU, CASE WHEN EVENT_TYPE_KEY = 0 AND  EVENT_TYPE_CLSF_KEY = 1 AND EVENT_DIR = 0 AND OUT_ROAMING_IND = 1 THEN SUM (CALL_PULSE_60)   ELSE 0 END AS  VOICE_STD_IC_OR_PULSE_60, CASE WHEN EVENT_TYPE_KEY = 0 AND EVENT_TYPE_CLSF_KEY = 1 AND EVENT_DIR = 0 AND OUT_ROAMING_IND = 2  THEN COUNT(A.CDR_ID_KEY) ELSE 0 END AS VOICE_STD_IC_OR_COUNT, CASE WHEN EVENT_TYPE_KEY = 0 AND EVENT_TYPE_CLSF_KEY = 1 AND  EVENT_DIR = 0 AND OUT_ROAMING_IND = 1 THEN SUM(CORE_ACC_CHARGE_AMT) ELSE 0 END AS VOICE_STD_IC_OR_CORE_INR, CASE WHEN  EVENT_TYPE_KEY = 0 AND EVENT_TYPE_CLSF_KEY = 1 AND EVENT_DIR = 0 AND OUT_ROAMING_IND = 1 THEN SUM (DED_ACC_CHARGE_AMT *  DED_ACC_CONVERSION_FACTOR) ELSE 0 END AS VOICE_STD_IC_OR_DED_INR FROM ?SCHEMA?.SUBSCRIBER_RATED_USAGE_MDC A LEFT OUTER JOIN  ?SCHEMA?.SUBSCRIBER_DEDICATED_ACCOUNT_USAGE_MDC B ON A.CDR_ID_KEY = B.CDR_ID_KEY AND a.subscriber_msisdn = b.subscriber_msisdn  LEFT OUTER JOIN ?SCHEMA?.DEDICATED_ACCOUNT_IND c ON A.SUBSCRIBER_CIRCLE_ID = C.CIRCLE_ID AND B.DED_ACC_KEY = C.DED_ACC_KEY AND  A.EVENT_START_DT >= c.DED_ACC_EFF_DT AND A.EVENT_START_DT &lt; c.DED_ACC_END_DT LEFT OUTER JOIN  ?SCHEMA?.SUBSCRIBER_MSISDN_HISTORY_IND D ON A.subscriber_msisdn = D.subscriber_msisdn AND A.EVENT_START_DT >= D.msisdn_START_DT AND A.EVENT_START_DT &lt; D.msisdn_END_DT WHERE A.EVENT_START_DT = '2009-02-02' AND A.SUBSCRIBER_CIRCLE_ID = 3 GROUP BY A.EVENT_START_DT, A.subscriber_msisdn,  D.SUBSCRIBER_KEY, A.EVENT_TYPE_KEY, A.SUBSCRIBER_CIRCLE_ID, A.EVENT_DIR, A.EVENT_TYPE_CLSF_KEY, A.OUT_ROAMING_IND,  A.TRF_PLAN_KEY) GROUP BY EVENT_START_DT, SUBSCRIBER_KEY, subscriber_msisdn, SUBSCRIBER_CIRCLE_ID, TRF_PLAN_KEY
+								</value>
+							</parameter>
+								<parameter name="Repetition" type="fixed">
+									<value>5</value>
+								</parameter>
+								<parameter name="SampleRate" type="fixed">
+									<value>5</value>
+								</parameter>
+						</parameterList>
+						<followOnAction condition="true">
+							<task>
+								<assignSharedConstant name="avgMdcTable" type="returnObject">
+									<value>runMdc.returnValue.SQL.1</value>
+								</assignSharedConstant>
+								<echo>Average Run time: ?avgMdcTable? s</echo>
+							</task>
+						</followOnAction>
+						<followOnAction condition="false">
+							<task>
+								<echo>Error in run!</echo>
+							</task>
+						</followOnAction>
+						
+					</action>
+				</task>
+			
+				<task>
+					<echo></echo>
+					<echo>
+						Running the Sample Query on the Compressed table 5 times...
+					</echo>
+					<action name="runcompr" type="serverAction">
+						<parameterList>
+							<parameter name="action" type="fixed">
+								<value>run_workload</value>
+							</parameter>
+							<parameter name="SQL[2]" type="fixed">
+								<value>SELECT EVENT_START_DT, SUBSCRIBER_KEY, SUBSCRIBER_MSISDN, SUBSCRIBER_CIRCLE_ID, TRF_PLAN_KEY, SUM (VOICE_LOCAL_OG_HOME_MOU)  LOCAL_OG_MOU, SUM(VOICE_LOCAL_OG_HOME_PULSE_60) LOCAL_OG_PULSE_60, SUM(VOICE_LOCAL_OG_HOME_COUNT) LOCAL_OG_COUNT,  SUM(VOICE_LOCAL_OG_HOME_CORE_INR) LOCAL_OG_CORE_AMT, SUM (VOICE_LOCAL_OG_HOME_DED_INR) LOCAL_OG_DED_AMT, SUM  (VOICE_LOCAL_IC_OR_MOU) LOCAL_IC_OR_MOU, SUM (VOICE_LOCAL_IC_OR_PULSE_60) LOCAL_IC_OR_PULSE_60, SUM (VOICE_LOCAL_IC_OR_COUNT)  LOCAL_IC_OR_COUNT, SUM (VOICE_LOCAL_IC_OR_CORE_INR) LOCAL_IC_OR_CORE_AMT, SUM (VOICE_LOCAL_IC_OR_DED_INR)  LOCAL_IC_OR_DED_AMT, SUM (VOICE_STD_OG_HOME_MOU) STD_OG_MOU, SUM (VOICE_STD_OG_HOME_PULSE_60) STD_OG_PULSE_60, SUM  (VOICE_STD_OG_HOME_COUNT) STD_OG_COUNT, SUM (VOICE_STD_OG_HOME_CORE_INR) STD_OG_CORE_AMT, SUM (VOICE_STD_OG_HOME_DED_INR)  STD_OG_DED_AMT, SUM(VOICE_STD_IC_OR_MOU) STD_IC_OR_MOU, SUM(VOICE_STD_IC_OR_PULSE_60) STD_IC_OR_PULSE_60,  SUM(VOICE_STD_IC_OR_COUNT) STD_IC_OR_COUNT, SUM (VOICE_STD_IC_OR_CORE_INR) STD_IC_OR_CORE_AMT, SUM (VOICE_STD_IC_OR_DED_INR)  STD_IC_OR_DED_AMT FROM ( SELECT A.EVENT_START_DT, D.SUBSCRIBER_KEY, A.SUBSCRIBER_MSISDN, A.SUBSCRIBER_CIRCLE_ID,  A.TRF_PLAN_KEY, CASE WHEN EVENT_TYPE_KEY = 0 AND EVENT_TYPE_CLSF_KEY = 0 AND EVENT_DIR = 1 AND OUT_ROAMING_IND = 1 THEN SUM  (A.EVENT_DURATION)/60 ELSE 0 END AS VOICE_LOCAL_OG_HOME_MOU, CASE WHEN EVENT_TYPE_KEY = 0 AND EVENT_TYPE_CLSF_KEY = 0 AND  EVENT_DIR = 1 AND OUT_ROAMING_IND = 1 THEN SUM (CALL_PULSE_60) ELSE 0 END AS VOICE_LOCAL_OG_HOME_PULSE_60, CASE WHEN  EVENT_TYPE_KEY = 0 AND EVENT_TYPE_CLSF_KEY = 0 AND EVENT_DIR = 1 AND OUT_ROAMING_IND = 0 THEN COUNT(A.CDR_ID_KEY) ELSE 0 END  AS VOICE_LOCAL_OG_HOME_COUNT, CASE WHEN EVENT_TYPE_KEY = 0 AND EVENT_TYPE_CLSF_KEY = 0 AND EVENT_DIR = 1 AND OUT_ROAMING_IND  = 0 THEN SUM(CORE_ACC_CHARGE_AMT) ELSE 0 END AS VOICE_LOCAL_OG_HOME_CORE_INR, CASE WHEN EVENT_TYPE_KEY = 0 AND  EVENT_TYPE_CLSF_KEY = 0 AND EVENT_DIR = 1 AND OUT_ROAMING_IND = 0 THEN SUM(DED_ACC_CHARGE_AMT * DED_ACC_CONVERSION_FACTOR)  ELSE 0 END AS VOICE_LOCAL_OG_HOME_DED_INR, CASE WHEN EVENT_TYPE_KEY = 0 AND EVENT_TYPE_CLSF_KEY = 0 AND EVENT_DIR = 0 AND  OUT_ROAMING_IND = 1 THEN SUM (A.EVENT_DURATION)/60 ELSE 0 END AS VOICE_LOCAL_IC_OR_MOU, CASE WHEN EVENT_TYPE_KEY = 0 AND EVENT_TYPE_CLSF_KEY = 0  AND EVENT_DIR = 0 AND OUT_ROAMING_IND = 1 THEN SUM (CALL_PULSE_60) ELSE 0 END AS VOICE_LOCAL_IC_OR_PULSE_60, CASE WHEN  EVENT_TYPE_KEY = 0 AND EVENT_TYPE_CLSF_KEY = 0 AND EVENT_DIR = 0 AND OUT_ROAMING_IND = 1 THEN COUNT(A.CDR_ID_KEY)   ELSE 0  END AS VOICE_LOCAL_IC_OR_COUNT, CASE WHEN EVENT_TYPE_KEY = 0 AND EVENT_TYPE_CLSF_KEY = 0 AND EVENT_DIR = 0 AND  OUT_ROAMING_IND = 1 THEN SUM(CORE_ACC_CHARGE_AMT) ELSE 0 END AS VOICE_LOCAL_IC_OR_CORE_INR, CASE WHEN EVENT_TYPE_KEY = 0 AND  EVENT_TYPE_CLSF_KEY = 0 AND EVENT_DIR = 0 AND OUT_ROAMING_IND = 1 THEN SUM (DED_ACC_CHARGE_AMT * DED_ACC_CONVERSION_FACTOR)  ELSE 0 END AS VOICE_LOCAL_IC_OR_DED_INR, CASE WHEN EVENT_TYPE_KEY = 0 AND EVENT_TYPE_CLSF_KEY = 1 AND EVENT_DIR = 1 AND  OUT_ROAMING_IND = 0 THEN SUM (A.EVENT_DURATION)/60 ELSE 0 END AS VOICE_STD_OG_HOME_MOU, CASE WHEN EVENT_TYPE_KEY = 0  AND  EVENT_TYPE_CLSF_KEY = 1 AND EVENT_DIR = 1 AND OUT_ROAMING_IND = 0 THEN SUM (CALL_PULSE_60) ELSE 0 END AS VOICE_STD_OG_HOME_PULSE_60, CASE WHEN EVENT_TYPE_KEY = 0 AND EVENT_TYPE_CLSF_KEY = 1 AND EVENT_DIR = 1 AND  OUT_ROAMING_IND = 0 THEN COUNT(A.CDR_ID_KEY) ELSE 0 END AS VOICE_STD_OG_HOME_COUNT, CASE WHEN EVENT_TYPE_KEY = 0 AND EVENT_TYPE_CLSF_KEY = 1 AND EVENT_DIR = 1 AND  OUT_ROAMING_IND = 1 THEN SUM(CORE_ACC_CHARGE_AMT) ELSE 0 END AS VOICE_STD_OG_HOME_CORE_INR, CASE WHEN EVENT_TYPE_KEY = 0 AND  EVENT_TYPE_CLSF_KEY = 1 AND EVENT_DIR = 1 AND OUT_ROAMING_IND = 0 THEN SUM(DED_ACC_CHARGE_AMT * DED_ACC_CONVERSION_FACTOR)  ELSE 0 END AS VOICE_STD_OG_HOME_DED_INR, CASE WHEN EVENT_TYPE_KEY = 0 AND EVENT_TYPE_CLSF_KEY = 1 AND EVENT_DIR = 0 AND  OUT_ROAMING_IND = 1 THEN SUM (A.EVENT_DURATION)/60 ELSE 0 END AS VOICE_STD_IC_OR_MOU, CASE WHEN EVENT_TYPE_KEY = 0 AND  EVENT_TYPE_CLSF_KEY = 1 AND EVENT_DIR = 0 AND OUT_ROAMING_IND = 1 THEN SUM (CALL_PULSE_60)   ELSE 0 END AS  VOICE_STD_IC_OR_PULSE_60, CASE WHEN EVENT_TYPE_KEY = 0 AND EVENT_TYPE_CLSF_KEY = 1 AND EVENT_DIR = 0 AND OUT_ROAMING_IND = 2  THEN COUNT(A.CDR_ID_KEY) ELSE 0 END AS VOICE_STD_IC_OR_COUNT, CASE WHEN EVENT_TYPE_KEY = 0 AND EVENT_TYPE_CLSF_KEY = 1 AND  EVENT_DIR = 0 AND OUT_ROAMING_IND = 1 THEN SUM(CORE_ACC_CHARGE_AMT) ELSE 0 END AS VOICE_STD_IC_OR_CORE_INR, CASE WHEN  EVENT_TYPE_KEY = 0 AND EVENT_TYPE_CLSF_KEY = 1 AND EVENT_DIR = 0 AND OUT_ROAMING_IND = 1 THEN SUM (DED_ACC_CHARGE_AMT *  DED_ACC_CONVERSION_FACTOR) ELSE 0 END AS VOICE_STD_IC_OR_DED_INR FROM ?SCHEMA?.SUBSCRIBER_RATED_USAGE_COMPRESS A LEFT OUTER JOIN  ?SCHEMA?.SUBSCRIBER_DEDICATED_ACCOUNT_USAGE_COMPRESS B ON A.CDR_ID_KEY = B.CDR_ID_KEY AND a.subscriber_msisdn = b.subscriber_msisdn  LEFT OUTER JOIN ?SCHEMA?.DEDICATED_ACCOUNT_IND c ON A.SUBSCRIBER_CIRCLE_ID = C.CIRCLE_ID AND B.DED_ACC_KEY = C.DED_ACC_KEY AND  A.EVENT_START_DT >= c.DED_ACC_EFF_DT AND A.EVENT_START_DT &lt; c.DED_ACC_END_DT LEFT OUTER JOIN  ?SCHEMA?.SUBSCRIBER_MSISDN_HISTORY_IND D ON A.subscriber_msisdn = D.subscriber_msisdn AND A.EVENT_START_DT >= D.msisdn_START_DT AND A.EVENT_START_DT &lt; D.msisdn_END_DT WHERE A.EVENT_START_DT = '2009-02-02' AND A.SUBSCRIBER_CIRCLE_ID = 3 GROUP BY A.EVENT_START_DT, A.subscriber_msisdn,  D.SUBSCRIBER_KEY, A.EVENT_TYPE_KEY, A.SUBSCRIBER_CIRCLE_ID, A.EVENT_DIR, A.EVENT_TYPE_CLSF_KEY, A.OUT_ROAMING_IND,  A.TRF_PLAN_KEY) GROUP BY EVENT_START_DT, SUBSCRIBER_KEY, subscriber_msisdn, SUBSCRIBER_CIRCLE_ID, TRF_PLAN_KEY
+								</value>
+							</parameter>
+								<parameter name="Repetition" type="fixed">
+									<value>5</value>
+								</parameter>
+								<parameter name="SampleRate" type="fixed">
+									<value>5</value>
+								</parameter>
+						</parameterList>
+						<followOnAction condition="true">
+							<task>
+								<assignSharedConstant name="avgComprTable" type="returnObject">
+									<value>runcompr.returnValue.SQL.2</value>
+								</assignSharedConstant>
+								<echo>Average Run time: ?avgComprTable? s</echo>
+							</task>
+						</followOnAction>
+						<followOnAction condition="false">
+							<task>
+								<echo>Error in run!</echo>
+							</task>
+						</followOnAction>
+					</action>
+				</task>
+			</followOnAction>
+		</action>
+	</task>
+				
+	<task name="Performance Comparison">
+		<description>
+			This generates the graph for query execution time with and without Compression
+		</description>
+		<action name="runUncompress" type="blank">
+			<followOnAction condition="true" compareOn="true" compareOnType="raw">
+				<task>
+					<loadPage>
+						<pageWindow target="informationWindow">
+							<panel name="main" PrimaryContainer="true">
+								<link type="action" target="_self"
+									window="_self" connectionRequired="y">
+									<parameterList>
+										<parameter name="action">
+											graphYUI
+										</parameter>
+										<parameter name="graph">
+											<![CDATA[					       				
+					       				
+ {
+	"Graph":
+	{
+		"title": "Query Execution Performance(in milliseconds)",
+		"graphType": "column",
+		"xField": "TableState",
+		"xTitle": "Number of Pages",
+		"yTitle": "Un Table",
+		"dataSourceType": "data_from_raw",
+		"responseSchema": {"fields": ["TableState","TableSize"]},
+		"style":{	"legend": { "display": "right" }, "animationEnabled" : "false"},
+		"seriesDef": [{ "displayName": "Time (ms)", "yField": "TableSize", "style": {"color": "0x454586"}}],
+		"datasets":
+		 [ 
+			    { "TableState": "Uncompressed Table", "TableSize": (?avgMdcTable? * 1000) },
+			    { "TableState": "Compressed Table", "TableSize": (?avgComprTable? * 1000) }
+			]
+	}
+
+
+}
+							
+
+]]>
+
+										</parameter>
+									</parameterList>
+								</link>
+							</panel>
+						</pageWindow>
+					</loadPage>
+				</task>
+            </followOnAction>
+		</action>
+	</task>
+
+	
+	
+			
+	</taskList>
+</actionPanel>
+
+

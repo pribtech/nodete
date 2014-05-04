@@ -1,0 +1,53 @@
+<actionPanel>
+	<flow>free</flow>
+	<useConsole>yes</useConsole>
+	<overview>
+<![CDATA[
+<p><b>Run Sample program</b></p>
+
+]]>
+	</overview>
+	<taskList>
+		<task name="Start LOCKWAIT simulation">
+			<discription>
+				This will run the sample program in background. This program will inject a lockwait problem in the system.
+			</discription>
+			<action  name="runDeletemulty" type="blank">
+				<followOnAction condition="true" compareOn="true" compareOnType="raw">
+					<task>
+						<echo>Running locking.java</echo>
+							<action  name="runDelete" type="serverAction">
+								<parameterList>
+									<parameter name="action" type="fixed">
+										<value>executeCMD</value>
+									</parameter>
+									<parameter name="SHELL" type="fixed">
+										<value>java 'C:\Program Files\Apache Software Foundation\Apache2.2\htdocs\TEGA\tutorials\Monitoring\LockWaitProblem\extras\extras\locking'</value>
+									</parameter>
+									<parameter name="param" type="fixed">
+										<value>yes</value>
+									</parameter>
+								</parameterList>
+								<followOnAction condition="true">
+									<task>
+										<assignSharedConstant name="DELETE_100k" type="returnObject">
+											<value>runDelete.returnValue</value>
+										</assignSharedConstant>
+										<echo>Simulation started successfully</echo>
+									</task>
+								</followOnAction>
+								<followOnAction condition="false">
+									<task>										
+										<assignSharedConstant name="DELETE_100k" type="returnObject">
+											<value>runDelete.returnValue</value>
+										</assignSharedConstant>
+										<echo>Simulation started successfully !!</echo>
+									</task>
+								</followOnAction>
+							</action>
+					</task>
+				</followOnAction>
+			</action>
+		</task>
+	</taskList>
+</actionPanel>

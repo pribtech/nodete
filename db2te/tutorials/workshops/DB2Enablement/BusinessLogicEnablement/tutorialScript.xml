@@ -1,0 +1,443 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	Copyright IBM Corp. 2007 All rights reserved.
+	
+	Licensed under the Apache License, Version 2.0 (the "License");
+	you may not use this file except in compliance with the License.
+	You may obtain a copy of the License at
+	
+	http://www.apache.org/licenses/LICENSE-2.0
+	
+	Unless required by applicable law or agreed to in writing, software
+	distributed under the License is distributed on an "AS IS" BASIS,
+	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	See the License for the specific language governing permissions and
+	limitations under the License.
+-->
+
+<tutorial name="Business Logic (PL/SQL) Enablement" autoCloseWindowsInRightStage="true" autoClearAdhocResults="true" useLongAdHoc="true">
+
+	<globalCodeHighlightOptions  highlightCode="true" />
+	<closeAction/>
+	<openAction />
+	<pageList>
+	
+<!--	
+		<page name="Introduction" type="intro">
+			<entryAction />
+			<exitAction />
+			<contentFile>BusinessLogicIntro.html</contentFile>
+			<autoLoadLink>
+				<pageWindow target="informationWindow">
+					<panel name="main" PrimaryContainer="true">
+						<URL></URL>
+					</panel>
+				</pageWindow>
+			</autoLoadLink>
+		</page>
+-->		
+<!--        <page name="Create Schema" type="intro">
+            <entryAction />
+			<exitAction />
+			<contentFile>Schema.html</contentFile>
+			<autoLoadLink>
+				<pageWindow target="informationWindow">
+					<panel name="main" PrimaryContainer="true">
+						<raw><![CDATA[<div id='title'>Enablement</div><img src='?BASE_DIRECTORY?/Other/schema.gif'/>]]></raw>
+					</panel>
+				</pageWindow>
+			</autoLoadLink>
+		</page> -->
+		
+<!--		<page name="Create Schema using Oralce types" type="general">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>Schema.html</contentFile>
+			<SQLFile>CreateTables.SQL</SQLFile>
+			<SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar="@"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+			<codeHighlightOptions highlightCode="true">
+				<changedHighlightTokens>
+					<text>VARCHAR2</text>
+					<text>NUMBER</text>
+					<text>CREATE global TEMPORARY TABLE</text>
+					<text>TIMESTAMP(0) DEFAULT SYSDATE</text>
+				</changedHighlightTokens>
+			</codeHighlightOptions>
+		</page>		-->
+		
+		<page name="DB2 PL/SQL support" type="general">
+			<entryAction />
+			<exitAction />
+			<contentFile>PL_SQL_Intro.html</contentFile>
+			<autoLoadLink>
+				<pageWindow target="informationWindow">
+					<panel name="main" PrimaryContainer="true">
+						<URL>http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.wn.doc/doc/c0053525.html</URL>
+					</panel>
+				</pageWindow>
+			</autoLoadLink>
+		</page>
+		
+		<page name="PL/SQL packages" type="general">
+			<entryAction name="checkForTable5k" type="serverAction">
+				<parameterList>
+					<parameter name="action" type="fixed">
+						<value>checkForObject</value>
+					</parameter>
+					<parameter name="objectType" type="fixed">
+						<value>table</value>
+					</parameter>
+					<parameter name="object[schema]" type="constant">
+						<value>SCHEMA</value>
+					</parameter>
+					<parameter name="object[table]" type="raw">
+						<value>table5k</value>
+					</parameter>
+				</parameterList>
+				<followOnAction condition="0" compareOn="checkForTable5k.returnValue">
+					<task>
+						<action name="alertTablesNotCreated" type="alert">
+							<message>The required tables must be created before proceeding with the tutorial.</message>
+						</action>
+						<setActionReturn value="false"/>
+					</task>
+				</followOnAction>
+			</entryAction>
+			<exitAction />
+			<contentFile>PL_SQL_Packages.html</contentFile>
+			<autoLoadLink>
+				<pageWindow target="informationWindow" raiseToTop="y">
+					<splitPane direction="h">
+						<topPane>
+							<panel name="main" PrimaryContainer="true">
+								<link type="action" target="_self" window="_self"
+									connectionRequired="y">
+									<parameterList>
+										<parameter name="table">tablecat</parameter>
+										<parameter name="action">list_table</parameter>
+										<parameter name="tabschema">?SCHEMA?</parameter>
+									</parameterList>
+								</link>
+							</panel>
+						</topPane>
+						<bottomPane>
+							<panel name="detail"/>
+						</bottomPane>
+					</splitPane>
+				</pageWindow>
+			</autoLoadLink>
+		</page>
+		
+<!--		
+		<page name="Explore the Tables" type="general">
+			<entryAction name="checkForTable5k" type="serverAction">
+				<parameterList>
+					<parameter name="action" type="fixed">
+						<value>checkForObject</value>
+					</parameter>
+					<parameter name="objectType" type="fixed">
+						<value>table</value>
+					</parameter>
+					<parameter name="object[schema]" type="constant">
+						<value>SCHEMA</value>
+					</parameter>
+					<parameter name="object[table]" type="raw">
+						<value>table5k</value>
+					</parameter>
+				</parameterList>
+				<followOnAction condition="0" compareOn="checkForTable5k.returnValue">
+					<task>
+						<action name="alertTablesNotCreated" type="alert">
+							<message>The required tables must be created before proceeding with the tutorial.</message>
+						</action>
+						<setActionReturn value="false"/>
+					</task>
+				</followOnAction>
+			</entryAction>
+			<exitAction/>
+			<contentFile>ExploreTables.html</contentFile>
+			<autoLoadLink>
+				<pageWindow target="informationWindow" raiseToTop="y">
+					<splitPane direction="h">
+						<topPane>
+							<panel name="main" PrimaryContainer="true">
+								<link type="action" target="_self" window="_self"
+									connectionRequired="y">
+									<parameterList>
+										<parameter name="table">tablecat</parameter>
+										<parameter name="action">list_table</parameter>
+										<parameter name="tabschema">?SCHEMA?</parameter>
+									</parameterList>
+								</link>
+							</panel>
+						</topPane>
+						<bottomPane>
+							<panel name="detail"/>
+						</bottomPane>
+					</splitPane>
+				</pageWindow>
+			</autoLoadLink>
+		</page>
+-->	
+		<page name="Create Product package" type="general">
+			<entryAction />
+			<exitAction />
+			<contentFile>CreateProductPackage.html</contentFile>
+			<SQLFile>CreateProductPackage.SQL</SQLFile>
+			<SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar="@"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+			<codeHighlightOptions highlightCode="true">
+				<copiedHighlightTokens>
+					<text>/* Example of new built-in packages: UTL_DIR, UTL_FILE and DBMS_OUTPUT */</text>
+					<text>/* Example of implicit cursor and usage of its attribute %NOTFOUND */</text>
+					<text>/* Example of new sequence keywords - NEXTVAL and CURRVAL */</text>
+					<text> /* Example of explicit cursor and usage of its actions and attributes: OPEN, FETCH, CLOSE, %ISOPEN, %NOTFOUND, %ROWCOUNT */</text>
+				</copiedHighlightTokens>
+				<changedHighlightTokens>
+					<text>CREATE OR REPLACE PACKAGE product_package IS</text>
+					<text>CREATE OR REPLACE PACKAGE BODY product_package IS</text>
+					<text>CURSOR c_verify_product IS SELECT inventory_quantity FROM product WHERE product_id=p_product_id;</text>
+					<text>c_verify_product%ISOPEN</text>
+					<text>OPEN c_verify_product</text>
+					<text>FETCH c_verify_product INTO v_inventory_quantity</text>
+					<text>c_verify_product%NOTFOUND</text>
+					<text>c_verify_product%ROWCOUNT</text>
+					<text>UTL_DIR.CREATE_DIRECTORY</text>
+					<text>UTL_DIR.DROP_DIRECTORY</text>
+					<text>UTL_FILE.FOPEN</text>
+					<text>UTL_FILE.IS_OPEN</text>
+					<text>UTL_FILE.PUT_LINE</text>
+					<text>UTL_FILE.FCLOSE</text>
+					<text>seq_product_id.NEXTVAL</text>
+					<text>seq_product_id.CURRVAL</text>
+					<text>SELECT category_id INTO v_category_id FROM category WHERE INITCAP(category_name)=INITCAP(p_category_name)</text>
+					<text>SQL%NOTFOUND</text>
+					<text>DBMS_OUTPUT.PUT_LINE</text>
+				</changedHighlightTokens>
+			</codeHighlightOptions>
+		</page>
+		<page name="Create Customer package" type="general">
+			<entryAction />
+			<exitAction />
+			<contentFile>CreateCustomerPackage.html</contentFile>
+			<SQLFile>CreateCustomerPackage.SQL</SQLFile>
+			<SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar="@"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+			<codeHighlightOptions highlightCode="true">
+				<changedHighlightTokens>
+					<text>IS RECORD</text>
+					<text>IS REF CURSOR</text>
+					<text>IS TABLE OF VARCHAR2(200) INDEX BY VARCHAR(20)</text>
+					<text>v_customer_rec customer%ROWTYPE;</text>
+					<text>v_customer_id customer.customer_id%TYPE;</text>
+					<text>EXECUTE IMMEDIATE</text>
+					<text>p_search_criteria SEARCH_CRITERIA</text>
+					<text>p_search_criteria.COUNT</text>
+					<text>p_search_criteria.FIRST</text>
+					<text>p_search_criteria.NEXT(search_argument)</text>
+					<text>CASE search_argument</text>
+					<text>END CASE</text>
+					<text>OPEN refcursor_out FOR stmt</text>
+					<text>RETURN refcursor_out</text>
+					<text>c_search_results := search_customer_records(promotion_search_criteria)</text>
+					<text>MONTHS_BETWEEN</text>
+					<text>EXCEPTION</text>
+					<text>WHEN others then</text>
+					<text>RAISE</text>
+				</changedHighlightTokens>
+				<copiedHighlightTokens>
+					<text>/* Example of %ROWTYPE and %TYPE pseudo/anchor data type */</text>
+					<text>/* Example of new types: record, reference cursor and associative array */</text>
+					<text>/* Example of function that takes ASSOCIATIVE ARRAY as an input and returns REFERENCE CURSOR */</text>
+					<text>/* Example of EXECUTE IMMEDIATEs command */</text>
+					<text>/* Example of associative array and its attributes: COUNT, FIRST, NEXT */</text>
+					<text>/* Example of CASE syntax */</text>
+					<text>/* Example of usage of function that returns REFERENCE CURSOR */</text>
+					<text>/* Example of handling the exceptions inside the procedure */</text>
+				</copiedHighlightTokens>
+			</codeHighlightOptions>
+		</page>
+		<page name="Create Order package" type="general">
+			<entryAction />
+			<exitAction />		
+			<contentFile>CreateOrderPackage.html</contentFile>
+			<SQLFile>CreateOrderPackage.SQL</SQLFile>
+			<SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar="@"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+			<codeHighlightOptions highlightCode="true">
+				<changedHighlightTokens>
+				  <text>TO_CHAR</text>
+				  <text>DECODE</text>
+					<text>IS VARRAY</text>
+					<text>product_package.verify_product_availability</text>
+					<text>FOR shopping_cart_rec IN c_get_shopping_cart LOOP</text>
+					<text>FOR k IN 1..v_shopping_cart_product.COUNT LOOP</text>
+					<text>FOR i IN (SELECT product_name, product_quantity FROM order_details o,	product p WHERE o.product_id=p.product_id AND order_id=p_order_id) LOOP</text>
+					<text>v_shopping_cart_quantity(i)</text>
+					<text>v_shopping_cart_quantity SHOPPING_CART_QUANTITY;</text>
+				</changedHighlightTokens>
+				<copiedHighlightTokens>
+					<text>/* Example of VARRAY datatype */</text>
+					<text>/* Example of calling the procedure defined in another package */</text>
+					<text>/* Example of FOR LOOP over explicit cursor */</text>
+					<text>/* Example of FOR LOOP over integer value */</text>
+					<text>/* Example of FOR LOOP over implicit cursor */</text>
+					<text>/* Example of usage of VARRAY data type */</text>
+				</copiedHighlightTokens>
+			</codeHighlightOptions>
+		</page>
+		
+		<page name="Create Shipment trigger" type="general">
+			<entryAction />
+			<exitAction />			
+			<contentFile>CreateTrigger.html</contentFile>
+			<SQLFile>CreateTrigger.SQL</SQLFile>
+			<SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar="@"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+			<codeHighlightOptions highlightCode="true">
+				<changedHighlightTokens>
+				  <text>CREATE OR REPLACE TRIGGER</text>
+				  <text>AFTER INSERT</text>
+					<text>for EACH ROW</text>
+					<text>:NEW</text>
+				</changedHighlightTokens>
+				<copiedHighlightTokens>
+					<text>/* Example of Trigger that has PL/SQL logic */</text>
+				</copiedHighlightTokens>
+			</codeHighlightOptions>
+		</page>
+		
+		
+		<page name="Create customer and product records" type="general">
+			<entryAction name="checkForPrintOrder" type="serverAction">
+				<parameterList>
+					<parameter name="action" type="fixed">
+						<value>checkForObject</value>
+					</parameter>
+					<parameter name="objectType" type="fixed">
+						<value>storedprocedure</value>
+					</parameter>
+					<parameter name="object[schema]" type="constant">
+						<value>SCHEMA</value>
+					</parameter>
+					<parameter name="object[storedprocedure]" type="raw">
+						<value>PRINT_ORDER</value>
+					</parameter>
+				</parameterList>
+				<followOnAction condition="true" negCondition="true">
+					<task>
+						<action name="displayMsgForPrintOrder" type="alert">
+							<message>Some of the objects have not been created.  Please try this step again.</message>
+						</action>
+					</task>
+					<task>
+						<setActionReturn>false</setActionReturn>
+					</task>
+				</followOnAction>
+			</entryAction>
+			<exitAction/>
+			<contentFile>CreateCustomerandOrders.html</contentFile>
+			<SQLFile>CreateCustomerandOrders.SQL</SQLFile>
+			<SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar="@"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+			<codeHighlightOptions highlightCode="true">
+				<changedHighlightTokens>
+					<text>DECLARE</text>
+					<text>BEGIN</text>
+					<text>END</text>
+					<text>customer_package.create_customer</text>
+					<text>product_package.create_product</text>
+				</changedHighlightTokens>
+				<copiedHighlightTokens>
+					<text>/* Example of anonymous block */</text>
+				</copiedHighlightTokens>
+			</codeHighlightOptions>
+		</page>		
+
+		<page name="Run application" type="general">
+			<entryAction name="checkForContents" type="serverAction">
+				<parameterList>
+					<parameter name="action" type="fixed">
+						<value>checkForRow</value>
+					</parameter>
+					<parameter name="schema" type="constant">
+						<value>SCHEMA</value>
+					</parameter>
+					<parameter name="name" type="raw">
+						<value>CUSTOMER</value>
+					</parameter>
+				</parameterList>
+				<followOnAction condition="true" negCondition="true">
+					<task>
+						<action name="displayMsgForFailedCust" type="alert">
+							<message>Data has not been entered into one of the tables.  Please try this step again.</message>
+						</action>
+					</task>
+					<task>
+						<setActionReturn>false</setActionReturn>
+					</task>
+				</followOnAction>
+			</entryAction>
+			<exitAction/>
+			<contentFile>RunApplication.html</contentFile>
+			<SQLFile>RunApplication.SQL</SQLFile>
+			<SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar="@"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+			<codeHighlightOptions highlightCode="true">
+				<changedHighlightTokens>
+					<text>ROWNUM</text>
+					<text>order_package.add_item_to_shopping_cart</text>
+					<text>order_package.create_order</text>
+					<text>order_package.print_order</text>
+				</changedHighlightTokens>
+			</codeHighlightOptions>
+		</page>
+
+		<page name="Create more customers, products and generate records" type="general">
+			<entryAction name="checkForPrintOrder" type="serverAction">
+				<parameterList>
+					<parameter name="action" type="fixed">
+						<value>checkForObject</value>
+					</parameter>
+					<parameter name="objectType" type="fixed">
+						<value>storedprocedure</value>
+					</parameter>
+					<parameter name="object[schema]" type="constant">
+						<value>SCHEMA</value>
+					</parameter>
+					<parameter name="object[storedprocedure]" type="raw">
+						<value>PRINT_ORDER</value>
+					</parameter>
+				</parameterList>
+			<followOnAction condition="true" negCondition="true">
+					<task>
+						<action name="displayMsgForPrintOrder" type="alert">
+							<message>Some of the objects have not been created.  Please try this step again.</message>
+						</action>
+					</task>
+					<task>
+						<setActionReturn>false</setActionReturn>
+					</task>
+				</followOnAction>
+			</entryAction>
+			<exitAction/>
+			<contentFile>TestPackages.html</contentFile>
+			<SQLFile>TestPackages.SQL</SQLFile>
+			<SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar="@"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+			<codeHighlightOptions highlightCode="true">
+				<changedHighlightTokens>
+					<text>DECLARE</text>
+					<text>BEGIN</text>
+					<text>END</text>
+					<text>customer_package.create_customer</text>
+					<text>product_package.create_product</text>
+				</changedHighlightTokens>
+				<copiedHighlightTokens>
+					<text>/* Example of anonymous block */</text>
+				</copiedHighlightTokens>
+			</codeHighlightOptions>
+		</page>		
+	</pageList>
+</tutorial>

@@ -1,0 +1,1 @@
+select * from Q1_2002;

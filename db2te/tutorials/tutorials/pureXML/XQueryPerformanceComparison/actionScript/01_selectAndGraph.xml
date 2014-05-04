@@ -1,0 +1,164 @@
+<actionPanel>
+	<flow>free</flow>
+	<useConsole>yes</useConsole>
+	<overview>
+<![CDATA[
+<p><b>Select & Graph</b></p>
+
+There are two actions on this page which should be executed in order: 
+<ul>
+<li>The same data will be gathered through a relational query and an XQuery.  Time required for each operation will be recorded.</li>
+<li>The second will plot the elapsed time for each SELECT operation on the graph.</li>
+</ul>
+]]>
+	</overview>
+	<taskList>
+		<task name="Run select time test">
+			<discription>
+				Select the same data using a relation query or XQuery and record the time required to perform each operation. 
+			</discription>
+			<action  name="runDeletemulty" type="blank">
+				<followOnAction condition="true" compareOn="true" compareOnType="raw">
+					<task>
+						<echo>Running statement 1000 times:</echo> 
+						<echo>select custno from ?SCHEMA?.postaltxs where custname='LIL'</echo>
+						<action  name="runSelect" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="fixed">
+									<value>run_workload</value>
+								</parameter>
+								<parameter name="SQL[1]" type="fixed">
+									<value>select custno from ?SCHEMA?.postaltxs where custname='LIL'</value>
+								</parameter>
+								<parameter name="Repetition" type="fixed">
+									<value>1000</value>
+								</parameter>
+								<parameter name="SampleRate" type="fixed">
+									<value>1000</value>
+								</parameter>
+							</parameterList>
+							<followOnAction condition="true">
+								<task>
+									<assignSharedConstant name="SELECTRELATIONAL" type="returnObject">
+										<value>runSelect.returnValue.SQL.1</value>
+									</assignSharedConstant>
+									<echo>Total Running time (1000 repetitions): ?SELECTRELATIONAL?s</echo>
+								</task>
+							</followOnAction>
+							<followOnAction condition="false">
+								<task>
+									<echo>Error in run!</echo>
+								</task>
+							</followOnAction>
+						</action>
+						<echo></echo>						
+						<echo>Running statement 1000 times:</echo> 
+						<echo>xquery db2-fn:xmlcolumn('?SCHEMA?.DISTRICT.CUSTOMERS') /district/customer[custname='LIL']/custno/text()</echo>
+						<action  name="runSelect" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="fixed">
+									<value>run_workload</value>
+								</parameter>
+								<parameter name="SQL[1]" type="fixed">
+									<value>xquery db2-fn:xmlcolumn('?SCHEMA?.DISTRICT.CUSTOMERS') /district/customer[custname='LIL']/custno/text()</value>
+								</parameter>
+								<parameter name="Repetition" type="fixed">
+									<value>1000</value>
+								</parameter>
+								<parameter name="SampleRate" type="fixed">
+									<value>1000</value>
+								</parameter>
+							</parameterList>
+							<followOnAction condition="true">
+								<task>
+									<assignSharedConstant name="SELECTXML" type="returnObject">
+										<value>runSelect.returnValue.SQL.1</value>
+									</assignSharedConstant>
+									<echo>Total Running time (1000 repetitions): ?SELECTXML?s</echo>
+								</task>
+							</followOnAction>
+							<followOnAction condition="false">
+								<task>
+									<echo>Error in run!</echo>
+								</task>
+							</followOnAction>
+						</action>
+					</task>
+				</followOnAction>
+			</action>
+		</task>
+<task name="Graph select times">
+			<discription>
+				Plot the select performance data on a graph.
+			</discription>
+			<action  name="runSelect" type="blank">
+				<followOnAction condition="true" compareOn="true" compareOnType="raw">
+					<task>
+						<echo>Graphing times</echo>
+						<loadPage>
+							<pageWindow target="informationWindow">
+						    	<panel name="main">
+						       		<link type="action" target="_self" window="_self" connectionRequired="y">
+						       			<parameterList>
+						       				<parameter name="action">graphYUI</parameter>
+						       				<parameter name="graph">	
+<![CDATA[					       				
+  {
+	"Graph": 
+	{
+		"title": "Select Performance",
+		"graphType": "column",
+		"xField": "row",
+		"dataSourceType": "data_from_raw",
+		"style":{	"legend": { "display": "right" }, "animationEnabled" : "false"},
+		"responseSchema": {"fields": ["row","value"]},
+		"seriesDef": [{"displayName": "Select time (s)", "yField": "value", "style": {"color": "0x0000FF"}}],
+		"datasets":
+			 [ 
+				    {"row": "RELATIONAL", "value": ?SELECTRELATIONAL?},
+				    {"row": "XML", "value": ?SELECTXML?}
+				]
+	}
+}
+
+]]>
+</parameter>
+<!--
+<parameter name="graph">	
+<![CDATA[					       				
+ {
+	"Graph": 
+	{
+		"prefix": "DELETE",
+		"title": "DELETE Performance",
+		"xTitle": "Number of Rows Deleted",
+		"forceXBaseline": "true",
+		"yTitleLeft": "Time (seconds)",
+		"forceYBaseline": "true",
+		"datasetType":"xyPlot",
+		"showGrid": "true",
+		"enableMarkers" : "true",
+		"datasets":
+		[ 
+			{
+				"description": "DELETE",
+				"color": "#00FF00",
+				"marker": "triangle",
+				"dataset": [[1000,?DELETE_1k?], [5000,?DELETE_5k?], [10000,?DELETE_10k?], [50000,?DELETE_50k?], [100000,?DELETE_100k?]]
+			}
+		]
+	}
+}
+]]>
+</parameter>-->
+						       			</parameterList>
+						       		</link>				
+						       	</panel>
+						      </pageWindow>
+						</loadPage>
+					</task>	
+				</followOnAction>
+			</action>
+		</task>
+	</taskList>
+</actionPanel>

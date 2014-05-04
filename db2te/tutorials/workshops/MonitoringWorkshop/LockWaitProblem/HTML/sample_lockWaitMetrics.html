@@ -1,0 +1,278 @@
+<PRE>
+  Result set 1
+  --------------
+
+  TEXT                                                                            
+  --------------------------------------------------------------------------------
+  -------------------------------------------------------------------------------- 
+  Monitoring report - current lock waits                                           
+  -------------------------------------------------------------------------------- 
+  Database:               SAMPLE                                                   
+  Generated:              10/13/2009 18:19:33                                      
+                                                                                   
+  ================================================================================ 
+  <B><font color='BLUE'>Part 1 - Summary of current lock waits                                           
+                                                                                   
+  -------------------------------------------------------------------------------- 
+                                                                                   
+        REQ_APPLICATION  LOCK_MODE  HLD_APPLICATION  LOCK_  LOCK_OBJECT_TYPE       
+  #     HANDLE           REQUESTED  _HANDLE          MODE                          
+  ----  ---------------  ---------  ---------------  -----  ---------------------- 
+  1     4703             U          4702             U      ROW                    
+  2     4701             U          4702             U      ROW                    
+  3     4714             U          4702             U      ROW                    
+  4     4704             U          4702             U      ROW                    </font></B>
+                                                                                   
+  ================================================================================ 
+  Part 2 - Details for each current lock wait                                      
+                                                                                   
+  <B><font color='BLUE'>lock wait #:1                                                                    
+  -------------------------------------------------------------------------------- 
+                                                                                   
+  -- Lock details --                                                               
+                                                                                   
+  LOCK_NAME            = 04000500040000000000000052                                
+  LOCK_WAIT_START_TIME = 2009-10-13-18.19.33.319505                                
+  LOCK_OBJECT_TYPE     = ROW                                                       
+  TABSCHEMA            = ADMINISTRATOR                                             
+  TABNAME              = INVENTORY                                                 
+  ROWID                = 4                                                         
+  LOCK_STATUS          = W                                                         
+  LOCK_ATTRIBUTES      = 0000000000000000                                          
+  ESCALATION           = N                                                         
+                                                                                   
+  -- Requestor and holder application details --                                   
+                                                                                   
+  Attributes           Requestor                      Holder                       
+  -------------------  -----------------------------  ---------------------------- 
+  APPLICATION_HANDLE   4703                           4702                         
+  APPLICATION_ID       *LOCAL.DB2.091013124917        *LOCAL.DB2.091013124916      
+  APPLICATION_NAME     java.exe                       java.exe                     
+  SESSION_AUTHID       ADMINISTRATOR                  ADMINISTRATOR                
+  MEMBER               0                              0                            
+  LOCK_MODE            -                              U                            
+  LOCK_MODE_REQUESTED  U                              -                            
+                                                                                   
+  -- Lock holder current agents --                                                 
+                                                                                   
+  AGENT_TID            = 368                                                       
+  REQUEST_TYPE         = FETCH                                                     
+  EVENT_STATE          = IDLE                                                      
+  EVENT_OBJECT         = REQUEST                                                   
+  EVENT_TYPE           = WAIT                                                      
+  ACTIVITY_ID          =                                                           
+  UOW_ID               =                                                           
+                                                                                   
+  -- Lock holder current activities --                                             
+                                                                                   
+  ACTIVITY_ID          = 1                                                         
+  UOW_ID               = 6                                                         
+  LOCAL_START_TIME     = 2009-10-13-18.19.30.222273                                
+  ACTIVITY_TYPE        = READ_DML                                                  
+  ACTIVITY_STATE       = IDLE                                                      
+                                                                                   
+  STMT_TEXT            =                                                           
+  select * from inventory for update                                               
+                                                                                   
+  -- Lock requestor waiting agent and activity --                                  
+                                                                                   
+  AGENT_TID            = 8476                                                      
+  REQUEST_TYPE         = FETCH                                                     
+  ACTIVITY_ID          = 1                                                         
+  UOW_ID               = 6                                                         
+  LOCAL_START_TIME     = 2009-10-13-18.19.33.230727                                
+  ACTIVITY_TYPE        = READ_DML                                                  
+  ACTIVITY_STATE       = EXECUTING                                                 
+                                                                                   
+  STMT_TEXT            =                                                           
+  select * from inventory for update                                               </font></B>
+                                                                                   
+  lock wait #:2                                                                    
+  -------------------------------------------------------------------------------- 
+                                                                                   
+  -- Lock details --                                                               
+                                                                                   
+  LOCK_NAME            = 04000500040000000000000052                                
+  LOCK_WAIT_START_TIME = 2009-10-13-18.19.32.315140                                
+  LOCK_OBJECT_TYPE     = ROW                                                       
+  TABSCHEMA            = ADMINISTRATOR                                             
+  TABNAME              = INVENTORY                                                 
+  ROWID                = 4                                                         
+  LOCK_STATUS          = W                                                         
+  LOCK_ATTRIBUTES      = 0000000000000000                                          
+  ESCALATION           = N                                                         
+                                                                                   
+  -- Requestor and holder application details --                                   
+                                                                                   
+  Attributes           Requestor                      Holder                       
+  -------------------  -----------------------------  ---------------------------- 
+  APPLICATION_HANDLE   4701                           4702                         
+  APPLICATION_ID       *LOCAL.DB2.091013124911        *LOCAL.DB2.091013124916      
+  APPLICATION_NAME     java.exe                       java.exe                     
+  SESSION_AUTHID       ADMINISTRATOR                  ADMINISTRATOR                
+  MEMBER               0                              0                            
+  LOCK_MODE            -                              U                            
+  LOCK_MODE_REQUESTED  U                              -                            
+                                                                                   
+  -- Lock holder current agents --                                                 
+                                                                                   
+  AGENT_TID            = 368                                                       
+  REQUEST_TYPE         = FETCH                                                     
+  EVENT_STATE          = IDLE                                                      
+  EVENT_OBJECT         = REQUEST                                                   
+  EVENT_TYPE           = WAIT                                                      
+  ACTIVITY_ID          =                                                           
+  UOW_ID               =                                                           
+                                                                                   
+  -- Lock holder current activities --                                             
+                                                                                   
+  ACTIVITY_ID          = 1                                                         
+  UOW_ID               = 6                                                         
+  LOCAL_START_TIME     = 2009-10-13-18.19.30.222273                                
+  ACTIVITY_TYPE        = READ_DML                                                  
+  ACTIVITY_STATE       = IDLE                                                      
+                                                                                   
+  STMT_TEXT            =                                                           
+  select * from inventory for update                                               
+                                                                                   
+  -- Lock requestor waiting agent and activity --                                  
+                                                                                   
+  AGENT_TID            = 8032                                                      
+  REQUEST_TYPE         = FETCH                                                     
+  ACTIVITY_ID          = 1                                                         
+  UOW_ID               = 11                                                        
+  LOCAL_START_TIME     = 2009-10-13-18.19.32.225902                                
+  ACTIVITY_TYPE        = READ_DML                                                  
+  ACTIVITY_STATE       = EXECUTING                                                 
+                                                                                   
+  STMT_TEXT            =                                                           
+  select * from inventory for update                                               
+                                                                                   
+  lock wait #:3                                                                    
+  -------------------------------------------------------------------------------- 
+                                                                                   
+  -- Lock details --                                                               
+                                                                                 
+  LOCK_NAME            = 04000500040000000000000052                                
+  LOCK_WAIT_START_TIME = 2009-10-13-18.19.33.211233                                
+  LOCK_OBJECT_TYPE     = ROW                                                       
+  TABSCHEMA            = ADMINISTRATOR                                             
+  TABNAME              = INVENTORY                                                 
+  ROWID                = 4                                                         
+  LOCK_STATUS          = W                                                         
+  LOCK_ATTRIBUTES      = 0000000000000000                                          
+  ESCALATION           = N                                                         
+                                                                                   
+  -- Requestor and holder application details --                                   
+                                                                                   
+  Attributes           Requestor                      Holder                       
+  -------------------  -----------------------------  ---------------------------- 
+  APPLICATION_HANDLE   4714                           4702                         
+  APPLICATION_ID       *LOCAL.DB2.091013124940        *LOCAL.DB2.091013124916      
+  APPLICATION_NAME     java.exe                       java.exe                     
+  SESSION_AUTHID       ADMINISTRATOR                  ADMINISTRATOR                
+  MEMBER               0                              0                            
+  LOCK_MODE            -                              U                            
+  LOCK_MODE_REQUESTED  U                              -                            
+                                                                                   
+  -- Lock holder current agents --                                                 
+                                                                                   
+  AGENT_TID            = 368                                                       
+  REQUEST_TYPE         = FETCH                                                     
+  EVENT_STATE          = IDLE                                                      
+  EVENT_OBJECT         = REQUEST                                                   
+  EVENT_TYPE           = WAIT                                                      
+  ACTIVITY_ID          =                                                           
+  UOW_ID               =                                                           
+                                                                                   
+  -- Lock holder current activities --                                             
+                                                                                   
+  ACTIVITY_ID          = 1                                                         
+  UOW_ID               = 6                                                         
+  LOCAL_START_TIME     = 2009-10-13-18.19.30.222273                                
+  ACTIVITY_TYPE        = READ_DML                                                  
+  ACTIVITY_STATE       = IDLE                                                      
+                                                                                   
+  STMT_TEXT            =                                                           
+  select * from inventory for update                                               
+                                                                                   
+  -- Lock requestor waiting agent and activity --                                  
+                                                                                   
+  AGENT_TID            = 4476                                                      
+  REQUEST_TYPE         = FETCH                                                     
+  ACTIVITY_ID          = 1                                                         
+  UOW_ID               = 1                                                         
+  LOCAL_START_TIME     = 2009-10-13-18.19.33.122315                                
+  ACTIVITY_TYPE        = READ_DML                                                  
+  ACTIVITY_STATE       = EXECUTING                                                 
+                                                                                   
+  STMT_TEXT            =                                                           
+  select * from inventory for update                                               
+                                                                                   
+  lock wait #:4                                                                    
+  -------------------------------------------------------------------------------- 
+                                                                                   
+  -- Lock details --                                                               
+                                                                                   
+  LOCK_NAME            = 04000500040000000000000052                                
+  LOCK_WAIT_START_TIME = 2009-10-13-18.19.31.310790                                
+  LOCK_OBJECT_TYPE     = ROW                                                       
+  TABSCHEMA            = ADMINISTRATOR                                             
+  TABNAME              = INVENTORY                                                 
+  ROWID                = 4                                                         
+  LOCK_STATUS          = W                                                         
+  LOCK_ATTRIBUTES      = 0000000000000000                                          
+  ESCALATION           = N                                                         
+                                                                                   
+  -- Requestor and holder application details --                                   
+                                                                                   
+  Attributes           Requestor                      Holder                       
+  -------------------  -----------------------------  ---------------------------- 
+  APPLICATION_HANDLE   4704                           4702                         
+  APPLICATION_ID       *LOCAL.DB2.091013124927        *LOCAL.DB2.091013124916      
+  APPLICATION_NAME     java.exe                       java.exe                     
+  SESSION_AUTHID       ADMINISTRATOR                  ADMINISTRATOR                
+  MEMBER               0                              0                            
+  LOCK_MODE            -                              U                            
+  LOCK_MODE_REQUESTED  U                              -                            
+                                                                                   
+  -- Lock holder current agents --                                                 
+                                                                                   
+  AGENT_TID            = 368                                                       
+  REQUEST_TYPE         = FETCH                                                     
+  EVENT_STATE          = IDLE                                                      
+  EVENT_OBJECT         = REQUEST                                                   
+  EVENT_TYPE           = WAIT                                                      
+  ACTIVITY_ID          =                                                           
+  UOW_ID               =                                                           
+                                                                                   
+  -- Lock holder current activities --                                             
+                                                                                   
+  ACTIVITY_ID          = 1                                                         
+  UOW_ID               = 6                                                         
+  LOCAL_START_TIME     = 2009-10-13-18.19.30.222273                                
+  ACTIVITY_TYPE        = READ_DML                                                  
+  ACTIVITY_STATE       = IDLE                                                      
+                                                                                   
+  STMT_TEXT            =                                                           
+  select * from inventory for update                                               
+                                                                                   
+  -- Lock requestor waiting agent and activity --                                  
+                                                                                   
+  AGENT_TID            = 4632                                                      
+  REQUEST_TYPE         = FETCH                                                     
+  ACTIVITY_ID          = 1                                                         
+  UOW_ID               = 2                                                         
+  LOCAL_START_TIME     = 2009-10-13-18.19.31.222442                                
+  ACTIVITY_TYPE        = READ_DML                                                  
+  ACTIVITY_STATE       = EXECUTING                                                 
+                                                                                   
+  STMT_TEXT            =                                                           
+  select * from inventory for update                                               
+                                                                                   
+
+  266 record(s) selected.
+
+  Return Status = 0
+
+</PRE>

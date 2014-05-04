@@ -1,0 +1,34 @@
+<p>The dependencies display from the last step uses a default XML profile. 
+	We can improve it's appearance and function by creating a custom profile. 
+</p>
+<p>Fortunately, you don't have to start with a blank file.
+Whenever the Technology Explorer for DB2 deals with a table that doesn't have a profile, it creates a default using
+the pureXML capabilities built into the DB2 data server. 	
+(That is how it can display the contents of any table in the Tables page.)
+<p>To create a default that you can edit, select the XML reference column in the table catalog view of the Technology Explorer. </p>
+<p><h3>Goal:</h3>
+
+Find the 'SYSCAT.TABDEP' table and save the XML table definition file associated with it.
+</p>
+<p><h3>Steps to complete:</h3>
+<ul>
+	<li>On the menu bar of the table page to the right
+		<ul><li> click 'Search'</li></ul></li>
+        <li>Select 'Schema' from the 'Column' drop down</li>
+        <li>Select '=' from the 'Condition' drop down</li>
+	<li>Select 'SYSCAT' from the drop down </li>
+        <li>Click on the 'Add condition' button</li>
+        <li>Select 'Table' from the 'Column' drop down</li>
+        <li>Select '=' from the 'Condition' drop down</li>
+	<li>Enter in the value 'TABDEP' in the right hand field (case is sensitive)</li>
+	<li>Click the 'Apply search' button
+		<ul>
+			<li>If you do not see the table try searching again</li>
+		</ul>
+	</li>
+	<li>Click the icon in the XML column</li>
+	<li>Right-click in the XML document and select 'This Frame' -> 'Save Frame As...' </li>
+	<li>Navigate to the folder /var/www/tableDefinitions/</li>
+	<li>Save the file with the name 'tableDependCat.xml' (case is sensitive)</li>
+</ul>
+</p>

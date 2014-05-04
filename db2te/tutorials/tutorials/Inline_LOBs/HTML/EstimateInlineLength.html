@@ -1,0 +1,26 @@
+<h4>Is LOB inlined?</h4>
+<p>Notice that the number of direct reads of querying inline LOBs is 50% less than querying the regular LOBs. However, we are expecting no direct reads on inline LOB retrieval. Why are we still seeing direct read activities on the inline LOB table? Select the first action on this page to examine the INLINELOBDATA table and see if all LOB is inlined. </p>
+
+<pre><code>
+SELECT CUSTOMER_ID
+  FROM INLINELOBDATA
+ WHERE ADMIN_IS_INLINED(VIEW_TEXT) = 0
+</code></pre>
+
+<p></p>
+
+<p>The ADMIN_IS_INLINED function returns 1 if the column is inlined, 0 if the column is not inlined, and NULL if the column is NULL.</p>
+
+<p>The result shows that not all LOBs are inlined. This explains why there are direct read activities when querying the INLINELOBDATA table.</p>
+
+<h4>Estimate LOB inline length</h4>
+<p>Select the second action on this page to find out the maximum estimated inline length.</p>
+
+<pre><code>
+SELECT MAX(ADMIN_EST_INLINE_LENGTH(VIEW_TEXT))
+  FROM INLINELOBDATA
+</code></pre>
+
+<p>The maximum estimated inline length for VIEW_TEXT column is 1759 bytes. In the previous page, the VIEW_TEXT COLUMN is defined to have INLINE LENGTH of 500 bytes. This clearly shows that LOBs larger than 500 bytes are not inlined.</p>
+
+

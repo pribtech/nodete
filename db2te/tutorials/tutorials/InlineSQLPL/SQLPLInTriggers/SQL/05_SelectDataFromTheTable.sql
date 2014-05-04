@@ -1,0 +1,1 @@
+SELECT * FROM ?SCHEMA?.employee_wages;

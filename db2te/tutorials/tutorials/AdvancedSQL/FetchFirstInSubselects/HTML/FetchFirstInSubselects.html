@@ -1,0 +1,155 @@
+<h2>fetch-first-clause</h2> <pre>
+&nbsp;&nbsp;&nbsp;             .-1-------.                &nbsp;&nbsp;&nbsp;
+&gt;&gt;-FETCH FIRST--+---------+--+-ROW--+--ONLY--------------------&gt;&lt;
+&nbsp;&nbsp;&nbsp;             '-<i>integer</i>-'  '-ROWS-'      &nbsp;&nbsp;&nbsp;
+
+</pre><p>The fetch-first-clause sets
+a maximum number of rows that can be retrieved. It lets the database manager
+know that the application does not want to retrieve more than integer rows,
+regardless of how many rows there might be in the result table when this clause
+is not specified. An attempt to fetch beyond integer rows
+is handled the same way as normal end of data (SQLSTATE 02000). The value
+of integer must be a positive integer (not zero).</p>
+ <p>Use of the fetch-first-clause influences
+query optimization of the subselect or fullselect, based on the fact that
+at most integer rows will be retrieved.   If both
+the fetch-first-clause is specified in the outermost fullselect and the optimize-for-clause
+is specified for the select statement, the database manager will use the integer from
+the optimize-for-clause to influence query optimization of the outermost fullselect.
+ </p>
+
+<p>Limiting the result table to the first integer rows
+can improve performance. The database manager will cease processing the query
+once it has determined the first integer rows. 
+ If both the fetch-first-clause and the optimize-for-clause are
+specified, the lower of the integer values from
+these clauses is used to influence the communications buffer size. </p>
+
+ <p>If
+the fullselect contains an SQL data change statement in the FROM clause, all
+the rows are modified regardless of the limit on the number of rows to fetch.</p>
+</div>
+<div><h2>Examples of subselects</h2> <div><em>Example
+A1:</em>&nbsp; Select all columns and rows from the EMPLOYEE table.  <pre>  <strong>SELECT * FROM</strong> EMPLOYEE</pre>
+</div>
+ <div><em>Example
+A2:</em>&nbsp; Join the EMP_ACT and EMPLOYEE tables, select all the columns from
+the EMP_ACT table and add the employee's surname (LASTNAME) from the EMPLOYEE
+table to each row of the result.  <pre>   <strong>SELECT</strong> EMP_ACT.*, LASTNAME
+     <strong>FROM</strong> EMP_ACT, EMPLOYEE
+     <strong>WHERE</strong> EMP_ACT.EMPNO = EMPLOYEE.EMPNO</pre>
+
+</div>
+ <div><em>Example
+A3:</em>&nbsp; Join the EMPLOYEE and DEPARTMENT tables, select the employee number
+(EMPNO), employee surname (LASTNAME), department number (WORKDEPT in the EMPLOYEE
+table and DEPTNO in the DEPARTMENT table) and department name (DEPTNAME) of
+all employees who were born (BIRTHDATE) earlier than 1930.  <pre>  <strong>SELECT</strong> EMPNO, LASTNAME, WORKDEPT, DEPTNAME 
+    <strong> FROM</strong> EMPLOYEE, DEPARTMENT                     
+    <strong> WHERE</strong> WORKDEPT = DEPTNO     
+    <strong> AND YEAR(</strong>BIRTHDATE<strong>)</strong> &lt; 1930</pre>
+
+</div>
+ <div class="p"><em>Example
+A4:</em>&nbsp; Select the job (JOB) and the minimum and maximum salaries (SALARY)
+for each group of rows with the same job code in the EMPLOYEE table, but only
+for groups with more than one row and with a maximum salary greater than or
+equal to 27000.  <pre>   <strong>SELECT</strong> JOB, <strong>MIN(</strong>SALARY<strong>)</strong>, <strong>MAX(</strong>SALARY<strong>)</strong>
+
+     <strong>FROM</strong> EMPLOYEE
+     <strong>GROUP BY</strong> JOB
+     <strong>HAVING COUNT(*)</strong> &gt; 1 
+     <strong>AND MAX(</strong>SALARY<strong>)</strong> &gt;= 27000</pre>
+
+</div>
+ <div><em>Example
+A5:</em>&nbsp; Select all the rows of EMP_ACT table for employees (EMPNO) in department
+(WORKDEPT) 'E11'. (Employee department numbers are shown in the EMPLOYEE table.)
+ <pre>  <strong>SELECT *</strong>
+    <strong>FROM</strong> EMP_ACT  
+    <strong>WHERE</strong> EMPNO <strong>IN</strong>
+
+             <strong>(SELECT</strong> EMPNO 
+                 <strong>FROM</strong> EMPLOYEE  
+                 <strong>WHERE</strong> WORKDEPT = 'E11'<strong>)</strong></pre>
+</div>
+ <div><em>Example A6:</em>&nbsp; From the EMPLOYEE table, select the department
+number (WORKDEPT) and maximum departmental salary (SALARY) for all departments
+whose maximum salary is less than the average salary for all employees.  <pre>  <strong>SELECT</strong> WORKDEPT, <strong>MAX(</strong>SALARY<strong>) </strong>
+
+    <strong>FROM</strong> EMPLOYEE 
+    <strong>GROUP BY</strong> WORKDEPT  
+    <strong>HAVING MAX(</strong>SALARY<strong>) &lt; (SELECT AVG(</strong>SALARY<strong>)</strong>
+                              <strong>FROM</strong> EMPLOYEE<strong>)</strong></pre>
+
+ The
+subquery in the HAVING clause would only be executed once in this example.</div>
+ <div><em>Example A7:</em>&nbsp; Using the EMPLOYEE table, select the department
+number (WORKDEPT) and maximum departmental salary (SALARY) for all departments
+whose maximum salary is less than the average salary in all other departments.
+ <pre>  <strong>SELECT</strong> WORKDEPT, <strong>MAX(</strong>SALARY<strong>)</strong>
+     <strong>FROM</strong> EMPLOYEE EMP_COR
+     <strong> GROUP BY</strong> WORKDEPT 
+     <strong> HAVING MAX(</strong>SALARY<strong>) &lt; (SELECT AVG(</strong>SALARY<strong>)</strong>
+
+                              <strong>FROM</strong> EMPLOYEE
+                              <strong>WHERE NOT</strong> WORKDEPT = EMP_COR.WORKDEPT<strong>)</strong></pre>
+</div>
+ <p>In
+contrast to <a href="#r0000875__exm6">Example A6</a>, the subquery in
+the HAVING clause would need to be executed for each group. </p>
+ <p id="r0000875__exm8"><a name="r0000875__exm8"><!-- --></a><em>Example
+A8:</em>&nbsp; Determine the employee number and salary of sales representatives
+along with the average salary and head count of their departments.</p>
+
+ <div>This
+query must first create a nested table expression (DINFO) in order to get
+the AVGSALARY and EMPCOUNT columns, as well as the DEPTNO column that is used
+in the WHERE clause.  <pre> <strong>SELECT</strong> THIS_EMP.EMPNO, THIS_EMP.SALARY, DINFO.AVGSALARY, DINFO.EMPCOUNT
+  <strong>FROM</strong> EMPLOYEE THIS_EMP,
+        <strong>(SELECT</strong> OTHERS.WORKDEPT <strong>AS</strong> DEPTNO,
+                           <strong>AVG(</strong>OTHERS.SALARY<strong>) AS</strong> AVGSALARY,
+                           <strong>COUNT(*) AS</strong> EMPCOUNT
+          <strong>FROM</strong> EMPLOYEE OTHERS
+          <strong>GROUP BY</strong> OTHERS.WORKDEPT
+         <strong>) AS</strong> DINFO
+  <strong>WHERE</strong> THIS_EMP.JOB = 'SALESREP'
+   <strong>AND</strong> THIS_EMP.WORKDEPT = DINFO.DEPTNO</pre>
+
+</div>
+ <p>Using a
+nested table expression for this case saves the overhead of creating the DINFO
+view as a regular view. During statement preparation, accessing the catalog
+for the view is avoided and, because of the context of the rest of the query,
+only the rows for the department of the sales representatives need to be considered
+by the view.</p>
+ <p><em>Example A9:</em> Display the average education
+level and salary for 5 random groups of employees.</p>
+ <div class="p">This query requires
+the use of a nested table expression to set a random value for each employee
+so that it can subsequently be used in the GROUP BY clause.  <pre>  <strong>SELECT</strong> RANDID <strong>, AVG(</strong>EDLEVEL<strong>),</strong> <strong>AVG(</strong>SALARY<strong>)</strong>
+
+    <strong>FROM (</strong> <strong>SELECT</strong> EDLEVEL, SALARY, INTEGER(RAND()*5) <strong>AS</strong> RANDID
+             <strong>FROM</strong> EMPLOYEE
+         <strong>) AS</strong> EMPRAND
+    <strong>GROUP BY</strong> RANDID</pre>
+
+</div>
+ <div<em>Example A10:</em> Query
+the EMP_ACT table and return those project numbers that have an employee whose
+salary is in the top 10 of all employees.<pre>  <strong>SELECT</strong> EMP_ACT.EMPNO,PROJNO
+     <strong>FROM</strong> EMP_ACT
+     <strong>WHERE</strong> EMP_ACT.EMPNO <strong>IN</strong>
+
+         <strong>(SELECT</strong> EMPLOYEE.EMPNO
+          <strong>FROM</strong> EMPLOYEE
+          <strong>ORDER BY</strong> SALARY <strong>DESC</strong>
+          <strong>FETCH FIRST</strong> 10 <strong>ROWS ONLY)</strong></pre>
+
+</div>
+<div><em>Example
+A11:</em> Assuming that PHONES and IDS are two SQL variables with array values
+of the same cardinality, turn these arrays into a table with three columns
+(one for each array and one for the position), and one row per array element.<pre>   <strong>SELECT</strong> T.PHONE, T.ID, T.INDEX <strong>FROM UNNEST</strong>(PHONES, IDS)
+     <strong>WITH ORDINALITY AS</strong> T(PHONE, ID, INDEX)
+     <strong>ORDER BY</strong> T.INDEX</pre>

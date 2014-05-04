@@ -1,0 +1,8 @@
+<p>This tutorial demonstrates the <a onclick="OpenURLInFloatingWindow
+('http://publib.boulder.ibm.com/infocenter/db2luw/v9r7/topic/com.ibm.db2.luw.admin.perf.doc/doc/c0053760.html?noframes=true');">improvement in concurrency by using the CS isolation level with currently committed semantics </a>to reduce lock wait and deadlock scenarios.
+<p>
+This new feature is particularly useful when an application holds write locks for a significant amount of time, or as a work around for unexperienced DBAs whose queries are not fully optimized.
+<p>
+The new currently committed (cur_commit) configuration  parameter controls the behavior of cursor stability (CS) scans.
+<p>
+In previous versions, CS prevented an application from reading any row that was changed by other applications until the change was committed. In DB2 version 9.7, under CS with currently committed semantics, a read operation does not necessarily wait for a change to a row to be committed before returning a value. Where possible, a read operation now returns the currently committed result, ignoring what might happen to an uncommitted operation. An example of an exception is for updatable cursors; in that case, currently committed results cannot be returned immediately if the row might be updated based on its previous contents.

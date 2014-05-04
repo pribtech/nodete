@@ -1,0 +1,394 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tutorial name="UNION ALL With Insert Capabilities">
+	<FlowRestriction>forwardExploration</FlowRestriction>
+	<openAction/>
+	<closeAction/>
+    <globalCodeHighlightOptions highlightCode = "true" />
+	<pageList>
+		<page name="UNION ALL With Insert Capabilities" type="intro">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>UNIONALLWithInsertCapabilities.html</contentFile>
+			<autoLoadLink>
+				<pageWindow target="informationWindow">
+					<panel name="main">
+						<URL>http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.dwe.sqw.doc/designing/data_flow/copunion.html?noframes=true</URL>
+					</panel>
+				</pageWindow>
+			</autoLoadLink>
+		</page>
+		
+		<page name="Create the tables with constraints within them" type="general">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>CreateTheTablesWithConstraintsWithinThem.html</contentFile>
+			<SQLFile>CreateTheTablesWithConstraintsWithinThem.sql</SQLFile>
+		</page>
+		
+		<page name="Insert some values into the base tables" type="general">
+			
+			<entryAction name="checkForFirstTable" type="serverAction">
+				<parameterList>
+					<parameter name="action" type="serverAction">
+						<value>checkForObject</value>
+					</parameter>
+					
+					<parameter name="objectType" type="raw">
+						<value>table</value>
+					</parameter>
+					
+					<parameter name="object[schema]" type="constant">
+						<value>SCHEMA</value>
+					</parameter>
+					
+					<parameter name="object[table]" type="fixed">
+						<value>Q1</value>
+					</parameter>
+				</parameterList>
+				
+				<followOnAction condition="false">
+					<task>
+						<action name="displayMsg" type="alert">
+							<message>Required table Q1 hasn't been created. Please execute this step again.</message>
+						</action>
+					</task>
+					
+					<task>
+						<setActionReturn>false</setActionReturn>
+					</task>
+				</followOnAction>
+				
+				<followOnAction condition="true">
+					<task>
+						<action name="checkForSecondTable" type="serverAction">
+							<parameterList>
+								
+								<parameter name="action" type="serverAction">
+									<value>CheckForObject</value>
+								</parameter>
+								
+								<parameter name="objectType" type="raw">
+									<value>table</value>
+								</parameter>
+								
+								<parameter name="object[schema]" type="constant">
+									<value>SCHEMA</value>
+								</parameter>
+								
+								<parameter name="object[table]" type="fixed">
+									<value>Q2</value>
+								</parameter>
+							</parameterList>
+							
+							<followOnAction condition="false">
+								<task>
+									<action name="displayMsg" type="alert">
+										<message>Required table Q2 hasn't been created. Please execute this step again.</message>
+									</action>
+								</task>
+								<task>
+									<setActionReturn>false</setActionReturn>
+								</task>
+							</followOnAction>
+							
+							<followOnAction condition="true">
+								<task>
+									<action name="checkForThird" type="serverAction">
+										<parameterList>
+											
+											<parameter name="action" type="serverAction">
+												<value>CheckForObject</value>
+											</parameter>
+											
+											<parameter name="object[schema]" type="constant">
+												<value>SCHEMA</value>
+											</parameter>
+											
+											<parameter name="objectType" type="raw">
+												<value>table</value>
+											</parameter>
+											
+											<parameter name="object[table]" type="fixed">
+												<value>Q3</value>
+											</parameter>
+										</parameterList>
+										
+										<followOnAction condition="false">
+											<task>
+												<action name="displayMsg" type="alert">
+													<message>Required table Q3 hasn't been created. Please execute this step again.</message>
+												</action>
+											</task>
+											<task>
+												<setActionReturn>false</setActionReturn>
+											</task>
+										</followOnAction>
+										
+										<followOnAction condition="true">
+											<task>
+												<action name="checkForFourthTable" type="serverAction">
+													<parameterList>
+														
+														<parameter name="action" type="serverAction">
+															<value>CheckForObject</value>
+														</parameter>
+														
+														<parameter name="objectType" type="raw">
+															<value>table</value>
+														</parameter>
+														
+														<parameter name="object[schema]" type="constant">
+															<value>SCHEMA</value>
+														</parameter>
+														
+														<parameter name="object[table]" type="fixed">
+															<value>Q4</value>
+														</parameter>
+													</parameterList>
+													
+													<followOnAction condition="false">
+														<task>
+															<action name="displayMsg" type="alert">
+																<message>Required table Q4 hasn't been created. Please execute this step again.</message>
+															</action>
+														</task>
+														<task>
+															<setActionReturn>false</setActionReturn>
+														</task>
+													</followOnAction>
+												</action>
+											</task>
+										</followOnAction>
+										
+									</action>
+								</task>
+							</followOnAction>
+						</action>
+					</task>
+				</followOnAction> 
+			</entryAction>       
+			<exitAction/>
+			<contentFile>InsertSomeValuesIntoTheBaseTables.html</contentFile>
+			<SQLFile>InsertSomeValuesIntoTheBaseTables.sql</SQLFile>
+		</page>
+		
+		<page name="Create a Union of these 4 tables" type="general">
+			<entryAction name="checkForInsert" type="serverAction">
+				<parameterList>
+					<parameter name="action" type="fixed">
+						<value>checkForRow</value>
+					</parameter>
+					<parameter name="schema" type="constant">
+						<value>SCHEMA</value>
+					</parameter>
+					<parameter name="name" type="fixed">
+						<value>Q1</value>
+					</parameter>
+				</parameterList>
+				<followOnAction condition="true"  negCondition="true">
+					<task>
+						<action name="displayMsgForFailedInsert" type="alert">
+							<message>Data hasn't been inserted in table Q1. Please try this step again.</message>
+						</action>
+					</task>
+					<task>
+						<setActionReturn>false</setActionReturn>
+					</task>
+				</followOnAction>
+				
+				
+				<followOnAction condition="true">
+					<task>
+						<action name="checkForSecondInsert" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="fixed">
+									<value>checkForRow</value>
+								</parameter>
+								<parameter name="schema" type="constant">
+									<value>SCHEMA</value>
+								</parameter>
+								<parameter name="name" type="fixed">
+									<value>Q2</value>
+								</parameter>
+							</parameterList>
+							<followOnAction condition="true"  negCondition="true">
+								<task>
+									<action name="displayMsgForFailedInsert" type="alert">
+										<message>Data hasn't been inserted in table Q2. Please try this step again.</message>
+									</action>
+								</task>
+								<task>
+									<setActionReturn>false</setActionReturn>
+								</task>
+							</followOnAction>
+							
+							<followOnAction condition="true">
+								<task>
+									<action name="checkForThirdInsert" type="serverAction">
+										<parameterList>
+											<parameter name="action" type="fixed">
+												<value>checkForRow</value>
+											</parameter>
+											<parameter name="schema" type="constant">
+												<value>SCHEMA</value>
+											</parameter>
+											<parameter name="name" type="fixed">
+												<value>Q3</value>
+											</parameter>
+										</parameterList>
+										<followOnAction condition="true"  negCondition="true">
+											<task>
+												<action name="displayMsgForFailedInsert" type="alert">
+													<message>Data hasn't been inserted in table Q3. Please try this step again.</message>
+												</action>
+											</task>
+											<task>
+												<setActionReturn>false</setActionReturn>
+											</task>
+										</followOnAction>
+										<followOnAction condition="true">
+											<task>
+												<action name="checkForForthInsert" type="serverAction">
+													<parameterList>
+														<parameter name="action" type="fixed">
+															<value>checkForRow</value>
+														</parameter>
+														<parameter name="schema" type="constant">
+															<value>SCHEMA</value>
+														</parameter>
+														<parameter name="name" type="fixed">
+															<value>Q4</value>
+														</parameter>
+													</parameterList>
+													<followOnAction condition="true"  negCondition="true">
+														<task>
+															<action name="displayMsgForFailedInsert" type="alert">
+																<message>Data hasn't been inserted in table Q4. Please try this step again.</message>
+															</action>
+														</task>
+														<task>
+															<setActionReturn>false</setActionReturn>
+														</task>
+													</followOnAction>
+												</action>
+											</task>
+										</followOnAction>
+										
+									</action>
+								</task>
+							</followOnAction>
+							
+							
+						</action>
+					</task>
+				</followOnAction>
+			</entryAction> 
+			
+			<exitAction/>
+			<contentFile>CreateAUnionOfThese4Tables.html</contentFile>
+			<SQLFile>CreateAUnionOfThese4Tables.sql</SQLFile>
+		</page>
+		
+		<page name="Now do a select across some ranges" type="general">	
+			<entryAction name="checkForView" type="serverAction">
+				<parameterList>
+					<parameter name="action" type="serverAction">
+						<value>checkForObject</value>
+					</parameter>
+					<parameter name="objectType" type="raw">
+						<value>view</value>
+					</parameter>
+					<parameter name="object[schema]" type="constant">
+						<value>SCHEMA</value>
+					</parameter>
+					<parameter name="object[view]" type="fixed">
+						<value>txYear </value>
+					</parameter>
+				</parameterList>
+				<followOnAction condition="false">
+					<task>
+						<action name="displayMsg" type="alert">
+							<message>Required View "txYear" hasn't been created. Please execute this step again.</message>
+						</action>
+					</task>
+					<task>
+						<setActionReturn>false</setActionReturn>
+					</task>
+				</followOnAction>
+				
+			</entryAction>
+			<exitAction/>
+			<contentFile>NowDoASelectAcrossSomeRanges.html</contentFile>
+			<SQLFile>NowDoASelectAcrossSomeRanges.sql</SQLFile>
+		</page>
+		
+		<!--	COMMENTED TILL EXPLAIN TABLES WORK 
+			
+			<page name="Show DB2 Explain" type="general">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>ShowDB2Explain.html</contentFile>
+			<SQLFile>ShowDB2Explain.sql</SQLFile>
+			</page>-->
+		
+		<page name="Try inserting into this view" type="general">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>TryInsertingIntoThisView.html</contentFile>
+			<SQLFile>TryInsertingIntoThisView.sql</SQLFile>
+		</page>
+		<page name="View the results" type="general">
+			<entryAction name="checkForInsert" type="serverAction">
+				<parameterList>
+					<parameter name="action" type="fixed">
+						<value>checkForRow</value>
+					</parameter>
+					<parameter name="schema" type="constant">
+						<value>SCHEMA</value>
+					</parameter>
+					<parameter name="name" type="fixed">
+						<value>txYear </value>
+					</parameter>
+					<parameter name="minrow" type="fixed">
+						<value>24</value>
+					</parameter>
+				</parameterList>
+				<followOnAction condition="true"  negCondition="true">
+					<task>
+						<action name="displayMsgForFailedInsert" type="alert">
+							<message>New Data hasn't been inserted in the table "txYear". Please try this step again.</message>
+						</action>
+					</task>
+					<task>
+						<setActionReturn>false</setActionReturn>
+					</task>
+				</followOnAction>
+			</entryAction> 
+			
+			<exitAction/>
+			<contentFile>ViewTheResults.html</contentFile>
+			<SQLFile>ViewTheResults.sql</SQLFile>
+		</page>
+		
+		<page name="Performance comparison of UNION-ALL versus base table inserts" type="general">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>PerformanceComparisonOfUNION-ALLVersusBaseTableInserts.html</contentFile>
+			<loadActionScriptFile>PerformanceComparisonOfUNION_ALLVersusBaseTableInserts.xml</loadActionScriptFile>
+		</page>
+		
+		<page name="Maintenance of UNION ALL - Delete" type="general">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>MaintenanceOfUNIONALL-Delete.html</contentFile>
+			<SQLFile>MaintenanceOfUNIONALL-Delete.sql</SQLFile>
+		</page>
+		
+		<page name="Maintenance of UNION ALL - Update" type="last">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>MaintenanceOfUNIONALL-Update.html</contentFile>
+			<SQLFile>MaintenanceOfUNIONALL-Update.sql</SQLFile>
+		</page>
+	</pageList>
+</tutorial>

@@ -1,0 +1,18 @@
+<BR><H2><B>Audit access to 'credit_card' table by manager Joe</B></H2><HR><P>
+<?php
+  $baseDIR = $_POST["BASE_DIR"];
+?>
+<img src="?BASE_DIRECTORY?HTML/Joe.png" />
+
+<p><b>You must log into the database as Joe before proceeding with this page.</b></p>
+<p><b>Now that audit policies are set, we can see the effect of audit policies on users.</b></p>
+
+<h4>Operation</h4><br>
+Execute the SQL statements in the right pane.
+
+<br><br><h4>Solution</h4><br>
+Since Joe is granted with the role 'Mgr', he has privileges to perform SELECT, INSERT, UPDATE and DELETE operations.
+ When he executes SQL statements on the right, all statements gets executed successfully and an audit log entry will be made.</p>
+
+
+

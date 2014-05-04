@@ -1,0 +1,19 @@
+<H3>The DECODE function</H3><hr>
+<p>
+ The DECODE function compares (a series of) 2 expressions and returns a specified or null value 
+ depending on the result of the comparison.
+ It compares each <i>expression2</i> to <i>expression1</i>.  
+ If <i>expression1</i> is equal to <i>expression2</i>, 
+ or both <i>expression1</i> and <i>expression2</i> are null, 
+ the value of the specified <i>result-expresssion</i> is returned. 
+ If no <i>expression2</i> matches <i>expression1</i>, the value of the <i>else-expression</i> is returned; 
+ otherwise a null value is returned.
+</p>
+<p>
+The DECODE function is similar to the CASE expression except for the handling of null values:
+<ul>
+  <li>A null value of expression1 will match a corresponding null value of expression2.</li>
+  <li>If the NULL keyword is used as an argument in the DECODE function, 
+  it must be cast to an appropriate data type.</li>
+</ul>
+<p>

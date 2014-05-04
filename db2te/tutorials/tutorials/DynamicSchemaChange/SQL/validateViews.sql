@@ -1,0 +1,1 @@
+SELECT * FROM lucky_fulltime_employee;

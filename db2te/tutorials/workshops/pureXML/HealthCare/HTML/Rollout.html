@@ -1,0 +1,30 @@
+<b>Scenario</b></p>
+<p align = "justify">
+	As described in the beginning of the tutorial, the health care provider requires to archive 
+	data in a quarterly basis. It now reaches the time to perform the archive.
+</p>
+
+
+<p><b>Operation</b></p>
+<p>
+	Roll-out operation is demonatrated here.
+	<ul>
+	<li>Once a table has been defined with range partitioning, it takes only one command 
+	to detach any partition; ALTER TABLE ... DETACH PARTITION ... TO TABLE</li>
+	</ul>
+</p>
+<BR>
+
+<p><b>Solution</b></p>
+<p align = "justify">
+	The health care provider can now roll out data from 2009-01-01 to 2009-03-31 with the 
+	ALTER TABLE ... DETACH command. The detached data is stored in the OPD_20090q1 table. 
+	This table is like any other regular table that can be backed up as desired. <BR><BR>
+	
+	<B>Best Practices ::</B>
+	<ul>
+		<li> DETACH works faster than DELETE command as it does not hit the transaction log.</li>
+		<li> With Local indexes in place, Asynchronus index clean is not required.</li>
+	</ul>
+</p>
+<P>

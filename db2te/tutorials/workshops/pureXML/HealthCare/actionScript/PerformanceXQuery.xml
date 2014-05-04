@@ -1,0 +1,113 @@
+<actionPanel>
+	<flow>controlled</flow>
+	<useConsole>yes</useConsole>
+	<overview>
+	</overview>
+	<taskList>
+
+<!--	
+	<task name="Explain Snapshot">
+			<discription>
+				This shows the access plan for the XML Query executed.
+			</discription>
+			
+			<action name="runExplain" type="blank">
+				<followOnAction condition="true" compareOn="true"
+					compareOnType="raw">
+					<task>
+						<echo>
+							Running db2expln command for :: 
+					SELECT PATIENT_ID,DATE_OF_CONSULTANCY, 
+					XMLQUERY('$i/patientMedicalDocument/medicalSection/component[1]/portion/text' passing PMD as "i") as Past_Medical_Records 
+					FROM ?SCHEMA?.OUT_PATIENT_DATA 
+					WHERE XMLEXISTS('$i/patientMedicalDocument/patientinfo/patient/name[firstname = "James"]' passing PMD as "i");
+.....
+						</echo>
+						<action name="runXQuery" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="fixed">
+									<value>executeCMD</value>
+								</parameter>
+								<parameter name="SHELL" type="fixed">
+									<value>db2expln -database SAMPLE -user db2admin $db2pass123 -statement "SELECT PATIENT_ID,DATE_OF_CONSULTANCY, 
+																								XMLQUERY('$i/patientMedicalDocument/medicalSection/component[1]/portion/text' passing PMD as ""i"") as Past_Medical_Records 
+																							FROM ?SCHEMA?.OUT_PATIENT_DATA 
+																								WHERE XMLEXISTS('$i/patientMedicalDocument/patientinfo/patient/name[firstname = ""James""]' passing PMD as ""i"");  -terminal -graph</value>
+								</parameter>
+							</parameterList>
+						</action>
+							<followOnAction condition="true">
+								<task>
+								<assignSharedConstant name="xquery" type="returnObject">
+									<value>runXQuery.returnValue</value>
+								</assignSharedConstant>
+									<echo>?xquery?</echo>
+								</task>
+							</followOnAction>
+							<followOnAction condition="false">
+								<task>
+									<echo>Error in run!</echo>
+								</task>
+							</followOnAction>
+
+			  		</task>	
+				</followOnAction>
+			</action>
+		</task>
+-->		
+		<task name="Average query time of the XML query">
+			<discription>
+				This finds the average execution time of the XML Query used in the previous page.
+			</discription>
+			<action name="runXQuery" type="blank">
+				<followOnAction condition="true" compareOn="true"
+					compareOnType="raw">
+					<task>
+						<echo>
+							Running the XML Query 5 times...
+						</echo>
+						<action name="runBase" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="fixed">
+									<value>statementThroughput</value>
+								</parameter>
+								<parameter name="SQL" type="fixed">
+									<value>
+									SELECT PATIENT_ID,DATE_OF_CONSULTANCY, XMLQUERY('$i/patient_document/patient/name' passing PMD as ""i"" ) as Name, XMLQUERY('$i/patient_document/patient/visit_info/visited_date/checkup_details/symptoms[1]/text()' passing PMD as ""i"") as Past_Medical_Records FROM ?SCHEMA?.OUT_PATIENT_DATA WHERE XMLEXISTS('$i/patient_document/patient/name[first = ""James""]' passing PMD as ""i"")
+									</value>
+								</parameter>								
+								<parameter name="Period" type="fixed">
+									<value>10</value>
+								</parameter>
+								<parameter name="MinRunAmount" type="fixed">
+									<value>5</value>
+								</parameter>								
+								<parameter name="retrieveAllData" type="fixed">
+									<value>true</value>
+								</parameter>
+							</parameterList>
+							
+							<followOnAction condition="true">
+								<task>
+								<assignSharedConstant name="avgBaseTable" type="returnObject">
+									<value>runBase.returnValue.avgRunTime</value>
+								</assignSharedConstant>
+									<echo>Average Run time: ?avgBaseTable? s</echo>
+								</task>
+							</followOnAction>
+							<followOnAction condition="false">
+								<task>
+									<echo>Error in run!</echo>
+								</task>
+							</followOnAction>
+						</action>
+					</task>
+				</followOnAction>
+			</action>
+		</task>
+		
+	</taskList>
+</actionPanel>
+
+
+

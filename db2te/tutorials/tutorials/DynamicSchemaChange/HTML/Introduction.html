@@ -1,0 +1,29 @@
+<p>
+  In this tutorial you will see some of the new schema change features available in DB2 9.7.
+  These new features significantly improve and simplify the administration of objects
+  within a database schema. <BR><BR>
+  
+  By the end of this tutorial you will be familiar with:
+  <ul>
+  		<li>how to rename columns in a table</li>
+  		<li>how column datatypes can be changed</li>  
+  		<li>how views can be created before the underlying tables</li>
+  		<li>how database objects can be recreated without the DROP command</li>
+  		<li>how database objects are automatically revalidated due to changes to the underlying dependencies</li>
+ </ul><BR>
+	All of these operations can now be performed online without any outages,
+  therefore we call this set of features "Dynamic Schema Change".  
+</p>
+<BR><BR>
+<p>
+	<B>Prerequisites</B><BR>
+	In order to complete this tutorial you need to make sure that the auto-revalidation (AUTO_REVAL) database configuration
+	parameter set to DEFERRED_FORCE.  When a new database is created, AUTO_REVAL is 
+	default to DEFERRED, that does not allow for creation of objects with errors.  On the other hand, IMMEDIATE
+	will automatically try to revalidate all dependent objects.  DEFERRED will
+	try to revalidate dependent objects the next time they are accessed.<BR><BR>
+	Here is the command for enabling this parameter:<BR>
+	<i>db2 update db cfg for &lt;database name&gt; using AUTO_REVAL [IMMEDIATE | DEFERRED | DEFERRED_FORCE]</i><BR>
+	This configuration parameter is dynamic, meaning that a change in its value takes effect immediately.  
+	You do not need to restart the database.
+</p>

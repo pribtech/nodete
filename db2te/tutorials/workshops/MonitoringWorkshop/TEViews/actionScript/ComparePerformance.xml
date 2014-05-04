@@ -1,0 +1,431 @@
+<actionPanel>
+	<flow>free</flow>
+	<useConsole>yes</useConsole>
+	<overview>
+	</overview>
+	<taskList>
+	   <task name="Run performance tests">
+			<discription>
+This step runs the same statement five times against a compressed and an uncompressed table. 
+The results show how quickly each perform and how much CPU time and how many IO page requests each run used.
+You should typically see that CPU time is comparible for each set but that the compressed table requires significantly fewer IO page requests than the compressed table.
+			</discription>
+			
+	    <action name="run" type="blank">			
+			  <followOnAction condition="true" compareOn="true" compareOnType="raw">			
+			   <task>
+					<action name="iostart" type="serverAction">
+						<parameterList>
+							<parameter name="action" type="fixed"><value>executeSQL</value></parameter>
+							<parameter name="SQL" type="fixed"><value>SELECT decimal(sum(TOTAL_SYS_CPU_TIME*1000.0 + TOTAL_SYS_CPU_TIME_MS/1000.0 + TOTAL_USR_CPU_TIME*1000.0 + TOTAL_USR_CPU_TIME_MS/1000.0),31,3) as TOTAL_SYS_CPU_TIME_MS FROM SYSIBMADM.SNAPDYN_SQL</value></parameter>
+						</parameterList>
+						<followOnAction condition="true">
+							<task>
+								<assignSharedConstant name="cpubaseline" type="returnObject"><value>iostart.returnValue.resultSet.0.data.0.0</value></assignSharedConstant>
+<echo></echo>
+<echo>First performance run without compression - run select five times</echo>
+<echo></echo>
+							</task>
+						</followOnAction>
+						<followOnAction condition="false">
+							<task>
+								<echo>Error in run!</echo>
+							</task>
+						</followOnAction>
+					</action>			
+	  		</task>			
+  		
+			   <task>
+					<action name="iostart" type="serverAction">
+						<parameterList>
+							<parameter name="action" type="fixed"><value>executeSQL</value></parameter>
+							<parameter name="SQL" type="fixed"><value>SELECT pool_data_l_reads as reads FROM SYSIBMADM.SNAPDB</value></parameter>
+						</parameterList>
+						<followOnAction condition="true">
+							<task>
+								<assignSharedConstant name="readsbaseline" type="returnObject"><value>iostart.returnValue.resultSet.0.data.0.0</value></assignSharedConstant>
+							</task>
+						</followOnAction>
+						<followOnAction condition="false">
+							<task>
+								<echo>Error in run!</echo>
+							</task>
+						</followOnAction>
+					</action>			
+	  		</task>			
+	  		
+				<task name="Requiring a minimum number of runs">
+					<action name="runTestWorkload" type="serverAction">
+						<parameterList>
+							<parameter name="action" type="fixed">
+								<value>statementThroughput</value>
+							</parameter>
+							<parameter name="SQL" type="fixed">
+								<value>SELECT * FROM ?SCHEMA?.WITHOUT_COMPRESSION ORDER BY TS1</value>
+							</parameter>								
+							<parameter name="Period" type="fixed">
+								<value>1</value>
+							</parameter>
+							<parameter name="MinRunAmount" type="fixed">
+								<value>5</value>
+							</parameter>
+						</parameterList>
+						<followOnAction condition="true">
+							<task>
+								<assignLocalParameter name="SQL" type="returnObject"><value>runTestWorkload.returnValue.SQL</value></assignLocalParameter>
+								<assignLocalParameter name="period" type="returnObject"><value>runTestWorkload.returnValue.period</value></assignLocalParameter>
+								<assignLocalParameter name="periodUsed" type="returnObject"><value>runTestWorkload.returnValue.periodUsed</value></assignLocalParameter>
+								<assignSharedConstant name="RunCount1" type="returnObject"><value>runTestWorkload.returnValue.RunCount</value></assignSharedConstant>
+								<assignLocalParameter name="avgRunTime" type="returnObject"><value>runTestWorkload.returnValue.avgRunTime</value></assignLocalParameter>
+								<assignLocalParameter name="maxRunTime" type="returnObject"><value>runTestWorkload.returnValue.maxRunTime</value></assignLocalParameter>
+								<assignLocalParameter name="minRunTime" type="returnObject"><value>runTestWorkload.returnValue.minRunTime</value></assignLocalParameter>
+								<assignLocalParameter name="Deviation" type="returnObject"><value>runTestWorkload.returnValue.Deviation</value></assignLocalParameter>
+								<assignLocalParameter name="runTimes" type="returnObject"><value>runTestWorkload.returnValue.runTimes</value></assignLocalParameter>
+								<assignSharedConstant name="avgRunTime1" type="returnObject"><value>runTestWorkload.returnValue.avgRunTime</value></assignSharedConstant>
+								<assignLocalParameter name="avgRunTimeDisplay" type="returnObject"><value>runTestWorkload.returnValue.avgRunTimeDisplay</value></assignLocalParameter>								
+								<assignLocalParameter name="maxRunTimeDisplay" type="returnObject"><value>runTestWorkload.returnValue.maxRunTimeDisplay</value></assignLocalParameter>
+								<assignLocalParameter name="minRunTimeDisplay" type="returnObject"><value>runTestWorkload.returnValue.minRunTimeDisplay</value></assignLocalParameter>
+								<echo><![CDATA[
+SQL: ?SQL?
+ 
+Run Count: ?RunCount1?
+Average Run Time: ?avgRunTimeDisplay?
+
+Max Run Time: ?maxRunTimeDisplay?
+Min Run Time: ?minRunTimeDisplay?
+
+		]]></echo>
+							</task>
+						</followOnAction>
+					</action>
+				</task>	  		
+	  		
+  		  <task>
+					<action name="ioend" type="serverAction">
+						<parameterList>
+							<parameter name="action" type="fixed"><value>executeSQL</value></parameter>
+							<parameter name="SQL" type="fixed"><value>SELECT decimal(sum(TOTAL_SYS_CPU_TIME*1000.0 + TOTAL_SYS_CPU_TIME_MS/1000.0 + TOTAL_USR_CPU_TIME*1000.0 + TOTAL_USR_CPU_TIME_MS/1000.0) - ?cpubaseline?,31,3)/?RunCount1? as TOTAL_SYS_CPU_TIME_MS FROM SYSIBMADM.SNAPDYN_SQL</value></parameter>
+						</parameterList>
+						<followOnAction condition="true">
+							<task>
+								<assignSharedConstant name="cpu1" type="returnObject"><value>ioend.returnValue.resultSet.0.data.0.0</value></assignSharedConstant>
+		<echo><![CDATA[
+ Average CPU time per select: ?cpu1?ms
+ 						
+		]]></echo>
+							</task>
+						</followOnAction>
+						<followOnAction condition="false">
+							<task>
+								<echo>Error in run!</echo>
+							</task>
+						</followOnAction>
+					</action>			
+				</task>			
+				
+  		  <task>
+					<action name="ioend" type="serverAction">
+						<parameterList>
+							<parameter name="action" type="fixed"><value>executeSQL</value></parameter>
+							<parameter name="SQL" type="fixed"><value>SELECT (pool_data_l_reads - ?readsbaseline?)/?RunCount1? as reads FROM SYSIBMADM.SNAPDB</value></parameter>
+						</parameterList>
+						<followOnAction condition="true">
+							<task>
+								<assignSharedConstant name="reads1" type="returnObject"><value>ioend.returnValue.resultSet.0.data.0.0</value></assignSharedConstant>
+
+		<echo><![CDATA[
+Average buffer pool reads per select: ?reads1?
+----------------------------------------------------------
+		]]></echo>	
+		<echo></echo>							
+<echo></echo>
+<echo>Second performance run with compression - run select five times</echo>
+<echo></echo>		
+							</task>
+						</followOnAction>
+						<followOnAction condition="false">
+							<task>
+								<echo>Error in run!</echo>
+							</task>
+						</followOnAction>
+					</action>			
+				</task>							
+
+				<task name="Requiring a minimum number of runs">
+					<action name="runTestWorkload" type="serverAction">
+						<parameterList>
+							<parameter name="action" type="fixed">
+								<value>statementThroughput</value>
+							</parameter>
+							<parameter name="SQL" type="fixed">
+								<value>SELECT * FROM ?SCHEMA?.WITH_COMPRESSION ORDER BY TS1</value>
+							</parameter>								
+							<parameter name="Period" type="fixed">
+								<value>1</value>
+							</parameter>
+							<parameter name="MinRunAmount" type="fixed">
+								<value>5</value>
+							</parameter>
+						</parameterList>
+						<followOnAction condition="true">
+							<task>
+								<assignLocalParameter name="SQL" type="returnObject"><value>runTestWorkload.returnValue.SQL</value></assignLocalParameter>
+								<assignLocalParameter name="period" type="returnObject"><value>runTestWorkload.returnValue.period</value></assignLocalParameter>
+								<assignLocalParameter name="periodUsed" type="returnObject"><value>runTestWorkload.returnValue.periodUsed</value></assignLocalParameter>
+								<assignSharedConstant name="RunCount2" type="returnObject"><value>runTestWorkload.returnValue.RunCount</value></assignSharedConstant>
+								<assignLocalParameter name="avgRunTime" type="returnObject"><value>runTestWorkload.returnValue.avgRunTime</value></assignLocalParameter>
+								<assignLocalParameter name="maxRunTime" type="returnObject"><value>runTestWorkload.returnValue.maxRunTime</value></assignLocalParameter>
+								<assignLocalParameter name="minRunTime" type="returnObject"><value>runTestWorkload.returnValue.minRunTime</value></assignLocalParameter>
+								<assignLocalParameter name="Deviation" type="returnObject"><value>runTestWorkload.returnValue.Deviation</value></assignLocalParameter>
+								<assignLocalParameter name="runTimes" type="returnObject"><value>runTestWorkload.returnValue.runTimes</value></assignLocalParameter>
+								<assignSharedConstant name="avgRunTime2" type="returnObject"><value>runTestWorkload.returnValue.avgRunTime</value></assignSharedConstant>								
+								<assignLocalParameter name="avgRunTimeDisplay" type="returnObject"><value>runTestWorkload.returnValue.avgRunTimeDisplay</value></assignLocalParameter>																
+								<assignLocalParameter name="maxRunTimeDisplay" type="returnObject"><value>runTestWorkload.returnValue.maxRunTimeDisplay</value></assignLocalParameter>
+								<assignLocalParameter name="minRunTimeDisplay" type="returnObject"><value>runTestWorkload.returnValue.minRunTimeDisplay</value></assignLocalParameter>
+								<echo><![CDATA[
+								
+
+SQL: ?SQL?
+ 
+Run Count: ?RunCount2?
+Average Run Time: ?avgRunTimeDisplay?
+
+Max Run Time: ?maxRunTimeDisplay?
+Min Run Time: ?minRunTimeDisplay?
+
+		]]></echo>
+							</task>
+						</followOnAction>
+					</action>
+				</task>	  	
+
+  		  <task>
+					<action name="ioend2" type="serverAction">
+						<parameterList>
+							<parameter name="action" type="fixed"><value>executeSQL</value></parameter>
+							<parameter name="SQL" type="fixed"><value>SELECT decimal(sum(TOTAL_SYS_CPU_TIME*1000.0 + TOTAL_SYS_CPU_TIME_MS/1000.0 + TOTAL_USR_CPU_TIME*1000.0 + TOTAL_USR_CPU_TIME_MS/1000.0) - ?cpubaseline? - (?cpu1?*?RunCount1?),31,3)/?RunCount2? as TOTAL_SYS_CPU_TIME_MS FROM SYSIBMADM.SNAPDYN_SQL</value></parameter>
+						</parameterList>
+						<followOnAction condition="true">
+							<task>
+								<assignSharedConstant name="cpu2" type="returnObject"><value>ioend2.returnValue.resultSet.0.data.0.0</value></assignSharedConstant>
+		<echo><![CDATA[
+ Average CPU time per select: ?cpu2?ms
+		]]></echo>
+							
+							</task>
+						</followOnAction>
+						<followOnAction condition="false">
+							<task>
+								<echo>Error in run!</echo>
+							</task>
+						</followOnAction>
+					</action>			
+				</task>			
+
+
+  		  <task>
+					<action name="ioend2" type="serverAction">
+						<parameterList>
+							<parameter name="action" type="fixed"><value>executeSQL</value></parameter>
+							<parameter name="SQL" type="fixed"><value>SELECT (pool_data_l_reads - ?readsbaseline? - (?reads1?*?RunCount1?))/?RunCount2? as reads FROM SYSIBMADM.SNAPDB</value></parameter>
+						</parameterList>
+						<followOnAction condition="true">
+							<task>
+								<assignSharedConstant name="reads2" type="returnObject"><value>ioend2.returnValue.resultSet.0.data.0.0</value></assignSharedConstant>
+		<echo><![CDATA[
+ Average buffer pool reads per select: ?reads2?
+----------------------------------------------------------
+		]]></echo>								
+							</task>
+						</followOnAction>
+						<followOnAction condition="false">
+							<task>
+								<echo>Error in run!</echo>
+							</task>
+						</followOnAction>
+					</action>			
+				</task>			
+
+
+			
+			  </followOnAction>
+			</action>
+		</task>
+		
+  	<task name="Graph run time">
+			<discription>
+				This step plots the average times of the two sets of statements on a graph. 
+				Typically the statement run against the compressed table will perform faster than the uncompressed table.
+			</discription>
+			<action name="runDelete" type="blank">
+				<followOnAction condition="true" compareOn="true" compareOnType="raw">
+					<task>
+						<echo>Graphing times</echo>
+						<loadPage>
+							<pageWindow target="informationWindow">
+						    	<panel name="main" PrimaryContainer="true">
+						       		<link type="action" target="_self" window="_self" connectionRequired="y">
+						       			<parameterList>
+						       				<parameter name="action">graphYUI</parameter>
+						       				<parameter name="graph"><![CDATA[					       				
+  {
+	"Graph": 
+	{
+		"title": "Statement run comparison",
+		"graphType": "column",
+		"xField": "stmt",
+		"xTitle": "Number of Pages",
+		"yTitle": "Un Table",
+		"dataSourceType": "data_from_raw",
+		"style":{	"legend": { "display": "right" }},
+		"responseSchema": {"fields": ["stmt","value"]},
+		"seriesDef": [{"displayName": "Average run time (s)", "yField": "value", "style": {"color": "0x454586"}}],
+		"datasets":
+			 [ 
+				    {"stmt": "Without compression", "value": ?avgRunTime1?},
+				    {"stmt": "With compression", "value": ?avgRunTime2?}
+			]
+	}
+}
+]]></parameter>
+						       			</parameterList>
+						       		</link>				
+						       	</panel>
+						      </pageWindow>
+						</loadPage>
+					</task>	
+				</followOnAction>
+			</action>
+		</task>
+
+		<task name="Graph IO performance">
+			<discription>
+				This step plots the IO performance two statements on a graph. 
+				The statement run against the compressed table consistently requests far fewer pages than the uncompressed table.
+				Since this measures logical page reads the results are the same whether or not the pages are found in the DB2 buffer pool. 
+				The more data you are working with compared to the size of your buffer pool the faster the compressed table will run compared with the uncopmressed table.				
+			</discription>
+			<action name="plotIOPerformance" type="blank">
+				<followOnAction condition="true" compareOn="true"
+					compareOnType="raw">
+					<task>
+						<loadPage>
+							<pageWindow target="informationWindow">
+								<panel name="main" PrimaryContainer="true">
+									<link type="action" target="_self"
+										window="_self" connectionRequired="y">
+
+
+
+										<parameterList>
+											<parameter name="action">
+												graphYUI
+											</parameter>
+											<parameter name="graph">
+												<![CDATA[					       				
+					       				
+ {
+	"Graph":
+	{
+		"title": "Table Compression IO Performance (in page reads)",
+		"graphType": "column",
+		"xField": "Compressed",
+		"xTitle": "Page Reads per statement",
+		"yTitle": "Table",
+		"dataSourceType": "data_from_raw",
+		"responseSchema": {"fields": ["Compressed","Reads"]},
+		"style":{	"legend": { "display": "right" }, "animationEnabled" : "false"},
+		"seriesDef": [{ "displayName": "Page Reads per statement", "yField": "Reads", "style": {"color": "0x454586"}}],
+		"datasets":
+		 [ 
+			    { "Compressed": "Uncompressed", "Reads": ?reads1? },
+			    { "Compressed": "Compressed", "Reads": ?reads2?}
+
+			]
+	}
+
+
+}
+							
+
+]]>
+
+											</parameter>
+										</parameterList>
+									</link>
+								</panel>
+							</pageWindow>
+						</loadPage>
+					</task>
+				</followOnAction>
+			</action>
+		</task>	
+
+		<task name="Graph CPU performance">
+			<discription>
+				This step plots how much CPU time each set of statement require and plots them on a graph. 
+				Typically the compressed table requires sightly more CPU time than the uncompressed table.
+				However the additional cost is usually comparible between the two statements for two reasons.
+				First, even if all the data pages are in the buffer pool, CPU time is requied to retrieve data pages. 
+				Since there are more pages in the uncompressed table more CPU time is required to retrieve the pages.
+				Second, a significant amount of CPU time is spent sorting the results. 
+				The additional overhead of uncompressing is often small compared to other operations in the statement, like sorting.
+			</discription>
+			<action name="plotIOPerformance" type="blank">
+				<followOnAction condition="true" compareOn="true"
+					compareOnType="raw">
+					<task>
+						<loadPage>
+							<pageWindow target="informationWindow">
+								<panel name="main" PrimaryContainer="true">
+									<link type="action" target="_self"
+										window="_self" connectionRequired="y">
+
+
+
+										<parameterList>
+											<parameter name="action">
+												graphYUI
+											</parameter>
+											<parameter name="graph">
+												<![CDATA[					       				
+					       				
+ {
+	"Graph":
+	{
+		"title": "Table Compression CPU Performance",
+		"graphType": "column",
+		"xField": "Compressed",
+		"xTitle": "Average CPU Time per Statement (ms)",
+		"yTitle": "Table",
+		"dataSourceType": "data_from_raw",
+		"responseSchema": {"fields": ["Compressed","CPU"]},
+		"style":{	"legend": { "display": "right" }, "animationEnabled" : "false"},
+		"seriesDef": [{ "displayName": "Average CPU time per statement (ms)", "yField": "CPU", "style": {"color": "0x454586"}}],
+		"datasets":
+		 [ 
+			    { "Compressed": "Uncompressed", "CPU": ?cpu1? },
+			    { "Compressed": "Compressed", "CPU": ?cpu2?}
+
+			]
+	}
+
+
+}
+							
+
+]]>
+
+											</parameter>
+										</parameterList>
+									</link>
+								</panel>
+							</pageWindow>
+						</loadPage>
+					</task>
+				</followOnAction>
+			</action>
+		</task>
+		
+	</taskList>
+</actionPanel>

@@ -1,0 +1,9 @@
+<p>The transaction table specifies how the invoice table should be updated. There are three types of transactions:</p>
+
+<ul>
+    <li>insert (I) - all of the data in this record in the transaction table is inserted into the invoice table,</li>
+    <li>delete (D) - invoice id in this record in the transaction record is used to delete a record from the invoice table, and</li>
+    <li>update (U) - not null values in this record in the transaction table are used to update information in the invoice table.</li>
+</ul>
+
+<p>The following SQL PL code will walk through the records in the transaction table, and change in the invoice table in accordance with the transaction table. At the end, a number of records will be inserted, deleted and modified, all without any use of the external programming.</p>

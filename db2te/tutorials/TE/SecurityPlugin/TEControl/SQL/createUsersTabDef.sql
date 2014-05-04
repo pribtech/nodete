@@ -1,0 +1,7 @@
+SELECT
+        USERID,
+        PW_EXPIRE_DATE,
+        ACCOUNT_STATUS,
+        FAILED_LOGINS
+  FROM
+        DB2AUTH.USERS

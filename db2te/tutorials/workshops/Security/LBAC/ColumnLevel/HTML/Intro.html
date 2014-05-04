@@ -1,0 +1,32 @@
+<h2>Business Problem</h2><hr><br>
+Data security is becoming one of the biggest challenges in the industry today. Data access needs to be protected at system level,
+database level, and database objects level. Data protection at system level and database level can be achieved by authentication and authorization. However data in the database tables needs to be protected as well. Not all employees of an organization need to have access to all table data. Users should be granted to see needed data only.
+
+<br><br>J.K.Avro superstore is looking for a solution which gives greater control
+on access to table data.</p>
+
+<br><br><h2>Operation</h2><hr><br>
+
+<p>To be compliant with PCI security standard <b><FONT style="BACKGROUND-COLOR: #CCC">"Restrict access to cardholder data by business need-to-know",</FONT></b> J.K.Avro superstore
+decides to implement label based access control (LBAC) on <font face="courier">'credit_card'</font> table. The table holds sensitive information such as card holder name, card number, and CCV number. </p>
+
+<h2>Solution</h2><hr><br>
+
+<p> To restrict data access in need-to-know basis, J.K.Avro superstore implements LBAC on <font face="courier">'credit_card'</font> table.<br>
+<p>
+LBAC is a security feature introduced in DB2 9. It provides content-based authorization using security labels.
+The LBAC allows to control read and write access of users to individual rows and columns at the table level. Data that is protected by a security label
+is called protected data.
+</p>
+
+<p> The following security features are demonstrated in this tutorial to address the above problem:
+<ul>
+<li>How to create LBAC policies.</li>
+<li>How to create security label components.</li>
+<li>How to grant security labels to users and roles.<li>
+<li>How to associate security labels to the table rows/columns.<li></ul>
+</p>
+
+<br>
+<a href="?BASE_DIRECTORY?HTML/UsageScenario.html" target="_blank">Click here to refer to Usage Scenario and pre-requisites to prepare this tutorial</a>
+

@@ -1,0 +1,12 @@
+<p><h2>What are parameters?</h2>
+Parameters are equivalent to variables in any language. When assigned in a parameter list, or as local parameters assigned by the task 'assignLocalParameter', these variable are only accessible within the local action and not within any nested or parent actions. Shared parameters assigned with 'assignSharedParameter' are equivalent to global variables. The scope of shared parameters depends on how the action was created and generally exists across the page that the action is called from. </p>
+
+<p>With any parameter, the attribute 'name' will identify the parameter and the attribute 'type' will identify where the parameter gets it's data from <!--(see more here)-->. Inside of the parameter element, the element “value” will contain the value, or the location of the value to be assigned to the parameter. There is a second option element, 'defaultValue', that can contain a raw value to assign if the location of the expected value cannot be located. </p>
+
+<p>For this parameter assignment, a type of 'blockValue' is used. A block value allows you to access data from within a given area in the Technology Explorer. Within a table, a block refers to the row of data from which the action was called, and all displayed data is accessible through its column name specified in the element 'value'.</p>
+
+<p><h3>Steps to complete:</h3>
+<ul>
+  <li>Make the changes to your document as indicated on the right</li>
+</ul>
+</p>

@@ -1,0 +1,159 @@
+<tutorial name="Input/Output Saturation Scenario" useLongAdHoc="true" clearAdhocResults="true" autoClearAdhocResults="true" autoCloseWindowsInRightStage="true">
+	<globalCodeHighlightOptions  highlightCode="true" />
+	<WMDConfig>
+		<load>
+			<workload name="normal" profile="wmd/workload_normal" taskset="wmd/all_emp_values"/>
+			<workload name="saturate" profile="wmd/workload_profile_IO" taskset="wmd/task_set_io_saturation"/>
+		</load>
+	</WMDConfig>
+	<defaultLayout  target="mainLayout">
+		<title>Work Panel</title>
+		<panelHeaders refreshEnabled="true" showRefreshControl="true">
+			<autoRefreshControls>
+				<timeOptions>[1,2,3,4,5,7,10]</timeOptions>
+			</autoRefreshControls>
+		</panelHeaders>
+		<splitPane direction="v" maxSize="200" allowResize="false">
+			<leftPane>
+				<splitPane direction="h" splitPercent="0.5" allowResize="false">
+					<topPane>
+						<panel name="AverageLockWaitTime" overflow="hidden">
+							<panelHeaders refreshEnabled="true"/>
+							<link type="action" target="_self" window="_self" connectionRequired="y">
+						    	<parameterList>
+						        	<parameter name="table">Monitor/monIO</parameter>
+						        	<parameter name="action">indicator</parameter>
+							     	<parameter name="type">dial</parameter>													
+						        	<parameter name="image_dir">./images/indicator/dial/</parameter>
+						        	<parameter name="unit">s/req</parameter>
+						        	<parameter name="monitor">INTENSITY</parameter>
+									<parameter name="threshold_min">0</parameter>																	
+						        	<parameter name="threshold_warning">5</parameter>
+						        	<parameter name="threshold_danger">10</parameter>
+									<parameter name="threshold_max">15</parameter>														
+						        </parameterList>
+					        </link>
+						</panel>
+					</topPane>
+					<bottomPane>
+						<panel name="Lockwaits" overflow="hidden">
+							<panelHeaders refreshEnabled="true"/>
+					        <link type="action" target="_self" window="_self" connectionRequired="y">
+							    <parameterList>
+							        <parameter name="table">Monitor/monIO</parameter>
+							        <parameter name="action">indicator</parameter>
+									<parameter name="type">dial</parameter>											
+							        <parameter name="image_dir">./images/indicator/dial/</parameter>
+							        <parameter name="unit">reads/s</parameter>
+							        <parameter name="monitor">DELTA_READS</parameter>
+									<parameter name="threshold_min">-1000</parameter>																	
+							        <parameter name="threshold_warning">2000</parameter>
+							        <parameter name="threshold_danger">5000</parameter>
+									<parameter name="threshold_max">10000</parameter>														
+						        </parameterList>
+					        </link>	
+						</panel>
+					</bottomPane>
+				</splitPane>
+			</leftPane>
+			<rightPane>
+			<splitPane direction="h" splitPercent="0.5" allowResize="true">
+					<topPane>
+						<panel name="main" PrimaryContainer="true" overflow="hidden">
+							<link type="action" target="_self" window="_self" connectionRequired="y">
+								<parameterList>
+									<parameter name="action">ADHOC</parameter>
+									<parameter name="AdHocLong">true</parameter>
+									<parameter name="controlerID">
+										?TUTORIAL_ID?
+									</parameter>
+									<parameter name="controlerType">
+										?TUTORIAL_TYPE?
+									</parameter>
+								</parameterList>
+							</link>
+						</panel>
+					</topPane>
+					<bottomPane>
+						<panel name="WMD" overflow="hidden"/>
+					</bottomPane>
+				</splitPane>
+			</rightPane>
+		</splitPane>
+	</defaultLayout>
+	
+	<pagelist>
+		<page name="Introduction" type="intro">
+			<contentFile>Introduction.html</contentFile>
+			<!--<autoLoadLink>
+				<pageWindow target="informationWindow">
+					<title>Large Objects (LOBs)</title>
+					<panel name="main">
+						<URL>
+							http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.sql.ref.doc/doc/r0008473.html?noframes=true
+						</URL>
+					</panel>
+				</pageWindow>
+			</autoLoadLink>		-->	
+		</page>
+		
+		<page name="Create Abstracts Table" type="general">
+			<entryAction />
+			<exitAction />
+			<contentFile>CreateAbstractsTable.html</contentFile>
+			<SQLFile>CreateAbstractsTable.SQL</SQLFile>
+			<HTMLSQLFile>CreateAbstractsTable.html</HTMLSQLFile>
+			<SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar=";"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+		</page>
+
+		<page name="Populate Abstracts Table" type="general">
+			<contentFile>PopulateAbstractsTable.html</contentFile>
+			<SQLFile>PopulateAbstractsTable.SQL</SQLFile>
+			<HTMLSQLFile>PopulateAbstractsTable.html</HTMLSQLFile>
+			<SQLExecutionOptions xml="false" clob="true" blob="false" dbclob="false" termChar=";"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+		</page>
+		
+		<page name="Find the upperbound I/O limit" type="general">
+			<contentFile>FindUpperboundLimit.html</contentFile>
+			<autoLoadLink>
+				<linkList>
+					<link type="action" target="WMD" window="mainLayout" connectionRequired="y">
+						<parameterList>
+							<parameter name="action">WMDTutorialBootstrap</parameter>
+							<parameter name="workload">normal</parameter>
+							<parameter name="controlerID">?TUTORIAL_ID?</parameter>
+							<parameter name="controlerType">?TUTORIAL_TYPE?</parameter>
+							<parameter name="parameters[SCHEMA]">?SCHEMA?</parameter>
+							<parameter name="connection">active</parameter>
+							<parameter name="compactView">true</parameter>
+						</parameterList>
+					</link>
+				</linkList>
+			</autoLoadLink>
+		</page>
+		
+		<page name="Diagnose an I/O saturation problem" type="general">
+			<contentFile>DiagnoseSaturationProblem.html</contentFile>
+			<autoLoadLink>
+				<linkList>
+					<link type="action" target="WMD" window="mainLayout" connectionRequired="y">
+						<parameterList>
+							<parameter name="action">WMDTutorialBootstrap</parameter>
+							<parameter name="workload">saturate</parameter>
+							<parameter name="controlerID">?TUTORIAL_ID?</parameter>
+							<parameter name="controlerType">?TUTORIAL_TYPE?</parameter>
+							<parameter name="parameters[SCHEMA]">?SCHEMA?</parameter>
+							<parameter name="connection">active</parameter>
+							<parameter name="compactView">true</parameter>
+						</parameterList>
+					</link>
+				</linkList>
+			</autoLoadLink>
+		</page>
+		<page name="Conclusion" type="last">
+			<contentFile>Conclusion.html</contentFile>
+		</page>
+	</pagelist>
+</tutorial>

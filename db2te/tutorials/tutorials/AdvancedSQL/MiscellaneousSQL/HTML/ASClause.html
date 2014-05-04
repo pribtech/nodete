@@ -1,0 +1,15 @@
+The AS clause is useful when assigning a name to a calculation.  This
+  can be used to give a meaningful name to a calculation in an SQL column,
+  but it can also be used to avoid sorting errors.  Prior to 9.1,
+  to sort on a calculation, you were required to give the relative
+  column number in the ORDER BY clause, i.e.:<p/>
+  <pre>
+     SELECT SALARY+BONUS FROM EMPLOYEE ORDER BY 1
+  </pre>
+  <p>Now you can assign a name to this calculation and use that in the
+  ORDER BY clause:</p>
+  <pre>
+     SELECT SALARY+BONUS AS PAY FROM EMPLOYEE ORDER BY PAY
+  </pre>
+  <p>This can help avoid a lot of mistakes in the SQL. 
+   </p>

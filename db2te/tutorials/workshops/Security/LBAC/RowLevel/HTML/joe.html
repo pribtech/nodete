@@ -1,0 +1,20 @@
+<BR><BR><H2><B>Access to table by manager Joe</B></H2><HR><P>
+<?php
+  $baseDIR = $_POST["BASE_DIR"];
+?>
+<img src="?BASE_DIRECTORY?HTML/Joe.png" />
+<p><b>You must log into the database as Joe before proceeding with this page.</b></p>
+
+<p>Joe is the general manager of customer service department for coastal north and south regions. He is granted security label 'CENTRAL'.
+<br><br><b>Check which regions of data can Joe access from the <font face="courier">'dailysales'</font> table.</b></p>
+
+<h4>Operation</h4><br>
+Execute SELECT statement on the right pane.
+
+<br><br><h4>Solution</h4><br>
+<p>Since Joe is granted with security label 'CENTRAL', he is able to access
+all record of <font face="courier">'dailysales'</font> table which are associated with security labels NORTH and SOUTH.</p>
+
+
+
+

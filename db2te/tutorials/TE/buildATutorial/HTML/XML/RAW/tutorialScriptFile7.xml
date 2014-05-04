@@ -1,0 +1,51 @@
+<tutorial name="About table joins"> 
+	<flowRestriction>forwardexploration</flowRestriction>
+	<globalCodeHighlightOptions highlightCode="true"/>
+	<pageList>
+		<page name="Why compression means faster performance" type="intro"> 
+			<contentFile>introduction.html</contentFile> 
+			<autoLoadLink> 
+				<pageWindow target="informationWindow"> 
+					<title>Table joins</title>
+					<panel name="main"> 
+						<URL>
+http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.datatools.datamining.doc/c_dp_table_joins.html?noframes=true 
+						</URL> 
+					</panel> 
+				</pageWindow> 
+			</autoLoadLink> 
+		</page>
+		<page name="Setting up tables" type="intro"> 
+			<entryAction/>
+			<contentFile> tableSetup.html </contentFile> 
+			<SQLFile>tableSetup.sql </SQLFile> 
+			<exitAction  name="checkForTable" type="serverAction"> 
+				<parameterList> 
+					<parameter name="action" type="fixed"> 
+						<value>checkForObject</value> 
+					</parameter> 
+					<parameter name="objectType" type="fixed"> 
+						<value>table</value> 
+					</parameter> 
+					<parameter name="object[schema]" type="constant"> 
+						<value>SCHEMA</value> 
+					</parameter> 
+					<parameter name="object[table]" type="fixed"> 
+						<value>TableA</value> 
+					</parameter> 
+				</parameterList> 
+				<if condition="false"> 
+					<task> 
+						<alert>The required tables must be created before proceeding with the tutorial.</alert> 
+						<setActionReturn value="false"/> 
+					</task> 
+				</if>
+			</exitAction>
+		</page>
+		<page name="Looking at joins" type="intro"> 
+			<contentFile> joinBasics.html </contentFile> 
+			<SQLFile>joinBasics.sql</SQLFile> 
+			<SQLExecutionOptions xml="false" clob="false" xmlinline="false" clobinline="false" blob="false" dbclob="false" termChar=";" commitPerStmt="true" numRowReturned="200"/>
+		</page>
+	</pageList> 
+</tutorial>

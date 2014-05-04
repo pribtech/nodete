@@ -1,0 +1,10 @@
+<p>A table is <b>Second Normal Form (2NF)</b> if it is 1NF and all non-key attributes are functionally dependent on the entire primary key </p>
+
+<H2><B>Problem Description</B></H2><HR>
+<p>The 'order_ID' and 'product_ID' columns of the 'order' table form the composite key i.e a combination of both uniquely determines a record. The 'order_date' column does not depend on the entire composite key, it depends only on the 'order_ID'. Similarly, the 'order_status' and 'order_status_desc' columns depend only on the 'order_ID'. Hence, 2NF fails.</p>
+
+<H2><B>Operation</B></H2><HR>
+<p>To make the 'order' table 2NF compliant, separate tables for sets of values that apply to multiple records are created and these tables are related through foreign keys.</p>
+
+<H2><B>Result</B></H2><HR>
+<p>Separate tables 'order_master' and 'order_details' are created.</p>

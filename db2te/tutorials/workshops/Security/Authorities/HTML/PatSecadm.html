@@ -1,0 +1,30 @@
+<br><h2>Separation of duties</h2><hr><br>
+<p>To have greater control on access to database, J.K.Avro superstore decides to enforce <b>separation of duties</b>
+using DB2 authorities and privileges.</p>
+
+<p>Separation of duties allows database administration tasks to be given to different users which results in
+granting least privileges to users.</p>
+
+
+<br><h4>Grant SECADM authority to Pat</h4><hr><br>
+
+<p><b>You must log into the database as the database creator before proceeding with this page.</b></p>
+
+<p>The database creator has both DBADM and SECADM authorities. CEO of J.K.Avro Superstore would like to
+separate the duties of administrator so that different users have different management power on the database. Specifically, he wants the database creator to manage the database administration tasks and Pat to manage security administration tasks.
+
+<br><h4>Operation</h4><hr><br>
+
+The SYSADM of J.K.Avro superstore grants SECADM authority to user Pat.<br><br>
+
+<ul><li> SECADM is an authority required to perform database security administration tasks.</li>
+<li>The security administrator may create, drop, and alter
+(where applicable) roles, audit, trusted contexts, security labels, security label
+components, and security policies. </li>
+<li>The authority allows a SECADM holder to grant and revoke any database authorities and privileges. </li>
+<li> SECADM seems to be a powerful authority, yet SECADM users cannot access table data.</li>
+
+</ul></p>
+
+<br><h4>Solution</h4><hr><br>
+<p>The GRANT statement in the right pane shows SECADM authority is granted to user 'pat'</p>

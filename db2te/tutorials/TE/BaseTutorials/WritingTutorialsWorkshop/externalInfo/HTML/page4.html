@@ -1,0 +1,63 @@
+<p><h3> Goal: </h3>
+Create an <a onclick="OpenURLInFloatingWindow('?BASE_DIRECTORY?/other/ImageFP.php?BASE_DIR=?BASE_DIRECTORY?&IMAGE_NAME=page4_cap.png');">image pop-up link</a> in the instructional content of your tutorial.
+</p>
+
+<p><h3> Steps to complete: </h3>
+<ul>
+  <li> Set up the files necessary for an image pop-up link by following these steps:
+    <ul>
+      <li> Create a new directory, <i>images</i>, within the tutorial directory </li>
+      <li> Copy <i>icon-link-action.gif</i> located at <i>TE/images/</i> into the <i>images</i> directory you just created </li>
+  
+      <li> Create a new file, <i>ImageFP.php</i>, within the directory <i>other</i> 
+        <ul>
+          <li> If the directory <i>other</i> does not exist then you will need to create it first </li>
+        </ul>
+      </li>
+      <li> Open <i>ImageFP.php</i> with a text editor </li>
+      <li> Copy the contents of the tab titled 'imageFP.php' in the right panel into <i>ImageFP.php</i> </li>
+      <li> Close the tab </li>
+      <li> Save <i>ImageFP.php</i> </li>
+    </ul>
+  </il>
+  <li> Add the image link to the first step in the tutorial by following these steps:
+    <ul> 
+      <li> Open <i>page1_1.html</i>
+      <li> Replace "concise" in <i>page1_1.html</i> with the link tag from the tab titled 'image_AnchorTag.html' </li>
+      <li> Change the URL variable 'imageName.ext' in the anchor tag to "icon-link-action.gif" </li>
+      <li> Change 'link label' to "concise" </li>
+      <li> Save <i>page1_1.html</i> </li>
+    </ul>
+  </li>
+</ul>
+</p>
+
+<p><h3> Notes:</h3>
+This method will pass the tutorial directory location and the image file name into the php file and return an HTML page with the image embedded.
+</p>
+<p> You may also need to clear your cache if you need to see the results of loading different images.
+</p>
+
+<p><h3> See the effects of your work </h3>
+(Click <a onclick="OpenURLInFloatingWindow('?BASE_DIRECTORY?/other/ImageFP.php?BASE_DIR=?BASE_DIRECTORY?&IMAGE_NAME=page4_cap.png');">here</a> for an example of the expected results of this step)
+  <ul>
+    <br/>
+    <li> Reload New Tutorial by clicking on the reload icon to the left of the name in the tutorial navigation menu </li>
+  </ul>
+</p>
+
+<p></p>
+<p> In the first step of the tutorial you should see a link for 'concise' in the text under "Goal".  Click on the link and a pop-up should be displayed containing <a onclick="OpenURLInFloatingWindow('?BASE_DIRECTORY?/other/ImageFP.php?BASE_DIR=?BASE_DIRECTORY?&IMAGE_NAME=icon-link-action.gif');">this image</a>.
+</p>
+<br/>
+<p><h4>The changes are indicated with the following:</h4>
+  <br/>
+  <ul>
+    <li class="sourceRemove">Indicated text has been removed</li>
+    <li class="sourceChange">Indicated text has been edited</li>
+    <li class="sourceAdd">Indicated text has been added</li>
+    <li class="sourceCopiedFrom">Indicated text is the source of a copy</li>
+  </ul>
+</p>
+
+<p><br/></p>

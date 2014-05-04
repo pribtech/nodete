@@ -1,0 +1,1 @@
+refresh TABLE ?SCHEMA?.storesum;

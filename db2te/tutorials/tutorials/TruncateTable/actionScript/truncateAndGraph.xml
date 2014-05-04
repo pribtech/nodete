@@ -1,0 +1,337 @@
+<actionPanel>
+	<flow>free</flow>
+	<useConsole>yes</useConsole>
+	<overview>
+<![CDATA[
+<p><b>Truncate & Graph</b></p>
+
+There are three actions on this page which should be executed in order:
+<ul>
+<li>The first will delete all rows from the five tables using the TRUNCATE command.  Time required for each TRUNCATE operation will be recorded.</li>
+<li>The second will plot the elapsed time for each TRUNCATE operations on the graph.</li>
+<li>The third will add the elapsed time data from the DELETE operations to the same graph for comparison.</li>
+</ul>
+]]>
+	</overview>
+	<taskList>
+		<task name="Run truncate time test">
+			<discription>
+				Truncate rows in the 1k, 5k, 10k, 50k and 100k tables and record the time required to perform each operation. 
+			</discription>
+			<action  name="runDeletemulty" type="blank">
+				<followOnAction condition="true" compareOn="true" compareOnType="raw">
+					<task>
+						<echo>Running statement: TRUNCATE ?SCHEMA?.table100k IMMEDIATE</echo>
+						<action  name="runDelete" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="fixed">
+									<value>run_workload</value>
+								</parameter>
+								<parameter name="SQL[1]" type="fixed">
+									<value>TRUNCATE ?SCHEMA?.table100k IMMEDIATE</value>
+								</parameter>
+								<parameter name="Repetition" type="fixed">
+									<value>1</value>
+								</parameter>
+								<parameter name="SampleRate" type="fixed">
+									<value>1</value>
+								</parameter>
+							</parameterList>
+							<followOnAction condition="true">
+								<task>
+									<assignSharedConstant name="TRUNCATE_100k" type="returnObject">
+										<value>runDelete.returnValue.SQL.1</value>
+									</assignSharedConstant>
+								<echo>Running time: ?TRUNCATE_100k?s</echo>
+								</task>
+							</followOnAction>
+							<followOnAction condition="false">
+								<task>
+									<echo>Error in run!</echo>
+								</task>
+							</followOnAction>
+						</action>
+						<echo>Running statement: TRUNCATE ?SCHEMA?.table50k IMMEDIATE</echo>
+						<action  name="runDelete" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="fixed">
+									<value>run_workload</value>
+								</parameter>
+								<parameter name="SQL[1]" type="fixed">
+									<value>TRUNCATE ?SCHEMA?.table50k IMMEDIATE</value>
+								</parameter>
+								<parameter name="Repetition" type="fixed">
+									<value>1</value>
+								</parameter>
+								<parameter name="SampleRate" type="fixed">
+									<value>1</value>
+								</parameter>
+							</parameterList>
+							<followOnAction condition="true">
+								<task>
+									<assignSharedConstant name="TRUNCATE_50k" type="returnObject">
+										<value>runDelete.returnValue.SQL.1</value>
+									</assignSharedConstant>
+									<echo>Running time: ?TRUNCATE_50k?s</echo>
+								</task>
+							</followOnAction>
+							<followOnAction condition="false">
+								<task>
+									<echo>Error in run!</echo>
+								</task>
+							</followOnAction>
+						</action>
+						<echo>Running statement: TRUNCATE ?SCHEMA?.table10k IMMEDIATE</echo>
+						<action  name="runDelete" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="fixed">
+									<value>run_workload</value>
+								</parameter>
+								<parameter name="SQL[1]" type="fixed">
+									<value>TRUNCATE ?SCHEMA?.table10k IMMEDIATE</value>
+								</parameter>
+								<parameter name="Repetition" type="fixed">
+									<value>1</value>
+								</parameter>
+								<parameter name="SampleRate" type="fixed">
+									<value>1</value>
+								</parameter>
+							</parameterList>
+							<followOnAction condition="true">
+								<task>
+									<assignSharedConstant name="TRUNCATE_10k" type="returnObject">
+										<value>runDelete.returnValue.SQL.1</value>
+									</assignSharedConstant>
+									<echo>Running time: ?TRUNCATE_10k?s</echo>
+								</task>
+							</followOnAction>
+							<followOnAction condition="false">
+								<task>
+									<echo>Error in run!</echo>
+								</task>
+							</followOnAction>
+						</action>
+						<echo>Running statement: TRUNCATE ?SCHEMA?.table5k IMMEDIATE</echo>
+						<action  name="runDelete" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="fixed">
+									<value>run_workload</value>
+								</parameter>
+								<parameter name="SQL[1]" type="fixed">
+									<value>TRUNCATE ?SCHEMA?.table5k IMMEDIATE</value>
+								</parameter>
+								<parameter name="Repetition" type="fixed">
+									<value>1</value>
+								</parameter>
+								<parameter name="SampleRate" type="fixed">
+									<value>1</value>
+								</parameter>
+							</parameterList>
+							<followOnAction condition="true">
+								<task>
+									<assignSharedConstant name="TRUNCATE_5k" type="returnObject">
+										<value>runDelete.returnValue.SQL.1</value>
+									</assignSharedConstant>
+									<echo>Running time: ?TRUNCATE_5k?s</echo>
+								</task>
+							</followOnAction>
+							<followOnAction condition="false">
+								<task>
+									<echo>Error in run!</echo>
+								</task>
+							</followOnAction>
+						</action>
+						<echo>Running statement: TRUNCATE ?SCHEMA?.table1k IMMEDIATE</echo>
+						<action  name="runDelete" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="fixed">
+									<value>run_workload</value>
+								</parameter>
+								<parameter name="SQL[1]" type="fixed">
+									<value>TRUNCATE ?SCHEMA?.table1k IMMEDIATE</value>
+								</parameter>
+								<parameter name="Repetition" type="fixed">
+									<value>1</value>
+								</parameter>
+								<parameter name="SampleRate" type="fixed">
+									<value>1</value>
+								</parameter>
+							</parameterList>
+							<followOnAction condition="true">
+								<task>
+									<assignSharedConstant name="TRUNCATE_1k" type="returnObject">
+										<value>runDelete.returnValue.SQL.1</value>
+									</assignSharedConstant>
+									<echo>Running time: ?TRUNCATE_1k?s</echo>
+								</task>
+							</followOnAction>
+							<followOnAction condition="false">
+								<task>
+									<echo>Error in run!</echo>
+								</task>
+							</followOnAction>
+						</action>
+					</task>
+				</followOnAction>
+			</action>
+		</task>
+<task name="Graph truncate times">
+			<discription>
+				Plot the TRUNCATE performance data on the graph.
+			</discription>
+			<action  name="runDelete" type="blank">
+				<followOnAction condition="true" compareOn="true" compareOnType="raw">
+					<task>
+						<echo>Graphing times</echo>
+						<loadPage>
+							<pageWindow target="informationWindow">
+						    	<panel name="main">
+						       		<link type="action" target="_self" window="_self" connectionRequired="y">
+						       			<parameterList>
+						       				<parameter name="action">graphYUI</parameter>
+						       				<parameter name="graph">
+						       				<![CDATA[					       				
+  {
+	"Graph": 
+	{
+		"title": "TRUNCATE Performance",
+		"graphType": "line",
+		"xField": "row",
+		"dataSourceType": "data_from_raw",
+		"style":{	"legend": { "display": "right" }, "animationEnabled" : "false"},
+		"responseSchema": {"fields": ["row", "truncate"]},
+		"seriesDef": [{"displayName": "TRUNCATE time (s)", "yField": "truncate", "style": {"color": "0x0000FF"}}],
+		"datasets":
+			 [ 
+				    {"row": 1000, "truncate": ?TRUNCATE_1k?},
+				    {"row": 5000, "truncate": ?TRUNCATE_5k?},
+				    {"row": 10000, "truncate": ?TRUNCATE_10k?},
+				    {"row": 50000, "truncate": ?TRUNCATE_50k?},
+				    {"row": 100000,"truncate": ?TRUNCATE_100k?}
+				]
+	}
+}
+
+]]>
+</parameter>
+
+<!--<parameter name="graph">	
+<![CDATA[					       				
+ {
+	"Graph": 
+	{
+		"prefix": "TRUNCATE",
+		"title": "TRUNCATE Performance",
+		"xTitle": "Number of Rows Deleted",
+		"forceXBaseline": "true",
+		"yTitleLeft": "Time (seconds)",
+		"forceYBaseline": "true",
+		"datasetType":"xyPlot",
+		"showGrid": "true",
+		"enableMarkers" : "true",
+		"datasets":
+		[ 
+			{
+				"description": "TRUNCATE",
+				"color": "#0000FF",
+				"marker": "circle",
+				"dataset": [[1000,?TRUNCATE_1k?], [5000,?TRUNCATE_5k?], [10000,?TRUNCATE_10k?], [50000,?TRUNCATE_50k?], [100000,?TRUNCATE_100k?]]
+			}
+		]
+	}
+}
+]]>
+</parameter>-->
+						       			</parameterList>
+						       		</link>				
+						       	</panel>
+						      </pageWindow>
+						</loadPage>
+					</task>	
+				</followOnAction>
+			</action>
+		</task>
+		<task name="Compare delete vs truncate times">
+			<discription>
+				Add performance data from DELETE operations to the graph for comparison.
+			</discription>
+			<action  name="runDelete" type="blank">
+				<followOnAction condition="true" compareOn="true" compareOnType="raw">
+					<task>
+						<echo>Graphing times</echo>
+						<loadPage>
+							<pageWindow target="informationWindow">
+						    	<panel name="main">
+						       		<link type="action" target="_self" window="_self" connectionRequired="y">
+						       			<parameterList>
+						       				<parameter name="action">graphYUI</parameter>
+										       				<parameter name="graph">
+						       				<![CDATA[					       				
+  {
+	"Graph": 
+	{
+		"title": "TRUNCATE Performance",
+		"graphType": "line",
+		"xField": "row",
+		"dataSourceType": "data_from_raw",
+		"style":{	"legend": { "display": "right" }, "animationEnabled" : "false"},
+		"responseSchema": {"fields": ["row","delete", "truncate"]},
+		"seriesDef": [{"displayName": "DELETE time (s)", "yField": "delete", "style": {"color": "0xFF0000"}}, {"displayName": "TRUNCATE time (s)", "yField": "truncate", "style": {"color": "0x0000FF"}}],
+		"datasets":
+			 [ 
+				    {"row": 1000, "delete": ?DELETE_1k?, "truncate": ?TRUNCATE_1k?},
+				    {"row": 5000, "delete": ?DELETE_5k?, "truncate": ?TRUNCATE_5k?},
+				    {"row": 10000, "delete": ?DELETE_10k?, "truncate": ?TRUNCATE_10k?},
+				    {"row": 50000, "delete": ?DELETE_50k?, "truncate": ?TRUNCATE_50k?},
+				    {"row": 100000, "delete": ?DELETE_100k?, "truncate": ?TRUNCATE_100k?}
+				]
+	}
+}
+
+]]>
+</parameter>		       				
+<!--
+<parameter name="graph">	
+<![CDATA[					       				
+ {
+	"Graph": 
+	{
+		"prefix": "TRUNCATEvDELETE",
+		"title": "TRUNCATE vs. DELETE Performance",
+		"xTitle": "Number of Rows Deleted",
+		"forceXBaseline": "true",
+		"yTitleLeft": "Time (seconds)",
+		"forceYBaseline": "true",
+		"datasetType":"xyPlot",
+		"showGrid": "true",
+		"enableMarkers" : "true",
+		"datasets":
+		[ 
+			{
+				"description": "DELETE",
+				"color": "#00FF00",
+				"marker": "triangle",
+				"dataset": [[1000,?DELETE_1k?], [5000,?DELETE_5k?], [10000,?DELETE_10k?], [50000,?DELETE_50k?], [100000,?DELETE_100k?]]
+			},
+			{
+				"description": "TRUNCATE",
+				"color": "#0000FF",
+				"marker": "circle",
+				"dataset": [[1000,?TRUNCATE_1k?], [5000,?TRUNCATE_5k?], [10000,?TRUNCATE_10k?], [50000,?TRUNCATE_50k?], [100000,?TRUNCATE_100k?]]
+			}
+		]
+	}
+}
+]]>
+</parameter>-->
+						       			</parameterList>
+						       		</link>				
+						       	</panel>
+						      </pageWindow>
+						</loadPage>
+					</task>	
+				</followOnAction>
+			</action>
+		</task>
+	</taskList>
+</actionPanel>

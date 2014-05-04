@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tutorial name="Getting Started with Basic Monitoring">
+    <FlowRestriction>forwardExploration</FlowRestriction>
+    <closeAction />
+    <openAction />
+    <globalCodeHighlightOptions highlightCode = "true" />
+    <WMDConfig>
+		<load>
+			<workload name="WLM_tutorial_wl1" profile="wmd/workload_profile_WLM_tutorial_wl1" taskset="wmd/task_set_WLM_tutorial_wl1"/>
+		</load>
+	</WMDConfig>
+    <pageList>
+    	<page name="Getting Started with Basic Monitoring" type="intro">
+            <entryAction/>
+			<exitAction name="checkForSchema" type="serverAction">
+                <parameterList>
+                    <parameter name="action" type="fixed">
+                        <value>checkForObject</value>
+                    </parameter>
+                    <parameter name="objectType" type="fixed">
+                        <value>table</value>
+                    </parameter>
+                    <parameter name="object[schema]" type="fixed">
+                        <value>WLMTUT</value>
+                    </parameter>
+                    <parameter name="object[table]" type="fixed">
+                        <value>SALES</value>
+                    </parameter>
+                </parameterList>
+                <followOnAction condition="0">
+                    <task>
+                        <action name="createBaseTable" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="fixed">
+									<value>createTablesFromSampleDatabase</value>
+								</parameter>
+								<parameter name="schema" type="fixed">
+									<value>WLMTUT</value>
+								</parameter>
+								<parameter name="table" type="fixed">
+									<value>SALES</value>
+								</parameter>
+							</parameterList>
+							<followOnAction condition="false">
+								<task>
+									<action name="" type="alert">
+										<message>Failed to create base table for initial setup of tutorial. Cannot proceed further with tutorial.</message>
+									</action>
+								</task>
+								<task>
+									<setActionReturn>false</setActionReturn>
+								</task>
+							</followOnAction>
+							<followOnAction condition="[0-9][0-9]*">
+								<task>
+									<assignLocalParameter name="ERROR_MESSAGE" type="returnObject">
+										<value>createBaseTable.returnValue</value>
+									</assignLocalParameter>
+									<alert>Failed to create base tables for initial setup of tutorial. Cannot proceed further with tutorial. SQLMSG: ?ERROR_MESSAGE?</alert>
+								</task>
+								<task>
+									<setActionReturn>false</setActionReturn>
+								</task>
+							</followOnAction>
+						</action>
+					</task>
+				</followOnAction>        
+            </exitAction>
+            <contentFile>GettingStartedWithBasicMonitoring.html</contentFile>
+            <autoLoadLink>
+                <pageWindow target="informationWindow">
+                    <panel name="main" PrimaryContainer="true" panelTitle="Workload Driver">
+                        <URL>http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.admin.wlm.doc/doc/c0051473.html?noframes=true</URL>
+                    </panel>
+                </pageWindow>
+            </autoLoadLink>
+        </page>
+    	<page name="Create and enable event monitors" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>CreateAndEnableEventMonitors.html</contentFile>
+            <SQLFile>CreateAndEnableEventMonitors.sql</SQLFile>
+            <SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" 
+            termChar=";" cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+        </page>
+        <page name="Collect individual activities" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>CollectIndividualActivities.html</contentFile>
+            <SQLFile>CollectIndividualActivities.sql</SQLFile>
+        </page><page name="Collect aggregate activity statistics" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>CollectAggregateActivityStatistics.html</contentFile>
+            <SQLFile>CollectAggregateActivityStatistics.sql</SQLFile>
+        </page><page name="Run some activities" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>RunSomeActivities.html</contentFile>
+            <autoLoadLink>
+				<pageWindow target="_blank">
+							<panel name="Workload Driver" PrimaryContainer="true" panelTitle="Workload Driver">
+								<link type="action" target="main" window="mainLayout" connectionRequired="y">
+									<parameterList>
+										<parameter name="action">WMDTutorialBootstrap</parameter>
+										<parameter name="workload">WLM_tutorial_wl1</parameter>
+										<parameter name="controlerID">?TUTORIAL_ID?</parameter>
+										<parameter name="controlerType">?TUTORIAL_TYPE?</parameter>
+										<parameter name="connection">active</parameter>
+										<parameter name="compactView">true</parameter>
+									</parameterList>
+								</link>
+							</panel>
+				</pageWindow>
+				</autoLoadLink>
+        </page>
+        <page name="View in-memory statistics" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>ViewIn-memoryStatistics.html</contentFile>
+            <SQLFile>ViewIn-memoryStatistics.sql</SQLFile>
+        </page><page name="Send in-memory statistics to event monitor" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>SendIn-memoryStatisticsToEventMonitor.html</contentFile>
+            <SQLFile>SendIn-memoryStatisticsToEventMonitor.sql</SQLFile>
+        </page><page name="View in-memory statistics again" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>ViewIn-memoryStatisticsAgain.html</contentFile>
+            <SQLFile>ViewIn-memoryStatisticsAgain.sql</SQLFile>
+        </page><page name="View service class statistics collected by the statistics event monitor" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>ViewServiceClassStatisticsCollectedByTheStatisticsEventMonitor.html</contentFile>
+            <SQLFile>ViewServiceClassStatisticsCollectedByTheStatisticsEventMonitor.sql</SQLFile>
+        </page><page name="View activity information" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>ViewActivityInformation.html</contentFile>
+            <SQLFile>ViewActivityInformation.sql</SQLFile>
+        </page><page name="Reset for next task" type="last">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>ResetForNextTask.html</contentFile>
+            <SQLFile>ResetForNextTask.sql</SQLFile>
+            <SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar=";"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+        </page></pageList>
+</tutorial>

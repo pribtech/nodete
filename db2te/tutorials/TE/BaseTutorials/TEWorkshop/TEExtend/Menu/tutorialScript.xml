@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tutorial name="Menus" autoCloseWindowsInRightStage="true" autoClearAdhocResults="true">
+	<!--flowRestriction>forwardexploration</flowRestriction-->
+	<pageList>
+		
+		<page name="Menus: Creating menus" type="general">
+			<contentFile>menuItemBranch.html</contentFile>
+			<SQLFile>blank.sql</SQLFile>
+			<autoLoadLink>
+				<pageWindow target="tabledef" raiseToTop="y">
+					<panel name="top" PrimaryContainer="true">
+		   				<link type="other" target="_self" window="_self" connectionRequired="y">
+							<address>
+								?BASE_DIRECTORY?/other/menuItemBranch.html
+							</address>
+						</link>
+					</panel>
+				</pageWindow>
+			</autoLoadLink>
+		</page>
+		
+		<page name="Menus: A leaf" type="general">
+			<contentFile>menuItemViewLoad1.html</contentFile>
+			<SQLFile>blank.sql</SQLFile>
+			<autoLoadLink>
+				<pageWindow target="tabledef" raiseToTop="y">
+					<panel name="top" PrimaryContainer="true">
+		   				<link type="other" target="_self" window="_self" connectionRequired="y">
+							<address>
+								?BASE_DIRECTORY?/other/menuItemViewLoad1.html
+							</address>
+						</link>
+					</panel>
+				</pageWindow>
+			</autoLoadLink>
+		</page>		
+		<page name="Menus: Loading a window" type="general">
+			<contentFile>menuItemViewLoad2.html</contentFile>
+			<SQLFile>blank.sql</SQLFile>
+			<autoLoadLink>
+				<pageWindow target="tabledef" raiseToTop="y">
+					<panel name="top" PrimaryContainer="true">
+		   				<link type="other" target="_self" window="_self" connectionRequired="y">
+							<address>
+								?BASE_DIRECTORY?/other/menuItemViewLoad2.html
+							</address>
+						</link>
+					</panel>
+				</pageWindow>
+			</autoLoadLink>
+		</page>
+		<page name="Menus: Content layout and split panels" type="general">
+			<contentFile>menuItemViewLoad3.html</contentFile>
+			<SQLFile>blank.sql</SQLFile>
+			<autoLoadLink>
+				<pageWindow target="tabledef" raiseToTop="y">
+					<panel name="top" PrimaryContainer="true">
+		   				<link type="other" target="_self" window="_self" connectionRequired="y">
+							<address>
+								?BASE_DIRECTORY?/other/menuItemViewLoad3.html
+							</address>
+						</link>
+					</panel>
+				</pageWindow>
+			</autoLoadLink>
+		</page>	
+		<page name="Menus: Detailed views" type="general">
+			<contentFile>menuItemViewLoad4.html</contentFile>
+			<SQLFile>blank.sql</SQLFile>
+			<autoLoadLink>
+				<pageWindow target="tabledef" raiseToTop="y">
+					<panel name="top" PrimaryContainer="true">
+		   				<link type="other" target="_self" window="_self" connectionRequired="y">
+							<address>
+								?BASE_DIRECTORY?/other/menuItemViewLoad4.html
+							</address>
+						</link>
+					</panel>
+				</pageWindow>
+			</autoLoadLink>
+		</page>	
+		<page name="Menus: Panels" type="general">
+			<contentFile>menuItemViewLoad5.html</contentFile>
+			<SQLFile>blank.sql</SQLFile>
+			<autoLoadLink>
+				<pageWindow target="tabledef" raiseToTop="y">
+					<panel name="top" PrimaryContainer="true">
+		   				<link type="other" target="_self" window="_self" connectionRequired="y">
+							<address>
+								?BASE_DIRECTORY?/other/menuItemViewLoad5.html
+							</address>
+						</link>
+					</panel>
+				</pageWindow>
+			</autoLoadLink>
+		</page>	
+		
+		<page name="Menus: Loading content" type="general">
+			<contentFile>menuItemViewLoad6.html</contentFile>
+			<SQLFile>blank.sql</SQLFile>
+			<autoLoadLink>
+				<pageWindow target="tabledef" raiseToTop="y">
+					<panel name="top" PrimaryContainer="true">
+		   				<link type="other" target="_self" window="_self" connectionRequired="y">
+							<address>
+								?BASE_DIRECTORY?/other/menuItemViewLoad6.html
+							</address>
+						</link>
+					</panel>
+				</pageWindow>
+			</autoLoadLink>
+		</page>	
+		
+		<page name="Menus: Reload the menu and view your new page" type="general">
+			<contentFile>viewYourWorkMenus.html</contentFile>
+		</page>
+	</pageList>	
+</tutorial>

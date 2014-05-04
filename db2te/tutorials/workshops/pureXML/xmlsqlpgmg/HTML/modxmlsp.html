@@ -1,0 +1,24 @@
+<p><b>Scenario</b></p>
+<p>
+	When a patient visits a hospital the doctor after diagnosing the patient's symptoms refer the patient to a specialist in another hospital or lab for test. 
+	On further investigation the specialist may remove a symptom if the test goes negative; hence those are removed from the PMD document.
+</p>
+<p><b>Operation</b></p>
+<p>
+	XML data can also be modified using a stored procedure.
+<ul>
+<li><b><code>CREATE PROCEDURE</code></b> -- Creates procedure. It is permanently deployed to a database and can be call from an application.
+ It encapsulates the source code which actually does the operation. The code is stored as a compiled code with an execution plan..</li>
+<li><b><code>XMLTRANSFORM</code></b> -- Can be used to modify an XML document by inserting, replacing or deleting particular nodes.</li>
+<li><b><code>do delete</code></b>  -- Deletes a node from a XML document.</li>
+</ul></br>
+The recipient node in the PMD document is removed by passing appropriate parameters to the stored procedure.
+</p>
+<p><b>Solution</b></p>
+<p>
+	The symptoms which are no longer true for the patient is removed from the PMD document.
+</p>
+<p><b></b></p>
+<p>
+
+</p>

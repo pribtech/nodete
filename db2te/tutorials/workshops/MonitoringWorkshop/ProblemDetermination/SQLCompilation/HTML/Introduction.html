@@ -1,0 +1,34 @@
+<H2>Introduction<HR> </H2>
+
+<P align=justify>
+<BR>
+DB2 9.7 provides many SQL interfaces for monitoring. It also provides 
+textual monitoring reports that give an overview of the system. This 
+tutorial will focus on the SQL interfaces for monitoring.
+<BR><BR>
+<font color=grey><B>This tutorial will troubleshoot an SQL compilation problem in an application. 
+This scenario illustrates the use of monitoring information to troubleshoot a 
+slowdown in response times that has been reported on a production system. 
+This scenario starts when the database administrator receives a report of a 
+slowdown problem. At the end of this scenario, there is enough known about 
+the problem to work on fixing it.</b></font>
+
+<H2>Problem to diagnose<HR></H2>
+<BR>
+<P align=justify>
+The following problem is used in this example: The <B>SALES_CHECKOUTAPPLICATION</B> 
+is slowed down due to spending more time in SQL compilation processing.
+<BR><BR>
+Troubleshooting this problem is considered complete once the database administrator 
+has found the answers to the following questions:
+<ul>
+  <li>What is the general nature of problem as determined by the initial diagnosis?</li>
+  <li>What part of the user workload is impacted by the slowdown? What does this set of SQL statements have in common?</li>
+  <li>What is the detailed nature of the problem determined during the detailed diagnosis?</li>
+  <li>What sequence of events led to this problem?</li>
+</ul>  
+
+<BR><BR>
+<H2>Tutorial flow<HR></H2>
+
+<img src="?BASE_DIRECTORY?/HTML/TUTflow.jpg" />

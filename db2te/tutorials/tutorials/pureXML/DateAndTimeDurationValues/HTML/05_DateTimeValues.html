@@ -1,0 +1,31 @@
+<p>The data type <a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v9r7/topic/com.ibm.db2.luw.xml.doc/doc/xqrdatetime.html');">xs:dateTime</a> represents an instant that has the following properties: year, month, day, hour, and minute properties that are expressed as integer values; a second property that is expressed as a decimal value; and a timezone indicator. The dateTime take the following format: yyyy-mm-ddThh:mm:ss.sssssszzzzzz. The following abbreviations are used to describe this form:</p>
+
+<ul>
+    <li>yyyy, a four digit numeral that represents the year. Valid values are from 0001 through 9999. A plus sign (+) is not allowed.</li>
+    <li>-, separators between parts of the date portion</li>
+    <li>mm, a two-digit numeral that represents the month.</li>
+    <li>dd, a two-digit numeral that represents the day.</li>
+    <li>T, a separator to indicate that the time of day follows.</li>
+    <li>hh, a two-digit numeral that represents the hour. A value of 24 is allowed only when the minutes and seconds that are represented are zero.</li>
+    <li>:, a separator between parts of the time portion.</li>
+    <li>mm, a two-digit numeral that represents the minute.</li>
+    <li>ss, a two-digit numeral that represents the whole seconds.</li>
+    <li>.ssssss, pptional. If present, a one-to-six digit numeral that represents the fractional seconds.</li>
+    <li>zzzzzz, optional. If present, represents the timezone.</li>
+</ul>
+
+<p>The lexical form for the timezone indicator is a string that includes one of the following forms:</p>
+
+<ul>
+    <li>A positive (+) or negative (-) sign that is followed by hh:mm, where the following abbreviations are used:
+        <ul>
+            <li>hh, a two-digit numeral (with leading zeros as required) that represents the hours. Currently there are no legally prescribed timezones which are durations whose magnitude
+            is greater than 14 hours. Therefore, a value of 14 for the hours property is allowed only when the value of the minutes property is zero.</li>
+            <li>mm, a two-digit numeral that represents the minutes. The value of the minutes property must be zero when the hours property is equal to 14.</li>
+            <li>+, indicates a nonnegative duration.</li>
+            <li>-, indicates a nonpositive duration.</li>
+        </ul>
+    </li>
+
+    <li>The literal Z, which represents the time in UTC. Specifying Z for the timezone is equivalent to specifying +00:00 or -00:00.</li>
+</ul>

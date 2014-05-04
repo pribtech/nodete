@@ -1,0 +1,47 @@
+
+<H2>Conclusion<HR></H2>
+<BR>
+<font color=grey><B>The database administrator monitors the report, to check the number if compilations and finds that, the workload modified to have parameter markers,
+performance as expected.  </B></font><BR><BR>
+<B>Having named parameter markers result in :<BR><BR></B>
+<ul>
+<li>Number of compilations has reduced; unnecessary recompilation is not happening</li>
+<li>Package cache lookups has greatly increased; package is being reused</li>
+</ul>
+
+<BR>
+<BR>
+<font color=grey><B>The results are displayed on the view in the right pane.</font></B><BR><BR>
+<B>Note: Set the refresh interval on the top right pane to 5 seconds.</B>
+<BR><BR>
+<font color=grey><B>
+The database administrator has answered most of the questions posed at the start of this scenario.
+The only unknown question is why the system suddenly encountered this slowdown after performing normally,
+and what changed to trigger this problem. The database administrator contacts the application support team
+and finds out that an update to the application was promoted to production. Further investigation reveals
+that the SQL statements identified were a part of the application update and were coded by a
+team member not familiar with the expected coding practices.
+</B></font>
+
+<P align=justify>
+<H4>Answers to the questions that the database administrator had for the SQL compilation problem:</H4>
+<BR><BR>
+<ul>
+<li><B>Q: What is the general nature of problem as determined by the initial diagnosis?</B><BR>
+    <B>A:</B> The slowdown is occurring within the data server. The statement executing at normal speed. The slowdown is occurring before or after statement execution.
+</li>
+<BR>
+<li><B>Q: What part of the user workload is impacted by the slowdown? What does this set of SQL statements have in common?</B><BR>
+    <B>A:</B> The problem is localized to statements in the SALES_CHECKOUTAPPLICATION.
+</li>
+<BR>
+<li><B>Q: What is the detailed nature of the problem determined during the detailed diagnosis?</B><BR>
+    <B>A:</B> Application requests are spending more time in SQL compilation processing. Every time a new request is submitted, it is compiled (as opposed to the plan being obtained from the package cache. This is due to the SQL coding practice of using literals, rather than parameter markers, for dynamic SQL statements.
+</li>
+<BR>
+<li><B>Q: What sequence of events led to this problem?</B><BR>
+    <B>A:</B> An update to the application was promoted to production. This update includes the SQL statement that is involved in the problem.
+</li>
+</ul>
+<BR><BR>
+<HR>

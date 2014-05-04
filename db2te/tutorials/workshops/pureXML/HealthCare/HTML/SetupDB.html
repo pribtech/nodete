@@ -1,0 +1,62 @@
+<p><b>Scenario</b></p>
+<p align = "justify">
+	Any patient visiting a health care provider must register at the clinic. 
+	As soon as the patients personal information is provided, he moves on for 
+	consultation. Based on the consultation, the health care provider records 
+	the diagnostic details and disease description in a PMD document in XML form. 
+	<BR><BR>
+	If the patient is already registered, the most recent PMD document is 
+	updated to include the diagnostic details and disease descriptions.
+	<BR><BR>
+	Due to the volume of data and nature of the business, the health care 
+	provider wants to perform data archival every quarter and keep only 9 
+	months of data in the base table.     	
+</p>
+
+
+<p><b>Operation</b></p>
+<p>
+	<ul>
+		<li>DB2 <B>native XML storage</B> is demonstrated here. Column PMD is defined as XML type in the table OUT_PATIENT_DATA.</li><BR>
+		<li><B>XML support in range partitioned table</B> is demonstrated here. Table OUT_PATIENT_DATA is partitioned based on the date stored in column DATE_OF_CONSULTANCY. 
+			Each partition contains quarterly data.</li>
+ 	</ul>
+</p>
+
+
+<p><b>Solution</b></p>
+<p align = "justify">
+	Three tables are created to hold details of the disease, patients personal details, and patients medical records. 
+	<ul>
+		<li> Disease description - Holds all details / code about disease  </li>
+	<BR> 	
+		<li> Patient details - Holds patients personal information. Addresses of the 
+			 patients are stored in a native DB2 XML column. </li>
+	<BR>	
+		<li> Out patient data - Holds PMD documents which contains all medical information 
+			 about the patients. PMD documents are stored in a native DB2 XML column. </li>
+	</ul>	 	 
+</p>
+<P>
+
+<p><b>Best Practices</b></p>
+<p align = "justify">
+	<ul>
+		<li> <B>Database managed table spaces (DMS) </B> provides higher performance than operating system managed table spaces (SMS). 
+	    	     This is true for relational data, and even more so for XML read and write access. </li>
+	<BR>
+		<li> If some or all of your XML documents are small enough to fit into their corresponding row on the base table page 
+		     in the DAT object, they can be <B>inlined</B> into the relational row. This provides more direct access to the XML data 
+		     and avoids the redirected access to the XDA object. </li>
+	<BR>
+		<li> If an XML document is too large to fit on a single page in a table space, DB2 splits the document into multiple 
+		     regions which are then stored on multiple pages. As a rule of thumb, <B>choose a page size for XML</B> data which is not 
+		     smaller than two times your average expected document size, subject to the maximum of 32 KB.</li>
+	<BR>
+		<li> With the performance analysis done and you find that you need a large page size for XML data 
+		     but a small page size for relational data or indexes, you can use separate table spaces to achieve this. 
+		     When you define a table, you can direct <B>"long" data into a separate table space with a different page size.</B> 
+		     Long data includes LOB and XML data.  </li>
+	</ul>
+</p>
+

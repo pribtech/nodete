@@ -1,0 +1,18 @@
+<H4>Keep XML and relational data in separate table spaces</H4>
+<BR>
+<P align="justify">
+	XML data is usually larger in size compared to relational data and indexes. Data buffering and caching will be more effective hence better performance if XML data uses larger page sized table space and buffer pool. To do so, you simply assign the XML and relational data to different table space at table creation time. The example on the right pane demonstrated the steps required.
+<BR>
+
+<H4>Operations</H4>
+<BR>
+<ul>
+<li>CREATE BUFFERPOOL bp4k_PDD2 in 4k page size.</li>
+<li>CREATE BUFFERPOOL bp32k_PDD2 in 32k page size.</li>
+<li>CREATE TABLESPACE relData_PDD2 in 4k page size using bp4k_PDD2 buffer pool.</li>
+<li>CREATE TABLESPACE xmlData_PDD2 in 32k page size using bp32k_PDD2 buffer pool.</li>
+<li>CREATE TABLE with relation and XML data. Specify LONG data (XML is considered LONG data) to be stored in the xmlData_PDD2 table space. The rest of the data stored in the relData_PDD2 table space.</li>
+</ul>
+
+<br>
+<b>Note that the CREATE TABLESPACE statements may fail if they already exist in the database. If that's the case, you may ignore those errors.</b>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tutorial name="XQuery-FOR Loop" autoCloseWindowsInRightStage="true" autoClearAdhocResults="true">
+    <flowRestriction>Free</flowRestriction>
+    <closeAction/>
+    <openAction />
+    <globalCodeHighlightOptions highlightCode = "true" />
+    <pageList>
+    	<page name="XQuery-FOR Loop" type="intro">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>01_XQuery-FORLoop.html</contentFile>
+				<autoLoadLink>
+					<pageWindow target="informationWindow">
+						<panel name="main">
+						<URL>
+						http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.xml.doc/doc/xqrforclau.html
+						</URL>
+						</panel>
+					</pageWindow>
+				</autoLoadLink>
+        </page>
+        
+    <page name="For Loop - Simple Expression" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>02_ForLoop-SimpleExpression.html</contentFile>
+            <SQLFile>01_ForLoop-SimpleExpression.sql</SQLFile>
+	    <SQLExecutionOptions xmlinline="true" xml="true" clob="false" blob="false" dbclob="false" termChar=";" cursor="forward" commitPerStmt="true" numRowReturned="100" />
+        </page><page name="For loop over document contents" type="last">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>03_ForLoopOverDocumentContents.html</contentFile>
+            <SQLFile>02_ForLoopOverDocumentContents.sql</SQLFile>
+	    <SQLExecutionOptions xmlinline="true" xml="true" clob="false" blob="false" dbclob="false" termChar=";" cursor="forward" commitPerStmt="true" numRowReturned="100" />
+        </page></pageList>
+</tutorial>

@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <tutorial name="XQuery Performance Comparison">
+   <flowRestriction>forwardExploration</flowRestriction>
+    <closeAction/>
+    <openAction />
+    <globalCodeHighlightOptions highlightCode = "true" />
+    <pageList>
+    	<page name="XQuery Performance Comparison" type="intro">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>01_XQueryPerformanceComparison.html</contentFile>
+							<autoLoadLink>
+								<pageWindow target="informationWindow">
+								<panel name="main">
+								<URL>
+								http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.xml.doc/doc/c0050595.html?noframes=true
+								</URL>
+								</panel>
+								</pageWindow>
+							</autoLoadLink>
+      </page>
+    <page name="Generate some Random SQL records" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>02_GenerateSomeRandomSQLRecords.html</contentFile>
+            <SQLFile>01_GenerateSomeRandomSQLRecords.sql</SQLFile>
+						<SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar="#" cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+    </page>
+    <page name="Generate XML Aggregation records based on the Postal Code" type="general">
+    	<entryAction name="checkForInsert" type="serverAction">
+    		<parameterList>
+    			<parameter name="action" type="fixed">
+    				<value>checkForRow</value>
+    			</parameter>
+    			<parameter name="schema" type="constant">
+    				<value>SCHEMA</value>
+    			</parameter>
+    			<parameter name="name" type="fixed">
+    				<value>postaltxs</value>
+    			</parameter>
+    		</parameterList>
+    		<followOnAction condition="true"  negCondition="true">
+    			<task>
+    				<action name="displayMsgForFailedInsert" type="alert">
+    					<message>Data hasn't been inserted in the table. Please try this step again.</message>
+    				</action>
+    			</task>
+    			<task>
+    				<setActionReturn>false</setActionReturn>
+    			</task>
+    		</followOnAction>
+    	</entryAction> 
+    	
+            <exitAction/>
+            <contentFile>03_GenerateXMLAggregationRecordsBasedOnThePostalCode.html</contentFile>
+            <SQLFile>02_GenerateXMLAggregationRecordsBasedOnThePostalCode.sql</SQLFile>
+						<SQLExecutionOptions xml="true" clob="false" blob="false" dbclob="false" termChar="#" cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+		</page>
+    <page name="Explore the Tables" type="general">
+            <entryAction name="checkForTable" type="serverAction">
+            	<parameterList>
+									<parameter name="action" type="fixed">
+										<value>checkForObject</value>
+									</parameter>
+									<parameter name="objectType" type="fixed">
+										<value>table</value>
+									</parameter>
+									<parameter name="object[schema]" type="constant">
+										<value>SCHEMA</value>
+									</parameter>
+									<parameter name="object[table]" type="raw">
+										<value>district</value>
+									</parameter>
+								</parameterList>
+								<followOnAction condition="0" compareOn="checkForTable.returnValue">
+									<task>
+										<action name="alertTablesNotCreated" type="alert">
+											<message>The required tables must be created before proceeding with the tutorial.</message>
+										</action>
+										<setActionReturn value='false'/>
+									</task>
+								</followOnAction>
+            </entryAction>
+            <exitAction/>
+            <contentFile>04_ExploreTables.html</contentFile>
+		<autoLoadLink>
+			<pageWindow target="informationWindow" raiseToTop="y">
+				<splitPane direction="h">
+					<topPane>
+						<panel name="main">
+			   				<link type="action" target="_self" window="_self" connectionRequired="y">
+							<parameterList>
+								<parameter name="table">tablecat</parameter>
+								<parameter name="action">list_table</parameter>
+								<parameter name="tabschema">?SCHEMA?</parameter>
+							</parameterList>
+							</link>
+						</panel>
+					</topPane>
+					<bottomPane>
+						<panel name="detail"/>
+					</bottomPane>
+				</splitPane>
+			</pageWindow>
+		</autoLoadLink>
+    </page>	
+
+    <page name="Select Performance for LIL" type="general">
+            <entryAction name="checkForTable" type="serverAction">
+            	<parameterList>
+									<parameter name="action" type="fixed">
+										<value>checkForObject</value>
+									</parameter>
+									<parameter name="objectType" type="fixed">
+										<value>table</value>
+									</parameter>
+									<parameter name="object[schema]" type="constant">
+										<value>SCHEMA</value>
+									</parameter>
+									<parameter name="object[table]" type="raw">
+										<value>district</value>
+									</parameter>
+								</parameterList>
+								<followOnAction condition="0" compareOn="checkForTable.returnValue">
+									<task>
+										<action name="alertTablesNotCreated" type="alert">
+											<message>The required tables must be created before proceeding with the tutorial.</message>
+										</action>
+										<setActionReturn value='false'/>
+									</task>
+								</followOnAction>
+            </entryAction>
+            <exitAction/>
+		    <loadActionScriptFile>01_selectAndGraph.xml</loadActionScriptFile>
+            <contentFile>05_SelectPerformance.html</contentFile>
+		</page>    
+    
+    <page name="Select Performance for All" type="general">
+            <entryAction name="checkForTable" type="serverAction">
+            	<parameterList>
+									<parameter name="action" type="fixed">
+										<value>checkForObject</value>
+									</parameter>
+									<parameter name="objectType" type="fixed">
+										<value>table</value>
+									</parameter>
+									<parameter name="object[schema]" type="constant">
+										<value>SCHEMA</value>
+									</parameter>
+									<parameter name="object[table]" type="raw">
+										<value>district</value>
+									</parameter>
+								</parameterList>
+								<followOnAction condition="0" compareOn="checkForTable.returnValue">
+									<task>
+										<action name="alertTablesNotCreated" type="alert">
+											<message>The required tables must be created before proceeding with the tutorial.</message>
+										</action>
+										<setActionReturn value='false'/>
+									</task>
+								</followOnAction>
+            </entryAction>
+            <exitAction/>
+		    <loadActionScriptFile>02_selectAllAndGraph.xml</loadActionScriptFile>
+            <contentFile>06_SelectAllPerformance.html</contentFile>
+		</page>    
+
+
+  </pageList>
+</tutorial>

@@ -1,0 +1,4 @@
+SELECT EMPNO, 
+       SALARY, 
+       SALARY / 10 + 1000 AS "BONUS"
+  FROM TEMP_EMP

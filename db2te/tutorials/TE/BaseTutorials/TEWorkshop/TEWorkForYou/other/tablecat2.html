@@ -1,0 +1,238 @@
+<div id="title">Pointing the reference to a table definition</div>
+<pre><table><tr><td>
+<i><font color="#9A1900">&lt;!--</font></i><br/>
+<i><font color="#9A1900">  Copyright IBM Corp. 2007 All rights reserved.</font></i><br/>
+<br/>
+<i><font color="#9A1900">  Licensed under the Apache License, Version 2.0 (the "License");</font></i><br/>
+<i><font color="#9A1900">  you may not use this file except in compliance with the License.</font></i><br/>
+<i><font color="#9A1900">  You may obtain a copy of the License at</font></i><br/>
+<br/>
+<i><font color="#9A1900">      http://www.apache.org/licenses/LICENSE-2.0</font></i><br/>
+<br/>
+<i><font color="#9A1900">  Unless required by applicable law or agreed to in writing, software</font></i><br/>
+<i><font color="#9A1900">  distributed under the License is distributed on an "AS IS" BASIS,</font></i><br/>
+<i><font color="#9A1900">  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</font></i><br/>
+<i><font color="#9A1900">  See the License for the specific language governing permissions and</font></i><br/>
+<i><font color="#9A1900">  limitations under the License.</font></i><br/>
+<i><font color="#9A1900">--&gt;</font></i><br/>
+&nbsp;&nbsp;<b><font color="#0000FF">&lt;table</font></b> <font color="#009900">name</font><font color="#990000">=</font><font color="#FF0000">"tablecat"</font><b><font color="#0000FF">&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;sql_name&gt;</font></b>SYSCAT.TABLES<b><font color="#0000FF">&lt;/sql_name&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;singular_name&gt;</font></b>Table<b><font color="#0000FF">&lt;/singular_name&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;plural_name&gt;</font></b>Tables<b><font color="#0000FF">&lt;/plural_name&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;description&gt;</font></b>Each row represents a <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#000080">&amp;lt;</font></b>a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v9/topic/com.ibm.db2.udb.admin.doc/doc/c0004098.htm?noframes=true');"<b><font color="#000080">&amp;gt;</font></b>table<b><font color="#000080">&amp;lt;</font></b>/a<b><font color="#000080">&amp;gt;</font></b>,<br/>
+&nbsp;&nbsp;    <b><font color="#000080">&amp;lt;</font></b>a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v9/topic/com.ibm.db2.udb.admin.doc/doc/c0004106.htm?noframes=true');"<b><font color="#000080">&amp;gt;</font></b>view<b><font color="#000080">&amp;lt;</font></b>/a<b><font color="#000080">&amp;gt;</font></b> or<br/>
+&nbsp;&nbsp;    <b><font color="#000080">&amp;lt;</font></b>a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v9/topic/com.ibm.db2.udb.admin.doc/doc/c0004097.htm?noframes=true');"<b><font color="#000080">&amp;gt;</font></b>alias<b><font color="#000080">&amp;lt;</font></b>/a<b><font color="#000080">&amp;gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;in the database. <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;This list is generated from the <b><font color="#000080">&amp;lt;</font></b>a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v9/topic/com.ibm.db2.udb.admin.doc/doc/r0001063.htm?noframes=true');"<b><font color="#000080">&amp;gt;</font></b>SYSCAT.SYSTABLES<b><font color="#000080">&amp;lt;</font></b>/a<b><font color="#000080">&amp;gt;</font></b> catalog view.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;/description&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;rows_per_page&gt;</font></b>100<b><font color="#0000FF">&lt;/rows_per_page&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;order_by_index</font></b> <font color="#009900">name</font><font color="#990000">=</font><font color="#FF0000">"tabschema"</font> <font color="#009900">direction</font><font color="#990000">=</font><font color="#FF0000">"A"</font><b><font color="#0000FF">/&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;order_by_index</font></b> <font color="#009900">name</font><font color="#990000">=</font><font color="#FF0000">"tabname"</font> <font color="#009900">direction</font><font color="#990000">=</font><font color="#FF0000">"A"</font><b><font color="#0000FF">/&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;display_columns&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;col</font></b> <font color="#009900">type</font><font color="#990000">=</font><font color="#FF0000">"reference"</font> <font color="#009900">name</font><font color="#990000">=</font><font color="#FF0000">"contents"</font><b><font color="#0000FF">/&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;col</font></b> <font color="#009900">type</font><font color="#990000">=</font><font color="#FF0000">"action"</font> <font color="#009900">name</font><font color="#990000">=</font><font color="#FF0000">"xmlgen"</font><b><font color="#0000FF">/&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;col</font></b> <font color="#009900">type</font><font color="#990000">=</font><font color="#FF0000">"column"</font> <font color="#009900">name</font><font color="#990000">=</font><font color="#FF0000">"tabschema"</font><b><font color="#0000FF">/&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;col</font></b> <font color="#009900">type</font><font color="#990000">=</font><font color="#FF0000">"column"</font> <font color="#009900">name</font><font color="#990000">=</font><font color="#FF0000">"tabname"</font><b><font color="#0000FF">/&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;col</font></b> <font color="#009900">type</font><font color="#990000">=</font><font color="#FF0000">"column"</font> <font color="#009900">name</font><font color="#990000">=</font><font color="#FF0000">"type"</font><b><font color="#0000FF">/&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;col</font></b> <font color="#009900">type</font><font color="#990000">=</font><font color="#FF0000">"column"</font> <font color="#009900">name</font><font color="#990000">=</font><font color="#FF0000">"status"</font><b><font color="#0000FF">/&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;col</font></b> <font color="#009900">type</font><font color="#990000">=</font><font color="#FF0000">"action"</font> <font color="#009900">name</font><font color="#990000">=</font><font color="#FF0000">"rowcount"</font><b><font color="#0000FF">/&gt;</font></b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;col</font></b> <font color="#009900">type</font><font color="#990000">=</font><font color="#FF0000">"column"</font> <font color="#009900">name</font><font color="#990000">=</font><font color="#FF0000">"card"</font><b><font color="#0000FF">/&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;col</font></b> <font color="#009900">type</font><font color="#990000">=</font><font color="#FF0000">"reference"</font> <font color="#009900">name</font><font color="#990000">=</font><font color="#FF0000">"cols"</font><b><font color="#0000FF">/&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;col</font></b> <font color="#009900">type</font><font color="#990000">=</font><font color="#FF0000">"reference"</font> <font color="#009900">name</font><font color="#990000">=</font><font color="#FF0000">"indexes"</font><b><font color="#0000FF">/&gt;</font></b><br/>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;col</font></b> <font color="#009900">type</font><font color="#990000">=</font><font color="#FF0000">"reference"</font> <font color="#009900">name</font><font color="#990000">=</font><font color="#FF0000">"Dependencies"</font><b><font color="#0000FF">/&gt;</font></b><br/>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;col</font></b> <font color="#009900">type</font><font color="#990000">=</font><font color="#FF0000">"reference"</font> <font color="#009900">name</font><font color="#990000">=</font><font color="#FF0000">"auth"</font><b><font color="#0000FF">/&gt;</font></b><br/>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;col</font></b> <font color="#009900">type</font><font color="#990000">=</font><font color="#FF0000">"reference"</font> <font color="#009900">name</font><font color="#990000">=</font><font color="#FF0000">"tbspace"</font><b><font color="#0000FF">/&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;col</font></b> <font color="#009900">type</font><font color="#990000">=</font><font color="#FF0000">"column"</font> <font color="#009900">name</font><font color="#990000">=</font><font color="#FF0000">"tbspace"</font><b><font color="#0000FF">/&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;/display_columns&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;action</font></b> <font color="#009900">name</font><font color="#990000">=</font><font color="#FF0000">"rowcount"</font><b><font color="#0000FF">&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;c_title&gt;</font></b>Count<b><font color="#0000FF">&lt;/c_title&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;icon&gt;</font></b>images/icon-count.gif<b><font color="#0000FF">&lt;/icon&gt;</font></b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;actionScript</font></b> <font color="#009900">name</font><font color="#990000">=</font><font color="#FF0000">"helloworld"</font> <font color="#009900">type</font><font color="#990000">=</font><font color="#FF0000">"serverAction"</font><b><font color="#0000FF">&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;parameterList&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;parameter</font></b> <font color="#009900">name</font><font color="#990000">=</font><font color="#FF0000">"action"</font> <font color="#009900">type</font><font color="#990000">=</font><font color="#FF0000">"fixed"</font><b><font color="#0000FF">&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;value&gt;</font></b>rowCount<b><font color="#0000FF">&lt;/value&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;/parameter&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;parameter</font></b> <font color="#009900">name</font><font color="#990000">=</font><font color="#FF0000">"schema"</font> <font color="#009900">type</font><font color="#990000">=</font><font color="#FF0000">"blockValue"</font><b><font color="#0000FF">&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;value&gt;</font></b>tabschema<b><font color="#0000FF">&lt;/value&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;/parameter&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;parameter</font></b> <font color="#009900">name</font><font color="#990000">=</font><font color="#FF0000">"name"</font> <font color="#009900">type</font><font color="#990000">=</font><font color="#FF0000">"blockValue"</font><b><font color="#0000FF">&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;value&gt;</font></b>tabname<b><font color="#0000FF">&lt;/value&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;/parameter&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;/parameterList&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;followOnAction</font></b> <font color="#009900">condition</font><font color="#990000">=</font><font color="#FF0000">""</font><b><font color="#0000FF">&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;task&gt;</font></b>&nbsp;&nbsp;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;action</font></b> <font color="#009900">name</font><font color="#990000">=</font><font color="#FF0000">"ok"</font> <font color="#009900">type</font><font color="#990000">=</font><font color="#FF0000">"alert"</font><b><font color="#0000FF">&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;message&gt;</font></b>Total number of rows: ?RETURN?<b><font color="#0000FF">&lt;/message&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;parameterList&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;parameter</font></b> <font color="#009900">name</font><font color="#990000">=</font><font color="#FF0000">"RETURN"</font> <font color="#009900">type</font><font color="#990000">=</font><font color="#FF0000">"returnObject"</font><b><font color="#0000FF">&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;value&gt;</font></b>helloworld.returnValue<b><font color="#0000FF">&lt;/value&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;/parameter&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;/parameterList&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;/action&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;/task&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;/followOnAction&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;/actionScript&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;/action&gt;</font></b><br/>
+<br/>
+<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;reference</font></b> <font color="#009900">name</font><font color="#990000">=</font><font color="#FF0000">"contents"</font><b><font color="#0000FF">&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;c_title&gt;</font></b>Contents<b><font color="#0000FF">&lt;/c_title&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;reftype&gt;</font></b>table<b><font color="#0000FF">&lt;/reftype&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;refvalue&gt;&lt;/refvalue&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;icon&gt;</font></b>images/icon-link-calendar.gif<b><font color="#0000FF">&lt;/icon&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;ref</font></b> <font color="#009900">foreign_column_name</font><font color="#990000">=</font><font color="#FF0000">"schema"</font><b><font color="#0000FF">&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;local_column_name&gt;</font></b>tabschema<b><font color="#0000FF">&lt;/local_column_name&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;/ref&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;ref</font></b> <font color="#009900">foreign_column_name</font><font color="#990000">=</font><font color="#FF0000">"table"</font><b><font color="#0000FF">&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;local_column_name&gt;</font></b>tabname<b><font color="#0000FF">&lt;/local_column_name&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;/ref&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;/reference&gt;</font></b>&nbsp;&nbsp;&nbsp;&nbsp;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;action</font></b> <font color="#009900">name</font><font color="#990000">=</font><font color="#FF0000">"xmlgen"</font><b><font color="#0000FF">&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;c_title&gt;</font></b>XML<b><font color="#0000FF">&lt;/c_title&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;icon&gt;</font></b>images/icon-xml.gif<b><font color="#0000FF">&lt;/icon&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;actionScript</font></b> <font color="#009900">name</font><font color="#990000">=</font><font color="#FF0000">"helloworld"</font> <font color="#009900">type</font><font color="#990000">=</font><font color="#FF0000">"block"</font><b><font color="#0000FF">&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;followOnAction</font></b> <font color="#009900">condition</font><font color="#990000">=</font><font color="#FF0000">""</font><b><font color="#0000FF">&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;task&gt;</font></b>&nbsp;&nbsp;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;assignLocalParameter</font></b> <font color="#009900">name</font><font color="#990000">=</font><font color="#FF0000">"TABLENAME"</font> <font color="#009900">type</font><font color="#990000">=</font><font color="#FF0000">"blockValue"</font><b><font color="#0000FF">&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;value&gt;</font></b>tabname<b><font color="#0000FF">&lt;/value&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;/assignLocalParameter&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;assignLocalParameter</font></b> <font color="#009900">name</font><font color="#990000">=</font><font color="#FF0000">"SCHEMANAME"</font> <font color="#009900">type</font><font color="#990000">=</font><font color="#FF0000">"blockValue"</font><b><font color="#0000FF">&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;value&gt;</font></b>tabschema<b><font color="#0000FF">&lt;/value&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;/assignLocalParameter&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;loadPage&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;pageWindow</font></b> <font color="#009900">target</font><font color="#990000">=</font><font color="#FF0000">"_blank"</font><b><font color="#0000FF">&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;panel</font></b> <font color="#009900">name</font><font color="#990000">=</font><font color="#FF0000">"main"</font><b><font color="#0000FF">&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;URL&gt;</font></b><br/>
+&lt;![CDATA[<br/>
+http://?DB2MC_SERVER?/?ACTION_PROCESSOR??action=xmlgen&amp;schemanameparm=?SCHEMANAME?&amp;tablenameparm=?TABLENAME?&USE_CONNECTION=?ACTIVE_DATABASE_CONNECTION?<br/>
+]]&gt;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;/URL&gt;</font></b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;/panel&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;/pageWindow&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;/loadPage&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;/task&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;/followOnAction&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;/actionScript&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;/action&gt;</font></b><br/>
+<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;reference</font></b> <font color="#009900">name</font><font color="#990000">=</font><font color="#FF0000">"cols"</font><b><font color="#0000FF">&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;c_title&gt;</font></b>Columns<b><font color="#0000FF">&lt;/c_title&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;reftype&gt;</font></b>table<b><font color="#0000FF">&lt;/reftype&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;refvalue&gt;</font></b>colcatdetail<b><font color="#0000FF">&lt;/refvalue&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;icon&gt;</font></b>images/icon-column.gif<b><font color="#0000FF">&lt;/icon&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;ref</font></b> <font color="#009900">foreign_column_name</font><font color="#990000">=</font><font color="#FF0000">"tabschema"</font><b><font color="#0000FF">&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;local_column_name&gt;</font></b>tabschema<b><font color="#0000FF">&lt;/local_column_name&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;/ref&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;ref</font></b> <font color="#009900">foreign_column_name</font><font color="#990000">=</font><font color="#FF0000">"tabname"</font><b><font color="#0000FF">&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;local_column_name&gt;</font></b>tabname<b><font color="#0000FF">&lt;/local_column_name&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;/ref&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;/reference&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;reference</font></b> <font color="#009900">name</font><font color="#990000">=</font><font color="#FF0000">"auth"</font><b><font color="#0000FF">&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;c_title&gt;</font></b>Privileges<b><font color="#0000FF">&lt;/c_title&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;reftype&gt;</font></b>table<b><font color="#0000FF">&lt;/reftype&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;refvalue&gt;</font></b>Authority/tabauth<b><font color="#0000FF">&lt;/refvalue&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;icon&gt;</font></b>images/icon-privilege.gif<b><font color="#0000FF">&lt;/icon&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;ref</font></b> <font color="#009900">foreign_column_name</font><font color="#990000">=</font><font color="#FF0000">"tabschema"</font><b><font color="#0000FF">&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;local_column_name&gt;</font></b>tabschema<b><font color="#0000FF">&lt;/local_column_name&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;/ref&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;ref</font></b> <font color="#009900">foreign_column_name</font><font color="#990000">=</font><font color="#FF0000">"tabname"</font><b><font color="#0000FF">&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;local_column_name&gt;</font></b>tabname<b><font color="#0000FF">&lt;/local_column_name&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;/ref&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;/reference&gt;</font></b><br/>
+
+&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;reference</font></b> <font color="#009900">name</font><font color="#990000">=</font><font color="#FF0000">"Dependencies"</font><b><font color="#0000FF">&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;c_title&gt;</font></b>Dependencies<b><font color="#0000FF">&lt;/c_title&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;reftype&gt;</font></b>table<b><font color="#0000FF">&lt;/reftype&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;refvalue&gt;</font></b><font class="sourceChange">tableDependCat</font><b><font color="#0000FF">&lt;/refvalue&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;icon&gt;</font></b>images/icon-workload.gif<b><font color="#0000FF">&lt;/icon&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;ref</font></b> <font color="#009900">foreign_column_name</font><font color="#990000">=</font><font color="#FF0000">"bschema"</font><b><font color="#0000FF">&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;local_column_name&gt;</font></b>tabschema<b><font color="#0000FF">&lt;/local_column_name&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;/ref&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;ref</font></b> <font color="#009900">foreign_column_name</font><font color="#990000">=</font><font color="#FF0000">"bname"</font><b><font color="#0000FF">&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;local_column_name&gt;</font></b>tabname<b><font color="#0000FF">&lt;/local_column_name&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;/ref&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;/reference&gt;</font></b><br/>
+
+&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;reference</font></b> <font color="#009900">name</font><font color="#990000">=</font><font color="#FF0000">"indexes"</font><b><font color="#0000FF">&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;c_title&gt;</font></b>Indexes<b><font color="#0000FF">&lt;/c_title&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;reftype&gt;</font></b>table<b><font color="#0000FF">&lt;/reftype&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;refvalue&gt;</font></b>indexcat<b><font color="#0000FF">&lt;/refvalue&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;icon&gt;</font></b>images/icon-index.gif<b><font color="#0000FF">&lt;/icon&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;ref</font></b> <font color="#009900">foreign_column_name</font><font color="#990000">=</font><font color="#FF0000">"tabschema"</font><b><font color="#0000FF">&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;local_column_name&gt;</font></b>tabschema<b><font color="#0000FF">&lt;/local_column_name&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;/ref&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;ref</font></b> <font color="#009900">foreign_column_name</font><font color="#990000">=</font><font color="#FF0000">"tabname"</font><b><font color="#0000FF">&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;local_column_name&gt;</font></b>tabname<b><font color="#0000FF">&lt;/local_column_name&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;/ref&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;/reference&gt;</font></b><br/>
+
+&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;reference</font></b> <font color="#009900">name</font><font color="#990000">=</font><font color="#FF0000">"tbspace"</font><b><font color="#0000FF">&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;c_title&gt;&lt;/c_title&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;reftype&gt;</font></b>table<b><font color="#0000FF">&lt;/reftype&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;refvalue&gt;</font></b>Performance/tbsputil<b><font color="#0000FF">&lt;/refvalue&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;icon&gt;</font></b>images/icon-tbs.gif<b><font color="#0000FF">&lt;/icon&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;ref</font></b> <font color="#009900">foreign_column_name</font><font color="#990000">=</font><font color="#FF0000">"tbsp_id"</font><b><font color="#0000FF">&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;local_column_name&gt;</font></b>tbspaceid<b><font color="#0000FF">&lt;/local_column_name&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;/ref&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;/reference&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;column</font></b> <font color="#009900">name</font><font color="#990000">=</font><font color="#FF0000">"tabschema"</font><b><font color="#0000FF">&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;c_sql_name&gt;</font></b>TABSCHEMA<b><font color="#0000FF">&lt;/c_sql_name&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;c_title&gt;</font></b>Schema<b><font color="#0000FF">&lt;/c_title&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;c_pkey&gt;</font></b>p<b><font color="#0000FF">&lt;/c_pkey&gt;</font></b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;c_prefill&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;table&gt;</font></b>schema<b><font color="#0000FF">&lt;/table&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;column&gt;</font></b>SCHEMANAME<b><font color="#0000FF">&lt;/column&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;/c_prefill&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;/column&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;column</font></b> <font color="#009900">name</font><font color="#990000">=</font><font color="#FF0000">"tabname"</font><b><font color="#0000FF">&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;c_sql_name&gt;</font></b>TABNAME<b><font color="#0000FF">&lt;/c_sql_name&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;c_title&gt;</font></b>Table Name<b><font color="#0000FF">&lt;/c_title&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;c_pkey&gt;</font></b>p<b><font color="#0000FF">&lt;/c_pkey&gt;</font></b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;/column&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;column</font></b> <font color="#009900">name</font><font color="#990000">=</font><font color="#FF0000">"card"</font><b><font color="#0000FF">&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;c_sql_name&gt;</font></b>CARD<b><font color="#0000FF">&lt;/c_sql_name&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;c_title&gt;</font></b>Number of Rows<b><font color="#0000FF">&lt;/c_title&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;c_presentation&gt;</font></b>n<b><font color="#0000FF">&lt;/c_presentation&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;c_drill&gt;</font></b>n<b><font color="#0000FF">&lt;/c_drill&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;c_prefill&gt;</font></b>n<b><font color="#0000FF">&lt;/c_prefill&gt;</font></b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br/>
+&nbsp;&nbsp;   &nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;c_column_mask&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;value_mask</font></b> <font color="#009900">value</font><font color="#990000">=</font><font color="#FF0000">"-1"</font><b><font color="#0000FF">&gt;&lt;mask&gt;</font></b>No Stats<b><font color="#0000FF">&lt;/mask&gt;&lt;/value_mask&gt;</font></b><br/>
+&nbsp;&nbsp;   &nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;/c_column_mask&gt;</font></b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;/column&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;column</font></b> <font color="#009900">name</font><font color="#990000">=</font><font color="#FF0000">"type"</font><b><font color="#0000FF">&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;c_sql_name&gt;</font></b>TYPE<b><font color="#0000FF">&lt;/c_sql_name&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;c_title&gt;</font></b>Type<b><font color="#0000FF">&lt;/c_title&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;c_prefill&gt;</font></b>y<b><font color="#0000FF">&lt;/c_prefill&gt;</font></b><br/>
+&nbsp;&nbsp;   &nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;c_column_mask_file&gt;</font></b>masks/tableTypeMasks.xml<b><font color="#0000FF">&lt;/c_column_mask_file&gt;</font></b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;/column&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;column</font></b> <font color="#009900">name</font><font color="#990000">=</font><font color="#FF0000">"status"</font><b><font color="#0000FF">&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;c_sql_name&gt;</font></b>STATUS<b><font color="#0000FF">&lt;/c_sql_name&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;c_title&gt;</font></b>Status<b><font color="#0000FF">&lt;/c_title&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;c_prefill&gt;</font></b>y<b><font color="#0000FF">&lt;/c_prefill&gt;</font></b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br/>
+&nbsp;&nbsp;   &nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;c_column_mask&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;value_mask</font></b> <font color="#009900">value</font><font color="#990000">=</font><font color="#FF0000">"C"</font><b><font color="#0000FF">&gt;&lt;mask&gt;</font></b>Set integrity pending<b><font color="#0000FF">&lt;/mask&gt;&lt;/value_mask&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;value_mask</font></b> <font color="#009900">value</font><font color="#990000">=</font><font color="#FF0000">"N"</font><b><font color="#0000FF">&gt;&lt;mask&gt;</font></b>Normal<b><font color="#0000FF">&lt;/mask&gt;&lt;/value_mask&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;value_mask</font></b> <font color="#009900">value</font><font color="#990000">=</font><font color="#FF0000">"X"</font><b><font color="#0000FF">&gt;&lt;mask&gt;</font></b>Inoperative<b><font color="#0000FF">&lt;/mask&gt;&lt;/value_mask&gt;</font></b><br/>
+&nbsp;&nbsp;   &nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;/c_column_mask&gt;</font></b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;/column&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;column</font></b> <font color="#009900">name</font><font color="#990000">=</font><font color="#FF0000">"tbspaceid"</font><b><font color="#0000FF">&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;c_sql_name&gt;</font></b>TBSPACEID<b><font color="#0000FF">&lt;/c_sql_name&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;c_title&gt;</font></b>Tablespace ID<b><font color="#0000FF">&lt;/c_title&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;c_presentation&gt;</font></b>n<b><font color="#0000FF">&lt;/c_presentation&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;c_drill&gt;</font></b>n<b><font color="#0000FF">&lt;/c_drill&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;c_prefill&gt;</font></b>y<b><font color="#0000FF">&lt;/c_prefill&gt;</font></b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;/column&gt;</font></b>&nbsp;&nbsp;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;column</font></b> <font color="#009900">name</font><font color="#990000">=</font><font color="#FF0000">"tbspace"</font><b><font color="#0000FF">&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;c_sql_name&gt;</font></b>TBSPACE<b><font color="#0000FF">&lt;/c_sql_name&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;c_title&gt;</font></b>Tablespace<b><font color="#0000FF">&lt;/c_title&gt;</font></b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;c_prefill&gt;</font></b>y<b><font color="#0000FF">&lt;/c_prefill&gt;</font></b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#0000FF">&lt;/column&gt;</font></b>&nbsp;&nbsp;<br/>
+&nbsp;&nbsp;<b><font color="#0000FF">&lt;/table&gt;</font></b><br/>
+</td></tr></table></pre><br/>

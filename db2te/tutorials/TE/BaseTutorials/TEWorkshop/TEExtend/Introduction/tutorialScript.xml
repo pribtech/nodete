@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tutorial name="Introduction" autoCloseWindowsInRightStage="true" autoClearAdhocResults="true">
+	<!--flowRestriction>forwardexploration</flowRestriction-->
+	<pageList>
+		
+	    <page name="Introduction" type="intro">
+			<contentFile>Intro.html</contentFile>
+			<SQLFile>blank.sql</SQLFile>
+		</page>
+		<page name="Enable the administrative task scheduler" type="general">
+			<contentFile>enableATS.html</contentFile>
+			<SQLFile>enableATS.sql</SQLFile>
+		    <SQLExecutionOptions scriptMode="shell"/>
+		</page>
+		<page name="Initializing the administration task views" type="general">
+			<contentFile>initializingATV.html</contentFile>
+			<SQLFile>initializingATV.sql</SQLFile>
+			<SQLExecutionOptions commitPerStmt="true"/>
+		</page>
+		<page name="View the administrative task scheduler views" type="general">
+			<contentFile>viewATSV.html</contentFile>
+			<SQLFile>blank.sql</SQLFile>
+			<autoLoadLink>
+				<pageWindow target="ATSViews" raiseToTop="y">
+					<splitPane direction="h">
+						<topPane>
+							<panel name="top" PrimaryContainer="true">
+				   				<link type="action" target="_self" window="_self" connectionRequired="y">
+									<parameterList>
+										<parameter name="table">SYSTOOLS.ADMIN_TASK_LIST</parameter>
+										<parameter name="action">list_table</parameter>
+									</parameterList>
+								</link>
+							</panel>
+						</topPane>
+						<bottomPane>
+							<panel name="bottom">
+				   				<link type="action" target="_self" window="_self" connectionRequired="y">
+									<parameterList>
+										<parameter name="table">SYSTOOLS.ADMIN_TASK_STATUS</parameter>
+										<parameter name="action">list_table</parameter>
+									</parameterList>
+								</link>
+							</panel>
+						</bottomPane>
+					</splitPane>
+				</pageWindow>
+			</autoLoadLink>
+		</page>
+				
+		<page name="View the administrative task scheduler stored procedures" type="general">
+			<contentFile>viewATSP.html</contentFile>
+			<SQLFile>blank.sql</SQLFile>
+			<autoLoadLink>
+				<pageWindow target="ATSViews" raiseToTop="y">
+					<splitPane direction="h">
+						<topPane>
+							<panel name="top" PrimaryContainer="true">
+				   				<link type="action" target="_self" window="_self" connectionRequired="y">
+									<parameterList>
+										<parameter name="table">procedure</parameter>
+										<parameter name="action">list_table</parameter>
+										<parameter name="procname">ADMIN_TASK%</parameter>
+										<parameter name="compareprocname">like</parameter>
+									</parameterList>
+								</link>
+							</panel>
+						</topPane>
+						<bottomPane>
+							<panel name="details"/>
+						</bottomPane>
+					</splitPane>
+				</pageWindow>
+			</autoLoadLink>
+		</page>
+		
+		<page name="Generate table definition for administration task overview" type="general">
+			<contentFile>overviewViewA.html</contentFile>
+			<SQLFile>overviewViewA.sql</SQLFile>
+		</page>
+		
+		<page name="View the table definition" type="general">
+			<contentFile>viewTableDeffATSOverview.html</contentFile>
+			<SQLFile>blank.sql</SQLFile>
+			<autoLoadLink>
+				<pageWindow target="tabledefPerview" raiseToTop="y">
+					<panel name="top" PrimaryContainer="true">
+		   				<link type="action" target="_self" window="_self" connectionRequired="y">
+							<parameterList>
+								<parameter name="table">ATSLab/atsBaseView</parameter>
+								<parameter name="action">list_table</parameter>
+							</parameterList>
+						</link>
+					</panel>
+				</pageWindow>
+			</autoLoadLink>
+		</page>	
+		
+	</pageList>	
+</tutorial>

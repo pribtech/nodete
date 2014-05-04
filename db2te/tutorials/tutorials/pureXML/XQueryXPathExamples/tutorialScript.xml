@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tutorial name="XQuery XPath Examples" autoCloseWindowsInRightStage="true" autoClearAdhocResults="true">
+    <flowRestriction>Free</flowRestriction>
+    <closeAction/>
+    <openAction />
+    <globalCodeHighlightOptions highlightCode = "true" />    
+    <pageList>
+    	<page name="XQuery XPath Examples" type="intro">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>01_XQueryXPathExamples.html</contentFile>
+            <autoLoadLink>
+    	        <pageWindow target="informationWindow">
+    	            <panel name="main">
+    	                <URL>http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.xml.doc/doc/xqrdatam.html?noframes=true</URL>
+    	            </panel>
+    	        </pageWindow>
+    	      </autoLoadLink>
+        </page>
+        
+    <page name="Select all the contents of a document" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>02_SelectAllTheContentsOfADocument.html</contentFile>
+            <SQLFile>01_SelectAllTheContentsOfADocument.sql</SQLFile>
+            <SQLExecutionOptions xmlinline="true" xml="true" clob="false" blob="false" dbclob="false" termChar=";" cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+    </page>
+    <page name="Select all employee ELEMENTS of a document" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>03_SelectAllEmployeeELEMENTSOfADocument.html</contentFile>
+            <SQLFile>02_SelectAllEmployeeELEMENTSOfADocument.sql</SQLFile>
+            <SQLExecutionOptions xmlinline="true" xml="true" clob="false" blob="false" dbclob="false" termChar=";" cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+    </page>
+    <page name="Select only the Employee named 'Jim Stittle'" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>04_SelectOnlyTheEmployeeNamed'JimStittle'.html</contentFile>
+            <SQLFile>03_SelectOnlyTheEmployeeNamed'JimStittle'.sql</SQLFile>
+            <SQLExecutionOptions xmlinline="true" xml="true" clob="false" blob="false" dbclob="false" termChar=";" cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+    </page>
+    <page name="Select the telephone number of the employee 'Jim Stittle'" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>05_SelectTheTelephoneNumberOfTheEmployee'JimStittle'.html</contentFile>
+            <SQLFile>04_SelectTheTelephoneNumberOfTheEmployee'JimStittle'.sql</SQLFile>
+            <SQLExecutionOptions xmlinline="true" xml="true" clob="false" blob="false" dbclob="false" termChar=";" cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+    </page>
+    <page name="Select only the text of the telephone number of the employee 'Jim Stittle'" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>06_SelectOnlyTheTextOfTheTelephoneNumberOfTheEmployee'JimStittle'.html</contentFile>
+            <SQLFile>05_SelectOnlyTheTextOfTheTelephoneNumberOfTheEmployee'JimStittle'.sql</SQLFile>
+            <SQLExecutionOptions xmlinline="true" xml="true" clob="false" blob="false" dbclob="false" termChar=";" cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+    </page>
+    <page name="Select multiple telephone numbers of the employee 'Kevin Street'" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>07_SelectMultipleTelephoneNumbersOfTheEmployee'KevinStreet'.html</contentFile>
+            <SQLFile>06_SelectMultipleTelephoneNumbersOfTheEmployee'KevinStreet'.sql</SQLFile>
+            <SQLExecutionOptions xmlinline="true" xml="true" clob="false" blob="false" dbclob="false" termChar=";" cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+    </page>
+    <page name="Select the employee number of the employee 'Kevin Street'" type="last">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>08_SelectTheEmployeeNumberOfTheEmployee'KevinStreet'.html</contentFile>
+            <SQLFile>07_SelectTheEmployeeNumberOfTheEmployee'KevinStreet'.sql</SQLFile>
+        <SQLExecutionOptions xmlinline="true" xml="true" clob="false" blob="false" dbclob="false" termChar=";" cursor="forward" commitPerStmt="true" numRowReturned="100"/> 
+    </page>
+  </pageList>
+</tutorial>

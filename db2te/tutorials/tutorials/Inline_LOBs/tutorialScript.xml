@@ -1,0 +1,393 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tutorial name="Inline Large Objects" closeWindowsInRightStage="true" clearAdhocResults="true">
+	<flowRestriction>forwardexploration</flowRestriction>
+	<closeAction/>
+	<openAction/>
+	<pageList>
+		<!--BEGIN: Introduction page-->
+		<page name="Introduction" type="intro">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>InlineLOBs.html</contentFile>
+			<autoLoadLink>
+				<pageWindow target="informationWindow">
+					<title>Information center</title>
+					<panel name="main">
+						<URL>
+							http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.admin.dbobj.doc/doc/c0054525.html?noframes=true
+						</URL>
+					</panel>
+				</pageWindow>
+			</autoLoadLink>
+		</page>
+		<!-- END: Introduction page -->
+		
+		
+		<!-- BEGIN: Create and Populate LOBDATA -->
+		<page name="Create and populate a regular LOB table" type="general">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>CreateTableLOBDATA.html</contentFile>
+			<SQLFile>CreateTableLOBDATA.sql</SQLFile>
+			<SQLExecutionOptions xml="false" clob="false" xmlinline="false" clobinline="false" blob="false" dbclob="false" termChar=";" cursor="forward" commitPerStmt="false" numRowReturned="100"/>
+		</page>
+		<!-- END: Create and Populate LOBDATA -->
+		
+		
+		<!-- BEGIN: Query LOBDATA -->
+		<page name="Fetch LOB data and examine direct read and write activities" type="general">
+			<entryAction name="checkForInsert" type="serverAction">
+				<parameterList>
+					<parameter name="action" type="fixed">
+						<value>checkForRow</value>
+					</parameter>
+					<parameter name="schema" type="constant">
+						<value>SCHEMA</value>
+					</parameter>
+					<parameter name="name" type="fixed">
+						<value>LOBDATA</value>
+					</parameter>
+				</parameterList>
+				<followOnAction condition="true" negCondition="true">
+					<task>
+						<action name="displayMsgForFailedInsert"
+							type="alert">
+							<message>
+								Data hasn't been inserted in the table.  Please try this step again.
+							</message>
+						</action>
+					</task>
+					<task>
+						<setActionReturn>false</setActionReturn>
+					</task>
+				</followOnAction>
+				<followOnAction condition="true">
+					<task>
+						<action name="checkForTable" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="serverAction">
+									<value>checkForObject</value>
+								</parameter>
+								<parameter name="objectType" type="raw">
+									<value>table</value>
+								</parameter>
+								<parameter name="object[schema]" type="constant">
+									<value>SCHEMA</value>
+								</parameter>
+								<parameter name="object[table]" type="fixed">
+									<value>LOBDATA</value>
+								</parameter>
+							</parameterList>
+							<followOnAction condition="false">
+								<task>
+									<action name="displayMsgForFailedInsert"
+										type="alert">
+										<message>
+											Table required hasn't been created.
+											Please execute this step again.
+										</message>
+									</action>
+								</task>
+								<task>
+									<setActionReturn>false</setActionReturn>
+								</task>
+							</followOnAction>
+						</action>
+					</task>
+				</followOnAction>			
+			</entryAction>
+			<exitAction/>
+			<contentFile>QueryLOBDATA.html</contentFile>
+			<loadActionScriptFile>getDirectReadLOB1.xml</loadActionScriptFile>
+			<SQLExecutionOptions xml="false" clob="true" xmlinline="false" clobinline="true" blob="false" dbclob="false" termChar=";" cursor="forward" commitPerStmt="false" numRowReturned="100"/>
+		</page>
+		<!-- END: Query LOBDATA -->
+		
+		<!-- BEGIN: Create and Populate INLINELOBDATA -->
+		<page name="Create and populate an INLINE LOB table" type="general">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>CreateTableInlineLOBDATA.html</contentFile>
+			<SQLFile>CreateTableInlineLOBDATA.sql</SQLFile>
+			<SQLExecutionOptions xml="false" clob="true" xmlinline="false" clobinline="true" blob="false" dbclob="false" termChar=";" cursor="forward" commitPerStmt="false" numRowReturned="100"/>
+		</page>
+		<!-- END: Create and Populate INLINELOBDATA -->		
+		
+		<!-- BEGIN: Query INLINELOBDATA -->
+		<page name="Fetch inline LOB data and examine direct read and write activities" type="general">
+			<entryAction name="checkForInsert" type="serverAction">
+				<parameterList>
+					<parameter name="action" type="fixed">
+						<value>checkForRow</value>
+					</parameter>
+					<parameter name="schema" type="constant">
+						<value>SCHEMA</value>
+					</parameter>
+					<parameter name="name" type="fixed">
+						<value>INLINELOBDATA</value>
+					</parameter>
+				</parameterList>
+				<followOnAction condition="true" negCondition="true">
+					<task>
+						<action name="displayMsgForFailedInsert"
+							type="alert">
+							<message>
+								Data hasn't been inserted in the table.  Please try this step again.
+							</message>
+						</action>
+					</task>
+					<task>
+						<setActionReturn>false</setActionReturn>
+					</task>
+				</followOnAction>
+				<followOnAction condition="true">
+					<task>
+						<action name="checkForTable" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="serverAction">
+									<value>checkForObject</value>
+								</parameter>
+								<parameter name="objectType" type="raw">
+									<value>table</value>
+								</parameter>
+								<parameter name="object[schema]" type="constant">
+									<value>SCHEMA</value>
+								</parameter>
+								<parameter name="object[table]" type="fixed">
+									<value>INLINELOBDATA</value>
+								</parameter>
+							</parameterList>
+							<followOnAction condition="false">
+								<task>
+									<action name="displayMsgForFailedInsert"
+										type="alert">
+										<message>
+											Table required hasn't been created.
+											Please execute this step again.
+										</message>
+									</action>
+								</task>
+								<task>
+									<setActionReturn>false</setActionReturn>
+								</task>
+							</followOnAction>
+						</action>
+					</task>
+				</followOnAction>			
+			</entryAction>
+			<exitAction/>
+			<contentFile>QueryInlineLOBDATA.html</contentFile>
+			<loadActionScriptFile>getDirectReadInlineLOB1.xml</loadActionScriptFile>
+			<SQLExecutionOptions xml="false" clob="true" xmlinline="false" clobinline="true" blob="false" dbclob="false" termChar=";" cursor="forward" commitPerStmt="false" numRowReturned="100"/>
+		</page>
+		<!-- END: Query INLINELOBDATA -->
+
+		<!-- BEGIN: Estimate Inline Length -->
+		<page name="Estimate inline length for LOB" type="general">
+			<entryAction name="checkForInsert" type="serverAction">
+				<parameterList>
+					<parameter name="action" type="fixed">
+						<value>checkForRow</value>
+					</parameter>
+					<parameter name="schema" type="constant">
+						<value>SCHEMA</value>
+					</parameter>
+					<parameter name="name" type="fixed">
+						<value>INLINELOBDATA</value>
+					</parameter>
+				</parameterList>
+				<followOnAction condition="true" negCondition="true">
+					<task>
+						<action name="displayMsgForFailedInsert"
+							type="alert">
+							<message>
+								Data hasn't been inserted in the table.  Please try this step again.
+							</message>
+						</action>
+					</task>
+					<task>
+						<setActionReturn>false</setActionReturn>
+					</task>
+				</followOnAction>
+				<followOnAction condition="true">
+					<task>
+						<action name="checkForTable" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="serverAction">
+									<value>checkForObject</value>
+								</parameter>
+								<parameter name="objectType" type="raw">
+									<value>table</value>
+								</parameter>
+								<parameter name="object[schema]" type="constant">
+									<value>SCHEMA</value>
+								</parameter>
+								<parameter name="object[table]" type="fixed">
+									<value>INLINELOBDATA</value>
+								</parameter>
+							</parameterList>
+							<followOnAction condition="false">
+								<task>
+									<action name="displayMsgForFailedInsert"
+										type="alert">
+										<message>
+											Table required hasn't been created.
+											Please execute this step again.
+										</message>
+									</action>
+								</task>
+								<task>
+									<setActionReturn>false</setActionReturn>
+								</task>
+							</followOnAction>
+						</action>
+					</task>
+				</followOnAction>			
+			</entryAction>
+			<exitAction/>
+			<contentFile>EstimateInlineLength.html</contentFile>
+			<loadActionScriptFile>estInlineLength.xml</loadActionScriptFile>
+			<SQLExecutionOptions xml="false" clob="true" xmlinline="false" clobinline="true" blob="false" dbclob="false" termChar=";" cursor="forward" commitPerStmt="false" numRowReturned="100"/>
+		</page>
+		<!-- END: Estimate Inline Length -->
+
+		<!-- BEGIN: Increase LOB Inline Length -->
+		<page name="Increase LOB Inline Length" type="general">
+			<entryAction name="checkForInsert" type="serverAction">
+				<parameterList>
+					<parameter name="action" type="fixed">
+						<value>checkForRow</value>
+					</parameter>
+					<parameter name="schema" type="constant">
+						<value>SCHEMA</value>
+					</parameter>
+					<parameter name="name" type="fixed">
+						<value>INLINELOBDATA</value>
+					</parameter>
+				</parameterList>
+				<followOnAction condition="true" negCondition="true">
+					<task>
+						<action name="displayMsgForFailedInsert"
+							type="alert">
+							<message>
+								Data hasn't been inserted in the table.  Please try this step again.
+							</message>
+						</action>
+					</task>
+					<task>
+						<setActionReturn>false</setActionReturn>
+					</task>
+				</followOnAction>
+				<followOnAction condition="true">
+					<task>
+						<action name="checkForTable" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="serverAction">
+									<value>checkForObject</value>
+								</parameter>
+								<parameter name="objectType" type="raw">
+									<value>table</value>
+								</parameter>
+								<parameter name="object[schema]" type="constant">
+									<value>SCHEMA</value>
+								</parameter>
+								<parameter name="object[table]" type="fixed">
+									<value>INLINELOBDATA</value>
+								</parameter>
+							</parameterList>
+							<followOnAction condition="false">
+								<task>
+									<action name="displayMsgForFailedInsert"
+										type="alert">
+										<message>
+											Table required hasn't been created.
+											Please execute this step again.
+										</message>
+									</action>
+								</task>
+								<task>
+									<setActionReturn>false</setActionReturn>
+								</task>
+							</followOnAction>
+						</action>
+					</task>
+				</followOnAction>					
+			</entryAction>
+			<exitAction/>
+			<contentFile>IncreaseInlineLength.html</contentFile>
+			<loadActionScriptFile>IncreaseInlineLength.xml</loadActionScriptFile>
+			<SQLExecutionOptions xml="false" clob="true" xmlinline="false" clobinline="true" blob="false" dbclob="false" termChar=";" cursor="forward" commitPerStmt="false" numRowReturned="100"/>
+		</page>
+		<!-- END: Increase LOB Inline Length -->	
+
+		<!-- BEGIN: Compare Performance -->
+		<page name="Compare Performance" type="general">
+			<entryAction name="checkForInsert" type="serverAction">
+				<parameterList>
+					<parameter name="action" type="fixed">
+						<value>checkForRow</value>
+					</parameter>
+					<parameter name="schema" type="constant">
+						<value>SCHEMA</value>
+					</parameter>
+					<parameter name="name" type="fixed">
+						<value>LOBDATA</value>
+					</parameter>
+				</parameterList>
+				<followOnAction condition="true" negCondition="true">
+					<task>
+						<action name="displayMsgForFailedInsert"
+							type="alert">
+							<message>
+								Data hasn't been inserted in the table.  Please try this step again.
+							</message>
+						</action>
+					</task>
+					<task>
+						<setActionReturn>false</setActionReturn>
+					</task>
+				</followOnAction>
+				<followOnAction condition="true">
+					<task>
+						<action name="checkForTable" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="serverAction">
+									<value>checkForObject</value>
+								</parameter>
+								<parameter name="objectType" type="raw">
+									<value>table</value>
+								</parameter>
+								<parameter name="object[schema]" type="constant">
+									<value>SCHEMA</value>
+								</parameter>
+								<parameter name="object[table]" type="fixed">
+									<value>LOBDATA</value>
+								</parameter>
+							</parameterList>
+							<followOnAction condition="false">
+								<task>
+									<action name="displayMsgForFailedInsert"
+										type="alert">
+										<message>
+											Table required hasn't been created.
+											Please execute this step again.
+										</message>
+									</action>
+								</task>
+								<task>
+									<setActionReturn>false</setActionReturn>
+								</task>
+							</followOnAction>
+						</action>
+					</task>
+				</followOnAction>					
+			</entryAction>			
+			<exitAction/>
+			<contentFile>ComparePerformance.html</contentFile>
+			<loadActionScriptFile>ComparePerformance.xml</loadActionScriptFile>
+			<SQLExecutionOptions xml="false" clob="true" xmlinline="false" clobinline="true" blob="false" dbclob="false" termChar=";" cursor="forward" commitPerStmt="false" numRowReturned="100"/>
+		</page>
+		<!-- END: Compare Performance -->
+
+	</pageList>
+</tutorial>

@@ -1,0 +1,1 @@
+select * from Y2004;

@@ -1,0 +1,1 @@
+INSERT into ?SCHEMA?.employee_wages(empno, salary) values (1,-10000);

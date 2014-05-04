@@ -1,0 +1,21 @@
+<H4>Insert large amount of XML documents using stored procedures</H4>
+
+<p>
+In order to obtain a reasonable performance number, we are going to insert XML docume nts into both the XML and CLOB columns in bulk.</p>
+<p>
+The script on the right defines two stored procedures to insert 1000 XML documents into 'out_patient_data_PDD1' table as XML and
+'out_patient_data_CLOB' table as CLOB.</p>
+
+<B>Operation</B>
+<BR><BR>
+<ol>
+<li>
+	Create two stored procedures
+	<BR>
+	<ul>
+	<li><b>InsertXMLasXML</b> - Insert 1000 XML documents as XML</li>
+	<li><b>InsertXMLasCLOB</b> -  Insert 1000 XML documents as CLOB</li>
+	</ul>
+</li>
+<li>Call both stored procedures</li>
+</ol>

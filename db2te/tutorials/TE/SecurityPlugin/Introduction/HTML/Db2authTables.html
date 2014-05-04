@@ -1,0 +1,11 @@
+<H3>The Tables</H3><hr>
+The db2auth plug-in stores all user, password, and group information in the database.
+During the initial install and set-up process, it creates a schema called DB2AUTH, containing three tables:<br/>
+<ul><li>USERS </li>
+<li>GROUPS </li>
+<li>GROUP_MEMBERSHIP </li></ul>
+</p>
+<p>The USERS table stores user ID (a unique name), password (MD5 hash), password expiry date, whether the account is locked or not, and the number of failed login attempts.
+<br/><br/>The GROUPS table stores group IP (a unique name).
+<br/><br/>The GROUP_MEMBERSHIP table stores group ID and user ID, where each row represents a membership.
+</p>

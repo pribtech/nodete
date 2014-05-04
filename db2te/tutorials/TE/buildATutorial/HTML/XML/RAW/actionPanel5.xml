@@ -1,0 +1,75 @@
+<actionPanel> 
+	<taskList>
+		<task name="Run performance tests"> 
+			<discription></discription> 
+			<action name="run" type="blank"> 
+				<task> 
+					<setGlobal name="SQL" type="fixed"> 
+						<value>?</value> 
+					</setGlobal> 
+					<echo>Timeing : ?SQL?</echo> 
+					<callAction name="statmentTimer"/> 
+					<setGlobal name="RUN_TIME_JOIN" type="returnObject"> 
+						<value>statmentTimer.returnValue.avgRunTime</value> 
+					</setGlobal> 
+	
+	
+					<setGlobal name="SQL" type="fixed"> 
+						<value>?</value> 
+					</setGlobal> 
+					<echo>Timeing : ?SQL?</echo> 
+					<callAction name="statmentTimer"/> 
+					<setGlobal name="RUN_TIME_INNER_JOIN" type="returnObject"> 
+						<value>statmentTimer.returnValue.avgRunTime</value> 
+					</setGlobal> 
+	
+	
+					<setGlobal name="SQL" type="fixed"> 
+						<value>?</value> 
+					</setGlobal> 
+					<echo>Timeing : ?SQL?</echo> 
+					<callAction name="statmentTimer"/> 
+					<setGlobal name="RUN_TIME_OUTER_JOIN" type="returnObject"> 
+						<value>statmentTimer.returnValue.avgRunTime</value> 
+					</setGlobal> 
+	
+	
+					<setGlobal name="SQL" type="fixed"> 
+						<value>?</value> 
+					</setGlobal> 
+					<echo>Timeing : ?SQL?</echo> 
+					<callAction name="statmentTimer"/> 
+					<setGlobal name="RUN_TIME_LEFT_JOIN" type="returnObject"> 
+						<value>statmentTimer.returnValue.avgRunTime</value> 
+					</setGlobal> 
+				</task>
+				<declareActions>	 
+					<action name="statmentTimer" type="serverAction"> 
+						<parameterList> 
+							<parameter name="action" type="fixed"> 
+								<value>statementThroughput</value> 
+							</parameter>								 
+							<parameter name="Period" type="fixed"> 
+								<value>5</value> 
+							</parameter> 
+							<parameter name="MinRunAmount" type="fixed"> 
+								<value>1</value> 
+							</parameter> 
+						</parameterList> 
+						<if condition="true"> 
+							<task> 
+								<echo>Run finished!</echo> 
+							</task> 
+						</if> 
+						<if condition="false"> 
+							<task> 
+								<echo>Error in run!</echo> 
+								<exit/> 
+							</task> 
+						</if> 
+					</action> 
+				</declareActions> 
+			</action>
+		</task>
+	</taskList>
+</actionPanel>

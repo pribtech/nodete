@@ -1,0 +1,44 @@
+<h2>Tutorial Flow:</h2><hr>
+<ul>
+<li class="sourceCopiedFrom">Determining the problem category</li>
+<li>Performing detailed diagnosis of the problem</li>
+<li>Identifying the scope of the SQL statements involved</li>
+</ul>
+
+
+<BR><h2>Determining the problem category</h2><hr>
+<P><B><font color=grey>As part of the initial diagnosis, the database administrator looks for familiar patterns of symptoms to categorize the problem at a high level. This example uses the <B><CODE>MONREPORT.DBSUMMARY</CODE></B> report. The Summary report contains in-depth monitor data for the entire database, as well as key performance indicators for each connection, workload, service class, and database member. This report is implemented as a stored procedure in MONREPORT module. The MONREPORT module provides a set of procedures for retrieving variety of monitoring data and generating text reports.</font></B></p>
+
+
+
+<BR>
+<h4>Monitoring report used</h4>
+<ul>
+<li><B><CODE>MONREPORT.DBSUMMARY</CODE></B></li>
+<li><a onclick="OpenURLInFloatingWindow('?BASE_DIRECTORY?/HTML/sample_serverPerformance.html');">Sample output</a> of the report</li>
+</ul>
+
+<br><BR>
+<h4>Report highlights</h4>
+Pay attention to "Part 1 - System performance"
+<ul>
+<li>Wait times</li>
+<li>Detailed breakdown of <B><code>TOTAL_WAIT_TIME</code></B></li>
+</ul>
+
+<br><BR>
+<h4>Results</h4>
+<ul>
+<li>High value for <B><code>TOTAL_WAIT_TIME</code></B></li>
+<li>High value for lock wait time</li>
+</ul>
+
+<BR><BR>
+<h4>Conclusion</h4>
+<ul>
+<li>High percentage of <B><CODE>TOTAL_WAIT_TIME</CODE></B> for requests and activities shows that applications are waiting most of the time.</li>
+<li>High values for <B><CODE>LOCK_WAIT_TIME</CODE></B> shows that DB2 is waiting for locks most of the time. This can be due to lock contention.</li>
+</ul>
+<BR><BR>
+<h4>Identified problem</h4>
+High lock wait time and high total wait time indicates problems with the locks.

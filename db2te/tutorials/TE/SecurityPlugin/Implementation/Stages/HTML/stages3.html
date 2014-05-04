@@ -1,0 +1,48 @@
+<H3>Defining the Stage Layout</H3><hr>
+<p>Next we define the layout of the stage.  
+</p>
+
+<p><h2>Steps:</h2>
+<ol>
+  <li>Copy or enter the text from the right into the file</li>
+</ol>
+</p>
+<p>You can specify:
+<ul>
+<li>the type
+  <ul><li>The types are: Menu, Panel, SplitPane, Stage, and Window</li>
+  </ul>
+</li>
+<li>name, so that we can refer to it later on when we define our pages</li>
+<li>what the menu bar of this stage will contain
+  <ul><li>The options are: NO_TASK_BAR, TOP_TAB_TASK_BAR, TOP_BLOCK_TASK_BAR, LEFT_BLOCK_TASK_BAR, RIGHT_BLOCK_TASK_BAR, BOTTOM_BLOCK_TASK_BAR, and ALLOW_NEW_PANEL</li>
+  <li>In our case we need to have the TOP_TAB_TASK_BAR because we need the tab to switch between the four windows, and we would like it at the top</li>
+  </ul>
+</li>
+<li>margins</li>
+<li>the type of title bar  
+  <ul><li>The options are: NO_TITLE_BAR, WINDOW_CONTROLS_OUTSIDE_OF_TITLE, and WINDOW_CONTROLS_INSIDE_OF_TITLE</li>
+  <li>In our case we need to have the NO_TITLE_BAR because we want the title to show up next to the navigation icons, to take up as little space as possible</li>
+  </ul>
+</li>
+<li>what navigation buttons you'd like on your stage
+  <ul><li>The options are: NO_NAV_BAR, NAV_FORWARD_BUTTON, NAV_RELOAD_BUTTON, NAV_ADDRESS_BAR, and TAB_PERSISTENCE_FLAG</li>
+  <li>In our case we need to have the:
+    <ul><li>NAV_BACK_BUTTON + NAV_FORWARD_BUTTON so that the user can navigate back and forward when they load detail views to the bottom panel</li>
+    <li>NAV_RELOAD_BUTTON so that the user can reload a window within the stage</li>
+        </ul>
+  </ul>
+</li>
+<li>what controls are offered for the window
+  <ul><li>The options are: NO_TITLE_BAR_OPTIONS, TITLE_BAR_QUESTION_MENU, TITLE_BAR_MINIMIZE_BUTTON, TITLE_BAR_HIDE_BUTTON, and TITLE_BAR_CLOSE_BUTTON</li>
+  <li>In our case we need to have the NO_TITLE_BAR_OPTIONS because we specifed that we wanted no title bars above </li>
+  </ul>
+</li>
+<li>whether you want it to be resizable
+  <ul><li>The options are: WINDOW_IS_SIZABLE, WINDOW_IS_FIXED, and WINDOW_IS_FULL</li>
+  <li>In our case we need to have the WINDOW_IS_FULL because we want the window to take up the whole window container, and allow resizing as the user resizes the outer browser</li>
+  </ul>
+</li>
+</ul> </p>
+<p>As you may have noticed, you can add options together, or only specify one.  Try plying around with some of the options to see what exactly they do</p>
+<p>Finally, the getWindow command loads the window containing the stage with the specified layout</p><br/><br/>

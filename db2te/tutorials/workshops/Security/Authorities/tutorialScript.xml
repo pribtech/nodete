@@ -1,0 +1,598 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tutorial name="DB2 Security: Authorities">
+	<flowRestriction>freewithchecks</flowRestriction>
+	<globalCodeHighlightOptions highlightCode = "true" />
+	<pageList>
+
+	        <page name="DB2 authorities overview" type="intro">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>SecurityIntro.html</contentFile>	
+			<autoLoadLink>
+				<pageWindow target="informationWindow">
+					<panel name="main">
+						<URL>
+							http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.admin.sec.doc/doc/c0055206.html?noframes=true
+						</URL>
+					</panel>
+				</pageWindow>
+			</autoLoadLink>
+		</page>
+		
+		<page name="Pre-requisites" type="general">
+			<contentFile>workshopPrereq.html</contentFile>
+			<autoLoadLink>
+				<pageWindow target="tabledef" raiseToTop="y">
+					<panel name="top" PrimaryContainer="true">
+		   				<link type="other" target="_self" window="_self" connectionRequired="y">
+							<address>
+								?BASE_DIRECTORY?/other/users.php
+							</address>
+							<parameterList>
+								<parameter name="BASE_DIR">
+									?BASE_DIRECTORY?
+								</parameter>
+							</parameterList>
+						</link>
+					</panel>
+				</pageWindow>
+			</autoLoadLink>
+		</page>
+		
+		<page name="Connect as the database creator" type="general">
+			<contentFile>
+				connect_dbcreator.html
+			</contentFile>
+			<autoLoadLink>
+				<pageWindow target="connectionLoader" raiseToTop="true">
+					<splitPane direction="h" splitPercent="0.8" allowResize="false">
+						<topPane>
+							<panel name="main" PrimaryContainer="true">
+								<RAW><![CDATA[
+<div id="title">Connection Manager</div>
+Connect to the database as the database creator.
+								]]></RAW>
+							</panel>
+						</topPane>
+						<bottomPane>
+							<panel name="connection" PrimaryContainer="false">
+								<link type="action" target="_self" window="_self" connectionRequired="y">
+									<parameterList>
+										<parameter name="action">connectionManager</parameter>
+									</parameterList>
+								</link>				
+							</panel>
+						</bottomPane>
+					</splitPane>
+				</pageWindow>
+			</autoLoadLink>
+		</page>
+
+
+		<page name="View SYSADM authorities" type="general">
+			<contentFile>
+				ViewAuthorities.html
+			</contentFile>
+			<SQLFile>
+			   ViewAuthorities.SQL
+			</SQLFile>
+			<SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar=";"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+            <codeHighlightOptions highlightCode="true">
+				<changedHighlightTokens>
+					<text>TABLE (AUTH_LIST_AUTHORITIES_FOR_AUTHID</text>
+				</changedHighlightTokens>
+			</codeHighlightOptions>
+			<autoLoadLink>
+				<pageWindow target="connectionLoader" raiseToTop="true">
+					<splitPane direction="h" splitPercent="0.8" allowResize="false">
+						<topPane>
+							<panel name="main" PrimaryContainer="true">
+								<RAW><![CDATA[
+<div id="title">Connection Manager</div>
+Connect to the database as the database creator for this example.
+								]]></RAW>
+							</panel>
+						</topPane>
+						<bottomPane>
+							<panel name="connection" PrimaryContainer="false">
+								<link type="action" target="_self" window="_self" connectionRequired="y">
+									<parameterList>
+										<parameter name="action">connectionManager</parameter>
+									</parameterList>
+								</link>				
+							</panel>
+						</bottomPane>
+					</splitPane>
+				</pageWindow>
+			</autoLoadLink>
+		</page>
+
+
+	<page name="Separation of duties" type="general">
+		<contentFile>
+				PatSecadm.html
+			</contentFile>
+			<SQLFile>
+				DBADM_AUTH.SQL
+			</SQLFile>
+		    <SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar=";"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+	            <codeHighlightOptions highlightCode="true">
+				<changedHighlightTokens>
+					<text>GRANT SECADM ON DATABASE</text>
+					<text>TO USER</text>
+				</changedHighlightTokens>
+			</codeHighlightOptions>
+			<autoLoadLink>
+				<pageWindow target="connectionLoader" raiseToTop="true">
+					<splitPane direction="h" splitPercent="0.8" allowResize="false">
+						<topPane>
+							<panel name="main" PrimaryContainer="true">
+								<RAW><![CDATA[
+<div id="title">Connection Manager</div>
+Connect to the database as the database creator for this example.
+								]]></RAW>
+							</panel>
+						</topPane>
+						<bottomPane>
+							<panel name="connection" PrimaryContainer="false">
+								<link type="action" target="_self" window="_self" connectionRequired="y">
+									<parameterList>
+										<parameter name="action">connectionManager</parameter>
+									</parameterList>
+								</link>				
+							</panel>
+						</bottomPane>
+					</splitPane>
+				</pageWindow>
+			</autoLoadLink>
+			
+		</page>
+
+		<page name="Connect as Pat" type="general">
+			<contentFile>
+				connect_pat.html
+			</contentFile>
+			<autoLoadLink>
+				<pageWindow target="connectionLoader" raiseToTop="true">
+					<splitPane direction="h" splitPercent="0.8" allowResize="false">
+						<topPane>
+							<panel name="main" PrimaryContainer="true">
+								<RAW><![CDATA[
+<div id="title">Connection Manager</div>
+Connect to the database as Pat.
+								]]></RAW>
+							</panel>
+						</topPane>
+						<bottomPane>
+							<panel name="connection" PrimaryContainer="false">
+								<link type="action" target="_self" window="_self" connectionRequired="y">
+									<parameterList>
+										<parameter name="action">connectionManager</parameter>
+									</parameterList>
+								</link>				
+							</panel>
+						</bottomPane>
+					</splitPane>
+				</pageWindow>
+			</autoLoadLink>
+		</page>
+
+
+		<page name="Revoke SECADM from database creator" type="general">
+			<contentFile>
+				RevokeSecadm.html
+			</contentFile>
+			<SQLFile>
+				secadm.SQL
+			</SQLFile>
+		    <SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar="@"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+	            <codeHighlightOptions highlightCode="true">
+				<changedHighlightTokens>
+					<text>GRANT DBADM ON DATABASE</text>
+					<text>TO USER</text>
+					<text>GRANT SECADM ON DATABASE</text>
+					<text>REVOKE SECADM ON DATABASE</text>					
+					<text>FROM USER</text>					
+				</changedHighlightTokens>
+			</codeHighlightOptions>
+			<autoLoadLink>
+				<pageWindow target="connectionLoader" raiseToTop="true">
+					<splitPane direction="h" splitPercent="0.8" allowResize="false">
+						<topPane>
+							<panel name="main" PrimaryContainer="true">
+								<RAW><![CDATA[
+<div id="title">Connection Manager</div>
+Connect to the database as Pat for this example.
+								]]></RAW>
+							</panel>
+						</topPane>
+						<bottomPane>
+							<panel name="connection" PrimaryContainer="false">
+								<link type="action" target="_self" window="_self" connectionRequired="y">
+									<parameterList>
+										<parameter name="action">connectionManager</parameter>
+									</parameterList>
+								</link>				
+							</panel>
+						</bottomPane>
+					</splitPane>
+				</pageWindow>
+			</autoLoadLink>			
+		</page>
+
+		<page name="Connect as the database creator" type="general">
+			<contentFile>
+				connect_dbcreator.html
+			</contentFile>
+			<autoLoadLink>
+				<pageWindow target="connectionLoader" raiseToTop="true">
+					<splitPane direction="h" splitPercent="0.8" allowResize="false">
+						<topPane>
+							<panel name="main" PrimaryContainer="true">
+								<RAW><![CDATA[
+<div id="title">Connection Manager</div>
+Connect to the database as the database creator.
+								]]></RAW>
+							</panel>
+						</topPane>
+						<bottomPane>
+							<panel name="connection" PrimaryContainer="false">
+								<link type="action" target="_self" window="_self" connectionRequired="y">
+									<parameterList>
+										<parameter name="action">connectionManager</parameter>
+									</parameterList>
+								</link>				
+							</panel>
+						</bottomPane>
+					</splitPane>
+				</pageWindow>
+			</autoLoadLink>
+		</page>
+	
+		<page name="SYSADM and DBADM limits" type="general">
+			<contentFile>
+				ViewDBADMAuth.html
+			</contentFile>
+			<SQLFile>
+				ViewDBADMAuth.SQL
+			</SQLFile>
+			<SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar=";"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+           		<codeHighlightOptions highlightCode="true">
+				<changedHighlightTokens>
+					<text>GRANT DBADM ON DATABASE</text>
+					<text>TO USER</text>
+					<text>GRANT SECADM ON DATABASE</text>
+					<text>REVOKE SECADM ON DATABASE</text>					
+					<text>FROM USER</text>
+				</changedHighlightTokens>
+			</codeHighlightOptions>
+			<autoLoadLink>
+				<pageWindow target="connectionLoader" raiseToTop="true">
+					<splitPane direction="h" splitPercent="0.8" allowResize="false">
+						<topPane>
+							<panel name="main" PrimaryContainer="true">
+								<RAW><![CDATA[
+<div id="title">Connection Manager</div>
+Connect to the database as the database creator for this example.
+								]]></RAW>
+							</panel>
+						</topPane>
+						<bottomPane>
+							<panel name="connection" PrimaryContainer="false">
+								<link type="action" target="_self" window="_self" connectionRequired="y">
+									<parameterList>
+										<parameter name="action">connectionManager</parameter>
+									</parameterList>
+								</link>				
+							</panel>
+						</bottomPane>
+					</splitPane>
+				</pageWindow>
+			</autoLoadLink>				
+		</page>
+	
+		<page name="Connect as Pat" type="general">
+			<contentFile>
+				connect_pat.html
+			</contentFile>
+			<autoLoadLink>
+				<pageWindow target="connectionLoader" raiseToTop="true">
+					<splitPane direction="h" splitPercent="0.8" allowResize="false">
+						<topPane>
+							<panel name="main" PrimaryContainer="true">
+								<RAW><![CDATA[
+<div id="title">Connection Manager</div>
+Connect to the database as Pat.
+								]]></RAW>
+							</panel>
+						</topPane>
+						<bottomPane>
+							<panel name="connection" PrimaryContainer="false">
+								<link type="action" target="_self" window="_self" connectionRequired="y">
+									<parameterList>
+										<parameter name="action">connectionManager</parameter>
+									</parameterList>
+								</link>				
+							</panel>
+						</bottomPane>
+					</splitPane>
+				</pageWindow>
+			</autoLoadLink>
+		</page>		
+		
+    		<page name="SECADM authority" type="general">
+  			<contentFile>
+				SECADM_AUTH.html
+			</contentFile>
+			<SQLFile>
+				SECADM_AUTH.SQL
+            		</SQLFile>
+			<SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar=";"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>            		
+            		<codeHighlightOptions highlightCode="true">
+				<changedHighlightTokens>
+					<text>GRANT DBADM ON DATABASE</text>
+					<text>TO USER</text>
+					<text>GRANT SECADM ON DATABASE</text>
+					<text>REVOKE SECADM ON DATABASE</text>					
+					<text>REVOKE DBADM ON DATABASE</text>	
+					<text>REVOKE DBADM, ACCESSCTRL, DATAACCESS ON DATABASE</text>
+					<text>CREATE ROLE</text>
+					<text>FROM USER</text>
+				</changedHighlightTokens>
+			</codeHighlightOptions>
+			<autoLoadLink>
+				<pageWindow target="connectionLoader" raiseToTop="true">
+					<splitPane direction="h" splitPercent="0.8" allowResize="false">
+						<topPane>
+							<panel name="main" PrimaryContainer="true">
+								<RAW><![CDATA[
+<div id="title">Connection Manager</div>
+Connect to the database as Pat for this example.
+								]]></RAW>
+							</panel>
+						</topPane>
+						<bottomPane>
+							<panel name="connection" PrimaryContainer="false">
+								<link type="action" target="_self" window="_self" connectionRequired="y">
+									<parameterList>
+										<parameter name="action">connectionManager</parameter>
+									</parameterList>
+								</link>				
+							</panel>
+						</bottomPane>
+					</splitPane>
+				</pageWindow>
+			</autoLoadLink>				
+			
+		</page>
+
+   	<page name="Grant least privileges to Sam" type="general">
+  		<contentFile>
+				BobsPrivileges.html
+			</contentFile>
+			<SQLFile>
+				BobsPrivileges.sql
+            		</SQLFile>
+            <SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar=";"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+            <codeHighlightOptions highlightCode="true">
+				<changedHighlightTokens>
+					<text>REVOKE ACCESSCTRL, DATAACCESS ON DATABASE</text>
+					<text>GRANT DBADM WITHOUT ACCESSCTRL WITHOUT DATAACCESS ON DATABASE</text>
+					<text>TO USER</text>
+				</changedHighlightTokens>
+			</codeHighlightOptions>
+			<autoLoadLink>
+				<pageWindow target="connectionLoader" raiseToTop="true">
+					<splitPane direction="h" splitPercent="0.8" allowResize="false">
+						<topPane>
+							<panel name="main" PrimaryContainer="true">
+								<RAW><![CDATA[
+<div id="title">Connection Manager</div>
+Connect to the database as Pat for this example.
+								]]></RAW>
+							</panel>
+						</topPane>
+						<bottomPane>
+							<panel name="connection" PrimaryContainer="false">
+								<link type="action" target="_self" window="_self" connectionRequired="y">
+									<parameterList>
+										<parameter name="action">connectionManager</parameter>
+									</parameterList>
+								</link>				
+							</panel>
+						</bottomPane>
+					</splitPane>
+				</pageWindow>
+			</autoLoadLink>				
+		</page>
+		
+	<page name="View authorities for Sam" type="general">
+    			<contentFile>
+				BobsAuthorities.html
+			</contentFile>
+			<SQLFile>
+				ViewAuthorities1.sql
+            		</SQLFile>
+		        <codeHighlightOptions highlightCode="true">
+				<changedHighlightTokens>
+					<text>TABLE (AUTH_LIST_AUTHORITIES_FOR_AUTHID </text>
+				</changedHighlightTokens>
+			</codeHighlightOptions>
+			<autoLoadLink>
+				<pageWindow target="connectionLoader" raiseToTop="true">
+					<splitPane direction="h" splitPercent="0.8" allowResize="false">
+						<topPane>
+							<panel name="main" PrimaryContainer="true">
+								<RAW><![CDATA[
+<div id="title">Connection Manager</div>
+Connect to the database as Pat for this example.
+								]]></RAW>
+							</panel>
+						</topPane>
+						<bottomPane>
+							<panel name="connection" PrimaryContainer="false">
+								<link type="action" target="_self" window="_self" connectionRequired="y">
+									<parameterList>
+										<parameter name="action">connectionManager</parameter>
+									</parameterList>
+								</link>				
+							</panel>
+						</bottomPane>
+					</splitPane>
+				</pageWindow>
+			</autoLoadLink>				
+			
+		</page>
+			
+		<page name="Connect as Sam" type="general">
+			<contentFile>
+				connect_sam.html
+			</contentFile>
+			<autoLoadLink>
+				<pageWindow target="connectionLoader" raiseToTop="true">
+					<splitPane direction="h" splitPercent="0.8" allowResize="false">
+						<topPane>
+							<panel name="main" PrimaryContainer="true">
+								<RAW><![CDATA[
+<div id="title">Connection Manager</div>
+Connect to the database as Sam.
+								]]></RAW>
+							</panel>
+						</topPane>
+						<bottomPane>
+							<panel name="connection" PrimaryContainer="false">
+								<link type="action" target="_self" window="_self" connectionRequired="y">
+									<parameterList>
+										<parameter name="action">connectionManager</parameter>
+									</parameterList>
+								</link>				
+							</panel>
+						</bottomPane>
+					</splitPane>
+				</pageWindow>
+			</autoLoadLink>
+		</page>			
+
+	<page name="Least privileges Sam has" type="general">
+			<contentFile>
+				checkBob.html
+			</contentFile>
+			<SQLFile>
+				checkBob.sql
+            		</SQLFile>
+   		    	<SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar=";"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+            		<codeHighlightOptions highlightCode="true">
+				<changedHighlightTokens>
+					<text>SELECT</text>
+					<text>GRANT SELECT, INSERT</text>
+					<text>TO USER</text>
+				</changedHighlightTokens>
+			</codeHighlightOptions>
+			<autoLoadLink>
+				<pageWindow target="connectionLoader" raiseToTop="true">
+					<splitPane direction="h" splitPercent="0.8" allowResize="false">
+						<topPane>
+							<panel name="main" PrimaryContainer="true">
+								<RAW><![CDATA[
+<div id="title">Connection Manager</div>
+Connect to the database as Sam for this example.
+								]]></RAW>
+							</panel>
+						</topPane>
+						<bottomPane>
+							<panel name="connection" PrimaryContainer="false">
+								<link type="action" target="_self" window="_self" connectionRequired="y">
+									<parameterList>
+										<parameter name="action">connectionManager</parameter>
+									</parameterList>
+								</link>				
+							</panel>
+						</bottomPane>
+					</splitPane>
+				</pageWindow>
+			</autoLoadLink>					
+		</page>
+
+		<page name="Connect as Pat" type="general">
+			<contentFile>
+				connect_pat.html
+			</contentFile>
+			<autoLoadLink>
+				<pageWindow target="connectionLoader" raiseToTop="true">
+					<splitPane direction="h" splitPercent="0.8" allowResize="false">
+						<topPane>
+							<panel name="main" PrimaryContainer="true">
+								<RAW><![CDATA[
+<div id="title">Connection Manager</div>
+Connect to the database as Pat.
+								]]></RAW>
+							</panel>
+						</topPane>
+						<bottomPane>
+							<panel name="connection" PrimaryContainer="false">
+								<link type="action" target="_self" window="_self" connectionRequired="y">
+									<parameterList>
+										<parameter name="action">connectionManager</parameter>
+									</parameterList>
+								</link>				
+							</panel>
+						</bottomPane>
+					</splitPane>
+				</pageWindow>
+			</autoLoadLink>
+		</page>			
+		
+		<page name="Restore authorities to default state" type="general">
+			<contentFile>
+				restore.html
+			</contentFile>
+			<SQLFile>
+				restore.sql
+	               </SQLFile>
+   		    <SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar=";"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+            <codeHighlightOptions highlightCode="true">
+				<changedHighlightTokens>
+					<text></text>
+					<text>REVOKE SELECT, INSERT</text>
+					<text>REVOKE DBADM</text>
+					<text>GRANT SECADM</text>
+					<text>GRANT DBADM</text>
+				</changedHighlightTokens>
+			</codeHighlightOptions>
+			<autoLoadLink>
+				<pageWindow target="connectionLoader" raiseToTop="true">
+					<splitPane direction="h" splitPercent="0.8" allowResize="false">
+						<topPane>
+							<panel name="main" PrimaryContainer="true">
+								<RAW><![CDATA[
+<div id="title">Connection Manager</div>
+Connect to the database as Pat for this example.
+								]]></RAW>
+							</panel>
+						</topPane>
+						<bottomPane>
+							<panel name="connection" PrimaryContainer="false">
+								<link type="action" target="_self" window="_self" connectionRequired="y">
+									<parameterList>
+										<parameter name="action">connectionManager</parameter>
+									</parameterList>
+								</link>				
+							</panel>
+						</bottomPane>
+					</splitPane>
+				</pageWindow>
+			</autoLoadLink>					
+			
+		</page>
+	
+	
+	</pageList>
+</tutorial>

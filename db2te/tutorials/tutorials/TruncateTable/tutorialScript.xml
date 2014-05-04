@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tutorial name="Truncate Table Command" useLongAdHoc="true">
+	<flowRestriction>forwardexploration</flowRestriction>
+	<globalCodeHighlightOptions highlightCode="true"/>
+	<pageList>
+		<page name="Introduction" type="intro">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>TruncateTableCommand.html</contentFile>
+			<autoLoadLink>
+				<pageWindow target="informationWindow">
+						<panel name="main">
+							<URL>http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.sql.ref.doc/doc/r0053474.html?noframes=true</URL>
+						</panel>
+				</pageWindow>
+			</autoLoadLink>
+		</page>
+		<page name="Create Large Tables" type="general">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>CreateLargeTables.html</contentFile>
+			<SQLFile>CreateLargeTables.SQL</SQLFile>
+			<HTMLSQLFile>CreateLargeTablesHTML.html</HTMLSQLFile>
+			<SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar="#"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+		</page>
+		<page name="Explore the Tables" type="general">
+			<entryAction name="checkForTable5k" type="serverAction">
+				<parameterList>
+					<parameter name="action" type="fixed">
+						<value>checkForObject</value>
+					</parameter>
+					<parameter name="objectType" type="fixed">
+						<value>table</value>
+					</parameter>
+					<parameter name="object[schema]" type="constant">
+						<value>SCHEMA</value>
+					</parameter>
+					<parameter name="object[table]" type="raw">
+						<value>table5k</value>
+					</parameter>
+				</parameterList>
+				<if condition="false">
+					<task>
+						<action name="alertTablesNotCreated" type="alert">
+							<message>The required tables must be created before proceeding with the tutorial.</message>
+						</action>
+						<setActionReturn value="false"/>
+					</task>
+				</if>
+			</entryAction>
+			<exitAction/>
+			<contentFile>ExploreLargeTables.html</contentFile>
+			<autoLoadLink>
+				<pageWindow target="informationWindow" raiseToTop="y">
+					<splitPane direction="h">
+						<topPane>
+							<panel name="main" PrimaryContainer="true">
+								<link type="action" target="_self" window="_self"
+									connectionRequired="y">
+									<parameterList>
+										<parameter name="table">tablecat</parameter>
+										<parameter name="action">list_table</parameter>
+										<parameter name="tabschema">?SCHEMA?</parameter>
+									</parameterList>
+								</link>
+							</panel>
+						</topPane>
+						<bottomPane>
+							<panel name="detail"/>
+						</bottomPane>
+					</splitPane>
+				</pageWindow>
+			</autoLoadLink>
+		</page>
+		<page name="DELETE Table Performance" type="general">
+			<entryAction name="checkForTable5k" type="serverAction">
+				<parameterList>
+					<parameter name="action" type="fixed">
+						<value>checkForObject</value>
+					</parameter>
+					<parameter name="objectType" type="fixed">
+						<value>table</value>
+					</parameter>
+					<parameter name="object[schema]" type="constant">
+						<value>SCHEMA</value>
+					</parameter>
+					<parameter name="object[table]" type="raw">
+						<value>table5k</value>
+					</parameter>
+				</parameterList>
+				<followOnAction condition="0" compareOn="checkForTable5k.returnValue">
+					<task>
+						<action name="alertTablesNotCreated" type="alert">
+							<message>The required tables must be created before proceeding with the tutorial.</message>
+						</action>
+						<setActionReturn value="false"/>
+					</task>
+				</followOnAction>
+			</entryAction>
+			<exitAction/>
+			<loadActionScriptFile>deleteAndGraph.xml</loadActionScriptFile>
+			<contentFile>DeleteTablePerformance.html</contentFile>
+		</page>
+		<page name="Reload Same Tables" type="general">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>ReloadSameTables.html</contentFile>
+			<SQLFile>ReloadSameTables.SQL</SQLFile>
+			<HTMLSQLFile>ReloadSameTablesHTML.html</HTMLSQLFile>
+			<SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar="#"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+		</page>
+		<page name="TRUNCATE Table Performance" type="general">
+			<entryAction name="checkForRows" type="serverAction">
+				<parameterList>
+					<parameter name="action" type="fixed">
+						<value>executeSQL</value>
+					</parameter>
+					<parameter name="SQL" type="fixed">
+						<value>SELECT ZIPCODE FROM ?SCHEMA?.table5k FETCH FIRST ROW ONLY</value>
+					</parameter>
+				</parameterList>
+				<followOnAction condition="1"
+					compareOn="checkForRows.returnValue.resultSet.0.rowsReturned"
+					negCondition="true">
+					<task>
+						<action name="alertTablesWithoutRows" type="alert">
+							<message>The required tables are empty, please execute SQL in previous step.</message>
+						</action>
+						<setActionReturn value="false"/>
+					</task>
+				</followOnAction>
+			</entryAction>
+			<exitAction/>
+			<contentFile>TruncateTablePerformance.html</contentFile>
+			<loadActionScriptFile>truncateAndGraph.xml</loadActionScriptFile>
+		</page>
+	</pageList>
+</tutorial>

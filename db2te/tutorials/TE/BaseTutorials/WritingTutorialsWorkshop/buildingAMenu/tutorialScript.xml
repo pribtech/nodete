@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tutorial name="Building A Menu" closeWindowsInRightStage="true" clearAdhocResults="true">
+	<flowRestriction>free</flowRestriction>
+	<closeAction/>
+	<openAction/>
+	<pageList>
+
+		<page name="Introduction" type="intro">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>intro.html</contentFile>
+			<autoLoadLink/>
+		</page>
+
+		<page name="Create a New Menu Folder" type="general">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>page2.html</contentFile>
+			<autoLoadLink>
+				<pageWindow target="tabledef" raiseToTop="y">
+					<panel name="top" PrimaryContainer="true">
+		   				<link type="other" target="_self" window="_self" connectionRequired="y">
+							<address>
+								?BASE_DIRECTORY?/other/page2_other.html
+							</address>
+						</link>
+					</panel>
+				</pageWindow>
+			</autoLoadLink>
+		</page>
+
+		<page name="Add a Tutorial to the Menu Structure" type="general">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>page3.html</contentFile>
+			<autoLoadLink/>
+		</page>
+		
+		<page name="Create Sub-Menus" type="general">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>page4.html</contentFile>
+			<autoLoadLink>
+				<pageWindow target="tabledef" raiseToTop="y">
+					<panel name="top" PrimaryContainer="true">
+		   				<link type="other" target="_self" window="_self" connectionRequired="y">
+							<address>
+								?BASE_DIRECTORY?/other/page4_original.html
+							</address>
+						</link>
+					</panel>
+				</pageWindow>
+				<pageWindow target="tabledef2" raiseToTop="y">
+					<panel name="top" PrimaryContainer="true">
+		   				<link type="other" target="_self" window="_self" connectionRequired="y">
+							<address>
+								?BASE_DIRECTORY?/other/page4_personal.html
+							</address>
+						</link>
+					</panel>
+				</pageWindow>
+
+			</autoLoadLink>
+		</page>
+		
+		<page name="Add a Set of Tutorials" type="general">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>page5.html</contentFile>
+			<autoLoadLink/>
+		</page>
+
+	</pageList>
+</tutorial>

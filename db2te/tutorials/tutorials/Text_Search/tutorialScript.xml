@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tutorial name="DB2 Text Search" closeWindowsInRightStage="true" clearAdhocResults="true">
+	<flowRestriction>forwardexploration</flowRestriction>
+	<closeAction/>
+	<openAction/>
+	<pageList>
+		<!--BEGIN: Introduction page-->
+		<page name="Introduction" type="intro">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>DB2TextSearch.html</contentFile>
+			<autoLoadLink>
+				<pageWindow target="informationWindow">
+					<panel name="main" PrimaryContainer="true">
+						<URL>
+							http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.admin.ts.doc/doc/c_overview.html
+						</URL>
+					</panel>
+				</pageWindow>
+			</autoLoadLink>
+		</page>
+		<!-- END: Introduction page -->
+		
+		
+		<!-- BEGIN: Enable database for text search -->
+		<page name="Enable database for text search" type="general">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>EnableTextSearch.html</contentFile>
+			<SQLFile>EnableTextSearch.sql</SQLFile>
+			<SQLExecutionOptions xml="false" clob="false" xmlinline="false" clobinline="false" blob="false" dbclob="false" termChar=";" cursor="forward" commitPerStmt="false" numRowReturned="100"/>
+		</page>
+		<!-- END: Enable database for text search -->
+
+		<!-- BEGIN: Create and Populate table -->
+		<page name="Create and populate table BOOKS" type="general">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>CreateTable.html</contentFile>
+			<SQLFile>CreateTable.sql</SQLFile>
+			<SQLExecutionOptions xml="false" clob="false" xmlinline="false" clobinline="false" blob="false" dbclob="false" termChar=";" cursor="forward" commitPerStmt="false" numRowReturned="100"/>
+		</page>
+		<!-- END: Create and Populate table -->		
+		
+		<!-- BEGIN: Create and populate text indexes -->
+		<page name="Create and populate text indexes" type="general">
+		<entryAction name="checkForInsert" type="serverAction">
+				<parameterList>
+					<parameter name="action" type="fixed">
+						<value>checkForRow</value>
+					</parameter>
+					<parameter name="schema" type="constant">
+						<value>SCHEMA</value>
+					</parameter>
+					<parameter name="name" type="fixed">
+						<value>BOOKS</value>
+					</parameter>
+				</parameterList>
+				<followOnAction condition="true" negCondition="true">
+					<task>
+						<action name="displayMsgForFailedInsert"
+							type="alert">
+							<message>
+								Data hasn't been inserted in the table.  Please try this step again.
+							</message>
+						</action>
+					</task>
+					<task>
+						<setActionReturn>false</setActionReturn>
+					</task>
+				</followOnAction>
+				<followOnAction condition="true">
+					<task>
+						<action name="checkForTable" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="serverAction">
+									<value>checkForObject</value>
+								</parameter>
+								<parameter name="objectType" type="raw">
+									<value>table</value>
+								</parameter>
+								<parameter name="object[schema]" type="constant">
+									<value>SCHEMA</value>
+								</parameter>
+								<parameter name="object[table]" type="fixed">
+									<value>BOOKS</value>
+								</parameter>
+							</parameterList>
+							<followOnAction condition="false">
+								<task>
+									<action name="displayMsgForFailedInsert"
+										type="alert">
+										<message>
+											Table required hasn't been created.
+											Please execute this step again.
+										</message>
+									</action>
+								</task>
+								<task>
+									<setActionReturn>false</setActionReturn>
+								</task>
+							</followOnAction>
+						</action>
+					</task>
+				</followOnAction>			
+			</entryAction>
+			<exitAction/>
+			<contentFile>CreateTextIndexes.html</contentFile>
+			<SQLFile>CreateTextIndexes.sql</SQLFile>
+			<SQLExecutionOptions xml="false" clob="true" xmlinline="false" clobinline="true" blob="false" dbclob="false" termChar=";" cursor="forward" commitPerStmt="false" numRowReturned="100"/>
+		</page>
+		<!-- END: Create and populate text indexes -->
+		
+		<!-- BEGIN: Perform searches in plain text -->
+		<page name="Perform searches in plain text" type="general">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>SearchPlainText.html</contentFile>
+			<SQLFile>SearchPlainText.sql</SQLFile>
+			<SQLExecutionOptions xml="false" clob="true" xmlinline="false" clobinline="true" blob="false" dbclob="false" termChar=";" cursor="forward" commitPerStmt="false" numRowReturned="100"/>
+		</page>
+		<!-- END: Perform searches in plain text -->		
+		
+		<!-- BEGIN: Perform searches in XML documents -->
+		<page name="Perform searches in XML documents" type="general">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>SearchXML.html</contentFile>
+			<SQLFile>SearchXML.sql</SQLFile>
+			<SQLExecutionOptions xml="true" clob="true" xmlinline="true" clobinline="true" blob="false" dbclob="false" termChar=";" cursor="forward" commitPerStmt="false" numRowReturned="100"/>
+		</page>
+		<!-- END: Perform searches in XML documents -->		
+
+		<!-- BEGIN: Update text indexes -->
+		<page name="Update text indexes" type="general">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>UpdateTextIndex.html</contentFile>
+			<SQLFile>UpdateTextIndex.sql</SQLFile>
+			<SQLExecutionOptions xml="true" clob="true" xmlinline="true" clobinline="true" blob="false" dbclob="false" termChar=";" cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+		</page>
+		<!-- END: Update text indexes -->	
+
+		<!-- BEGIN: Clean up -->
+		<page name="Clean up" type="general">
+			<entryAction/>			
+			<exitAction/>
+			<contentFile>Cleanup.html</contentFile>
+			<SQLFile>Cleanup.sql</SQLFile>
+			<SQLExecutionOptions xml="false" clob="true" xmlinline="false" clobinline="true" blob="false" dbclob="false" termChar=";" cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+		</page>
+		<!-- END: Clean up -->	
+	</pageList>
+</tutorial>

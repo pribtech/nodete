@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tutorial name="Dynamic Schema Change">
+	<flowRestriction>forwardExploration</flowRestriction>
+	<globalCodeHighlightOptions  highlightCode="true" />
+	<closeAction/>
+	<openAction/>
+	<pageList>
+		<page name="Dynamic Schema Change" type="intro">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>Introduction.html</contentFile>
+			<autoLoadLink>
+				<pageWindow target="informationWindow">
+					<panel name="main" PrimaryContainer="true">
+						<URL>http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.wn.doc/doc/c0023230.html?noframes=true</URL>
+					</panel>
+				</pageWindow>
+			</autoLoadLink>
+		</page>
+		<page name="Check the AUTO_REVAL setting" type="general">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>auto_revalCheck.html</contentFile>
+			<autoLoadLink>
+				<pageWindow target="informationWindow">
+					<panel name="main" PrimaryContainer="true">
+						<link type="action" target="_self" window="_self"
+									connectionRequired="y">
+									<parameterList>
+										<parameter name="table">dbcfg</parameter>
+										<parameter name="action">list_table</parameter>
+										<parameter name="name">auto_reval</parameter>
+									</parameterList>
+								</link>
+					</panel>
+				</pageWindow>
+			</autoLoadLink>
+			<SQLExecutionOptions commitPerStmt="true"/>
+		</page>
+		<page name="Create Tables" type="general">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>CreateTable.html</contentFile>
+			<SQLFile>CreateTable.sql</SQLFile>
+			<SQLExecutionOptions commitPerStmt="true"/>
+		</page>
+		<page name="Show Views" type="general">
+			<entryAction name="checkForInsert" type="serverAction">
+				<parameterList>
+					<parameter name="action" type="fixed">
+						<value>checkForRow</value>
+					</parameter>
+					<parameter name="schema" type="constant">
+						<value>SCHEMA</value>
+					</parameter>
+					<parameter name="name" type="fixed">
+						<value>EMPLOYEE</value>
+					</parameter>
+				</parameterList>
+				<followOnAction condition="true" negCondition="true">
+					<task>
+						<action name="displayMsgForFailedInsert"
+							type="alert">
+							<message>
+								Data hasn't been inserted in the table.  Please try this step again.
+							</message>
+						</action>
+					</task>
+					<task>
+						<setActionReturn>false</setActionReturn>
+					</task>
+				</followOnAction>
+			</entryAction>
+			<exitAction/>
+			<contentFile>showViews.html</contentFile>
+			<autoLoadLink>
+				<pageWindow target="informationWindow" raiseToTop="y">
+					<splitPane direction="h">
+						<topPane>
+							<panel name="main" PrimaryContainer="true">
+								<link type="action" target="_self" window="_self"
+									connectionRequired="y">
+									<parameterList>
+										<parameter name="table">viewcat</parameter>
+										<parameter name="action">list_table</parameter>
+										<parameter name="viewschema">?SCHEMA?</parameter>
+									</parameterList>
+								</link>
+							</panel>
+						</topPane>
+						<bottomPane>
+							<panel name="detail"/>
+						</bottomPane>
+					</splitPane>
+				</pageWindow>
+			</autoLoadLink>
+		</page>
+		<page name="Validate the views" type="general">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>validateViews.html</contentFile>
+			<SQLFile>validateViews.sql</SQLFile>
+			<SQLExecutionOptions commitPerStmt="true"/>
+		</page>
+		<page name="Show Views Again" type="general">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>showViewsAgain.html</contentFile>
+			<autoLoadLink>
+				<pageWindow target="informationWindow" raiseToTop="y">
+					<splitPane direction="h">
+						<topPane>
+							<panel name="main" PrimaryContainer="true">
+								<link type="action" target="_self" window="_self"
+									connectionRequired="y">
+									<parameterList>
+										<parameter name="table">viewcat</parameter>
+										<parameter name="action">list_table</parameter>
+										<parameter name="viewschema">?SCHEMA?</parameter>
+									</parameterList>
+								</link>
+							</panel>
+						</topPane>
+						<bottomPane>
+							<panel name="detail"/>
+						</bottomPane>
+					</splitPane>
+				</pageWindow>
+			</autoLoadLink>
+		</page>
+		<page name="Alter Column Name" type="general">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>AlterColumnName.html</contentFile>
+			<SQLFile>AlterColumnName.sql</SQLFile>
+			<SQLExecutionOptions commitPerStmt="true"/>
+			<codeHighlightOptions highlightCode="true">
+				<changedHighlightTokens>
+					<text>ALTER TABLE</text>
+					<text>RENAME COLUMN</text>
+					<text>ALTER COLUMN</text>
+					<text>SET DATA TYPE SMALLINT</text>
+				</changedHighlightTokens>
+			</codeHighlightOptions>
+		</page>
+		<page name="Select Validation" type="general">
+			<entryAction name="checkForRename" type="serverAction">
+				<parameterList>
+					<parameter name="action" type="fixed">
+						<value>checkForObject</value>
+					</parameter>
+					<parameter name="objectType" type="fixed">
+						<value>column</value>
+					</parameter>
+					<parameter name="object[schema]" type="constant">
+						<value>SCHEMA</value>
+					</parameter>
+					<parameter name="object[table]" type="fixed">
+						<value>EMPLOYEE</value>
+					</parameter>
+					<parameter name="object[column]" type="fixed">
+						<value>EMPLOYEE_ID</value>
+					</parameter>
+				</parameterList>
+				<followOnAction condition="true" negCondition="true">
+					<task>
+						<action name="displayMsgForFailedInsert"
+							type="alert">
+							<message>
+								Column EMPLOYEE_ID does not exist.  Please try this step again.
+							</message>
+						</action>
+					</task>
+					<task>
+						<setActionReturn>false</setActionReturn>
+					</task>
+				</followOnAction>
+			</entryAction>
+			<exitAction/>
+			<contentFile>SelectValidation.html</contentFile>
+			<SQLFile>SelectValidation.sql</SQLFile>
+			<SQLExecutionOptions commitPerStmt="true"/>
+			<codeHighlightOptions highlightCode="true">
+				<changedHighlightTokens>
+					<text>CREATE OR REPLACE function</text>
+					<text>CREATE OR REPLACE VIEW</text>
+				</changedHighlightTokens>
+
+			</codeHighlightOptions>
+		</page>
+	</pageList>
+</tutorial>

@@ -1,0 +1,44 @@
+<p>Inlined LOBs are also qualified for compression. This page shows you how to compress the inlined LOBs.  We will then run some performance tests and analysis against the regular LOB table, the inlined LOB table, and the compressed inlined LOB table. Select the actions on this page in order.</p>
+
+<p>For more in depth analysis of data and index compression, refer to the Automated Compression and Compression Performance tutorials.</p>
+
+<h4>Create and populate a table with inlined and compressed LOB</h4>
+The first step creates the INLINE_COMPRESS table with inlined LOB and compression enabled.
+
+<pre><code>
+CREATE TABLE INLINE_COMPRESS
+  LIKE INLINELOBDATA COMPRESS YES
+   NOT LOGGED INITIALLY
+
+INSERT INTO INLINE_COMPRESS
+  SELECT * FROM INLINELOBDATA
+</code></pre>
+
+<p></p>
+
+<h4>REORG and RUNSTATS all three tables</h4>
+Reorganize and update statistics for each table so that the optimizer can choose the best access path possible for all of them.
+<pre><code>
+CALL ADMIN_CMD('REORG TABLE LOBDATA');
+CALL ADMIN_CMD('RUNSTATS ON TABLE LOBDATA');
+
+CALL ADMIN_CMD('REORG TABLE INLINELOBDATA');
+CALL ADMIN_CMD('RUNSTATS ON TABLE INLINELOBDATA');
+
+CALL ADMIN_CMD('REORG TABLE INLINE_COMPRESS');
+CALL ADMIN_CMD('RUNSTATS ON TABLE INLINE_COMPRESS');
+</code></pre>
+<p></p>
+
+<h4>Run performance tests</h4>
+The second step runs a select with an ORDER BY clause against the regular LOB, inlined LOB, and compressed inlined LOB tables.
+<pre><code>
+SELECT * FROM LOBDATA ORDER BY CUSTOMER_ID;
+SELECT * FROM INLINELOBDATA ORDER BY CUSTOMER_ID;
+SELECT * FROM INLINE_COMPRESS ORDER BY CUSTOMER_ID;
+</code></pre>
+<p></p>
+
+<h4>Graph the results</h4>
+<p>You can then graph the results for runtime, IO and CPU performance</p>
+<p>If you hover your cursor over the bars in the graph you will see the exact sizes of each table.</p>

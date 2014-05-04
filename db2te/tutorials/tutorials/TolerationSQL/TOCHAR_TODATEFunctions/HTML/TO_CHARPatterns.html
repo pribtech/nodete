@@ -1,0 +1,46 @@
+The following SQL will display all of the different conversion formats
+  that are available with the TO_CHAR function. A format-string must contain a 
+  combination of the format elements listed below. Two format elements can 
+  optionally be separated by one or more of the following separator characters:
+  <ul>
+  <li>dash (-)  </li>
+  <li>period (.) </li>
+  <li>slash (/)  </li>
+  <li>comma (,)  </li>
+  <li>apostrophe (') </li>
+  <li>semi-colon (;)  </li>
+  <li>colon (:)  </li>
+  <li>blank ( )  </li>
+  </ul>
+  <p>Separator characters can also be specified at the start or end of format-string. The
+  available format elements are:
+  <ul>
+  <li>CC Century (00-99). If the last two digits of the four-digit year are zero, the result is the first two digits of the year. Otherwise, the result is the first two digits of the year plus one. </li>
+  <li>DD Day of month (01-31). </li>
+  <li>DDD Day of year (001-366). </li>
+  <li>FF[n] Fractional seconds (0-999999). The number n is used to specify the number of digits to include in the returned value. Valid values for n are 1-6. The default is 6. </li>
+  <li>HH HH behaves the same as HH12.  </li>
+  <li>HH12 Hour of the day (01-12) in 12-hour format. AM is the default meridian indicator. </li>
+  <li>HH24 Hour of the day (00-24) in 24-hour format.  </li>
+  <li>IW ISO week of the year (01-53). The week starts on Monday and includes seven days. Week 1 is the first week of the year to contain a Thursday, which is equivalent to the first week of the year to contain January 4. </li>
+  <li>I ISO year (0-9). The last digit of the year based on the ISO week that is returned. </li>
+  <li>IY ISO year (00-99). The last two digits of the year based on the ISO week that is returned. </li>
+  <li>IYY ISO year (000-999). The last three digits of the year based on the ISO week that is returned. </li>
+  <li>IYYY ISO year (0000-9999). The 4-digit year based on the ISO week that is returned. </li>
+  <li>J Julian day (number of days since January 1, 4713 BC). </li>
+  <li>MI Minute (00-59). </li>
+  <li>MM Month (01-12). </li>
+  <li>NNNNNN Microseconds (000000-999999). Same as FF6. </li>
+  <li>Q Quarter (1-4), where the months January through March return 1. </li>
+  <li>RR RR behaves the same as YY. </li>
+  <li>RRRR RRRR behaves the same as YYYY. </li>
+  <li>SS Seconds (00-59). </li>
+  <li>SSSSS Seconds since previous midnight (00000-86400). </li>
+  <li>W Week of the month (1-5), where week 1 starts on the first day of the month and ends on the seventh day. </li>
+  <li>WW Week of the year (01-53), where week 1 starts on January 1 and ends on January 7. </li>
+  <li>Y Last digit of the year (0-9). </li>
+  <li>YY Last two digits of the year (00-99). </li>
+  <li>YYY Last three digits of the year (000-999). </li>
+  <li>YYYY 4-digit year (0000-9999). </li>
+  </ul>
+   <br/>

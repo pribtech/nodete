@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tutorial name="Temporary Table Indexes">
+<FlowRestriction>forwardExploration</FlowRestriction>
+    <closeAction/>
+    <openAction />
+    <globalCodeHighlightOptions highlightCode = "true" />
+    <pageList>
+    	<page name="Temporary Table Indexes" type="intro">
+            <entryAction/>
+            <exitAction name="createEmployeeTable" type="serverAction">
+    			<parameterList>
+    				<parameter name="action" type="fixed">
+    					<value>createTablesFromSampleDatabase</value>
+    				</parameter>
+    				<parameter name="schema" type="constant">
+    					<value>SCHEMA</value>
+    				</parameter>
+    				<parameter name="table" type="fixed">
+    					<value>EMPLOYEE</value>
+    				</parameter>
+    			</parameterList>
+    			<followOnAction condition="false"   >
+    				<task>
+    					<action name="" type="alert">
+    						<message>Failed to create base tables for initial setup of tutorial. Cannot proceed further with tutorial.</message>
+    					</action>
+    				</task>
+    				<task>
+    					<setActionReturn>false</setActionReturn>
+    				</task>
+    			</followOnAction>
+    			<followOnAction condition="[0-9][0-9]*"   >
+    				<task>
+    					<assignLocalParameter name="ERROR_MESSAGE" type="returnObject">
+    						<value>createEmployeeTable.returnValue</value>
+    					</assignLocalParameter>
+    					<alert>Failed to create base tables for initial setup of tutorial. Cannot proceed further with tutorial.  
+    						SQLMSG: ?ERROR_MESSAGE?</alert>
+    				</task>
+    				<task>
+    					<setActionReturn>false</setActionReturn>
+    				</task>
+    			</followOnAction>
+    		</exitAction>
+            <contentFile>TemporaryTableIndexes.html</contentFile>
+    		<autoLoadLink>
+    			<pageWindow target="informationWindow">
+    				<panel name="main">
+    					<URL>http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.admin.dbobj.doc/doc/c0052372.html?noframes=true</URL>
+    				</panel>
+    			</pageWindow>
+    		</autoLoadLink>
+        </page>
+        
+    	<page name="Create temporary tablespace" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>CreateTemporaryTablespace.html</contentFile>
+        <SQLFile>CreateTemporaryTablespace.sql</SQLFile>
+        <SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar=";"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+        </page>
+        <page name="Create and experiment with indexes on a temporary table" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>CreateATemporaryTable.html</contentFile>
+            <SQLFile>CreateATemporaryTable.sql</SQLFile>
+        </page>
+	</pageList>
+</tutorial>

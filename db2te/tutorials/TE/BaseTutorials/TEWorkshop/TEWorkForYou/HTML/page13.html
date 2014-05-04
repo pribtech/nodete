@@ -1,0 +1,47 @@
+<p>Masking is a simple, yet powerful feature of the Technology Explorer that can save you time.
+The DB2 catalog, and administrative tables and views have many columns that include information in short form. 
+For example the letter 'V' instead of the word 'View'.
+Unless you have these codes memorized, they can be annoying to look up.</p> 
+<p>Masking replaces the displayed code with text that is easier to read.
+The underlying data is not modified so that sorting and searching still work.</p>
+<p>There are two types of masks:
+<ul>
+	<li>Masks embedded in the XML definition. These are useful for small sets of codes that do not appear in other pages. 
+  <li>Masks stored in a separate reusable file. These are useful for large sets of codes that are used in multiple pages.
+</ul>
+In this example, we will reuse an existing mask file and create embedded masks.</p>
+<p>For the Dependencies page the codes that need to be masked are the table type symbols. 
+	
+The masks used to replace the table type symbols are common throughout the catalog.
+Since they are already used elsewhere you can simply reuse the existing mask file located here: <br/>
+<a class="solo" onclick="OpenURLInFloatingWindow( DB2MC_SERVER + '/tableDefinitions/masks/tableTypeMasks.xml')">/var/www/tableDefinitions/masks/tableTypeMasks.xml </a></p>
+
+<p><h3>Goal:</h3>
+Add a column mask to make the data easier to read.
+</p>
+<p><h3>Steps to complete:</h3>
+<ul>
+<li>If you closed the tablecat.xml file
+		<ul>
+	<li>Open the file '/var/www/tableDefinitions/tableDependCat' from gedit or open a terminal and run the following command:
+				<ul>
+					<li>“gedit /var/www/tableDefinitions/tableDependCat.xml &”</li>
+				</ul>
+			</li>
+		</ul>
+	</li>
+
+  <li>Make the changes to your document as indicated on the right
+</li>
+<li>Save the file</li>
+<li>Do not close the file</li>
+</ul>
+</p>
+<p><h4>The changes are indicated with the following:</h4>
+<ul>
+  <li class="sourceRemove">Indicated text has been removed</li>
+  <li class="sourceChange">Indicated text has been edited</li>
+  <li class="sourceAdd">Indicated text has been added</li>
+  <li class="sourceCopiedFrom">Indicated text is the source of a copy</li>
+</ul>
+</p>

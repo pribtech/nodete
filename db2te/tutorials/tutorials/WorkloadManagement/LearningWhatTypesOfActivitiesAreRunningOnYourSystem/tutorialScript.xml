@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tutorial name="Learning What Types of Activities are running on Your System">
+    <FlowRestriction>forwardExploration</FlowRestriction>
+    <closeAction />
+    <openAction />
+    <globalCodeHighlightOptions highlightCode = "true" />
+    <pageList>
+    	<page name="Learning What Types of Activities are running on Your System" type="intro">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>LearningWhatTypesOfActivitiesAreRunningOnYourSystem.html</contentFile>
+            <autoLoadLink/>
+        </page>        
+    	<page name="Determining the number of activities that are running" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>DeterminingTheNumberOfActivitiesThatAreRunning.html</contentFile>
+            <SQLFile>DeterminingTheNumberOfActivitiesThatAreRunning.sql</SQLFile>
+        </page><page name="Create database work action set with count activity work actions" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>CreateDatabaseWorkActionSetWithCountActivityWorkActions.html</contentFile>
+            <SQLFile>CreateDatabaseWorkActionSetWithCountActivityWorkActions.sql</SQLFile>
+            <SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar=";"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+        </page><page name="Run some activities" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>RunSomeActivities.html</contentFile>            
+            <SQLFile>RunSomeActivities.sql</SQLFile>
+            <SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar="#"
+				cursor="forward" commitPerStmt="false" numRowReturned="100"/>
+        </page><page name="View work action set statistics" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>ViewWorkActionSetStatistics.html</contentFile>
+            <SQLFile>ViewWorkActionSetStatistics.sql</SQLFile>
+        </page><page name="Differentiate activities by more than their type and other attributes" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>DifferentiateActivitiesByMoreThanTheirTypeAndOtherAttributes.html</contentFile>
+            <SQLFile>DifferentiateActivitiesByMoreThanTheirTypeAndOtherAttributes.sql</SQLFile>
+        </page><page name="Alter Work Action set to add activity count" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>AlterWorkActionSetToAddActivityCount.html</contentFile>
+            <SQLFile>AlterWorkActionSetToAddActivityCount.sql</SQLFile>
+        </page><page name="Reset the statistics" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>ResetTheStatistics.html</contentFile>
+            <SQLFile>ResetTheStatistics.sql</SQLFile>
+        </page><page name="Run Some Activities" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile> RunSomeActivities.html</contentFile>
+            <SQLFile>RunSomeActivities.sql</SQLFile>
+            <SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar="#"
+				cursor="forward" commitPerStmt="false" numRowReturned="100"/>
+        </page><page name="View work action set statistics" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>ViewWorkActionSetStatistics.html</contentFile>
+            <SQLFile>ViewWorkActionSetStatistics.sql</SQLFile>
+        </page><page name="Reset for next task" type="last">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>ResetForNextTask.html</contentFile>
+            <SQLFile>ResetForNextTask.sql</SQLFile>
+        </page></pageList>
+</tutorial>

@@ -1,0 +1,41 @@
+<p>
+	This tutorial demonstrates the advantages of using a Created Global 
+	Temporary Table (CGTT) over a Declared Global Temporary Table (DGTT) or a regular table.
+	Unlike DGTTs, the definitions of CGTTs are persistent over multiple sessions and
+	can be shared between connections. Application objects such as Stored Procedures 
+	and User Defined Functions are supported by CGTTs.
+</p>
+<p>This tutorial uses a tax computation process to compare the following differences
+	between CGTTs, DGTTs and regular tables:
+	<ul>
+		<li>Application Object Supports</li>
+		<li>Data Isolation</li>
+		<li>Automatic Cleanup</li>
+		<li>Query Performance</li>
+	</ul>
+</p>
+<p><b>Scenario Overview</b></p>  
+<p>
+	At the end of a financial year, the payroll department computes 
+	income tax owed for each the employees. The tutorial demonstrates the use of 
+	all three types of tables to store intermediate results during the tax 
+	calculation process.
+</p>
+<p>
+	Each employee gets tax exemption for salary up to 100 000.  
+	The proof for exemption is submitted at the end of the financial 
+	year. At the beginning of the financial year, the tax payable by an employee 
+	is calculated based on the employees income. 
+	At the end of the year, once all the employees within a department 
+	have submitted their tax proofs, the tax calculation process is triggered. 
+	The tax process updates the payroll table with
+	the total tax and the balance payable. 
+</p>
+<p>
+	All the intermediate results of tax calculation are updated in the TAX_CAL table. 
+	After the tax calculation is complete	another procedure updates the payroll table 
+	with the tax data. 	A function generates the Income Tax sheet for all the employees. 
+</p>
+<p>
+	Note: This tutorial requires the Technology Explorer for IBM DB2 version 3.3 or greater.
+</p>

@@ -1,0 +1,13 @@
+<p>The output shows that app2 is waiting on a row lock.  
+We can also see the lock owner's transaction handle (call this Z).
+  lock and causing our hang.  The final step is to determine the
+  corresponding application handle for transaction handle Z.  Issue
+  <a onclick="OpenURLInFloatingWindow
+('http://publib.boulder.ibm.com/infocenter/db2luw/v9r7/topic/com.ibm.db2.luw.admin.cmd.doc/doc/r0011729.html?noframes=true');">
+db2pd</a> transactions command for transaction handle Z.</p>
+<ol>
+  	<li>Issue the command (replace Z with the lock owner's trasaction handle #): 
+  	<pre><code>db2pd -db sample -transactions Z</code></pre>
+	<ul><li>Look for the Type field.</li></ul></li>
+	<li>Keep the CLP or terminal open</li>
+</ol>   

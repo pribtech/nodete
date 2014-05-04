@@ -1,0 +1,1189 @@
+<actionPanel>
+	<flow>controlled</flow>
+	<useConsole>yes</useConsole>
+	<overview>
+	</overview>
+	<taskList>
+
+		<task name="Create DPF tables">
+			<discription>
+				This creates tables enabled for DPF and populates them with data
+			</discription>
+			<action name="dpf" type="blank">
+				<followOnAction condition="true" compareOn="true" compareOnType="raw">
+				
+					<task>
+						<echo>Creating the DPF tables and populating them with data...</echo>
+						<action name="createdpf1" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="fixed">
+									<value>executeSQL</value>
+								</parameter>
+								<parameter name="SQL" type="fixed">
+									<value>CREATE TABLE ?SCHEMA?.SUBSCRIBER_RATED_USAGE_DPF (OUT_ROAMING_IND SMALLINT, OUT_ROAMING_NW_OP_KEY INTEGER,EVENT_START_DT DATE, EVENT_START_TIME TIME, EVENT_DURATION INTEGER, CORE_ACC_CHARGE_AMT DECIMAL(10,2), CC_NUM VARCHAR(21), EVENT_TYPE_KEY SMALLINT, CDR_ID_KEY VARCHAR(75), EVENT_TYPE_CLSF_KEY SMALLINT, SUBSCRIBER_CIRCLE_ID SMALLINT, SUBSCRIBER_MSISDN BIGINT, CALL_PULSE_30 INTEGER, CALL_PULSE_60 INTEGER, FORWARD_TO_NUM BIGINT, FIRST_CELLSITE VARCHAR(21), SOURCE_DESTINATION_NW_OP_KEY INTEGER, EVENT_DIR SMALLINT, TRF_PLAN_KEY VARCHAR(21)) DISTRIBUTE BY HASH(SUBSCRIBER_MSISDN) IN FACTSPACE NOT LOGGED INITIALLY</value>
+								</parameter>											
+							</parameterList>
+							
+							<followOnAction condition="true">
+								<task>
+									<action name="insertdpf1" type="serverAction">
+										<parameterList>
+											<parameter name="action" type="fixed">
+												<value>executeSQL</value>
+											</parameter>
+											<parameter name="SQL" type="fixed">
+												<value>INSERT INTO ?SCHEMA?.SUBSCRIBER_RATED_USAGE_DPF (SELECT * FROM TE_TEMP.SUBSCRIBER_RATED_USAGE)</value>
+											</parameter>											
+										</parameterList>
+										
+										<followOnAction condition="true">
+											<task>
+												<echo></echo>
+												<echo>SUBSCRIBER_RATED_USAGE_DPF table created successfully !</echo>
+											</task>
+										</followOnAction>										
+										
+										<followOnAction condition="false">
+											<task>
+												<echo></echo>
+												<echo>Insertion into SUBSCRIBER_RATED_USAGE_DPF failed !</echo>
+											</task>
+										</followOnAction>
+									</action>															
+								</task>
+							</followOnAction>
+							
+							<followOnAction condition="false">
+								<task>
+									<echo></echo>
+									<echo>SUBSCRIBER_RATED_USAGE_DPF table already exists !</echo>
+								</task>
+							</followOnAction>
+						</action>
+					</task>
+										
+					<task>
+						<action name="createdpf2" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="fixed">
+									<value>executeSQL</value>
+								</parameter>
+								<parameter name="SQL" type="fixed">
+									<value>CREATE TABLE ?SCHEMA?.SUBSCRIBER_DEDICATED_ACCOUNT_USAGE_DPF (CDR_ID_KEY VARCHAR(75) , DED_ACC_KEY SMALLINT, DED_ACC_CHARGE_AMT DECIMAL(10,2), SUBSCRIBER_MSISDN BIGINT, SUBSCRIBER_CIRCLE_ID SMALLINT, CC_NUM VARCHAR(21), EVENT_START_DT DATE, EVENT_START_TIME TIME, EVENT_DURATION INTEGER) DISTRIBUTE BY HASH(SUBSCRIBER_MSISDN) IN FACTSPACE NOT LOGGED INITIALLY</value>
+								</parameter>											
+							</parameterList>
+							
+							<followOnAction condition="true">
+								<task>
+									<action name="insertdpf2" type="serverAction">
+										<parameterList>
+											<parameter name="action" type="fixed">
+												<value>executeSQL</value>
+											</parameter>
+											<parameter name="SQL" type="fixed">
+												<value>INSERT INTO ?SCHEMA?.SUBSCRIBER_DEDICATED_ACCOUNT_USAGE_DPF (SELECT * FROM TE_TEMP.SUBSCRIBER_DEDICATED_ACCOUNT_USAGE)</value>
+											</parameter>											
+										</parameterList>
+										
+										<followOnAction condition="true">
+											<task>												
+												<echo>SUBSCRIBER_DEDICATED_ACCOUNT_USAGE_DPF table created successfully !</echo>
+											</task>
+										</followOnAction>									
+										
+										<followOnAction condition="false">
+											<task>												
+												<echo>Insertion into SUBSCRIBER_DEDICATED_ACCOUNT_USAGE_DPF failed !</echo>
+											</task>
+										</followOnAction>
+									</action>
+								</task>	
+							</followOnAction>
+							
+							<followOnAction condition="false">
+								<task>									
+									<echo>SUBSCRIBER_DEDICATED_ACCOUNT_USAGE_DPF table already exists !</echo>
+								</task>
+							</followOnAction>
+						</action>
+					</task>
+										
+					<task>
+						<action name="createdpf3" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="fixed">
+									<value>executeSQL</value>
+								</parameter>
+								<parameter name="SQL" type="fixed">
+									<value>CREATE TABLE ?SCHEMA?.SUBSCRIBER_MSISDN_HISTORY_DPF (SUBSCRIBER_MSISDN BIGINT,MSISDN_START_DT DATE NOT NULL,CIRCLE_ID SMALLINT,SUBSCRIBER_KEY VARCHAR(21),MSISDN_END_DT DATE,MSISDN_EFF_TIME TIME,MSISDN_END_TIME TIME) DISTRIBUTE BY HASH(SUBSCRIBER_MSISDN) IN FACTSPACE NOT LOGGED INITIALLY</value>
+								</parameter>											
+							</parameterList>
+							
+							<followOnAction condition="true">
+								<task>
+									<action name="insertdpf3" type="serverAction">
+										<parameterList>
+											<parameter name="action" type="fixed">
+												<value>executeSQL</value>
+											</parameter>
+											<parameter name="SQL" type="fixed">
+												<value>INSERT INTO ?SCHEMA?.SUBSCRIBER_MSISDN_HISTORY_DPF (SELECT * FROM TE_TEMP.SUBSCRIBER_MSISDN_HISTORY)</value>
+											</parameter>											
+										</parameterList>
+										
+										<followOnAction condition="true">
+											<task>
+												<echo>SUBSCRIBER_MSISDN_HISTORY_DPF table created successfully !</echo>
+											</task>
+										</followOnAction>										
+										
+										<followOnAction condition="false">
+											<task>
+												<echo>Insertion into SUBSCRIBER_MSISDN_HISTORY_DPF failed !</echo>
+											</task>
+										</followOnAction>
+									</action>
+								</task>				
+							</followOnAction>							
+							
+							<followOnAction condition="false">
+								<task>
+									<echo>SUBSCRIBER_MSISDN_HISTORY_DPF table already exists !</echo>
+								</task>
+							</followOnAction>
+						</action>
+					</task>			
+							
+					<task>
+						<action name="creatededacc" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="fixed">
+									<value>executeSQL</value>
+								</parameter>
+								<parameter name="SQL" type="fixed">
+									<value>CREATE TABLE ?SCHEMA?.DEDICATED_ACCOUNT_DPF (DED_ACC_KEY SMALLINT, DED_ACC_EFF_DT DATE, DED_ACC_END_DT DATE, DED_ACC_CONVERSION_FACTOR DECIMAL(10,2), CIRCLE_ID SMALLINT) IN DIMSPACE NOT LOGGED INITIALLY</value>
+								</parameter>											
+							</parameterList>
+
+							<followOnAction condition="true">
+								<task>
+									<action name="insertdedacc" type="serverAction">
+										<parameterList>
+											<parameter name="action" type="fixed">
+												<value>executeSQL</value>
+											</parameter>
+											<parameter name="SQL" type="fixed">
+												<value>INSERT INTO ?SCHEMA?.DEDICATED_ACCOUNT_DPF (SELECT * FROM TE_TEMP.DEDICATED_ACCOUNT_temp)</value>
+											</parameter>											
+										</parameterList>
+										
+										<followOnAction condition="true">
+											<task>
+												<echo>DEDICATED_ACCOUNT_DPF table created successfully !</echo>
+											</task>
+										</followOnAction>
+																	
+										<followOnAction condition="false">
+											<task>
+												<echo>Insertion into DEDICATED_ACCOUNT_DPF table failed !</echo>
+											</task>
+										</followOnAction>
+									</action>
+								</task>	
+							</followOnAction>							
+
+							<followOnAction condition="false">
+								<task>
+									<echo>DEDICATED_ACCOUNT_DPF table already exists !</echo>
+								</task>
+							</followOnAction>
+						</action>
+					</task>										
+					
+				</followOnAction>
+			</action>
+		</task>
+				
+		<task name="Create tables enabled with DPF and Indexes">
+			<discription>
+				This creates DPF tables with Indexes and populates them with data
+			</discription>
+			<action name="ind" type="blank">
+				<followOnAction condition="true" compareOn="true" compareOnType="raw">
+					<task>
+						<echo></echo>
+						<echo>Creating the tables for indexing and populating them with data...</echo>
+						<action name="createindtab1" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="fixed">
+									<value>executeSQL</value>
+								</parameter>
+								<parameter name="SQL" type="fixed">
+									<value>CREATE TABLE ?SCHEMA?.SUBSCRIBER_RATED_USAGE_IND (OUT_ROAMING_IND SMALLINT, OUT_ROAMING_NW_OP_KEY INTEGER,EVENT_START_DT DATE, EVENT_START_TIME TIME, EVENT_DURATION INTEGER, CORE_ACC_CHARGE_AMT DECIMAL(10,2), CC_NUM VARCHAR(21), EVENT_TYPE_KEY SMALLINT, CDR_ID_KEY VARCHAR(75), EVENT_TYPE_CLSF_KEY SMALLINT, SUBSCRIBER_CIRCLE_ID SMALLINT, SUBSCRIBER_MSISDN BIGINT, CALL_PULSE_30 INTEGER, CALL_PULSE_60 INTEGER, FORWARD_TO_NUM BIGINT, FIRST_CELLSITE VARCHAR(21), SOURCE_DESTINATION_NW_OP_KEY INTEGER, EVENT_DIR SMALLINT, TRF_PLAN_KEY VARCHAR(21)) DISTRIBUTE BY HASH(SUBSCRIBER_MSISDN) IN FACTSPACE INDEX IN INDSPACE1 NOT LOGGED INITIALLY</value>
+								</parameter>											
+							</parameterList>
+							
+							<followOnAction condition="true">
+
+								<task>
+									<action name="insertindtab1" type="serverAction">
+										<parameterList>
+											<parameter name="action" type="fixed">
+												<value>executeSQL</value>
+											</parameter>
+											<parameter name="SQL" type="fixed">
+												<value>INSERT INTO ?SCHEMA?.SUBSCRIBER_RATED_USAGE_IND (SELECT * FROM TE_TEMP.SUBSCRIBER_RATED_USAGE)</value>
+											</parameter>											
+										</parameterList>
+										
+										<followOnAction condition="true">
+											<task>
+												<echo></echo>
+												<echo>SUBSCRIBER_RATED_USAGE_IND table created successfully !</echo>
+											</task>
+										</followOnAction>
+							
+										<followOnAction condition="false">
+											<task>
+												<echo></echo>
+												<echo>Insertion into SUBSCRIBER_RATED_USAGE_IND table failed !</echo>
+											</task>
+										</followOnAction>
+									</action>
+								</task>				
+							</followOnAction>
+							
+							<followOnAction condition="false">
+								<task>
+									<echo></echo>
+									<echo>SUBSCRIBER_RATED_USAGE_IND table already exists !</echo>
+								</task>
+							</followOnAction>
+							
+						</action>
+					</task>
+																
+					<task>
+						<action name="createind1" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="fixed">
+									<value>executeSQL</value>
+								</parameter>
+								<parameter name="SQL" type="fixed">
+									<value>CREATE INDEX ?SCHEMA?.INDEX_RATED_USAGE_1 ON ?SCHEMA?.SUBSCRIBER_RATED_USAGE_IND (SUBSCRIBER_MSISDN) ALLOW REVERSE SCANS</value>
+								</parameter>											
+							</parameterList>
+							
+							<followOnAction condition="true">
+								<task>											    
+									<echo>INDEX_RATED_USAGE_1 index created successfully !</echo>
+								</task>
+							</followOnAction>
+						
+							<followOnAction condition="false">
+								<task>
+									<echo>INDEX_RATED_USAGE_1 index already exists !</echo>
+								</task>
+							</followOnAction>
+						</action>
+					</task>					
+					
+					<task>
+						<action name="createind2" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="fixed">
+									<value>executeSQL</value>
+								</parameter>
+								<parameter name="SQL" type="fixed">
+									<value>CREATE INDEX ?SCHEMA?.INDEX_RATED_USAGE_2 ON ?SCHEMA?.SUBSCRIBER_RATED_USAGE_IND (SUBSCRIBER_CIRCLE_ID, EVENT_START_DT) ALLOW REVERSE SCANS</value>
+								</parameter>											
+							</parameterList>
+							
+							<followOnAction condition="true">
+								<task>									
+									<echo>INDEX_RATED_USAGE_2 index created successfully !</echo>
+								</task>
+							</followOnAction>
+							
+							<followOnAction condition="false">
+								<task>								
+									<echo>INDEX_RATED_USAGE_2 index already exists !</echo>
+								</task>
+							</followOnAction>
+						</action>
+					</task>					
+						
+					<task>
+						<action name="runstats1" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="fixed">
+									<value>executeSQL</value>
+								</parameter>
+								<parameter name="SQL" type="fixed">
+									<value>CALL ADMIN_CMD('RUNSTATS ON TABLE ?SCHEMA?.SUBSCRIBER_RATED_USAGE_IND FOR INDEXES ALL')</value>
+								</parameter>											
+							</parameterList>
+							
+							<followOnAction condition="true">
+								<task>								
+									<echo>Runstats on table SUBSCRIBER_RATED_USAGE_IND successfull !</echo>
+								</task>
+							</followOnAction>
+							
+							<followOnAction condition="false">
+								<task>								
+									<echo>Runstats on table SUBSCRIBER_RATED_USAGE_IND failed !</echo>
+								</task>
+							</followOnAction>
+						</action>
+					</task>													
+					
+					<task>
+						<action name="createindtab2" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="fixed">
+									<value>executeSQL</value>
+								</parameter>
+								<parameter name="SQL" type="fixed">
+									<value>CREATE TABLE ?SCHEMA?.SUBSCRIBER_DEDICATED_ACCOUNT_USAGE_IND (CDR_ID_KEY VARCHAR(75), DED_ACC_KEY SMALLINT, DED_ACC_CHARGE_AMT DECIMAL(10,2), SUBSCRIBER_MSISDN BIGINT, SUBSCRIBER_CIRCLE_ID SMALLINT, CC_NUM VARCHAR(21), EVENT_START_DT DATE, EVENT_START_TIME TIME, EVENT_DURATION INTEGER) DISTRIBUTE BY HASH(SUBSCRIBER_MSISDN) IN FACTSPACE INDEX IN INDSPACE1 NOT LOGGED INITIALLY</value>
+								</parameter>											
+							</parameterList>
+							
+							<followOnAction condition="true">
+							
+								<task>
+									<action name="insertindtab2" type="serverAction">
+										<parameterList>
+											<parameter name="action" type="fixed">
+												<value>executeSQL</value>
+										</parameter>
+											<parameter name="SQL" type="fixed">
+												<value>INSERT INTO ?SCHEMA?.SUBSCRIBER_DEDICATED_ACCOUNT_USAGE_IND (SELECT * FROM TE_TEMP.SUBSCRIBER_DEDICATED_ACCOUNT_USAGE)</value>
+											</parameter>											
+										</parameterList>
+										
+										<followOnAction condition="true">
+											<task>
+												<echo></echo>
+												<echo>SUBSCRIBER_DEDICATED_ACCOUNT_USAGE_IND table created successfully !</echo>
+											</task>
+										</followOnAction>
+										
+										<followOnAction condition="false">
+											<task>
+												<echo>Insertion into SUBSCRIBER_DEDICATED_ACCOUNT_USAGE_IND table failed !</echo>
+											</task>
+										</followOnAction>
+									</action>
+								</task>	
+							</followOnAction>
+							
+							<followOnAction condition="false">
+								<task>
+									<echo></echo>
+									<echo>SUBSCRIBER_DEDICATED_ACCOUNT_USAGE_IND table already exists !</echo>
+								</task>
+							</followOnAction>
+							
+						</action>
+					</task>										
+					
+					<task>
+						<action name="createind3" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="fixed">
+									<value>executeSQL</value>
+								</parameter>
+								<parameter name="SQL" type="fixed">
+									<value>CREATE INDEX ?SCHEMA?.INDEX_DEDICATED_USAGE_1 ON ?SCHEMA?.SUBSCRIBER_DEDICATED_ACCOUNT_USAGE_IND (SUBSCRIBER_MSISDN) ALLOW REVERSE SCANS</value>
+								</parameter>											
+							</parameterList>
+							
+							<followOnAction condition="true">
+								<task>											    
+									<echo>INDEX_DEDICATED_USAGE_1 index created successfully !</echo>
+								</task>
+							</followOnAction>
+							
+							<followOnAction condition="false">
+								<task>
+									<echo>INDEX_DEDICATED_USAGE_1 index already exists !</echo>
+								</task>
+							</followOnAction>
+						</action>
+					</task>	
+					
+					<task>
+						<action name="createind4" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="fixed">
+									<value>executeSQL</value>
+								</parameter>
+								<parameter name="SQL" type="fixed">
+									<value>CREATE INDEX ?SCHEMA?.INDEX_DEDICATED_USAGE_2 ON ?SCHEMA?.SUBSCRIBER_DEDICATED_ACCOUNT_USAGE_IND (SUBSCRIBER_CIRCLE_ID, EVENT_START_DT) ALLOW REVERSE SCANS</value>
+								</parameter>											
+							</parameterList>
+							
+							<followOnAction condition="true">
+								<task>											    
+									<echo>INDEX_DEDICATED_USAGE_2 index created successfully !</echo>
+								</task>
+							</followOnAction>
+							
+							<followOnAction condition="false">
+								<task>
+									<echo>INDEX_DEDICATED_USAGE_2 index already exists !</echo>
+								</task>
+							</followOnAction>
+						</action>
+					</task>	
+
+					<task>
+						<action name="runstats2" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="fixed">
+									<value>executeSQL</value>
+								</parameter>
+								<parameter name="SQL" type="fixed">
+									<value>CALL ADMIN_CMD('RUNSTATS ON TABLE ?SCHEMA?.SUBSCRIBER_DEDICATED_ACCOUNT_USAGE_IND FOR INDEXES ALL')</value>
+								</parameter>											
+							</parameterList>
+							
+							<followOnAction condition="true">
+								<task>											    
+									<echo>Runstats on table SUBSCRIBER_DEDICATED_ACCOUNT_USAGE_IND successfull !</echo>
+								</task>
+							</followOnAction>
+							
+							<followOnAction condition="false">
+								<task>
+									<echo>Runstats on table SUBSCRIBER_DEDICATED_ACCOUNT_USAGE_IND failed !</echo>
+								</task>
+							</followOnAction>
+						</action>
+					</task>	
+								
+					<task>
+						<action name="createindtab3" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="fixed">
+									<value>executeSQL</value>
+								</parameter>
+								<parameter name="SQL" type="fixed">
+									<value>CREATE TABLE ?SCHEMA?.SUBSCRIBER_MSISDN_HISTORY_IND (SUBSCRIBER_MSISDN BIGINT, MSISDN_START_DT DATE, CIRCLE_ID SMALLINT, SUBSCRIBER_KEY VARCHAR(21), MSISDN_END_DT DATE, MSISDN_EFF_TIME TIME, MSISDN_END_TIME TIME) DISTRIBUTE BY HASH(SUBSCRIBER_MSISDN) IN FACTSPACE INDEX IN INDSPACE1 NOT LOGGED INITIALLY</value>
+								</parameter>											
+							</parameterList>
+							
+							<followOnAction condition="true">
+							
+								<task>
+									<action name="insertindtab3" type="serverAction">
+										<parameterList>
+											<parameter name="action" type="fixed">
+												<value>executeSQL</value>
+											</parameter>
+											<parameter name="SQL" type="fixed">
+												<value>INSERT INTO ?SCHEMA?.SUBSCRIBER_MSISDN_HISTORY_IND (SELECT * FROM TE_TEMP.SUBSCRIBER_MSISDN_HISTORY)</value>
+											</parameter>											
+										</parameterList>
+										
+										<followOnAction condition="true">
+											<task>
+												<echo></echo>
+												<echo>SUBSCRIBER_MSISDN_HISTORY_IND table created successfully !</echo>
+											</task>
+										</followOnAction>
+										
+										<followOnAction condition="false">
+											<task>
+												<echo>Insertion into table SUBSCRIBER_MSISDN_HISTORY_IND failed !</echo>
+											</task>
+										</followOnAction>
+									</action>
+								</task>	
+							</followOnAction>
+							
+							<followOnAction condition="false">
+								<task>
+									<echo></echo>
+									<echo>SUBSCRIBER_MSISDN_HISTORY_IND table already exists !</echo>
+								</task>
+							</followOnAction>
+							
+						</action>
+					</task>		
+					
+					<task>
+						<action name="createind5" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="fixed">
+									<value>executeSQL</value>
+								</parameter>
+								<parameter name="SQL" type="fixed">
+									<value>CREATE INDEX ?SCHEMA?.INDEX_MSISDN_HISTORY ON ?SCHEMA?.SUBSCRIBER_MSISDN_HISTORY_IND (SUBSCRIBER_MSISDN) ALLOW REVERSE SCANS</value>
+								</parameter>											
+							</parameterList>
+							
+							<followOnAction condition="true">
+								<task>
+									<echo>INDEX_MSISDN_HISTORY index created successfully !</echo>
+								</task>
+							</followOnAction>
+							
+							<followOnAction condition="false">
+								<task>
+									<echo>INDEX_MSISDN_HISTORY index already exists !</echo>
+								</task>
+							</followOnAction>
+						</action>
+					</task>	
+
+					<task>
+						<action name="runstats3" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="fixed">
+									<value>executeSQL</value>
+								</parameter>
+								<parameter name="SQL" type="fixed">
+									<value>CALL ADMIN_CMD('RUNSTATS ON TABLE ?SCHEMA?.SUBSCRIBER_MSISDN_HISTORY_IND FOR INDEX ?SCHEMA?.INDEX_MSISDN_HISTORY')</value>
+								</parameter>											
+							</parameterList>
+							
+							<followOnAction condition="true">
+								<task>
+									<echo>Runstats on table SUBSCRIBER_MSISDN_HISTORY_IND successfull !</echo>
+								</task>
+							</followOnAction>
+														
+							<followOnAction condition="false">
+								<task>
+									<echo>Runstats on table SUBSCRIBER_MSISDN_HISTORY_IND failed !</echo>
+								</task>
+							</followOnAction>
+						</action>
+					</task>			
+
+					<task>
+						<action name="createindtab4" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="fixed">
+									<value>executeSQL</value>
+								</parameter>
+								<parameter name="SQL" type="fixed">
+									<value>CREATE TABLE ?SCHEMA?.DEDICATED_ACCOUNT_IND (DED_ACC_KEY SMALLINT, DED_ACC_EFF_DT DATE, DED_ACC_END_DT DATE, DED_ACC_CONVERSION_FACTOR DECIMAL(10,2), CIRCLE_ID SMALLINT) IN DIMSPACE INDEX IN INDSPACE2 NOT LOGGED INITIALLY</value>
+								</parameter>											
+							</parameterList>
+							
+							<followOnAction condition="true">
+
+								<task>
+									<action name="insertindtab4" type="serverAction">
+										<parameterList>
+											<parameter name="action" type="fixed">
+												<value>executeSQL</value>
+											</parameter>
+											<parameter name="SQL" type="fixed">
+												<value>INSERT INTO ?SCHEMA?.DEDICATED_ACCOUNT_IND (SELECT * FROM TE_TEMP.DEDICATED_ACCOUNT_TEMP)</value>
+											</parameter>											
+										</parameterList>
+										
+										<followOnAction condition="true">
+											<task>
+												<echo></echo>
+												<echo>DEDICATED_ACCOUNT_IND table created successfully !</echo>
+											</task>
+										</followOnAction>
+										
+										<followOnAction condition="false">
+											<task>
+												<echo>Insertion into DEDICATED_ACCOUNT_IND table failed !</echo>
+											</task>
+										</followOnAction>
+									</action>
+								</task>	
+							</followOnAction>
+							
+							<followOnAction condition="false">
+								<task>
+									<echo></echo>
+									<echo>DEDICATED_ACCOUNT_IND table already exists !</echo>
+								</task>
+							</followOnAction>
+							
+						</action>
+					</task>		
+								
+								
+					<task>
+						<action name="createind6" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="fixed">
+									<value>executeSQL</value>
+								</parameter>
+								<parameter name="SQL" type="fixed">
+									<value>CREATE INDEX ?SCHEMA?.INDEX_DEDICATED_ACCOUNT ON ?SCHEMA?.DEDICATED_ACCOUNT_IND (CIRCLE_ID, DED_ACC_KEY) ALLOW REVERSE SCANS</value>
+								</parameter>											
+							</parameterList>
+							
+							<followOnAction condition="true">
+								<task>
+									<echo>INDEX_DEDICATED_ACCOUNT index created successfully !</echo>
+								</task>
+							</followOnAction>
+							
+							<followOnAction condition="false">
+								<task>
+									<echo>INDEX_DEDICATED_ACCOUNT already exists !</echo>
+								</task>
+							</followOnAction>
+						</action>
+					</task>	
+				
+					<task>
+						<action name="runstats4" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="fixed">
+									<value>executeSQL</value>
+								</parameter>
+								<parameter name="SQL" type="fixed">
+									<value>CALL ADMIN_CMD('RUNSTATS ON TABLE ?SCHEMA?.DEDICATED_ACCOUNT_IND FOR INDEX ?SCHEMA?.INDEX_DEDICATED_ACCOUNT')</value>
+								</parameter>											
+							</parameterList>
+							
+							<followOnAction condition="true">
+								<task>
+									<echo>Runstats on table DEDICATED_ACCOUNT_IND successfull !</echo>
+								</task>
+							</followOnAction>
+							
+							<followOnAction condition="false">
+								<task>
+									<echo>Runstats on table DEDICATED_ACCOUNT_IND failed !</echo>
+								</task>
+							</followOnAction>
+						</action>
+					</task>							
+				
+				</followOnAction>
+			</action>
+		</task>
+	
+		<task name="Create tablespaces for Range Partitioning">
+			<discription>
+				This creates tablespaces for the different ranges created during Range Partitioning
+			</discription>
+			<action name="tbsp" type="blank">
+				<followOnAction condition="true" compareOn="true" compareOnType="raw">
+
+					<task>
+						<echo></echo>
+						<echo>Creating the tablespaces...</echo>
+						<action name="createtbsp1" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="fixed">
+									<value>executeSQL</value>
+								</parameter>
+								<parameter name="SQL" type="fixed">
+									<value>CREATE TABLESPACE RP0 IN PGA</value>
+								</parameter>											
+							</parameterList>
+							<followOnAction condition="true">
+								<task>
+									<echo></echo>
+									<echo>Tablespace RP0 created !</echo>
+								</task>
+							</followOnAction>							
+							<followOnAction condition="false">
+								<task>
+									<echo></echo>
+									<echo>Tablespace RP0 already exists !</echo>
+								</task>
+							</followOnAction>
+						</action>
+					</task>					
+
+					<task>
+						<action name="createtbsp2" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="fixed">
+									<value>executeSQL</value>
+								</parameter>
+								<parameter name="SQL" type="fixed">
+									<value>CREATE TABLESPACE RP1 IN PGA</value>
+								</parameter>											
+							</parameterList>
+							<followOnAction condition="true">
+								<task>
+									<echo></echo>
+									<echo>Tablespace RP1 created !</echo>
+								</task>
+							</followOnAction>							
+							<followOnAction condition="false">
+								<task>
+									<echo>Tablespace RP1 already exists</echo>
+								</task>
+							</followOnAction>
+						</action>
+					</task>	
+	
+					<task>
+						<action name="createtbsp3" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="fixed">
+									<value>executeSQL</value>
+								</parameter>
+								<parameter name="SQL" type="fixed">
+									<value>CREATE TABLESPACE RP2 IN PGA</value>
+								</parameter>											
+							</parameterList>
+							<followOnAction condition="true">
+								<task>
+									<echo></echo>
+									<echo>Tablespace RP2 created !</echo>
+								</task>
+							</followOnAction>							
+							<followOnAction condition="false">
+								<task>
+									<echo>Tablespace RP2 already exists</echo>
+								</task>
+							</followOnAction>
+						</action>
+					</task>		
+
+					<task>
+						<action name="createtbsp4" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="fixed">
+									<value>executeSQL</value>
+								</parameter>
+								<parameter name="SQL" type="fixed">
+									<value>CREATE TABLESPACE RP3 IN PGA</value>
+								</parameter>											
+							</parameterList>
+							<followOnAction condition="true">
+								<task>
+									<echo></echo>
+									<echo>Tablespace RP3 created !</echo>
+								</task>
+							</followOnAction>							
+							<followOnAction condition="false">
+								<task>
+									<echo>Tablespace RP3 already exists</echo>
+								</task>
+							</followOnAction>
+						</action>
+					</task>	
+
+					<task>
+						<action name="createtbsp5" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="fixed">
+									<value>executeSQL</value>
+								</parameter>
+								<parameter name="SQL" type="fixed">
+									<value>CREATE TABLESPACE RP4 IN PGA</value>
+								</parameter>											
+							</parameterList>
+							<followOnAction condition="true">
+								<task>
+									<echo></echo>
+									<echo>Tablespace RP4 created !</echo>
+								</task>
+							</followOnAction>							
+							<followOnAction condition="false">
+								<task>
+									<echo>Tablespace RP4 already exists</echo>
+								</task>
+							</followOnAction>
+						</action>
+					</task>	
+
+					<task>
+						<action name="createtbsp6" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="fixed">
+									<value>executeSQL</value>
+								</parameter>
+								<parameter name="SQL" type="fixed">
+									<value>CREATE TABLESPACE Ind0 IN PGA</value>
+								</parameter>											
+							</parameterList>
+							<followOnAction condition="true">
+								<task>
+									<echo></echo>
+									<echo>Tablespace Ind0 created !</echo>
+								</task>
+							</followOnAction>							
+							<followOnAction condition="false">
+								<task>
+									<echo>Tablespace Ind0 already exists</echo>
+								</task>
+							</followOnAction>
+						</action>
+					</task>	
+
+					<task>
+						<action name="createtbsp7" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="fixed">
+									<value>executeSQL</value>
+								</parameter>
+								<parameter name="SQL" type="fixed">
+									<value>CREATE TABLESPACE Ind1 IN PGA</value>
+								</parameter>											
+							</parameterList>
+							<followOnAction condition="true">
+								<task>
+									<echo></echo>
+									<echo>Tablespace Ind1 created !</echo>
+								</task>
+							</followOnAction>							
+							<followOnAction condition="false">
+								<task>
+									<echo>Tablespace Ind1 already exists</echo>
+								</task>
+							</followOnAction>
+						</action>
+					</task>	
+
+					<task>
+						<action name="createtbsp8" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="fixed">
+									<value>executeSQL</value>
+								</parameter>
+								<parameter name="SQL" type="fixed">
+									<value>CREATE TABLESPACE Ind2 IN PGA</value>
+								</parameter>											
+							</parameterList>
+							<followOnAction condition="true">
+								<task>
+									<echo></echo>
+									<echo>Tablespace Ind2 created !</echo>
+								</task>
+							</followOnAction>							
+							<followOnAction condition="false">
+								<task>
+									<echo>Tablespace Ind2 already exists</echo>
+								</task>
+							</followOnAction>
+						</action>
+					</task>	
+
+					<task>
+						<action name="createtbsp9" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="fixed">
+									<value>executeSQL</value>
+								</parameter>
+								<parameter name="SQL" type="fixed">
+									<value>CREATE TABLESPACE Ind3 IN PGA</value>
+								</parameter>											
+							</parameterList>
+							<followOnAction condition="true">
+								<task>
+									<echo></echo>
+									<echo>Tablespace Ind3 created !</echo>
+								</task>
+							</followOnAction>							
+							<followOnAction condition="false">
+								<task>
+									<echo>Tablespace Ind3 already exists</echo>
+								</task>
+							</followOnAction>
+						</action>
+					</task>	
+
+					<task>
+						<action name="createtbsp10" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="fixed">
+									<value>executeSQL</value>
+								</parameter>
+								<parameter name="SQL" type="fixed">
+									<value>CREATE TABLESPACE Ind4 IN PGA</value>
+								</parameter>											
+							</parameterList>
+							<followOnAction condition="true">
+								<task>
+									<echo></echo>
+									<echo>Tablespace Ind4 created !</echo>
+								</task>
+							</followOnAction>							
+							<followOnAction condition="false">
+								<task>
+									<echo>Tablespace Ind4 already exists</echo>
+								</task>
+							</followOnAction>
+						</action>
+					</task>	
+
+				</followOnAction>
+			</action>
+		</task>	
+
+		<task name="Create Range Partitioned tables">
+			<discription>
+				This creates tables enabled for Range Partitioned and populates them with data
+			</discription>
+			<action name="range" type="blank">
+				<followOnAction condition="true" compareOn="true" compareOnType="raw">
+
+					<task>
+						<echo></echo>
+						<echo>Creating the Range Partitioned tables and populating them with data...</echo>
+						<action name="createrange1" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="fixed">
+									<value>executeSQL</value>
+								</parameter>
+								<parameter name="SQL" type="fixed">
+									<value>CREATE TABLE ?SCHEMA?.SUBSCRIBER_RATED_USAGE_RANGE (OUT_ROAMING_IND SMALLINT, OUT_ROAMING_NW_OP_KEY INTEGER, EVENT_START_DT DATE, EVENT_START_TIME TIME, EVENT_DURATION INTEGER, CORE_ACC_CHARGE_AMT DECIMAL(10,2), CC_NUM VARCHAR(21), EVENT_TYPE_KEY SMALLINT, CDR_ID_KEY VARCHAR(75), EVENT_TYPE_CLSF_KEY SMALLINT, SUBSCRIBER_CIRCLE_ID SMALLINT, SUBSCRIBER_MSISDN BIGINT, CALL_PULSE_30 INTEGER, CALL_PULSE_60 INTEGER, FORWARD_TO_NUM BIGINT, FIRST_CELLSITE VARCHAR(21), SOURCE_DESTINATION_NW_OP_KEY INTEGER, EVENT_DIR SMALLINT, TRF_PLAN_KEY VARCHAR(21)) DISTRIBUTE BY HASH(SUBSCRIBER_MSISDN) PARTITION BY RANGE(EVENT_START_DT) (PART PART0 STARTING '2009-02-01' ENDING '2009-02-28' IN RP0 INDEX IN Ind0, PART PART1 STARTING '2009-03-01' ENDING '2009-03-31' IN RP1 INDEX IN Ind1, PART PART2 STARTING '2009-04-01' ENDING '2009-04-30' IN RP2 INDEX IN Ind2, PART PART3 STARTING '2009-05-01' ENDING '2009-05-31' IN RP3 INDEX IN Ind3, PART PART4 STARTING '2009-06-01' ENDING '2009-06-30' IN RP4 INDEX IN Ind4) NOT LOGGED INITIALLY</value>
+								</parameter>											
+							</parameterList>
+							
+							<followOnAction condition="true">
+							
+								<task>
+									<action name="insertrange1" type="serverAction">
+										<parameterList>
+											<parameter name="action" type="fixed">
+												<value>executeSQL</value>
+											</parameter>
+											<parameter name="SQL" type="fixed">
+												<value>INSERT INTO ?SCHEMA?.SUBSCRIBER_RATED_USAGE_RANGE (SELECT * FROM TE_TEMP.SUBSCRIBER_RATED_USAGE)</value>
+											</parameter>											
+										</parameterList>
+
+										<followOnAction condition="true">
+											<task>
+												<echo></echo>
+												<echo>SUBSCRIBER_RATED_USAGE_RANGE table created successfully !</echo>
+											</task>
+										</followOnAction>										
+										
+										<followOnAction condition="false">
+											<task>
+												<echo>Insertion into SUBSCRIBER_RATED_USAGE_RANGE table failed !</echo>
+											</task>
+										</followOnAction>
+									</action>
+								</task>	
+							</followOnAction>
+							
+							<followOnAction condition="false">
+								<task>
+									<echo></echo>
+									<echo>SUBSCRIBER_RATED_USAGE_RANGE table already exists !</echo>
+								</task>
+							</followOnAction>
+							
+						</action>
+					</task>								
+
+					<task>
+						<action name="createind7" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="fixed">
+									<value>executeSQL</value>
+								</parameter>
+								<parameter name="SQL" type="fixed">
+									<value>CREATE INDEX ?SCHEMA?.INDEX_RATED_USAGE_RANGE_1 ON ?SCHEMA?.SUBSCRIBER_RATED_USAGE_RANGE (SUBSCRIBER_MSISDN) PARTITIONED ALLOW REVERSE SCANS</value>
+								</parameter>											
+							</parameterList>
+							
+							<followOnAction condition="true">
+								<task>
+									<echo>INDEX_RATED_USAGE_RANGE_1 index created successfully !</echo>
+								</task>
+							</followOnAction>
+							
+							<followOnAction condition="false">
+								<task>
+									<echo>INDEX_RATED_USAGE_RANGE_1 index already exists !</echo>
+								</task>
+							</followOnAction>
+						</action>
+					</task>	
+			
+					<task>
+						<action name="createind8" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="fixed">
+									<value>executeSQL</value>
+								</parameter>
+								<parameter name="SQL" type="fixed">
+									<value>CREATE INDEX ?SCHEMA?.INDEX_RATED_USAGE_RANGE_2 ON ?SCHEMA?.SUBSCRIBER_RATED_USAGE_RANGE (SUBSCRIBER_CIRCLE_ID, EVENT_START_DT) PARTITIONED ALLOW REVERSE SCANS</value>
+								</parameter>											
+							</parameterList>
+							
+							<followOnAction condition="true">
+								<task>
+									<echo>INDEX_RATED_USAGE_RANGE_2 index created successfully !</echo>
+								</task>
+							</followOnAction>
+							
+							<followOnAction condition="false">
+								<task>
+									<echo>INDEX_RATED_USAGE_RANGE_2 index already exists !</echo>
+								</task>
+							</followOnAction>
+						</action>
+					</task>	
+
+					<task>
+						<action name="runstats5" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="fixed">
+									<value>executeSQL</value>
+								</parameter>
+								<parameter name="SQL" type="fixed">
+									<value>CALL ADMIN_CMD('RUNSTATS ON TABLE ?SCHEMA?.SUBSCRIBER_RATED_USAGE_RANGE FOR INDEXES ALL')</value>
+								</parameter>											
+							</parameterList>
+							
+							<followOnAction condition="true">
+								<task>
+									<echo>Runstats on table SUBSCRIBER_RATED_USAGE_RANGE successfull !</echo>
+								</task>
+							</followOnAction>
+							
+							<followOnAction condition="false">
+								<task>
+									<echo>Runstats on table SUBSCRIBER_RATED_USAGE_RANGE failed !</echo>
+								</task>
+							</followOnAction>
+						</action>
+					</task>					
+				
+					<task>
+						<action name="createrange2" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="fixed">
+									<value>executeSQL</value>
+								</parameter>
+								<parameter name="SQL" type="fixed">
+									<value>CREATE TABLE ?SCHEMA?.SUBSCRIBER_DEDICATED_ACCOUNT_USAGE_RANGE (CDR_ID_KEY VARCHAR(75), DED_ACC_KEY SMALLINT, DED_ACC_CHARGE_AMT DECIMAL(10,2), SUBSCRIBER_MSISDN BIGINT, SUBSCRIBER_CIRCLE_ID SMALLINT, CC_NUM VARCHAR(21), EVENT_START_DT DATE, EVENT_START_TIME TIME, EVENT_DURATION INTEGER) DISTRIBUTE BY HASH(SUBSCRIBER_MSISDN) PARTITION BY RANGE(EVENT_START_DT) (PART PART0 STARTING '2009-02-01' ENDING '2009-02-28' IN RP0 INDEX IN Ind0, PART PART1 STARTING '2009-03-01' ENDING '2009-03-31' IN RP1 INDEX IN Ind1, PART PART2 STARTING '2009-04-01' ENDING '2009-04-30' IN RP2 INDEX IN Ind2, PART PART3 STARTING '2009-05-01' ENDING '2009-05-31' IN RP3 INDEX IN Ind3, PART PART4 STARTING '2009-06-01' ENDING '2009-06-30' IN RP4 INDEX IN Ind4) NOT LOGGED INITIALLY</value>
+								</parameter>											
+							</parameterList>
+							
+							<followOnAction condition="true">
+							
+								<task>
+									<action name="insertrange2" type="serverAction">
+										<parameterList>
+											<parameter name="action" type="fixed">
+												<value>executeSQL</value>
+											</parameter>
+											<parameter name="SQL" type="fixed">
+												<value>INSERT INTO ?SCHEMA?.SUBSCRIBER_DEDICATED_ACCOUNT_USAGE_RANGE (SELECT * FROM TE_TEMP.SUBSCRIBER_DEDICATED_ACCOUNT_USAGE)</value>
+											</parameter>											
+										</parameterList>
+										
+										<followOnAction condition="true">
+											<task>
+												<echo></echo>
+												<echo>SUBSCRIBER_DEDICATED_ACCOUNT_USAGE_RANGE table created successfully !</echo>
+											</task>
+										</followOnAction>
+										
+										<followOnAction condition="false">
+											<task>
+												<echo>Insertion into SUBSCRIBER_DEDICATED_ACCOUNT_USAGE_RANGE table failed !</echo>
+											</task>
+										</followOnAction>
+									</action>
+								</task>	
+							</followOnAction>
+							
+							<followOnAction condition="false">
+								<task>
+									<echo></echo>
+									<echo>SUBSCRIBER_DEDICATED_ACCOUNT_USAGE_RANGE table already exists !</echo>
+								</task>
+							</followOnAction>
+							
+						</action>
+					</task>										
+					
+					<task>
+						<action name="createind9" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="fixed">
+									<value>executeSQL</value>
+								</parameter>
+								<parameter name="SQL" type="fixed">
+									<value>CREATE INDEX ?SCHEMA?.INDEX_DEDICATED_USAGE_RANGE_1 ON ?SCHEMA?.SUBSCRIBER_DEDICATED_ACCOUNT_USAGE_RANGE (SUBSCRIBER_MSISDN) PARTITIONED ALLOW REVERSE SCANS</value>
+								</parameter>											
+							</parameterList>
+							
+							<followOnAction condition="true">
+								<task>
+									<echo>INDEX_DEDICATED_USAGE_RANGE_1 index created successfully !</echo>
+								</task>
+							</followOnAction>
+							
+							<followOnAction condition="false">
+								<task>
+									<echo>INDEX_DEDICATED_USAGE_RANGE_1 index already exists !</echo>
+								</task>
+							</followOnAction>
+						</action>
+					</task>	
+
+					<task>
+						<action name="createind10" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="fixed">
+									<value>executeSQL</value>
+								</parameter>
+								<parameter name="SQL" type="fixed">
+									<value>CREATE INDEX ?SCHEMA?.INDEX_DEDICATED_USAGE_RANGE_2 ON ?SCHEMA?.SUBSCRIBER_DEDICATED_ACCOUNT_USAGE_RANGE (SUBSCRIBER_CIRCLE_ID, EVENT_START_DT) PARTITIONED ALLOW REVERSE SCANS</value>
+								</parameter>											
+							</parameterList>
+							
+							<followOnAction condition="true">
+								<task>
+									<echo>INDEX_DEDICATED_USAGE_RANGE_2 index created successfully !</echo>
+								</task>
+							</followOnAction>
+							
+							<followOnAction condition="false">
+								<task>
+									<echo>INDEX_DEDICATED_USAGE_RANGE_2 index already exists !</echo>
+								</task>
+							</followOnAction>
+						</action>
+					</task>	
+
+					<task>
+						<action name="runstats6" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="fixed">
+									<value>executeSQL</value>
+								</parameter>
+								<parameter name="SQL" type="fixed">
+									<value>CALL ADMIN_CMD('RUNSTATS ON TABLE ?SCHEMA?.SUBSCRIBER_DEDICATED_ACCOUNT_USAGE_RANGE FOR INDEXES ALL')</value>
+								</parameter>											
+							</parameterList>
+							
+							<followOnAction condition="true">
+								<task>
+									<echo>Runstats on table SUBSCRIBER_DEDICATED_ACCOUNT_USAGE_RANGE successfull !</echo>
+								</task>
+							</followOnAction>
+							
+							<followOnAction condition="false">
+								<task>
+									<echo>Runstats on table SUBSCRIBER_DEDICATED_ACCOUNT_USAGE_RANGE failed !</echo>
+								</task>
+							</followOnAction>
+						</action>
+					</task>		
+		
+				</followOnAction>
+			</action>
+		</task>	
+		
+    </taskList>
+</actionPanel>

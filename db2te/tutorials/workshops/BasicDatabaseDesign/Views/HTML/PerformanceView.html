@@ -1,0 +1,24 @@
+<p>This page compares the performance of a query (i.e query execution time) run against the tables before and after a view is created</p>
+
+<H2><B>Operation</B></H2><HR>
+<p>The following query is run against the tables first without a view and then with a view. The performance in terms of query execution time in each case is compared</p>
+
+<p><b>Query to generate the bill for the customer run against the table :</b></p>
+
+<p><pre><code>
+SELECT a.order_master_ID, a.customer_ID, a.order_date, a.total_amount, b.product_ID, b.product_cost 
+  FROM order_master_c a, order_details_c b
+  WHERE a.order_master_ID = 11011
+    AND a.order_master_ID = b.order_details_ID
+</code></pre></p>
+
+<br><p><b>Query to generate the bill for the customer run against the view :</b></p>
+
+<p><pre><code>
+SELECT order_master_ID, customer_ID, order_date, total_amount, product_ID, product_cost 
+  FROM v_order
+  WHERE order_master_ID = 11011
+</code></pre></p>
+
+<BR><H2><B>Result</B></H2><HR>
+<p>The graph shows better query performance i.e. the query processing time is significantly reduced with the use of views</p>

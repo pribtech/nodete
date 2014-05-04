@@ -1,0 +1,417 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tutorial name="DB2 Security: Role based access">
+	<flowRestriction>freewithchecks</flowRestriction>
+	<globalCodeHighlightOptions highlightCode = "true" />
+	<pageList>
+ 
+		<page name="PCI Standard - Protect Stored Data: ROLE" type="general">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>RolesPCI.html</contentFile>
+		        <autoLoadLink>
+				<pageWindow target="informationWindow">
+					<panel name="main">
+						<URL>
+							http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.admin.sec.doc/doc/c0050531.html?noframes=true
+						</URL>
+					</panel>
+				</pageWindow>
+			</autoLoadLink>
+		</page>
+		
+		<page name="ROLEs Usecase Diagram" type="general">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>Roles.html</contentFile>
+			<autoLoadLink>
+				<pageWindow target="tabledef" raiseToTop="y">
+					<panel name="top" PrimaryContainer="true">
+		   				<link type="other" target="_self" window="_self" connectionRequired="y">
+							<address>
+								?BASE_DIRECTORY?/other/RolesUC.php
+							</address>
+							<parameterList>
+								<parameter name="BASE_DIR">
+									?BASE_DIRECTORY?
+								</parameter>
+							</parameterList>
+						</link>
+					</panel>
+				</pageWindow>
+			</autoLoadLink>
+		</page>
+		
+		<page name="Pre-requisites" type="general">
+			<contentFile>workshopPrereq.html</contentFile>
+			<autoLoadLink>
+				<pageWindow target="tabledef" raiseToTop="y">
+					<panel name="top" PrimaryContainer="true">
+		   				<link type="other" target="_self" window="_self" connectionRequired="y">
+							<address>
+								?BASE_DIRECTORY?/other/users.php
+							</address>
+							<parameterList>
+								<parameter name="BASE_DIR">
+									?BASE_DIRECTORY?
+								</parameter>
+							</parameterList>
+						</link>
+					</panel>
+				</pageWindow>
+			</autoLoadLink>
+		</page>
+		<page name="Connect as the database creator" type="general">
+			<contentFile>
+				connect_dbcreator.html
+			</contentFile>
+			<autoLoadLink>
+				<pageWindow target="connectionLoader" raiseToTop="true">
+					<splitPane direction="h" splitPercent="0.8" allowResize="false">
+						<topPane>
+							<panel name="main" PrimaryContainer="true">
+								<RAW><![CDATA[
+<div id="title">Connection Manager</div>
+Connect to the database as the database creator.
+								]]></RAW>
+							</panel>
+						</topPane>
+						<bottomPane>
+							<panel name="connection" PrimaryContainer="false">
+								<link type="action" target="_self" window="_self" connectionRequired="y">
+									<parameterList>
+										<parameter name="action">connectionManager</parameter>
+									</parameterList>
+								</link>				
+							</panel>
+						</bottomPane>
+					</splitPane>
+				</pageWindow>
+			</autoLoadLink>
+		</page>
+
+		<page name="Setup authority and tables for the workshop" type="general">
+			<contentFile>
+				rolePrereq.html
+			</contentFile>
+			<SQLFile>
+				rolePrereq.sql				
+			</SQLFile>
+			<SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar=";"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+			<autoLoadLink>
+				<pageWindow target="connectionLoader" raiseToTop="true">
+					<splitPane direction="h" splitPercent="0.8" allowResize="false">
+						<topPane>
+							<panel name="main" PrimaryContainer="true">
+								<RAW><![CDATA[
+<div id="title">Connection Manager</div>
+Connect to the database as the database creator for this example.
+								]]></RAW>
+							</panel>
+						</topPane>
+						<bottomPane>
+							<panel name="connection" PrimaryContainer="false">
+								<link type="action" target="_self" window="_self" connectionRequired="y">
+									<parameterList>
+										<parameter name="action">connectionManager</parameter>
+									</parameterList>
+								</link>				
+							</panel>
+						</bottomPane>
+					</splitPane>
+				</pageWindow>
+			</autoLoadLink>				
+		</page>	
+		
+		<page name="Connect as Pat" type="general">
+			<contentFile>
+				connect_pat.html
+			</contentFile>
+			<autoLoadLink>
+				<pageWindow target="connectionLoader" raiseToTop="true">
+					<splitPane direction="h" splitPercent="0.8" allowResize="false">
+						<topPane>
+							<panel name="main" PrimaryContainer="true">
+								<RAW><![CDATA[
+<div id="title">Connection Manager</div>
+Connect to the database as Pat.
+								]]></RAW>
+							</panel>
+						</topPane>
+						<bottomPane>
+							<panel name="connection" PrimaryContainer="false">
+								<link type="action" target="_self" window="_self" connectionRequired="y">
+									<parameterList>
+										<parameter name="action">connectionManager</parameter>
+									</parameterList>
+								</link>				
+							</panel>
+						</bottomPane>
+					</splitPane>
+				</pageWindow>
+			</autoLoadLink>
+		</page>	
+
+		<page name="Create and grant roles" type="general">
+    		<contentFile>
+				createRoles.html
+			</contentFile>
+			<SQLFile>
+				createRoles.sql
+			</SQLFile>
+			<SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar=";"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+			<codeHighlightOptions highlightCode="true">
+				<changedHighlightTokens>
+					<text>CREATE ROLE</text>
+					<text>GRANT ROLE</text>
+					<text>GRANT SELECT, INSERT, UPDATE</text>
+					<text>GRANT SELECT, INSERT, UPDATE, DELETE</text>
+					<text>TO ROLE</text>
+					<text>GRANT ROLE</text>
+					<text>TO USER</text>
+				</changedHighlightTokens>
+			</codeHighlightOptions>
+			<autoLoadLink>
+				<pageWindow target="connectionLoader" raiseToTop="true">
+					<splitPane direction="h" splitPercent="0.8" allowResize="false">
+						<topPane>
+							<panel name="main" PrimaryContainer="true">
+								<RAW><![CDATA[
+<div id="title">Connection Manager</div>
+Connect to the database as Pat for this example.
+								]]></RAW>
+							</panel>
+						</topPane>
+						<bottomPane>
+							<panel name="connection" PrimaryContainer="false">
+								<link type="action" target="_self" window="_self" connectionRequired="y">
+									<parameterList>
+										<parameter name="action">connectionManager</parameter>
+									</parameterList>
+								</link>				
+							</panel>
+						</bottomPane>
+					</splitPane>
+				</pageWindow>
+			</autoLoadLink>				
+			
+		</page>
+        
+		<page name="Connect as Joe" type="general">
+			<contentFile>
+				connect_joe.html
+			</contentFile>
+			<autoLoadLink>
+				<pageWindow target="connectionLoader" raiseToTop="true">
+					<splitPane direction="h" splitPercent="0.8" allowResize="false">
+						<topPane>
+							<panel name="main" PrimaryContainer="true">
+								<RAW><![CDATA[
+<div id="title">Connection Manager</div>
+Connect to the database as Joe.
+								]]></RAW>
+							</panel>
+						</topPane>
+						<bottomPane>
+							<panel name="connection" PrimaryContainer="false">
+								<link type="action" target="_self" window="_self" connectionRequired="y">
+									<parameterList>
+										<parameter name="action">connectionManager</parameter>
+									</parameterList>
+								</link>				
+							</panel>
+						</bottomPane>
+					</splitPane>
+				</pageWindow>
+			</autoLoadLink>
+		</page>	
+	
+     		<page name="ROLE based access by manager Joe" type="general">
+			<contentFile>
+				manager.html
+			</contentFile>
+			<SQLFile>
+				RolebasedAccess2.SQL
+            		</SQLFile>
+            		<SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar=";"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+       			<codeHighlightOptions highlightCode="true">
+				<changedHighlightTokens>
+					<text>SELECT</text>
+					<text>UPDATE</text>
+					<text>INSERT</text>
+					<text>DELETE</text>
+				</changedHighlightTokens>
+			</codeHighlightOptions>
+			<autoLoadLink>
+				<pageWindow target="connectionLoader" raiseToTop="true">
+					<splitPane direction="h" splitPercent="0.8" allowResize="false">
+						<topPane>
+							<panel name="main" PrimaryContainer="true">
+								<RAW><![CDATA[
+<div id="title">Connection Manager</div>
+Connect to the database as Joe for this example.
+								]]></RAW>
+							</panel>
+						</topPane>
+						<bottomPane>
+							<panel name="connection" PrimaryContainer="false">
+								<link type="action" target="_self" window="_self" connectionRequired="y">
+									<parameterList>
+										<parameter name="action">connectionManager</parameter>
+									</parameterList>
+								</link>				
+							</panel>
+						</bottomPane>
+					</splitPane>
+				</pageWindow>
+			</autoLoadLink>				
+			
+		</page>
+
+		<page name="Connect as Bob" type="general">
+			<contentFile>
+				connect_bob.html
+			</contentFile>
+			<autoLoadLink>
+				<pageWindow target="connectionLoader" raiseToTop="true">
+					<splitPane direction="h" splitPercent="0.8" allowResize="false">
+						<topPane>
+							<panel name="main" PrimaryContainer="true">
+								<RAW><![CDATA[
+<div id="title">Connection Manager</div>
+Connect to the database as Bob.
+								]]></RAW>
+							</panel>
+						</topPane>
+						<bottomPane>
+							<panel name="connection" PrimaryContainer="false">
+								<link type="action" target="_self" window="_self" connectionRequired="y">
+									<parameterList>
+										<parameter name="action">connectionManager</parameter>
+									</parameterList>
+								</link>				
+							</panel>
+						</bottomPane>
+					</splitPane>
+				</pageWindow>
+			</autoLoadLink>
+		</page>	
+
+		
+		<page name="ROLE based access by employee Bob" type="general">
+    		<contentFile>
+				employee.html
+			</contentFile>
+			<SQLFile>
+				RolebasedAccess3.SQL
+            		</SQLFile>
+            		<SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar=";"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+       			<codeHighlightOptions highlightCode="true">
+				<changedHighlightTokens>
+					<text>SELECT</text>
+					<text>UPDATE</text>
+					<text>INSERT</text>
+					<text>DELETE</text>
+				</changedHighlightTokens>
+			</codeHighlightOptions>
+			<autoLoadLink>
+				<pageWindow target="connectionLoader" raiseToTop="true">
+					<splitPane direction="h" splitPercent="0.8" allowResize="false">
+						<topPane>
+							<panel name="main" PrimaryContainer="true">
+								<RAW><![CDATA[
+<div id="title">Connection Manager</div>
+Connect to the database as Bob for this example.
+								]]></RAW>
+							</panel>
+						</topPane>
+						<bottomPane>
+							<panel name="connection" PrimaryContainer="false">
+								<link type="action" target="_self" window="_self" connectionRequired="y">
+									<parameterList>
+										<parameter name="action">connectionManager</parameter>
+									</parameterList>
+								</link>				
+							</panel>
+						</bottomPane>
+					</splitPane>
+				</pageWindow>
+			</autoLoadLink>				
+			
+		</page>
+		
+		<page name="Connect as Pat" type="general">
+			<contentFile>
+				connect_pat.html
+			</contentFile>
+			<autoLoadLink>
+				<pageWindow target="connectionLoader" raiseToTop="true">
+					<splitPane direction="h" splitPercent="0.8" allowResize="false">
+						<topPane>
+							<panel name="main" PrimaryContainer="true">
+								<RAW><![CDATA[
+<div id="title">Connection Manager</div>
+Connect to the database as Pat.
+								]]></RAW>
+							</panel>
+						</topPane>
+						<bottomPane>
+							<panel name="connection" PrimaryContainer="false">
+								<link type="action" target="_self" window="_self" connectionRequired="y">
+									<parameterList>
+										<parameter name="action">connectionManager</parameter>
+									</parameterList>
+								</link>				
+							</panel>
+						</bottomPane>
+					</splitPane>
+				</pageWindow>
+			</autoLoadLink>
+		</page>	
+		
+		
+		<page name="Revoke and drop roles" type="general">
+			<contentFile>
+				RevokeAndDropRoles.html
+			</contentFile>
+			<SQLFile>
+				cleanup.sql
+            		</SQLFile>
+           		<SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar=";"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+       			<codeHighlightOptions highlightCode="true">
+				<changedHighlightTokens>
+					<text>REVOKE ROLE</text>
+					<text>DROP ROLE</text>
+				</changedHighlightTokens>
+			</codeHighlightOptions>
+			<autoLoadLink>
+				<pageWindow target="connectionLoader" raiseToTop="true">
+					<splitPane direction="h" splitPercent="0.8" allowResize="false">
+						<topPane>
+							<panel name="main" PrimaryContainer="true">
+								<RAW><![CDATA[
+<div id="title">Connection Manager</div>
+Connect to the database as Pat for this example.
+								]]></RAW>
+							</panel>
+						</topPane>
+						<bottomPane>
+							<panel name="connection" PrimaryContainer="false">
+								<link type="action" target="_self" window="_self" connectionRequired="y">
+									<parameterList>
+										<parameter name="action">connectionManager</parameter>
+									</parameterList>
+								</link>				
+							</panel>
+						</bottomPane>
+					</splitPane>
+				</pageWindow>
+			</autoLoadLink>				
+
+		</page>	
+	</pageList>
+</tutorial>

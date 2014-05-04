@@ -1,0 +1,43 @@
+<B>Pre-requistes</B><BR><BR>
+	Create directory 'XMLDataMoved_OPD' and 
+					 'XMLDataMoved_PD' in drive C:\
+					 
+<BR><BR>					 
+<H4>Importing XML data</H4>
+<P align = "justify">
+The import utility can be used to import XML data into an XML table column using either the table name or 
+a nickname for a DB2 Database for Linux, UNIX, and Windows source data object. When importing data into 
+an XML table column, you can use the XML FROM option to specify the paths of the input XML data file or files. 
+<BR><BR>					 
+For example, for an XML file "/home/user/xmlpath/xmldocs.001.xml" that had previously been exported, 
+the following command could be used to import the data back into the table.
+<BR><BR>					 
+   IMPORT FROM t1export.del OF DEL XML FROM /home/user/xmlpath INSERT INTO USER.T1
+
+
+<BR><BR>					 
+<H4>Exporting XML data</H4>
+<P align = "justify">
+When exporting XML data, the resulting QDM (XQuery Data Model) instances are written to a file or files 
+separate from the main data file containing exported relational data. This is true even if neither the 
+XMLFILE nor the XML TO option is specified. By default, exported QDM instances are all concatenated to 
+the same XML file. You can use the XMLINSEPFILES file type modifier to specify that each QDM instance be 
+written to a separate file.
+<BR><BR>
+The XML data, however, is represented in the main data file with an XML data specifier (XDS). The XDS 
+is a string represented as an XML tag named "XDS", which has attributes that describe information about 
+the actual XML data in the column; such information includes the name of the file that contains the actual 
+XML data, and the offset and length of the XML data within that file. 				
+<BR><BR>
+The destination paths and base names of the exported XML files can be specified with the XML TO and XMLFILE 
+options. If the XML TO or XMLFILE option is specified, the format of the exported XML file names, stored in 
+the FIL attribute of the XDS, is xmlfilespec.xxx.xml, where xmlfilespec is the value specified for the 
+XMLFILE option, and xxx is a sequence number for xml files produced by the export utility. Otherwise, the 
+format of the exported XML file names is: exportfilename.xxx.xml, where exportfilename is the name of the 
+exported output file specified for the EXPORT command, and xxx is a sequence number for xml files produced 
+by the export utility.
+<BR><BR>
+By default, exported XML files are written to the path of the exported data file. The default base name for 
+exported XML files is the name of the exported data file, with an appending 3-digit sequence number, 
+and the .xml extension.	 
+<BR><BR>

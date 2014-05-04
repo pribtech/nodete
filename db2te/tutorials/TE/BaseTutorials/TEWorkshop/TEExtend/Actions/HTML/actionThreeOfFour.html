@@ -1,0 +1,39 @@
+<p>At this point in the script, the data has been retrieved successfully and will need to be assigned to appropriate shared parameters. This will allow the data to be filled in on the form which will be created later. Earlier in the lab you looked at the db2 stored procedure to update an administrative task and were shown how to create a table definition from the stored procedure. </p>
+
+<p>For this lab, you are going to use the table definition that is already created for the Administrative Task Scheduler built into the Technology Explorer for DB2. On the third tab in the right stage you will see the definition we are using to create our form. Pairing of the column or parameter names from the definition file (third tab) with the names identified in the shared parameters (second tab) the data is stored and automatically filled in when the form is built.</p>
+
+<p>The data is pulled out of the return object of this action using the statement:
+<ul><li>getTaskDetails.returnValue.resultSet.0.data.0.0</li></ul></p>
+
+<p>Yes, it looks scary but it is really easy. Here, follow along:
+<ul>
+<li>The data from the return information of the action getTaskDetails:
+<ul><li>GetTaskDetails</li></ul>
+</li>
+<li>The information contained in the return value:
+<ul><li>getTaskDetails.returnValue</li></ul>
+</li>
+<li>The result set which is return from the query:
+<ul><li>getTaskDetails.returnValue.resultSet</li></ul>
+</li>
+<li>A result set is an array and there is only one result set returned for this query. It will be at index 0:
+<ul><li>getTaskDetails.returnValue.resultSet.0</li></ul>
+</li>
+<li>Now you want to look at the data returned in the result set:
+<ul><li>getTaskDetails.returnValue.resultSet.0.data</li></ul>
+</li>
+<li>The row:
+<ul><li>getTaskDetails.returnValue.resultSet.0.data.0</li></ul>
+</li>
+<li>Finally the column:
+<ul><li>getTaskDetails.returnValue.resultSet.0.data.0.0</li></ul>
+</li>
+</ul></p>
+<!--
+<p>For a complete look at the return object of 'executeSQL' look here.</p>
+-->
+<p><h3>Steps to complete:</h3>
+<ul>
+  <li>Make the changes to your document as indicated on the right</li>
+</ul>
+</p>

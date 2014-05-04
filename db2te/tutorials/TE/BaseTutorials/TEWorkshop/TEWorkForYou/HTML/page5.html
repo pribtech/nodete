@@ -1,0 +1,59 @@
+<p>Instead of remembering SQL, you can easily add a link to the Tables page to look up dependency information.</p>
+<p>The pages in the Technology Explorer for DB2 are defined in XML profiles.
+Each page has it's own XML profile stored within the web server.
+The file displayed to the right is the XML definition for the Tables page. 
+The XML file controls the SQL to run, how the columns are displayed, cross reference links, and actions.
+It even controls detailed information on the page itself, searching rules, how many rows to display, and much more. 
+</p>
+<p><h3>Goal:</h3>
+Add a reference within the Table page's XML table definition file. You can use the modified file displayed to the right as an example.
+</p>
+<p><h3>Steps to complete:</h3>
+<ul>
+	<li>Open the following file in any plaintext editor:
+		<ul>
+			<li>&lt;PathToTE&gt;/tableDefinitions/tablecat.xml</li>
+		</ul>
+	</li>
+	<li>Add a new column to be displayed within the display_columns element. 
+		The changes are outlined in the file to the right.
+		Refer to the legend below.
+		<ul>
+			<li>Do this by:
+				<ul>
+					<li>Copying the 'col' element below</li>
+					<li>Changing the value of the 'name' attribute to 'Dependencies'</li>
+				</ul>
+			</li>
+		</ul>		
+	</li>
+	<li>Add a new reference
+		<ul>
+			<li>Do this by:
+				<ul>
+					<li>Copying the reference element with the attribute 'name' of the value 'indexes'</li>
+					<li>Change the value of the element 'c_title' and the attribute 'name' to 'Dependencies'</li>
+					<li>Change the value of the element 'refvalue' to 'SYSCAT.TABDEP' (case is sensitive).</li>
+					<li>Change the foreign column names to match the corresponding names in the 'tabdep' table
+						<ul>
+							<li>'bschema' for the first 'ref' element</li>
+							<li>'bname' for the second 'ref' element</li>
+						</ul>
+					</li>
+				</ul>
+			</li>
+		</ul>
+	</li>
+	<li>Save the file</li>
+	<li>Leave the editor open</li>
+</ul>
+</p>
+
+<p><h4>The changes are indicated with the following:</h4>
+<ul>
+  <li class="sourceRemove">Indicated text has been removed</li>
+  <li class="sourceChange">Indicated text has been edited</li>
+  <li class="sourceAdd">Indicated text has been added</li>
+  <li class="sourceCopiedFrom">Indicated text is the source of a copy</li>
+</ul>
+</p>

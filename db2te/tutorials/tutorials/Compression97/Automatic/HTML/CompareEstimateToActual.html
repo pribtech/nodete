@@ -1,0 +1,21 @@
+<p>Select the actions on this page in order.</p>
+<p>This step checks to see how close the estimated compressed size is to the actual.</p>
+<h4>Get actual compressed size</h4>
+The first step collects statistics for the CUSTOMER_ADDRESS_WITH_COMPRESSION table and retrieves an estimate of the the table size.
+The SQL used to collect statistics and determine the table size are:
+<p><pre><code>
+CALL ADMIN_CMD
+  ('RUNSTATS ON TABLE CUSTOMER_ADDRESS_WITH_COMPRESSION')
+
+SELECT CAST(CAST(NPAGES AS DOUBLE)/256
+  AS DECIMAL(5,3))
+  FROM SYSIBM.SYSTABLES
+    WHERE CREATOR=?SCHEMA?
+      AND NAME='CUSTOMER_ADDRESS_WITH_COMPRESSION'
+
+</code></pre></p>
+<h4>Compare table sizes</h4>
+<p>The second step plots the current table size, the estimated table size (in MB) and the actual compressed size on a bar graph.</p>
+<p>If you hover your cursor over the bars in the graph you will see the exact sizes of each table.
+Notice how well the estimate predicted the actual size of the compressed table.</p>
+

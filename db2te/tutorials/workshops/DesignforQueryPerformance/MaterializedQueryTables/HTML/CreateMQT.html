@@ -1,0 +1,30 @@
+<BR><H2><B>Lets try it !</B></H2>
+<p>This page demonstrates creation of replicated MQT on the <b>dimension table</b>.</p>
+
+<H2><B>Operation</B></H2><HR>
+<p>
+<ol>
+<li>Create a Replicated MQT on the dimension table to reside on the partitions containing the fact tables</li>
+<li>Refresh the MQT to organize the data within the MQT</li>
+<li>Validate the data by issuing the SET INTEGRITY statement. The data is accessible only after integrity check is performed</li>
+<li>Execute RUNSTATS to ensure that current statistics are present in the MQT</li>
+</ol>
+</p>
+
+<BR><H2><B>Best Practices</B></H2><HR>
+<p>
+<ol>
+<li>Focus on frequently-used queries that use a lot of resources. These queries provide the greatest opportunities for performance gains through MQTs.</li>
+<li>Set a limit on the number of MQTs that you are willing to maintain. There are
+two reasons for this :
+  <ul>
+	  <li>Each MQT uses storage space on disk and additional UPDATE overhead</li>
+	  <li>Each MQT adds complexity to the search for the optimal QEP, increasing query compilation time</li>
+  </ul>
+</li>
+<li>Decide on a limit for the amount of disk space available for MQTs. Generally, do not allocate more than 10% to 20% of the total system storage of a data
+warehouse for MQTs</li>
+<li>Keep statistics on the MQTs up-to-date</li>
+<li>Avoid problematic MQT designs that make routing difficult. Try to avoid using EXISTS, NOT EXISTS, and SELECT DISTINCT. Unless the MQT is an exact match for a query, these predicates can make it difficult for the query compiler to make use of the MQT.</li>
+</ol>
+</p>

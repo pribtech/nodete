@@ -1,0 +1,15 @@
+<p>Run the SQL in the Ad Hoc command window to the right.</p>
+<BR>
+<h4>Enable the database for text search</h4>
+<p>DB2 Text Search manages information about text indexes to support administration tasks like index updates or gathering status. Enabling the database creates system tables and views that contain this information.</p>
+
+<p>Typically, you will use the following command to enable the current database for text search.</p>
+<pre><code>
+db2ts "ENABLE DATABASE FOR TEXT"
+</code></pre>
+
+<BR>
+<p>Here in the Technology Explorer, we issue an administrative SQL routine to enable the database like the above.</p>
+<pre><code>
+CALL SYSTS_ENABLE('en_US', ?)
+</code></pre>

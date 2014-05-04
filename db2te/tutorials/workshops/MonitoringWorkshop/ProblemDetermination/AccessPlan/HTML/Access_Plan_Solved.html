@@ -1,0 +1,68 @@
+<html>
+<head>
+    <style type="text/css">
+	.titleboxcontent {
+        background-color: #000000;
+		color:#ffffff;
+        padding: 2px;
+        overflow: hidden;
+        border-top: solid 1px #336699; }
+		
+	.linkboxcontent {
+        background-color: #999999;
+		color:#ffffff;
+        padding: 2px;
+        overflow: hidden;
+        border-top: solid 1px #336699; }
+		
+    .displayboxcontent {
+        background-color: #f5f5f5;
+        padding: 2px;
+        overflow: hidden;
+        border-top: solid 1px #336699; }
+    </style>
+</head>
+<body>
+
+<h2>Operation</h2><hr><BR>
+
+As the database adminitrator has resolved the problem with the SQL statement, he now begins to validate the system by performing the following steps:<BR><BR>
+<ul type=i>
+<li>Executes the SQL statement in the adhoc sql window on the top-right pane.</li>
+<li>Goes through the detailed diagnosis again, to verify if the query is behaving as expected.</li>
+</ul>
+<BR>
+
+<H2>Highlights</H2><HR><BR>
+
+<div class="titleboxcontent">View "<B>Detail diagnostic information</B>"</div><b> - Bottom-right pane.</B><BR>
+    The view displays the statistics like rows read, rows returned etc, for all the queries executed under each service class.
+	<ul>
+	    <li>Note the <B>rows read</B> and the <B>rows returned</B> for the query.</li>
+		<li>The ratio of rows read to rows returned has reduced to a great extent with the creation of appropriate indexes by the database adminitsrator.</li> 
+	</ul>	
+<BR>
+	For more details on the diagnosis, click on the below highlighted panel.	<BR><BR>	
+		<span style="height:30px; cursor: pointer;" onclick="MinimizeWindow('showme_DD');"><div class="linkboxcontent"><H4>Performing Detailed Diagnosis</H4></div></span>
+		<div id="showme_DD" style="display:none">
+		<div class="displayboxcontent">
+
+
+<font color=grey><B>The database administrator looks at the monitoring report generated here, to check, if the statements 
+which were expensive are performing as expected now.</B></font><BR><BR>
+
+To start with the validating the system, the database administrator executes the query and monitors the TE 
+view on the bottam-right pane and finds that the metrics 
+<BR><BR>
+<ul>
+<li><B>ROWS_READ/ROWS_RETURNED :</B> Is normal / as expected now.</li>
+<li><B>Total sorts and other sort metrics :</B> Is normal.</li>
+</ul>
+<BR>
+<font color=grey><B>The evidence suggests that the statements which were slow earlier, due to 
+scanning table rows rather than using an index, perform as expected with "index scans" taking place.</b></font>
+	</div>
+		</div> 
+	
+</body>
+</html>

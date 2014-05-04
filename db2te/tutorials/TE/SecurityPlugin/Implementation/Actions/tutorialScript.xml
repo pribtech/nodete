@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tutorial name="Implementation: Actions" autoCloseWindowsInRightStage="true" autoClearAdhocResults="true">
+	<!--flowRestriction>forwardexploration</flowRestriction-->
+	<pageList>
+		<page name="Actions part 1: Table xml basics" type="general">
+			<contentFile>actionOnePartOne.html</contentFile>
+			<autoLoadLink>
+				<pageWindow target="tabledef" raiseToTop="y">
+					<panel name="top" PrimaryContainer="true">
+		   				<link type="other" target="_self" window="_self" connectionRequired="y">
+							<address>
+								?BASE_DIRECTORY?/other/db2authCustomMasterView5-0.html
+							</address>
+						</link>
+					</panel>
+				</pageWindow>
+			</autoLoadLink>
+		</page>
+		<page name="Actions part 1: The remove script" type="general">
+			<contentFile>actionOnePartTwo.html</contentFile>
+			<autoLoadLink>
+				<pageWindow target="tabledef" raiseToTop="y">
+					<panel name="top" PrimaryContainer="true">
+		   				<link type="other" target="_self" window="_self" connectionRequired="y">
+							<address>
+								?BASE_DIRECTORY?/other/db2authCustomMasterView5-1.html
+							</address>
+						</link>
+					</panel>
+				</pageWindow>
+			</autoLoadLink>
+		</page>
+		<page name="Actions part 1: Follow-on actions" type="general">
+			<contentFile>actionOnePartThree.html</contentFile>
+			<autoLoadLink>
+				<pageWindow target="tabledef" raiseToTop="y">
+					<panel name="top" PrimaryContainer="true">
+		   				<link type="other" target="_self" window="_self" connectionRequired="y">
+							<address>
+								?BASE_DIRECTORY?/other/db2authCustomMasterView5-2.html
+							</address>
+						</link>
+					</panel>
+				</pageWindow>
+			</autoLoadLink>
+		</page>
+		<page name="Actions part 1: Local vs. shared parameter and block values" type="general">
+			<contentFile>actionOnePartFour.html</contentFile>
+			<autoLoadLink>
+				<pageWindow target="tabledef" raiseToTop="y">
+					<panel name="top" PrimaryContainer="true">
+		   				<link type="other" target="_self" window="_self" connectionRequired="y">
+							<address>
+								?BASE_DIRECTORY?/other/db2authCustomMasterView5-3.html
+							</address>
+						</link>
+					</panel>
+				</pageWindow>
+			</autoLoadLink>
+		</page>
+		<page name="Actions part 1: Delete confirmation" type="general">
+			<contentFile>actionOnePartFive.html</contentFile>
+			<autoLoadLink>
+				<pageWindow target="tabledef" raiseToTop="y">
+					<panel name="top" PrimaryContainer="true">
+		   				<link type="other" target="_self" window="_self" connectionRequired="y">
+							<address>
+								?BASE_DIRECTORY?/other/db2authCustomMasterView5-4.html
+							</address>
+						</link>
+					</panel>
+				</pageWindow>
+			</autoLoadLink>
+		</page>
+		<page name="Actions part 1: Completing the Delete" type="general">
+			<contentFile>actionOnePartSix.html</contentFile>
+			<autoLoadLink>
+				<pageWindow target="tabledef" raiseToTop="y">
+					<panel name="top" PrimaryContainer="true">
+		   				<link type="other" target="_self" window="_self" connectionRequired="y">
+							<address>
+								?BASE_DIRECTORY?/other/db2authCustomMasterView5-5.html
+							</address>
+						</link>
+					</panel>
+				</pageWindow>
+			</autoLoadLink>
+		</page>
+		<page name="Actions part 1: Catching errors from executeSQL" type="general">
+			<contentFile>actionOnePartSeven.html</contentFile>
+			<autoLoadLink>
+				<pageWindow target="tabledef" raiseToTop="y">
+					<panel name="top" PrimaryContainer="true">
+		   				<link type="other" target="_self" window="_self" connectionRequired="y">
+							<address>
+								?BASE_DIRECTORY?/other/db2authCustomMasterView5-6.html
+							</address>
+						</link>
+					</panel>
+				</pageWindow>
+			</autoLoadLink>
+		</page>        
+		<page name="Actions part 1: About parameter checks" type="general">
+            <contentFile>actionOnePartEight.html</contentFile>
+            <autoLoadLink>
+                <pageWindow target="tabledef" raiseToTop="y">
+                    <panel name="top" PrimaryContainer="true">
+                        <link type="other" target="_self" window="_self" connectionRequired="y">
+                            <address>
+                                ?BASE_DIRECTORY?/other/db2authCustomMasterView5-7.html
+                            </address>
+                        </link>
+                    </panel>
+                </pageWindow>
+            </autoLoadLink>
+        </page>    
+		<page name="Actions part 2: Changing a password" type="general">
+			<contentFile>actionTwoPartOne.html</contentFile>
+			<autoLoadLink>
+				<pageWindow target="tabledef" raiseToTop="y">
+					<panel name="top" PrimaryContainer="true">
+		   				<link type="other" target="_self" window="_self" connectionRequired="y">
+							<address>
+								?BASE_DIRECTORY?/other/db2authCustomMasterView6-0.html
+							</address>
+						</link>
+					</panel>
+				</pageWindow>
+			</autoLoadLink>
+		</page>
+		<page name="Actions part 2: Retrieve row information for editing" type="general">
+			<contentFile>actionTwoPartTwo.html</contentFile>
+			 
+			<autoLoadLink>
+				<pageWindow target="tabledef" raiseToTop="y">
+					<panel name="top" PrimaryContainer="true">
+		   				<link type="other" target="_self" window="_self" connectionRequired="y">
+							<address>
+								?BASE_DIRECTORY?/other/db2authCustomMasterView6-1.html
+							</address>
+						</link>
+					</panel>
+				</pageWindow>
+			</autoLoadLink>
+		</page>
+		
+		<page name="Actions part 2: Finishing up the change password action" type="general">
+			<contentFile>actionTwoPartThree.html</contentFile>
+			 
+			<autoLoadLink>
+				<pageWindow target="tabledef" raiseToTop="y">
+					<panel name="top" PrimaryContainer="true">
+		   				<link type="other" target="_self" window="_self" connectionRequired="y">
+							<address>
+								?BASE_DIRECTORY?/other/db2authCustomMasterView6-2.html
+							</address>
+						</link>
+					</panel>
+				</pageWindow>
+			</autoLoadLink>
+		</page>
+		<page name="Actions part 3: Create a panel menu" type="general">
+			<contentFile>actionThreePartOne.html</contentFile>
+			 
+			<autoLoadLink>
+				<pageWindow target="tabledef" raiseToTop="y">
+					<panel name="top" PrimaryContainer="true">
+		   				<link type="other" target="_self" window="_self" connectionRequired="y">
+							<address>
+								?BASE_DIRECTORY?/other/db2authCustomMasterView7-0.html
+							</address>
+						</link>
+					</panel>
+				</pageWindow>
+			</autoLoadLink>
+		</page>
+		<page name="Actions part 3: Add User action script" type="general">
+			<contentFile>actionThreePartTwo.html</contentFile>
+			 
+			<autoLoadLink>
+				<pageWindow target="tabledef" raiseToTop="y">
+					<panel name="top" PrimaryContainer="true">
+		   				<link type="other" target="_self" window="_self" connectionRequired="y">
+							<address>
+								?BASE_DIRECTORY?/other/db2authCustomMasterView7-1.html
+							</address>
+						</link>
+					</panel>
+				</pageWindow>
+			</autoLoadLink>
+		</page>
+        <page name="Actions part 3: Add Group action script" type="general">
+            <contentFile>actionThreePartThree.html</contentFile>
+             
+            <autoLoadLink>
+                <pageWindow target="tabledef" raiseToTop="y">
+                    <panel name="top" PrimaryContainer="true">
+                        <link type="other" target="_self" window="_self" connectionRequired="y">
+                            <address>
+                                ?BASE_DIRECTORY?/other/db2authCustomMasterView7-2.html
+                            </address>
+                        </link>
+                    </panel>
+                </pageWindow>
+            </autoLoadLink>
+        </page>
+        <page name="Actions part 3: Add Membership action script" type="general">
+            <contentFile>actionThreePartFour.html</contentFile>
+             
+            <autoLoadLink>
+                <pageWindow target="tabledef" raiseToTop="y">
+                    <panel name="top" PrimaryContainer="true">
+                        <link type="other" target="_self" window="_self" connectionRequired="y">
+                            <address>
+                                ?BASE_DIRECTORY?/other/db2authCustomMasterView7-3.html
+                            </address>
+                        </link>
+                    </panel>
+                </pageWindow>
+            </autoLoadLink>
+        </page>        		
+		<page name="Actions part 3: Checking the menu action" type="general">
+			<contentFile>actionThreePartFive.html</contentFile>
+			 
+		</page>		
+	</pageList>	
+</tutorial>

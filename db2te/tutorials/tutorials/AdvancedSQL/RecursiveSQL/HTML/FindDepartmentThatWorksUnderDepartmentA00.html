@@ -1,0 +1,6 @@
+The first part of the SQL query will generate a list of departments
+  that report directly to department A00 (the first <a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v9r7/topic/com.ibm.db2.luw.sql.ref.doc/doc/r0000879.html');">SELECT</a> ).  The
+  second SELECT then goes against this list and finds all of the
+  departments that work for the departments in the list.  This continues
+  on until all records in the temporary table (DINFO) have been
+  exhausted.

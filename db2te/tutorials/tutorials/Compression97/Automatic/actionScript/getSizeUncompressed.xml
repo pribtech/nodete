@@ -1,0 +1,195 @@
+<actionPanel>
+	<flow>free</flow>
+	<useConsole>yes</useConsole>
+	<overview>
+	</overview>
+	<taskList>
+		<task name="Estimate size">
+			<discription>
+				This collects table statistics and estimates the uncompressed table size.
+			</discription>
+			<action name="runUncompress" type="blank">
+				<followOnAction condition="true" compareOn="true"
+					compareOnType="raw">
+					<task>
+						<echo>
+							Collecting statistics for uncompressed table
+						</echo>
+						<action name="runstats" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="raw">
+									<value>executeSQL</value>
+								</parameter>
+								<parameter name="SQL" type="fixed">
+									<value>
+										call admin_cmd('RUNSTATS ON TABLE ?SCHEMA?.CUSTOMER_ADDRESS_WITHOUT_COMPRESSION')
+									</value>
+								</parameter>
+							</parameterList>
+							<followOnAction condition="true">
+							<task>
+								<action name="estimateSize"
+									type="serverAction">
+									<parameterList>
+										<parameter name="action"
+											type="fixed">
+											<value>executeSQL</value>
+										</parameter>
+										<parameter name="SQL"
+											type="fixed">
+											<value>
+												SELECT CAST(CAST(NPAGES AS DOUBLE)/256 AS DECIMAL(5,3)) FROM SYSIBM.SYSTABLES WHERE creator='?SCHEMA?' AND NAME='CUSTOMER_ADDRESS_WITHOUT_COMPRESSION'
+											</value>
+										</parameter>
+									</parameterList>
+									<followOnAction condition="true">
+										<task>
+											<assignSharedConstant
+												name="size_uncompressed" type="returnObject">
+												<value>
+													estimateSize.returnValue.resultSet.0.data.0.0
+												</value>
+											</assignSharedConstant>
+											<assignSharedConstant
+												name="query1" type="returnObject">
+												<value>
+													estimateSize.returnValue.STMT
+												</value>
+											</assignSharedConstant>
+											<echo>
+												Size of Uncompressed Table: ?size_uncompressed? MB
+											</echo>
+											<echo> </echo>
+										</task>
+									</followOnAction>
+									<followOnAction condition="false">
+										<task>
+											<echo>Error in run!</echo>
+										</task>
+									</followOnAction>
+								</action>
+							</task>
+							</followOnAction>
+						</action>
+						
+					</task>
+				</followOnAction>
+			</action>
+		</task>
+		<task name="Estimate compression">
+			<discription>
+				This uses the 
+&lt;a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.sql.rtn.doc/doc/r0052896.html?noframes=true');"&gt;SYSPROC.ADMIN_GET_TAB_COMPRESS_INFO&lt;/a&gt;				 				
+				administrative view to estimate the potential compression of the
+				CUSTOMER_ADDRESS_WITHOUT_COMPRESSION table.
+			</discription>
+			<action name="runUncompress" type="blank">
+				<followOnAction condition="true" compareOn="true" compareOnType="raw">
+					<task>
+						<echo>
+							Calculating the compression ratio table CUSTOMER_ADDRESS_WITHOUT_COMPRESSION
+						</echo>
+						<action name="compressRatio" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="fixed">
+									<value>executeSQL</value>
+								</parameter>
+								<parameter name="SQL" type="fixed">
+									<value>
+									    SELECT PAGES_SAVED_PERCENT, CAST (TABSIZE*(CAST(100 - PAGES_SAVED_PERCENT AS DOUBLE)/100) AS DECIMAL (5,3)) FROM TABLE(SELECT CAST(CAST(NPAGES AS DOUBLE)/256 AS DECIMAL(5,3)) AS TABSIZE FROM SYSIBM.SYSTABLES WHERE CREATOR= '?SCHEMA?' AND NAME='CUSTOMER_ADDRESS_WITHOUT_COMPRESSION') AS T1, TABLE (SYSPROC.ADMIN_GET_TAB_COMPRESS_INFO('?SCHEMA?', 'CUSTOMER_ADDRESS_WITHOUT_COMPRESSION', 'ESTIMATE')) AS T2
+									</value>
+								</parameter>
+							</parameterList>
+							<followOnAction condition="true">
+								<task>
+									<assignSharedConstant
+										name="compression_ratio" type="returnObject">
+										<value>compressRatio.returnValue.resultSet.0.data.0.0</value>
+									</assignSharedConstant>
+									<assignSharedConstant
+										name="compressed_size_estimate" type="returnObject">
+										<value>compressRatio.returnValue.resultSet.0.data.0.1</value>
+									</assignSharedConstant>
+									<assignSharedConstant name="query1"
+										type="returnObject">
+										<value>compressRatio.returnValue.STMT</value>
+									</assignSharedConstant>
+									<echo>Estimated compression ratio: ?compression_ratio?%</echo>
+									<echo> </echo>
+								</task>
+							</followOnAction>
+							<followOnAction condition="false">
+								<task>
+									<echo>Error in run!</echo>
+								</task>
+							</followOnAction>
+						</action>
+
+
+
+					</task>
+				</followOnAction>
+			</action>
+		</task>
+		<task name="Compare sizes">
+			<discription>
+				This plots the actual size of the 
+				'CUSTOMER_ADDRESS_WITHOUT_COMPRESSION' table and its estimated size when compressed.
+			</discription>
+			<action name="plotUncompress" type="blank">
+				<followOnAction condition="true" compareOn="true"
+					compareOnType="raw">
+					<task>
+						<loadPage>
+							<pageWindow target="informationWindow">
+								<panel name="main" PrimaryContainer="true">
+									<link type="action" target="_self"
+										window="_self" connectionRequired="y">
+
+
+
+										<parameterList>
+											<parameter name="action">
+												graphYUI
+											</parameter>
+											<parameter name="graph">
+												<![CDATA[					       				
+					       				
+ {
+	"Graph":
+	{
+		"title": "Table Compression Performance (in MB)",
+		"graphType": "column",
+		"xField": "TableState",
+		"xTitle": "Number of Pages",
+		"yTitle": "Un Table",
+		"dataSourceType": "data_from_raw",
+		"responseSchema": {"fields": ["TableState","TableSize"]},
+		"style":{	"legend": { "display": "right" }, "animationEnabled" : "false"},
+		"seriesDef": [{ "displayName": "Size (MB)", "yField": "TableSize", "style": {"color": "0x454586"}}],
+		"datasets":
+		 [ 
+			    { "TableState": "Uncompressed Table", "TableSize": ?size_uncompressed? },
+			    { "TableState": "Compressed Table (Estimated)", "TableSize": ?compressed_size_estimate?}
+			]
+	}
+
+
+}
+							
+
+]]>
+
+											</parameter>
+										</parameterList>
+									</link>
+								</panel>
+							</pageWindow>
+						</loadPage>
+					</task>
+				</followOnAction>
+			</action>
+		</task>
+	</taskList>
+</actionPanel>
+

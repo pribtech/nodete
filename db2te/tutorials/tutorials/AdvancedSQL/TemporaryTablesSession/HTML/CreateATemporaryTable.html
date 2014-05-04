@@ -1,0 +1,21 @@
+The next SQL statement will create a temporary table that is valid for this session only.
+  The <a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v9r7/topic/com.ibm.db2.luw.admin.dbobj.doc/doc/t0020127.html');">DECLARE GLOBAL TEMPORARY TABLE</a> statement specifies the name of the temporary table (T1) and how it is defined.  In this
+  example, the table is created based on the structure of another table (transactions).  This
+  simplifies the creation of these tables since you do not need to know the structure of the table
+  that you will extracting data from.
+  <p>
+  The clause "on commit preserve rows" means that if a commit statement is issued, the temporary table
+  is kept "alive".  In this case, the table will only go away when you physically disconnect from 
+  the system.  The "in db2demo" specifies the tablespace that will contain this temporary table.
+  This tablespace must be defined beforehand in order for this SQL to work.
+  </p>
+  <p>
+  Now that we have defined this table, we can insert data into it like any other normal
+  table, and select information from it. Note the
+  use of the SCHEMA name SESSION in order to specify that this is a temporary table that we are
+  selecting from.  If we did not supply the high-level qualifier, the T1 table would not be found.
+  </p>
+  <p>
+  Please note that once you leave this page, it will be considered as a new session, and 
+  you will no longer be able to access the temporary table (T1).
+  </p>

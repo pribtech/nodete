@@ -1,0 +1,12 @@
+<p>Create a work action set at the service class level that contains work
+  actions that apply to the specific work classes representing the types
+  of activities you want isolated using the <a onclick="OpenURLInFloatingWindow
+('http://publib.boulder.ibm.com/infocenter/db2luw/v9r7/topic/com.ibm.db2.luw.sql.ref.doc/doc/r0050576.html;">
+CREATE WORK ACTION SET</a> statement.  
+</p><p>  
+For this example, assume we want to
+  collect activity data for all DDL, read, and load activities that run
+  under the work1_sc service class and we also want to map read
+  activities to a separate service subclass so that we can treat them
+  differently; in this case, a threshold will be applied to the service
+  subclass to stop any large SELECT statements from running.</p>

@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	Copyright IBM Corp. 2007 All rights reserved.
+	
+	Licensed under the Apache License, Version 2.0 (the "License");
+	you may not use this file except in compliance with the License.
+	You may obtain a copy of the License at
+	
+	http://www.apache.org/licenses/LICENSE-2.0
+	
+	Unless required by applicable law or agreed to in writing, software
+	distributed under the License is distributed on an "AS IS" BASIS,
+	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	See the License for the specific language governing permissions and
+	limitations under the License.
+-->
+<tutorial name="pure XML - Health Care Scenario" autoCloseWindowsInRightStage="true" autoClearAdhocResults="true">
+	<flowRestriction>free</flowRestriction>
+	<globalCodeHighlightOptions  highlightCode="true"/>
+	<closeAction/>
+	<openAction/>
+	<pageList>
+		<page name="Introduction" type="intro">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>Introduction.html</contentFile>
+			<autoLoadLink>
+				<pageWindow target="informationWindow">
+					<panel name="main" PrimaryContainer="true">
+						<URL>?BASE_DIRECTORY?/HTML/Scenariointro.html</URL>
+						<!--<raw><![CDATA[<div id='healthcarescenario'><Title of </div><img src='?BASE_DIRECTORY?/HTML/clip_image002.jpg'/>]]></raw>-->
+					</panel>
+				</pageWindow>
+			</autoLoadLink>
+		</page>
+		<page name="Creating DB2 tables to store XML data" type="general">
+			<entryAction />
+			<exitAction />
+			<contentFile>
+				SetupDB.html
+			</contentFile>
+			<SQLFile>
+				SetupDB.sql
+			</SQLFile>
+			<autoLoadLink>
+				<pageWindow target="informationWindow">
+					<panel name="main" PrimaryContainer="true"> 
+						<URL>http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.xml.doc/doc/c0050646.html</URL>
+					</panel>
+				</pageWindow>
+			</autoLoadLink>
+			<SQLExecutionOptions commitPerStmt="true"/>
+		</page>
+				<page name="Managing XML Schema Repository (XSR) objects" type="general">
+			<entryAction />
+			<exitAction />
+			<contentFile>
+				XMLSchema.html
+			</contentFile>
+			<SQLFile>
+				XMLSchema.sql
+			</SQLFile>
+			<SQLExecutionOptions commitPerStmt="true"/>
+		</page>
+		<page name="Inserting XML Data" type="general">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>Insertxml.html</contentFile>
+			<SQLFile>insert.sql</SQLFile>
+			<SQLExecutionOptions  xmlinline="true" xml="true" clob="false" blob="false"
+				dbclob="false" termChar="@" cursor="forward" commitPerStmt="true"
+				numRowReturned="100"/>
+				<codeHighlightOptions highlightCode="true">
+				<changedHighlightTokens>
+					<text>INSERT INTO</text>
+					<text>Patient information</text>
+					<text>author information</text>
+					<text>Legal Authenticator</text>
+					<text>Medical History</text>
+				</changedHighlightTokens>
+			</codeHighlightOptions>
+
+		</page>
+		<page name="Updating XML Data" type="general">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>updatexml.html</contentFile>
+			<SQLFile>updatexml.sql</SQLFile>
+			<SQLExecutionOptions xmlinline="true" xml="true" clob="false" blob="false"
+				dbclob="false" termChar=";" cursor="forward" commitPerStmt="true"
+				numRowReturned="100"/>
+				<codeHighlightOptions highlightCode="true">
+				<changedHighlightTokens>
+					<text>UPDATE</text>
+					
+				</changedHighlightTokens>
+			</codeHighlightOptions>
+		</page>
+		<page name="Querying XML Data with SQL" type="general">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>queryxml.html</contentFile>
+			<SQLFile>queryxml.sql</SQLFile>
+			<SQLExecutionOptions xmlinline="true" xml="true" clob="false" blob="false"
+				dbclob="false" termChar=";" cursor="forward" commitPerStmt="true"
+				numRowReturned="100"/>
+				<codeHighlightOptions highlightCode="true">
+				<changedHighlightTokens>
+					<text>SELECT</text>
+					
+				</changedHighlightTokens>
+			</codeHighlightOptions>
+		</page>
+			<page name="Obtaining Data Access Plan for XML Query" type="general">
+			<entryAction />
+			<exitAction />
+			<contentFile>
+				XQuery.html
+			</contentFile>
+			<loadActionScriptFile>
+				PerformanceXQuery.xml
+			</loadActionScriptFile>
+			<SQLExecutionOptions xmlinline="true" xml="true" clob="false" blob="false"
+				dbclob="false" termChar=";" cursor="forward" commitPerStmt="true"
+				numRowReturned="100"/>
+		</page>
+				<page name="Indexing XML Data" type="general">
+			<entryAction />
+			<exitAction />
+			<contentFile>
+				XMLIndexes.html
+			</contentFile>
+			<SQLFile>
+				XMLIndexes.sql
+			</SQLFile>
+			<SQLExecutionOptions commitPerStmt="true"/>
+		</page>
+			<page name="Query XML Data with Index" type="general">
+			<entryAction />
+			<exitAction />
+			<contentFile>
+				XQuery1.html
+			</contentFile>
+			<loadActionScriptFile>
+				PerformanceXQuery1.xml
+			</loadActionScriptFile>
+			<SQLExecutionOptions commitPerStmt="true"/>
+		</page>
+		<page name="Using XQuery TRANSFORM expression" type="general">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>transformxml.html</contentFile>
+			<SQLFile>transformxml.sql</SQLFile>
+			<autoLoadLink>
+				<pageWindow target="informationWindow">
+					<panel name="main" PrimaryContainer="true"> 
+						<URL>http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.xml.doc/doc/xqrupdtransfrm.html</URL>
+					</panel>
+				</pageWindow>
+			</autoLoadLink>
+			<SQLExecutionOptions xmlinline="false" xml="true" clob="false" blob="false"
+				dbclob="false" termChar=";" cursor="forward" commitPerStmt="true"
+				numRowReturned="100"/>
+				<codeHighlightOptions highlightCode="true">
+				<changedHighlightTokens>
+					<text>TRANSFORM</text>
+					<text>do REPLACE</text>
+					<text>do INSERT</text>
+				</changedHighlightTokens>
+			</codeHighlightOptions>
+		</page>
+
+		<page name="Exporting and Importing XML data" type="general">
+			<entryAction />
+			<exitAction />
+			<contentFile>
+				DataMove.html
+			</contentFile>
+			<SQLFile>
+				DataMove.sql
+			</SQLFile>
+			<autoLoadLink>
+				<pageWindow target="informationWindow">
+					<panel name="main" PrimaryContainer="true">
+						<URL>http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.xml.doc/doc/c0024120.html</URL>
+						<URL>?BASE_DIRECTORY?/HTML/Scenariointro.html</URL>
+					</panel>
+				</pageWindow>
+			</autoLoadLink>
+			<SQLExecutionOptions commitPerStmt="true"/>
+		</page>
+
+		<page name="Transforming XML data with XSLT stylesheets" type="general">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>xsltxml.html</contentFile>
+		
+			<autoLoadLink>
+				<pageWindow target="informationWindow">
+					<panel name="main" PrimaryContainer="true"> 
+					<URL>?BASE_DIRECTORY?/HTML/xsltxml_pmd.html</URL>
+					
+						<URL>http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.xml.doc/doc/c0050648.html</URL>
+					</panel>
+				</pageWindow>
+			</autoLoadLink>
+			<codeHighlightOptions highlightCode="false">
+				<changedHighlightTokens>
+					<text>PMD.xsl</text>
+					<text>XML PMD document</text>
+					<text>XSLT Style Sheet</text>
+				</changedHighlightTokens>
+			</codeHighlightOptions>
+		</page>
+		<page name="Enabling Annotated Schema Decomposition" type="general">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>annotexml.html</contentFile>
+			<SQLFile>annotexml.sql</SQLFile>
+			
+			<autoLoadLink>
+				<pageWindow target="informationWindow">
+					<panel name="main" PrimaryContainer="true"> 
+						<URL>http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.xml.doc/doc/c0022319.html</URL>
+					</panel>
+				</pageWindow>
+			</autoLoadLink>
+			<codeHighlightOptions highlightCode="true">
+				<changedHighlightTokens>
+					<text>CALL SYSPROC.XSR_REGISTER</text>
+					<text>xsd:annotation</text>
+					<text>db2-xdb:rowSet</text>
+					<text>db2-xdb:column</text>
+					<text>CALL SYSPROC.XSR_COMPLETE</text>
+					<text>xdbDecompXML</text>
+				</changedHighlightTokens>
+			</codeHighlightOptions>
+		</page>
+		<page name="Rolling out data" type="general">
+				<entryAction />
+				<exitAction />
+				<contentFile>
+				Rollout.html
+				</contentFile>
+				<SQLFile>
+				Rollout.sql
+				</SQLFile>
+				<SQLExecutionOptions commitPerStmt="true"/>
+		</page>
+	</pageList>
+</tutorial>

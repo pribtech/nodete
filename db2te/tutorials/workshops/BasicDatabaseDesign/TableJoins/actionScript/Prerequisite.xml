@@ -1,0 +1,68 @@
+<actionPanel>
+	<flow>controlled</flow>
+	<useConsole>yes</useConsole>
+	<overview>
+	</overview>
+	<taskList>
+
+		<task name="Create PRODUCT table">
+			<discription>
+				This creates the 'product' table with constraints and enabled for 3NF
+			</discription>
+			<action name="prod" type="blank">
+				<followOnAction condition="true" compareOn="true" compareOnType="raw">
+										
+					<task>
+						<echo>Creating the PRODUCT table and populating it with data...</echo>
+						<action name="createproducttable" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="fixed">
+									<value>executeSQL</value>
+								</parameter>
+								<parameter name="SQL" type="fixed">
+									<value>CREATE TABLE ?SCHEMA?.product_c ( product_ID SMALLINT NOT NULL, product_name VARCHAR(20), selling_price DECIMAL(7,2), PRIMARY KEY (product_ID))</value>
+								</parameter>											
+							</parameterList>
+							
+							<followOnAction condition="true">
+								<task>
+									<action name="insertproducttable" type="serverAction">
+										<parameterList>
+											<parameter name="action" type="fixed">
+												<value>executeSQL</value>
+											</parameter>
+											<parameter name="SQL" type="fixed">
+												<value>INSERT INTO product_c VALUES ( 1, 'DVD Player', 6000 ), ( 2, 'TV', 25000), ( 3, 'Laptop', 35000), ( 4, 'mp3 player', 10000), ( 5, 'Watch', 5000)</value>
+											</parameter>											
+										</parameterList>
+										
+										<followOnAction condition="true">
+										    <task>
+												<echo></echo>
+												<echo>PRODUCT table successfully created !</echo>
+											</task>
+										</followOnAction>
+										
+										<followOnAction condition="false">
+											<task>
+												<echo>Insertion into PRODUCT table failed !</echo>
+											</task>
+										</followOnAction>
+									</action>
+								</task>	
+							</followOnAction>
+
+							<followOnAction condition="false">
+								<task>
+									<echo>PRODUCT table already exists !</echo>
+								</task>
+							</followOnAction>
+						</action>
+					</task>								
+					
+				</followOnAction>
+			</action>
+		</task>
+					
+    </taskList>
+</actionPanel>

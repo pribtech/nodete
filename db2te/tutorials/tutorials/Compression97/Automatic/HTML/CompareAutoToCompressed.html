@@ -1,0 +1,25 @@
+<p>Select the actions on this page in order.</p>
+<p>This step compares automatic table compression to manual table compression.</p>
+<h4>Get actual compressed size</h4>
+The first step collects statistics for the CUSTOMER_ADDRESS_WITH_AUTO_COMPRESSION table and retrieves an estimate of the the table size.
+The SQL used to collect statistics and determine the table size are:
+<p><pre><code>
+CALL ADMIN_CMD
+  ('RUNSTATS ON TABLE CUSTOMER_ADDRESS_WITH_AUTO_COMPRESSION')
+
+SELECT CAST(CAST(NPAGES AS DOUBLE)/256
+  AS DECIMAL(5,3))
+  FROM SYSIBM.SYSTABLES
+    WHERE CREATOR=?SCHEMA?
+      AND NAME='CUSTOMER_ADDRESS_WITH_AUTO_COMPRESSION'
+
+</code></pre></p>
+<h4>Compare table sizes</h4>
+<p>The second step plots the current table size, the estimated table size,
+the actual compressed size, and the automatically compressed size on a bar graph.</p>
+<p>
+	Since we don't compress the first one to two MB of data inserted into the table it does not compress as much as a full
+	reorganization would compress the data.
+	This is a small table, so one to two megabytes has a significant impact on the overall compression of this table.
+	If the table was gigabytes in size, not compressing the first couple of megabytes is negligable.
+</p>

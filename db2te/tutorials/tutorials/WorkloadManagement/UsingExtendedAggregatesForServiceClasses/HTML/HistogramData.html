@@ -1,0 +1,15 @@
+<p>The last view, HISTOGRAMS, is for looking at the histograms
+  themselves. Unlike the HISTOGRAMTIMES view that lists each collection
+  interval as its own row, this view aggregates histogram data across
+  multiple intervals to produce a single histogram of a given type for a
+  given service class.
+  </p><p>Running theis query produces 41 
+  bins and all of the largest bins are empty. At the top, there is a bin
+  whose BIN_TOP is -1. This bin represents all of those activities whose
+  inter-arrival time was too large to fit in the histogram. Seeing a
+  NUMBER_OF_BIN greater than zero when the BIN_TOP is -1 indicates that
+  you should probably increase the high bin value of your histogram. In
+  the output, the NUMBER_IN_BIN should be 0, so there is no need to make
+  such a change. From this result, you can find out the number of milliseconds
+  apart from each other that the majority of activities arrived at.
+  </p>

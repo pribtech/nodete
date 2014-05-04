@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tutorial name="Schema Enablement" useLongAdHoc="true">
+	<flowRestriction>forwardexploration</flowRestriction>
+	<globalCodeHighlightOptions  highlightCode="true" />
+	<closeAction/>
+	<openAction/>
+	<pageList>
+		<page name="DB2 new data types" type="intro">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>Introduction.html</contentFile>
+			<autoLoadLink>
+				<pageWindow target="informationWindow">
+					<panel name="main" PrimaryContainer="true">
+						<URL>http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.wn.doc/doc/c0054110.html</URL>
+					</panel>
+				</pageWindow>
+			</autoLoadLink>
+		</page>
+
+		<page name="Data model for the e-Commerce application" type="intro">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>SceSchema.html</contentFile>
+			<autoLoadLink>
+				<pageWindow target="informationWindow">
+					<panel name="main" PrimaryContainer="true">
+						<raw><![CDATA[<div id='title'>Enablement</div><img src='?BASE_DIRECTORY?/Other/schema.gif'/>]]></raw>
+					</panel>
+				</pageWindow>
+			</autoLoadLink>
+		</page>
+		
+		<page name="Running Oracle schema creation scripts in DB2" type="general">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>CreateSchema.html</contentFile>
+			<SQLFile>CreateSchema.SQL</SQLFile>
+			<SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar="@"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+			<codeHighlightOptions highlightCode="true">
+				<changedHighlightTokens>
+					<text>VARCHAR2</text>
+					<text>NUMBER</text>
+					<text>CREATE global TEMPORARY TABLE</text>
+					<text>TIMESTAMP(0) DEFAULT SYSDATE</text>
+				</changedHighlightTokens>
+			</codeHighlightOptions>
+		</page>
+<!--		<page name="IBM Data Movement Tool" type="general">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>DataMovementTool.html</contentFile>
+			<autoLoadLink>
+				<pageWindow target="informationWindow">
+					<panel name="main" PrimaryContainer="true">
+						<raw><![CDATA[<div id='title'>Enablement</div><img src='?BASE_DIRECTORY?/Other/IDM.jpg'/>]]></raw>
+					</panel>
+				</pageWindow>
+			</autoLoadLink>
+		</page> -->
+	</pageList>
+</tutorial>

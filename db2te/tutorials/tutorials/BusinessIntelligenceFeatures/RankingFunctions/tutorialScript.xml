@@ -1,0 +1,100 @@
+<tutorial name="Ranking Functions">
+    <globalCodeHighlightOptions highlightCode="true" /><flowRestriction>forwardexploration</flowRestriction>
+    <closeAction />
+    <openAction />
+    <pageList>
+    	<page name="Ranking Functions" type="intro">
+            <entryAction />
+            <exitAction name="createEmployeeTable" type="serverAction">
+                <parameterList>
+                    <parameter name="action" type="fixed">
+                        <value>createTablesFromSampleDatabase</value>
+                    </parameter>
+                    <parameter name="schema" type="constant">
+                        <value>SCHEMA</value>
+                    </parameter>
+                    <parameter name="table" type="fixed">
+                        <value>EMPLOYEE</value>
+					</parameter>
+                </parameterList>
+                <followOnAction condition="false">
+                    <task>
+                        <action name="" type="alert">
+                            <message>Failed to create base tables for initial setup of tutorial. Cannot proceed further with tutorial.</message>
+                        </action>
+                    </task>
+                    <task>
+                        <setActionReturn>false</setActionReturn>
+                    </task>
+                </followOnAction>
+				<followOnAction condition="[0-9][0-9]*">
+                    <task>
+                        <assignLocalParameter name="ERROR_MESSAGE" type="returnObject">
+                            <value>createEmployeeTable.returnValue</value>
+                        </assignLocalParameter>
+						<action name="" type="alert">
+							<message>Failed to create base tables for initial setup of tutorial. Cannot proceed further with tutorial. SQLMSG: ?ERROR_MESSAGE?</message>
+						</action>
+                    </task>
+                    <task>
+                        <setActionReturn>false</setActionReturn>
+                    </task>
+                </followOnAction>
+            </exitAction>
+            <contentFile>01_RankingFunctions.html</contentFile>
+            <autoLoadLink>
+                    <pageWindow target="informationWindow">
+                        <panel name="main">
+                            <URL>http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.sql.ref.doc/doc/r0023461.html?noframes=true</URL>
+                        </panel>
+                    </pageWindow>
+            </autoLoadLink>
+        </page>
+        
+    <page name="Rank Function" type="general">
+            <entryAction />
+            <exitAction />
+            <contentFile>02_RankFunction.html</contentFile>
+            <SQLFile>01_RankFunction.sql</SQLFile>
+        </page><page name="Rank Employee Salaries by Last name" type="general">
+            <entryAction />
+            <exitAction />
+            <contentFile>03_RankEmployeeSalariesByLastName.html</contentFile>
+            <SQLFile>02_RankEmployeeSalariesByLastName.sql</SQLFile>
+        </page><page name="Rank Employee Salaries by Rank" type="general">
+            <entryAction />
+            <exitAction />
+            <contentFile>04_RankEmployeeSalariesByRank.html</contentFile>
+            <SQLFile>03_RankEmployeeSalariesByRank.sql</SQLFile>
+        </page><page name="Rank Employee Salaries by Bonus " type="general">
+            <entryAction />
+            <exitAction />
+            <contentFile>05_RankEmployeeSalariesByBonus.html</contentFile>
+            <SQLFile>04_RankEmployeeSalariesByBonus.sql</SQLFile>
+        </page><page name="Dense Rank Employee Salaries by Bonus " type="general">
+            <entryAction />
+            <exitAction />
+            <contentFile>06_DenseRankEmployeeSalariesByBonus.html</contentFile>
+            <SQLFile>05_DenseRankEmployeeSalariesByBonus.sql</SQLFile>
+        </page><page name="Rank and Partition usage" type="general">
+            <entryAction />
+            <exitAction />
+            <contentFile>07_RankAndPartitionUsage.html</contentFile>
+            <SQLFile>06_RankAndPartitionUsage.sql</SQLFile>
+        </page><page name="Rank and Multiple Partition usage" type="general">
+            <entryAction />
+            <exitAction />
+            <contentFile>08_RankAndMultiplePartitionUsage.html</contentFile>
+            <SQLFile>07_RankAndMultiplePartitionUsage.sql</SQLFile>
+        </page><page name="Row Numbers" type="general">
+            <entryAction />
+            <exitAction />
+            <contentFile>09_RowNumbers.html</contentFile>
+            <SQLFile>08_RowNumbers.sql</SQLFile>
+        </page><page name="List the top five wage earners." type="last">
+            <entryAction />
+            <exitAction />
+            <contentFile>10_ListTheTopFiveWageEarners..html</contentFile>
+            <SQLFile>09_ListTheTopFiveWageEarners..sql</SQLFile>
+        </page></pageList>
+</tutorial>

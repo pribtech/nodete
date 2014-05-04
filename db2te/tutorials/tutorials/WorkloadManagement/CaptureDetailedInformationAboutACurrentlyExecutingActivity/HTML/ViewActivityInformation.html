@@ -1,0 +1,18 @@
+<p>Look at the information that was collected for the activity using a
+  statement like the following sql.
+  </p><p>
+  Activities that are captured using the
+  <a onclick="OpenURLInFloatingWindow
+('http://publib.boulder.ibm.com/infocenter/db2luw/v9r7/topic/com.ibm.db2.luw.sql.rtn.doc/doc/r0052913.html?noframes=true');">
+WLM_CAPTURE_ACTIVITY_IN_PROGRESS</a> procedure contain somewhat less
+  information than if the COLLECT ACTIVITY DATA clause were used,
+  because the activity is captured before it has completed execution. In
+  particular, fields like the completion timestamp (which shows only
+  zeros) and the sqlcode do not apply. You can determine if an activity
+  was collected using the WLM_CAPTURE_ACTIVITY_IN_PROGRESS procedure by
+  looking at the PARTIAL_RECORD column in the ACTIVITY table. If the
+  PARTIAL_RECORD column has a value of 1 (as shown above), activity
+  information was collected using WLM_CAPTURE_ACTIVITY_IN_PROGRESS. If
+  the PARTIAL_RECORD column has a value of 0, activity information was
+  collected after completion with the COLLECT ACTIVITY DATA clause.
+  </p>

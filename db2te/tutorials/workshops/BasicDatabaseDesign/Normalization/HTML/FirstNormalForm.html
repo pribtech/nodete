@@ -1,0 +1,11 @@
+<p>A table is said to be in <b>First Normal Form (1NF)</b>, if all entries in it are scalar-valued i.e. no repeating elements.</p>
+
+<H2><B>Problem Description</B></H2><HR>
+<p>A customer may order many products during one transaction. Hence, a particular order may have many entries for each of these products. The customer information, in this case gets duplicated each time.</p>
+
+<H2><B>Operation</B></H2><HR>
+<p>To make the denormalized "customer_order" table to comply with 1NF, the repeating group of data elements, the customer names and address and the product names and cost are normalized into separate tables.</p>
+
+<H2><B>Result</B></H2><HR>
+<p>Three separate tables 'order', 'product' and 'customer' are created.</p>
+

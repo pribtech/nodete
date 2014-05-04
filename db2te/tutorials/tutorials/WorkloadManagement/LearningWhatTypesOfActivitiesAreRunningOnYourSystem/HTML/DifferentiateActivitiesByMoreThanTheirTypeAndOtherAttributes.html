@@ -1,0 +1,19 @@
+<p>You can separate out activities by more than just their types. For
+  example, you might want to know how many large queries are being run.
+  </p><p>
+  Alter the work class set to add a new read work class that will
+  represent large queries. For this example, a large query is any query
+  that has a cardinality greater than 40.
+  </p>
+  <p>
+  Note that we positioned this work class at
+  position 1. If the "POSITION AT" clause is not specified, the work
+  class is positioned at the bottom of the work class set. When deciding
+  which work class an activity belongs to, the work classes are checked
+  in the order they are positioned and the first work class whose
+  attributes match the activities attributes is the class that the
+  activity gets assigned to. In this case, if the large_wc were
+  positioned at the end of the list, the large activities would have
+  been assigned to the read_wc since it was positioned ahead of
+  large_wc.
+  </p>

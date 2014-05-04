@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tutorial name="XQuery Comparison Operators" autoCloseWindowsInRightStage="true" autoClearAdhocResults="true">
+    <flowRestriction>Free</flowRestriction>
+    <closeAction/>
+    <openAction />
+    <globalCodeHighlightOptions highlightCode = "true" />
+    <pageList>
+    	<page name="XQuery Comparison Operators" type="intro">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>01_XQueryComparisonOperators.html</contentFile>
+            <autoLoadLink>
+    	        <pageWindow target="informationWindow">
+    	            <panel name="main">
+    	                <URL>http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.xml.doc/doc/xqrcompexp.html?noframes=true</URL>
+    	            </panel>
+    	        </pageWindow>
+    	      </autoLoadLink>
+        </page>
+        
+    <page name="Standard Comparison operators" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>02_StandardComparisonOperators.html</contentFile>
+            <SQLFile>01_StandardComparisonOperators.sql</SQLFile>
+            <SQLExecutionOptions xmlinline="true" xml="true" clob="false" blob="false" dbclob="false" termChar=";" cursor="forward" commitPerStmt="true" numRowReturned="100" />
+        </page><page name="Set comparison is Different" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>03_SetComparisonIsDifferent(Tricky!).html</contentFile>
+            <SQLFile>02_SetComparisonIsDifferent(Tricky!).sql</SQLFile>
+            <SQLExecutionOptions xmlinline="true" xml="true" clob="false" blob="false" dbclob="false" termChar=";" cursor="forward" commitPerStmt="true" numRowReturned="100" />
+        </page><page name="Set comparison with deep-equal()" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>04_SetComparisonWithDeep-equal().html</contentFile>
+            <SQLFile>03_SetComparisonWithDeep-equal().sql</SQLFile>
+            <SQLExecutionOptions xmlinline="true" xml="true" clob="false" blob="false" dbclob="false" termChar=";" cursor="forward" commitPerStmt="true" numRowReturned="100" />
+        </page><page name="Atomic Value comparisons" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>05_AtomicValueComparisons.html</contentFile>
+            <SQLFile>04_AtomicValueComparisons.sql</SQLFile>
+            <SQLExecutionOptions xmlinline="true" xml="true" clob="false" blob="false" dbclob="false" termChar=";" cursor="forward" commitPerStmt="true" numRowReturned="100" />
+        </page><page name="Atomic Value comparisons cannot work on sets *" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>06_AtomicValueComparisonsCannotWorkOnSets.html</contentFile>
+            <SQLFile>05_AtomicValueComparisonsCannotWorkOnSets.sql</SQLFile>
+            <SQLExecutionOptions xmlinline="true" xml="true" clob="false" blob="false" dbclob="false" termChar=";" cursor="forward" commitPerStmt="true" numRowReturned="100" />
+        </page><page name="Comparing Character Strings" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>07_ComparingCharacterStrings.html</contentFile>
+            <SQLFile>06_ComparingCharacterStrings.sql</SQLFile>
+            <SQLExecutionOptions xmlinline="true" xml="true" clob="false" blob="false" dbclob="false" termChar=";" cursor="forward" commitPerStmt="true" numRowReturned="100" />
+        </page><page name="Contains function will look for a string in a string" type="last">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>08_ContainsFunctionWillLookForAStringInAString.html</contentFile>
+            <SQLFile>07_ContainsFunctionWillLookForAStringInAString.sql</SQLFile>
+            <SQLExecutionOptions xmlinline="true" xml="true" clob="false" blob="false" dbclob="false" termChar=";" cursor="forward" commitPerStmt="true" numRowReturned="100" />
+        </page></pageList>
+</tutorial>

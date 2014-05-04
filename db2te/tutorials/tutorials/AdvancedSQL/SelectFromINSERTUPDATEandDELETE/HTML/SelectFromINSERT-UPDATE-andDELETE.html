@@ -1,0 +1,48 @@
+DB2 UDB V8.1.4 now allows SELECT statements to be processed along with an INSERT/UPDATE/DELETE
+  statement. This allows the developer to run one SQL statement that updates the corresponding data
+  and at the same time returns the values of the rows that were changed. This eliminates the need
+  to run a SELECT statement separate from the INSERT/UPDATE/DELETE. In addition, it may be 
+  difficult to determine which rows are affected by the corresponding action, so this form of
+  SQL guarantees that the actual rows affected will be returned.
+  <P>The contents of the intermediate result table are dependant on the
+  qualifier specified in the FROM clause. You must include one of the
+  following FROM clause qualifiers in SELECT statements that retrieve result
+  sets as intermediate result tables. 
+  </P>
+  <DL>
+  <P>
+    <DT>
+      <B>OLD TABLE
+      </B>
+    </DT>
+    <DD>The rows in the intermediate result table will contain values of the
+  target table rows at the point immediately preceding the execution of before
+  triggers and the SQL data-change operation. The OLD TABLE qualifier
+  applies to UPDATE and DELETE operations.
+    </DD>
+    </P>
+    <P>
+      <DT>
+        <B>NEW TABLE
+        </B>
+      </DT>
+      <DD>The rows in the intermediate result table will contain values of the
+  target table rows at the point immediately after the SQL data-change statement
+  has been executed, but before referential integrity evaluation and the firing
+  of any after triggers. The NEW TABLE qualifier applies to UPDATE and
+  INSERT operations.
+      </DD>
+      </P>
+      <P>
+        <DT>
+          <B>FINAL TABLE
+          </B>
+        </DT>
+        <DD>This qualifier returns the same intermediate result table as NEW
+  TABLE. In addition, the use of FINAL TABLE guarantees that no after
+  trigger or referential integrity constraint will further modify the target of
+  the UPDATE or INSERT operation. The FINAL TABLE qualifier applies to
+  UPDATE and INSERT operations.
+        </DD>
+        </P>
+  </DL>

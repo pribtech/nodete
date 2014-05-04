@@ -1,0 +1,168 @@
+<actionPanel>
+   <flow>free</flow>
+   <useConsole>yes</useConsole>
+   <overview></overview>
+   <taskList>
+      <task name="Run performance tests">
+         <discription>This action is going to insert at least 50 rows in the Q1 table and txYear view, and records the time it take to execute each statement. 
+         </discription>
+
+         <action name="run" type="blank">			
+            <followOnAction condition="true" compareOn="true" compareOnType="raw">		
+
+               <task name="Requiring a minimum number of runs">
+                  <action name="runTestWorkload" type="serverAction">
+                     <parameterList>
+                        <parameter name="action" type="fixed">
+                           <value>statementThroughput</value>
+                        </parameter>
+                        <parameter name="SQL" type="fixed">
+                           <value>INSERT INTO ?SCHEMA?.Q1 VALUES (1, 1)</value>
+                        </parameter>								
+                        <parameter name="Period" type="fixed">
+                           <value>1</value>
+                        </parameter>
+                        <parameter name="MinRunAmount" type="fixed">
+                           <value>50</value>
+                        </parameter>
+                     </parameterList>
+                     <followOnAction condition="true">
+                        <task>
+                           <assignLocalParameter name="SQL" type="returnObject"><value>runTestWorkload.returnValue.SQL</value></assignLocalParameter>
+                           <assignLocalParameter name="period" type="returnObject"><value>runTestWorkload.returnValue.period</value></assignLocalParameter>
+                           <assignLocalParameter name="periodUsed" type="returnObject"><value>runTestWorkload.returnValue.periodUsed</value></assignLocalParameter>
+                           <assignSharedConstant name="RunCount1" type="returnObject"><value>runTestWorkload.returnValue.RunCount</value></assignSharedConstant>
+                           <assignLocalParameter name="avgRunTime" type="returnObject"><value>runTestWorkload.returnValue.avgRunTime</value></assignLocalParameter>
+                           <assignLocalParameter name="maxRunTime" type="returnObject"><value>runTestWorkload.returnValue.maxRunTime</value></assignLocalParameter>
+                           <assignLocalParameter name="minRunTime" type="returnObject"><value>runTestWorkload.returnValue.minRunTime</value></assignLocalParameter>
+                           <assignLocalParameter name="Deviation" type="returnObject"><value>runTestWorkload.returnValue.Deviation</value></assignLocalParameter>
+                           <assignLocalParameter name="runTimes" type="returnObject"><value>runTestWorkload.returnValue.runTimes</value></assignLocalParameter>
+                           <assignSharedConstant name="avgRunTime1" type="returnObject"><value>runTestWorkload.returnValue.avgRunTime</value></assignSharedConstant>
+                           <assignLocalParameter name="avgRunTimeDisplay" type="returnObject"><value>   
+                            runTestWorkload.returnValue.avgRunTimeDisplay</value></assignLocalParameter>								
+                           <assignLocalParameter name="maxRunTimeDisplay" type="returnObject"><value>runTestWorkload.returnValue.maxRunTimeDisplay</value></assignLocalParameter>
+                           <assignLocalParameter name="minRunTimeDisplay" type="returnObject"><value>runTestWorkload.returnValue.minRunTimeDisplay</value></assignLocalParameter>
+                           <echo><![CDATA[
+SQL: ?SQL?
+ 
+Run Count: ?RunCount1?
+Average Run Time: ?avgRunTimeDisplay?
+
+Max Run Time: ?maxRunTimeDisplay?
+Min Run Time: ?minRunTimeDisplay?
+]]></echo>
+                        </task>
+                     </followOnAction>
+                     <followOnAction condition="false">
+                         <task>
+                            <echo>Error in run #1</echo>
+                         </task>
+                      </followOnAction>                    
+                  </action>
+               </task>	  
+
+               <task name="Requiring a minimum number of runs">
+                  <action name="runTestWorkload" type="serverAction">
+                     <parameterList>
+                        <parameter name="action" type="fixed">
+                           <value>statementThroughput</value>
+                        </parameter>
+                        <parameter name="SQL" type="fixed">
+                           <value>INSERT INTO ?SCHEMA?.TXYEAR VALUES (1, 1)</value>
+                        </parameter>								
+                        <parameter name="Period" type="fixed">
+                           <value>1</value>
+                        </parameter>
+                        <parameter name="MinRunAmount" type="fixed">
+                           <value>50</value>
+                        </parameter>
+                     </parameterList>
+                     <followOnAction condition="true">
+                        <task>
+                           <assignLocalParameter name="SQL" type="returnObject"><value>runTestWorkload.returnValue.SQL</value></assignLocalParameter>
+                           <assignLocalParameter name="period" type="returnObject"><value>runTestWorkload.returnValue.period</value></assignLocalParameter>
+                           <assignLocalParameter name="periodUsed" type="returnObject"><value>runTestWorkload.returnValue.periodUsed</value></assignLocalParameter>
+                           <assignSharedConstant name="RunCount2" type="returnObject"><value>runTestWorkload.returnValue.RunCount</value></assignSharedConstant>
+                           <assignLocalParameter name="avgRunTime" type="returnObject"><value>runTestWorkload.returnValue.avgRunTime</value></assignLocalParameter>
+                           <assignLocalParameter name="maxRunTime" type="returnObject"><value>runTestWorkload.returnValue.maxRunTime</value></assignLocalParameter>
+                           <assignLocalParameter name="minRunTime" type="returnObject"><value>runTestWorkload.returnValue.minRunTime</value></assignLocalParameter>
+                           <assignLocalParameter name="Deviation" type="returnObject"><value>runTestWorkload.returnValue.Deviation</value></assignLocalParameter>
+                           <assignLocalParameter name="runTimes" type="returnObject"><value>runTestWorkload.returnValue.runTimes</value></assignLocalParameter>
+                           <assignSharedConstant name="avgRunTime2" type="returnObject"><value>runTestWorkload.returnValue.avgRunTime</value></assignSharedConstant>								
+                           <assignLocalParameter name="avgRunTimeDisplay" type="returnObject"><value>runTestWorkload.returnValue.avgRunTimeDisplay</value></assignLocalParameter>																
+                           <assignLocalParameter name="maxRunTimeDisplay" type="returnObject"><value>runTestWorkload.returnValue.maxRunTimeDisplay</value></assignLocalParameter>
+                           <assignLocalParameter name="minRunTimeDisplay" type="returnObject"><value>runTestWorkload.returnValue.minRunTimeDisplay</value></assignLocalParameter>
+                           <echo><![CDATA[
+								
+
+SQL: ?SQL?
+ 
+Run Count: ?RunCount2?
+Average Run Time: ?avgRunTimeDisplay?
+
+Max Run Time: ?maxRunTimeDisplay?
+Min Run Time: ?minRunTimeDisplay?
+
+		]]></echo>
+                        </task>
+                     </followOnAction>
+                     <followOnAction condition="false">
+                         <task>
+                            <echo>Error in run #2</echo>
+                         </task>
+                      </followOnAction>                            
+                  </action>
+               </task>	  	              
+                
+            </followOnAction>
+         </action>
+      </task>
+      
+      <task name="Graph run time">
+         <discription>This step plots the average times of the two sets of statements on a graph. Typically the statement run against the individual table will perform faster than the view of unioned tables.
+         </discription>
+         <action name="runDelete" type="blank">
+            <followOnAction condition="true" compareOn="true" compareOnType="raw">
+               <task>
+                  <echo>Graphing times</echo>
+                     <loadPage>
+                        <pageWindow target="informationWindow">
+                           <panel name="main" PrimaryContainer="true">
+                              <link type="action" target="_self" window="_self" connectionRequired="y">
+                                 <parameterList>
+                                    <parameter name="action">graphYUI</parameter>
+                                    <parameter name="graph"><![CDATA[					       				
+  {
+	"Graph": 
+	{
+		"title": "Statement run comparison",
+		"graphType": "column",
+		"xField": "InsertTimes",
+		"xTitle": "Number of Pages",
+		"yTitle": "Un Table",
+		"dataSourceType": "data_from_raw",
+		"style":{	"legend": { "display": "right" }, "animationEnabled" : "false"},
+		"responseSchema": {"fields": ["InsertTimes","Writes"]},
+		"seriesDef": [{"displayName": "Average run time (ms)", "yField": "Writes", "style": {"color": "0x454586"}}],
+		"datasets":
+			 [ 
+				    {"InsertTimes": "Q1", "Writes": ?avgRunTime1?*1000},
+				    {"InsertTimes": "txYear", "Writes": ?avgRunTime2?*1000}
+			]
+	}
+}
+]]></parameter>
+                              </parameterList>
+                           </link>				
+                        </panel>
+                     </pageWindow>
+                  </loadPage>
+               </task>	
+            </followOnAction>
+         </action>
+      </task>    
+      
+      
+      
+   </taskList>
+</actionPanel>

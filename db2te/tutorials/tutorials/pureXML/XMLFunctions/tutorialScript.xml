@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tutorial name="XML Functions" autoCloseWindowsInRightStage="true" autoClearAdhocResults="true">
+	<flowRestriction>forwardexploration</flowRestriction>
+    <closeAction/>
+    <openAction />
+    <globalCodeHighlightOptions highlightCode = "true" />
+    <pageList>
+    	<page name="XML Functions" type="intro">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>01_XMLFunctions.html</contentFile>
+    		<autoLoadLink>
+    			<pageWindow target="informationWindow">
+    				<panel name="main">
+    					<URL>http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.xml.doc/doc/c0023909.html?noframes=true</URL>
+    				</panel>
+    			</pageWindow>
+    		</autoLoadLink>
+        </page>
+        
+    <page name="XML2CLOB" type="general">
+    	<entryAction name="createEmployeeTable" type="serverAction">
+    		<parameterList>
+    			<parameter name="action" type="fixed">
+    				<value>createTablesFromSampleDatabase</value>
+    			</parameter>
+    			<parameter name="schema" type="constant">
+    				<value>SCHEMA</value>
+    			</parameter>
+    			<parameter name="table[0]" type="fixed">
+    				<value>EMPLOYEE</value>
+    			</parameter>
+    			<parameter name="table[1]" type="fixed">
+    				<value>DEPARTMENT</value>
+    			</parameter>
+    		</parameterList>
+    		<followOnAction condition="false"   >
+    			<task>
+    				<action name="diaplayMsg" type="alert">
+    					<message>Failed to create base tables for initial setup of tutorial. Cannot proceed further with tutorial.</message>
+    				</action>
+    			</task>
+    			<task>
+    				<setActionReturn>false</setActionReturn>
+    			</task>
+    		</followOnAction>
+    		<followOnAction condition="[0-9][0-9]*"   >
+    			<task>
+    				<assignLocalParameter name="ERROR_MESSAGE" type="returnObject">
+    					<value>createEmployeeTable.returnValue</value>
+    				</assignLocalParameter>
+    				<alert>Failed to create base tables for initial setup of tutorial. Cannot proceed further with tutorial.  
+    					SQLMSG: ?ERROR_MESSAGE?</alert>
+    			</task>
+    			<task>
+    				<setActionReturn>false</setActionReturn>
+    			</task>
+    		</followOnAction>
+    	</entryAction>
+            <exitAction/>
+            <contentFile>02_XML2CLOB.html</contentFile>
+    	<SQLFile>01_XML2CLOB.sql</SQLFile>
+    	<SQLExecutionOptions clobinline="true" xml="false" clob="true" blob="false" dbclob="false" termChar=";" cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+        </page><page name="XMLAGG" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>03_XMLAGG.html</contentFile>
+        	<SQLFile>02_XMLAGG.sql</SQLFile>
+        	<SQLExecutionOptions xmlinline="true" clobinline="true" xml="true" clob="true" blob="false" dbclob="false" termChar=";" cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+        </page><page name="XMLELEMENT" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>04_XMLELEMENT.html</contentFile>
+        	<SQLFile>03_XMLELEMENT.sql</SQLFile>
+        	<SQLExecutionOptions xmlinline="true" clobinline="true" xml="true" clob="true" blob="false" dbclob="false" termChar=";" cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+        </page><page name="XMLATTRIBUTES" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>05_XMLATTRIBUTES.html</contentFile>
+        	<SQLFile>04_XMLATTRIBUTES.sql</SQLFile>
+        	<SQLExecutionOptions xmlinline="true" clobinline="true" xml="true" clob="true" blob="false" dbclob="false" termChar=";" cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+        </page><page name="REC2XML" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>06_REC2XML.html</contentFile>
+        	<SQLFile>05_REC2XML.sql</SQLFile>
+        </page><page name="COLATTVAL and COLATTVAL_XML" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>07_COLATTVALAndCOLATTVAL_XML.html</contentFile>
+        	<SQLFile>06_COLATTVALAndCOLATTVAL_XML.sql</SQLFile>
+        </page><page name="XMLSERIALIZE" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>08_XMLSERIALIZE.html</contentFile>
+        	<SQLFile>07_XMLSERIALIZE.sql</SQLFile>
+        </page><page name="XMLSERIALIZE (CLOB or CHAR)" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>09_XMLSERIALIZE(CLOBOrCHAR).html</contentFile>
+        	<SQLFile>08_XMLSERIALIZE(CLOBOrCHAR).sql</SQLFile>
+        	<SQLExecutionOptions xmlinline="true" clobinline="true" xml="true" clob="true" blob="false" dbclob="false" termChar=";" cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+        </page><page name="XMLNAMESPACES" type="last">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>10_XMLNAMESPACES.html</contentFile>
+        	<SQLFile>09_XMLNAMESPACES.sql</SQLFile>
+        	<SQLExecutionOptions xmlinline="true" clobinline="true" xml="true" clob="true" blob="false" dbclob="false" termChar=";" cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+        </page></pageList>
+</tutorial>

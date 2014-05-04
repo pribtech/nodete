@@ -1,0 +1,14 @@
+Use the WLM_GET_WORK_ACTION_SET_STATS table function to access the
+  work action set statistics in memory to get the number of times
+  specific activity types have been run.  Note that running the
+  following query shows only the load_wc, ddl_wc, and the read_wc work
+  classes since they are the only three work classes that have a work
+  action applied to them.  All the other activities end up being counted
+  under *.
+  <p>
+  Notice again, that one of the activities has a SQLCODE of -4712, this
+  time because of the stop_large_activities service class threshold that
+  was created in step 9 that was breached because the estimated cost for
+  that select statement was too large.  Also notice that all read
+  activities are being run under the work1_sc_read service subclass.
+  </p>

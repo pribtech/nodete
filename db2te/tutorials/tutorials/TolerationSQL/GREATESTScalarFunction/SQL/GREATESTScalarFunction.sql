@@ -1,0 +1,1 @@
+VALUES GREATEST(5, 3, 1)

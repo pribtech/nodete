@@ -1,0 +1,122 @@
+<div id='title'>actionPanel.xml</div>
+<pre><tt><b><font color="#0000FF">&lt;actionPanel&gt;</font></b> 
+	<b><font color="#0000FF">&lt;taskList&gt;</font></b>
+		<b><font color="#0000FF">&lt;task</font></b> <font color="#009900">name</font><font color="#990000">=</font><font color="#FF0000">"Run performance tests"</font><b><font color="#0000FF">&gt;</font></b> 
+			<b><font color="#0000FF">&lt;discription&gt;&lt;/discription&gt;</font></b> 
+			<b><font color="#0000FF">&lt;action</font></b> <font color="#009900">name</font><font color="#990000">=</font><font color="#FF0000">"run"</font> <font color="#009900">type</font><font color="#990000">=</font><font color="#FF0000">"blank"</font><b><font color="#0000FF">&gt;</font></b> 
+				<b><font color="#0000FF">&lt;task&gt;</font></b> 
+					<b><font color="#0000FF">&lt;setGlobal</font></b> <font color="#009900">name</font><font color="#990000">=</font><font color="#FF0000">"SQL"</font> <font color="#009900">type</font><font color="#990000">=</font><font color="#FF0000">"fixed"</font><b><font color="#0000FF">&gt;</font></b> 
+						<b><font color="#0000FF">&lt;value&gt;</font></b>?<b><font color="#0000FF">&lt;/value&gt;</font></b> 
+					<b><font color="#0000FF">&lt;/setGlobal&gt;</font></b> 
+					<b><font color="#0000FF">&lt;echo&gt;</font></b>Timeing : ?SQL?<b><font color="#0000FF">&lt;/echo&gt;</font></b> 
+					<b><font color="#0000FF">&lt;callAction</font></b> <font color="#009900">name</font><font color="#990000">=</font><font color="#FF0000">"statmentTimer"</font><b><font color="#0000FF">/&gt;</font></b> 
+					<b><font color="#0000FF">&lt;setGlobal</font></b> <font color="#009900">name</font><font color="#990000">=</font><font color="#FF0000">"RUN_TIME_JOIN"</font> <font color="#009900">type</font><font color="#990000">=</font><font color="#FF0000">"returnObject"</font><b><font color="#0000FF">&gt;</font></b> 
+						<b><font color="#0000FF">&lt;value&gt;</font></b>statmentTimer.returnValue.avgRunTime<b><font color="#0000FF">&lt;/value&gt;</font></b> 
+					<b><font color="#0000FF">&lt;/setGlobal&gt;</font></b> 
+	
+	
+					<b><font color="#0000FF">&lt;setGlobal</font></b> <font color="#009900">name</font><font color="#990000">=</font><font color="#FF0000">"SQL"</font> <font color="#009900">type</font><font color="#990000">=</font><font color="#FF0000">"fixed"</font><b><font color="#0000FF">&gt;</font></b> 
+						<b><font color="#0000FF">&lt;value&gt;</font></b>?<b><font color="#0000FF">&lt;/value&gt;</font></b> 
+					<b><font color="#0000FF">&lt;/setGlobal&gt;</font></b> 
+					<b><font color="#0000FF">&lt;echo&gt;</font></b>Timeing : ?SQL?<b><font color="#0000FF">&lt;/echo&gt;</font></b> 
+					<b><font color="#0000FF">&lt;callAction</font></b> <font color="#009900">name</font><font color="#990000">=</font><font color="#FF0000">"statmentTimer"</font><b><font color="#0000FF">/&gt;</font></b> 
+					<b><font color="#0000FF">&lt;setGlobal</font></b> <font color="#009900">name</font><font color="#990000">=</font><font color="#FF0000">"RUN_TIME_INNER_JOIN"</font> <font color="#009900">type</font><font color="#990000">=</font><font color="#FF0000">"returnObject"</font><b><font color="#0000FF">&gt;</font></b> 
+						<b><font color="#0000FF">&lt;value&gt;</font></b>statmentTimer.returnValue.avgRunTime<b><font color="#0000FF">&lt;/value&gt;</font></b> 
+					<b><font color="#0000FF">&lt;/setGlobal&gt;</font></b> 
+	
+	
+					<b><font color="#0000FF">&lt;setGlobal</font></b> <font color="#009900">name</font><font color="#990000">=</font><font color="#FF0000">"SQL"</font> <font color="#009900">type</font><font color="#990000">=</font><font color="#FF0000">"fixed"</font><b><font color="#0000FF">&gt;</font></b> 
+						<b><font color="#0000FF">&lt;value&gt;</font></b>?<b><font color="#0000FF">&lt;/value&gt;</font></b> 
+					<b><font color="#0000FF">&lt;/setGlobal&gt;</font></b> 
+					<b><font color="#0000FF">&lt;echo&gt;</font></b>Timeing : ?SQL?<b><font color="#0000FF">&lt;/echo&gt;</font></b> 
+					<b><font color="#0000FF">&lt;callAction</font></b> <font color="#009900">name</font><font color="#990000">=</font><font color="#FF0000">"statmentTimer"</font><b><font color="#0000FF">/&gt;</font></b> 
+					<b><font color="#0000FF">&lt;setGlobal</font></b> <font color="#009900">name</font><font color="#990000">=</font><font color="#FF0000">"RUN_TIME_OUTER_JOIN"</font> <font color="#009900">type</font><font color="#990000">=</font><font color="#FF0000">"returnObject"</font><b><font color="#0000FF">&gt;</font></b> 
+						<b><font color="#0000FF">&lt;value&gt;</font></b>statmentTimer.returnValue.avgRunTime<b><font color="#0000FF">&lt;/value&gt;</font></b> 
+					<b><font color="#0000FF">&lt;/setGlobal&gt;</font></b> 
+	
+	
+					<b><font color="#0000FF">&lt;setGlobal</font></b> <font color="#009900">name</font><font color="#990000">=</font><font color="#FF0000">"SQL"</font> <font color="#009900">type</font><font color="#990000">=</font><font color="#FF0000">"fixed"</font><b><font color="#0000FF">&gt;</font></b> 
+						<b><font color="#0000FF">&lt;value&gt;</font></b>?<b><font color="#0000FF">&lt;/value&gt;</font></b> 
+					<b><font color="#0000FF">&lt;/setGlobal&gt;</font></b> 
+					<b><font color="#0000FF">&lt;echo&gt;</font></b>Timeing : ?SQL?<b><font color="#0000FF">&lt;/echo&gt;</font></b> 
+					<b><font color="#0000FF">&lt;callAction</font></b> <font color="#009900">name</font><font color="#990000">=</font><font color="#FF0000">"statmentTimer"</font><b><font color="#0000FF">/&gt;</font></b> 
+					<b><font color="#0000FF">&lt;setGlobal</font></b> <font color="#009900">name</font><font color="#990000">=</font><font color="#FF0000">"RUN_TIME_LEFT_JOIN"</font> <font color="#009900">type</font><font color="#990000">=</font><font color="#FF0000">"returnObject"</font><b><font color="#0000FF">&gt;</font></b> 
+						<b><font color="#0000FF">&lt;value&gt;</font></b>statmentTimer.returnValue.avgRunTime<b><font color="#0000FF">&lt;/value&gt;</font></b> 
+					<b><font color="#0000FF">&lt;/setGlobal&gt;</font></b> 
+				<b><font color="#0000FF">&lt;/task&gt;</font></b>
+				<b><font color="#0000FF">&lt;declareActions&gt;</font></b>	 
+					<b><font color="#0000FF">&lt;action</font></b> <font color="#009900">name</font><font color="#990000">=</font><font color="#FF0000">"statmentTimer"</font> <font color="#009900">type</font><font color="#990000">=</font><font color="#FF0000">"serverAction"</font><b><font color="#0000FF">&gt;</font></b> 
+						<b><font color="#0000FF">&lt;parameterList&gt;</font></b> 
+							<b><font color="#0000FF">&lt;parameter</font></b> <font color="#009900">name</font><font color="#990000">=</font><font color="#FF0000">"action"</font> <font color="#009900">type</font><font color="#990000">=</font><font color="#FF0000">"fixed"</font><b><font color="#0000FF">&gt;</font></b> 
+								<b><font color="#0000FF">&lt;value&gt;</font></b>statementThroughput<b><font color="#0000FF">&lt;/value&gt;</font></b> 
+							<b><font color="#0000FF">&lt;/parameter&gt;</font></b>								 
+							<b><font color="#0000FF">&lt;parameter</font></b> <font color="#009900">name</font><font color="#990000">=</font><font color="#FF0000">"Period"</font> <font color="#009900">type</font><font color="#990000">=</font><font color="#FF0000">"fixed"</font><b><font color="#0000FF">&gt;</font></b> 
+								<b><font color="#0000FF">&lt;value&gt;</font></b>5<b><font color="#0000FF">&lt;/value&gt;</font></b> 
+							<b><font color="#0000FF">&lt;/parameter&gt;</font></b> 
+							<b><font color="#0000FF">&lt;parameter</font></b> <font color="#009900">name</font><font color="#990000">=</font><font color="#FF0000">"MinRunAmount"</font> <font color="#009900">type</font><font color="#990000">=</font><font color="#FF0000">"fixed"</font><b><font color="#0000FF">&gt;</font></b> 
+								<b><font color="#0000FF">&lt;value&gt;</font></b>1<b><font color="#0000FF">&lt;/value&gt;</font></b> 
+							<b><font color="#0000FF">&lt;/parameter&gt;</font></b> 
+						<b><font color="#0000FF">&lt;/parameterList&gt;</font></b> 
+						<b><font color="#0000FF">&lt;if</font></b> <font color="#009900">condition</font><font color="#990000">=</font><font color="#FF0000">"true"</font><b><font color="#0000FF">&gt;</font></b> 
+							<b><font color="#0000FF">&lt;task&gt;</font></b> 
+								<b><font color="#0000FF">&lt;echo&gt;</font></b>Run finished!<b><font color="#0000FF">&lt;/echo&gt;</font></b> 
+							<b><font color="#0000FF">&lt;/task&gt;</font></b> 
+						<b><font color="#0000FF">&lt;/if&gt;</font></b> 
+						<b><font color="#0000FF">&lt;if</font></b> <font color="#009900">condition</font><font color="#990000">=</font><font color="#FF0000">"false"</font><b><font color="#0000FF">&gt;</font></b> 
+							<b><font color="#0000FF">&lt;task&gt;</font></b> 
+								<b><font color="#0000FF">&lt;echo&gt;</font></b>Error in run!<b><font color="#0000FF">&lt;/echo&gt;</font></b> 
+								<b><font color="#0000FF">&lt;exit/&gt;</font></b> 
+							<b><font color="#0000FF">&lt;/task&gt;</font></b> 
+						<b><font color="#0000FF">&lt;/if&gt;</font></b> 
+					<b><font color="#0000FF">&lt;/action&gt;</font></b> 
+				<b><font color="#0000FF">&lt;/declareActions&gt;</font></b> 
+			<b><font color="#0000FF">&lt;/action&gt;</font></b>
+		<b><font color="#0000FF">&lt;/task&gt;</font></b>
+		<b><font color="#0000FF">&lt;task</font></b> <font color="#009900">name</font><font color="#990000">=</font><font color="#FF0000">"Graph run time"</font><b><font color="#0000FF">&gt;</font></b> 
+			<b><font color="#0000FF">&lt;discription&gt;</font></b> 
+			<b><font color="#0000FF">&lt;/discription&gt;</font></b> 
+			<b><font color="#0000FF">&lt;action</font></b> <font color="#009900">name</font><font color="#990000">=</font><font color="#FF0000">"plotPerformance"</font> <font color="#009900">type</font><font color="#990000">=</font><font color="#FF0000">"blank"</font><b><font color="#0000FF">&gt;</font></b> 
+				<b><font color="#0000FF">&lt;task&gt;</font></b> 
+					<b><font color="#0000FF">&lt;loadPage&gt;</font></b> 
+						<b><font color="#0000FF">&lt;pageWindow</font></b> <font color="#009900">target</font><font color="#990000">=</font><font color="#FF0000">"informationWindow"</font><b><font color="#0000FF">&gt;</font></b> 
+							<b><font color="#0000FF">&lt;panel</font></b> <font color="#009900">name</font><font color="#990000">=</font><font color="#FF0000">"main"</font> <font color="#009900">PrimaryContainer</font><font color="#990000">=</font><font color="#FF0000">"true"</font><b><font color="#0000FF">&gt;</font></b> 
+								<b><font color="#0000FF">&lt;link</font></b> <font color="#009900">type</font><font color="#990000">=</font><font color="#FF0000">"action"</font><b><font color="#0000FF">&gt;</font></b> 
+									<b><font color="#0000FF">&lt;parameterList&gt;</font></b> 
+										<b><font color="#0000FF">&lt;parameter</font></b> <font color="#009900">name</font><font color="#990000">=</font><font color="#FF0000">"action"</font><b><font color="#0000FF">&gt;</font></b> 
+											graphYUI 
+										<b><font color="#0000FF">&lt;/parameter&gt;</font></b> 
+										<b><font color="#0000FF">&lt;parameter</font></b> <font color="#009900">name</font><font color="#990000">=</font><font color="#FF0000">"graph"</font><b><font color="#0000FF">&gt;</font></b> 
+											&lt;![CDATA[ 
+{ 
+	"Graph": 
+	{ 
+		"title": "Joins", 
+		"graphType": "column", 
+		"xField": "title", 
+		"xTitle": "ms", 
+		"yTitle": "Join type", 
+		"dataSourceType": "data_from_raw", 
+		"responseSchema": {"fields": ["title","time"]}, 
+		"style":{	"legend": { "display": "right" }, "animationEnabled" : "false"}, 
+		"seriesDef": [{ "displayName": "Average run time (ms)", "yField": "time", "style": {"color": "0x454586"}}], 
+		"datasets":
+			[
+				{ "title": "Join", "time": ?RUN_TIME_JOIN?*1000 }, 
+				{ "title": "Inner Join", "time": ?RUN_TIME_INNER_JOIN?*1000} ,
+				{ "title": "Left Join", "time": ?RUN_TIME_LEFT_JOIN?*1000 }, 
+				{ "title": "Outer Join", "time": ?RUN_TIME_OUTER_JOIN?*1000 } 
+			]
+	}
+}
+]]&gt;
+										<b><font color="#0000FF">&lt;/parameter&gt;</font></b> 
+									<b><font color="#0000FF">&lt;/parameterList&gt;</font></b> 
+								<b><font color="#0000FF">&lt;/link&gt;</font></b> 
+							<b><font color="#0000FF">&lt;/panel&gt;</font></b> 
+						<b><font color="#0000FF">&lt;/pageWindow&gt;</font></b> 
+					<b><font color="#0000FF">&lt;/loadPage&gt;</font></b> 
+				<b><font color="#0000FF">&lt;/task&gt;</font></b> 
+			<b><font color="#0000FF">&lt;/action&gt;</font></b> 
+		<b><font color="#0000FF">&lt;/task&gt;</font></b>
+	<b><font color="#0000FF">&lt;/taskList&gt;</font></b>
+<b><font color="#0000FF">&lt;/actionPanel&gt;</font></b></tt></pre>

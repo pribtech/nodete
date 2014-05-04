@@ -1,0 +1,38 @@
+<H2>Change CUR_COMMIT to DISABLE</H2><HR>
+
+<p>
+If for any reason, you want to maintain the same behavior as in releases prior to DB2 9.7, 
+you can also set the <b class="sourceChange">CUR_COMMIT</b> database configuration parameter to <b class="sourceChange">DISABLED</b>. 
+To understand how the same scenario may behave without CUR_COMMIT,
+set the registry variable and stop and start the instance. 
+On a DB2 command window, issue:
+<ul>
+<li class="sourceCopiedFrom"><b>db2 update dbm cfg using cur_commit DISABLED</b></li>
+<li class="sourceCopiedFrom"><b>db2stop force</b></li>
+<li class="sourceCopiedFrom"><b>db2start</b></li>
+</ul>
+</p>
+
+<BR><H2>Currently committed disabled</H2><HR>
+<p>
+Currently committed is now disabled, run the same SQL commands from DB2 command prompt, 
+you can see the deadlock.
+</p>
+
+<BR><H2>Output of above scenario</H2><HR>
+<p>
+	Right pane shows the output of the sample scenario <b>without currently committed</b> semantics.
+	User B will get <a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v9r7/topic/com.ibm.db2.luw.messages.sql.doc/doc/msql00911n.html');"><b>SQL0911N</b></a> with Reason code 2 due to deadlock.
+</p>
+
+<BR><H2>Change CUR_COMMIT to ON</H2><HR>
+
+<p>
+To maintain the default behavior of DB2 9.7 change the CUR_COMMIT value to ON. 
+On a DB2 command window, issue:
+<ul>
+<li class="sourceCopiedFrom"><b>db2 update dbm cfg using cur_commit ON</b></li>
+<li class="sourceCopiedFrom"><b>db2stop force</b></li>
+<li class="sourceCopiedFrom"><b>db2start</b></li>
+</ul>
+</p>

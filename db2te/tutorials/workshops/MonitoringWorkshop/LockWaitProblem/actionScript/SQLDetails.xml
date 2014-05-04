@@ -1,0 +1,391 @@
+CALL MONREPORT.PKGCACHE;
+
+
+  Result set 1
+
+  --------------
+
+
+
+  TEXT                                                                            
+
+  --------------------------------------------------------------------------------
+
+  -------------------------------------------------------------------------------- 
+
+  Monitoring report - package cache                                                
+
+  -------------------------------------------------------------------------------- 
+
+  Database:                          SAMPLE                                        
+
+  Generated:                         09/18/2009 16:19:41                           
+
+  -- Command options --                                                            
+
+  CACHE_INTERVAL:                    All statements                                
+
+  SECTION_TYPE:                      Dynamic and static SQL                        
+
+  MEMBER:                            All                                           
+
+                                                                                   
+
+  ================================================================================ 
+
+  Part 1 - Summaries by 'top' metrics                                              
+
+                                                                                   
+
+  Top 10 statements by TOTAL_CPU_TIME                                              
+
+  -------------------------------------------------------------------------------- 
+
+  #   TOTAL_       STMT_TEXT                                                       
+
+      CPU_TIME                                                                     
+
+  --  -----------  --------------------------------------------------------------- 
+
+  1   79986        CALL SYSIBM.sqlCAMESSAGECCSID (:HV00010  :HI00010 , 80, NULL, N 
+
+  2   15625        CALL MONREPORT.CURRENTAPPS ()                                   
+
+  3   15625        CALL USEMSGCACHE(:HV00009  :HI00009 ,:HV00021  :HI00021 ,:HV000 
+
+  4   0            CALL MONREPORT.PKGCACHE ()                                      
+
+  5   0            CALL MONREPORT.PKGCACHE                                         
+
+  6   0            select * from inventory for update                              
+
+  7   0            SELECT CASE WHEN (LENGTH(:HV00013  :HI00013 ) > 0) THEN 0 ELSE  
+
+  8   0            SET :HV00015  :HI00015  = CAST(:HV00008  :HI00008  AS "SYSIBMAD 
+
+  9   0            DECLARE RES CURSOR WITH RETURN TO CALLER FOR                SEL 
+
+  10  0            /* All agents by EVENT_OBJECT:EVENT_TYPE */                CALL 
+
+                                                                                   
+
+  Top 10 statements by TOTAL_CPU TIME per exec                                     
+
+  -------------------------------------------------------------------------------- 
+
+  #   TOTAL_       STMT_TEXT                                                       
+
+      CPU_TIME                                                                     
+
+  --  -----------  --------------------------------------------------------------- 
+
+  2   15625        CALL MONREPORT.CURRENTAPPS ()                                   
+
+  11  15625        SELECT ARRAY_AGG(P.EXECUTABLE_ID ORDER BY M.CPU_TIME DESC),     
+
+  3   1736         CALL USEMSGCACHE(:HV00009  :HI00009 ,:HV00021  :HI00021 ,:HV000 
+
+  1   1052         CALL SYSIBM.sqlCAMESSAGECCSID (:HV00010  :HI00010 , 80, NULL, N 
+
+  7   0            SELECT CASE WHEN (LENGTH(:HV00013  :HI00013 ) > 0) THEN 0 ELSE  
+
+  8   0            SET :HV00015  :HI00015  = CAST(:HV00008  :HI00008  AS "SYSIBMAD 
+
+  9   0            DECLARE RES CURSOR WITH RETURN TO CALLER FOR                SEL 
+
+  10  0            /* All agents by EVENT_OBJECT:EVENT_TYPE */                CALL 
+
+  12  0            SELECT ARRAY_AGG(OBJECT_TYPE),               ARRAY_AGG(TYPE_COU 
+
+  13  0            VALUES (1, CARDINALITY(CAST(:HV00060  :HI00060  AS "SYSIBMADM". 
+
+                                                                                   
+
+  Top 10 statements by TOTAL_ACT_WAIT_TIME                                         
+
+  -------------------------------------------------------------------------------- 
+
+  #   TOTAL_ACT    LOCK_WAIT    STMT_TEXT                                          
+
+      _WAIT_TIME   _TIME                                                           
+
+  --  -----------  -----------  -------------------------------------------------- 
+
+  2   82           0            CALL MONREPORT.CURRENTAPPS ()                      
+
+  14  5            0            CALL USEMSGCACHE(:HV00009  :HI00009 ,:HV00021  :HI 
+
+  15  1            0            CALL SAVE_EXEC_INFO (CAST(:HV00039  :HI00039  AS " 
+
+  4   0            0            CALL MONREPORT.PKGCACHE ()                         
+
+  5   0            0            CALL MONREPORT.PKGCACHE                            
+
+  6   0            0            select * from inventory for update                 
+
+  1   0            0            CALL SYSIBM.sqlCAMESSAGECCSID (:HV00010  :HI00010  
+
+  7   0            0            SELECT CASE WHEN (LENGTH(:HV00013  :HI00013 ) > 0) 
+
+  8   0            0            SET :HV00015  :HI00015  = CAST(:HV00008  :HI00008  
+
+  9   0            0            DECLARE RES CURSOR WITH RETURN TO CALLER FOR       
+
+                                                                                   
+
+  Top 10 statements by TOTAL_ACT_WAIT_TIME per exec                                
+
+  -------------------------------------------------------------------------------- 
+
+  #   TOTAL_ACT    LOCK_WAIT    STMT_TEXT                                          
+
+      _WAIT_TIME   _TIME                                                           
+
+  --  -----------  -----------  -------------------------------------------------- 
+
+  2   82           0            CALL MONREPORT.CURRENTAPPS ()                      
+
+  1   0            0            CALL SYSIBM.sqlCAMESSAGECCSID (:HV00010  :HI00010  
+
+  7   0            0            SELECT CASE WHEN (LENGTH(:HV00013  :HI00013 ) > 0) 
+
+  8   0            0            SET :HV00015  :HI00015  = CAST(:HV00008  :HI00008  
+
+  9   0            0            DECLARE RES CURSOR WITH RETURN TO CALLER FOR       
+
+  10  0            0            /* All agents by EVENT_OBJECT:EVENT_TYPE */        
+
+  12  0            0            SELECT ARRAY_AGG(OBJECT_TYPE),               ARRAY 
+
+  13  0            0            VALUES (1, CARDINALITY(CAST(:HV00060  :HI00060  AS 
+
+  16  0            0            SET :HV00014  :HI00014  = RPAD(CAST(:HV00060  :HI0 
+
+  17  0            0            VALUES (:HV00025  :HI00025  + 1, :HV00022  :HI0002 
+
+                                                                                   
+
+  Top 10 statements by ROWS_READ + ROWS_MODIFIED                                   
+
+  -------------------------------------------------------------------------------- 
+
+  #   ROWS_READ +    STMT_TEXT                                                     
+
+      ROWS_MODIFIED                                                                
+
+  --  -------------  ------------------------------------------------------------- 
+
+  2   136            CALL MONREPORT.CURRENTAPPS ()                                 
+
+  15  9              CALL SAVE_EXEC_INFO (CAST(:HV00039  :HI00039  AS "SYSIBMADM". 
+
+  18  2              /* IR is the index in the report output array */        /* IC 
+
+  10  2              /* All agents by EVENT_OBJECT:EVENT_TYPE */                CA 
+
+  14  2              CALL USEMSGCACHE(:HV00009  :HI00009 ,:HV00021  :HI00021 ,:HV0 
+
+  4   0              CALL MONREPORT.PKGCACHE ()                                    
+
+  5   0              CALL MONREPORT.PKGCACHE                                       
+
+  6   0              select * from inventory for update                            
+
+  1   0              CALL SYSIBM.sqlCAMESSAGECCSID (:HV00010  :HI00010 , 80, NULL, 
+
+  7   0              SELECT CASE WHEN (LENGTH(:HV00013  :HI00013 ) > 0) THEN 0 ELS 
+
+                                                                                   
+
+  Top 10 statements by ROWS_READ + ROWS_MODIFIED per exec                          
+
+  -------------------------------------------------------------------------------- 
+
+  #   ROWS_READ +    STMT_TEXT                                                     
+
+      ROWS_MODIFIED                                                                
+
+  --  -------------  ------------------------------------------------------------- 
+
+  2   136            CALL MONREPORT.CURRENTAPPS ()                                 
+
+  18  2              /* IR is the index in the report output array */        /* IC 
+
+  10  2              /* All agents by EVENT_OBJECT:EVENT_TYPE */                CA 
+
+  1   0              CALL SYSIBM.sqlCAMESSAGECCSID (:HV00010  :HI00010 , 80, NULL, 
+
+  7   0              SELECT CASE WHEN (LENGTH(:HV00013  :HI00013 ) > 0) THEN 0 ELS 
+
+  8   0              SET :HV00015  :HI00015  = CAST(:HV00008  :HI00008  AS "SYSIBM 
+
+  9   0              DECLARE RES CURSOR WITH RETURN TO CALLER FOR                S 
+
+  12  0              SELECT ARRAY_AGG(OBJECT_TYPE),               ARRAY_AGG(TYPE_C 
+
+  13  0              VALUES (1, CARDINALITY(CAST(:HV00060  :HI00060  AS "SYSIBMADM 
+
+  16  0              SET :HV00014  :HI00014  = RPAD(CAST(:HV00060  :HI00060  AS "S 
+
+                                                                                   
+
+  Top 10 statements by number of executions                                        
+
+  -------------------------------------------------------------------------------- 
+
+  #   Executions            STMT_TEXT                                              
+
+  --  --------------------  ------------------------------------------------------ 
+
+  19  475                   SELECT CASE WHEN (:HV00013  :HI00013  <= :HV00012  :HI 
+
+  7   225                   SELECT CASE WHEN (LENGTH(:HV00013  :HI00013 ) > 0) THE 
+
+  1   76                    CALL SYSIBM.sqlCAMESSAGECCSID (:HV00010  :HI00010 , 80 
+
+  8   38                    SET :HV00015  :HI00015  = CAST(:HV00008  :HI00008  AS  
+
+  20  18                    SELECT CASE WHEN (:HV00024  :HI00024  <= CARDINALITY(C 
+
+  21  18                    VALUES SYSIBM.REPLACE(:HV00009  :HI00009 ,X'0A',' ') I 
+
+  22  18                    VALUES SYSIBM.REPLACE(:HV00009  :HI00009 ,X'0D',' ') I 
+
+  23  18                    VALUES SYSIBM.REPLACE(:HV00009  :HI00009 ,X'09',' ') I 
+
+  24  16                    SELECT CASE WHEN (:HV00024  :HI00024  <= CARDINALITY(C 
+
+  15  10                    CALL SAVE_EXEC_INFO (CAST(:HV00039  :HI00039  AS "SYSI 
+
+                                                                                   
+
+  Top 10 statements by I/O wait time                                               
+
+  -------------------------------------------------------------------------------- 
+
+  #   I/O                   STMT_TEXT                                              
+
+      wait time                                                                    
+
+  --  --------------------  ------------------------------------------------------ 
+
+  2   82                    CALL MONREPORT.CURRENTAPPS ()                          
+
+  14  5                     CALL USEMSGCACHE(:HV00009  :HI00009 ,:HV00021  :HI0002 
+
+  15  1                     CALL SAVE_EXEC_INFO (CAST(:HV00039  :HI00039  AS "SYSI 
+
+  4   0                     CALL MONREPORT.PKGCACHE ()                             
+
+  5   0                     CALL MONREPORT.PKGCACHE                                
+
+  6   0                     select * from inventory for update                     
+
+  1   0                     CALL SYSIBM.sqlCAMESSAGECCSID (:HV00010  :HI00010 , 80 
+
+  7   0                     SELECT CASE WHEN (LENGTH(:HV00013  :HI00013 ) > 0) THE 
+
+  8   0                     SET :HV00015  :HI00015  = CAST(:HV00008  :HI00008  AS  
+
+  9   0                     DECLARE RES CURSOR WITH RETURN TO CALLER FOR           
+
+                                                                                   
+
+  Top 10 statements by I/O wait time per exec                                      
+
+  -------------------------------------------------------------------------------- 
+
+  #   I/O                   STMT_TEXT                                              
+
+      wait time                                                                    
+
+  --  --------------------  ------------------------------------------------------ 
+
+  2   82                    CALL MONREPORT.CURRENTAPPS ()                          
+
+  1   0                     CALL SYSIBM.sqlCAMESSAGECCSID (:HV00010  :HI00010 , 80 
+
+  7   0                     SELECT CASE WHEN (LENGTH(:HV00013  :HI00013 ) > 0) THE 
+
+  8   0                     SET :HV00015  :HI00015  = CAST(:HV00008  :HI00008  AS  
+
+  9   0                     DECLARE RES CURSOR WITH RETURN TO CALLER FOR           
+
+  10  0                     /* All agents by EVENT_OBJECT:EVENT_TYPE */            
+
+  12  0                     SELECT ARRAY_AGG(OBJECT_TYPE),               ARRAY_AGG 
+
+  13  0                     VALUES (1, CARDINALITY(CAST(:HV00060  :HI00060  AS "SY 
+
+  16  0                     SET :HV00014  :HI00014  = RPAD(CAST(:HV00060  :HI00060 
+
+  17  0                     VALUES (:HV00025  :HI00025  + 1, :HV00022  :HI00022  + 
+
+                                                                                   
+
+  ================================================================================ 
+
+  Part 2 - EXECUTABLE_IDs for statements in Part 1                                 
+
+                                                                                   
+
+  #   EXECUTABLE_ID                                                                
+
+  --  ---------------------------------------------------------------------------- 
+
+  1   x'0100000000000000E50000000000000001000000010020090915180139234001'          
+
+  2   x'0100000000000000700000000000000000000000020020090918161941265003'          
+
+  3   x'0100000000000000EC000000000000002F000000010020090915180147906002'          
+
+  4   x'0100000000000000720000000000000000000000020020090918161941531003'          
+
+  5   x'0100000000000000710000000000000000000000020020090918161941531001'          
+
+  6   x'0100000000000000520000000000000000000000020020090918161715718000'          
+
+  7   x'0100000000000000E60000000000000001000000010020090915180139531001'          
+
+  8   x'0100000000000000E60000000000000002000000010020090915180139531001'          
+
+  9   x'0100000000000000EC0000000000000001000000010020090915180147906002'          
+
+  10  x'0100000000000000EC000000000000001A000000010020090915180147906002'          
+
+  11  x'0100000000000000EE0000000000000019000000010020090915180149140001'          
+
+  12  x'0100000000000000EC000000000000001B000000010020090915180147906002'          
+
+  13  x'0100000000000000EC000000000000001C000000010020090915180147906002'          
+
+  14  x'0100000000000000EC000000000000002D000000010020090915180147906002'          
+
+  15  x'0100000000000000EE000000000000001C000000010020090915180149140001'          
+
+  16  x'0100000000000000EC000000000000001D000000010020090915180147906002'          
+
+  17  x'0100000000000000EC000000000000001E000000010020090915180147906002'          
+
+  18  x'0100000000000000EE000000000000000A000000010020090915180149140001'          
+
+  19  x'0100000000000000ED0000000000000001000000010020090915180148406001'          
+
+  20  x'0100000000000000EC000000000000003B000000010020090915180147906002'          
+
+  21  x'0100000000000000ED0000000000000002000000010020090915180148406001'          
+
+  22  x'0100000000000000ED0000000000000003000000010020090915180148406001'          
+
+  23  x'0100000000000000ED0000000000000004000000010020090915180148406001'          
+
+  24  x'0100000000000000EC0000000000000035000000010020090915180147906002'          
+
+
+
+  185 record(s) selected.
+
+
+
+  Return Status = 0
+

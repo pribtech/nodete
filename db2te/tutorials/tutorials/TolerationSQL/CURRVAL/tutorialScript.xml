@@ -1,0 +1,384 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tutorial name="CURRVAL">
+    <flowRestriction>forwardExploration</flowRestriction>
+    <closeAction/>
+    <openAction />
+    <globalCodeHighlightOptions highlightCode = "true" />
+    <pageList>
+    	<page name="CURRVAL" type="intro">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>CURRVAL.html</contentFile>
+            <autoLoadLink>
+    	        <pageWindow target="informationWindow">
+    	            <panel name="main">
+    	                <URL>http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.sql.ref.doc/doc/r0023464.html?noframes=true</URL>
+    	            </panel>
+    	        </pageWindow>
+    	    </autoLoadLink>
+    	</page>      
+        <page name="Create A Simple Sequence With Default Values" type="general" >
+            <entryAction/>
+            <exitAction/>
+            <contentFile>CreateASimpleSequenceWithDefaultValues.html</contentFile>
+            <SQLFile>CreateASimpleSequenceWithDefaultValues.sql</SQLFile>
+        </page>
+        <page name="Create a Table that will use the Sequence Object" type="general" >
+            <entryAction name="checkForSequence" type="serverAction">
+                <parameterList>
+                    <parameter name="action" type="serverAction">
+                        <value>checkForObject</value>
+                    </parameter>
+                    <parameter name="objectType" type="raw">
+                        <value>sequence</value>
+                    </parameter>
+                    <parameter name="object[schema]" type="constant">
+                        <value>SCHEMA</value>
+                    </parameter>
+                    <parameter name="object[sequence]" type="fixed">
+                        <value>empno</value>
+                    </parameter>
+                </parameterList>
+                <followOnAction condition="false">
+                    <task>
+                        <action name="displayMsg" type="alert">
+                            <message>Required Sequence hasn't been created. Please execute this step again.</message>
+                        </action>
+                    </task>
+                    <task>
+                        <setActionReturn>false</setActionReturn>
+                    </task>
+                </followOnAction>
+                </entryAction>
+            <exitAction/>
+            <contentFile>CreateATableThatWillUseTheSequenceObject.html</contentFile>
+            <SQLFile>CreateATableThatWillUseTheSequenceObject.sql</SQLFile>
+        </page>
+        
+        <page name="Using NEXTVAL  to generate a sequence value" type="general" >
+            <entryAction name="checkForTable" type="serverAction">
+                <parameterList>
+                    <parameter name="action" type="serverAction">
+                        <value>checkForObject</value>
+                    </parameter>
+                    <parameter name="objectType" type="raw">
+                        <value>table</value>
+                    </parameter>
+                    <parameter name="object[schema]" type="constant">
+                        <value>SCHEMA</value>
+                    </parameter>
+                    <parameter name="object[table]" type="fixed">
+                        <value>seq_employee</value>
+                    </parameter>
+                </parameterList>
+                <followOnAction condition="false">
+                    <task>
+                        <action name="displayMsg" type="alert">
+                            <message>Required table hasn't been created. Please execute this step again.</message>
+                        </action>
+                    </task>
+                    <task>
+                        <setActionReturn>false</setActionReturn>
+                    </task>
+                </followOnAction>
+            </entryAction>
+            <exitAction/>
+            <contentFile>UsingNEXTVALToGenerateASequenceValue.html</contentFile>
+            <SQLFile>UsingNEXTVALToGenerateASequenceValue.sql</SQLFile>
+        </page>
+        <page name="You can also use the format SEQUENCE.NEXTVAL" type="general" >
+            <entryAction/>
+            <exitAction/>
+            <contentFile>YouCanAlsoUseAnotherFormat.html</contentFile>
+            <SQLFile>YouCanAlsoUseAnotherFormat.sql</SQLFile>
+        </page>
+        <page name="What happens with multiple requests to the Sequence Object" type="general" >
+            <entryAction/>
+            <exitAction/>
+            <contentFile>WhatHappensWithMultipleRequestsToTheSequenceObject.html</contentFile>
+            <SQLFile>WhatHappensWithMultipleRequestToTheSequenceObject.sql</SQLFile>
+        </page>
+        
+        <page name="Create a new sequence object for department numbers" type="general" >
+            <entryAction/>
+            <exitAction/>
+            <contentFile>CreateANewSequenceObjectForDepartmentNumbers.html</contentFile>
+            <SQLFile>CreateANewSequenceObjectForDepartmentNumbers.sql</SQLFile>
+        </page>
+        
+        <page name="Create department sequence number" type="general" >
+            <entryAction name="checkForTable" type="serverAction">
+                <parameterList>
+                    <parameter name="action" type="serverAction">
+                        <value>checkForObject</value>
+                    </parameter>
+                    <parameter name="objectType" type="raw">
+                        <value>table</value>
+                    </parameter>
+                    <parameter name="object[schema]" type="constant">
+                        <value>SCHEMA</value>
+                    </parameter>
+                    <parameter name="object[table]" type="fixed">
+                        <value>seq_employee_second</value>
+                    </parameter>
+                </parameterList>
+                <followOnAction condition="false">
+                    <task>
+                        <action name="displayMsg" type="alert">
+                            <message>Required table hasn't been created. Please execute this step again.</message>
+                        </action>
+                    </task>
+                    <task>
+                        <setActionReturn>false</setActionReturn>
+                    </task>
+                </followOnAction>
+            </entryAction>
+            <exitAction/>
+            <contentFile>CreateDepartmentSequenceNumber.html</contentFile>
+            <SQLFile>CreateDepartmentSequenceNumber.sql</SQLFile>
+        </page>
+        
+        
+        <page name="Insert all employees for department 100" type="general" >
+            <entryAction name="checkForSequence" type="serverAction">
+                <parameterList>
+                    <parameter name="action" type="serverAction">
+                        <value>checkForObject</value>
+                    </parameter>
+                    <parameter name="objectType" type="raw">
+                        <value>sequence</value>
+                    </parameter>
+                    <parameter name="object[schema]" type="constant">
+                        <value>SCHEMA</value>
+                    </parameter>
+                    <parameter name="object[sequence]" type="fixed">
+                        <value>deptno</value>
+                    </parameter>
+                </parameterList>
+                <followOnAction condition="false">
+                    <task>
+                        <action name="displayMsg" type="alert">
+                            <message>Required Sequence hasn't been created. Please execute this step again.</message>
+                        </action>
+                    </task>
+                    <task>
+                        <setActionReturn>false</setActionReturn>
+                    </task>
+                </followOnAction>
+            </entryAction>
+            <exitAction/>
+            <contentFile>InsertAllEmployeesForDepartment100.html</contentFile>
+            <SQLFile>InsertAllEmployeesForDepartment100.sql</SQLFile>
+        </page>
+        
+        <page name="Try again using the values clause first to generate a value" type="general" >
+            <entryAction/>
+            <exitAction/>
+            <contentFile>TryAgainUsingTheValuesClauseFirstToGenerateAValue.html</contentFile>
+            <SQLFile>TryAgainUsingTheValuesClauseFirstToGenerateAValue.sql</SQLFile>
+        </page>
+        
+        <page name="Resetting SequenceObjects" type="general" >
+            <entryAction name="checkForInsert" type="serverAction">
+                <parameterList>
+                    <parameter name="action" type="fixed">
+                        <value>checkForRow</value>
+                    </parameter>
+                    <parameter name="schema" type="constant">
+                        <value>SCHEMA</value>
+                    </parameter>
+                    <parameter name="name" type="fixed">
+                        <value>seq_employee_second</value>
+                    </parameter>
+                </parameterList>
+                <followOnAction condition="true"  negCondition="true">
+                    <task>
+                        <action name="displayMsgForFailedInsert" type="alert">
+                            <message>Data hasn't been inserted in the table. Please try this step again.</message>
+                        </action>
+                    </task>
+                    <task>
+                        <setActionReturn>false</setActionReturn>
+                    </task>
+                </followOnAction>
+            </entryAction> 
+            <exitAction/>
+            <contentFile>ResettingSequenceObjects.html</contentFile>
+            <SQLFile>ResettingSequenceObjects.sql</SQLFile>
+        </page>
+        
+        <page name="Create Cycling Sequences" type="general" >
+            <entryAction/>
+            <exitAction/>
+            <contentFile>CreateCyclingSequences.html</contentFile>
+            <SQLFile>CreateCyclingSequences.sql</SQLFile>
+        </page>
+        
+        <page name="Insert values into the table" type="general" >
+            <entryAction name="checkForTable" type="serverAction">
+                <parameterList>
+                    <parameter name="action" type="serverAction">
+                        <value>checkForObject</value>
+                    </parameter>
+                    <parameter name="objectType" type="raw">
+                        <value>table</value>
+                    </parameter>
+                    <parameter name="object[schema]" type="constant">
+                        <value>SCHEMA</value>
+                    </parameter>
+                    <parameter name="object[table]" type="fixed">
+                        <value>showcycle</value>
+                    </parameter>
+                </parameterList>
+                <followOnAction condition="false">
+                    <task>
+                        <action name="displayMsg" type="alert">
+                            <message>Required table hasn't been created. Please execute this step again.</message>
+                        </action>
+                    </task>
+                    <task>
+                        <setActionReturn>false</setActionReturn>
+                    </task>
+                </followOnAction>
+                <followOnAction condition="true">
+                    <task>
+                        <action name="checkForSequence" type="serverAction">
+                            <parameterList>
+                                <parameter name="action" type="serverAction">
+                                    <value>checkForObject</value>
+                                </parameter>
+                                <parameter name="objectType" type="raw">
+                                    <value>sequence</value>
+                                </parameter>
+                                <parameter name="object[schema]" type="constant">
+                                    <value>SCHEMA</value>
+                                </parameter>
+                                <parameter name="object[sequence]" type="fixed">
+                                    <value>cycle</value>
+                                </parameter>
+                            </parameterList>
+                            <followOnAction condition="false">
+                                <task>
+                                    <action name="displayMsg" type="alert">
+                                        <message>Required Sequence hasn't been created. Please execute this step again.</message>
+                                    </action>
+                                </task>
+                                <task>
+                                    <setActionReturn>false</setActionReturn>
+                                </task>
+                            </followOnAction>
+                        </action>
+                    </task>
+                </followOnAction>
+            </entryAction>
+            <exitAction/>
+            <contentFile>InsertValuesIntoTheTable.html</contentFile>
+            <SQLFile>InsertValuesIntoTheTable.sql</SQLFile>
+        </page>
+        
+        <page name="Sequences that stop" type="general" >
+            <entryAction/>
+            <exitAction/>
+            <contentFile>SequencesThatStop.html</contentFile>
+            <SQLFile>SequencesThatStop.sql</SQLFile>
+        </page>
+        
+        <page name="Insert 3 values into the table" type="general" >
+            <entryAction name="checkForTable" type="serverAction">
+                <parameterList>
+                    <parameter name="action" type="serverAction">
+                        <value>checkForObject</value>
+                    </parameter>
+                    <parameter name="objectType" type="raw">
+                        <value>table</value>
+                    </parameter>
+                    <parameter name="object[schema]" type="constant">
+                        <value>SCHEMA</value>
+                    </parameter>
+                    <parameter name="object[table]" type="fixed">
+                        <value>showcycle_second</value>
+                    </parameter>
+                </parameterList>
+                <followOnAction condition="false">
+                    <task>
+                        <action name="displayMsg" type="alert">
+                            <message>Required table hasn't been created. Please execute this step again.</message>
+                        </action>
+                    </task>
+                    <task>
+                        <setActionReturn>false</setActionReturn>
+                    </task>
+                </followOnAction>
+                <followOnAction condition="true">
+                    <task>
+                        <action name="checkForSequence" type="serverAction">
+                            <parameterList>
+                                <parameter name="action" type="serverAction">
+                                    <value>checkForObject</value>
+                                </parameter>
+                                <parameter name="objectType" type="raw">
+                                    <value>sequence</value>
+                                </parameter>
+                                <parameter name="object[schema]" type="constant">
+                                    <value>SCHEMA</value>
+                                </parameter>
+                                <parameter name="object[sequence]" type="fixed">
+                                    <value>cycle_second</value>
+                                </parameter>
+                            </parameterList>
+                            <followOnAction condition="false">
+                                <task>
+                                    <action name="displayMsg" type="alert">
+                                        <message>Required Sequence hasn't been created. Please execute this step again.</message>
+                                    </action>
+                                </task>
+                                <task>
+                                    <setActionReturn>false</setActionReturn>
+                                </task>
+                            </followOnAction>
+                        </action>
+                    </task>
+                </followOnAction>
+            </entryAction>
+            <exitAction/>
+            <contentFile>Insert3ValuesIntoTheTable.html</contentFile>
+            <SQLFile>Insert3ValuesIntoTheTable.sql</SQLFile>
+        </page>
+        
+        <page name="Hit the end of the sequence" type="general" >
+            <entryAction name="checkForInsert" type="serverAction">
+                <parameterList>
+                    <parameter name="action" type="fixed">
+                        <value>checkForRow</value>
+                    </parameter>
+                    <parameter name="schema" type="constant">
+                        <value>SCHEMA</value>
+                    </parameter>
+                    <parameter name="name" type="fixed">
+                        <value>showcycle_second</value>
+                    </parameter>
+                </parameterList>
+                <followOnAction condition="true"  negCondition="true">
+                    <task>
+                        <action name="displayMsgForFailedInsert" type="alert">
+                            <message>Data hasn't been inserted in the table. Please try this step again.</message>
+                        </action>
+                    </task>
+                    <task>
+                        <setActionReturn>false</setActionReturn>
+                    </task>
+                </followOnAction>
+            </entryAction>
+            <exitAction/>
+            <contentFile>HitTheEndOfTheSequence.html</contentFile>
+            <SQLFile>HitTheEndOfTheSequence.sql</SQLFile>
+        </page>
+        
+        <page name="Alter the end of the cycle" type="last" >
+            <entryAction/>
+            <exitAction/>
+            <contentFile>AlterTheEndOfTheCycle.html</contentFile>
+            <SQLFile>AlterTheEndOfTheCycle.sql</SQLFile>
+        </page>
+    </pageList>
+</tutorial>

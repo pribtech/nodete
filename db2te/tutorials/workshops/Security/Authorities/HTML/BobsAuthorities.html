@@ -1,0 +1,15 @@
+<br><h2>View authorities for Sam</h2><hr><br>
+<p><b>You must log into the database as Pat before proceeding with this page.</b></p>
+
+<p>From the previous page we saw that Sam is explicitly granted with DBADM authority without DATAACCESS and ACCESSCTRL authorities. Check what authorities Sam has received implicitly/explicitly after he was granted with DBADM authority.</p>
+
+<br><h4>Operation</h4><hr><br>
+<p>Use AUTH_LIST_AUTHORITIES_FOR_AUTHID table function to check what authorities Sam got after he was granted with DBADM authority.</p>
+
+<br><h4>Solution</h4><hr><br>
+<p>Example of the right shows that Sam has DBADM and other authorities granted implicitly with DBADM.
+ However, he doesn't have DATAACCESS and ACCESSCTRL authorities.</p>
+
+
+
+

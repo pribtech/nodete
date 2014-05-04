@@ -1,0 +1,45 @@
+<H2><B>Package - order_package</B></H2><HR>
+<p>
+	<b>order_package</b> is a package that contains procedures to manage orders.
+
+	<ul>
+	 <li><b>add_item_to_shopping_cart -</b> Adds the product to the shopping cart.
+										   If product already exists, it updates the quantity</li>
+	 <li><b>create_order -</b> Creates orders based on the shopping cart contents</li>
+	 <li><b>print_order -</b> Prints customer and order details based on order_id</li>
+	</ul>
+</p>
+<img src="?BASE_DIRECTORY?HTML/orderpkg.PNG"/><br><br>
+<br><br><br><br><br><br><br><br><br><br><br><br>
+<BR><H2><B>Demonstrated features</B></H2><HR><br>
+	<ul>
+		<li><b class="sourceCopiedFrom">Loops:</b>
+		<ul>
+			<li>FOR i IN cursor LOOP ... END LOOP</li>
+		    <li>FOR i IN 1..N LOOP ... END LOOP</li>
+		    <li>FOR i IN (SELECT ...) LOOP ... END LOOP</li>
+		    <li>LOOP ... EXIT WHEN ... END LOOP</li>
+		</ul>
+		</li>
+		<li><b class="sourceCopiedFrom">Use of procedures, functions and types from other packages:-</b>
+    	<ul>
+      		<li>product_package.verify_product_availability</li>
+			<li>customer_package.customer_record</li>
+		</ul>
+		</li>
+		<li><b class="sourceCopiedFrom">Collection type:</b>
+		<ul>
+			<li>TYPE ... IS VARRAY(10) OF ...</li>
+		    <li>VARRAY.COUNT</li>
+		</ul>
+		</li>
+		<li><b class="sourceCopiedFrom">SQL extensions and Built-in functions:</b>
+      	<ul>
+      		<li>DUAL</li>
+			<li>SYSDATE</li>
+		    <li>DECODE</li>
+		    <li>TO_CHAR</li>
+		</ul>
+		</li>
+	</ul>
+</p>

@@ -1,0 +1,48 @@
+<h2> Introduction<hr></h2>
+
+<p>The objective of this scenario is to use the DB2 monitoring text report to identify and isolate a <b>lock wait problem</b>.
+<p>
+<B><font color=grey>In this problem, slow application request(s) are spending more time waiting for locks. This is due to more requests contending for the same few rows in a particular table. 
+<br>This scenario illustrates the use of monitoring information to troubleshoot a slowdown in response time reported on a production system. 
+<BR>
+</font></B>
+<BR>
+DB2 provides many monitoring tools to diagnose different types of problems. The scenario illustrated here uses a DB2 module called <B>MONREPORT</B> to monitor information and troubleshoot a response time slowdown on a production system. The <B>MONREPORT</B> module provides a set of procedures for retrieving a variety of monitoring data and generating text reports.
+<BR>
+At the end of this scenario, there is enough information available about the problem to fix it.
+<BR><BR>
+<font color=red><B>NOTE:</font> This tutorial requires DB2 9.7 Fix pack 1 to be installed.</B>
+
+<h2>Problem to diagnose<hr></h2>
+<p>
+The Purchase item application is slowed down due to time spent waiting for locks on the <CODE>INVENTORY</CODE> table to be released.
+</p><p>
+Troubleshooting this problem involves getting these questions answered:
+<ul>
+<li>What is the general type of problem?</li>
+<li>What part of the user workload is impacted by the slowdown? What does this set of SQL statements have in common?</li>
+<li>What is the detailed description of the lock wait problem?</li>
+<li>What sequence of events led to this problem occurring at this time?</li>
+</ul>
+</p>
+
+<P>
+<h2>Tutorial Flow:</h2><hr>
+<ul>
+<li>Determining the problem category</li>
+<li>Performing detailed diagnosis of the problem</li>
+<li>Identifying the scope of the SQL statements involved</li>
+</ul>
+
+<P>
+<h2>Pre-requisite:</h2><hr>
+<ul>
+	<li>Create Sample database using the following command:</li>
+		<ul>
+			<li><CODE><B>db2sampl</B></CODE></li>
+		</ul>
+	<li>User should have <CODE>EXECUTE</CODE> privileges on <CODE>SYSIBMADM.MONREPORT</CODE> module. For example, use the following command to grant <CODE>EXECUTE</CODE> privilege to user <CODE>'testuser'</CODE>:</li>
+	<ul>
+			<li><CODE>GRANT EXECUTE ON MODULE SYSIBMADM.MONREPORT TO USER testuser</CODE></li>
+		</ul>
+</ul>

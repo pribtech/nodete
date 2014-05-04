@@ -1,0 +1,12 @@
+<BR><H2><B>Lets try it !</B></H2><HR>
+<p>This page demonstrates creation of indexes on the <b>first two fact tables</b> to improve query processing by 
+reducing the need for full table scans and repeated sorting of data for queries.</p>
+
+<H2><B>Operation</B></H2><HR>
+<p>
+<ol>
+<li>Create tables 'subscriber_rated_usage_ind' and 'subscriber_dedicated_usage_ind'</li>
+<li>Create a regular index on the 'subscriber_msisdn' column as it is used in the join between tables</li>
+<li>Create a composite index on the 'subscriber_circle_id' and 'event_start_dt' columns as they are predicates in the WHERE clause</li>
+</ol>
+</p>

@@ -1,0 +1,28 @@
+<p>Before continuing here if you are not familiar with action scripts within the TE you should complete the Introduction to action scripts tutorial.</p>
+
+<p>Flow control is used to restrict a students/tutorial users moment through a tutorial. While it is preferable for a user to be able to completely explore a tutorial freely sometime there are step which must be completed before other steps or action must be completed in order.</p>
+
+<p>Click on the tab 'Understanding tutorial flow' to the right.</p>
+
+<p>The diagram represents the motions which can occur within a tutorial and the action that will occur. </p>
+
+<p>The default flow type is "Free Flow".</p>
+
+<p>Flow types are defined using the tag 'flowRestriction' and can be written in one of three ways, full title, full title no spaces, short form. The full title no spaces (first type demonstrated below) is backwards compatible with older version of the TE.
+<br/><br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'FreeFlow' == 'Free Flow' == 'FF'
+</p>
+<p>On a page transition where a 'C - Run and check action of exiting page and the entering page' is designated with the given tutorial flow the tags 'enteryAction' and 'exitAction' with in the 'page' element are used. The 'enteryAction' and exitAction' represent the start of an action script of the leaving and entering pages. If the return value of ether of these two action is 'false' the page transition will not occur (default return of an action script is 'true').  </p>
+
+<p>To set the return value of an action script the following task is used:
+<br/>
+<pre><code>&lt;setActionReturn value="false"/&gt;</code></pre>
+</p>
+<p>Steps to complete:
+
+<ul><li>Copy the contents of tab 'tutorialScript.xml' located to the right into the file 'tutorialScript.xml'.
+</li><li>Save the file, but do not close it
+</li><li>Reload the 'About table joins' tutorial you should now have have to run the queries on page 2 before you can move onto page 3
+</li><li>At this point you may wish to change the tutorial flow restriction to 'Free Flow'
+<ul><li>doing so will make checking you work in the next section much easier
+</li></ul>
+</p>

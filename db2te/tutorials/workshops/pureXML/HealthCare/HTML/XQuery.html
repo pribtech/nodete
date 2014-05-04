@@ -1,0 +1,43 @@
+<p>Click the button on the right to find out the average query time for the XML query used in the previous page. </p>
+<p>This page also shows you how to obtain the access plan of the XML query executed in the previous page. From the access plan, you can identify any inefficient access and make some tuning accordingly.
+<BR><BR>
+
+<B>Explain Snapshot</B>
+<p>Run the following steps on the DB2 CLP window to view the explain snapshot :
+<ol>
+<li><b>On Windows</b> change to directory <b>DB2_install_directory\sqllib\misc</b></li>
+<li><b>On UNIX/Linux</b> change to directory <b>DB2 instance home directory/sqllib/misc</b></li>
+<li>Connect to the database you are working on.</li>
+<li>Run <b>db2 -tvf EXPLAIN.DDL</b>. This creates the explain tables.</li>
+<li>Run <b>db2 SET CURRENT EXPLAIN MODE=YES</b></li>
+<li>Go the Ad Hoc SQL tab, Select Options. Note the Default Schema used for this workshop.</li>
+<li>Copy the file <b>TE_install_directory\tutorials\Workshops\pureXML\HealthCare\SQL\PerformanceXQuery.sql to the current working directory.</b></li>
+<li>Edit the working copy of <CODE><b>PerformanceXQuery.sql</b></CODE> and replace '~~~SCHEMA~~~' with the Default Schema.</li>
+<li>Run <b>db2 -tvf <CODE>PerformanceXQuery.sql</CODE></b></li>
+<li>Run <b>db2 SET CURRENT EXPLAIN MODE=NO</b></li>
+<li>Run <b>db2exfmt -d <CODE><FONT style="BACKGROUND-COLOR: yellow">DBNAME</FONT></CODE> -1 -o <CODE>explain_xmlquery.out</CODE></b>. Replace <code><FONT style="BACKGROUND-COLOR: yellow">DBNAME</FONT></code> with the database you are working on. The Explain Plan can be viewed in the output file <CODE><b>explain_xmlquery.out</b></CODE>.</li>
+</ol>
+</p><br>
+<p>Click here to view the sample output of the Explain Access Plan : <a onclick="OpenURLInFloatingWindow('?BASE_DIRECTORY?/HTML/explain_xmlquery.html');"><b>Sample Explain Access Plan</b></a></p>
+
+<P align='Justify'>
+<B> Total cost captured in access plan </B>
+<BR>
+Review the explain output and locate the <code>Total Cost</code> right above the access graph. The sample plan above shows a total cost of 53055.1.
+<BR><BR>
+
+<P align='Justify'>
+<B> Operation in access plan </B>
+<BR>
+The access plan shows the XSCAN operator scanning the XML document
+and a TBSCAN scanning the relational data and then joining the result
+set of two operations.
+<BR><BR>
+<P align='Justify'>
+<B>XSCAN operator</B>
+<BR>
+<P align='Justify'>
+This operator is used to navigate XML fragments to evaluate XPath
+expressions and to extract document fragments if needed. This
+operator processes node references passed by a nested-loop join operator
+(NLJOIN). It is not represented with a direct input in the access plan.

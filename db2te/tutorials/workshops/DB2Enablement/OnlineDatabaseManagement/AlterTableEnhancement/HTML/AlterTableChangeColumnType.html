@@ -1,0 +1,33 @@
+<H2>Scenario</H2><HR>
+<p class="sourceChange">
+<b>	Application developer also uses the type 'Registered' and 'Temporary' rather than using 'R' and 'T' in the application.
+	Because of the mismatch in column value in the column and the application, application will not run. </b>
+</p>
+
+<BR><H2>Problem</H2><HR>
+<p>
+As the occurrences of CUSTOMER_TYPE column in the application is high
+the DBA has to change data type of column FROM CHAR to VARCHAR and update the column value from
+'R' to 'Registered' and 'T' to 'Temporary' to get the application working. 
+</p>	
+	
+<BR><H2>Solution</H2><HR>
+<p>
+	To solve the above problem DB2 9.7 offers <a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v9r7/topic/com.ibm.db2.luw.wn.doc/doc/c0053726.html');"><b>SET DATA TYPE</b></a> Option.
+	Now the DBA can change the data type of a column in the table using SET DATA TYPE option in the ALTER TABLE command. 
+	DBA performs below steps to accommodate this requirement.
+	
+	<ol>
+	<li class="sourceCopiedFrom">ALTER data type of column CUSTOMER_TYPE to VARCHAR using SET DATA TYPE option in <b>ALTER TABLE </b> command.</li><br>
+	<li class="sourceCopiedFrom">CALL <b>ADMIN_REVALIDATE_DB_OBJECTS</b> to revalidate the object.</li><br>
+	<li class="sourceCopiedFrom">Check the new definition of table from <b>syscat.columns</b> for verification.</li><br>
+	<li class="sourceCopiedFrom">Fetch the rows from customer table using <b>SELECT</b> command.</li><br>
+	</ol>
+</p>	
+
+<BR><H2>Output</H2><HR>
+<p>
+	After running the SQL scripts on the right pane, <br>Result tab 4 shows a datatype of column name<b class="sourceCopiedFrom" >TYPE</b> 
+	change from <b class="sourceCopiedFrom">CHAR</b> to <b class="sourceCopiedFrom" >VARCHAR</b> in the  
+	base table <b>CUSTOMER</b>.</br><br><br>
+<img src="?BASE_DIRECTORY?HTML/RenameColumnType.PNG"/>

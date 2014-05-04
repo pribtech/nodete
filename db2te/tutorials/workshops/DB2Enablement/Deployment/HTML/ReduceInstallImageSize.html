@@ -1,0 +1,19 @@
+<H2>Reduce Installation Image Size</H2><HR>
+The <b class="sourceChange">db2iprune</b> utility can be used to reduce the size of a DB2 database product installation image.
+<BR>
+DB2 data server products provide flexibility by including a large number of installable 
+features in their installation images. However, the large footprint size of the installation 
+images might cause a problem. You can avoid this potential problem different platforms using 
+the <a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v9r7/topic/com.ibm.db2.luw.admin.cmd.doc/doc/r0025270.html');"><b>db2iprune</b></a> command line utility. The db2iprune utility reduces the size of your installation image.
+<br><br>
+On Windows the <a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v9r7/topic/com.ibm.db2.luw.admin.cmd.doc/doc/r0025270.html');"><b>db2iprune</b></a> utility is located at <b class="sourceChange">\db2\windows\utilities\db2iprune</b> and consists 
+of an input file and a db2iprune executable file and a text file with basic instructions.
+On Linux and Unix platform utility is located at <b class="sourceChange">image/db2/platform/utilities/db2iprune </b>.
+<br><br>
+Use the input file (.prn file) to specify which features and components you want 
+to remove from the installation image. The db2iprune executable file (db2iprune.exe) 
+removes the cabinet (.cab) files associated with those features and languages (cabinet files are a number of related files that are packaged together for deployment purposes), and makes it impossible to remove a component from the installation image if a different feature in the image requires that component to be present.
+<br><br>
+Only the unspecified features, and any components that the unspecified features require, are included in the pruned installation image. When the pruned image is installed, features that were removed do not appear in the installation GUI panels. After a pruned image is installed, the result is the same as if the user had selected only that subset of features during an installation from a full image.
+<br><br>
+The end result of using the db2iprune utility is a new, smaller installation image that can be installed using the regular product installation methods.

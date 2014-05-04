@@ -1,0 +1,21 @@
+<p><b>Scenario</b></p>
+<p>
+	The health care provider often needs to provide reports of patient's personal information and their PMDs. However, not every patient knows about their patient ID. The provider would like to search this information by patient's name.
+</p>
+<p><b>Operation</b></p>
+<p>
+	Patient names are stored in the 'patient_details' table and in the XML PMD document stored in the 'out_patient_data' table. A join between these two tables is required to obtain the desired results. XMLCAST function is used here to cast an XML data type to relational character so that the values can be compared in the WHERE clause.
+</p>
+<p><b>Solution</b></p>
+<p>
+	The query on the right joins both relational and XML data, searches and returns patient's information by name.
+</p>
+<p><b>Best Practices </b></p>
+<p>
+<ul>
+<li>Join XML and relational data in your queries as needed to
+increase business insight and maximize the value of a single
+hybrid database server.</li>
+
+</ul>
+</p>

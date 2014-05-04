@@ -1,0 +1,33 @@
+<b>Scenario</b></p>
+<p align = "justify">
+	The health care provider finds that reports to extract information from the PMD documents takes longer than usual.
+</p>
+
+
+<p><b>Operation</b></p>
+<p>
+	XML indexes is demonstrated over here.
+<ul>
+	<li>An XML index, with the patients given names as the index key, is created on the XML document.</li>
+	<li>GENERATE KEY USING XMLPATTERN is used to specify the key within the XML document.</li>
+ 	<li>A partition level index (i.e. index local to the range of data) is created to further improve
+	performance because index search will be faster to be performed on the data in a range.</li>
+</ul>
+</p>
+
+
+<p><b>Solution</b></p>
+<p align = "justify">
+	The DBA of the health care provider, get to know that the growing volume of data
+	(business requirement : 9 months of data to be preserved in the base table) resulted in degradation of performance.
+	He creates partition level indexes (Indexes local to the ranges of data) to improve the performance of the queries.<BR><BR>
+	<B>Advantages of having a partition level indexes</B>
+	<ul>
+
+		<li> Index search wil be faster as the index tree built will be only for the data in a range</li>
+		<li> Index rebuild / building process will be faster as size of index tree is less. Time taken for roll-in / roll-out operation would be less.</li>
+	</ul>
+		</p>
+<P>
+
+

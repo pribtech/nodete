@@ -1,0 +1,32 @@
+<p>
+	Run the SQL statements in the right hand panel.
+</p>
+<p>
+	<b>Scenario: One lucky employee</b><BR>
+	A company that produces gambling equipment for casinos is running a
+	promotion for its full-time employees. Each month their DB2 database will randomly pick the name of one lucky
+	full-time employee to be rewarded with a cash prize.<BR><BR>
+	To support this lottery, the database has a few specifications:
+	<UL>
+	<LI>The company keeps the ids, names, job status and salary information of all its employees in the EMPLOYEE table.</LI>
+	<LI>There is a view called FULLTIME_EMPLOYEE that contain the records of full-time employees only.</LI>
+	<LI>There is a function called LUCKY_NUMBER that returns a random number based on an employee's name.</LI>
+	<LI>There is another view called LUCKY_FULLTIME_EMPLOYEE defined on top of FULLTIME_EMPLOYEE view.  This view selects 
+		the name with the lowest number based on output from LUCKY_NUMBER function.</LI>
+</UL>
+</p>
+<BR>
+<p>
+	Please note the order of CREATE commands:
+	<UL><LI> LUCKY_FULLTIME_EMPLOYEE is created first, even though the underlying FULLTIME_EMPLOYEE does not exist yet.</LI>
+	<LI>FULLTIME_EMPLOYEE view is created before the underlying EMPLOYEE table is created.</LI>
+	<LI>Function LUCKY_NUMBER depends on the existence of EMPLOYEE table, but it is also created, without error, before CREATE TABLE command</LI>
+</UL>
+	<BR>This demonstrates the ability of DB2 9.7 to create objects tolerant of certain errors, like a missing object.
+	Similarly, DB2 9.7 allows certain errors in SQL Inline Functions.
+</p>
+<p>
+	After running the SQL statements, you will see several errors in the Console - lower right panel.
+	Despite the failure messages, the commands did work.  Warnings were returned to inform
+	you that dependent objects have not yet been created.
+</p>

@@ -1,0 +1,15 @@
+<p>Currently committed semantics apply only to read-only scans that do not involve catalog tables or the internal scans that are used to evaluate or enforce constraints. Note that, because currently committed is decided at the scan level, a writer's access plan might include currently committed scans. For example, the scan for a read-only subquery can involve currently committed semantics. Because currently committed semantics obey isolation level semantics, applications running under currently committed semantics continue to respect isolation levels.
+<p>
+The following restrictions apply to currently committed semantics:
+<ul>
+<li>The target table object in a section that is to be used for data update or deletion operations does not use currently committed semantics. Rows that are to be modified must be lock protected to ensure that they do not change after they have satisfied any query predicates that are part of the update operation.
+</li><li>A transaction that has made an uncommitted modification to a row forces the currently committed reader to access appropriate log records to determine the currently committed version of the row. Although log records that are no longer in the log buffer can be physically read, currently committed semantics do not support the retrieval of log files from the log archive. This only affects databases that are configured to use infinite logging.
+</li><li>The following scans do not use currently committed semantics:
+<ul>
+<li>Catalog table scans
+</li><li>Scans that are used to enforce referential integrity constraints
+</li><li>Scans that reference LONG VARCHAR or LONG VARGRAPHIC columns
+</li><li>Range-clustered table (RCT) scans
+</li><li>Scans that use spatial or extended indexes
+</li>
+</ul>

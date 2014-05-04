@@ -1,0 +1,14 @@
+<br><h2>Grant security label to Pat</h2><hr><br>
+
+
+<p><b>You must log into the database as the database creator before proceeding with this page.</b></p>
+
+<p>In previous page, security policies and security labels are created. These security labels should be granted to users to provide
+restricted access to rows of <font face="courier">'dailysales'</font> table.
+
+<br><h4>Operation</h4><br>
+<p>SECADM Pat is granted with 'SALES_ORGANIZATION' security label, so that he can setup row level LBAC on <font face="courier">'dailysales'</font> table.
+Since Pat cannot grant security label to himself, the database creator (who by default holds SECADM) grants him the 'SALES_ORGANIZATION' security label.</p>
+
+<br><h4>Solution</h4><br>
+Pat is now able to setup row level LBAC on <font face="courier">'dailysales'</font> table.

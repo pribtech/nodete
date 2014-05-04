@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tutorial name="Edit a table definition" autoCloseWindowsInRightStage="true" autoClearAdhocResults="true">
+	<!--flowRestriction>forwardexploration</flowRestriction-->
+	<pageList>
+		
+		<page name="Edit a table definition: atsBaseView.xml" type="general">
+			<contentFile>editAtsBaseView.html</contentFile>
+			<SQLFile>blank.sql</SQLFile>
+			<autoLoadLink>
+				<pageWindow target="tabledef" raiseToTop="y">
+					<panel name="top" PrimaryContainer="true">
+		   				<link type="other" target="_self" window="_self" connectionRequired="y">
+							<address>
+								?BASE_DIRECTORY?/other/atsBaseView32.html
+							</address>
+						</link>
+					</panel>
+				</pageWindow>
+			</autoLoadLink>
+		</page>
+		<page name="Edit a table definition: Basic display information" type="general">
+			<contentFile>editBasicdisplayInformation.html</contentFile>
+			<SQLFile>blank.sql</SQLFile>
+			<autoLoadLink>
+				<pageWindow target="tabledef" raiseToTop="y">
+					<panel name="top" PrimaryContainer="true">
+		   				<link type="other" target="_self" window="_self" connectionRequired="y">
+							<address>
+								?BASE_DIRECTORY?/other/atsBaseView31.html
+							</address>
+						</link>
+					</panel>
+				</pageWindow>
+			</autoLoadLink>
+		</page>
+		<page name="Edit a table definition: Column details" type="general">
+			<contentFile>editColumnDetails.html</contentFile>
+			<SQLFile>blank.sql</SQLFile>
+			<autoLoadLink>
+				<pageWindow target="tabledef" raiseToTop="y">
+					<panel name="top" PrimaryContainer="true">
+		   				<link type="other" target="_self" window="_self" connectionRequired="y">
+							<address>
+								?BASE_DIRECTORY?/other/atsBaseView30.html
+							</address>
+						</link>
+					</panel>
+				</pageWindow>
+			</autoLoadLink>
+		</page>
+
+	</pageList>	
+</tutorial>

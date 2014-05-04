@@ -1,0 +1,39 @@
+<p>Dropping a table or a database does not automatically drop the text search collections. Use the following steps to ensure all artifacts are removed before dropping a table or a database. </p>
+
+<h4>Drop all the text indexes</h4>
+<pre><code>
+db2ts "DROP INDEX mytitleidx FOR TEXT"
+db2ts "DROP INDEX myxmlidx FOR TEXT"
+</code></pre>
+
+<p>Here in the Technology Explorer, we drop the indexes using the administrative SQL routine. Note that database object name referenced in quotes is case sensitive.</p>
+<pre><code>
+CALL SYSTS_DROP('MYSCHEMA', 'MYTITLEIDX', 'en_US', ?);
+CALL SYSTS_DROP('MYSCHEMA', 'MYXMLIDX'  , 'en_US', ?);
+</code></pre>
+
+<BR>
+<h4>Disable database for text search</h4>
+<pre><code>
+db2ts "DISABLE DATABASE FOR TEXT"
+</code></pre>
+
+<p>Here in the Technology Explorer, we disable the database using the administrative SQL routine.</p>
+<pre><code>
+CALL SYSTS_DISABLE('', 'en_US', ?);
+</code></pre>
+
+<p>The preceding example uses the <code>SYSTS_DISABLE</code> procedure without specifying any option. If any text indexes are not dropped before the database is disabled for text search, an error message will be raised. Optionally, you can use the <code>FORCE</code> option to ensure that the feature is disabled even if text indexes still exist on tables in the database. The <code>FORCE</code> option is used as follows.</p>
+
+<pre><code>
+CALL SYSTS_DISABLE('FORCE', 'en_US', ?);
+</code></pre>
+
+<BR>
+<h4>Stop text search service</h4>
+<p>Now, you can stop the text search service and drop the database as you wish. Issue the following commands outside of Technology Explorer.</p>
+
+<pre><code>
+db2ts "STOP FOR TEXT"
+DB2 DROP DATABASE <i>dbname</i>
+</code></pre>

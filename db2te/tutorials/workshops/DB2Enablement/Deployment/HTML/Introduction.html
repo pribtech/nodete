@@ -1,0 +1,35 @@
+<H2>Step 4: Production Deployment</H2><HR>
+<p>
+After completing the testing of your application on DB2, next step is to <b class="sourceChange">deploy your DB2 products</b>.
+
+<H2>Deployment</H2><HR>
+<p>
+	Planning the deployment of DB2 based solutions among various operating
+	system platforms and DB2 products might appear be a complex endeavor. 
+	This tutorial briefly describes the different methodology for deploying the 
+	DB2 family of products on Linux, UNIX, and Windows platforms across multiple computers 
+	quickly, easily, and consistently. <br><br>
+	The first step in deployment planning is choosing the right product.
+	After selecting the right product, the next step is to deploy it on machines. Installing 
+a product on a single machine will not take much time and effort however deploying the
+product on mass level might be challenging as each machines will take lot of time and effort.
+
+<br>
+The steps to install and deploy DB2 product differ by platform, the overall steps are:
+<ol>
+<li class="sourceCopiedFrom">Planing your deployment</li>
+<li class="sourceCopiedFrom">Creating a response file</li>
+<li class="sourceCopiedFrom">Creating a deployment script or definition</li>
+<li class="sourceCopiedFrom">Running the deployment script or definition on all computers</li>
+<li class="sourceCopiedFrom">Reducing the size of installation image</li>
+</ol>
+
+<BR><BR><H2>Example</H2><HR>
+<p>
+	Figure in the right pane illustrates an environment topology. There are Seven AIX boxes (Box A,
+	B, C, D, E, F, G) targeted for deployment. All the systems have the same operating system and the same version of DB2. The DB2 installation image is on
+	Box A, which acts as a file server. Deployment
+	script executed from Box A will send commands to Box B, C, D, E, F, G across the network.  Box A is set-up as a Network File System (NFS) server 
+	and  Box B, C, D, E, F, G act as NFS clients. Therefore Box B, C, D, E, F, G can access the DB2 installation image on Box A 
+	through the network.<br> 
+</p>

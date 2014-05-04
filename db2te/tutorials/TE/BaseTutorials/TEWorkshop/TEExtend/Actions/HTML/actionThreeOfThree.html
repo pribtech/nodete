@@ -1,0 +1,11 @@
+<p>You may have noticed that in the statement we added during the last step, there was a parameter marker to which we did not have any corresponding parameters set to replace it with. Although statements are processed in the order in which they appear, in this case the parameters are set up such that the substitution will take place on the server side.</p>
+
+<p>To do this you will need to change the type of the parameter 'SQL' to 'raw' and add a new parameter at the bottom to send the task ID to the server.</p>
+
+<p><b>Note:</b> This is not a bind parameter marker in a prepared statement but a text substitution of the parameter marker. <!--To see how to use bind parameter markers see the executeSQL information here.--></p>
+
+<p><h3>Steps to complete:</h3>
+<ul>
+  <li>Make the changes to your document as indicated on the right</li>
+</ul>
+</p>

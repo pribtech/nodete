@@ -1,0 +1,75 @@
+<tutorial name="Linear Regression Functions">
+    <globalCodeHighlightOptions highlightCode="true" /><flowRestriction>forwardexploration</flowRestriction>
+    <closeAction />
+    <openAction />
+    <pageList>
+    	<page name="Linear Regression Functions" type="intro">
+            <entryAction />
+            <exitAction />
+            <contentFile>01_LinearRegressionFunctions.html</contentFile>
+                <autoLoadLink>
+                    <pageWindow target="informationWindow">
+                        <panel name="main">
+                            <URL>http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.sql.ref.doc/doc/r0002321.html?noframes=true</URL>
+                        </panel>
+                    </pageWindow>
+                </autoLoadLink> 
+        </page><page name="Generate Random Data" type="general">
+            <entryAction />
+            <exitAction />
+            <contentFile>02_GenerateRandomData.html</contentFile>
+            <SQLFile>01_GenerateRandomData.sql</SQLFile>
+        </page><page name="Show Generated Equation" type="general">
+            <entryAction name="checkForInsert" type="serverAction">
+        		<parameterList>
+        			<parameter name="action" type="fixed">
+        				<value>checkForRow</value>
+        			</parameter>
+        			<parameter name="schema" type="constant">
+        				<value>SCHEMA</value>
+        			</parameter>
+        			<parameter name="name" type="fixed">
+        				<value>XYCOORDS</value>
+        			</parameter>
+        		</parameterList>
+        		<followOnAction condition="true" negCondition="true">
+        			<task>
+        				<action name="displayMsgForFailedInsert" type="alert">
+        					<message>Data hasn't been inserted in the table. Please try this step again.</message>
+        				</action>
+        			</task>
+        			<task>
+        				<setActionReturn>false</setActionReturn>
+        			</task>
+        		</followOnAction>
+        	</entryAction>
+            <exitAction />
+            <contentFile>03_ShowGeneratedEquation.html</contentFile>
+            <SQLFile>02_ShowGeneratedEquation.sql</SQLFile>
+        </page><page name="Best Fit calculation" type="general">
+            <entryAction />
+            <exitAction />
+            <contentFile>04_BestFitCalculation.html</contentFile>
+            <SQLFile>03_BestFitCalculation.sql</SQLFile>
+        </page><page name="Average X Values" type="general">
+            <entryAction />
+            <exitAction />
+            <contentFile>05_AverageValues.html</contentFile>
+            <SQLFile>04_AverageValues.sql</SQLFile>
+        </page><page name="Count of Data Pairs" type="general">
+            <entryAction />
+            <exitAction />
+            <contentFile>06_CountOfDataPairs.html</contentFile>
+            <SQLFile>05_CountOfDataPairs.sql</SQLFile>
+        </page><page name="Sum of X Variance" type="general">
+            <entryAction />
+            <exitAction />
+            <contentFile>07_SumOfVariance.html</contentFile>
+            <SQLFile>06_SumOfVariance.sql</SQLFile>
+        </page><page name="Additional Statistic Calculations" type="last">
+            <entryAction />
+            <exitAction />
+            <contentFile>08_AdditionalStatisticCalculations.html</contentFile>
+            <SQLFile>07_AdditionalStatisticCalculations.sql</SQLFile>
+        </page></pageList>
+</tutorial>

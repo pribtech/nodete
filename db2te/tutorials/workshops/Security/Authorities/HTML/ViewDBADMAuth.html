@@ -1,0 +1,14 @@
+<br><h2>SYSADM and DBADM limits</h2><hr><br>
+<p><b>You must log into the database as the database creator before proceeding with this page.</b>
+<p> In the previous page, the SECADM authority has been revoked from the database creator. This user ID is now left with SYSADM, DBADM, ACCESSCTRL and DATAACCESS authorities. Check whether this user can grant/revoke DBADM or SECADM authorities to other users.</p>
+
+<br><h4>Operation</h4><hr><br>
+Prior to DB2 9.7, SYSADM could grant SECADM and DBADM authorities to other users. Starting from DB2 9.7, users with only SYSADM or DBADM authority can no longer grant any database authorities to other users.
+You must have SECADM authority to do so. <br><br>
+
+<br><h4>Solution</h4><hr><br>
+
+<p>A user with SYSADM and DBADM authorities will not be able to grant any authorities to other users.
+
+<br><br> The commands on the right show that the database creator who does not hold SECADM authority cannot grant/revoke any authorities to other users.</p>
+

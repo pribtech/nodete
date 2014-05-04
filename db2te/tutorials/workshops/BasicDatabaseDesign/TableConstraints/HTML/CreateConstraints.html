@@ -1,0 +1,17 @@
+<p>This page enforces some constraints on the tables and advises some best practices</p>
+
+<H2><B>Problem Description</B></H2><HR>
+<p>The database of the store contains many tables. Some columns like the 'customer_ID', 'order_ID', 'product_ID', etc. are present in more than one table. These columns are related to each other. Without defining the relationship between such columns, data integrity cannot be maintained.</p>
+
+<H2><B>Operation</B></H2><HR>
+<p>Create the tables in 3NF and apply the appropriate constraints as applicable:
+<ol>
+<li>Establish the relationship between tables using appropriate primary and foreign keys.
+<p>For ex. the 'order_ID column of the 'order_master' table is chosen as the primary key as it uniquely identifies a record in the table. This 'order_ID' referenced in the 'order_details' table is declared as a foreign key to the primary key in the 'order_master' table in order to ensure that no value is added to the table that is not present in the 'order_master' table.</p></li>
+<li>Use the NOT NULL constraints to columns that must always contain a value.
+<p>For ex. The 'order_ID' column in the 'order_master' table is declared NOT NULL as any order must always contain an ID for reference.</p>
+</ol>
+
+<H2><B>Result</B></H2><HR>
+<p>The tables with appropriate constraints are created.</p>
+

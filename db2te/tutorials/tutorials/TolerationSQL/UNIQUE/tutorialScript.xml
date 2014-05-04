@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tutorial name="UNIQUE">
+    <flowRestriction>forwardExploration</flowRestriction>
+    <closeAction/>
+    <openAction />
+    <globalCodeHighlightOptions highlightCode = "true" />
+    <pageList>
+    	<page name="UNIQUE" type="intro">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>UNIQUE.html</contentFile>
+    	    <autoLoadLink>
+    	        <pageWindow target="informationWindow">
+    	            <panel name="main">
+    	                <URL>http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.admin.explain.doc/doc/r0021343.html?noframes=true</URL>
+    	            </panel>
+    	        </pageWindow>
+    	    </autoLoadLink>
+        </page>
+        
+    <page name="Find DISTINCT departments in the EMPLOYEE table" type="general">
+        <entryAction name="createEmployeeTable" type="serverAction">
+            <parameterList>
+                <parameter name="action" type="fixed">
+                    <value>createTablesFromSampleDatabase</value>
+                </parameter>
+                <parameter name="schema" type="constant">
+                    <value>SCHEMA</value>
+                </parameter>
+                <parameter name="table" type="fixed">
+                    <value>EMPLOYEE</value>
+                </parameter>
+            </parameterList>
+            <followOnAction condition="false"   >
+                <task>
+                    <action name="" type="alert">
+                        <message>Failed to create base tables for initial setup of tutorial. Cannot proceed further with tutorial.</message>
+                    </action>
+                </task>
+                <task>
+                    <setActionReturn>false</setActionReturn>
+                </task>
+            </followOnAction>
+            <followOnAction condition="[0-9][0-9]*"   >
+                <task>
+                    <assignLocalParameter name="ERROR_MESSAGE" type="returnObject">
+                        <value>createEmployeeTable.returnValue</value>
+                    </assignLocalParameter>
+                    <alert>Failed to create base tables for initial setup of tutorial. Cannot proceed further with tutorial.  
+                        SQLMSG: ?ERROR_MESSAGE?</alert>
+                </task>
+                <task>
+                    <setActionReturn>false</setActionReturn>
+                </task>
+            </followOnAction>
+        </entryAction>
+            <exitAction/>
+            <contentFile>FindDISTINCTDepartmentsInTheEMPLOYEETable.html</contentFile>
+        <SQLFile>FindDISTINCTDepartmentsInTheEMPLOYEETable.sql</SQLFile>
+        </page><page name="Count the distinct departments in the EMPLOYEE table" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>CountTheDistinctDepartmentsInTheEMPLOYEETable.html</contentFile>
+            <SQLFile>CountTheDistinctDepartmentsInTheEMPLOYEETable.sql</SQLFile>
+        </page><page name="Use of UNIQUE instead of DISTINCT for getting department numbers" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>UseOfUNIQUEInsteadOfDISTINCTForGettingDepartmentNumbers.html</contentFile>
+            <SQLFile>UseOfUNIQUEInsteadOfDISTINCTForGettingDepartmentNumbers.sql</SQLFile>
+        </page><page name="Count the UNIQUE departments in the EMPLOYEE table" type="last">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>CountTheUNIQUEDepartmentsInTheEMPLOYEETable.html</contentFile>
+            <SQLFile>CountTheUNIQUEDepartmentsInTheEMPLOYEETable.sql</SQLFile>
+        </page></pageList>
+</tutorial>

@@ -1,0 +1,19 @@
+<p><h2>Conclusion</h2><hr>
+<B><font color=blue>The database administrator has answered most of the questions posed at the start
+of this scenario. The only unknown question is why the system suddenly
+encountered this slowdown after performing normally, and what changed to
+trigger this problem. The database administrator contacts the production team and
+finds out that a sales promotion has driven workload to unprecedented levels. The
+database administrator concludes that this sharp increase in transaction volume led
+to more locks being requested for rows in the <CODE>INVENTORY</CODE> table.</font></B>
+
+<p><h2>Summary</h2><BR>
+<TABLE width="80%" border="2" cellspacing="0">
+	<TR><TD class="sourceAdd"></TD><TD class="sourceAdd">Objective</TD><TD class="sourceAdd">Monitoring Report Used</TD></TR>
+	<TR><TD>Step 1:</TD><TD>Determining the problem category</TD><TD><CODE><a onclick="OpenURLInFloatingWindow
+('http://publib.boulder.ibm.com/infocenter/db2luw/v9r7/topic/com.ibm.db2.luw.sql.rtn.doc/doc/r0056370.html?noframes=true');">MONREPORT.DBSUMMARY</a></CODE></TD></TR>
+	<TR><TD>Step 2:</TD><TD>Performing detailed diagnosis appropriate locking problems</TD><TD><CODE><a onclick="OpenURLInFloatingWindow
+('http://publib.boulder.ibm.com/infocenter/db2luw/v9r7/topic/com.ibm.db2.luw.sql.rtn.doc/doc/r0056370.html?noframes=true');">MONREPORT.DBSUMMARY</a></CODE></TD></TR>
+	<TR><TD>Step 3:</TD><TD>Identifying the scope of the SQL statements involved</TD><TD><CODE><a onclick="OpenURLInFloatingWindow
+('http://publib.boulder.ibm.com/infocenter/db2luw/v9r7/topic/com.ibm.db2.luw.sql.rtn.doc/doc/r0056374.html?noframes=true');">MONREPORT.LOCKWAIT</a></CODE></TD></TR>
+</TABLE>

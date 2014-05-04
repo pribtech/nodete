@@ -1,0 +1,56 @@
+<H2>Troubleshooting SQL performance slowdowns<HR></H2>
+The workshop covers troubleshooting SQL performance slowdown incidents in
+production environments. 
+<BR>
+<P align="justify">
+<H4>An SQL performance slowdown incident satisfies the following two conditions:</H4><BR>
+<ul>
+<li>The incident starts with a problem report of certain SQL statements performing
+too slowly that normally perform adequately.</li>
+<li>The cause or explanation of this problem is not immediately apparent.</li>
+</ul>
+<BR>
+<P align="justify">
+<H4>A problem report can come from various sources, such as the following examples:</H4><BR>
+<ul>
+<li>Business users report, through help desk trouble tickets, that the system seems
+slow today.</li>
+<li>A developer reports a problem with a set of queries she wrote to generate a
+management report. Her report performed fine on the test system, but when it
+was promoted to the production system it ran too slowly.</li>
+<li>A data center operator reports that a batch job is taking much longer than is
+typical.</li>
+<li>A database administrator receives an alert from a mechanism they have setup to
+notify them of response times that exceed an agreed-upon service level.</li>
+</ul>
+<BR>
+<P align="justify">
+<H4>Response time is perceived as ?too slow? when it is slower relative to expectations
+set by comparisons such as the following comparisons:</H4><BR>
+<ul>
+<li>The system is slower than the same system at a previous time. For example, the
+response time a day earlier before a configuration change.</li>
+<li>The system is slower than a similar system. For example a test server or another
+production server.</li>
+<li>An SQL statement runs longer than similar SQL statements. For example the
+same statement except for a minor change to the WHERE clause.</li>
+</ul>
+<BR>
+<P align="justify">
+The cause or explanation of a problem is not immediately apparent. The problem
+could be caused by different things influenced by different people. For example,
+the problem could be caused by things in the realm of the database management
+system (DBMS) server under the purview of the database administrator; the
+problem could be caused by the application SQL and code under the purview of
+the application developer; the problem could be caused by other IT technical areas
+such as storage under the purview of IT staff, other than the database
+administrator. 
+<BR><BR>
+<H4>In this workshop, a step by step approach is being used to troubleshoot any of the problems.</H4>
+<B>The steps followed in diagnosing the problem are as below :: </B><BR><BR>
+<ul>
+<li>Determining the problem category.</li>
+<li>Performing a detailed diagnosis.</li>
+<li>Identifying the scope of SQL statements.</li>
+<li>Conclusion.</li>
+</ul>

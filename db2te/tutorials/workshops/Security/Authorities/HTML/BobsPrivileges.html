@@ -1,0 +1,23 @@
+<br><h2>Least privileges to Sam</h2><hr><br>
+<p><b>You must log into the database as Pat before proceeding with this page.</b></p>
+
+<p>As a database administrator, Sam needs to manage the database and performs tasks such as create, alter, drop non-security related database objects, collect catalog statistics, and reorganize a table. However, he does not necessarily need to access the business data or be able to grant and revoke privileges on the database. Sam should be given least privileges to perform database administration tasks.</p>
+
+<br><h4>Operation</h4><hr><br>
+<p>To give Sam the minimum level of authority he needs, Pat (SECADM) grant DBADM authority to Sam without DATAACCESS and ACCESSCTRL authorities.</p>
+
+<b>ACCESSCTRL authority</b><br><p>
+Access control authority provides the holder with the ability to grant and revoke privileges to users.</p>
+
+<b>DATAACCESS authority</b><br><p>
+Data access authority restricts the database administrator from accessing the data in the database tables.</p>
+
+<br><h4>Solution</h4><hr><br>
+<p>Example on the right first make sure Sam does not already have ACCESSCTRL and DATAACCESS authorities.
+Then Pat grants DBADM WITHOUT DATAACCESS and WITHOUT ACCESSCTRL to Sam.</p>
+
+<p>On the next page, you will see that Sam fails to access the 'customer' table Pat creates here.</p>
+
+
+
+

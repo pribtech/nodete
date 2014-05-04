@@ -1,0 +1,62 @@
+<tutorial name="Range-Table Partitioning">
+    <globalCodeHighlightOptions highlightCode="true" /><enforceFlow>yes</enforceFlow>
+    <closeAction />
+    <openAction />
+    <pageList>
+    <page name="Creating a Range Partitioned Table-Short Form" type="intro">
+            <entryAction />
+            <exitAction />
+            <contentFile>01_Range-TablePartitioning.html</contentFile>
+			<autoLoadLink>
+                    <pageWindow target="informationWindow">
+                        <panel name="main">
+                            <URL>http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.admin.partition.doc/doc/c0021560.html</URL>
+                        </panel>
+                    </pageWindow>
+            </autoLoadLink>
+        </page>
+
+        <page name="Creating a range partitioned table" type="general">
+            <entryAction />
+            <exitAction />
+            <contentFile>01_Range-TablePartitioning.html</contentFile>
+            <SQLFile>01_CreatingARangePartitionedTable-LongForm.sql</SQLFile>
+        </page>
+
+        <page name="Creating a range partitioned table (dates)" type="general">
+            <entryAction />
+            <exitAction />
+            <contentFile>01_Range-TablePartitioning.html</contentFile>
+            <SQLFile>02_CreateTable-DefiningRanges.sql</SQLFile>
+        </page>
+
+        <page name="Partitioning on multiple columns" type="general">
+            <entryAction />
+            <exitAction />
+            <contentFile>01_Range-TablePartitioning.html</contentFile>
+            <SQLFile>03_PartitioningOnMultipleColumns.sql</SQLFile>
+        </page>
+
+        <page name="Partitioned tablespaces" type="general">
+            <entryAction />
+            <exitAction />
+            <contentFile>01_Range-TablePartitioning.html</contentFile>
+            <SQLFile>04_CreateTableForATTACH-DETACH.sql</SQLFile>
+        </page>
+
+        <page name="Inserting values (correct range)" type="general">
+            <entryAction />
+            <exitAction />
+            <contentFile>01_Range-TablePartitioning.html</contentFile>
+            <SQLFile>05_InsertSomeValuesIntoTheTable.sql</SQLFile>
+        </page>
+
+        <page name="Inserting values (incorrect range)" type="last">
+            <entryAction />
+            <exitAction />
+            <contentFile>01_Range-TablePartitioning.html</contentFile>
+            <SQLFile>06_BadInsert-WrongRange.sql</SQLFile>
+        </page>
+
+        </pageList>
+</tutorial>

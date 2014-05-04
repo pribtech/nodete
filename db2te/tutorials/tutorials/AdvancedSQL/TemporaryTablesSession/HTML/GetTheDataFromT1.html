@@ -1,0 +1,8 @@
+Because this new page is considered as a new session in DB2, 
+the temporary table (T1) no longer exists.
+If you would like the table to be available across sessions, 
+you would need to use the 
+<a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v9r7/topic/com.ibm.db2.luw.admin.dbobj.doc/doc/t0054147.html');">CREATE GLOBAL TEMPORARY TABLE</a>
+statement, which was introduced in DB2 9.7.
+Please refer to the 'Created Global Temporary Table' tutorial
+for further details.

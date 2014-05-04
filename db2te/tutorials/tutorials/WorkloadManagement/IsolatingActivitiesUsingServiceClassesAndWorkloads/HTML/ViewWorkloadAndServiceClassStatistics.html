@@ -1,0 +1,16 @@
+  <p>Use the <a onclick="OpenURLInFloatingWindow
+('http://publib.boulder.ibm.com/infocenter/db2luw/v9r7/topic/com.ibm.db2.luw.sql.rtn.doc/doc/r0053581.html?noframes=true');">WLM_GET_WORKLOAD_STATS_V97</a>table function (or <a onclick="OpenURLInFloatingWindow
+('http://publib.boulder.ibm.com/infocenter/db2luw/v9r7/topic/com.ibm.db2.luw.sql.rtn.doc/doc/r0052921.html?noframes=true');">WLM_GET_WORKLOAD_STATS</a> if you are on a DB2 9.5 database) again to
+  determine which workload the applications are being
+  associated with.
+  </p>
+  <p>
+  Note this time both workload definitions have a workload occurrence run, once for each script. 
+  </p>
+  <p>
+  You may or may not see a workload occurrence completed for
+  the SYSDEFAULTUSERWORKLOAD depending on whether workload
+  occurrence over which the call to the WLM_COLLECT_STATS
+  procedure was submitted is closed before the statistics are
+  collected.  
+  </p>

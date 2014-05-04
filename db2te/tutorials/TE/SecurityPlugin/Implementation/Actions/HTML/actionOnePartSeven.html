@@ -1,0 +1,22 @@
+<h3>Catching Errors from executeSQL</h3><hr/>
+<p><h2>Steps:</h2>
+<ol>
+  <li>Make the changes to your document as indicated on the right</li>
+  </ol>
+</p>
+<br/>
+<p>After the CALL statement has been executed by the JSON server action, one of two things should be done: 
+<ul><li>On success: the panel needs to be reloaded to reflect the absence of the task</li>
+<li>On failure: an error message should be raised to indicate what went wrong</li>
+</ul></p>
+
+<p>Two new tasks and a new parameter access type that you have yet to encounter will be required to complete these actions.</p>
+
+<p>The tasks should be straight forward:
+<ul>
+<li>alert – raises an alert dialog</li>
+<li>panelReload – reloads the current panel the action is running on and exits the action.</LI>
+</ul></p>
+
+<p>For the local parameter the new attribute value of 'returnObject' allows you to access return data from a given action. Object or array access is done using dot-separated parameters. In this case, we are accessing the actions 'delUser'/'delMembership'/'delGroup' with the return value of 'returnValue'--which is an object in this case--and the value of the string 'STMTMSG'. This may make more sense by looking at the return object of the executeSQL action</p>
+<br/>

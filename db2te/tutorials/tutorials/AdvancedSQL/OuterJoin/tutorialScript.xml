@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tutorial name="Outer Join">
+	<FlowRestriction>forwardExploration</FlowRestriction>
+	<closeAction/>
+	<openAction />
+    <globalCodeHighlightOptions highlightCode = "true" />
+	<pageList>
+		<page name="Outer Join" type="intro">
+			<entryAction/>
+			<exitAction name="createDEPARTMENTTable" type="serverAction">
+				<parameterList>
+					<parameter name="action" type="fixed">
+						<value>createTablesFromSampleDatabase</value>
+					</parameter>
+					<parameter name="schema" type="constant">
+						<value>SCHEMA</value>
+					</parameter>
+					<parameter name="table" type="fixed">
+						<value>DEPARTMENT</value>
+					</parameter>
+				</parameterList>
+				<followOnAction condition="false"   >
+					<task>
+						<action name="" type="alert">
+							<message>Failed to create base tables for initial setup of tutorial. Cannot proceed further with tutorial.</message>
+						</action>
+					</task>
+					<task>
+						<setActionReturn>false</setActionReturn>
+					</task>
+				</followOnAction>
+				<followOnAction condition="[0-9][0-9]*"   >
+					<task>
+						<assignLocalParameter name="ERROR_MESSAGE" type="returnObject">
+							<value>createDEPARTMENTTable.returnValue</value>
+						</assignLocalParameter>
+						<alert>Failed to create base tables for initial setup of tutorial. Cannot proceed further with tutorial.  
+							SQLMSG: ?ERROR_MESSAGE?</alert>
+					</task>
+					<task>
+						<setActionReturn>false</setActionReturn>
+					</task>
+					<task>
+						
+					</task>
+				</followOnAction>
+			</exitAction>
+			
+			<contentFile>OuterJoin.html</contentFile>
+			<autoLoadLink>
+				<pageWindow target="informationWindow">
+					<panel name="main">
+						<URL>http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.dwe.sqw.doc/designing/data_flow/copjoin.html?noframes=true</URL>
+					</panel>
+				</pageWindow>
+			</autoLoadLink>
+		</page>
+		
+		<page name="Show Department Table" type="general">
+			<entryAction/>
+			<exitAction name="createEmployeeTable" type="serverAction">
+				<parameterList>
+					<parameter name="action" type="fixed">
+						<value>createTablesFromSampleDatabase</value>
+					</parameter>
+					<parameter name="schema" type="constant">
+						<value>SCHEMA</value>
+					</parameter>
+					<parameter name="table" type="fixed">
+						<value>EMPLOYEE</value>
+					</parameter>
+				</parameterList>
+				<followOnAction condition="false"   >
+					<task>
+						<action name="" type="alert">
+							<message>Failed to create base tables for initial setup of tutorial. Cannot proceed further with tutorial.</message>
+						</action>
+					</task>
+					<task>
+						<setActionReturn>false</setActionReturn>
+					</task>
+				</followOnAction>
+				<followOnAction condition="[0-9][0-9]*"   >
+					<task>
+						<assignLocalParameter name="ERROR_MESSAGE" type="returnObject">
+							<value>createEmployeeTable.returnValue</value>
+						</assignLocalParameter>
+						<alert>Failed to create base tables for initial setup of tutorial. Cannot proceed further with tutorial.  
+							SQLMSG: ?ERROR_MESSAGE?</alert>
+					</task>
+					<task>
+						<setActionReturn>false</setActionReturn>
+					</task>
+					<task>
+						
+					</task>
+				</followOnAction>
+			</exitAction>
+			
+			<contentFile>ShowDepartmentTable.html</contentFile>
+			<SQLFile>ShowDepartmentTable.sql</SQLFile>
+		</page><page name="Show Departments and their employees" type="general">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>ShowDepartmentsAndTheirEmployees.html</contentFile>
+			<SQLFile>ShowDepartmentsAndTheirEmployees.sql</SQLFile>
+		</page><page name="Show missing department" type="general">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>ShowMissingDepartment.html</contentFile>
+			<SQLFile>ShowMissingDepartment.sql</SQLFile>
+		</page><page name="Show all Department records" type="last">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>ShowAllDepartmentRecords.html</contentFile>
+			<SQLFile>ShowAllDepartmentRecords.sql</SQLFile>
+		</page></pageList>
+</tutorial>

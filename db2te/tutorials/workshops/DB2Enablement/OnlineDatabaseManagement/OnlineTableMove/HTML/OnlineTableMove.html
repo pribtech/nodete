@@ -1,0 +1,38 @@
+<H2>Scenario</H2><HR>
+<p class="sourceChange"><b>
+	Company's database server located at Toronto and users from US, India
+	and from other locations are accessing this database. Tablespace TBS1 in a 
+	database is full and DBA cannot add any more disk to the containers, DBA              decided to move to a different tablespaces with new container storage                    without making any outages.</b>
+</p>	
+
+
+<BR><H2>Problem</H2><HR>
+<p>
+	To move to a different tablespaces DBA has to offline the database, that will 
+	cause the loss of million dollars to the company.
+</P	
+	
+
+<BR><H2>Solution</H2><HR>
+<p>
+	Starting from DB2 9.7 you can move tables by using an online or offline move 
+	using the <a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v9r7/topic/com.ibm.db2.luw.admin.dm.doc/doc/t0054864.html');"><b>ADMIN_MOVE_TABLE</b></a> procedure. The <b class="sourceChange">ADMIN_MOVE_TABLE</b> stored procedure 
+	moves the data in an active table into a new table object with the same name, 
+	while the data remains online and available for access. Use an online table move 
+	instead of an offline table move if you value availability more than cost, space, move 
+	performance, and transaction overhead.
+</p>
+<img width="350" src="?BASE_DIRECTORY?HTML/OnlineTableMove.PNG"/><br><br>
+<br><br><br><br><br><br><br><br>
+<p>
+	You can move a table online by calling the stored procedure once or multiple times, 
+	one call for each operation performed by the procedure. Using multiple calls provides 
+	you with additional options, such as cancelling the move or controlling when the 
+	target table is taken offline to be updated.
+</p>	
+
+<H2>Prerequisite</H2><HR>
+<p>
+	Ensure there is sufficient disk space to accommodate the copies of the table 
+	and index, the staging table, and the additional log entries.
+</p>

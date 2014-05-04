@@ -1,0 +1,1 @@
+VALUES LEAST(5, 3, 1)

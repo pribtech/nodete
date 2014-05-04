@@ -1,0 +1,35 @@
+<p>This page demonstrates use of the outer joins namely the left outer join, right outer join and the full outer join</p>
+
+<H2><B>Left Outer Join</B></H2><HR><BR>
+
+<h4>Problem Description</h4>
+<p>The store manager wants a comparison of selling price and cost price of those products whose listing is present in both the 'product' table and the 'inventory' table as well as the "in house" products listing</p> 
+
+<h4>Operation</h4>
+<p>Query the two tables using a left outer join</p>
+
+<h4>Result</h4>
+<p>The result data set contains a combination of rows from the two tables with common 'product_ID'. This join eliminates information that may be present in the 'inventory' table whose product_ID s is not a match. The above SQL returns the names of products available in the store for sale, including the in house products, but not the products in the inventory table that are not in the product table, and their corresponding selling price and cost price</p>
+
+
+<H2><B>Right Outer Join</B></H2><HR><BR>
+
+<h4>Problem Description</h4>
+<p>The store manager wants a comparison of selling price and cost price of those products whose listing is present in both the 'product' table and the 'inventory' table as well as the ones in the inventory table that are not on sale yet</p> 
+
+<h4>Operation</h4>
+<p>Query the two tables using a right outer join</p>
+
+<h4>Result</h4>
+<p>The result data set contains a combination of rows from the two tables with common 'product_ID'. This join eliminates information that may be present in the 'product' table whose product_ID s is not a match. The above SQL returns the names of products available in the store for sale, including the ones in the 'inventory' table, but not the in house products listing of the 'product' table, and their corresponding selling price and cost price</p>
+
+<H2><B>Full Outer Join</B></H2><HR><BR>
+
+<h4>Problem Description</h4>
+<p>The store manager wants a complete listing of all products listed in the 'product' table and the 'inventory' table</p> 
+
+<h4>Operation</h4>
+<p>Query the two tables using a full outer join</p>
+
+<h4>Result</h4>
+<p>The result data set contains a combination of rows from the two tables with common 'product_ID'. This join does not eliminate any information that may be present in either tables whose product_ID s is not a match. The above SQL returns all records in the two tables</p>

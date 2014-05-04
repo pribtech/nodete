@@ -1,0 +1,48 @@
+<p>Click on the action buttons in the action panel to get the query execution time for tables enabled
+with DPF and generate a graph for the same</p>
+
+<H2><B>Operation</B></H2><HR><BR>
+<h4>Get Query Execution Time</h4>
+<p>Query execution time for tables enabled with DPF is computed</p>
+
+<h4>Performance</h4>
+<p>
+<ol>
+<li>A graph showing the query execution time for DPF enabled tables is generated.</li>
+<li>If you hover your cursor over the bar in the graph you will see the exact execution time for each run.</li>
+</ol>
+</p>
+
+<BR><H2><B>Result</B></H2><HR>
+<p>The query execution time for the tables enabled with DPF is noted</p>
+<p>DPF helps achieve scaleability and manageability of data by splitting data logically across partitions</p>
+
+<H2><B>Explain Snapshot</B></H2><HR>
+<p>An explain snapshot is compressed information that is collected when an SQL statement is explained. 
+It contains</p>
+<ol>
+<li>The internal representation of the access plan (graphical as well), including its operators and the tables 
+and indexes accessed</li>
+<li>The decision criteria used by the optimizer, including statistics for database objects and the cumulative 
+cost for each operation.</li>
+</ol>
+</p>
+
+<p>Run the following steps on the DB2 CLP window to view the explain snapshot :
+<ol>
+<li>Change to directory <b>DB2_install_directory\sqllib\misc</b></li>
+<li>Connect to the database as <b>db2 connect to <CODE>designdb</CODE></b>.</li>
+<li>Run <b>db2 -tvf EXPLAIN.DDL</b>. This creates the explain tables.</li>
+<li>Run <b>db2 SET CURRENT EXPLAIN MODE=YES</b></li>
+<li>Go the Ad Hoc SQL tab, Select Options. Note the Default Schema used for this workshop.</li>
+<li>Change to directory <b>TE_install_directory\tutorials\Workshops\DesignforQueryPerformance\DatabasePartitioning</b></li> 
+<li>In the file <CODE><b>query_DPF.db2</b></CODE> replace 'SCHEMA' with the Default Schema.</li>
+<li>Run <b>db2 -tvf <CODE>query_DPF.db2</CODE></b></li>
+<li>Run <b>db2 SET CURRENT EXPLAIN MODE=NO</b></li>
+<li>Run <b>db2exfmt -d <CODE>designdb</CODE> -1 -o <CODE>explain_DPF.out</CODE></b>. The Explain Plan can be viewed in the output file <CODE><b>explain_DPF.out</b></CODE>.</li> 
+</ol>
+</p><br>
+
+<p>Click here to view the sample output of the Explain Access Plan : <a onclick="OpenURLInFloatingWindow('?BASE_DIRECTORY?/HTML/Explain_DPF.html');"><b>Sample Explain Access Plan</b></a></p>
+
+

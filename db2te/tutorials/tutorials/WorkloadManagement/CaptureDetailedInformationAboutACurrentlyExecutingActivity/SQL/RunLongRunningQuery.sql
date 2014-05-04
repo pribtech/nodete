@@ -1,0 +1,1 @@
+%db2 nowait seq=10 file="longquery.db2"

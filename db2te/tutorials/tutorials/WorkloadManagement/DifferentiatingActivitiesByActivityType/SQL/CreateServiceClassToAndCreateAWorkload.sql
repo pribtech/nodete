@@ -1,0 +1,1 @@
+CREATE SERVICE CLASS work1_sc_read UNDER work1_sc

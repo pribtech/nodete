@@ -1,0 +1,1 @@
+alter tablespace regulartablespace CONVERT TO LARGE;

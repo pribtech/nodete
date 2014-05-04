@@ -1,0 +1,32 @@
+<actionPanel>
+    <flow>free</flow>
+    <useConsole>yes</useConsole>
+    <taskList>
+        <task name="Graph">
+            <discription>
+                We are now going to graph the normal versus calculated average.
+            </discription>
+            <action  name="runInsert" type="blank">
+                <followOnAction condition="true" compareOn="true" compareOnType="raw">
+                    <task>
+                        <echo>Graphing normal versus averaged sales results</echo>
+                        <loadPage>
+                            <pageWindow target="informationWindow">
+                               
+				<panel name="main" PrimaryContainer="true">
+					<link type="action" target="_self" window="_self" connectionRequired="y">
+						<parameterList>
+							<parameter name="table">UNIONALLWithTablespacesNormalVSAvg</parameter>
+							<parameter name="action">graphYUI</parameter>
+							<parameter name="tutorialschema">?SCHEMA?</parameter>
+						</parameterList>
+					</link>				
+				</panel>
+                            </pageWindow>
+                        </loadPage>
+                    </task>	
+                </followOnAction>
+            </action>
+        </task> 
+    </taskList>
+</actionPanel>

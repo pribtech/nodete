@@ -1,0 +1,20 @@
+<BR><H2><B>Introduction</B></H2><HR>
+<p>A <b>Data Warehouse</b> is an electronic data repository of an organization. Data warehouses are designed to facilitate reporting and analysis.</p>
+<p> Database performance can be impacted by many factors, having a good <b>physical database design</b> is ranked at the top among all. A good design reduces hardware resource utilization and improves administrative efficiency as well as usage of the stored data.</p>
+
+<H2><B>IBM Layered Data Architecture</B></H2><HR>
+<p>There are many ways to introduce the concept of database design. Here, we present you the IBM layered data architecture. It divides the information warehouse environment into three logical layers:
+<ol>
+<li>The bottom, or <b>Data Assets layer</b>, of the architecture contains all of the business data of interest for analysis. This includes business process (transaction) data, and also reference data that provides additional meaning to the transaction data. The data in this layer is maintained in an application-neutral form that makes it easy to maintain.</li>  
+<li>The upper, or <b>Business access layer</b>, provides business views of the data (information) organized for specific business user communities for their specific needs.</li>
+<li>The logical middle, or <b>Performance layer</b>, consists of a variety of objects and organizational techniques that facilitate providing the business views in the top layer with appropriate performance.</li>
+</ol><br>
+A single partitioned DB2 database can satisfy the requirements of all these layers.
+</p><br>
+
+<BR><H2><B>The Challenge</B></H2><HR>
+<p>The challenge is to use the business data (bottom layer) and provide the business view (top layer) with appropriate performance.</p>
+
+
+
+

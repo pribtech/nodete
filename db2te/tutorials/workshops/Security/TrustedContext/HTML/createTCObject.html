@@ -1,0 +1,38 @@
+<br><h2>Trusted context and trusted connection</h2><hr><br><p>
+<p>A trusted context is a database object that defines a trust relationship for a connection between the database and  an external entity such as an application server. The trust relationship is based upon the following set of attributes: <ul>
+<li>System authorization ID: Represents the user that establishes a database connection</li>
+<li>IP address (or domain name): Represents the host from which a database connection is established</li>
+<li>Data stream encryption: Represents the encryption setting (if any) for the data communication between the database server and the database client </li>
+</ul>
+
+<br><br>When a user establishes a database connection, the DB2 database system checks whether the connection matches the definition of a trusted context object in the database. When a match occurs, the database connection is said to be trusted.</p>
+
+To prevent access to sensitive information in <font face="courier">'credit_card'</font> table from outside the organizational premisis, the J.K.Avro superstore decides to have trusted connection using trusted context objects. 
+
+<br><br><h4>Operation</h4><br>
+<p>On Windows, on a command window enter <code>ipconfig /all</code>. From the result, obtain the <code>IP Address</code> of the system.</p>
+
+<p>On UNIX/Linux, at a terminal enter <code>ifconfig</code>. From the result, obtain the <code>inet addr</code> (IP address) of the system.</p>
+
+<FONT style="BACKGROUND-COLOR: yellow">On the right pane, click Edit Query. Replace ~~~~ipaddress~~~~ with the ipaddress of the system
+to create the trusted context object.</font>.
+
+<br><br><p><b>Create trusted context Object</b></p>
+The SECADM of J.K.Avro superstore creates a trusted context object called trCtx. A trusted connection using this object can only be established from a particular IP address or a domain name by the authentication ID joe.
+
+<br><br><b>Note that localhost and 127.0.0.1 are not accepted for trusted connection.</b>
+
+<p>Behavior of trusted context trCtx:<ul>
+<li>Joe gets default role 'Mgr' privileges if connected through the trusted connection. </li>
+<li>The trusted context is also enabled with use for Sue and Bob.</li>
+<li>To switch user from Joe to Sue, Sue's password is required for authentication. Once authenticated, Sue will also receive the default Mgr role privileges.</li>
+<li>To switch user from Joe to Bob, no authentication is required. Once authenticated, Bob will only receive custService role privileges.</li>
+</ul>
+</p>
+
+
+<br><h4>Solution</h4><br>
+SECADM pat, successfully creates trusted context object. When Joe connects to the database through trusted connection, he will be
+able to access table data, else if he tries to access table data from a non-trusted connection, he will not be able to access table
+data.
+

@@ -1,0 +1,32 @@
+<br><h2>Configure audit log paths</h2><hr><br>
+
+<p>Specify location to store audit archived and active logs files. </p>
+
+<h4>Operation</h4><br>
+
+<p>DB2 audit log files come in two types: active and archived.
+<ul>
+<li>The active audit log files contain all the records about operations currently in progress or
+records which have not been archived. </li>
+<li>When there is a need to backup active audit logs or work with audit data, the active logs must be archived.</li>
+</ul></p>
+
+<br><b><p>Execute the commands shown in the right pane from DB2 command window.</p></b>
+
+<h4>Solution</h4><br>
+<p><b>Windows specific instructions</b><br><br> SECADM Pat performs the following steps in a DB2 CLP as shown in the right pane. Replace <font face="courier">C:\Audit</font> with a path you like.</p>
+<ol>
+<li>Sets the archived log path to C:\Audit.</li>
+<li>Execute <code><b>db2audit configure archivepath C:\Audit</b></code>. This sets the archived log path to C:\Audit.</li>
+<li>Execute <code><b>db2audit configure datapath C:\Audit</b></code>. This sets the active log (data path) path to C:\Audit.</li>
+</ol></p>
+
+
+<br><p><b>Linux specific Instructions</b><br><br>
+Archive path must be created, with permissions to write to it.Create audit archive directory as follows: <br>
+<ol>
+<li>mkdir $HOME/Audit.</li>
+<li>Execute <code><b>db2audit configure archivepath $HOME/Audit</b></code>. This sets the archived log path to $HOME/Audit.</li>
+<li>Execute <code><b>db2audit configure datapath $HOME/Audit</b></code>. This sets the active log (data path) path to $HOME/Audit.</li>
+</ol></p><br><br>
+

@@ -1,0 +1,25 @@
+<BR><H2><B>Lets try it !</B></H2><HR>
+<p>This page demonstrates creation of data partitions on the fact tables to improve query processing by causing
+parallel processing of data.</p>
+
+<H2><B>Prerequisites</B></H2><HR>
+<p>Make sure a multi-partition processing instance and the <code>designdb</code> database are created before proceeding. Please refer to the Design Overview section for detailed instructions.</p>
+
+<H2><B>Operation</B></H2><HR>
+<p>
+<ol>
+<li>Create tables enabled with Database Partitioning</li>
+<li>Populate data into the tables. Data is stored in logical data partitions based on the hashing key specified</li>
+</ol>
+</p>
+
+<BR><H2><B>Best Practices</B></H2><HR>
+<p>
+<ol>
+<li>Choose a partition key column with large number of values (high cardinality), preferably unique key column to ensure even distribution of data across logical partitions</li>
+<li>Avoid choosing a partitioning key with a column that is updated frequently. This could incur additional overhead on the update to relocate the row to another partition</li>
+<li>Try to choose a partitioning key column that has a simple datatype, such as fixed-length character or integer. The hashing performance can benefit from doing this versus selecting a complex datatype</li>
+<li>Ensure unique indexes are a superset of the partitioning key</li>
+<li>Try to use the same partitioning key on tables that get joined. This increases the collocation of joins.</li>
+</ol>
+</p>

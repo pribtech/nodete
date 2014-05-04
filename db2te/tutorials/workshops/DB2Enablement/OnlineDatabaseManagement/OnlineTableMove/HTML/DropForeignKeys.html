@@ -1,0 +1,39 @@
+<H2>SQL statements to captures the foreign key information</H2><HR>
+<p>
+Below SQL statement captures the foreign key information.
+</p>
+
+<p class="sourceCopiedFrom">
+SELECT 'ALTER TABLE ' || RTRIM(a.tabschema)||'.'||RTRIM(a.tabname) ||
+' ADD CONSTRAINT '||a.constname||
+' FOREIGN KEY (' || fk_colnames || ') REFERENCES ' ||
+RTRIM(reftabschema)||'.'||RTRIM(reftabname) ||
+' ('||pk_colnames||') ON DELETE ' ||
+CASE deleterule WHEN 'A' THEN 'NO ACTION' WHEN 'C' THEN 'CASCADE' WHEN 'N' THEN
+'SET NULL' WHEN 'R' THEN 'RESTRICT' END || ' ON UPDATE ' ||
+CASE updaterule WHEN 'A' THEN 'NO ACTION' WHEN 'R' THEN 'RESTRICT' END ||
+CASE enforced WHEN 'Y' THEN ' ENFORCED ' WHEN 'N' THEN ' NOT ENFORCED ' END ||
+' QUERY OPTIMIZATION '||
+CASE enablequeryopt WHEN 'Y' THEN ' ENABLE ' WHEN 'N' THEN ' DISABLE 'END ||
+';'
+FROM syscat.references a, syscat.tabconst b
+WHERE a.constname=b.constname;
+</p>
+
+<H2>SQL statement to generate <b class="sourceChange">DROP FOREIGN KEY</b> statements for table <b>ORDER_DETAILS</b> </H2><HR>
+<p>
+Below SQL statement generates the </b>DROP FOREIGN KEY</b> statements to DROP the foreign keys for table <b>ORDER_DETAILS</b>.
+</p>
+<p class="sourceCopiedFrom">
+SELECT 'ALTER TABLE ' || RTRIM(tabschema)||'.'||RTRIM(tabname) ||
+' DROP FOREIGN KEY ' || constname || ';'
+FROM syscat.references
+WHERE (tabschema='?SCHEMA?' AND tabname='ORDER_DETAILS') OR
+(reftabschema='?SCHEMA?' AND reftabname='ORDER_DETAILS');
+</p>
+
+
+<H2>Output of the above SQL statement</H2><HR>
+Below is the output of above SQL statement.
+<BR><BR><BR>
+<img src="tutorials/workshops/DB2Enablement/OnlineDatabaseManagement/OnlineTableMove/HTML/DropForeignKeys.PNG"><br>

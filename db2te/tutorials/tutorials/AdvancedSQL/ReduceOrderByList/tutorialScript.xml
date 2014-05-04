@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tutorial name="Reduce Order by list">
+<FlowRestriction>forwardExploration</FlowRestriction>
+   <closeAction/>
+    <openAction />
+    <globalCodeHighlightOptions highlightCode = "true" />
+    <pageList>
+    	<page name="Reduce Order by list" type="intro">
+            <entryAction/>
+    		<exitAction name="createEmployeeTable" type="serverAction">
+    			<parameterList>
+    				<parameter name="action" type="fixed">
+    					<value>createTablesFromSampleDatabase</value>
+    				</parameter>
+    				<parameter name="schema" type="constant">
+    					<value>SCHEMA</value>
+    				</parameter>
+    				<parameter name="table" type="fixed">
+    					<value>EMPLOYEE</value>
+    				</parameter>
+    			</parameterList>
+    			<followOnAction condition="false"   >
+    				<task>
+    					<action name="" type="alert">
+    						<message>Failed to create base tables for initial setup of tutorial. Cannot proceed further with tutorial.</message>
+    					</action>
+    				</task>
+    				<task>
+    					<setActionReturn>false</setActionReturn>
+    				</task>
+    			</followOnAction>
+    			<followOnAction condition="[0-9][0-9]*"   >
+    				<task>
+    					<assignLocalParameter name="ERROR_MESSAGE" type="returnObject">
+    						<value>createEmployeeTable.returnValue</value>
+    					</assignLocalParameter>
+    					<alert>Failed to create base tables for initial setup of tutorial. Cannot proceed further with tutorial.  
+    						SQLMSG: ?ERROR_MESSAGE?</alert>
+    				</task>
+    				<task>
+    					<setActionReturn>false</setActionReturn>
+    				</task>
+    			</followOnAction>
+    		</exitAction>
+    		
+            <contentFile>ReduceOrderByList.html</contentFile>
+    		<autoLoadLink>
+    			<pageWindow target="informationWindow">
+    				<panel name="main">
+    					<URL>http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.admin.mon.doc/doc/r0011712.html?noframes=true</URL>
+    				</panel>
+    			</pageWindow>
+    		</autoLoadLink>
+        </page>
+        
+    <page name="Show contents of table with full sort" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>ShowContentsOfTableWithFullSort.html</contentFile>
+        <SQLFile>ShowContentsOfTableWithFullSort.sql</SQLFile>
+        </page><page name="Show the contents, but only 5 rows" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>ShowTheContentsButOnly5Rows.html</contentFile>
+            <SQLFile>ShowTheContents,ButOnly5Rows.sql</SQLFile>
+        </page><page name="Show data sorted by inner query (Descending)" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>ShowDataSortedByInnerQuery-Descending.html</contentFile>
+            <SQLFile>ShowDataSortedByInnerQuery(Descending).sql</SQLFile>
+        </page><page name="Show data sorted by inner query (Ascending)" type="last">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>ShowDataSortedByInnerQuery-Ascending.html</contentFile>
+            <SQLFile>ShowDataSortedByInnerQuery(Ascending).sql</SQLFile>
+        </page></pageList>
+</tutorial>

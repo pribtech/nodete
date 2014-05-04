@@ -1,0 +1,15 @@
+<H3>Configure the db2auth_key.txt</H3><hr>
+<p>This is the file that the plug-in gathers information about where to get the authorization data from.
+It also gets group name to set SYSADM to, as well as the user name (and password in some cases) of the administrator.
+</p>
+<H2>Steps:</H2><p>
+<ol><li>Open the db2auth_key.txt file.  
+You should see a default configuration line: 
+<ul>db2auth db2admns db2admin</ul>
+<br/>This configuration follows the format: 
+<br/>[name of db to store authorization info] [SYSADM admin group name] [admin user ID] ([admin password])
+</li><br/>
+<li>Replace this line with names of your choice.  The admin user ID should be the name with the necessary authorization, as verified in the previous step.
+<ul><br/><li><b>IMPORTANT:</b> Fill the password parameter <b>only if</b> the database where the authorization information is stored is <b>not local to the instance</b> that you are configuring the plug-in for.
+</li></ul></li></ol></p>
+

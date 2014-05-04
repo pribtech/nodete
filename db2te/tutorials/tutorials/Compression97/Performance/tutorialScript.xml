@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tutorial name="Compression Performance" autoCloseWindowsInRightStage="true" autoClearAdhocResults="true">
+	<flowRestriction>forwardexploration</flowRestriction>
+	<globalCodeHighlightOptions  highlightCode="true">
+		<addedHighlightTokens>
+			<text><![CDATA[COMPRESS YES]]></text>
+			<text><![CDATA[REORG TABLE]]></text>			
+			<text><![CDATA[RUNSTATS ON TABLE]]></text>						
+		</addedHighlightTokens>
+	</globalCodeHighlightOptions>	
+	<closeAction/>
+	<openAction />
+	<pageList>
+		<page name="Why compression means faster performance" type="intro">
+			<entryAction />
+			<exitAction />
+			<contentFile>CompressionPerformance.html</contentFile>
+			<autoLoadLink>
+				<pageWindow target="informationWindow">
+					<panel name="main" PrimaryContainer="true">
+						<URL>
+							http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.admin.dbobj.doc/doc/c0007306.html?noframes=true
+						</URL>
+					</panel>
+				</pageWindow>
+			</autoLoadLink>
+		</page>
+
+		<page name="Create a Regular Table" type="general">
+			<entryAction />
+			<exitAction />
+			<contentFile>
+				CreateTableWITHOUT_COMPRESSION.html
+			</contentFile>
+			<SQLFile>
+				CreateTableWITHOUT_COMPRESSION.sql
+			</SQLFile>
+		</page>
+
+		<page name="Create a Compressed Table" type="general">
+			<entryAction name="checkForInsert" type="serverAction">
+				<parameterList>
+					<parameter name="action" type="fixed">
+						<value>checkForRow</value>
+					</parameter>
+					<parameter name="schema" type="constant">
+						<value>SCHEMA</value>
+					</parameter>
+					<parameter name="name" type="fixed">
+						<value>customer_address_without_compression</value>
+					</parameter>
+				</parameterList>
+				<followOnAction condition="true" negCondition="true">
+					<task>
+						<action name="displayMsgForFailedInsert"
+							type="alert">
+							<message>
+								The WITHOUT_COMPRESSION table has not been created or has no data. Please complete the previous step.
+							</message>
+						</action>
+					</task>
+					<task>
+						<setActionReturn>false</setActionReturn>
+					</task>
+				</followOnAction>
+			</entryAction>
+			<exitAction />
+			<contentFile>
+				CreateTableWITH_COMPRESSION.html
+			</contentFile>
+			<SQLFile>
+				CreateTableWITH_COMPRESSION.sql
+			</SQLFile>
+		</page>
+
+		<page name="Compare Statement Performance" type="general">
+			<entryAction name="checkForInsert" type="serverAction">
+				<parameterList>
+					<parameter name="action" type="fixed">
+						<value>checkForRow</value>
+					</parameter>
+					<parameter name="schema" type="constant">
+						<value>SCHEMA</value>
+					</parameter>
+					<parameter name="name" type="fixed">
+						<value>customer_address_with_compression</value>
+					</parameter>
+				</parameterList>
+				<followOnAction condition="true" negCondition="true">
+					<task>
+						<action name="displayMsgForFailedInsert"
+							type="alert">
+							<message>
+							The WITH_COMPRESSION table has not been created or has no data. Please complete the previous step.
+							</message>
+						</action>
+					</task>
+					<task>
+						<setActionReturn>false</setActionReturn>
+					</task>
+				</followOnAction>
+
+			</entryAction>
+			<exitAction />
+			<contentFile>
+				CompareStatements.html
+			</contentFile>
+			<SQLFile>
+				CompareStatements.sql
+			</SQLFile>
+		</page>
+	
+		<page name="Select with Order by Performance Comparison" type="general">
+			<entryAction></entryAction>
+			<exitAction />
+			<contentFile>ComparePerformance.html</contentFile>
+			<loadActionScriptFile>
+				ComparePerformance.xml
+			</loadActionScriptFile>
+		</page>
+
+		<page name="Create Indexes" type="general">
+			<entryAction name="checkForInsert" type="serverAction">
+				<parameterList>
+					<parameter name="action" type="fixed">
+						<value>checkForRow</value>
+					</parameter>
+					<parameter name="schema" type="constant">
+						<value>SCHEMA</value>
+					</parameter>
+					<parameter name="name" type="fixed">
+						<value>customer_address_with_compression</value>
+					</parameter>
+				</parameterList>
+				<followOnAction condition="true" negCondition="true">
+					<task>
+						<action name="displayMsgForFailedInsert"
+							type="alert">
+							<message>
+							The WITH_COMPRESSION table has not been created or has no data. Please complete the previous step.
+							</message>
+						</action>
+					</task>
+					<task>
+						<setActionReturn>false</setActionReturn>
+					</task>
+				</followOnAction>
+
+			</entryAction>
+			<exitAction />
+			<contentFile>
+				CreateIndex.html
+			</contentFile>
+			<SQLFile>
+				CreateIndex.sql
+			</SQLFile>
+		</page>
+		
+		<page name="Select with Index Performance Comparison" type="general">
+			<entryAction></entryAction>
+			<exitAction />
+			<contentFile>CompareIndexPerformance.html</contentFile>
+			<loadActionScriptFile>
+				CompareIndexPerformance.xml
+			</loadActionScriptFile>
+		</page>
+		
+
+	</pageList>
+</tutorial>

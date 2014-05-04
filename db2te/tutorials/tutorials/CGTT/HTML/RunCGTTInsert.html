@@ -1,0 +1,57 @@
+<p>
+	Run the commands in the right hand panel.
+</p>
+<p>
+	In this step, the data will be inserted into the two temporary tables and the static table again.
+	This will result in an error when the insert attempts to write to the DGTT, this is because
+	we've created a new connection since the DGTT was defined and has since been lost.
+</p>
+<p>
+	The CGTT does continue to allow data to be inserted because the table still exists
+	because we're in the same session, just using a different connection.  A simple SELECT
+	statement will show that before we inserted this new data, there was no data previously
+	in the table.  This is because the data is private between connections.
+</p>
+<p>
+	While the regular table will continue to allow data to be inserted, it is ineffective as
+	a temporary work area for the application.  Note that the data inserted from one of the
+	previous steps is still there and depending on the calculation, this can yield incorrect 
+	results.  This table cannot be cleaned up easily if the application is multi-threaded. A 
+	DELETE issued from one thread will remove all application data from the table including
+	those used by another thread.
+</p>
+<table style="text-align: center; border-collapse: collapse;">
+	<tr id="ResultHeader">
+		<td style="border: solid 1px black">&nbsp;</td>
+		<td style="border: solid 1px black">Isolation</td>
+		<td style="border: solid 1px black">Automatic cleanup</td>
+		<td style="border: solid 1px black">Application Object Support</td>
+		<td style="border: solid 1px black">Performance</td>
+	</tr>
+	<tr>
+		<td style="border: solid 1px black">Static Table</td>
+		<td style="border: solid 1px black" bgcolor="#ffff99"></td>
+		<td style="border: solid 1px black" bgcolor="#ffff99"></td>
+		<td style="border: solid 1px black"><img style="display:inline;" src="?IMAGE_BASE_DIRECTORY?/typevalue_ok.gif" /></td>
+		<td style="border: solid 1px black"><img style="display:inline;" src="?IMAGE_BASE_DIRECTORY?/typevalue_ok.gif" /></td>
+	</tr>
+	<tr>
+		<td style="border: solid 1px black">DGTT</td>
+		<td style="border: solid 1px black" bgcolor="#ffff99"><img style="display:inline;" src="?IMAGE_BASE_DIRECTORY?/typevalue_ok.gif" /></td>
+		<td style="border: solid 1px black" bgcolor="#ffff99"><img style="display:inline;" src="?IMAGE_BASE_DIRECTORY?/typevalue_ok.gif" /></td>
+		<td style="border: solid 1px black"></td>
+		<td style="border: solid 1px black"></td>
+	</tr>
+	<tr>
+		<td style="border: solid 1px black">CGTT</td>
+		<td style="border: solid 1px black" bgcolor="#ffff99"><img style="display:inline;" src="?IMAGE_BASE_DIRECTORY?/typevalue_ok.gif" /></td>
+		<td style="border: solid 1px black" bgcolor="#ffff99"><img style="display:inline;" src="?IMAGE_BASE_DIRECTORY?/typevalue_ok.gif" /></td>
+		<td style="border: solid 1px black"><img style="display:inline;" src="?IMAGE_BASE_DIRECTORY?/typevalue_ok.gif" /></td>
+		<td style="border: solid 1px black"><img style="display:inline;" src="?IMAGE_BASE_DIRECTORY?/typevalue_ok.gif" /></td>
+	</tr>
+</table>
+<br />
+<p>
+	You should see two failure messages followed by success statements in the lower right.  Also
+	in the lower right panel, there should be additional result set tabs.
+</p>

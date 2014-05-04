@@ -1,0 +1,1 @@
+SELECT * FROM ?SCHEMA?.month_customer;

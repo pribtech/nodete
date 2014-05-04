@@ -1,0 +1,18 @@
+<p>Now that the configuration values have been updated, you can use the graphical indicators to diagnose I/O saturation problems.</p>
+
+<p>The first thing to do is to turn on the automatic refresh of the indicators by changing the <strong>Refresh time</strong> value at the top of the top right panel. </p>
+
+<p>The <strong>left indicator</strong> is the <strong>I/O Intensity</strong> indicator. It shows the number of seconds required to complete one request.</p>
+<p>The <strong>right indicator</strong> is the <strong>Direct Reads</strong> indicator. It shows the number of direct reads per second on the disk.</p>
+
+<p>Under normal situation that doesn't require I/O access, the dials shouldn't change. To test this situation, click on <strong>normal_workload</strong> in the bottom panel and then, click on the <em>start</em> button. Wait for awhile and observe the indicators. Since this workload profile dooesn't access LOBs, the indicators should almost not move.<p>
+	
+<p>Now, we will use a workload profile that will access LOBs on the disk to show you the difference. Before continuing, stop the <strong>normal_workload</strong> by clicking on the <em>stop</em> button.</p>
+
+<p>Select the <strong>workload_profile_IO</strong> and click on the <em>start</em> button. After a couple of seconds, you should see an increase of the value for the <strong>Direct Reads</strong> indicator. Since we didn't modify the number of connections, the <strong>I/O Intensity</strong> won't tell us much on the current situation because the system should still be able to respond to the number of requests we are sending.</p>
+
+<p>Increase the number of connections to 100 and observe how the indicators fluctuate. You should now see a much higher number for the <strong>Direct Reads</strong> indicator.</p>
+
+<p>If the values you used in the configuration files are good, you should see a linear relationship between the number of connections and the values displayed on the indicators. To test this, try changing the number of connections and the <em>think time</em> and see what happens. If the results does not fit well with what you expect, it may be possible that you need to go back one step to get better upperbound I/O limits for your system.</p>
+
+<p>Once you are pleased the results, proceed to the next step.</p>

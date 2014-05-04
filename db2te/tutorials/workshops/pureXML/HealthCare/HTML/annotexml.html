@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-us" xml:lang="en-us">
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+</head>
+<body bgcolor='blue'>
+<p><b>Scenario</b></p>
+<p>
+After a patient receives treatments from a health care provider, he/she is billed with the expenses incurred. As directed by the patient, the invoice can be directed to the appointed insurance company for medical expense claims.
+Assume that the insurance company has not deployed their XML solution, all data is stored in relational data format. This requires a data massaging 
+process to convert XML data (from health care provider) into relational (for the insurance company).
+</p>
+<p><b>Operation</b></p>
+<p>
+Annotated schema decomposition makes this easy. The process shreds an XML document into relational data.
+</p>
+<p>The following are the steps involved in annotated schema decompostion</p>
+<p>
+<ul>
+<li>Register the schema based on which the XML will be shredded using REGISTER XMLSCHEMA or the system procedure XSR_REGISTER.</li>
+<li>Complete the registration using COMPLETE or XSR_COMPLETE.</li>
+<li>Enable the schema for decomposition using ENABLE DECOMPOSITION</li>
+<li>Use xdbDecompXML  PROC to decompose an XML document to the specified table in the schema document.</li>
+</ul>
+</P>
+</br></br>
+<p><b>Solution</b></p>
+<p>
+The patient information after the complete treatment from the health care provider with address is sent to the insuranace company
+where it is shredded and dumped to the database of the insurance company in the relational format.
+</p>
+<p>The result of the XML data shreded can be viewed in the result tab.</p>
+</br></br></br></br>
+<p><b>Best Practices</b></p>
+	<p>
+	<ul>
+	<li>
+Ensure that the XML document is valid according to its XML schema. Validation is not a requirement for decomposition, however,
+ if you expect certain behavior, such as character entity expansion, then perform decomposition with validation.
+	</li>
+<li><a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v9r7/topic/com.ibm.db2.luw.xml.doc/doc/r0022580.html');"> Limitations</a></li>
+	</ul>
+	</p>
+</body>
+</html>

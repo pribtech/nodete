@@ -1,0 +1,167 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2010 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+
+<menu type="leaf" branchDirectory="">
+	<pageWindow target="_active">
+		<splitPane direction="h" splitPercent="0.5">
+			<topPane>
+				<splitPane direction="v" splitPercent="0.5">
+					<leftPane>
+						<panel name="pie" >
+							<link type="action" target="_self" window="_self" connectionRequired="y">
+								<parameterList>
+									<parameter name="table">employee</parameter>
+									<parameter name="action">chart</parameter>
+									<parameter name="$chartName">Employees Pies </parameter>
+									<parameter name="$type">pie</parameter>
+									<parameter name="$xAxis">lastname</parameter>
+									<parameter name="$yAxis">comm,bonus</parameter>
+									<parameter name="$settings">
+<![CDATA[
+<axis>
+	<x width="6">
+		<tick width="6"/>
+	</x>
+	<y width="6">
+		<tick width="6"/>
+	</y>
+</axis>
+]]>
+									</parameter>
+								</parameterList>
+							</link>				
+						</panel>
+					</leftPane>
+					<rightPane>
+						<panel name="stack" >
+							<panelHeaders refreshEnabled="true"/>
+							<link type="action" target="_self" window="_self" connectionRequired="y">
+								<parameterList>
+									<parameter name="table">employee</parameter>
+									<parameter name="action">chart</parameter>
+									<parameter name="$chartName">Employees Stacks </parameter>
+									<parameter name="$type">stack</parameter>
+									<parameter name="$xAxis">dept</parameter>
+									<parameter name="$yAxis">comm,bonus</parameter>
+									<parameter name="$grouping">sex</parameter>
+								</parameterList>
+							</link>				
+						</panel>
+					</rightPane>
+				</splitPane>
+			</topPane>
+			<bottomPane>
+				<splitPane direction="v" splitPercent="0.5">
+					<leftPane>
+						<splitPane direction="v" splitPercent="0.5">
+							<leftPane>
+								<panel name="Line">
+									<link type="action" target="_self" window="_self" connectionRequired="y">
+										<parameterList>
+											<parameter name="table">employee</parameter>
+											<parameter name="action">chart</parameter>
+											<parameter name="$chartName">Employees Line</parameter>
+											<parameter name="$type">line</parameter>
+											<parameter name="$xAxis">salary</parameter>
+											<parameter name="$yAxis">comm,bonus</parameter>
+											<parameter name="$grouping">dept</parameter>
+											<parameter name="$settings">
+<![CDATA[
+<axis>
+	<x width="3">
+		<tick width="6"/>
+	</x>
+	<y width="6">
+		<tick width="3"/>
+	</y>
+</axis>
+]]>
+											</parameter>
+										</parameterList>
+									</link>	
+								</panel>
+							</leftPane>
+							<rightPane>
+								<panel name="bubble">
+									<link type="action" target="_self" window="_self" connectionRequired="y">
+										<parameterList>
+											<parameter name="table">employee</parameter>
+											<parameter name="action">chart</parameter>
+											<parameter name="$chartName">Employees Line</parameter>
+											<parameter name="$type">bubble</parameter>
+											<parameter name="$xAxis">salary</parameter>
+											<parameter name="$yAxis">comm</parameter>
+											<parameter name="$zAxis">bonus</parameter>
+											<parameter name="$grouping">dept</parameter>
+											<parameter name="$settings">
+<![CDATA[
+<axis>
+	<x width="3">
+		<tick width="3"/>
+	</x>
+	<y width="3">
+		<tick width="3"/>
+	</y>
+</axis>
+]]>
+											</parameter>
+										</parameterList>
+									</link>	
+								</panel>
+							</rightPane>
+						</splitPane>
+					</leftPane>
+					<rightPane>
+						<panel name="setline">
+							<link type="action" target="_self" window="_self" connectionRequired="y">
+								<parameterList>
+									<parameter name="table">employee</parameter>
+									<parameter name="action">chart</parameter>
+									<parameter name="$chartName">Employees Setline</parameter>
+									<parameter name="$type">setline</parameter>
+									<parameter name="$xAxis">dept</parameter>
+									<parameter name="$yAxis">comm</parameter>
+									<parameter name="$grouping">sex</parameter>
+									<parameter name="$lineWidth">3</parameter>
+									<parameter name="$axisXLineWidth">3</parameter>
+									<parameter name="$axisYLineWidth">3</parameter>
+									<parameter name="$axisLineWidth">3</parameter>
+									<parameter name="$axisXTickWidth">3</parameter>
+									<parameter name="$axisYTickWidth">3</parameter>
+									<parameter name="$settings">
+<![CDATA[
+<axis>
+	<x width="6">
+		<tick width="6"/>
+	</x>
+	<y width="6">
+		<tick width="6"/>
+	</y>
+</axis>
+]]>
+									</parameter>
+								</parameterList>
+							</link>	
+						</panel>
+					</rightPane>
+				</splitPane>
+			</bottomPane>
+		</splitPane>
+	</pageWindow>
+	<description>Employee Charted</description>
+</menu>

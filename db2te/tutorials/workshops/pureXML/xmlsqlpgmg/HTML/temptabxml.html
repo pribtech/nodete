@@ -1,0 +1,43 @@
+<p><b>Scenario</b></p>
+<p>
+	A patient approaches a doctor and explains about his illness by telling the symptoms he has been observing.
+	The application through which the doctor updates the symptoms gets all the symptoms one by one as patient explains and once all symptoms are mentioned by the patient, the doctor does a final submission to the application. 
+	When the symptoms are explained one by one it should be stored temporarily rather than submitting to the system each time.
+</p>
+<p><b>Operation</b></p>
+<p>
+	Transaction to actual tables can be reduced by inserting into a global temporary table. 
+	The scenario requires that there should be some intermediate place where all the symptoms are stored temporarily 
+	before they are finally submitted. DB2 has the ability to store data temporarily by creating global temporary table. 
+	DB2 9.7 has the ability to create temporary tables with XML column.</p>
+<p>
+The below code explains the section which stores symptom information in the PMD
+</p>
+<p>
+<pre><code><b>
+&lt;symptoms&gt;
+	&lt;text&gt;
+		The patient has shown signs of relif in the lower back. 
+		the swelling has also reduced to acceptable level.
+	&lt;/text&gt;
+&lt;/symptoms&gt;</b></code></pre>
+</p>
+</br></br></br>
+<p>The above node will repeat for each symptom in the PMD XML document.</p>
+<p>
+	<ul>
+<li><b><code>CREATE USER TEMPORARY TABLESPACE</code></b> --> creates a temporary table space in which the temporary table will be created.</li>
+<li><b><code>DECLARE GLOBAL TEMPORARY TABLE</code></b> --> creates a temporary table with XML column. It stores intermediate data before moving it to actual tables.</li>
+
+</ul></br>
+The patient symptom will be inserted into this temporary table until all his symptoms are obtained. 
+After all the symptoms are collected the data is actually inserted to the XML column of OUT_PATIENT_DATA table from the temporary table.
+</p>
+<p><b>Solution</b></p>
+<p>
+	The PMD XML document is updated with symptoms of the patient only once after the patient mentions all his symptoms to the doctor.
+</p>
+<p><b></b></p>
+<p>
+
+</p>

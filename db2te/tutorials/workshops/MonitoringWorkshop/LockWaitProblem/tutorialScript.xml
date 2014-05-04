@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tutorial name="Using DB2 monitoring text report" autoCloseWindowsInRightStage="true" autoClearAdhocResults="true">
+	<flowRestriction>forwardexploration</flowRestriction>
+	<globalCodeHighlightOptions  highlightCode="true">
+		<addedHighlightTokens>
+			<text><![CDATA[MONREPORT]]></text>					
+		</addedHighlightTokens>
+	</globalCodeHighlightOptions>	
+	<closeAction/>
+	<openAction />
+	<pageList>
+
+		<page name="Introduction" type="general">
+			<contentFile>
+				Introduction.html
+			</contentFile>
+			<autoLoadLink>
+				<pageWindow target="informationWindow">
+					<panel name="main" PrimaryContainer="true">
+						<URL>http://db2id.torolab.ibm.com/db2doc_v97fp1/topic/com.ibm.db2.luw.sql.rtn.doc/doc/r0056368.html?noframes=true</URL>
+					</panel>
+				</pageWindow>
+			</autoLoadLink>
+		</page>
+
+		<page name="Run simulation" type="general">
+			<contentFile>
+				simulation.html
+			</contentFile>
+			<autoLoadLink>
+				<pageWindow target="informationWindow">
+					<panel name="main" PrimaryContainer="true">
+						<URL>?BASE_DIRECTORY?/HTML/locking.html</URL>
+					</panel>
+				</pageWindow>
+			</autoLoadLink>
+		</page>
+
+		<page name="Identify the problem category" type="general">
+			<contentFile>
+				IdentifyProblemCategory.html
+			</contentFile>
+			<SQLFile>
+				IdentifyProblemCategory.sql
+			</SQLFile>
+			<SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar=";"
+				cursor="forward" commitPerStmt="true" numRowReturned="300"/>
+		</page>
+		
+		<page name="Perform detailed diagnosis" type="general">
+			<contentFile>
+				LockingDiagnosis.html
+			</contentFile>
+			<SQLFile>
+				LockingDiagnosis.sql
+			</SQLFile>
+			<SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar=";"
+				cursor="forward" commitPerStmt="true" numRowReturned="300"/>
+		</page>
+		
+		<page name="Workload Impacted" type="general">
+			<contentFile>
+				WorkloadImpacted.html
+			</contentFile>
+			<SQLFile>
+				WorkloadImpacted.sql
+			</SQLFile>
+			<SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar=";"
+				cursor="forward" commitPerStmt="true" numRowReturned="300"/>
+		</page>
+		
+		<page name="Conclusion" type="general">
+			<contentFile>
+				Conclusion.html
+			</contentFile>
+			<autoLoadLink>
+				<pageWindow target="informationWindow">
+					<panel name="main" PrimaryContainer="true">
+						<URL>?BASE_DIRECTORY?/HTML/Summary.html</URL>
+					</panel>
+				</pageWindow>
+			</autoLoadLink>
+		</page>
+		
+		
+	</pageList>
+</tutorial>

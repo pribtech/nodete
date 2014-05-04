@@ -1,0 +1,1 @@
+select number, floor(number) from ?SCHEMA?.show_decimal;

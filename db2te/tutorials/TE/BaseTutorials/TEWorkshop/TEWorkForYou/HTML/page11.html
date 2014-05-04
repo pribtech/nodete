@@ -1,0 +1,38 @@
+<p>You can improve the appearance and presentation of the Dependencies page by updating the tableDependCat.xml file.</p>
+<p><h4>First:</h4>
+You can improve the title by changing the 'singular_name' and 'plural_name' elements.
+</p>
+<p><h4>Second:</h4>
+You can change the order of columns, or choose to remove them from the display, by changing the 'col' element in 'display_columns'. 
+The two columns to remove are only used for backward compatibility with old versions of the DB2 server. 
+The other columns are rearranged into a more logical order.
+</p>
+<p><h4>Third:</h4>
+You can change the column titles by updating the 'c_title' element in 'display_columns'.</p>
+</p>
+
+<p><h3>Goal:</h3>
+Clean up the appearance of the Dependencies page.
+</p>
+
+<p><h3>Steps to complete:</h3>
+<ul>
+	<li>Open the file '/var/www/tableDefinitions/tableDependCat' from gedit or open a terminal and run the following command:
+				<ul>
+					<li>“gedit /var/www/tableDefinitions/tableDependCat.xml &”</li>
+				</ul>
+			</li>
+  <li>Make the changes as indicated on the right
+</li>
+<li>Save the file</li>
+<li>Do not close the file</li>
+</ul>
+</p>
+<p><h4>The changes are indicated with the following:</h4>
+<ul>
+  <li class="sourceRemove">Indicated text has been removed</li>
+  <li class="sourceChange">Indicated text has been edited</li>
+  <li class="sourceAdd">Indicated text has been added</li>
+  <li class="sourceCopiedFrom">Indicated text is the source of a copy</li>
+</ul>
+</p>

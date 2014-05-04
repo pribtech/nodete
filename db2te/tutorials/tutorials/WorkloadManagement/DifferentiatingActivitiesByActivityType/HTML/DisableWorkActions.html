@@ -1,0 +1,24 @@
+Before moving on to the service class work action set, drop the
+  database work action set.
+  <p>
+  Additional information: Before dropping any concurrency threshold,
+  that threshold must first be disabled.  In this case, there are no
+  work actions that represent a concurrency threshold but if there were,
+  the only way to disable it would be by disabling the work action.  A
+  work action threshold cannot be manipulated through THRESHOLD SQL
+  statements; they can be manipulated only through WORK ACTION SET SQL
+  statements.  Only work actions that represent concurrency thresholds
+  need to be disabled before dropping the subsequent work action set. 
+  For this task, because there are no work actions that represent a
+  concurrency threshold, there is no need to disable any of the work
+  actions before dropping the work action set.
+  </p>
+  <p>
+  If you want to perform a particular action, such as a threshold, to
+  all the activities of a certain type running in a service super class,
+  you should consider using a service class work action set.  You can
+  create a mapping work action to map specific types of activities to a
+  specific service subclass and then apply a threshold to that service
+  subclass.  The following steps demonstrate how service class work
+  action sets might be used
+  </p>

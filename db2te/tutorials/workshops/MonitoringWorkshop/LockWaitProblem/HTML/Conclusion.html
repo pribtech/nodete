@@ -1,0 +1,17 @@
+<h3>Recent business activities</h3>
+<hr>
+<B><font color=grey>The database administrator is able to identify that it is a lock wait problem. However why would the system suddenly encounter this problem while it has been performing well? What has changed to trigger this problem? The database administrator contacts the production team and finds out that a sales promotion has driven workload to unprecedented levels. </font></B>
+
+<P>
+<B>Answers to the questions that the database administrator had :</B><BR>
+<ul>
+<li><B>Q: What is the general type of problem?</B><BR>
+    <B>A:</B> This is a lock wait problem.</li><BR>
+<li><B>Q: What part of the user workload is impacted by the slowdown? What does this set of SQL statements have in common?</B><BR>
+    <B>A:</B> The problem is localized to statements accessing the <CODE>INVENTORY</CODE> table. Once the <CODE>AGENT_ID</CODE> is identified, <CODE>'LIST APPLICATIONS'</CODE> command can be used to identify the application name. Alternatively, <CODE>'SYSIBMADM.APPLICATIONS'</CODE> administrative view can be used to get the application name. Looking for the <CODE>AGENT_ID</CODE> in <CODE>'LIST APPLICATIONS'</CODE> command output shows that these statements are mostly or exclusively from the Purchase item application.</li><BR>
+<li><B>Q: What is the detailed description of the lock wait problem?</B><BR>
+    <B>A:</B> The slowdown occurs during the part of the transaction that accesses the <CODE>INVENTORY</CODE> table because the transaction waits for locks to be released.</li><BR>
+<li><B>Q: What sequence of events led to this problem occurring at this time?</B><BR>
+    <B>A:</B> A sale was advertised, causing a sharp increase in transaction volume. This increase in transaction volume led to more locks being requested for rows on the <CODE>INVENTORY</CODE> table. The increase in the number of locks led to application requests spending more time waiting for locks to be released. The increased lock wait time produced experiencing slower response time for users.</li><BR>
+</ul>
+</p>

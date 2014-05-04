@@ -1,0 +1,154 @@
+<actionPanel>
+	<flow>controlled</flow>
+	<useConsole>yes</useConsole>
+	<overview>
+	</overview>
+	<taskList>
+
+		<task name="Get Query Execution Times">
+			<discription>
+				This computes the average time taken for query execution against the tables before and after creation of view</discription>	
+			<action name="gettime" type="blank">
+				<followOnAction condition="true" compareOn="true" compareOnType="raw">				
+					<task>
+						<echo>Running the sample query on the store tables 5 times..</echo>
+						<action name="runnoview" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="fixed">
+									<value>run_workload</value>
+								</parameter>
+								<parameter name="SQL[1]" type="fixed">
+									<value>SELECT a.order_master_ID, a.customer_ID, a.order_date, a.total_amount, b.product_ID, b.product_quantity FROM ?SCHEMA?.order_master_c a, ?SCHEMA?.order_details_c b WHERE a.order_master_ID = 11011 AND a.order_master_ID = b.order_details_ID</value>
+								</parameter>
+								<parameter name="Repetition" type="fixed">
+									<value>5</value>
+								</parameter>
+								<parameter name="SampleRate" type="fixed">
+									<value>5</value>
+								</parameter> 												
+							</parameterList>
+							<followOnAction condition="true">
+								<task>
+									<assignSharedConstant name="avgBaseTable" type="returnObject">
+										<value>runnoview.returnValue.SQL.1</value>
+									</assignSharedConstant>
+									<echo>Average Run time: ?avgBaseTable? s</echo>
+									<echo> </echo>
+								</task>
+							</followOnAction>
+							<followOnAction condition="false">
+								<task>
+									<echo>Error in run !</echo>
+								</task>
+							</followOnAction>
+						</action>
+					</task>
+
+					<task>
+						<echo>
+							Running the sample query on the view 5 times...
+						</echo>
+						<action name="runwithview" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="fixed">
+									<value>run_workload</value>
+								</parameter>
+								<parameter name="SQL[2]" type="fixed">
+									<value>SELECT order_master_ID, customer_ID, order_date, total_amount, product_ID, product_quantity FROM ?SCHEMA?.v_order WHERE order_master_ID = 11011</value>
+								</parameter>
+								<parameter name="Repetition" type="fixed">
+									<value>5</value>
+								</parameter>
+								<parameter name="SampleRate" type="fixed">
+									<value>5</value>
+								</parameter>
+								<parameter name="Accumulative" type="fixed">
+									<value>false</value>
+								</parameter>
+							</parameterList>
+							<followOnAction condition="true">
+								<task>
+								<assignSharedConstant name="avgView" type="returnObject">
+									<value>runwithview.returnValue.SQL.2</value>
+								</assignSharedConstant>
+									<echo>Average Run time: ?avgView? s</echo>
+								</task>
+							</followOnAction>
+							<followOnAction condition="false">
+								<task>
+									<echo>Error in run !</echo>
+								</task>
+							</followOnAction>
+						</action>
+					</task>
+
+				</followOnAction>
+			</action>
+		</task>
+					
+		<task name="Generate Graph">
+			<discription type="text/html">
+				<![CDATA[
+					<p>This generates a graph comparing the query execution time for the following :
+						<ul>
+							<li>Before view creation</li>
+							<li>After view creation</li>
+						</ul>
+					</p>	
+				]]>
+			</discription>
+			<action name="performance" type="blank">
+				<followOnAction condition="true" compareOn="true" compareOnType="raw">				
+					<task>
+						<loadPage>
+							<pageWindow target="informationWindow">
+								<panel name="main" PrimaryContainer="true">
+									<link type="action" target="_self" window="_self" connectionRequired="y">
+										<parameterList>
+											<parameter name="action">
+												graphYUI
+											</parameter>
+											<parameter name="graph">
+												<![CDATA[					       				
+		       				
+ {
+	"Graph":
+	{
+		"title": "Query Execution time (in milliseconds)",
+		"graphType": "column",
+		"xField": "TableState",
+		"xTitle": "Number of Pages",
+		"yTitle": "Un Table",
+		"dataSourceType": "data_from_raw",
+		"responseSchema": {"fields": ["TableState","QueryTime"]},
+		"style":{	"legend": { "display": "right" }, "animationEnabled" : "false"},
+		"seriesDef": [{ "displayName": "Time (ms)", "yField": "QueryTime", "style": {"color": "0x454586"}}],
+		"datasets":
+		 [ 
+			    { "TableState": "Without View", "QueryTime": (?avgBaseTable? * 100) },
+				{ "TableState": "With View", "QueryTime": (?avgView? * 100) }
+			]
+	}
+
+
+}
+							
+
+]]>
+
+											</parameter>
+										</parameterList>
+									</link>
+								</panel>
+							</pageWindow>
+						</loadPage>
+					</task>
+
+				</followOnAction>
+			</action>
+		</task>
+
+	</taskList>
+</actionPanel>
+
+

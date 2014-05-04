@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tutorial name="Select from INSERT-UPDATE-and DELETE">
+	<FlowRestriction>forwardExploration</FlowRestriction>
+	<closeAction/>
+	<openAction />
+    <globalCodeHighlightOptions highlightCode = "true" />
+	<pageList>
+		<page name="Select from INSERT-UPDATE-and DELETE" type="intro">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>SelectFromINSERT-UPDATE-andDELETE.html</contentFile>
+			<autoLoadLink/>
+		</page>
+		
+		<page name="Create sample table for Select with Insert Example" type="general">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>CreateSampleTableForSelectWithInsertExample.html</contentFile>
+			<SQLFile>CreateSampleTableForSelectWithInsertExample.sql</SQLFile>
+		</page>
+		
+		<page name="Insert some values into the EMP_Profile table" type="general">
+			<entryAction name="checkForEMP_ProfileTable" type="serverAction">
+				<parameterList>
+					<parameter name="action" type="serverAction">
+						<value>checkForObject</value>
+					</parameter>
+					
+					<parameter name="objectType" type="raw">
+						<value>table</value>
+					</parameter>
+					
+					<parameter name="object[schema]" type="constant">
+						<value>SCHEMA</value>
+					</parameter>
+					
+					<parameter name="object[table]" type="fixed">
+						<value>EMP_Profile</value>
+					</parameter>
+				</parameterList>
+				
+				<followOnAction condition="false">
+					<task>
+						<action name="displayMsg" type="alert">
+							<message>Required table "EMP_Profile" hasn't been created. Please execute this step again.</message>
+						</action>
+					</task>
+					
+					<task>
+						<setActionReturn>false</setActionReturn>
+					</task>
+				</followOnAction>
+			</entryAction>       
+			
+			
+			<exitAction/>
+			<contentFile>InsertSomeValuesIntoTheEMP_ProfileTable.html</contentFile>
+			<SQLFile>InsertSomeValuesIntoTheEMP_ProfileTable.sql</SQLFile>
+		</page>
+		
+		<page name="FINAL TABLE versus OLD Table" type="general">
+			<entryAction name="checkForInsert" type="serverAction">
+				<parameterList>
+					<parameter name="action" type="fixed">
+						<value>checkForRow</value>
+					</parameter>
+					<parameter name="schema" type="constant">
+						<value>SCHEMA</value>
+					</parameter>
+					<parameter name="name" type="fixed">
+						<value>EMP_Profile</value>
+					</parameter>
+				</parameterList>
+				<followOnAction condition="true"  negCondition="true">
+					<task>
+						<action name="displayMsgForFailedInsert" type="alert">
+							<message>Data hasn't been inserted in table EMP_Profile . Please try this step again.</message>
+						</action>
+					</task>
+					<task>
+						<setActionReturn>false</setActionReturn>
+					</task>
+				</followOnAction>
+			</entryAction> 
+			<exitAction/>
+			<contentFile>FINALTABLEVersusOLDTable.html</contentFile>
+			<SQLFile>FINALTABLEVersusOLDTable.sql</SQLFile>
+		</page>
+		
+<!--	DON'T need this page... have merged the select statement of this page with the previous page.	
+	<page name="Actual contents of the table" type="last">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>ActualContentsOfTheTable.html</contentFile>
+			<SQLFile>ActualContentsOfTheTable.sql</SQLFile>
+			</page>-->
+		
+	</pageList>
+</tutorial>

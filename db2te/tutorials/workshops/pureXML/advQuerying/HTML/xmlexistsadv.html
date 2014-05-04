@@ -1,0 +1,21 @@
+<p><b>Scenario</b></p>
+<p>
+	The health care provider needs to find all the patients who had treated by a doctor Durenda. Doctor's informaion and reports are stored in the PMD documents in XML format.
+</p>
+<p><b>Operation</b></p>
+<p>
+	The XMLEXISTS predicate checks for the condition specified and returns a boolean accordingly. The example on the right shows that XMLEXISTS returns 'true' if the doctor's given name is 'Durenda' and 'false' if otherwise.
+
+</p>
+<p><b>Solution</b></p>
+<p>
+Patients treated by doctor Durenda are returned.
+</p>
+<p><b>Best Practices</b></p>
+<p>
+<ul>
+<li>Use the XMLEXISTS predicate in the SQL WHERE clause to
+specify predicates over XML data to help improve query
+performance by examining fewer rows. </li>
+</ul>
+</p>

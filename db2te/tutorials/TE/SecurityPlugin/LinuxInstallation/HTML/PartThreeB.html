@@ -1,0 +1,22 @@
+<H3>Configure the db2auth_key.txt</H3><hr>
+<p>This is the file that the plug-in gathers information about where to get the authorization data from.
+It also gets group name to set SYSADM to, as well as the user name (and password in some cases) of the administrator.
+</p>
+<H2>Steps:</H2><p>
+<ol><li>Make a copy of the db2auth_key.txt.empty file, and rename it as db2auth_key.txt.</li><br/>
+<li>Open the db2auth_key.txt file.  
+You should see two sample configuration lines: 
+<ul># Sample showing connection to local authentication database</ul>
+<ul>#   localDB db2admns db2admin</ul>
+<ul># Sample showing connection to remote authentication database</ul>
+<ul>#   remoteDB db2admns db2admin db2adminpw</ul>
+<br/>This configuration follows the format: 
+<br/>[name of (remote or local) db to store authorization info] [SYSADM admin group name] [admin user ID] ([admin password (only for remote db)])
+</li><br/>
+<li>Copy the appropriate sample line, and replace it with names of your choice (and without the # sign).  The admin user ID should be the name with the necessary authorization, as verified in step three.
+<ul><br/><li><b>IMPORTANT:</b> Fill the password parameter <b>only if</b> the database where the authorization information is stored is <b>not local to the instance</b> that you are configuring the plug-in for. In that case, the file should be configured so that only the DB2 instance owner can access the file.
+</p>
+</li></ul></li></ol></p>
+
+
+

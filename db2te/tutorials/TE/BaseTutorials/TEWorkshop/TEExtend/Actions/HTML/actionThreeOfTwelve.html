@@ -1,0 +1,20 @@
+<p>To the right there are a series of simple checks, do not let the mass of text or regex scare you.</p>
+
+<p><h4>Lets take a look:</h4>
+<ul>
+<li>First, the date and time field need to be combined in the element 'value' before the checks can be done</li>
+</ul>
+Then:
+<ul>
+<li>The first match checks to see if the datetime is an empty string, and if so, sets it to null</li>
+<li>The second match checks to see if the datetime contains only a date. If so, the appropriate text for the SQL function to convert it to a time stamp is set.</li>
+<li>The third match checks to see if the datetime contains only a time. If so, the appropriate text for the SQL function to convert it to a time stamp is set.</li>
+<li>The forth match checks to see if the datetime contains both a date and time. If so, the appropriate text for the SQL function to convert it to a time stamp is set.</li>
+<li>The fifth match checks to see if we have reset the parameter to either null or a string beginning with 'TIMESTAMP_FORMAT' if an error is not raised as was done with the maximum invocations.</li>
+</ul></p>
+
+<p><h3>Steps to complete:</h3>
+<ul>
+  <li>Make the changes to your document as indicated on the right</li>
+</ul>
+</p>

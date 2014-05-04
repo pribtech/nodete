@@ -1,0 +1,35 @@
+<p><b>Scenario</b></p>
+<p>
+	The health care provider receives a new patient, James Mathew, who doesnt have any previous record in the system. 
+	A new patient request is processed and James information is then inserted.
+</p>
+<p><b>Operation</b></p>
+<p>
+	Insert patients address and complete medical details as XML documents into the patient_details and out_patient_data tables.
+	</p>
+	<p>
+	<ul>
+	<li>INSERT SQL command to insert the data.</li>
+	<li>Out_Patient_Data table has column PMD of XML datatype to which the PMD document is inserted.</li>
+	</ul>
+	</p>
+<p><b>Solution</b></p>
+<p>
+	These XML documents are now stored natively with other relational data in DB2.
+	The new record for the patient James Mathew is entered into the application.
+</p>
+<p><b>Best Practices</b></p>
+<p>
+<ul>
+<li>Keep a prerequisite to use DMS to have large page size such as 16KB or 32KB. The larger the page size fewer the number of potential 
+splits per document and improves insert and retrivel.</li>
+<li>Give sufficient buffer pool space to support index reads. This is because even though no indexes are defined DB2 pure XML 
+storage mechanism transparently maintains regions and path indexes for efficient XML storage access.
+</li>
+<li>Its better to define XML Indexes before inserting data since the XML. Since while insert each XML docuemnt will be processed only once to create
+index entries.</li>
+<li>Increasing the LOGBUFSZ and the LOGFILSZ will increase the insert performance. This is important for XML inserts since the data volume is 
+bigger for each row.</li>
+
+</ul>
+</p>

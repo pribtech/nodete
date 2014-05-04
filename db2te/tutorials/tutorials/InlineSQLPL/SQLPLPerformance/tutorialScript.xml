@@ -1,0 +1,354 @@
+<tutorial name="SQL-PL Performance ">
+	<globalCodeHighlightOptions highlightCode="true" /><flowRestriction>forwardexploration</flowRestriction>
+    <closeAction />
+    <openAction />
+    <pageList>
+    	<page name="SQL-PL Performance " type="intro">
+            <entryAction />
+            <exitAction />
+            <contentFile>01_SQL-PLPerformance.html</contentFile>
+			<autoLoadLink>
+				<pageWindow target="informationWindow">
+					<panel PrimaryContainer="true" name="main">
+						<URL>http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.apdv.sqlpl.doc/doc/c0011922.html</URL>
+					</panel>
+				</pageWindow>
+			</autoLoadLink>
+        </page>
+        
+        <page name="Create test tables" type="general">
+            <entryAction />
+            <exitAction />
+            <contentFile>02_CreateTables.html</contentFile>
+    	<SQLFile>01_CreateTables.sql</SQLFile>
+        </page>
+
+        <page name="Create UDF, Stored Procedures, and Triggers" type="general">
+        	<entryAction name="checkForTable" type="serverAction">
+        		<parameterList>
+        			<parameter name="action" type="serverAction">
+        				<value>checkForObject</value>
+        			</parameter>
+        			<parameter name="objectType" type="raw">
+        				<value>table</value>
+        			</parameter>
+        			<parameter name="object[schema]" type="constant">
+        				<value>SCHEMA</value>
+        			</parameter>
+        			<parameter name="object[table]" type="fixed">
+        				<value>employee_wages_case1</value>
+        			</parameter>
+        		</parameterList>
+        		<if condition="false">
+        			<task>
+        				<action name="displayMsgForFailedCreation" type="alert">
+        					<message>Required table [employee_wages_case1] hasn't been created. Please execute this step again.</message>
+        				</action>
+        			</task>
+        			<task>
+        				<setActionReturn>false</setActionReturn>
+        			</task>
+        		</if>
+        		<if condition="true">
+        			<task>
+        				<action name="checkForInsert" type="serverAction">
+        					<parameterList>
+                    			<parameter name="action" type="serverAction">
+                    				<value>checkForObject</value>
+                    			</parameter>
+                    			<parameter name="objectType" type="raw">
+                    				<value>table</value>
+                    			</parameter>
+                    			<parameter name="object[schema]" type="constant">
+                    				<value>SCHEMA</value>
+                    			</parameter>
+                    			<parameter name="object[table]" type="fixed">
+                    				<value>employee_wages_case2</value>
+                    			</parameter>
+        					</parameterList>
+        					<if condition="true" negCondition="true">
+        						<task>
+        							<action name="displayMsgForFailedInsert" type="alert">
+        								<message>Required table [employee_wages_case2] hasn't been created. Please execute this step again.</message>
+        							</action>
+        						</task>
+        						<task>
+        							<setActionReturn>false</setActionReturn>
+        						</task>
+        					</if>
+        				</action> 
+        			</task>
+        		</if>
+        		<if condition="true">
+        			<task>
+        				<action name="checkForInsert" type="serverAction">
+        					<parameterList>
+                    			<parameter name="action" type="serverAction">
+                    				<value>checkForObject</value>
+                    			</parameter>
+                    			<parameter name="objectType" type="raw">
+                    				<value>table</value>
+                    			</parameter>
+                    			<parameter name="object[schema]" type="constant">
+                    				<value>SCHEMA</value>
+                    			</parameter>
+                    			<parameter name="object[table]" type="fixed">
+                    				<value>employee_wages_case3</value>
+                    			</parameter>
+        					</parameterList>
+        					<if condition="true" negCondition="true">
+        						<task>
+        							<action name="displayMsgForFailedInsert" type="alert">
+        								<message>Required table [employee_wages_case3] hasn't been created. Please execute this step again.</message>
+        							</action>
+        						</task>
+        						<task>
+        							<setActionReturn>false</setActionReturn>
+        						</task>
+        					</if>
+        				</action> 
+        			</task>
+        		</if>
+        		<if condition="true">
+        			<task>
+        				<action name="checkForInsert" type="serverAction">
+        					<parameterList>
+                    			<parameter name="action" type="serverAction">
+                    				<value>checkForObject</value>
+                    			</parameter>
+                    			<parameter name="objectType" type="raw">
+                    				<value>table</value>
+                    			</parameter>
+                    			<parameter name="object[schema]" type="constant">
+                    				<value>SCHEMA</value>
+                    			</parameter>
+                    			<parameter name="object[table]" type="fixed">
+                    				<value>employee_wages_case4</value>
+                    			</parameter>
+        					</parameterList>
+        					<if condition="true" negCondition="true">
+        						<task>
+        							<action name="displayMsgForFailedInsert" type="alert">
+        								<message>Required table [employee_wages_case4] hasn't been created. Please execute this step again.</message>
+        							</action>
+        						</task>
+        						<task>
+        							<setActionReturn>false</setActionReturn>
+        						</task>
+        					</if>
+        				</action> 
+        			</task>
+        		</if>
+        		<if condition="true">
+        			<task>
+        				<action name="checkForInsert" type="serverAction">
+        					<parameterList>
+                    			<parameter name="action" type="serverAction">
+                    				<value>checkForObject</value>
+                    			</parameter>
+                    			<parameter name="objectType" type="raw">
+                    				<value>table</value>
+                    			</parameter>
+                    			<parameter name="object[schema]" type="constant">
+                    				<value>SCHEMA</value>
+                    			</parameter>
+                    			<parameter name="object[table]" type="fixed">
+                    				<value>employee_wages_case5</value>
+                    			</parameter>
+        					</parameterList>
+        					<if condition="true" negCondition="true">
+        						<task>
+        							<action name="displayMsgForFailedInsert" type="alert">
+        								<message>Required table [employee_wages_case5] hasn't been created. Please execute this step again.</message>
+        							</action>
+        						</task>
+        						<task>
+        							<setActionReturn>false</setActionReturn>
+        						</task>
+        					</if>
+        				</action> 
+        			</task>
+        		</if>
+        		<if condition="true">
+        			<task>
+        				<action name="checkForInsert" type="serverAction">
+        					<parameterList>
+        						<parameter name="action" type="fixed">
+        							<value>checkForRow</value>
+        						</parameter>
+        						<parameter name="schema" type="constant">
+        							<value>SCHEMA</value>
+        						</parameter>
+        						<parameter name="name" type="fixed">
+        							<value>tax_rate</value>
+        						</parameter>
+        					</parameterList>
+        					<if condition="true" negCondition="true">
+        						<task>
+        							<action name="displayMsgForFailedInsert" type="alert">
+        								<message>Data hasn't been inserted in the table. Please try this step again.</message>
+        							</action>
+        						</task>
+        						<task>
+        							<setActionReturn>false</setActionReturn>
+        						</task>
+        					</if>
+        				</action> 
+        			</task>
+        		</if>
+        	</entryAction>
+            <exitAction />
+            <contentFile>03_CreateTriggerUDFProcedure.html</contentFile>
+        	<SQLFile>02_CreateTriggerUDFProcedure.sql</SQLFile>
+        	<SQLExecutionOptions blob="false" clob="false" commitPerStmt="true" cursor="forward" dbclob="false" numRowReturned="100" termChar="#" xml="false" />
+        </page>
+        
+        <page name="Compare performance" type="general">
+        	<entryAction name="checkForFunction" type="serverAction">
+        		<parameterList>
+        			<parameter name="action" type="serverAction">
+        				<value>checkForObject</value>
+        			</parameter>
+        			<parameter name="objectType" type="raw">
+        				<value>function</value>
+        			</parameter>
+        			<parameter name="object[schema]" type="constant">
+        				<value>SCHEMA</value>
+        			</parameter>
+        			<parameter name="object[function]" type="fixed">
+        				<value>tax_payment</value>
+        			</parameter>
+        		</parameterList>
+        		<if condition="false">
+        			<task>
+        				<action name="displayMsgForFailedCreation" type="alert">
+        					<message>Required function [tax_payment] hasn't been created. Please try again.</message>
+        				</action>
+        			</task>
+        			<task>
+        				<setActionReturn>false</setActionReturn>
+        			</task>
+        		</if>
+                <if condition="true">
+                	<action name="checkForFunction" type="serverAction">
+                		<parameterList>
+                			<parameter name="action" type="serverAction">
+                				<value>checkForObject</value>
+                			</parameter>
+                			<parameter name="objectType" type="raw">
+                				<value>trigger</value>
+                			</parameter>
+                			<parameter name="object[schema]" type="constant">
+                				<value>SCHEMA</value>
+                			</parameter>
+                			<parameter name="object[trigger]" type="fixed">
+                				<value>check_taxes_no_external_functions_used</value>
+                			</parameter>
+                		</parameterList>
+                		<if condition="false">
+                			<task>
+                				<action name="displayMsgForFailedCreation" type="alert">
+                					<message>Required trigger [check_taxes_no_external_functions_used] hasn't been created. Please try again.</message>
+                				</action>
+                			</task>
+                			<task>
+                				<setActionReturn>false</setActionReturn>
+                			</task>
+                		</if>
+                    </action>
+                </if>
+                <if condition="true">
+                	<action name="checkForFunction" type="serverAction">
+                		<parameterList>
+                			<parameter name="action" type="serverAction">
+                				<value>checkForObject</value>
+                			</parameter>
+                			<parameter name="objectType" type="raw">
+                				<value>trigger</value>
+                			</parameter>
+                			<parameter name="object[schema]" type="constant">
+                				<value>SCHEMA</value>
+                			</parameter>
+                			<parameter name="object[trigger]" type="fixed">
+                				<value>check_taxes_use_external_function</value>
+                			</parameter>
+                		</parameterList>
+                		<if condition="false">
+                			<task>
+                				<action name="displayMsgForFailedCreation" type="alert">
+                					<message>Required trigger [check_taxes_use_external_function] hasn't been created. Please try again.</message>
+                				</action>
+                			</task>
+                			<task>
+                				<setActionReturn>false</setActionReturn>
+                			</task>
+                		</if>
+                    </action>
+                </if>
+                <if condition="true">
+                	<action name="checkForFunction" type="serverAction">
+                		<parameterList>
+                			<parameter name="action" type="serverAction">
+                				<value>checkForObject</value>
+                			</parameter>
+                			<parameter name="objectType" type="raw">
+                				<value>procedure</value>
+                			</parameter>
+                			<parameter name="object[schema]" type="constant">
+                				<value>SCHEMA</value>
+                			</parameter>
+                			<parameter name="object[procedure]" type="fixed">
+                				<value>check_taxes_use_external_function</value>
+                			</parameter>
+                		</parameterList>
+                		<if condition="false">
+                			<task>
+                				<action name="displayMsgForFailedCreation" type="alert">
+                					<message>Required procedure [check_taxes_no_external_functions_used] hasn't been created. Please try again.</message>
+                				</action>
+                			</task>
+                			<task>
+                				<setActionReturn>false</setActionReturn>
+                			</task>
+                		</if>
+                    </action>
+                </if>
+                <if condition="true">
+                	<action name="checkForFunction" type="serverAction">
+                		<parameterList>
+                			<parameter name="action" type="serverAction">
+                				<value>checkForObject</value>
+                			</parameter>
+                			<parameter name="objectType" type="raw">
+                				<value>procedure</value>
+                			</parameter>
+                			<parameter name="object[schema]" type="constant">
+                				<value>SCHEMA</value>
+                			</parameter>
+                			<parameter name="object[trigger]" type="fixed">
+                				<value>procedure</value>
+                			</parameter>
+                		</parameterList>
+                		<if condition="false">
+                			<task>
+                				<action name="displayMsgForFailedCreation" type="alert">
+                					<message>Required procedure [check_taxes_use_external_function] hasn't been created. Please try again.</message>
+                				</action>
+                			</task>
+                			<task>
+                				<setActionReturn>false</setActionReturn>
+                			</task>
+                		</if>
+                    </action>
+                </if>
+
+
+
+            </entryAction>
+
+            <exitAction />
+        	<loadActionScriptFile>01_insertAndGraph.xml</loadActionScriptFile>
+            <contentFile>04_ComparePerformance.html</contentFile>
+        </page>
+</pageList>
+</tutorial>

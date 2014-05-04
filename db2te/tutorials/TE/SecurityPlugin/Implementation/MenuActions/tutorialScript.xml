@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tutorial name="Implementation: Menus with Actions" autoCloseWindowsInRightStage="true" autoClearAdhocResults="true">
+	<!--flowRestriction>forwardexploration</flowRestriction-->
+	<pageList>
+		
+		<page name="Menus with Actions: Creating menus with actions prior to loading the page" type="general">
+			<contentFile>menuItemViewLoadPre.html</contentFile>
+			<SQLFile>blank.sql</SQLFile>
+		</page>
+		
+		<page name="Menus with Actions: Checking for number of rows" type="general">
+			<contentFile>menuItemViewLoad6.html</contentFile>
+			<autoLoadLink>
+				<pageWindow target="tabledef" raiseToTop="y">
+					<panel name="top" PrimaryContainer="true">
+		   				<link type="other" target="_self" window="_self" connectionRequired="y">
+							<address>
+								?BASE_DIRECTORY?/other/menuItemViewLoad6.html
+							</address>
+						</link>
+					</panel>
+				</pageWindow>
+			</autoLoadLink>
+		</page>		
+		<page name="Menus with Actions: Checking for number of rows (cont)" type="general">
+			<contentFile>menuItemViewLoad7.html</contentFile>
+			<autoLoadLink>
+				<pageWindow target="tabledef" raiseToTop="y">
+					<panel name="top" PrimaryContainer="true">
+		   				<link type="other" target="_self" window="_self" connectionRequired="y">
+							<address>
+								?BASE_DIRECTORY?/other/menuItemViewLoad7.html
+							</address>
+						</link>
+					</panel>
+				</pageWindow>
+			</autoLoadLink>
+		</page>
+		<page name="Menus with Actions: Checking for an object" type="general">
+			<contentFile>menuItemViewLoad8.html</contentFile>
+			<autoLoadLink>
+				<pageWindow target="tabledef" raiseToTop="y">
+					<panel name="top" PrimaryContainer="true">
+		   				<link type="other" target="_self" window="_self" connectionRequired="y">
+							<address>
+								?BASE_DIRECTORY?/other/menuItemViewLoad8.html
+							</address>
+						</link>
+					</panel>
+				</pageWindow>
+			</autoLoadLink>
+		</page>	
+		<page name="Menus with Actions: Checking for an object (cont)" type="general">
+			<contentFile>menuItemViewLoad9.html</contentFile>
+			<autoLoadLink>
+				<pageWindow target="tabledef" raiseToTop="y">
+					<panel name="top" PrimaryContainer="true">
+		   				<link type="other" target="_self" window="_self" connectionRequired="y">
+							<address>
+								?BASE_DIRECTORY?/other/menuItemViewLoad9.html
+							</address>
+						</link>
+					</panel>
+				</pageWindow>
+			</autoLoadLink>
+		</page>	
+		
+		<page name="Menus with Actions: Reload the modified menu and test it" type="general">
+			<contentFile>viewYourWorkMenus2.html</contentFile>
+			<SQLFile>blank.sql</SQLFile>
+		</page>
+	</pageList>	
+</tutorial>

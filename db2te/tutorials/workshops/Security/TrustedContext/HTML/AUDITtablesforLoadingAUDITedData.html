@@ -1,0 +1,17 @@
+<BR><H2>Audit data</H2><HR><P>
+<p><b>You must log into the database as Pat before proceeding with this page.</b></p>
+
+<P>The exported data from the audit logs either can be reviewed as a plain text or
+loaded into database tables and then analyzed using the SQL statements.
+Before we can work with the audit data in database tables, we need to create the
+actual tables to hold the data.</p>
+
+<P>From data security perspective, these tables should be created in a separate
+schema and access to these tables should be restricted only to authorized users,
+for example, users holding SYSADM or SECADM authorities.</p>
+
+<h4>Operation</h4><br>
+<p>The SECADM creates the audit tables to hold the audited data.</p>
+
+<h4>Solution</h4><br>
+DB2 audit tables are ready to populate them with audited data.

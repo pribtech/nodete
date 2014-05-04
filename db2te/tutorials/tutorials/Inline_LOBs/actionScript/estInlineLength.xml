@@ -1,0 +1,116 @@
+<actionPanel>
+	<flow>controlled</flow>
+	<useConsole>yes</useConsole>
+	<overview>
+	</overview>
+	<taskList>
+		<task name="Is LOB inlined?">
+			<discription>
+				This determines the number of rows with inlined LOB and non-inlined LOB in the INLINELOBDATA table.
+			</discription>
+			<action name="estLOB" type="blank">
+				<followOnAction condition="true" compareOn="true" compareOnType="raw">
+					<task>
+						<echo>Determining number of rows with inlined LOBs and non-inlined LOBs...</echo>
+						<action name="isInlined" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="raw">
+									<value>executeSQL</value>
+								</parameter>
+								<parameter name="SQL" type="fixed">
+									<value>
+										SELECT COUNT(*) FROM ?SCHEMA?.INLINELOBDATA WHERE ADMIN_IS_INLINED(VIEW_TEXT) = 1
+									</value>
+								</parameter>
+							</parameterList>
+							<followOnAction condition="true">
+								<task>
+									<assignSharedConstant name="num_Inline_rows" type="returnObject">
+										<value>
+											isInlined.returnValue.resultSet.0.data.0.0
+										</value>
+									</assignSharedConstant>
+									<echo> Number of rows with LOBs that are inlined: ?num_Inline_rows? </echo>
+								</task>
+							</followOnAction>
+							<followOnAction condition="false">
+								<task>
+									<echo>Error in run!</echo>
+								</task>
+							</followOnAction>
+						</action>
+						<action name="isNotInlined" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="raw">
+									<value>executeSQL</value>
+								</parameter>
+								<parameter name="SQL" type="fixed">
+									<value>
+										SELECT COUNT(*) FROM ?SCHEMA?.INLINELOBDATA WHERE ADMIN_IS_INLINED(VIEW_TEXT) = 0
+									</value>
+								</parameter>
+							</parameterList>
+							<followOnAction condition="true">
+								<task>
+									<assignSharedConstant name="num_LOB_rows" type="returnObject">
+										<value>
+											isNotInlined.returnValue.resultSet.0.data.0.0
+										</value>
+									</assignSharedConstant>
+									<echo> Number of rows with LOBs that are not inlined: ?num_LOB_rows? </echo>
+									<echo> </echo>
+								</task>
+							</followOnAction>
+							<followOnAction condition="false">
+								<task>
+									<echo>Error in run!</echo>
+								</task>
+							</followOnAction>
+						</action>							
+					</task>
+				</followOnAction>
+			</action>
+		</task>
+		<task name="Estimate maximum LOB inline length">
+			<discription>
+				This estimates the maximum LOB inline length.
+			</discription>
+			<action name="estLOB" type="blank">
+				<followOnAction condition="true" compareOn="true" compareOnType="raw">
+					<task>
+						<echo> Estimating LOB inline length... </echo>
+						<action name="estLOBLength" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="raw">
+									<value>executeSQL</value>
+								</parameter>
+								<parameter name="SQL" type="fixed">
+									<value>
+										SELECT MAX(ADMIN_EST_INLINE_LENGTH(VIEW_TEXT)) FROM ?SCHEMA?.INLINELOBDATA
+									</value>
+								</parameter>
+							</parameterList>
+							<followOnAction condition="true">
+								<task>
+									<assignSharedConstant name="maxLength" type="returnObject">
+										<value>
+											estLOBLength.returnValue.resultSet.0.data.0.0
+										</value>
+									</assignSharedConstant>
+									<echo> Estimate maximum LOB inline length: ?maxLength? </echo>
+									<echo></echo>
+								</task>
+							</followOnAction>							
+							<followOnAction condition="false">
+								<task>
+									<echo>Error in run!</echo>
+								</task>
+							</followOnAction>						
+						</action>							
+					</task>
+				</followOnAction>
+			</action>
+		</task>
+	</taskList>
+</actionPanel>
+

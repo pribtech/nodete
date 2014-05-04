@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tutorial name="Using Extended Aggregates for Service Classes">
+    <FlowRestriction>forwardExploration</FlowRestriction>
+    <closeAction />
+    <openAction />
+    <globalCodeHighlightOptions highlightCode = "true" />
+    <WMDConfig>
+		<load>
+			<workload name="WLM_tutorial_wl1" profile="wmd/workload_profile_WLM_tutorial_wl1" taskset="wmd/task_set_WLM_tutorial_wl1"/>
+			<workload name="WLM_tutorial_wl2" profile="wmd/workload_profile_WLM_tutorial_wl2" taskset="wmd/task_set_WLM_tutorial_wl2"/>
+		</load>
+	</WMDConfig>
+    <pageList>
+    	<page name="Using Extended Aggregates for Service Classes" type="intro">
+            <entryAction/>
+            <exitAction name="checkForSchema" type="serverAction">
+                <parameterList>
+                    <parameter name="action" type="fixed">
+                        <value>checkForObject</value>
+                    </parameter>
+                    <parameter name="objectType" type="fixed">
+                        <value>table</value>
+                    </parameter>
+                    <parameter name="object[schema]" type="fixed">
+                        <value>WLMTUT</value>
+                    </parameter>
+                    <parameter name="object[table]" type="fixed">
+                        <value>SALES</value>
+                    </parameter>
+                </parameterList>
+                <followOnAction condition="0">
+                    <task>
+                        <action name="createBaseTable" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="fixed">
+									<value>createTablesFromSampleDatabase</value>
+								</parameter>
+								<parameter name="schema" type="fixed">
+									<value>WLMTUT</value>
+								</parameter>
+								<parameter name="table" type="fixed">
+									<value>SALES</value>
+								</parameter>
+							</parameterList>
+							<followOnAction condition="false">
+								<task>
+									<action name="" type="alert">
+										<message>Failed to create base table for initial setup of tutorial. Cannot proceed further with tutorial.</message>
+									</action>
+								</task>
+								<task>
+									<setActionReturn>false</setActionReturn>
+								</task>
+							</followOnAction>
+							<followOnAction condition="[0-9][0-9]*">
+								<task>
+									<assignLocalParameter name="ERROR_MESSAGE" type="returnObject">
+										<value>createBaseTable.returnValue</value>
+									</assignLocalParameter>
+									<alert>Failed to create base tables for initial setup of tutorial. Cannot proceed further with tutorial. SQLMSG: ?ERROR_MESSAGE?</alert>
+								</task>
+								<task>
+									<setActionReturn>false</setActionReturn>
+								</task>
+							</followOnAction>
+						</action>
+					</task>
+				</followOnAction>        
+            </exitAction>
+            <contentFile>UsingExtendedAggregatesForServiceClasses.html</contentFile>
+            <autoLoadLink>
+                <pageWindow target="informationWindow">
+                    <panel name="main">
+                        <URL>https://publib.boulder.ibm.com/infocenter/db2luw/v9r7/topic/com.ibm.db2.luw.admin.wlm.doc/doc/c0052789.html?noframes=true</URL>
+                    </panel>
+                </pageWindow>
+            </autoLoadLink>
+        </page>
+        <page name="Drop and re-create event monitor (optional)" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>CreateEventMonitor.html</contentFile>
+            <SQLFile>CreateEventMonitor.sql</SQLFile>
+            <SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar="#"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+        </page>
+    	<page name="Create views for viewing histogram statistics" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>CreateViewsForViewingHistogramStatistics.html</contentFile>
+            <SQLFile>CreateViewsForViewingHistogramStatistics.sql</SQLFile>
+        </page><page name="Create view 2: HISTOGRAMSERVICECLASSES" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>CreateView2.html</contentFile>
+            <SQLFile>CreateView2.sql</SQLFile>
+        </page> <page name="Create view 3: HISTOGRAMTIMES" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>CreateView3.html</contentFile>
+            <SQLFile>CreateView3.sql</SQLFile>
+        </page> <page name="Create view 4: HISTOGRAMS" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>CreateView4.html</contentFile>
+            <SQLFile>CreateView4.sql</SQLFile>
+        </page> 
+        <page name="Turn on collection of histograms" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>TurnOnCollectionOfHistograms.html</contentFile>
+           <SQLFile>TurnOnCollectionOfHistograms.sql</SQLFile>
+        </page><page name="Activate statistics event monitor" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>ActivateStatisticsEventMonitor.html</contentFile>
+            <SQLFile>ActivateStatisticsEventMonitor.sql</SQLFile>
+        </page><page name="Run Activity 1" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>RunActivity1.html</contentFile>
+            <autoLoadLink>
+				<pageWindow target="_blank">
+            	<splitPane direction="h" splitPercent="0.5">
+						<topPane>
+							<panel name="Workload Driver" PrimaryContainer="true" panelTitle="Workload Driver">
+								<link type="action" target="main" window="mainLayout" connectionRequired="y">
+									<parameterList>
+										<parameter name="action">WMDTutorialBootstrap</parameter>
+										<parameter name="workload">WLM_tutorial_wl1</parameter>
+										<parameter name="controlerID">?TUTORIAL_ID?</parameter>
+										<parameter name="controlerType">?TUTORIAL_TYPE?</parameter>
+										<parameter name="connection">active</parameter>
+										<parameter name="compactView">true</parameter>
+									</parameterList>
+								</link>
+							</panel>
+						</topPane>
+						<bottomPane>
+							<panel name="Workload Driver 2">
+								<link type="action" target="workload" window="mainLayout" connectionRequired="y">
+									<parameterList>
+										<parameter name="action">WMDTutorialBootstrap</parameter>
+										<parameter name="workload">WLM_tutorial_wl2</parameter>
+										<parameter name="controlerID">?TUTORIAL_ID?</parameter>
+										<parameter name="controlerType">?TUTORIAL_TYPE?</parameter>
+										<parameter name="connection">active</parameter>
+										<parameter name="compactView">true</parameter>
+									</parameterList>
+								</link>
+							</panel>
+						</bottomPane>
+					</splitPane>
+				</pageWindow>
+				</autoLoadLink>
+        </page> <page name="Collect and Reset Statistics" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>CollectAndResetStats.html</contentFile>
+            <SQLFile>CollectAndResetStats.sql</SQLFile>
+        </page><page name="Run Activity 2" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>RunActivity2.html</contentFile>
+            <autoLoadLink>
+				<pageWindow target="_blank">
+						
+							<panel name="Workload Driver 2">
+								<link type="action" target="workload" window="mainLayout" connectionRequired="y">
+									<parameterList>
+										<parameter name="action">WMDTutorialBootstrap</parameter>
+										<parameter name="workload">WLM_tutorial_wl1</parameter>
+										<parameter name="controlerID">?TUTORIAL_ID?</parameter>
+										<parameter name="controlerType">?TUTORIAL_TYPE?</parameter>
+										<parameter name="connection">active</parameter>
+										<parameter name="compactView">true</parameter>
+									</parameterList>
+								</link>
+							</panel>
+				</pageWindow>
+				</autoLoadLink>
+        </page><page name="Collect and Reset Statistics" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>CollectAndResetStats.html</contentFile>
+            <SQLFile>CollectAndResetStats.sql</SQLFile>
+        </page><page name="Run Activity 3" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>RunActivity3.html</contentFile>
+            <autoLoadLink>
+				<pageWindow target="_blank">
+            	<splitPane direction="h" splitPercent="0.5">
+						<topPane>
+							<panel name="Workload Driver" PrimaryContainer="true" panelTitle="Workload Driver">
+								<link type="action" target="main" window="mainLayout" connectionRequired="y">
+									<parameterList>
+										<parameter name="action">WMDTutorialBootstrap</parameter>
+										<parameter name="workload">WLM_tutorial_wl1</parameter>
+										<parameter name="controlerID">?TUTORIAL_ID?</parameter>
+										<parameter name="controlerType">?TUTORIAL_TYPE?</parameter>
+										<parameter name="connection">active</parameter>
+										<parameter name="compactView">true</parameter>
+									</parameterList>
+								</link>
+							</panel>
+						</topPane>
+						<bottomPane>
+							<panel name="Workload Driver 2">
+								<link type="action" target="workload" window="mainLayout" connectionRequired="y">
+									<parameterList>
+										<parameter name="action">WMDTutorialBootstrap</parameter>
+										<parameter name="workload">WLM_tutorial_wl2</parameter>
+										<parameter name="controlerID">?TUTORIAL_ID?</parameter>
+										<parameter name="controlerType">?TUTORIAL_TYPE?</parameter>
+										<parameter name="connection">active</parameter>
+										<parameter name="compactView">true</parameter>
+									</parameterList>
+								</link>
+							</panel>
+						</bottomPane>
+					</splitPane>
+				</pageWindow>
+				</autoLoadLink>
+        </page><page name="Collect and Reset Statistics" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>CollectAndResetStats.html</contentFile>
+            <SQLFile>CollectAndResetStats.sql</SQLFile>
+        </page><page name="Available Histograms" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>AvailableHistograms.html</contentFile>
+            <SQLFile>AvailableHistograms.sql</SQLFile>
+        </page><page name="Service Classes for Histograms" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>ServiceClassesForHistograms.html</contentFile>
+            <SQLFile>ServiceClassesForHistograms.sql</SQLFile>
+        </page><page name="Times when Histograms were collected" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>TimesWhenHistogramsWereCollected.html</contentFile>
+            <SQLFile>TimesWhenHistogramsWereCollected.sql</SQLFile>
+        </page><page name="Histogram Data" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>HistogramData.html</contentFile>
+            <SQLFile>HistogramData.sql</SQLFile>
+        </page><page name="Interpreting Histogram Output" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>InterpretingHistogramOutput.html</contentFile>
+            <SQLFile>InterpretingHistogramOutput.sql</SQLFile>
+        </page><page name="Reset for next task" type="last">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>ResetForNextTask.html</contentFile>
+            <SQLFile>ResetForNextTask.sql</SQLFile>
+            <SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar=";"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+        </page></pageList>
+</tutorial>

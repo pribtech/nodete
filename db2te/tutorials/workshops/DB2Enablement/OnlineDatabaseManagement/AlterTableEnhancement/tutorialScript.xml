@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tutorial name="Alter Table Enhancements" useLongAdHoc="true">
+	<flowRestriction>forwardExploration</flowRestriction>
+	<globalCodeHighlightOptions  highlightCode="true" />
+	<closeAction/>
+	<openAction/>
+	<pageList>
+		<page name="Reduce Database Downtime" type="intro">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>Introduction.html</contentFile>
+			<SQLFile>PreSQL.SQL</SQLFile>
+			<SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar="@"
+			cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+		</page>
+		
+		<page name="Online Database Maintenance" type="intro">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>OnlineDatabaseMaintenance.html</contentFile>
+			<autoLoadLink>
+				<pageWindow target="informationWindow">
+					<panel name="main" PrimaryContainer="true">
+						<URL>http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.wn.doc/doc/c0023230.html</URL>
+					</panel>
+				</pageWindow>
+			</autoLoadLink>
+		</page>		
+		
+		<page name="Alter Table:- Add Column" type="general">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>AlterTableAddColumn.html</contentFile>
+			<SQLFile> AlterTableAddColumn.SQL </SQLFile>
+			<SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar="@"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+			<codeHighlightOptions highlightCode="true">
+				<changedHighlightTokens>
+					<text>ALTER TABLE</text>
+					<text>ADD COLUMN</text>
+					<text>UPDATE</text>
+					<text>REORG TABLE</text>
+					<text>SELECT colname, typename FROM syscat.columns</text>
+					<text>SELECT</text>
+				</changedHighlightTokens>	
+			</codeHighlightOptions>
+		</page>
+
+		<page name="Alter Table:- Rename Column" type="general">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>AlterTableRenameColumn.html</contentFile>
+			<SQLFile> AlterTableRenameColumn.SQL </SQLFile>
+			<SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar="@"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+			<codeHighlightOptions highlightCode="true">
+				<changedHighlightTokens>
+					<text>ALTER TABLE</text>
+					<text>RENAME COLUMN</text>
+					<text>SELECT colname, typename FROM syscat.columns</text>
+					<text>SELECT</text>					
+				</changedHighlightTokens>
+			</codeHighlightOptions>
+		</page>
+
+		<page name="Alter Table:- Change Column Type" type="general">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>AlterTableChangeColumnType.html</contentFile>
+			<SQLFile>AlterTableRenameColumnType.SQL </SQLFile>
+			<SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar="@"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+			<codeHighlightOptions highlightCode="true">
+				<changedHighlightTokens>
+					<text>ALTER TABLE</text>
+					<text>ALTER COLUMN</text>
+					<text>SET DATA TYPE</text>
+					<text>ADMIN_REVALIDATE_DB_OBJECTS</text>
+				</changedHighlightTokens>
+			</codeHighlightOptions>
+		</page>
+
+		<page name="Alter Table:- Drop Column" type="general">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>AlterTableDropColumn.html</contentFile>
+			<SQLFile> AlterTableDropColumn.SQL </SQLFile>
+			<SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar="@"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+			<codeHighlightOptions highlightCode="true">
+				<changedHighlightTokens>
+					<text>ALTER TABLE</text>
+					<text>DROP COLUMN</text>
+				</changedHighlightTokens>
+			</codeHighlightOptions>
+		</page>		
+	</pageList>
+</tutorial>

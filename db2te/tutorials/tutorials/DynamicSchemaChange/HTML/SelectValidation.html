@@ -1,0 +1,28 @@
+<p>
+	Run the statements to the right.
+</p>
+<p>
+	<b>Scenario: Changes to the Lucky formula</b><BR>
+	After some time, the company decides that employees with lower salary should have 
+	better chances of winning the "Lucky Employee" award and employees that have a salary higher than $100,000 
+	should not be eligible to participate in this contest. 
+	The database administrator is given a task of modifying the DB2 objects to reflect the new rules.
+</p>
+<p>
+	The administrator decides to change the LUCKY_NAME function to take each employees salary into consideration, but still selecting a random winner.
+	He also decides to change the FULLTIME_EMPLOYEE view to remove the employees with high salary.
+	Instead of dropping and recreating the LUCKY_NAME function and FULLTIME_EMPLOYEE view from scratch, 
+	the administrator knows to take advantage	of the new CREATE OR REPLACE syntax to do the job.
+</p>
+<p>
+	You should see successful completion messages in the lower right panel.
+	As well, there should be a second tab open with a result set.
+</p>
+<p>
+	<b>Summary</b>
+</p>
+<p>
+	Thanks to the new dynamic schema change feature, administrators
+	have the power to manipulate their tables on the fly without having to worry
+	about any views or functions that use those tables.
+</p>

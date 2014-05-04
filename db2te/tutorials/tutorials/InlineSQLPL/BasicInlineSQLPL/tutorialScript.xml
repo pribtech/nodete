@@ -1,0 +1,94 @@
+<tutorial name="Basic Inline SQL-PL">
+	<globalCodeHighlightOptions highlightCode="true" /><flowRestriction>Free</flowRestriction>
+    <closeAction />
+    <openAction />
+    <pageList>
+    	<page name="Basic Inline SQL-PL" type="intro">
+            <entryAction />
+            <exitAction />
+            <contentFile>01_BasicInlineSQL-PL.html</contentFile>
+			<autoLoadLink>
+				<pageWindow target="informationWindow">
+					<panel PrimaryContainer="true" name="main">
+						<URL>http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.apdv.sqlpl.doc/doc/c0011916.html</URL>
+					</panel>
+				</pageWindow>
+			</autoLoadLink>            
+        </page>
+        
+   <page name="Declaring Variables" type="general">
+            <entryAction />
+            <exitAction />
+            <contentFile>02_DECLAREVariables.html</contentFile>
+        	<SQLFile>01_DECLAREVariables.sql</SQLFile>
+        	<SQLExecutionOptions blob="false" clob="false" commitPerStmt="true" cursor="forward" dbclob="false" numRowReturned="100" termChar="#" xml="false" />
+   </page>
+        <page name="Using SET to assign values to variables" type="general">
+            <entryAction />
+            <exitAction />
+            <contentFile>03_SETStatement.html</contentFile>
+        	<SQLFile>02_SETStatement.sql</SQLFile>
+        	<SQLExecutionOptions blob="false" clob="false" commitPerStmt="true" cursor="forward" dbclob="false" numRowReturned="100" termChar="#" xml="false" />
+        </page>
+        <page name="Using SET to assign SQL results to variables" type="general">
+            <entryAction />
+            <exitAction />
+        	<contentFile>04_SETStatementWithSQL.html</contentFile>
+        	<SQLFile>03_SETStatementWithSQL.sql</SQLFile>
+        	<SQLExecutionOptions blob="false" clob="false" commitPerStmt="true" cursor="forward" dbclob="false" numRowReturned="100" termChar="#" xml="false" />
+        </page><page name="Using IF-THEN-ELSE blocks" type="general">
+            <entryAction />
+            <exitAction />
+            <contentFile>05_IF-THEN-ELSEBlocks.html</contentFile>
+        	<SQLFile>04_IF-THEN-ELSEBlocks.sql</SQLFile>
+        	<SQLExecutionOptions blob="false" clob="false" commitPerStmt="true" cursor="forward" dbclob="false" numRowReturned="100" termChar="#" xml="false" />
+        </page><page name="Using SQL in IF-THEN-ELSE blocks" type="general">
+            <entryAction />
+            <exitAction />
+            <contentFile>06_SQLInIF-THENBlocks.html</contentFile>
+        	<SQLFile>05_SQLInIF-THENBlocks.sql</SQLFile>
+        	<SQLExecutionOptions blob="false" clob="false" commitPerStmt="true" cursor="forward" dbclob="false" numRowReturned="100" termChar="#" xml="false" />
+        </page><page name="Using ELSEIF blocks" type="general">
+            <entryAction />
+            <exitAction />
+            <contentFile>07_ELSEIFBlocks.html</contentFile>
+        	<SQLFile>06_ELSEIFBlocks.sql</SQLFile>
+        	<SQLExecutionOptions blob="false" clob="false" commitPerStmt="true" cursor="forward" dbclob="false" numRowReturned="100" termChar="#" xml="false" />
+        </page><page name="Using WHILE loops" type="general">
+            <entryAction />
+            <exitAction />
+            <contentFile>08_WHILELoop.html</contentFile>
+        	<SQLFile>07_WHILELoop.sql</SQLFile>
+        	<SQLExecutionOptions blob="false" clob="false" commitPerStmt="true" cursor="forward" dbclob="false" numRowReturned="100" termChar="#" xml="false" />
+        </page><page name="Breaking out of a WHILE loop" type="general">
+            <entryAction />
+            <exitAction />
+            <contentFile>09_BreakingOutOfAWHILELoop.html</contentFile>
+        	<SQLFile>08_BreakingOutOfAWHILELoop.sql</SQLFile>
+        	<SQLExecutionOptions blob="false" clob="false" commitPerStmt="true" cursor="forward" dbclob="false" numRowReturned="100" termChar="#" xml="false" />
+        </page><page name="Continuing to next cycle in a WHILE loop" type="general">
+            <entryAction />
+            <exitAction />
+            <contentFile>10_ITERATEInAWHILELoop.html</contentFile>
+        	<SQLFile>09_ITERATEInAWHILELoop.sql</SQLFile>
+        	<SQLExecutionOptions blob="false" clob="false" commitPerStmt="true" cursor="forward" dbclob="false" numRowReturned="100" termChar="#" xml="false" />
+        </page><page name="Using FOR Loop" type="general">
+            <entryAction />
+            <exitAction />
+            <contentFile>11_FORLoop.html</contentFile>
+        	<SQLFile>10_FORLoop.sql</SQLFile>
+        	<SQLExecutionOptions blob="false" clob="false" commitPerStmt="true" cursor="forward" dbclob="false" numRowReturned="100" termChar="#" xml="false" />
+        </page><page name="Using GET DIAGNOSTICS" type="general">
+            <entryAction />
+            <exitAction />
+            <contentFile>12_GETDIAGNOSTICS.html</contentFile>
+        	<SQLFile>11_GETDIAGNOSTICS.sql</SQLFile>
+        	<SQLExecutionOptions blob="false" clob="false" commitPerStmt="true" cursor="forward" dbclob="false" numRowReturned="100" termChar="#" xml="false" />
+        </page><page name="Checking for the errors" type="last">
+            <entryAction />
+            <exitAction />
+            <contentFile>13_ReturningAnErrorCode.html</contentFile>
+        	<SQLFile>12_ReturningAnErrorCode.sql</SQLFile>
+        	<SQLExecutionOptions blob="false" clob="false" commitPerStmt="true" cursor="forward" dbclob="false" numRowReturned="100" termChar="#" xml="false" />
+        </page></pageList>
+</tutorial>

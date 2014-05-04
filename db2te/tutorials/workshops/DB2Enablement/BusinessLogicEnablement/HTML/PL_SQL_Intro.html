@@ -1,0 +1,26 @@
+<H2>Step 2: Business Logic (PL/SQL) Enablement</H2><HR>
+<p>
+After successfully enabling other vendor database schema to DB2, the second step is to <br><b class="sourceChange">enable PL/SQL packages</b>.
+</p>
+<BR><H2><B>Business Problem: Encapsulating business logic written in different procedural languages in database application objects</B></H2><HR>
+<p>Newer application models, application programming interfaces, and programming languages are often designed for reduce cost of creating and maintaining applications in n-tier architectures. Practical experience, however, has shown that isolating all business logic in the application layer does not necessary perform well. People soon realize that use of database application objects such as stored procedures, packages, user defined functions, and triggers bring them many benefits.</p>
+
+<img width="340" src="?BASE_DIRECTORY?HTML/BLogic.PNG"/><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+<p>Database application objects can be written in many programming languages: SQL procedural language, C, JAVA, or .NET. Among all, SQL procedural language is the most popular one because it combines the ease of data access of SQL with the flow control structures of a simple programming language.</p>
+
+<p>All major database vendors support their own versions of an SQL procedural language. DB2's language is called DB2 SQL PL (SQL Procedural Language). Oracle's language is called PL/SQL (Procedural Language/Structured Query Language).</p>
+
+
+<BR><H2><B>DB2 SQL PL and PL/SQL support</B></H2><HR>
+<p>DB2 9.7 makes both SQL PL and PL/SQL both first class procedural languages in the database engine. No translation of PL/SQL is required. The source code remains as it is in the schema catalog just like SQL PL.</p>
+
+<img width="350" src="?BASE_DIRECTORY?HTML/PLSQL.PNG"/><br><br><br><br><br><br><br><br>
+
+<p>After the DB2 registry variable is set, <b>DB2_COMPATIBILITY_VECTOR=ORA</b>, PL/SQL code can be compiled and executed using any of the following DB2 interfaces:
+<ul>
+<li> <a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v9r7/topic/com.ibm.db2.luw.admin.cmd.doc/doc/r0010409.html');">DB2 command line processor (CLP)</a></li>
+<li> <a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v9r7/topic/com.ibm.swg.im.dbclient.clpplus.doc/doc/t0053826.html');">DB2 CLPPlus </a></li>
+<li> <a onclick="OpenURLInFloatingWindow('http://www.ibm.com/developerworks/data/library/techarticle/dm-0906optimdeveloper/');">IBM Optim Development Studio</a></li>
+</ul>
+<br>

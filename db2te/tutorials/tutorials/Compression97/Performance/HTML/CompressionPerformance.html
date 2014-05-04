@@ -1,0 +1,35 @@
+<b><font color="red">License Compliance:<br>Customers need to purchase the Storage Optimization Feature before they are entitled to use compression </font></b>
+<p>
+<p>
+Compression saves disk space. Everyone agrees on that. However, despite what you may intuatively think, using DB2 deep compression doesn't mean slower performance.
+Since compressing and uncompressing data uses processing cycles it is a common assumption that compressing your data slows performance. </p>
+<p>
+The truth is that often the cost of moving pages of data takes far more resources than uncompressing information.
+<p>When the DB2 data server compresses rows it does so on disk, in the log and in the buffer pools.
+So you can reduce the amount of data moving through the entire system by using deep compression, and consequently improve performance.
+</p>
+<p>This tutorial will create the same table of data twice, one uncompressed the other compressed.
+The table simulates an OLAP table with lots of repetitive information that achieves a high compression ratio.
+The tests we run will demonstrate how compressed tables can actually run faster, in some cases dramatically faster.
+Of course your results will depend on your system. The more that IO is a bottleneck the better your results.
+</p>
+<img src="http://publib.boulder.ibm.com/infocenter/db2luw/v9r7/topic/com.ibm.dwe.sqw.luw.doc/graphics/ccompressiondictionary1.gif" width=500>
+
+<p></p>
+<h4>Pre-requisites</h4>
+<p>#1 In order to execute some system-defined DB2 routines, the userID you use to connect to the database must have DBADM authority. For example, issue the following in a DB2 Command Window to grant DBADM on SAMPLE to user <i>db2admin</i>.</p>
+<pre><code>
+DB2 CONNECT to SAMPLE
+DB2 GRANT DBADM ON DATABASE TO db2admin
+</code></pre>
+<br>
+<p>#2 This tutorial uses the database snapshot monitors to show the underlying read and write activities. Before you begin, make sure you have turned on all the monitor switches.</p>
+
+<p>From the Technology Explorer, go to the menu View > Configurations > Monitor Settings. For each of the monitor switches, click the Change icon and enter 'ON'. You should see the 'Deferred Value' is set to 'ON'. You need to restart DB2 so that the changes can take effect.</p>
+
+<p>#3 The snapshot monitor accumulates information for a database only while it is active. You need to start the database with the ACTIVATE DATABASE command. For example, issue the following in a DB2 Command Window to activate the SAMPLE database.</p>
+
+<pre><code>
+DB2 ACTIVATE DATABASE SAMPLE
+</code></pre>
+

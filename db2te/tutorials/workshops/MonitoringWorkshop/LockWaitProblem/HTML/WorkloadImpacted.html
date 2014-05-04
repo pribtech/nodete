@@ -1,0 +1,36 @@
+<h2>Tutorial Flow:</h2><hr>
+<ul>
+<li>Determining the problem category (completed)</li>
+<li>Performing detailed diagnosis of the problems (completed)</li>
+<li class="sourceCopiedFrom">Identifying the scope of the SQL statements involved</li>
+</ul>
+
+<BR><h2>Identifying the scope of the SQL statements involved</h2><hr>
+<p><B><font color=grey>As a part of the initial diagnoses, the database administrator typically tries to determine the part of the user workload impacted by the slowdown. To get this information, the database administrator gets more detailed information of the locks and tries to get the information about the SQLs/tables/applications involved in locking. To get this information, the database administrator uses <B><CODE>MONREPORT.LOCKWAIT</CODE></B> report. The report contains information about each lock wait currently in progress. </font></B></P>
+
+<BR>
+<h4>Monitoring report used</h4>
+<ul>
+<li><B><CODE>MONREPORT.LOCKWAIT</CODE></B></li>
+<li><a onclick="OpenURLInFloatingWindow('?BASE_DIRECTORY?/HTML/sample_lockWaitMetrics.html');">Sample output</a> of the report</li>
+</ul>
+
+<br><BR>
+<h4>Report highlights</h4>
+Pay attention to <code>'Part 1 - Summary of current lock waits'</code> and <code>'Part 2: Details for each current lock wait'</code> sections.
+
+<br><BR>
+<h4>Results</h4>
+You can notice many instances as:
+<PRE>
+  LOCK_OBJECT_TYPE     = ROW                                                       
+  TABSCHEMA            = TRIPATHY                                                  
+  TABNAME              = INVENTORY                                                 
+  ROWID                = <numeric value>                                                         
+  LOCK_STATUS          = W                                                         
+</PRE><BR>
+This shows that the table <CODE>(TABNAME)</CODE> involved in the locks is <CODE>INVENTORY</CODE>. You can also see the <CODE>AGENT_ID</CODE> which is holding lock in <code>'Lock holder current agents'</code> section. The same row in the <CODE>INVENTORY</CODE> table is being requested by other applications introducing lockwait in the system.
+
+<BR><BR>
+<h4>Conclusion</h4>
+Multiple applications are waiting for the same lock.

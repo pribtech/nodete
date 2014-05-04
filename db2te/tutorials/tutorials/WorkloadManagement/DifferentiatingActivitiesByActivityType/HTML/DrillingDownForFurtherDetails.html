@@ -1,0 +1,25 @@
+To drill down further and get some additional information about each
+  activity such as the activity text and what service class it ran
+  under, you can perform a query similar to this one.
+  <p>
+  Notice that one of the activities has an 
+  <a onclick="OpenURLInFloatingWindow
+('http://publib.boulder.ibm.com/infocenter/db2luw/v9r7/topic/com.ibm.db2.luw.messages.sql.doc/doc/msql04712n.html?noframes=true');">
+SQLCODE of -4712.</a> This
+  indicates execution of the activity was stopped due to a threshold
+  violation. The threshold defined for the stop_large_read_wa work
+  action will prevent any SELECT statement with an estimated cost of
+  greater than 10000 from executing.
+  </p>
+  <p>
+  Load activities (not including load from a
+  cursor) do not have an entry in the activity statement event monitor
+  table  (activitystmt_db2activities table) which explains why there is
+  no record for the single load activity that is run by the work1.db2
+  script in the output shown in the last query above.  The reason for
+  this is that load activities are not SQL statements.  For load from
+  cursor activities, there is an entry for the cursor statement in the
+  activity statement event monitor table because the cursor itself is a
+  separate activity. There is an entry for all load activities in the
+  activity event monitor table (activity_db2activities). 
+  </p>

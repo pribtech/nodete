@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	Copyright IBM Corp. 2007 All rights reserved.
+	
+	Licensed under the Apache License, Version 2.0 (the "License");
+	you may not use this file except in compliance with the License.
+	You may obtain a copy of the License at
+	
+	http://www.apache.org/licenses/LICENSE-2.0
+	
+	Unless required by applicable law or agreed to in writing, software
+	distributed under the License is distributed on an "AS IS" BASIS,
+	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	See the License for the specific language governing permissions and
+	limitations under the License.
+-->
+<tutorial name="Alter table enhancements">
+	<flowRestriction>forwardexploration</flowRestriction>
+	<closeAction/>
+	<openAction/>
+	<pageList>
+		<page name="Introduction" type="intro">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>AlterTableEnhancements.html</contentFile>
+			<autoLoadLink>
+				<pageWindow target="informationWindow">
+					<panel name="main" PrimaryContainer="true">
+						<URL>http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.admin.gui.doc/doc/t0021584.html?noframes=true</URL>
+					</panel>
+				</pageWindow>
+			</autoLoadLink>
+		</page>
+
+		<page name="Create sample table" type="general">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>CreateSampleTable.html</contentFile>
+			<SQLFile>CreateSampleTable.sql</SQLFile>
+		</page>
+		<page name="Insert some values into the Employee table" type="general">
+			<entryAction name="checkForTable" type="serverAction">
+				<parameterList>
+					<parameter name="action" type="serverAction">
+						<value>checkForObject</value>
+					</parameter>
+					<parameter name="objectType" type="raw">
+						<value>table</value>
+					</parameter>
+					<parameter name="object[schema]" type="constant">
+						<value>SCHEMA</value>
+					</parameter>
+					<parameter name="object[table]" type="fixed">
+						<value>employee_salary</value>
+					</parameter>
+				</parameterList>
+				<followOnAction condition="false">
+					<task>
+						<action name="displayMsgForFailedInsert" type="alert">
+							<message>Table required hasn't been created. Please execute this step
+								again.</message>
+						</action>
+					</task>
+					<task>
+						<setActionReturn>false</setActionReturn>
+					</task>
+				</followOnAction>
+			</entryAction>
+			<exitAction/>
+			<contentFile>InsertSomeValuesIntoTheEmployeeTable.html</contentFile>
+			<SQLFile>InsertSomeValuesIntoTheEmployeeTable.sql</SQLFile>
+		</page>
+		<page name="Turn off integrity checking" type="general">
+			<entryAction name="checkForInsert" type="serverAction">
+				<parameterList>
+					<parameter name="action" type="fixed">
+						<value>checkForRow</value>
+					</parameter>
+					<parameter name="schema" type="constant">
+						<value>SCHEMA</value>
+					</parameter>
+					<parameter name="name" type="fixed">
+						<value>employee_salary</value>
+					</parameter>
+				</parameterList>
+				<followOnAction condition="true" negCondition="true">
+					<task>
+						<action name="displayMsgForFailedInsert" type="alert">
+							<message>Data hasn't been inserted in the table. Please try this step
+								again.</message>
+						</action>
+					</task>
+					<task>
+						<setActionReturn>false</setActionReturn>
+					</task>
+				</followOnAction>
+			</entryAction>
+			<exitAction/>
+			<contentFile>TurnOffIntegrityChecking.html</contentFile>
+			<SQLFile>TurnOffIntegrityChecking.sql</SQLFile>
+		</page>
+		<page name="Alter the salary table" type="general">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>AlterTheSalaryTable.html</contentFile>
+			<SQLFile>AlterTheSalaryTable.sql</SQLFile>
+		</page>
+		<page name="Turn integrity checking back on and recompute generated columns" type="last">
+			<entryAction name="checkForInsert" type="serverAction">
+				<parameterList>
+					<parameter name="action" type="fixed">
+						<value>checkForRow</value>
+					</parameter>
+					<parameter name="schema" type="constant">
+						<value>SCHEMA</value>
+					</parameter>
+					<parameter name="name" type="fixed">
+						<value>employee_salary</value>
+					</parameter>
+					<parameter name="minrow" type="fixed">
+						<value>4</value>
+					</parameter>
+				</parameterList>
+				<followOnAction condition="true" negCondition="true">
+					<task>
+						<action name="displayMsgForFailedInsert" type="alert">
+							<message>New Data hasn't been inserted in the table. Please try this
+								step again.</message>
+						</action>
+					</task>
+					<task>
+						<setActionReturn>false</setActionReturn>
+					</task>
+				</followOnAction>
+			</entryAction>
+			<exitAction/>
+			<contentFile>TurnIntegrityCheckingBackOnAndRecomputeGeneratedColumns.html</contentFile>
+			<SQLFile>TurnIntegrityCheckingBackOnAndRecomputeGeneratedColumns.sql</SQLFile>
+		</page>
+	</pageList>
+</tutorial>

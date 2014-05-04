@@ -1,0 +1,28 @@
+<br><h2>Set up Row Level LBAC</h2><hr><br>
+<p><b>You must log into the database as Pat before proceeding with this page.</b></p>
+In previous pages, SECADM Pat created security labels. Now, the security labels need to be granted to users accordingly so that they can access their own regional <font face="courier">'dailysales'</font> table data.
+
+<br><br>
+<h4>Operation</h4><br>
+<p>SECADM grants security labels to users with the GRANT SECURITY LABEL command.</p>
+
+<h4>Solution</h4><br>
+<p>The query results in the right pane show that SECADM Pat grants: <br>
+<ul>
+<li>Security label 'NORTH' is granted to Betcy <img src="?BASE_DIRECTORY?HTML/betcy.png" />, employee of customer service department.</li><br><br><br><br>
+<li>Security label 'SOUTH' is granted to Bob <img src="?BASE_DIRECTORY?HTML/bob.png" />, employee of customer service department.</li><br><br><br><br>
+
+<li>Security label 'EAST' is granted to Sam <img src="?BASE_DIRECTORY?HTML/sam.png" />, employee of customer service department.</li><br><br><br><br>
+
+<li>Security label 'WEST' is granted to Nick <img src="?BASE_DIRECTORY?HTML/Nick.png" />, employee of customer service department.</li><br><br><br><br>
+
+<li>Security label 'CENTRAL' is granted to Joe <img src="?BASE_DIRECTORY?HTML/Joe.png" />, general manager for NORTH and SOUTH regions.</li><br><br><br><br>
+
+<li>Security label 'COASTAL' is granted to Sue <img src="?BASE_DIRECTORY?HTML/sue.png" />, general manager for EAST and WEST regions.</li><br><br><br><br>
+
+<li>Security label 'SALES_ORGANIZATION' is granted to the Mark <img src="?BASE_DIRECTORY?HTML/Mark.png" />, Vice President of J.K.Avro superstore.</li>
+</ul><br><br>
+
+
+<br><br>When a user tries to access <font face="courier">'dailysales'</font> table data, DB2 compares the user's security label with the row's security label. Access will be given to the user only if the security labels match. Otherwise an empty result set will be returned.
+</p>

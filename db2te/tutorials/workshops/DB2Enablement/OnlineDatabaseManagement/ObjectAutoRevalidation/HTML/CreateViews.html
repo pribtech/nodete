@@ -1,0 +1,32 @@
+<H2>Scenario: Random Customer</H2><HR>
+<p class="sourceChange"><b>
+	After the end of each month company runs a bonanza gift for its registered customers. 
+	Each month their application will randomly pick the name of one registered customer to be rewarded with a bonanza gift.<BR><BR></b></p>
+<p>	
+	To support the above, the following database objects are required:
+	<UL>
+	<LI>The company keeps the ids, names, type and phone number information of all its customers in the CUSTOMER table.</LI>
+	<LI>There is a view called <b>REGISTERED_CUSTOMERS</b> that contains the records of all registered customers only.</LI>
+	<LI>There is another view called <b>MONTH_CUSTOMER</b> defined on top of REGISTERED_CUSTOMERS view.  This view selects 
+		the name of random customer based on output from REGISTERED_CUSTOMERS.</LI>
+	<LI>There is a function called <b>FULL_NAME</b> that returns the full name of customer based on an customer's id.</LI>	
+</UL>
+</p>
+<BR><H2>Solution</H2><HR>	
+<p>
+	Please note the order of CREATE statements:
+	<UL><LI class="sourceCopiedFrom"><b class="sourceChange">CREATE  view MONTH_CUSTOMER</b>, even though the underlying REGISTERED_CUSTOMERS view does not exist yet.</LI>
+	<LI class="sourceCopiedFrom"><b class="sourceChange">CREATE view REGISTERED_CUSTOMERS</b> before the underlying function FULL_NAME and underlying column CUSTOMER_TYPE of base table CUSTOMER is created</LI>
+	<LI class="sourceCopiedFrom"><b class="sourceChange">CREATE Function</b> FULL_NAME to get the full name of customers.</LI>
+	<LI class="sourceCopiedFrom"><b class="sourceChange">ALTER</b> the base table CUSTOMER to add a new column CUSTOMER_TYPE to store the type of customer.</LI>
+	<LI class="sourceCopiedFrom"><b class="sourceChange">REORG</b> base table CUSTOMER.</LI>
+	<LI class="sourceCopiedFrom"><b class="sourceChange">UPDATE</b> column CUSTOMER_TYPE.</LI>
+	</UL>
+</p>
+<BR><H2>Demonstrated Features</H2><HR>
+	<BR>This demonstrates the ability of DB2 9.7 to create objects tolerant of certain errors, like a missing object.
+<p>
+	After running the SQL statements, you will see several <span style="background-color: ORANGE"><b><a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v9r7/topic/com.ibm.db2.luw.messages.sql.doc/doc/msql20480w.html');"><b>WARNING</b></b></a></span> in the Console - lower right panel.
+	Despite the warning messages, the commands did work.  Warnings were returned to inform
+	you that dependent objects have not yet been created.
+</p>

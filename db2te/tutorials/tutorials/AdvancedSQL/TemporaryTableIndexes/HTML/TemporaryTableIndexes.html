@@ -1,0 +1,84 @@
+<h1 class="topictitle1">Temporary table spaces</h1>
+<div><p>System temporary table spaces hold temporary data required by the
+database manager while performing operations such as sorts or joins. </p>
+<p>These types of operations require extra space to process the results set.
+A database must have at least one system temporary table space; by default,
+one system temporary table space called TEMPSPACE1 is created at database
+creation time. IBMTEMPGROUP is the default database partition group for this
+table space.</p>
+<p>User temporary table spaces hold temporary data from tables created with
+a <a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v9r7/topic/com.ibm.db2.luw.admin.dbobj.doc/doc/t0020127.html');">DECLARE GLOBAL TEMPORARY TABLE</a> 
+statement. To allow the definition of declared
+temporary tables, at least one user temporary table space should be created
+with the appropriate USE privileges. USE privileges are granted using the
+<a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v9r7/topic/com.ibm.db2.luw.sql.ref.doc/doc/r0003304.html');">GRANT</a>
+ statement. A user temporary table space is <em>not</em> created by default
+at database creation time.</p>
+
+<p>It is recommended that you define a single SMS temporary table space with
+a page size equal to the page size used in the majority of your regular table
+spaces. This should be suitable for typical environments and workloads. However,
+it can be advantageous to experiment with different temporary table space
+configurations and workloads. The following points should be considered:</p>
+<ul><li>Temporary tables are in most cases accessed in batches and sequentially.
+That is, a batch of rows is inserted, or a batch of sequential rows is fetched.
+Therefore, a larger page size typically results in better performance, because
+fewer logical or physical page I/O requests are required to read a given amount
+of data. This is not always the case when the average temporary table row
+size is smaller than the page size divided by 255. A maximum of 255 rows can
+exist on any page, regardless of the page size. For example, a query that
+requires a temporary table with 15-byte rows would be better served by a 4
+KB temporary table space page size, because 255 such rows can all be contained
+within a 4 KB page. An 8 KB (or larger) page size would result in at least
+4 KB (or more) bytes of wasted space on each temporary table page, and would
+not reduce the number of required I/O requests.</li>
+<li>If more than fifty percent of the regular table spaces in your database
+use the same page size, it can be advantageous to define your temporary table
+spaces with the same page size. The reason for this is that this arrangement
+enables your temporary table space to share the same buffer pool space with
+most or all of your regular table spaces. This, in turn, simplifies buffer
+pool tuning.</li>
+<li>When reorganizing a table using a temporary table space, the page size
+of the temporary table space must match that of the table. For this reason,
+you should ensure that there are temporary table spaces defined for each different
+page size used by existing tables that you may reorganize using a temporary
+table space. <p>You can also reorganize without a temporary table space by
+reorganizing the table directly in the target table space. Of course, this
+type of reorganization requires that there be extra space in the target table
+space for the reorganization process.</p>
+</li>
+<li>If you are reliant on system temporary tables in SMS system
+temporary table spaces because of your work environment, you may want to consider
+using the registry variable DB2_SMS_TRUNC_TMPTABLE_THRESH. System temporary
+tables are truncated to a file size of 0. The DB2_SMS_TRUNC_TMPTABLE_THRESH
+can be used to leave the files at a non-zero size to avoid the performance
+cost of repeated creations and truncations of the system temporary tables.
+The need for a new system temporary table would have a performance cost associated
+with it. Using this registry variable allows for leaving non-zero system temporary
+tables on the system to avoid the performance cost of repeated creations and
+truncations of system temporary tables.</li>
+<li>In general, when temporary table spaces of differing page sizes exist,
+the optimizer will choose the temporary table space whose buffer pool can
+hold the most number of rows (in most cases that means the largest buffer
+pool). In such cases, it is often wise to assign an ample buffer pool to one
+of the temporary table spaces, and leave any others with a smaller buffer
+pool. Such a buffer pool assignment will help ensure efficient utilization
+of main memory. For example, if your catalog table space uses 4 KB pages,
+and the remaining table spaces use 8 KB pages, the best temporary table space
+configuration may be a single 8 KB temporary table space with a large buffer
+pool, and a single 4 KB table space with a small buffer pool. </li>
+<li>There is generally no advantage to defining more than one temporary table
+space of any single page size.</li>
+<li>SMS is almost always a better choice than DMS for temporary table spaces
+because: <ul><li>There is more overhead in the creation of a temporary table when using
+DMS versus SMS.</li>
+
+<li>Disk space is allocated on demand in SMS, whereas it must be pre-allocated
+in DMS. Pre-allocation can be difficult: Temporary table spaces hold transient
+data that can have a very large peak storage requirement, and a much smaller
+average storage requirement. With DMS, the peak storage requirement must be
+pre-allocated, whereas with SMS, the extra disk space can be used for other
+purposes during off-peak hours.</li>
+<li>The database manager attempts to keep temporary table pages in memory,
+rather than writing them out to disk. As a result, the performance advantages
+of DMS are less significant.</li>

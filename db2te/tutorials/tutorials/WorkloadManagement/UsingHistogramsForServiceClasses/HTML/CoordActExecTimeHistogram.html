@@ -1,0 +1,9 @@
+The same query can be repeated with a histogram_type of
+  CoordActExecTime instead of CoordActLifetime. The execution time
+  histogram is expected to be similar but not identical to the lifetime
+  histogram. The reason they are different, even when there is no
+  queuing, is that execution time does not include initialization time
+  or cursor idle time, while lifetime does.
+  <p>
+  Once again, a large number of activities are counted in the first bin.
+  </p>

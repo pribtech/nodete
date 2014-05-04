@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tutorial name="Problem Scenario: Access Plan" autoCloseWindowsInRightStage="true" autoClearAdhocResults="true">
+	
+	<globalCodeHighlightOptions  highlightCode="true">
+		<addedHighlightTokens>
+			<text><![CDATA[MONREPORT]]></text>					
+		</addedHighlightTokens>
+	</globalCodeHighlightOptions>	
+	<closeAction/>
+	<openAction />
+	<pageList>
+
+		<page name="Introduction" type="general">
+			<contentFile>
+				Introduction.html
+			</contentFile>
+			<autoLoadLink>
+				<pageWindow target="informationWindow">
+					<panel name="main" PrimaryContainer="true">
+						<URL>http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.sql.rtn.doc/doc/r0053941.html</URL>
+					</panel>
+				</pageWindow>
+			</autoLoadLink>
+		</page>
+
+		<page name="Run simulation" type="general">
+			<contentFile>
+				Setup.html
+			</contentFile>
+			<SQLFile>
+				Setup.sql
+			</SQLFile>
+			<SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar=";"
+				cursor="forward" commitPerStmt="true" />
+		</page>
+		
+<page name="Troubleshooting the problem" type="general">
+			<contentFile>
+				Access_Plan_Problem.html
+			</contentFile>
+			<autoLoadLink>
+			<pageWindow target="_final">
+				<panelHeaders refreshEnabled="true"/>
+				<title>Ad Hoc</title>
+					<splitPane direction="h" splitPercent="0.7">
+						<topPane>
+							<panel name="first" overflow="hidden">
+							<link type="action" target="_self" window="_self" connectionRequired="y">
+							<parameterList>
+							<parameter name="action">ADHOC</parameter>
+							<parameter name="AdHocLong">true</parameter>
+							<parameter name="LoadSQLData"><![CDATA[
+select a.id from ?SCHEMA?.Dept_Access a,
+                 ?SCHEMA?.Dept_Access b,
+				 ?SCHEMA?.Dept_Access c,
+				 ?SCHEMA?.Dept_Access d,
+				 ?SCHEMA?.Dept_Access e 
+where a.id > 1000 and a.id < 10000 and 
+      a.id = b.id and b.id = c.id and 
+	  c.id = d.id and d.id = e.id
+
+]]>							</parameter>
+							</parameterList>
+							</link> 
+							</panel>
+						</topPane>
+						<bottomPane>
+							
+							<splitPane direction="h" splitPercent="0.4">
+								<topPane>
+								    <splitPane direction="v"  splitPercent="0.5">
+										<leftPane>
+											<panel name="DBM">
+											<panelHeaders refreshEnabled="true"/>
+											<link type="action" target="_self" window="_self" connectionRequired="y">
+											<parameterList>
+											<parameter name="table">Monitor/SummaryViews/monSVConnDynamic_AP</parameter>
+											<parameter name="action">list_table</parameter>
+											</parameterList>
+											</link>				
+											</panel>
+										</leftPane>
+										<rightPane>
+											<panel name="DB" >
+											<panelHeaders refreshEnabled="true"/>
+											<link type="action" target="_self" window="_self" connectionRequired="y">
+											<parameterList>
+											<parameter name="table">Monitor/SummaryViews/DetailedDiag</parameter>
+											<parameter name="action">list_table</parameter>
+											</parameterList>
+											</link>				
+											</panel>
+										</rightPane>
+									</splitPane>
+								</topPane>
+								<bottomPane>	
+									<panel name="DDRR">
+									<panelHeaders refreshEnabled="true"/>
+									<link type="action" target="_self" window="_self" connectionRequired="y">
+									<parameterList>
+									<parameter name="table">Monitor/SummaryViews/Result_AP</parameter>
+									<parameter name="action">list_table</parameter>
+									</parameterList>
+									</link>				
+									</panel>
+								</bottomPane>
+							</splitPane>
+						</bottomPane>
+					</splitPane>
+				</pageWindow> 
+			</autoLoadLink>
+			</page>
+	
+			<page name="Create Index" type="general">
+			<contentFile>
+				action.html
+			</contentFile>
+			<SQLFile>
+				AdminTask.sql
+			</SQLFile>
+			</page>
+		
+			<page name="Perform diagnosis after INDEX" type="general">
+			<contentFile>
+				Access_Plan_Solved.html
+			</contentFile>
+			<autoLoadLink>
+			<pageWindow target="_final">
+				<panelHeaders refreshEnabled="true"/>
+				<title>Ad Hoc</title>
+					<splitPane direction="h" splitPercent="0.5">
+					<topPane>
+						<panel name="first" overflow="hidden">
+							<link type="action" target="_self" window="_self" connectionRequired="y">
+							<parameterList>
+								<parameter name="action">ADHOC</parameter>
+								<parameter name="AdHocLong">true</parameter>
+								<parameter name="LoadSQLData"><![CDATA[
+
+
+select a.id from ?SCHEMA?.Dept_Access a,
+                 ?SCHEMA?.Dept_Access b,
+				 ?SCHEMA?.Dept_Access c,
+				 ?SCHEMA?.Dept_Access d,
+				 ?SCHEMA?.Dept_Access e 
+where a.id > 1000 and a.id < 10000 and 
+      a.id = b.id and b.id = c.id and 
+	  c.id = d.id and d.id = e.id
+
+
+
+]]></parameter>
+							</parameterList>
+							</link> 
+						</panel>
+					</topPane>
+					<bottomPane>
+						<panel name="DB_RR" >
+											<panelHeaders refreshEnabled="true"/>
+											<link type="action" target="_self" window="_self" connectionRequired="y">
+											<parameterList>
+											<parameter name="table">Monitor/SummaryViews/DetailedDiag</parameter>
+											<parameter name="action">list_table</parameter>
+											</parameterList>
+											</link>				
+											</panel>
+					</bottomPane>
+			</splitPane>
+				</pageWindow> 
+			</autoLoadLink>
+			</page>
+		
+
+		<page name="Conclusion" type="general">
+			<contentFile>
+				Conclusion.html
+			</contentFile>
+			<autoLoadLink>
+				<pageWindow target="informationWindow">
+					<panel name="main" PrimaryContainer="true">
+						<URL>?BASE_DIRECTORY?/HTML/GetAccessPlan.html</URL>
+					</panel>
+				</pageWindow>
+			</autoLoadLink>
+		</page>
+	</pageList>
+</tutorial>

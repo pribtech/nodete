@@ -1,0 +1,24 @@
+<workload_profile think_time='50ms' actions_per_connection="-1" set_sequence="sequential">
+
+	  <title>WLM_tutorial_wl2</title>
+    <connection_attributes number_of_connections="1"/>
+    <!-- either con file or profile, if both exist, use last one -->
+    <connection file='connection_profile1.xml'/>
+    <connection_profile/>
+    
+    <!-- either task file or task_set, if both exist, use last one -->
+    <task file='task_WLM_tutorial_wl2.xml'/>
+    <task_set/>
+	
+	<distribution>
+		<group name="write" balance="50"/>
+		<group name="read" balance="50"/>
+	</distribution>
+	
+    <metrics>
+        <display type="all"/>
+        <report interval="1"/>
+        <history length="30"/>
+    </metrics>
+
+</workload_profile>

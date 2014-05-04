@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tutorial name="Using the Tutorial Template" closeWindowsInRightStage="true" clearAdhocResults="true">
+	<flowRestriction>free</flowRestriction>
+	<closeAction/>
+	<openAction/>
+	<pageList>
+
+		<page name="Introduction" type="intro">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>intro.html</contentFile>
+			<autoLoadLink/>
+		</page>
+
+		<page name="Setup Your Tutorial" type="general">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>page2.html</contentFile>
+			<autoLoadLink/>
+		</page>
+
+		<page name="Modify the Tutorial Name" type="general">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>page3.html</contentFile>
+			<autoLoadLink>
+				<pageWindow target="tabledef" raiseToTop="y">
+					<panel name="top" PrimaryContainer="true">
+		   				<link type="other" target="_self" window="_self" connectionRequired="y">
+							<address>
+								?BASE_DIRECTORY?/other/editTutorialName.html
+							</address>
+						</link>
+					</panel>
+				</pageWindow>
+			</autoLoadLink>
+		</page>
+
+		<page name="Modify the Tutorial Title" type="general">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>page4.html</contentFile>
+			<autoLoadLink>
+				<pageWindow target="tabledef" raiseToTop="y">
+					<panel name="top" PrimaryContainer="true">
+		   				<link type="other" target="_self" window="_self" connectionRequired="y">
+							<address>
+								?BASE_DIRECTORY?/other/editTutorialTitle.html
+							</address>
+						</link>
+					</panel>
+				</pageWindow>
+			</autoLoadLink>
+		</page>
+
+		<page name="Edit the Instructional Content" type="general">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>page5.html</contentFile>
+			<autoLoadLink>
+				<pageWindow target="tabledef" raiseToTop="y">
+					<panel name="top" PrimaryContainer="true">
+		   				<link type="other" target="_self" window="_self" connectionRequired="y">
+							<address>
+								?BASE_DIRECTORY?/other/editInstructionalContent.html
+							</address>
+						</link>
+					</panel>
+				</pageWindow>
+			</autoLoadLink>
+		</page>
+
+		<page name="General Tutorial Framework Information" type="general">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>page6.html</contentFile>
+			<autoLoadLink/>
+		</page>
+
+	</pageList>
+</tutorial>

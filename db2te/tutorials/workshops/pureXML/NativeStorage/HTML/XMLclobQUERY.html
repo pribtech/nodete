@@ -1,0 +1,49 @@
+<H4>Benefits of quering XML nodes from XML columns</H4>
+<P align="justify">
+<p>
+Since XML documents are already parsed at insert time, they are stored and ready to be queried in tree structure of nodes. This characteristic provides a much higher search and extraction performance. </p>
+
+<p>Although there may be potential overhead of XML documents being parsed at insert time, it is often outweighed by the fact that XML columns are buffered in the buffer pools while large CLOB columns are not.</p>
+
+
+<h4>Drawbacks of quering XML nodes from CLOB columns</h4>
+<p>Without XML parsing, the structure of the XML documents is entirely ignored. This precludes the database from performing intelligent and efficient search and extract operations on the stored text objects. The only remedy
+is to invoke the XML parser at query execution time to "look into" the XML documents such that search conditions can be evaluated. </p>
+
+<h4>Query performance comparison</h4>
+<P align="justify">
+On the right pane, click the buttons in order to obtain an average query times for XML node data stored in XML columns and CLOB columns. You should see a better query performance with XML columns.
+
+
+
+<!--
+
+<BR>
+With XML data, stored as XML, the searching and extraction operations are performed without XML parsing.
+This gives a significant performance benefit, as the XML parsing overhead is incurred at insert time.
+However, document retrieval from an XML column requires serialization, that is, converting the parsed XML format
+back into its original textual representation. This overhead does not exist when reading full
+XML documents from a CLOB where the XML is already stored in text form.
+<BR><BR>
+-->
+<!--
+CLOB storage offers good performance for insert and full document retrieval, typically
+at the cost of poor search and extract performance. The XML data type in DB2 9 sacrifices some of the
+insert and retrieval performance for much higher search and extract performance. This is a reasonable
+trade-off because business data is more often searched and analyzed than inserted. Typically, there is
+one insert and multiple searches. Additionally, the potential overhead of XML columns is often outweighed
+by the fact that XML columns are buffered in the buffer pool while CLOB columns are not.
+-->
+
+<!--
+Avoiding XML parsing at insert time can be a performance benefit,
+especially in CPU-bound systems. However, without XML parsing, the structure of the XML
+documents is entirely ignored. This precludes the database from performing intelligent
+and efficient search and extract operations on the stored text objects. The only remedy
+is to invoke the XML parser at query execution time to "look into" the XML documents such
+that search conditions can be evaluated. The significant CPU consumption of XML parsing
+often leads to low search and extract performance. Only a blind full document retrieval,
+which again ignores the internal XML structure, can quickly read XML documents from CLOB
+columns.
+<BR><BR>
+-->

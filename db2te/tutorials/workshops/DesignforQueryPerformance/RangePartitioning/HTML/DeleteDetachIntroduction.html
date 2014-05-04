@@ -1,0 +1,26 @@
+<BR><H2><B>Problem Statement</B></H2><HR>
+<p>In a Data Warehouse environment, very old data needs to be eliminated periodically for storage purposes. The key challenges in such a scenario include :</p>
+<ol>
+<li>Huge volumes of scattered data</li>
+<li>Time consuming operation affecting other operations in the system</li>
+</ol>
+
+<BR><H2><B>Solution : <a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v9r7/topic/com.ibm.db2.luw.admin.partition.doc/doc/t0021576.html');">Detach Partition</B></H2><HR></a>
+
+<BR>
+<h4>What is Detach ?</h4>
+<p>Detach, in case of Range Partitioned tables enables a specific range of data to be quickly and easily detached.</p>
+
+<H2><B>Operation</B></H2><HR>
+<p>This tutorial demonstrates benefits of <b>detach over delete</b> operation thus highlighting the advantages of range partitioning 
+in providing an easy way to detach a data partition. A graph comparing the time taken for delete vs detach is generated.</p>
+
+<H2><B>Benefits of Detach vs Delete</B></H2><HR>
+<p>
+<ol>
+<li>Reduced time taken for detach as compared to delete owing to data clustered in a specific range</li>
+<li>Lesser I/O overhead in case of delete</li>
+</ol>
+</p>
+
+

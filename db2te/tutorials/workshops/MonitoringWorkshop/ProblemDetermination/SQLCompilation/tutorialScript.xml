@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tutorial name="Problem Scenario: SQL Compilation" autoCloseWindowsInRightStage="true" autoClearAdhocResults="true">
+	
+	<globalCodeHighlightOptions  highlightCode="true">
+		<addedHighlightTokens>
+			<text><![CDATA[MONREPORT]]></text>					
+		</addedHighlightTokens>
+	</globalCodeHighlightOptions>	
+	<closeAction/>
+	<openAction />
+	<pageList>
+
+		<page name="Introduction" type="general">
+			<contentFile>
+				Introduction.html
+			</contentFile>
+			<autoLoadLink>
+				<pageWindow target="informationWindow">
+					<panel name="main" PrimaryContainer="true">
+						<URL>http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.sql.rtn.doc/doc/r0053941.html</URL>
+					</panel>
+				</pageWindow>
+			</autoLoadLink>
+		</page>
+
+		<page name="Run simulation" type="general">
+			<contentFile>
+				simulation.html
+			</contentFile>
+			<autoLoadLink>
+				<pageWindow target="informationWindow">
+					<panel name="main" PrimaryContainer="true">
+						<URL>?BASE_DIRECTORY?/HTML/SQLCompilation.html</URL>
+					</panel>
+				</pageWindow>
+			</autoLoadLink>
+		</page>
+		
+		<page name="Identify the problem category" type="general">
+			<contentFile>
+				ProblemCategory.html
+			</contentFile>
+			<autoLoadLink>
+				<pageWindow target="informationWindow" raiseToTop="y">
+					<panelHeaders refreshEnabled="true"/>
+					<splitPane direction="h">
+						<topPane>
+							<panel name="DBM">
+								<panelHeaders refreshEnabled="true"/>
+									<link type="action" target="_self" window="_self" connectionRequired="y">
+										<parameterList>
+											<parameter name="table">Monitor/SummaryViews/monSVConnDynamic_AP</parameter>
+											<parameter name="action">list_table</parameter>
+										</parameterList>
+									</link>				
+								</panel>
+						</topPane>
+						<bottomPane>
+							<panel name="detail"/>
+						</bottomPane>
+					</splitPane>
+				</pageWindow>
+			</autoLoadLink>
+		</page>
+
+		
+		<page name="Perform detailed diagnosis" type="general">
+			<contentFile>
+				DetailedDiagnosis.html
+			</contentFile>
+			<autoLoadLink>
+				<pageWindow target="informationWindow" raiseToTop="y">
+					<panelHeaders refreshEnabled="true"/>
+					<splitPane direction="h">
+						<topPane>
+							<panel name="DBM">
+								<panelHeaders refreshEnabled="true"/>
+									<link type="action" target="_self" window="_self" connectionRequired="y">
+										<parameterList>
+											<parameter name="table">Monitor/SummaryViews/SQLComp_DD</parameter>
+											<parameter name="action">list_table</parameter>
+										</parameterList>
+									</link>				
+								</panel>
+						</topPane>
+						<bottomPane>
+							<panel name="detail"/>
+						</bottomPane>
+					</splitPane>
+				</pageWindow>
+			</autoLoadLink>
+		</page>
+		
+		<page name="Perform detailed Analysis" type="general">
+			<contentFile>
+				DetailedAnalysis.html
+			</contentFile>
+			<autoLoadLink>
+				<pageWindow target="informationWindow" raiseToTop="y">
+					<panelHeaders refreshEnabled="true"/>
+					<splitPane direction="h">
+						<topPane>
+							<panel name="DBM">
+								<panelHeaders refreshEnabled="true"/>
+									<link type="action" target="_self" window="_self" connectionRequired="y">
+										<parameterList>
+											<parameter name="table">Monitor/SummaryViews/SQLComp_DA</parameter>
+											<parameter name="action">list_table</parameter>
+										</parameterList>
+									</link>				
+								</panel>
+						</topPane>
+						<bottomPane>
+							<panel name="detail"/>
+						</bottomPane>
+					</splitPane>
+				</pageWindow>
+			</autoLoadLink>
+		</page>
+		
+		<page name="Impacting workload" type="general">
+			<contentFile>
+				Conclude.html
+			</contentFile>
+			<autoLoadLink>
+				<pageWindow target="informationWindow" raiseToTop="y">
+					<panelHeaders refreshEnabled="true"/>
+					<splitPane direction="h">
+						<topPane>
+							<panel name="DBM">
+								<panelHeaders refreshEnabled="true"/>
+									<link type="action" target="_self" window="_self" connectionRequired="y">
+										<parameterList>
+											<parameter name="table">Monitor/SummaryViews/SQLComp_R</parameter>
+											<parameter name="action">list_table</parameter>
+										</parameterList>
+									</link>				
+								</panel>
+						</topPane>
+						<bottomPane>
+							<panel name="detail"/>
+						</bottomPane>
+					</splitPane>
+				</pageWindow>
+			</autoLoadLink>
+		</page>
+
+
+		<page name="Run Simulation with parameter markers" type="general">
+			<contentFile>
+				Simulation_NP.html
+			</contentFile>
+			<autoLoadLink>
+				<pageWindow target="informationWindow">
+					<panel name="main" PrimaryContainer="true">
+						<URL>?BASE_DIRECTORY?/HTML/SQLCompilation_NP.html</URL>
+					</panel>
+				</pageWindow>
+			</autoLoadLink>
+		</page>
+		
+		<page name="Conclusion" type="general">
+			<contentFile>
+				Conclusion.html
+			</contentFile>
+			<autoLoadLink>
+				<pageWindow target="informationWindow" raiseToTop="y">
+					<panelHeaders refreshEnabled="true"/>
+					<splitPane direction="h">
+						<topPane>
+							<panel name="DBM">
+								<panelHeaders refreshEnabled="true"/>
+									<link type="action" target="_self" window="_self" connectionRequired="y">
+										<parameterList>
+											<parameter name="table">Monitor/SummaryViews/SQLComp_DA</parameter>
+											<parameter name="action">list_table</parameter>
+										</parameterList>
+									</link>				
+								</panel>
+						</topPane>
+						<bottomPane>
+							<panel name="detail"/>
+						</bottomPane>
+					</splitPane>
+				</pageWindow>
+			</autoLoadLink>
+		</page>
+				
+	</pageList>
+</tutorial>

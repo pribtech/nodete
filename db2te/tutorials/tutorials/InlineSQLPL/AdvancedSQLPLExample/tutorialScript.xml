@@ -1,0 +1,69 @@
+<tutorial name="AdvancedSQLPLExample">
+    <globalCodeHighlightOptions highlightCode="true" /><flowRestriction>forwardexploration</flowRestriction>
+    <closeAction />
+    <openAction />
+    <pageList>
+       
+    <page name="Create Transactions and Invoice Tables" type="general">
+            <entryAction />
+            <exitAction />
+            <contentFile>01_ExtendedSQL-PLExamples.html</contentFile>
+            <SQLFile>01_CreateTables.sql</SQLFile>
+    </page>
+
+<page name="SQL-PL to update the Invoice table based on the transaction table" type="last">
+            <entryAction name="checkForInsert" type="serverAction">
+                <parameterList>
+                    <parameter name="action" type="fixed">
+                        <value>checkForRow</value>
+                    </parameter>
+                    <parameter name="schema" type="constant">
+                        <value>SCHEMA</value>
+                    </parameter>
+                    <parameter name="name" type="fixed">
+                        <value>transactions</value>
+                    </parameter>
+                </parameterList>
+                <if condition="true" negCondition="true">
+                    <task>
+                        <action name="displayMsgForFailedInsert" type="alert">
+                            <message>Data hasn't been inserted in the table. Please try this step again.</message>
+                        </action>
+                    </task>
+                    <task>
+                        <setActionReturn>false</setActionReturn>
+                    </task>
+
+                    <if condition="false">
+                        <task name="checkForInsert" type="serverAction">
+                            <parameterList>
+                                <parameter name="action" type="fixed">
+                                    <value>checkForRow</value>
+                                </parameter>
+                                <parameter name="schema" type="constant">
+                                    <value>SCHEMA</value>
+                                </parameter>
+                                <parameter name="name" type="fixed">
+                                    <value>invoice</value>
+                                </parameter>
+                            </parameterList>
+                            <followOnAction condition="true" negCondition="true">
+                                <task>
+                                    <action name="displayMsgForFailedInsert" type="alert">
+                                        <message>Data hasn't been inserted in the table. Please try this step again.</message>
+                                    </action>
+                                </task>
+                                <task>
+                                    <setActionReturn>false</setActionReturn>
+                                </task>
+                            </followOnAction>
+                        </task> 
+                    </if>
+                </if>
+            </entryAction> 
+            <exitAction />
+            <contentFile>02_SQL-PLToUpdateTheInvoiceTableBasedOnTheTransactionTable.html</contentFile>
+            <SQLFile>02_SQL-PLToUpdateTheInvoiceTableBasedOnTheTransactionTable.sql</SQLFile>
+            <SQLExecutionOptions blob="false" clob="false" commitPerStmt="true" cursor="forward" dbclob="false" numRowReturned="100" termChar="#" xml="false" />
+        </page></pageList>
+</tutorial>

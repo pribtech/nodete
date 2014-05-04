@@ -1,0 +1,6 @@
+<p>Run the statements in the Ad Hoc command window to the right and review the results.</p>
+<p>Indexes are created on the compressed and uncompressed tables. 
+By updating the table and index statistics and looking at the SYSCAT.INDEXES catalog table you can see the results.	
+<p>The index on the compressed table is automatically compressed, while the index on the uncompressed table is not compressed.
+You can override this automatic decision by adding the COMPRESS (NO/YES) clause to the end of the CREATE INDEX statement.</p>
+

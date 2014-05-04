@@ -1,0 +1,31 @@
+<p>The introductory page is now complete and the next page that needs to be create for this tutorial is a page to create some tables and fill them with data to perform the joins against. </p>
+
+<p>In the new 'page' there is a new tag 'SQLFile'. This tag will load the contents of the given file located in the SQL directory of the tutorial into the Ah Hoc frame work.</p>
+
+<p>This file is similar to a script that you would run through the command processor on the command line. Basically it contains a series of SQL statements to run terminated by a termination character (';' by default).</p>
+
+<p>Thing to note about running SQL in a tutorial. First if you click over to the Ad hoc SQL tab, then click on the Options menu. You should see that the default schema is filled in with unique identifier. This is to ensure that each tutorial that is being run exists in its own sandbox. Second within your SQL script when the tutorial framework loads them you can use parameter replacement to substitute in saved global tutorial parameters and TE global constants. </p>
+
+<p>Base global tutorial parameters that you have access to are as follows:
+<ul><li>SCHEMA<ul><li>the schema that the tutorial is running under</li></ul>
+</li><li>TUTORIAL_NAME<ul><li>the name of the tutorial</li></ul>
+</li><li>BASE_DIRECTORY<ul><li>a relative directory on the web server where the tutorial is located (Remember web server not database server you can not use this to do loads)</li></ul>
+</li></ul>
+</p>
+<p>To preform a parameter substitution use '?<parameter name>?', if you wanted to substitute the value of SCHEMA into an SQL statement you could use the following:</p>
+<p>
+<pre><code>SELECT * FROM SYSCAT.TABLES WHERE TABSCHEMA = '?SCHEMA?';</code></pre>
+</p>
+<p>Steps to complete:
+<ul>
+<li>Copy the contents of tab 'tutorialScript.xml' located to the right into the file 'tutorialScript.xml'.
+</li><li>Save the file, but do not close it
+</li><li>Create a file called 'tableSetup.html' in the folder './tutorials/tableJoins/HTML'
+</li><li>Copy the contents of tab 'tableSetup.html' located to the right into the new created file.
+</li><li>Save & close the file
+</li><li>Create a file called 'tableSetup.sql' in the folder './tutorials/tableJoins/SQL'
+</li><li>Copy the contents of tab 'tableSetup.sql' located to the right into the new created file.
+</li><li>Save & close the file
+</li><li>Reload the 'About table joins' tutorial you should now have and be able to navigate to page two.
+</li></ul>
+</p>

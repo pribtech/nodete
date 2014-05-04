@@ -1,0 +1,1 @@
+create index session.t1index on session.t1(store);

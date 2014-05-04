@@ -1,0 +1,22 @@
+<h2>Tutorial Flow:</h2><hr>
+<br>
+<ul>
+<li>Determining the problem category (completed)</li>
+<li class="sourceCopiedFrom">Performing detailed diagnosis of the problem</li>
+<li>Identifying the scope of the SQL statements involved</li>
+</ul>
+<BR>
+<H2>Performing a detailed diagnosis<HR></H2>
+<BR>
+<P align=justify>
+<a class="sourceAdd">Recall that the database administrator has localized the slowdown is in SQL statement processing.  
+A common approach is to explain the SQL statement and analyze the access plan. The database administrator 
+looks at the monitoring report generated to get a quick, initial indication of why the statements are so expensive.</a><BR>
+<H2>Few monitor elements useful for analyzing expensive access plan operations<HR></H2>
+<BR>
+<ul>
+<li><B>ROWS_READ/ROWS_RETURNED <I>(Worse than normal)</I></B> :: This often indicates that indexes are not being used extensively.</li><BR>
+<li><B>Total sorts and other sort metrics <I>(Normal)</I></B> :: Excessive sorting is NOT the problem.</li><BR>
+</ul>
+<BR>
+<a class="sourceChange">The evidence suggests that the slow statements are scanning table rows rather than using an index, because no suitable index is available. </a>

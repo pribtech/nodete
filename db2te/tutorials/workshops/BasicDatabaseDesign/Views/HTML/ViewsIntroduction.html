@@ -1,0 +1,22 @@
+<p>This tutorial gives an overview of <b>views</b> that can be created on tables and demonstrates the same. Some of the benefits of views are discussed.</p>
+
+<H2><B>Problem Description</B></H2><HR>
+<p>Business data contains multiple tables and queries typically address only some relevant data in the tables. A full table scan during query processing in such cases may be avoided.</p>
+<p>Business data invariably contains sensitive information. A view can restrict access to this sensitive information from user to user thus ensuring security of data.</p>
+
+<H2><B>Operation</B></H2><HR>
+<p>Views are created over the tables for faster query processing and protecting sensitive information present in some tables</p>
+
+<H2><B>Solution</B></H2><HR>
+<p>A view is an efficient way of representing data without the need to maintain it. A view is not an actual table and requires no permanent storage. A "virtual table" is created and used. It consists of a stored query accessible as a virtual table composed of the result set of a query. Unlike ordinary tables (base tables) in a relational database, a view does not form part of the physical schema: it is a dynamic, virtual table computed or collated from data in the database. Changing the data in a table alters the data shown in subsequent invocations of the view.</p>
+<p>Views can provide advantages over tables :</p>
+<p>
+<ol>
+<li>Views can represent a subset of the data contained in a table</li>
+<li>Views can join and simplify multiple tables into a single virtual table</li>
+<li>Views can act as aggregated tables, where the database engine aggregates data (sum, average etc) and presents the calculated results as part of the data</li>
+<li>Views can hide the complexity of data; for example a view could appear as Sales2000 or Sales2001, transparently partitioning the actual underlying table</li>
+<li>Views take very little space to store; the database contains only the definition of a view, not a copy of all the data it presents</li>
+<li>Views can limit the degree of exposure of a table or tables to the outer world</li>
+</ol>
+</p>

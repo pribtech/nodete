@@ -1,0 +1,19 @@
+<p>Run the SQL in the Ad Hoc command window to the right.</p>
+
+<h4>Create the base table with INLINE LENGTH option</h4>
+
+<p>
+The INLINELOBDATA table has the same columns as the LOBDATA table except that the VIEW_TEXT column has an inline length of 500 bytes and the COLUMN_TEXT column has an inline length of 500 bytes.
+</p>
+
+<p>
+The INLINE LENGTH option indicates that the maximum byte size of the LOB data to store in the base table row. If any LOB data larger than the maximum length allowed, it will be stored separately from the base table in the same way as a regular LOB column.
+</p>
+
+<p>
+Again, the <a onclick="OpenURLInFloatingWindow
+('http://db2id.torolab.ibm.com/cobra/nightly/topic/com.ibm.db2.luw.admin.ha.doc/doc/c0006079.html?noframes=true');">NOT LOGGED INITIALLY </a> clause is used here to reduce logging activities performed on the LOBDATA table. Logging is not engaged for any operations or changes made on the table in the same unit of work that NOT LOGGED INITIALLY is used.
+</p>
+
+<h4>Populate the table with data</h4>
+<p>It inserts 10,000 rows of data into the INLINELOBDATA table.</p>

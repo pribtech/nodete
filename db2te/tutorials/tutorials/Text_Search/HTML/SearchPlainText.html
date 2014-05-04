@@ -1,0 +1,67 @@
+<p>This page shows you a few examples of using built-in DB2 search functions to search plain text. Run the Adhoc page and see the associated result set of each query in the <code>Result</code> tab.</p>
+
+<h4>Basic syntax for text search</h4>
+<p>The <code>CONTAINS</code> function searches the text index for the specified search argument and returns whether or not a match was found. If the documents contains a match for the search argument, the result is 1, otherwise it is 0.</p>
+<p>DB2 Text Search automatically uses stemmed forms in the search. In the preceding example, the search returns not only occurrences of the term "mountain" but of "mountains" and other derivative terms.</p>
+
+<pre><code>
+SELECT author, year, substr(title,1,30)
+  FROM books
+ WHERE CONTAINS(title, 'mountain') = 1
+</code></pre>
+
+<BR>
+<h4>Use of default Boolean operator</h4>
+<p>To find rows that contain a combination of words, use operators AND, OR, and NOT to include or exclude documents. The AND operator is the default to combine multiple terms.</p>
+<p>This query returns rows that contain both terms "mountain" and "top" in the column title, no matter where each term occurs in the column.</p>
+
+<pre><code>
+SELECT author, year, substr(title,1,30)
+  FROM books
+ WHERE CONTAINS(title, 'mountain top') = 1
+</code></pre>
+
+<BR>
+<h4>Find an exact match</h4>
+<p>You can also embed the terms to be searched in quotes. For example, this sample searches titles for the exact phrase "mountain tops".</p>
+
+<pre><code>
+SELECT author, year, substr(title,1,30)
+  FROM books
+ WHERE CONTAINS(title, '"mountain tops"') = 1
+</code></pre>
+
+<BR>
+<h4>Search with wildcards</h4>
+<p>To match a partial term, you can use wildcards ? for a single character and asterisk * for multiple characters. Using a wildcard at the beginning of a search term should be avoided because it has a significant adverse impact on query performance.</p>
+<p>This example searches for titles starting with "comp".</p>
+
+<pre><code>
+SELECT author, year, substr(title,1,30)
+  FROM books
+ WHERE CONTAINS(title, 'comp*') = 1
+</code></pre>
+
+<BR>
+<h4>Limit number of documents to be returned</h4>
+<p>If you want to retrieve a sample of results, you can limit the number of documents with the RESULTLIMIT argument. This example limits the result to return only one row.</p>
+
+<pre><code>
+SELECT author, year, substr(title,1,30)
+  FROM books
+ WHERE CONTAINS(title, 'mountain', 'RESULTLIMIT=1') = 1
+</code></pre>
+
+<BR>
+<h4>Get the relevance of documents</h4>
+<p>Besides being able to search the documents, you can also determine how well a result matches the search term(s) compared to other results of the same query.</p>
+<p>The score for a document is expressed as a value between 0 and 1. It takes into account the number of occurrences of the search term(s) in a document comparend with other documents in the result set. The score of each document is calculated dynamically for the current result set.</p>
+<p>This example searches for title containing the word 'mountain'. The result is ordered by the score - highest revelance of search term.</p>
+
+<pre><code>
+SELECT title
+  FROM books
+ WHERE CONTAINS(title, 'mountain') = 1
+ ORDER BY SCORE(title, 'mountain') DESC
+</code></pre>
+

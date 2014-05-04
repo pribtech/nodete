@@ -1,0 +1,56 @@
+<tutorial name="Multidimensional Clustering">
+    <globalCodeHighlightOptions highlightCode="true" />
+    <enforceFlow>yes</enforceFlow>
+    <closeAction />
+    <openAction />
+    <pageList>
+    	<page name="Multidimensional Clustering" type="intro">
+            <entryAction />
+            <exitAction />
+            <contentFile>01_MultidimensionalClustering.html</contentFile>
+			<autoLoadLink>
+				<pageWindow target="informationWindow">
+					<panel name="main">
+						<URL>http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.admin.perf.doc/doc/c0007337.html</URL>
+					</panel>
+				</pageWindow>
+			</autoLoadLink>
+        </page>       
+    <page name="Insert some values into the tempMDC table" type="general">
+            <entryAction />
+            <exitAction />
+            <contentFile>02_InsertSomeValuesIntoTheTempMDCTable.html</contentFile>
+            <SQLFile>01_InsertSomeValuesIntoTheTempMDCTable.sql</SQLFile>
+            <SQLExecutionOptions xmlinline="false" xml="false" clob="false" blob="false" dbclob="false" termChar="#" cursor="forward" commitPerStmt="true" numRowReturned="100" />
+        </page><page name="Create a MDC Table" type="general">
+            <entryAction />
+            <exitAction />
+            <contentFile>03_CreateAMDCTable.html</contentFile>
+            <SQLFile>02_CreateAMDCTable.sql</SQLFile>
+        </page><page name="Insert some values into the table" type="general">
+            <entryAction />
+            <exitAction />
+            <contentFile>04_InsertSomeValuesIntoTheTable.html</contentFile>
+            <SQLFile>03_InsertSomeValuesIntoTheTable.sql</SQLFile>
+        </page><page name="Select some stuff from the empMDC table" type="general">
+            <entryAction />
+            <exitAction />
+            <contentFile>05_SelectSomeStuffFromTheEmpMDCTable.html</contentFile>
+            <SQLFile>04_SelectSomeStuffFromTheEmpMDCTable.sql</SQLFile>
+        </page><page name="Add some selectivity Logic" type="general">
+            <entryAction />
+            <exitAction />
+            <contentFile>06_AddSomeSelectivityLogic.html</contentFile>
+            <SQLFile>05_AddSomeSelectivityLogic.sql</SQLFile>
+        </page><page name="Create another table with exactly the same contents as empMDC" type="general">
+            <entryAction />
+            <exitAction />
+            <contentFile>07_CreateAnotherTableWithExactlyTheSameContentsAsEmpMDC.html</contentFile>
+            <SQLFile>06_CreateAnotherTableWithExactlyTheSameContentsAsEmpMDC.sql</SQLFile>
+        </page><page name="Compare performance of MDC versus Non-MDC" type="last">
+            <entryAction />
+            <exitAction />
+            <contentFile>08_ShowASimpleBarGraphOfPerformanceOfMDCVersusNon-MDC.html</contentFile>
+            <loadActionScriptFile>01_insertAndGraph1.xml</loadActionScriptFile>
+        </page></pageList>
+</tutorial>

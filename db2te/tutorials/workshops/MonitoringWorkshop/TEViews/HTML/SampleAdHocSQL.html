@@ -1,0 +1,19 @@
+<h3>Sample SQL</h3>
+<hr>
+In this tutorial, we will take an example of <CODE>MON_GET_CONNECTION()</CODE> table function. This table function retrieves information for all connections currently present in the database. This information can be used to check the health of all applications.
+<P>Some important monitor elements that can tell the application behavior can be <CODE>TOTAL_CPU_TIME per request, TOTAL_WAIT_TIME %, TOTAL_COMMITS, ROWS READ, ROWS MODIFIED</CODE> etc. 
+
+<P> In general, you may not be interested in all the information returned by this table function. So you can write your SQL query in such a manner that it returns only selective information. One such possible query is as follows:
+<PRE><font color=grey><B>SELECT APPLICATION_HANDLE, 
+       APPLICATION_NAME,
+	   TOTAL_CPU_TIME, 
+	   TOTAL_ACT_TIME, 
+	   ACT_COMPLETED_TOTAL, 
+	   TOTAL_WAIT_TIME, 
+	   CLIENT_IDLE_WAIT_TIME
+	FROM TABLE(MON_GET_CONNECTION(NULL, -1)) as t;
+</B></font></PRE>
+<BR><BR>
+<h3>Analyze Results</h3>
+<hr>
+In the right pane, you can see the above SQL statement. Clicking on 'RUN' will execute the query and results will be returned. You can see the total number of connections to the database at current point of time, and shows specific information about each connection.

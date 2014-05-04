@@ -1,0 +1,44 @@
+
+<p>Before you can use the Administrative Task Scheduler views for DB2 you
+will need to initialize the views by creating a Task. </p>
+
+<p><h3>Goal:</h3>
+To initialize the Administrative Task Scheduler views.
+</p>
+
+<p><h3>Steps to complete:</h3>
+<ul>
+  <li>Run the script on the right</li>
+</ul>
+</p>
+
+<h3>Details:</h3>
+
+<p>The stored procedure SYSPROC.ADMIN_TASK_ADD is used to create a new
+Administrative Task. When you run the command on the right, a Task will be
+created using the stored procedure SQLJ.REFRESH_CLASSES. This stored
+procedure causes the reloading of user defined classes used by Java stored
+procedures or Java UDFs in the current database connection, and is used here
+because it is present on all systems and has no parameters. The other
+parameters are set to indicate to the task scheduler that we do not want the
+task to run.</p>
+<pre><code>
+&gt;&gt;-CALL&nbsp;SYSPROC.ADMIN_TASK_ADD--(--name-,-------------------------&gt;
+&gt;--+-begin-timestamp-+-,--+-end-timestamp-+-,---------------------&gt;
+   &nbsp;-NULL------------&nbsp;    &nbsp;-NULL----------&nbsp;
+&gt;--+-max-invocations-+-,--+-schedule-+-,--+-procedure-schema-+-,--&gt;
+   &nbsp;-NULL------------&nbsp;    &nbsp;-NULL-----&nbsp;
+&gt;--procedure-name-,--+-procedure-input-+-,--+-options-+-,---------&gt;
+                     &nbsp;-NULL------------&nbsp;    &nbsp;-NULL----&nbsp;
+&gt;--+-remarks-+---------------------------------------------------&gt;&lt;    &nbsp;-NULL----&nbsp;
+</code></pre>
+
+<p><a
+onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v9r5/topic/com.ibm.db2.luw.sql.rtn.doc/doc/r0054371.html');">View
+the SYSPROC.ADMIN_TASK_ADD complete procedure definition here.</a></p>
+
+<p>If you wish to remove a task, you will need to use the procedure SYSPROC.ADMIN_TASK_REMOVE.</p>
+
+<p><a
+onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v9r5/topic/com.ibm.db2.luw.sql.rtn.doc/doc/r0054372.html');">View the SYSPROC.ADMIN_TASK_REMOVE procedure definition here.</a></p>
+

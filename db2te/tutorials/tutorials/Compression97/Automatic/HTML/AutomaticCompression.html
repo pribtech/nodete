@@ -1,0 +1,26 @@
+<b><font color="red">License Compliance:<br>Customers need to purchase the Storage Optimization Feature before they are entitled to use compression </font></b>
+<p>
+<p>This tutorial explores the DB2 data server Row Compression feature and the automatic compression enhancement introduced in version 9.5. Index compression feature added in DB2 version 9.7 is also demonstrated in this tutorial.</p>
+<p>Row compression can be enabled when a table is created.  The data server
+ automatically samples new data and automatically creates a compression dictionary.
+ When enough new data has been sampled (typically 1 - 2 MB), a compression dictionary is created.
+ Any new incoming data is compressed automatically.
+ You don't have to run <a onclick="OpenURLInFloatingWindow
+('http://publib.boulder.ibm.com/infocenter/db2luw/v9r7/topic/com.ibm.db2.luw.admin.cmd.doc/doc/r0001966.html?noframes=true');">REORG</a> or <a onclick="OpenURLInFloatingWindow
+('http://publib.boulder.ibm.com/infocenter/db2luw/v9r7/topic/com.ibm.db2.luw.admin.cmd.doc/doc/r0008633.html?noframes=true');">INSPECT</a> to explicitly create the compression dictionary.
+</p>
+<p>
+In this tutorial, you will complete the following steps to highlight the differences between manual and automatic compression:<br>
+<ol>
+<li>Create an uncompressed table and populate the table with 250,000 rows.</li>
+<li>Estimate the space occupied by the table and use INSPECT to calculate projected disk saving.</li>
+<li>Create a copy of the table, populate table with data, and manually switch on compression.</li>
+<li>Find the actual size of the uncompressed table.</li>
+<li>Create a new table with automatic compression and populate it with data.</li>
+<li>Compare the disk usage by the manually and automatically compressed tables.</li>
+<li>Run REORG on the auto compressed table to reclaim initial disk space.</li>
+<li>Compare the disk usage of the auto compressed table before and after the REORG.</li>
+<li>Compare the query performance for both compressed and uncompressed tables.</li>
+<li>Create compressed indexes.</li>
+</ol>
+</p>

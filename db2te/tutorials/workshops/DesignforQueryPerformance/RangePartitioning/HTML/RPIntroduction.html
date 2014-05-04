@@ -1,0 +1,33 @@
+<BR><H2><B>Problem Statement</B></H2><HR>
+<p>In a data warehouse environment, queries usually address a section of data pertaining to a specific date, state, etc. The key challenges in optimizing query performance in such a scenario include :</p>
+<ol>
+<li>Very large tables with spedific information like date, state, etc. highly scattered across the tables</li>
+<li>Rapidly growing size of tables introduce difficulty in management and operation of data</li>
+<li>Increased network traffic in a partitioned database environment for frequently joined tables that reside on different partitions</li>
+</ol>
+
+<BR><H2><B>Solution : <a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v9r5/topic/com.ibm.db2.luw.admin.partition.doc/doc/c0021560.html?noframes=true');">Range Partitioning</B></H2><HR></a>
+
+<BR>
+<h4>What is Range Partitioning ?</h4>
+<p>Range partitioning is a data organization scheme in which table data is divided across multiple storage objects called data partitions or ranges according to values in one or more table columns. Each data partition is stored separately. These storage objects can be in different table spaces, in the same table space, or a combination of both</p>
+
+<H2><B>Operation</B></H2><HR>
+<p>This tutorial demonstrates creation of range partitions and highlights the best practices to do the same. 
+The need for range partitioning and their advantages are analysed. A graph comparing the query execution time against 
+the tables with and without range partitioning enabled is generated and the steps to create an explain snapshot 
+displaying partition elimination of ranges during query processing are indicated.</p>
+
+<H2><B>Benefits of Range Partitioning</B></H2><HR>
+<p>
+<ol>
+<li>Query processing is enhanced to automatically eliminate data partitions based on predicates of the query. This functionality, known as Data Partition Elimination, benefits many decision support queries</li>
+<li>Easier administration of large tables</li>
+<li>Easier roll-out of table data</li>
+<li>Better optimization of storage costs by using the fastest and most expensive storage hardware for only the most active data partitions</li>
+<li>Larger table capacity. By dividing the contents of the table into multiple storage objects or data partitions, each capable of supporting as much data as in a non-partitioned table, one can effectively create databases that are virtually unlimited in size</li>
+<li>Greater index placement flexibility. Indexes for partitioned tables can be stored in their own storage objects (table spaces), as opposed to being in the same storage object as the non-partitioned table. This index placement flexibility is useful for performing faster index operations, managing table growth, and reduced I/O contention, providing more efficient concurrent access to the index data for the table</li>
+</ol>
+</p>
+
+

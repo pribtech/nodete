@@ -1,0 +1,18 @@
+<H4>Keep XML and relational data in same table space</H4>
+<BR>
+<P align="justify">
+		You can choose to keep the XML and relational data in the same table space. This means they will be buffered in the same buffer pool. Within the table space, relational data is stored in DAT objects and XML data stored in XDA (XML data area) objects. You can store XML documents for up to 2 gigabytes in size in a database.
+<BR><BR>
+This default layout provides good performance for most application scenarios.
+
+<H4>Operations</H4>
+<BR>
+An example is shown on the right pane.
+<ul>
+<li>CREATE BUFFERPOOL ... to create a buffer pool in 8k page size.</li>
+<li>CREATE TABLESPACE ... to create an 8k page sized tablespace which uses a buffer pool in the same page size.</li>
+<li>CREATE TABLE ... to create a table with XML and relational data in the same table space. </li>
+</ul>
+
+<br>
+<b>Note that the CREATE TABLESPACE statements may fail if they already exist in the database. If that's the case, you may ignore those errors.</b>

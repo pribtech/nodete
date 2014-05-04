@@ -1,0 +1,29 @@
+<h2>Understanding SYS groups</h2><hr><br>
+
+<p>DB2 defines different hierarchal levels of authorities, SYSADM, SYSCTRL,
+SYSMAINT, SYSMON, SECADM, and DBADM. Each with the ability to perform
+a subset of administrative operations such as creating of a database, creating
+database backups, and retrieving data. The first four authorization levels operate
+on the instance level (DB2 database manager level) and have system wide scope authority. Each of these
+authorities is associated with a specific DB2 instance level parameter that
+controls which users receive that authority.</p>
+
+<p>DB2 database manager level authorities are associated with group membership, and the group
+names that are associated with the authority levels are stored in the database manager configuration file for a specific instance.</p>
+
+<p> To see instance level parameter values for SYSADM_GROUP, SYSCTRL_GROUP, SYSMAINT_GROUP, <b>execute "db2 get dbm cfg" from DB2 Command window</b> as shown in the right pane. </p>
+
+<p><b>In Windows operating system</b>,
+The following users have SYSADM authority if "NULL" is specified for sysadm_group database manager configuration parameter:<br><br>
+
+    * Members of the local Administrators group<br>
+    * Members of the Administrators group at the Domain Controller if DB2_GRP_LOOKUP is not set or set to DOMAIN<br>
+    * Members of DB2ADMNS group if Extended Security feature is enabled. The location of the DB2ADMNS group was decided during installation<br>
+    * The LocalSystem account<br>
+<br>
+
+<b>For Linux and UNIX systems</b>, if "NULL" is specified as the value of this parameter, the SYSADM group defaults to the primary group of the instance owner.
+
+<P>On windows, users are created under local administrators group. User who creates a database gets SYSADM authority.</p>
+
+

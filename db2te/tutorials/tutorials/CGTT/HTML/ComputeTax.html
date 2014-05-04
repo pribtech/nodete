@@ -1,0 +1,23 @@
+<p>
+	Run the command script to the right.
+</p>
+<p>
+	With all the application objects created, execute the code to see the
+	following processing steps:
+	<ol>							
+		<li>Call the procedure <b>tax_pay</b> to calculate the <b>tax_payable</b> 
+			by an employee depending on his income and update the <b>payroll</b> table.</li>
+		<li>Update the <b>payroll</b> table with the tax proof submitted by the employees.
+			For ease of demonstration, set tax exemption for each employee as 100,000 and proof submitted by the employee as 50,000.</li>
+		<li>After all the employees of a department submit their tax proofs, update the calculate_tax column of payroll table to 1. 
+			This update invokes the trigger <b>tax_update</b>. </li>
+			<li>Execute RUNSTATS command to update the created temporary table <b>cgtt.tax_cal</b> to update statistics.</li>
+			<li>CALL the table function to print the IT sheet for the employees.</li>
+	</ol>
+</p>
+<br />
+<p>
+	You should see success and success with warnings messages in the lower right.
+	The success with warnings messages indicate that values in an entire table will be changed, 
+	it is expected for this tutorial.
+</p>

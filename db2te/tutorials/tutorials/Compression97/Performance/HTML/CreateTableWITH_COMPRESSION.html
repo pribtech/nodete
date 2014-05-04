@@ -1,0 +1,12 @@
+<p>Run the four statements in the Ad Hoc command window to the right.</p>
+<p>
+	This step builds a compressed copy of the CUSTOMER_ADDRESS_WITHOUT_COMPRESSION table.
+</p>
+<h4>Create and load the compression table</h4>
+<p>The first statement creates a new table CUSTOMER_ADDRESS_WITH_COMPRESSION. All the rows from the original CUSTOMER_ADDRESS_WITHOUT_COMPRESSION table are selected
+and inserted in the new CUSTOMER_ADDRESS_WITH_COMPRESSION table. The two tables are identical in size.</p>
+<h4>Turn on compression</h4>
+<p>The ALTER TABLE command switches on row compression for the CUSTOMER_ADDRESS_WITH_COMPRESSION table, but nothing is compressed until the final step.</p>
+<h4>Reorganize with compression</h4>
+<p>The reorganization (REORG) command samples the table data, builds a compression dictionary and compress the data.
+</p>

@@ -1,0 +1,8 @@
+This example will use a slightly different form of transaction table. Here the transaction
+  records explicitly tell the <a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v9r7/topic/com.ibm.db2.luw.sql.ref.doc/doc/r0010873.html');">MERGE</a> command what to do. 'I' records will insert new values, 'U' records will
+  update existing records, and 'D' will delete records from the product table.
+  If records are not matched, they are ignored. This means that deletes and updates of unknown product
+  records will not take place, but no error record is generated.
+  <p>This first example will fail because the transaction records contain a duplicate key value (3)
+  for deletes.
+  </p>

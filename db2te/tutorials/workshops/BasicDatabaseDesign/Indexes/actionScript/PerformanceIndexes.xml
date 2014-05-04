@@ -1,0 +1,154 @@
+<actionPanel>
+	<flow>controlled</flow>
+	<useConsole>yes</useConsole>
+	<overview>
+	</overview>
+	<taskList>
+
+		<task name="Get Query Execution Times">
+			<discription>
+				This computes the average time taken for query execution against the tables with and without Indexes     </discription>	
+			<action name="gettime" type="blank">
+				<followOnAction condition="true" compareOn="true" compareOnType="raw">				
+					<task>
+						<echo>Running the sample query on the tables without indexes 5 times..</echo>
+						<action name="runnoindex" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="fixed">
+									<value>run_workload</value>
+								</parameter>
+								<parameter name="SQL[1]" type="fixed">
+									<value>SELECT a.order_master_ID, a.customer_ID, a.order_date, b.product_ID, b.total_cost FROM ?SCHEMA?.order_master_c a, ?SCHEMA?.order_details_c b WHERE a.order_date BETWEEN '02-01-2009' AND '04-30-2009' AND a.order_master_ID = b.order_details_ID AND b.product_ID IN (2,3) GROUP BY a.order_master_ID, a.customer_ID, a.order_date, b.product_ID, b.total_cost ORDER BY a.order_master_ID, a.customer_ID, a.order_date, b.product_ID, b.total_cost</value>
+								</parameter>
+								<parameter name="Repetition" type="fixed">
+									<value>5</value>
+								</parameter>
+								<parameter name="SampleRate" type="fixed">
+									<value>5</value>
+								</parameter> 												
+							</parameterList>
+							<followOnAction condition="true">
+								<task>
+									<assignSharedConstant name="avgBaseTable" type="returnObject">
+										<value>runnoindex.returnValue.SQL.1</value>
+									</assignSharedConstant>
+									<echo>Average Run time: ?avgBaseTable? s</echo>
+									<echo> </echo>
+								</task>
+							</followOnAction>
+							<followOnAction condition="false">
+								<task>
+									<echo>Error in run !</echo>
+								</task>
+							</followOnAction>
+						</action>
+					</task>
+
+					<task>
+						<echo>
+							Running the sample query on the tables with indexes 5 times...
+						</echo>
+						<action name="runwithindex" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="fixed">
+									<value>run_workload</value>
+								</parameter>
+								<parameter name="SQL[2]" type="fixed">
+									<value>SELECT a.order_master_ID, a.customer_ID, a.order_date, b.product_ID, b.total_cost FROM ?SCHEMA?.order_master_i a, ?SCHEMA?.order_details_i b WHERE a.order_date BETWEEN '02-01-2009' AND '04-30-2009' AND a.order_master_ID = b.order_details_ID AND b.product_ID IN (2,3) GROUP BY a.order_master_ID, a.customer_ID, a.order_date, b.product_ID, b.total_cost ORDER BY a.order_master_ID, a.customer_ID, a.order_date, b.product_ID, b.total_cost</value>
+								</parameter>
+								<parameter name="Repetition" type="fixed">
+									<value>5</value>
+								</parameter>
+								<parameter name="SampleRate" type="fixed">
+									<value>5</value>
+								</parameter>
+								<parameter name="Accumulative" type="fixed">
+									<value>false</value>
+								</parameter>
+							</parameterList>
+							<followOnAction condition="true">
+								<task>
+								<assignSharedConstant name="avgIndexTable" type="returnObject">
+									<value>runwithindex.returnValue.SQL.2</value>
+								</assignSharedConstant>
+									<echo>Average Run time: ?avgIndexTable? s</echo>
+								</task>
+							</followOnAction>
+							<followOnAction condition="false">
+								<task>
+									<echo>Error in run !</echo>
+								</task>
+							</followOnAction>
+						</action>
+					</task>
+
+				</followOnAction>
+			</action>
+		</task>
+					
+		<task name="Generate Graph">
+			<discription type="text/html">
+				<![CDATA[
+					<p>This generates a graph comparing the query execution time for the following :
+						<ul>
+							<li>Tables without Indexes</li>
+							<li>Tables with Indexes</li>
+						</ul>
+					</p>	
+				]]>
+			</discription>
+			<action name="performance" type="blank">
+				<followOnAction condition="true" compareOn="true" compareOnType="raw">				
+					<task>
+						<loadPage>
+							<pageWindow target="informationWindow">
+								<panel name="main" PrimaryContainer="true">
+									<link type="action" target="_self" window="_self" connectionRequired="y">
+										<parameterList>
+											<parameter name="action">
+												graphYUI
+											</parameter>
+											<parameter name="graph">
+												<![CDATA[					       				
+		       				
+ {
+	"Graph":
+	{
+		"title": "Query Execution time (in milliseconds)",
+		"graphType": "column",
+		"xField": "TableState",
+		"xTitle": "Number of Pages",
+		"yTitle": "Un Table",
+		"dataSourceType": "data_from_raw",
+		"responseSchema": {"fields": ["TableState","QueryTime"]},
+		"style":{	"legend": { "display": "right" }, "animationEnabled" : "false"},
+		"seriesDef": [{ "displayName": "Time (ms)", "yField": "QueryTime", "style": {"color": "0x454586"}}],
+		"datasets":
+		 [ 
+			    { "TableState": "Without Indexes", "QueryTime": (?avgBaseTable? * 100) },
+				{ "TableState": "With Indexes", "QueryTime": (?avgIndexTable? * 100) }
+			]
+	}
+
+
+}
+							
+
+]]>
+
+											</parameter>
+										</parameterList>
+									</link>
+								</panel>
+							</pageWindow>
+						</loadPage>
+					</task>
+
+				</followOnAction>
+			</action>
+		</task>
+
+	</taskList>
+</actionPanel>
+
+

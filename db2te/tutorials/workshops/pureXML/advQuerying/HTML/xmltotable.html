@@ -1,0 +1,33 @@
+<p><b>Scenario</b></p>
+<p>
+	The  health care provider generates a report at the end of the day to get a complete medical details of all the patients, their doctors, and few other information. The reports allow the doctors to quickly identify if further medical advice is necessary.
+</p>
+
+<p><b>Operation</b></p>
+<p>
+	The SQL/XML function XMLTABLE displays XML data in the relational format after XQuery expressions are evaluated.
+</p>
+<p><b>Solution</b></p>
+<p>
+The patient information which is stored in XML with medical history is extracted into a report. It can then be used for further treatment to the patient.
+</p>
+<p><b>Best Practices</b></p>
+<p>
+Use SQL/XML Functions if
+<ul>
+<!--<li>Use SQL/XML functions while querying.</li>
+<li>Use XMLEXISTS predicate in the SQL WHERE clause.</li>-->
+<li>You have an existing SQL application and need to add some XML functionality
+here and there.</li>
+<li>You are an SQL fan and want to keep SQL as the primary language, because this
+is what you and your team are most familiar with.</li>
+<li>Your queries need to return data from relational columns and from XML
+columns at the same time.</li>
+<li>Your queries require full-text search conditions via DB2 Net Search Extender
+(NSE) or DB2 Text Search.</li>
+<li>You want results returned as sets and missing XML elements represented with
+nulls.</li>
+<li>You want to use parameter markers.</li>
+
+</ul>
+</p>

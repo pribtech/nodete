@@ -1,0 +1,147 @@
+<actionPanel>
+	<flow>controlled</flow>
+	<useConsole>yes</useConsole>
+	<taskList>
+		<task name="Move table ORDER_DETAILS with INSERT FROM CURSOR option">
+			<discription>Move ORDER_DETAILS table with INSERT FROM CURSOR option</discription>
+			<action  name="Start" type="blank">
+				<task>
+					<echo><![CDATA[<font style="color:blue">Start moving table ORDER_DETAILS</font>]]></echo>
+						<echo> </echo>
+						<echo><![CDATA[<font style="color:blue">Running statement: Start moving table ?SCHEMA?.ORDER_DETAILS</font>]]></echo>
+						<action  name="runDelete" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="fixed">
+									<value>run_workload</value>
+								</parameter>
+								<parameter name="SQL[1]" type="fixed">
+									<value>CALL SYSPROC.ADMIN_MOVE_TABLE ('?SCHEMA?', 'ORDER_DETAILS', 'TBS3', 'TBS3', 'TBS3', '', '', '', '', '', 'MOVE')</value>
+								</parameter>
+								<parameter name="Repetition" type="fixed">
+									<value>1</value>
+								</parameter>
+								<parameter name="SampleRate" type="fixed">
+									<value>1</value>
+								</parameter>
+							</parameterList>
+							<followOnAction condition="true">
+								<task>
+									<assignSharedConstant name="Move_WithInsert" type="returnObject">
+										<value>runDelete.returnValue.SQL.1</value>
+									</assignSharedConstant>
+									<echo><![CDATA[<font style="color:blue">Running time: ?Move_WithInsert?s </font>]]></echo>
+								</task>
+							</followOnAction>
+							<followOnAction condition="true">
+								<task>
+									<echo><![CDATA[<font style="color:blue">Table Moved successfully</font>]]></echo>
+									<echo></echo>
+									<echo></echo>
+								</task>
+							</followOnAction>							
+							<followOnAction condition="false">
+								<task>
+									<echo><![CDATA[<font style="color:red">Error in run!</font>]]></echo>
+								</task>
+							</followOnAction>
+						</action>
+				</task>
+			</action>
+		</task>
+		
+		<task name="Move table ORDER_DETAILS with LOAD options">
+			<discription>Move ORDER_DETAILS table with LOAD option</discription>
+			<action  name="Start" type="blank">
+				<task>
+					<echo><![CDATA[<font style="color:blue">Start moving table ORDER_DETAILS</font>]]></echo>
+						<echo> </echo>
+						<echo><![CDATA[<font style="color:blue">Running statement: Start moving table ?SCHEMA?.ORDER_DETAILS</font>]]></echo>
+						<action  name="runDelete" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="fixed">
+									<value>run_workload</value>
+								</parameter>
+								<parameter name="SQL[1]" type="fixed">
+									<value>CALL SYSPROC.ADMIN_MOVE_TABLE ('?SCHEMA?','ORDER_DETAILS', 'TBS2', 'TBS2', 'TBS2', '', '', '', '', 'KEEP, COPY_USE_LOAD, FORCE', 'MOVE')</value>
+								</parameter>
+								<parameter name="Repetition" type="fixed">
+									<value>1</value>
+								</parameter>
+								<parameter name="SampleRate" type="fixed">
+									<value>1</value>
+								</parameter>
+							</parameterList>
+							<followOnAction condition="true">
+								<task>
+									<assignSharedConstant name="Move_WithLoad" type="returnObject">
+										<value>runDelete.returnValue.SQL.1</value>
+									</assignSharedConstant>
+									<echo><![CDATA[<font style="color:blue">Running time: ?Move_WithLoad?s</font>]]></echo>
+								</task>
+							</followOnAction>
+							<followOnAction condition="true">
+								<task>
+									<echo><![CDATA[<font style="color:blue">Table Moved successfully</font>]]></echo>
+									<echo></echo>
+									<echo></echo>
+								</task>
+							</followOnAction>							
+							<followOnAction condition="false">
+								<task>
+									<echo><![CDATA[<font style="color:red">Error in run!</font>]]></echo>
+								</task>
+							</followOnAction>
+						</action>
+				</task>
+			</action>
+		</task>	
+
+	<task name="Compare execution times">
+			<discription>
+				Plot the query performance for Online Table Move on the graph.
+			</discription>
+			<action  name="runDelete" type="blank">
+				<followOnAction condition="true" compareOn="true" compareOnType="raw">
+					<task>
+						<echo>Graphing times</echo>
+						<loadPage>
+							<pageWindow target="informationWindow">
+						    	<panel name="main">
+						       		<link type="action" target="_self" window="_self" connectionRequired="y">
+						       			<parameterList>
+						       				<parameter name="action">graphYUI</parameter>
+						       				<parameter name="graph">	
+<![CDATA[					       				
+  {
+	"Graph": 
+	{
+		"title": "Online Table Move with INSERT option vs Online Table Move with LOAD option",
+		"graphType": "column",
+		"xField": "row",
+		"dataSourceType": "data_from_raw",
+		"style":{	"legend": { "display": "right" }, "animationEnabled" : "false"},
+		"responseSchema": {"fields": ["row","value"]},
+		"seriesDef": [{"displayName": "Query Execution time (s)", "yField": "value", "style": {"color": "green"}}],
+		"datasets":
+			 [ 
+				    {"row": "Online Table Move with INSERT", "value": ?Move_WithInsert?},
+				    {"row": "Online TABLE Move with LOAD", "value": ?Move_WithLoad?}
+				]
+	}
+}
+
+]]>
+</parameter>
+
+
+						       			</parameterList>
+						       		</link>				
+						       	</panel>
+						      </pageWindow>
+						</loadPage>
+					</task>	
+				</followOnAction>
+			</action>
+		</task>		
+	</taskList>
+</actionPanel>

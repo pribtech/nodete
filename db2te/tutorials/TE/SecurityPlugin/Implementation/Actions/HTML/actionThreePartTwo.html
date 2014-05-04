@@ -1,0 +1,19 @@
+<h3>The Add User Action Script</h3><hr/>
+<p>The add user action is very similar to the change password function. Copy the entire 'change_password' action from the edit function into the 'menu' element.</p>
+
+<p><h2>Steps:</h2>
+<ol>
+  <li>Make the changes to your document as indicated on the right</li>
+</ol>
+</p><br/>
+<p>
+We need to change the shared constant 'USER_NAME' to type 'raw' because we need to get the value from the form, just like we needed to get the password from the form previously.
+<p>
+The form needs to now have a field for the user to input the new user's name.
+</p>
+<p>
+When we perform the stored procedure 'DB2AUTH.ADD_USER,' we are using the user name from the form input, not from the row.  Therefore, we no longer need to define the parameter that used to fetch the value from the row.
+</p>
+<p>
+Finally, one extra onMatch condition is added, because there is one extra error message pattern to our stored procedure.
+</p><br/>

@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tutorial name="Integrating Outside Information" closeWindowsInRightStage="true" clearAdhocResults="true">
+	<flowRestriction>free</flowRestriction>
+	<closeAction/>
+	<openAction/>
+	<pageList>
+
+		<page name="Introduction" type="intro">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>intro.html</contentFile>
+			<autoLoadLink/>
+		</page>
+
+		<page name="Set Up the Tutorial" type="general">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>page2.html</contentFile>
+			<autoLoadLink>
+				<pageWindow target="tabledef" raiseToTop="y">
+					<panel name="top" PrimaryContainer="true">
+		   				<link type="other" target="_self" window="_self" connectionRequired="y">
+							<address>
+								?BASE_DIRECTORY?/other/setup.html
+							</address>
+						</link>
+					</panel>
+				</pageWindow>
+			</autoLoadLink>
+		</page>
+
+		<page name="Add Instructional Content To a Page" type="general">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>page3.html</contentFile>
+			<autoLoadLink>
+				<pageWindow target="tabledef" raiseToTop="y">
+					<panel name="top" PrimaryContainer="true">
+		   				<link type="other" target="_self" window="_self" connectionRequired="y">
+							<address>
+								?BASE_DIRECTORY?/other/instructionalContent.html
+							</address>
+						</link>
+					</panel>
+				</pageWindow>
+			</autoLoadLink>
+		</page>
+
+		<page name="Create an Image Pop-Up Link Within Your Tutorial" type="general">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>page4.html</contentFile>
+			<autoLoadLink>
+				<pageWindow target="tabledef" raiseToTop="y">
+					<panel name="top" PrimaryContainer="true">
+		   				<link type="other" target="_self" window="_self" connectionRequired="y">
+							<address>
+								?BASE_DIRECTORY?/other/image_AnchorTag.html
+							</address>
+						</link>
+					</panel>
+				</pageWindow>
+				<pageWindow target="tabledef2" raiseToTop="y">
+					<panel name="top" PrimaryContainer="true">
+		   				<link type="other" target="_self" window="_self" connectionRequired="y">
+							<address>
+								?BASE_DIRECTORY?/other/imageFP_Contents.html
+							</address>
+						</link>
+					</panel>
+				</pageWindow>
+			</autoLoadLink>
+		</page>
+
+		<page name="Create a Link to Another Tutorial" type="general">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>page5.html</contentFile>
+			<autoLoadLink>
+				<pageWindow target="tabledef" raiseToTop="y">
+					<panel name="top" PrimaryContainer="true">
+		   				<link type="other" target="_self" window="_self" connectionRequired="y">
+							<address>
+								?BASE_DIRECTORY?/other/tutorialLink.html
+							</address>
+						</link>
+					</panel>
+				</pageWindow>
+			</autoLoadLink>
+		</page>
+		
+		<page name="Load an External Web Page" type="general">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>page6.html</contentFile>
+			<autoLoadLink>
+				<pageWindow target="tabledef" raiseToTop="y">
+					<panel name="top" PrimaryContainer="true">
+		   				<link type="other" target="_self" window="_self" connectionRequired="y">
+							<address>
+								?BASE_DIRECTORY?/other/externalInfo.html
+							</address>
+						</link>
+					</panel>
+				</pageWindow>
+			</autoLoadLink>
+		</page>
+
+	</pageList>
+</tutorial>

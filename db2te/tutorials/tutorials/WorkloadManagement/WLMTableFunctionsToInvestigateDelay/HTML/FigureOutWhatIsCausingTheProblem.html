@@ -1,0 +1,16 @@
+<p>Now that we know why the application is hung, we can proceed to remedy
+  the situation.  We know the application is waiting on a lock.  To find
+  out which lock this application is waiting on and which application is
+  holding the lock, we can use the <a onclick="OpenURLInFloatingWindow
+('http://publib.boulder.ibm.com/infocenter/db2luw/v9r7/topic/com.ibm.db2.luw.admin.cmd.doc/doc/r0011729.html?noframes=true');">
+db2pd</a> tool.  </p><p>First, we need to find
+  out the current transaction number for our hung application.  To do
+  so, we need to issue db2pd transactions for the application handle number we got from 2 pages ago.</p>
+  <ol>
+  	<li>Open a command line window/terminal</li>
+  	<li>(Windows only): Type db2cmd to open up the CLP</li>
+  	<li>Issue the command (replace X with the application handle #): 
+  	<pre><code>db2pd -db sample -transactions app=X</code></pre>
+	<ul><li>Look for the TranHdl field.</li></ul></li>
+	<li>Keep the CLP or terminal open</li>
+</ol>  

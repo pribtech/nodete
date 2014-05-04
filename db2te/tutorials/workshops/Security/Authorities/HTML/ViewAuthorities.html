@@ -1,0 +1,18 @@
+<br><h2>View SYSADM authorities</h2><hr><br>
+<p><b>You must log into the database as the database creator before proceeding with this page.</b></p>
+<p>Check what authorities the database creator holds after creating the 'security' database.</p>
+
+<h4>Operation</h4><hr>
+<br><p>Run the Ad hoc SQL on the right.<br><br>
+Using the table function SYSPROC.AUTH_LIST_AUTHORITIES_FOR_AUTHID, you can check what authorities the database creator holds now.<br><br>
+Table function SYSPROC.AUTH_LIST_AUTHORITIES_FOR_AUTHID returns all authorities held by the current user (ie database creator). The function accepts two input arguments
+<ul>
+<li>authid - authentication ID being queried. Authentication ID can be user, role or a group</li>
+<li>authidtype - can be user U, group G, role R.</li>
+</ul>
+</p>
+
+<br><h4>Solution</h4><hr><br>
+<p>The query results in the right pane show that, the database creator holds SYSADM, DBADM, SECADM, ACCESSCTRL, DATAACCESS authorities along with CREATETAB, BINDADD, CONNECT, and IMPLICIT_SCHEMA authorities.
+<br><br>The same information can be obtained from the Information > My Authorities menu in TE.</p>
+

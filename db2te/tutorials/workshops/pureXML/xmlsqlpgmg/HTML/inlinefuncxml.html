@@ -1,0 +1,30 @@
+<p><b>Scenario</b></p>
+<p>
+	The hospital sends the patient's data to different sources. Some of the receivers need the XML document in a different format. 
+	The hospital needs to send the patient address from the master data and some patient medical information from the PMD.
+</p>
+<p><b>Operation</b></p>
+<p>
+Inlined SQL functions are SQL functions that are created using the CREATE FUNCTION statement with a body that is either a RETURN statement or an inline compound statement. 
+Inline compound statements are defined with the BEGIN ATOMIC and END keywords.
+Inlined SQL functions can contain SQL statements and inline SQL PL statements - a subset of SQL PL statements.
+</p>
+<p>
+	The scenario requires combining of the address XML and retrieving specific patient information from the PMD and combining it to a new XML document.
+DB2 pureXML can be used inside an inline SQL function. XML variables can be declared inside an inline SQL function as an input or output parameter. The required XML document can be build using 
+<ul>
+
+<li><b><code>XMLELEMENT function</code></b> -- Builds the required XML document.</li>
+<li><b><code>CREATE FUNCTION</code></b> -- Gets the parameters for which the XML is to be built and returns the XML document as output.</li>
+
+</ul></br>
+
+</p>
+<p><b>Solution</b></p>
+<p>
+	The function takes the patient ID as an input parameter and returns an XML document containing the required patient information.
+</p>
+<p><b></b></p>
+<p>
+
+</p>

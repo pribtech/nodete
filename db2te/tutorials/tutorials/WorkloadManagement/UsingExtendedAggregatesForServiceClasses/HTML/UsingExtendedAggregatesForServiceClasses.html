@@ -1,0 +1,25 @@
+<p>This sample demonstrates how to use the COLLECT AGGREGATE ACTIVITY
+  DATA EXTENDED option on a service class to produce histograms of
+  coordinator activity inter-arrival times and estimated costs. The
+  inter-arrival time is the time between the arrival of one activity
+  into the system and the arrival of the next activity. The estimated
+  cost of an activity is the estimated system resources that will be
+  used in the execution of the activity and it only applies to DML
+  activities. An inter-arrival time histogram can be useful for
+  correlating with a lifetime histogram or other lifetime statistics for
+  determining whether a change in lifetime statistics was the result of
+  a change in the arrival rate of the workload versus being the result
+  of a change in the complexity of the workload (e.g. more complex
+  queries) or a change in the system. The estimated cost histogram can
+  be useful for correlating with the inter-arrival time and lifetime
+  histograms to see whether a change in the lifetime histogram could be
+  due to a change in the complexity of the workload load (e.g. more
+  complex queries with higher estimated costs being submitted), due to a
+  change in the arrival rate of activities (determined from the
+  inter-arrival time distribution) or due to a change in the system
+  itself, such as the introduction of a new threshold, a change in the
+  priority given to a service class, or a change in hardware.
+  </p><p>
+  Histograms are accessed through the statistics event monitor.  This
+  task reuses the statistics event monitor created in an earlier step.
+  </p>

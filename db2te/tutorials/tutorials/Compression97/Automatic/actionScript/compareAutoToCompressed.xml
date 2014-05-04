@@ -1,0 +1,120 @@
+<actionPanel>
+	<flow>free</flow>
+	<useConsole>yes</useConsole>
+	<overview>
+	</overview>
+	<taskList>
+		<task name="Get auto compressed size">
+			<discription>
+				This collects table statistics and estimates the automatically compressed table size.			
+			</discription>
+			<action name="runUncompress" type="blank">
+				<followOnAction condition="true" compareOn="true"
+					compareOnType="raw">
+						<task>
+							<action name="estimateAutoSize"
+								type="serverAction">
+								<parameterList>
+									<parameter name="action"
+										type="fixed">
+										<value>executeSQL</value>
+									</parameter>
+									<parameter name="SQL"
+										type="fixed">
+										<value>
+										<!-- Returning size estimate in MB. -->
+											SELECT CAST(CAST(NPAGES AS DOUBLE)/256 AS DECIMAL(5,3)) FROM SYSIBM.SYSTABLES WHERE CREATOR= '?SCHEMA?' AND NAME='CUSTOMER_ADDRESS_WITH_AUTO_COMPRESSION'
+										</value>
+									</parameter>
+								</parameterList>
+								<followOnAction condition="true">
+									<task>
+										<assignSharedConstant
+											name="auto_compressed" type="returnObject">
+											<value>
+												estimateAutoSize.returnValue.resultSet.0.data.0.0
+											</value>
+										</assignSharedConstant>
+										<assignSharedConstant
+											name="query1" type="returnObject">
+											<value>
+												estimateAutoSize.returnValue.STMT
+											</value>
+										</assignSharedConstant>
+										<echo>
+											Size of Automatic Compressed Table: ?auto_compressed? MB
+										</echo>
+									    <echo> </echo>
+										<echo> </echo>
+									</task>
+								</followOnAction>
+								<followOnAction condition="false">
+									<task>
+										<echo>Error in run!</echo>
+									</task>
+								</followOnAction>
+							</action>
+    				</task>
+				</followOnAction>
+			</action>
+		</task>
+		<task name="Graph table sizes">
+			<discription>
+				This plots the compression performance for the automatically compressed table.
+			</discription>
+			<action name="plotUncompress" type="blank">
+				<followOnAction condition="true" compareOn="true"
+					compareOnType="raw">
+					<task>
+						<loadPage>
+							<pageWindow target="informationWindow">
+								<panel name="main" PrimaryContainer="true">
+									<link type="action" target="_self"
+										window="_self" connectionRequired="y">
+										<parameterList>
+											<parameter name="action">
+												graphYUI
+											</parameter>
+											<parameter name="graph">
+												<![CDATA[					       				
+					       				
+ {
+	"Graph":
+	{
+		"title": "Table Compression Performance (in MB)",
+		"graphType": "column",
+		"xField": "TableState",
+		"xTitle": "Number of Pages",
+		"yTitle": "Un Table",
+		"dataSourceType": "data_from_raw",
+		"responseSchema": {"fields": ["TableState","TableSize"]},
+		"style":{	"legend": { "display": "right" }, "animationEnabled" : "false"},
+		"seriesDef": [{ "displayName": "Size (MB)", "yField": "TableSize", "style": {"color": "0x454586"}}],
+		"datasets":
+		 [ 
+			    { "TableState": "Uncomp", "TableSize": ?size_uncompressed? },
+			    { "TableState": "Comp Estimated", "TableSize": ?compressed_size_estimate?},
+			    { "TableState": "Comp Actual", "TableSize": ?size_compressed?},
+			    { "TableState": "Auto", "TableSize": ?auto_compressed?}
+			]
+	}
+
+
+}
+							
+
+]]>
+
+											</parameter>
+										</parameterList>
+									</link>
+								</panel>
+							</pageWindow>
+						</loadPage>
+					</task>
+				</followOnAction>
+			</action>
+		</task>
+	</taskList>
+</actionPanel>
+

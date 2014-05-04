@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tutorial name="Query Sampling">
+	<FlowRestriction>forwardExploration</FlowRestriction>
+	<closeAction/>
+	<openAction />
+    <globalCodeHighlightOptions highlightCode = "true" />
+	<pageList>
+		<page name="Query Sampling" type="intro">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>QuerySampling.html</contentFile>
+			<autoLoadLink>
+				<pageWindow target="informationWindow">
+					<panel name="main">
+						<URL>http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.admin.perf.doc/doc/c0010970.html?noframes=true</URL>
+					</panel>
+				</pageWindow>
+			</autoLoadLink>
+		</page>
+		
+		<page name="Create sample table" type="general">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>CreateSampleTable.html</contentFile>
+			<SQLFile>CreateSampleTable.sql</SQLFile>
+			<SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar="#" cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+		</page>
+		
+		<page name="Show normal average calculation" type="general">
+			<entryAction name="checkForTable" type="serverAction">
+				<parameterList>
+					<parameter name="action" type="serverAction">
+						<value>checkForObject</value>
+					</parameter>
+					
+					<parameter name="objectType" type="raw">
+						<value>table</value>
+					</parameter>
+					
+					<parameter name="object[schema]" type="constant">
+						<value>SCHEMA</value>
+					</parameter>
+					
+					<parameter name="object[table]" type="fixed">
+						<value>store_txs</value>
+					</parameter>
+				</parameterList>
+				
+				<followOnAction condition="false">
+					<task>
+						<action name="displayMsg" type="alert">
+							<message>Required table "store_txs" hasn't been created. Please execute this step again.</message>
+						</action>
+					</task>
+					
+					<task>
+						<setActionReturn>false</setActionReturn>
+					</task>
+				</followOnAction>
+				
+				<followOnAction condition="true">
+					<task>
+						<action name="checkForIndex" type="serverAction">
+							<parameterList>
+								
+								<parameter name="action" type="serverAction">
+									<value>CheckForObject</value>
+								</parameter>
+								
+								<parameter name="objectType" type="raw">
+									<value>index</value>
+								</parameter>
+								
+								<parameter name="object[schema]" type="constant">
+									<value>SCHEMA</value>
+								</parameter>
+								
+								<parameter name="object[index]" type="fixed">
+									<value>store_ix</value>
+								</parameter>
+							</parameterList>
+							
+							<followOnAction condition="false">
+								<task>
+									<action name="displayMsg" type="alert">
+										<message>Required index "store_ix" hasn't been created. Please execute this step again.</message>
+									</action>
+								</task>
+								<task>
+									<setActionReturn>false</setActionReturn>
+								</task>
+							</followOnAction>
+							
+							<followOnAction condition="true">
+								<task>
+									<action name="checkForInsert" type="serverAction">
+										<parameterList>
+											<parameter name="action" type="fixed">
+												<value>checkForRow</value>
+											</parameter>
+											<parameter name="schema" type="constant">
+												<value>SCHEMA</value>
+											</parameter>
+											<parameter name="name" type="fixed">
+												<value>store_txs</value>
+											</parameter>
+										</parameterList>
+										<followOnAction condition="true"  negCondition="true">
+											<task>
+												<action name="displayMsgForFailedInsert" type="alert">
+													<message>Data hasn't been inserted in table "store_txs ". Please try this step again.</message>
+												</action>
+											</task>
+											<task>
+												<setActionReturn>false</setActionReturn>
+											</task>
+										</followOnAction>
+										
+									</action>
+								</task>
+							</followOnAction>
+						</action>
+					</task>
+				</followOnAction>
+				
+			</entryAction>       
+			<exitAction/>
+			<contentFile>ShowNormalAverageCalculation.html</contentFile>
+			<SQLFile>ShowNormalAverageCalculation.sql</SQLFile>
+		</page>
+		
+		<page name="Use Bernoulli sampling" type="general">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>UseBernoulliSampling.html</contentFile>
+			<SQLFile>UseBernoulliSampling.sql</SQLFile>
+		</page>
+		
+		<page name="Modify to use System sampling" type="general">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>ModifyToUseSystemSampling.html</contentFile>
+			<SQLFile>ModifyToUseSystemSampling.sql</SQLFile>
+		</page>
+		
+		<page name="Issue query again with the same sampling type" type="general">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>IssueQueryAgainWithTheSameSamplingType.html</contentFile>
+			<SQLFile>IssueQueryAgainWithTheSameSamplingType.sql</SQLFile>
+		</page>
+		
+		<page name="Producing identical results" type="general">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>ProducingIdenticalResults.html</contentFile>
+			<SQLFile>ProducingIdenticalResults.sql</SQLFile>
+		</page>
+		
+		<page name="What about Count" type="general">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>WhatAboutCount.html</contentFile>
+			<SQLFile>WhatAboutCount.sql</SQLFile>
+		</page>
+		
+		<page name="Modifying results to scale" type="general">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>ModifyingResultsToScale.html</contentFile>
+			<SQLFile>ModifyingResultsToScale.sql</SQLFile>
+		</page>
+		
+		<page name="Using Sampling across multiple tables" type="general">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>UsingSamplingAcrossMultipleTables.html</contentFile>
+			<SQLFile>UsingSamplingAcrossMultipleTables.sql</SQLFile>
+		</page>
+		
+		<page name="Select against two sampled tables" type="general">
+			<entryAction name="checkForTable" type="serverAction">
+				<parameterList>
+					<parameter name="action" type="serverAction">
+						<value>checkForObject</value>
+					</parameter>
+					
+					<parameter name="objectType" type="raw">
+						<value>table</value>
+					</parameter>
+					
+					<parameter name="object[schema]" type="constant">
+						<value>SCHEMA</value>
+					</parameter>
+					
+					<parameter name="object[table]" type="fixed">
+						<value>store_txs_dup</value>
+					</parameter>
+				</parameterList>
+				
+				<followOnAction condition="false">
+					<task>
+						<action name="displayMsg" type="alert">
+							<message>Required table "store_txs_dup" hasn't been created. Please execute this step again.</message>
+						</action>
+					</task>
+					
+					<task>
+						<setActionReturn>false</setActionReturn>
+					</task>
+				</followOnAction>
+				
+				<followOnAction condition="true">
+					<task>
+						<action name="checkForInsert" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="fixed">
+									<value>checkForRow</value>
+								</parameter>
+								<parameter name="schema" type="constant">
+									<value>SCHEMA</value>
+								</parameter>
+								<parameter name="name" type="fixed">
+									<value>store_txs_dup</value>
+								</parameter>
+							</parameterList>
+							<followOnAction condition="true"  negCondition="true">
+								<task>
+									<action name="displayMsgForFailedInsert" type="alert">
+										<message>Data hasn't been inserted in table store_txs_dup. Please try this step again.</message>
+									</action>
+								</task>
+								<task>
+									<setActionReturn>false</setActionReturn>
+								</task>
+							</followOnAction>
+							
+						</action>
+					</task>
+				</followOnAction>
+				
+			</entryAction>       
+			<exitAction/>
+			<contentFile>SelectAgainstTwoSampledTables.html</contentFile>
+			<SQLFile>SelectAgainstTwoSampledTables.sql</SQLFile>
+		</page>
+		
+		<page name="Comparing to the real results" type="last">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>ComparingToTheRealResults.html</contentFile>
+			<SQLFile>ComparingToTheRealResults.sql</SQLFile>
+		</page></pageList>
+</tutorial>

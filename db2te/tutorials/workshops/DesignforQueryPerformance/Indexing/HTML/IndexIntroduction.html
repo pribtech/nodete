@@ -1,0 +1,33 @@
+<BR><H2><B>Problem Statement</B></H2><HR>
+<p>As large amount of data is being generated and stored in the database, performance and data manageability is a concern. The key challenges when dealing with such data include :</p>
+<ol>
+<li>High query processing time</li>
+<li>Increased I/O in full table scans</li>
+<li>Repeated sorting of data for each query</li>
+</ol>
+
+<BR><H2><B>Solution : <a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v9r7/topic/com.ibm.db2.luw.admin.dbobj.doc/doc/t0020190.html');">Indexing</B></H2><HR></a>
+
+<br>
+<h4>What is an Index ?</h4>
+<p>Index is a database object created on frequently accessed columns of a table. Indexes contain keys that point to the physical location of where the data is being stored. DB2 Indexes work just like an index in a book to provide a quick and easy reference to data within the table.</p>
+<p>A <b>composite index</b> is one index made up of combined values from multiple columns in a table. If multiple columns in a table will often be accessed together a composite index will be efficient.</p>
+<p>A <b>clustered index</b> is one whose order of the rows in the data pages correspond to the order of the rows in the index. For example, if the clustering index is defined on a date key, then the DB2 database manager will attempt to rearrange data physically in ascending or descending date sequence.</p>
+
+<H2><B>Operation</B></H2><HR>
+<p>This tutorial demonstrates indexing over tables and highlights the best practices to do the same. The
+need for creating indexes and their advantages are analysed. A graph comparing the query execution time against the 
+tables with and without indexes is generated and the steps to create an explain snapshot displaying the use of
+indexes during query processing are indicated.</p>
+
+<H2><B>Benefits of Indexing</B></H2><HR>
+<p>
+<ol>
+<li>Significantly improved query performance by speeding up frequently run queries</li>
+<li>Indexes are usually smaller than the base tables. Hence, they require less I/O than full table scans</li>
+<li>Index entries are already sorted, so selects with appropriate ORDER BY, GROUP BY, or DISTINCT clauses run without the need to sort result sets</li>
+<li>Index entries are already sorted, so merge joins do not need any sorting</li>
+<li>Clustered indexes can improve the performance of most queries as they provide a more linear access path to data, which has been stored in pages. In addition, as rows with similar index key values are stored together, prefetching is usually more efficient.</li>
+</ol>
+</p>
+

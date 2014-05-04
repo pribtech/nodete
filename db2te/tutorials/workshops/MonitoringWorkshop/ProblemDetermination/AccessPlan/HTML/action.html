@@ -1,0 +1,11 @@
+<H2>Solution to the problem<HR></H2>
+<BR>
+<font color=grey><B>The database administrator earlier concluded the problem for SQL performance slowdown to be a 'table scan' 
+as the index was not present on the predicate column.
+As a solution to the problem, database administrator creates an index on the column, which is the search predicate 
+for the query or workload run.</B></font> <BR><BR>
+The DDL for the creating the index is present on the right pane. The workload or the query is run again. 
+Now, with the index in place DB2 picks the index to satisfy the query. With this, the ratio of number of rows read 
+vs the number of rows returned reduces considerably, improving the performance of the query. 
+
+   

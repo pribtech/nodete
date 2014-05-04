@@ -1,0 +1,30 @@
+--------------------------------------------------------------------------------------------------------
+
+				NATIVE STORAGE
+
+--------------------------------------------------------------------------------------------------------
+<H4>Use DMS and larger pages for better for XML performance</H4>
+
+<P align="justify">
+Database managed table spaces (DMS) provides higher performance than operating system managed table spaces (SMS). 
+This is true for relational data, and even more so for XML read and write access. 
+In DB2 9, newly created table spaces are DMS by default. It is also recommended to use DMS table spaces with 
+automatic storage so that DMS containers grow as needed without manual intervention. If an XML document is too 
+large to fit on a single page in a table space, DB2 splits the document into multiple regions which are then stored on multiple pages. 
+This is transparent to your application and allows DB2 to handle XML documents up to the bind-in limit of 2 GB per document.
+<BR>
+<P align="justify">
+Generally, the lower the number of regions (splits) per document the better the performance, especially for insert and full-document retrieval. 
+If a document does not fit on a page, the number of splits per document depends on the page size (4 KB, 8 KB, 16 KB, or 32 KB). 
+The larger the page size of your table space the lower the number of potential splits per document. For example, let's say a given 
+document gets split across forty 4 KB pages. Then the same document may get stored on only twenty 8 KB pages, or ten 16 KB or five 32 KB pages, respectively. 
+If the XML documents are significantly smaller than the selected page size, no space will be wasted since multiple small documents can be stored on a single page.
+<BR>
+<P align="justify">
+As a rule of thumb, choose a page size for XML data which is not smaller than two times your average expected document size, 
+subject to the maximum of 32 KB. If you use a single page size for relational and XML data, or for data and indexes, 
+a 32 KB page size may be beneficial for XML data but somewhat detrimental for relational data and index access. In such cases, 
+16 KB or 8 KB pages may be a better choice that works well for both.
+
+
+--------------------------------------------------------------------------------------------------------

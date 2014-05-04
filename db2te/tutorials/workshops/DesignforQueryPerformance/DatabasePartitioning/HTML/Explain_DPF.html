@@ -1,0 +1,1889 @@
+<PRE>
+<b>Explain Plan</b>
+
+DB2 Universal Database Version 9.7, 5622-044 (c) Copyright IBM Corp. 1991, 2008
+Licensed Material - Program Property of IBM
+IBM DATABASE 2 Explain Table Format Tool
+
+
+
+******************** EXPLAIN INSTANCE ********************
+
+DB2_VERSION:       09.07.1
+SOURCE_NAME:       SQLC2H20
+SOURCE_SCHEMA:     NULLID  
+SOURCE_VERSION:      
+EXPLAIN_TIME:      2009-12-20-00.00.58.109000
+EXPLAIN_REQUESTER: ADMINISTRATOR
+
+Database Context:
+----------------
+	Parallelism:          Inter-Partition Parallelism
+	CPU Speed:            2.164911e-007
+	Comm Speed:           100
+	Buffer Pool size:     250
+	Sort Heap size:       256
+	Database Heap size:   1130
+	Lock List size:       6200
+	Maximum Lock List:    60
+	Average Applications: 1
+	Locks Available:      119040
+
+Package Context:
+---------------
+	SQL Type:           Dynamic
+	Optimization Level: 9
+	Blocking:           Block All Cursors
+	Isolation Level:    Cursor Stability
+
+
+
+---------------- STATEMENT 1  SECTION 201 ----------------
+	QUERYNO:       1
+	QUERYTAG:      CLP                 
+	Statement Type:   Select
+	Updatable:        No
+	Deletable:        No
+	Query Degree:     1
+
+Original Statement:
+------------------
+SELECT EVENT_START_DT, SUBSCRIBER_KEY, SUBSCRIBER_MSISDN, 
+        SUBSCRIBER_CIRCLE_ID, TRF_PLAN_KEY, SUM (VOICE_LOCAL_OG_HOME_MOU) 
+        LOCAL_OG_MOU, SUM(VOICE_LOCAL_OG_HOME_PULSE_60) LOCAL_OG_PULSE_60, 
+        SUM(VOICE_LOCAL_OG_HOME_COUNT) LOCAL_OG_COUNT, 
+        SUM(VOICE_LOCAL_OG_HOME_CORE_INR) LOCAL_OG_CORE_AMT, SUM 
+        (VOICE_LOCAL_OG_HOME_DED_INR) LOCAL_OG_DED_AMT, SUM 
+        (VOICE_LOCAL_IC_OR_MOU) LOCAL_IC_OR_MOU, SUM 
+        (VOICE_LOCAL_IC_OR_PULSE_60) LOCAL_IC_OR_PULSE_60, SUM 
+        (VOICE_LOCAL_IC_OR_COUNT) LOCAL_IC_OR_COUNT, SUM 
+        (VOICE_LOCAL_IC_OR_CORE_INR) LOCAL_IC_OR_CORE_AMT, SUM 
+        (VOICE_LOCAL_IC_OR_DED_INR) LOCAL_IC_OR_DED_AMT, SUM 
+        (VOICE_STD_OG_HOME_MOU) STD_OG_MOU, SUM (VOICE_STD_OG_HOME_PULSE_60) 
+        STD_OG_PULSE_60, SUM (VOICE_STD_OG_HOME_COUNT) STD_OG_COUNT, SUM 
+        (VOICE_STD_OG_HOME_CORE_INR) STD_OG_CORE_AMT, SUM 
+        (VOICE_STD_OG_HOME_DED_INR) STD_OG_DED_AMT, SUM(VOICE_STD_IC_OR_MOU) 
+        STD_IC_OR_MOU, SUM(VOICE_STD_IC_OR_PULSE_60) STD_IC_OR_PULSE_60, 
+        SUM(VOICE_STD_IC_OR_COUNT) STD_IC_OR_COUNT, SUM 
+        (VOICE_STD_IC_OR_CORE_INR) STD_IC_OR_CORE_AMT, SUM 
+        (VOICE_STD_IC_OR_DED_INR) STD_IC_OR_DED_AMT 
+FROM 
+   (SELECT A.EVENT_START_DT, D.SUBSCRIBER_KEY, A.SUBSCRIBER_MSISDN, 
+           A.SUBSCRIBER_CIRCLE_ID, A.TRF_PLAN_KEY, 
+   CASE 
+   WHEN EVENT_TYPE_KEY = 0 AND EVENT_TYPE_CLSF_KEY = 0 AND EVENT_DIR = 1 AND 
+           OUT_ROAMING_IND = 1 
+   THEN SUM (A.EVENT_DURATION)/60 
+   ELSE 0 END AS VOICE_LOCAL_OG_HOME_MOU, 
+   CASE 
+   WHEN EVENT_TYPE_KEY = 0 AND EVENT_TYPE_CLSF_KEY = 0 AND EVENT_DIR = 1 AND 
+           OUT_ROAMING_IND = 1 
+   THEN SUM (CALL_PULSE_60) 
+   ELSE 0 END AS VOICE_LOCAL_OG_HOME_PULSE_60, 
+   CASE 
+   WHEN EVENT_TYPE_KEY = 0 AND EVENT_TYPE_CLSF_KEY = 0 AND EVENT_DIR = 1 AND 
+           OUT_ROAMING_IND = 0 
+   THEN COUNT(A.CDR_ID_KEY) 
+   ELSE 0 END AS VOICE_LOCAL_OG_HOME_COUNT, 
+   CASE 
+   WHEN EVENT_TYPE_KEY = 0 AND EVENT_TYPE_CLSF_KEY = 0 AND EVENT_DIR = 1 AND 
+           OUT_ROAMING_IND = 0 
+   THEN SUM(CORE_ACC_CHARGE_AMT) 
+   ELSE 0 END AS VOICE_LOCAL_OG_HOME_CORE_INR, 
+   CASE 
+   WHEN EVENT_TYPE_KEY = 0 AND EVENT_TYPE_CLSF_KEY = 0 AND EVENT_DIR = 1 AND 
+           OUT_ROAMING_IND = 0 
+   THEN SUM(DED_ACC_CHARGE_AMT * DED_ACC_CONVERSION_FACTOR) 
+   ELSE 0 END AS VOICE_LOCAL_OG_HOME_DED_INR, 
+   CASE 
+   WHEN EVENT_TYPE_KEY = 0 AND EVENT_TYPE_CLSF_KEY = 0 AND EVENT_DIR = 0 AND 
+           OUT_ROAMING_IND = 1 
+   THEN SUM (A.EVENT_DURATION)/60 
+   ELSE 0 END AS VOICE_LOCAL_IC_OR_MOU, 
+   CASE 
+   WHEN EVENT_TYPE_KEY = 0 AND EVENT_TYPE_CLSF_KEY = 0 AND EVENT_DIR = 0 AND 
+           OUT_ROAMING_IND = 1 
+   THEN SUM (CALL_PULSE_60) 
+   ELSE 0 END AS VOICE_LOCAL_IC_OR_PULSE_60, 
+   CASE 
+   WHEN EVENT_TYPE_KEY = 0 AND EVENT_TYPE_CLSF_KEY = 0 AND EVENT_DIR = 0 AND 
+           OUT_ROAMING_IND = 1 
+   THEN COUNT(A.CDR_ID_KEY) 
+   ELSE 0 END AS VOICE_LOCAL_IC_OR_COUNT, 
+   CASE 
+   WHEN EVENT_TYPE_KEY = 0 AND EVENT_TYPE_CLSF_KEY = 0 AND EVENT_DIR = 0 AND 
+           OUT_ROAMING_IND = 1 
+   THEN SUM(CORE_ACC_CHARGE_AMT) 
+   ELSE 0 END AS VOICE_LOCAL_IC_OR_CORE_INR, 
+   CASE 
+   WHEN EVENT_TYPE_KEY = 0 AND EVENT_TYPE_CLSF_KEY = 0 AND EVENT_DIR = 0 AND 
+           OUT_ROAMING_IND = 1 
+   THEN SUM (DED_ACC_CHARGE_AMT * DED_ACC_CONVERSION_FACTOR) 
+   ELSE 0 END AS VOICE_LOCAL_IC_OR_DED_INR, 
+   CASE 
+   WHEN EVENT_TYPE_KEY = 0 AND EVENT_TYPE_CLSF_KEY = 1 AND EVENT_DIR = 1 AND 
+           OUT_ROAMING_IND = 0 
+   THEN SUM (A.EVENT_DURATION)/60 
+   ELSE 0 END AS VOICE_STD_OG_HOME_MOU, 
+   CASE 
+   WHEN EVENT_TYPE_KEY = 0 AND EVENT_TYPE_CLSF_KEY = 1 AND EVENT_DIR = 1 AND 
+           OUT_ROAMING_IND = 0 
+   THEN SUM (CALL_PULSE_60) 
+   ELSE 0 END AS VOICE_STD_OG_HOME_PULSE_60, 
+   CASE 
+   WHEN EVENT_TYPE_KEY = 0 AND EVENT_TYPE_CLSF_KEY = 1 AND EVENT_DIR = 1 AND 
+           OUT_ROAMING_IND = 0 
+   THEN COUNT(A.CDR_ID_KEY) 
+   ELSE 0 END AS VOICE_STD_OG_HOME_COUNT, 
+   CASE 
+   WHEN EVENT_TYPE_KEY = 0 AND EVENT_TYPE_CLSF_KEY = 1 AND EVENT_DIR = 1 AND 
+           OUT_ROAMING_IND = 1 
+   THEN SUM(CORE_ACC_CHARGE_AMT) 
+   ELSE 0 END AS VOICE_STD_OG_HOME_CORE_INR, 
+   CASE 
+   WHEN EVENT_TYPE_KEY = 0 AND EVENT_TYPE_CLSF_KEY = 1 AND EVENT_DIR = 1 AND 
+           OUT_ROAMING_IND = 0 
+   THEN SUM(DED_ACC_CHARGE_AMT * DED_ACC_CONVERSION_FACTOR) 
+   ELSE 0 END AS VOICE_STD_OG_HOME_DED_INR, 
+   CASE 
+   WHEN EVENT_TYPE_KEY = 0 AND EVENT_TYPE_CLSF_KEY = 1 AND EVENT_DIR = 0 AND 
+           OUT_ROAMING_IND = 1 
+   THEN SUM (A.EVENT_DURATION)/60 
+   ELSE 0 END AS VOICE_STD_IC_OR_MOU, 
+   CASE 
+   WHEN EVENT_TYPE_KEY = 0 AND EVENT_TYPE_CLSF_KEY = 1 AND EVENT_DIR = 0 AND 
+           OUT_ROAMING_IND = 1 
+   THEN SUM (CALL_PULSE_60) 
+   ELSE 0 END AS VOICE_STD_IC_OR_PULSE_60, 
+   CASE 
+   WHEN EVENT_TYPE_KEY = 0 AND EVENT_TYPE_CLSF_KEY = 1 AND EVENT_DIR = 0 AND 
+           OUT_ROAMING_IND = 2 
+   THEN COUNT(A.CDR_ID_KEY) 
+   ELSE 0 END AS VOICE_STD_IC_OR_COUNT, 
+   CASE 
+   WHEN EVENT_TYPE_KEY = 0 AND EVENT_TYPE_CLSF_KEY = 1 AND EVENT_DIR = 0 AND 
+           OUT_ROAMING_IND = 1 
+   THEN SUM(CORE_ACC_CHARGE_AMT) 
+   ELSE 0 END AS VOICE_STD_IC_OR_CORE_INR, 
+   CASE 
+   WHEN EVENT_TYPE_KEY = 0 AND EVENT_TYPE_CLSF_KEY = 1 AND EVENT_DIR = 0 AND 
+           OUT_ROAMING_IND = 1 
+   THEN SUM (DED_ACC_CHARGE_AMT * DED_ACC_CONVERSION_FACTOR) 
+   ELSE 0 END AS VOICE_STD_IC_OR_DED_INR 
+   FROM GRP1261278480789_12.SUBSCRIBER_RATED_USAGE_DPF A LEFT OUTER JOIN 
+           GRP1261278480789_12.SUBSCRIBER_DEDICATED_ACCOUNT_USAGE_DPF B ON 
+           A.CDR_ID_KEY = B.CDR_ID_KEY AND a.subscriber_msisdn = 
+           b.subscriber_msisdn LEFT OUTER JOIN 
+           GRP1261278480789_12.DEDICATED_ACCOUNT_DPF c ON 
+           A.SUBSCRIBER_CIRCLE_ID = C.CIRCLE_ID AND B.DED_ACC_KEY = 
+           C.DED_ACC_KEY AND A.EVENT_START_DT >= C.DED_ACC_EFF_DT AND 
+           A.EVENT_START_DT < C.DED_ACC_END_DT LEFT OUTER JOIN 
+           GRP1261278480789_12.SUBSCRIBER_MSISDN_HISTORY_DPF D ON 
+           A.subscriber_msisdn = D.subscriber_msisdn AND A.EVENT_START_DT >= 
+           D.msisdn_START_DT and A.EVENT_START_DT < D.msisdn_END_DT 
+   WHERE A.EVENT_START_DT = '2009-02-02' AND A.SUBSCRIBER_CIRCLE_ID = 3 
+   GROUP BY A.EVENT_START_DT, A.subscriber_msisdn, D.SUBSCRIBER_KEY, 
+           A.EVENT_TYPE_KEY, A.SUBSCRIBER_CIRCLE_ID, A.EVENT_DIR, 
+           A.EVENT_TYPE_CLSF_KEY, A.OUT_ROAMING_IND, A.TRF_PLAN_KEY) 
+GROUP BY EVENT_START_DT, SUBSCRIBER_KEY, subscriber_msisdn, 
+        SUBSCRIBER_CIRCLE_ID, TRF_PLAN_KEY
+
+
+Optimized Statement:
+-------------------
+SELECT '02/02/2009' AS "EVENT_START_DT", Q12.SUBSCRIBER_KEY AS 
+        "SUBSCRIBER_KEY", Q12.SUBSCRIBER_MSISDN AS "SUBSCRIBER_MSISDN", 
+        Q12.SUBSCRIBER_CIRCLE_ID AS "SUBSCRIBER_CIRCLE_ID", Q12.TRF_PLAN_KEY 
+        AS "TRF_PLAN_KEY", Q12.$C4 AS "LOCAL_OG_MOU", Q12.$C5 AS 
+        "LOCAL_OG_PULSE_60", Q12.$C6 AS "LOCAL_OG_COUNT", Q12.$C7 AS 
+        "LOCAL_OG_CORE_AMT", Q12.$C8 AS "LOCAL_OG_DED_AMT", Q12.$C9 AS 
+        "LOCAL_IC_OR_MOU", Q12.$C10 AS "LOCAL_IC_OR_PULSE_60", Q12.$C11 AS 
+        "LOCAL_IC_OR_COUNT", Q12.$C12 AS "LOCAL_IC_OR_CORE_AMT", Q12.$C13 AS 
+        "LOCAL_IC_OR_DED_AMT", Q12.$C14 AS "STD_OG_MOU", Q12.$C15 AS 
+        "STD_OG_PULSE_60", Q12.$C16 AS "STD_OG_COUNT", Q12.$C17 AS 
+        "STD_OG_CORE_AMT", Q12.$C18 AS "STD_OG_DED_AMT", Q12.$C19 AS 
+        "STD_IC_OR_MOU", Q12.$C20 AS "STD_IC_OR_PULSE_60", Q12.$C21 AS 
+        "STD_IC_OR_COUNT", Q12.$C22 AS "STD_IC_OR_CORE_AMT", Q12.$C23 AS 
+        "STD_IC_OR_DED_AMT" 
+FROM 
+   (SELECT Q11.SUBSCRIBER_KEY, Q11.SUBSCRIBER_MSISDN, 
+           Q11.SUBSCRIBER_CIRCLE_ID, Q11.TRF_PLAN_KEY, SUM(CASE 
+   WHEN ((((Q11.EVENT_TYPE_KEY = 0) AND (Q11.EVENT_TYPE_CLSF_KEY = 0)) AND 
+           (Q11.EVENT_DIR = 1)) AND (Q11.OUT_ROAMING_IND = 1)) 
+   THEN (Q11.$C12 / 60) 
+   ELSE 0 END), SUM(CASE 
+   WHEN ((((Q11.EVENT_TYPE_KEY = 0) AND (Q11.EVENT_TYPE_CLSF_KEY = 0)) AND 
+           (Q11.EVENT_DIR = 1)) AND (Q11.OUT_ROAMING_IND = 1)) 
+   THEN Q11.$C11 
+   ELSE 0 END), SUM(CASE 
+   WHEN ((((Q11.EVENT_TYPE_KEY = 0) AND (Q11.EVENT_TYPE_CLSF_KEY = 0)) AND 
+           (Q11.EVENT_DIR = 1)) AND (Q11.OUT_ROAMING_IND = 0)) 
+   THEN Q11.$C10 
+   ELSE 0 END), SUM(CASE 
+   WHEN ((((Q11.EVENT_TYPE_KEY = 0) AND (Q11.EVENT_TYPE_CLSF_KEY = 0)) AND 
+           (Q11.EVENT_DIR = 1)) AND (Q11.OUT_ROAMING_IND = 0)) 
+   THEN Q11.$C9 
+   ELSE +00000000000000000000000000000.00 END), SUM(CASE 
+   WHEN ((((Q11.EVENT_TYPE_KEY = 0) AND (Q11.EVENT_TYPE_CLSF_KEY = 0)) AND 
+           (Q11.EVENT_DIR = 1)) AND (Q11.OUT_ROAMING_IND = 0)) 
+   THEN Q11.$C8 
+   ELSE +000000000000000000000000000.0000 END), SUM(CASE 
+   WHEN ((((Q11.EVENT_TYPE_KEY = 0) AND (Q11.EVENT_TYPE_CLSF_KEY = 0)) AND 
+           (Q11.EVENT_DIR = 0)) AND (Q11.OUT_ROAMING_IND = 1)) 
+   THEN (Q11.$C12 / 60) 
+   ELSE 0 END), SUM(CASE 
+   WHEN ((((Q11.EVENT_TYPE_KEY = 0) AND (Q11.EVENT_TYPE_CLSF_KEY = 0)) AND 
+           (Q11.EVENT_DIR = 0)) AND (Q11.OUT_ROAMING_IND = 1)) 
+   THEN Q11.$C11 
+   ELSE 0 END), SUM(CASE 
+   WHEN ((((Q11.EVENT_TYPE_KEY = 0) AND (Q11.EVENT_TYPE_CLSF_KEY = 0)) AND 
+           (Q11.EVENT_DIR = 0)) AND (Q11.OUT_ROAMING_IND = 1)) 
+   THEN Q11.$C10 
+   ELSE 0 END), SUM(CASE 
+   WHEN ((((Q11.EVENT_TYPE_KEY = 0) AND (Q11.EVENT_TYPE_CLSF_KEY = 0)) AND 
+           (Q11.EVENT_DIR = 0)) AND (Q11.OUT_ROAMING_IND = 1)) 
+   THEN Q11.$C9 
+   ELSE +00000000000000000000000000000.00 END), SUM(CASE 
+   WHEN ((((Q11.EVENT_TYPE_KEY = 0) AND (Q11.EVENT_TYPE_CLSF_KEY = 0)) AND 
+           (Q11.EVENT_DIR = 0)) AND (Q11.OUT_ROAMING_IND = 1)) 
+   THEN Q11.$C8 
+   ELSE +000000000000000000000000000.0000 END), SUM(CASE 
+   WHEN ((((Q11.EVENT_TYPE_KEY = 0) AND (Q11.EVENT_TYPE_CLSF_KEY = 1)) AND 
+           (Q11.EVENT_DIR = 1)) AND (Q11.OUT_ROAMING_IND = 0)) 
+   THEN (Q11.$C12 / 60) 
+   ELSE 0 END), SUM(CASE 
+   WHEN ((((Q11.EVENT_TYPE_KEY = 0) AND (Q11.EVENT_TYPE_CLSF_KEY = 1)) AND 
+           (Q11.EVENT_DIR = 1)) AND (Q11.OUT_ROAMING_IND = 0)) 
+   THEN Q11.$C11 
+   ELSE 0 END), SUM(CASE 
+   WHEN ((((Q11.EVENT_TYPE_KEY = 0) AND (Q11.EVENT_TYPE_CLSF_KEY = 1)) AND 
+           (Q11.EVENT_DIR = 1)) AND (Q11.OUT_ROAMING_IND = 0)) 
+   THEN Q11.$C10 
+   ELSE 0 END), SUM(CASE 
+   WHEN ((((Q11.EVENT_TYPE_KEY = 0) AND (Q11.EVENT_TYPE_CLSF_KEY = 1)) AND 
+           (Q11.EVENT_DIR = 1)) AND (Q11.OUT_ROAMING_IND = 1)) 
+   THEN Q11.$C9 
+   ELSE +00000000000000000000000000000.00 END), SUM(CASE 
+   WHEN ((((Q11.EVENT_TYPE_KEY = 0) AND (Q11.EVENT_TYPE_CLSF_KEY = 1)) AND 
+           (Q11.EVENT_DIR = 1)) AND (Q11.OUT_ROAMING_IND = 0)) 
+   THEN Q11.$C8 
+   ELSE +000000000000000000000000000.0000 END), SUM(CASE 
+   WHEN ((((Q11.EVENT_TYPE_KEY = 0) AND (Q11.EVENT_TYPE_CLSF_KEY = 1)) AND 
+           (Q11.EVENT_DIR = 0)) AND (Q11.OUT_ROAMING_IND = 1)) 
+   THEN (Q11.$C12 / 60) 
+   ELSE 0 END), SUM(CASE 
+   WHEN ((((Q11.EVENT_TYPE_KEY = 0) AND (Q11.EVENT_TYPE_CLSF_KEY = 1)) AND 
+           (Q11.EVENT_DIR = 0)) AND (Q11.OUT_ROAMING_IND = 1)) 
+   THEN Q11.$C11 
+   ELSE 0 END), SUM(CASE 
+   WHEN ((((Q11.EVENT_TYPE_KEY = 0) AND (Q11.EVENT_TYPE_CLSF_KEY = 1)) AND 
+           (Q11.EVENT_DIR = 0)) AND (Q11.OUT_ROAMING_IND = 2)) 
+   THEN Q11.$C10 
+   ELSE 0 END), SUM(CASE 
+   WHEN ((((Q11.EVENT_TYPE_KEY = 0) AND (Q11.EVENT_TYPE_CLSF_KEY = 1)) AND 
+           (Q11.EVENT_DIR = 0)) AND (Q11.OUT_ROAMING_IND = 1)) 
+   THEN Q11.$C9 
+   ELSE +00000000000000000000000000000.00 END), SUM(CASE 
+   WHEN ((((Q11.EVENT_TYPE_KEY = 0) AND (Q11.EVENT_TYPE_CLSF_KEY = 1)) AND 
+           (Q11.EVENT_DIR = 0)) AND (Q11.OUT_ROAMING_IND = 1)) 
+   THEN Q11.$C8 
+   ELSE +000000000000000000000000000.0000 END) 
+   FROM 
+      (SELECT Q10.SUBSCRIBER_KEY, Q10.SUBSCRIBER_MSISDN, 
+              Q10.SUBSCRIBER_CIRCLE_ID, Q10.TRF_PLAN_KEY, Q10.EVENT_TYPE_KEY, 
+              Q10.EVENT_TYPE_CLSF_KEY, Q10.EVENT_DIR, Q10.OUT_ROAMING_IND, 
+              Q10.$C12, Q10.$C11, Q10.$C10, Q10.$C9, Q10.$C8 
+      FROM 
+         (SELECT Q9.SUBSCRIBER_KEY, Q9.SUBSCRIBER_MSISDN, 
+                 Q9.SUBSCRIBER_CIRCLE_ID, Q9.TRF_PLAN_KEY, Q9.EVENT_TYPE_KEY, 
+                 Q9.EVENT_TYPE_CLSF_KEY, Q9.EVENT_DIR, Q9.OUT_ROAMING_IND, 
+                 SUM(Q9.EVENT_DURATION), SUM(Q9.CALL_PULSE_60), 
+                 COUNT(Q9.CDR_ID_KEY), SUM(Q9.CORE_ACC_CHARGE_AMT), 
+                 SUM((Q9.DED_ACC_CHARGE_AMT * Q9.DED_ACC_CONVERSION_FACTOR)) 
+         FROM
+            (SELECT Q8.SUBSCRIBER_MSISDN, Q8.SUBSCRIBER_KEY, 
+                    Q8.EVENT_TYPE_KEY, Q8.SUBSCRIBER_CIRCLE_ID, Q8.EVENT_DIR, 
+                    Q8.EVENT_TYPE_CLSF_KEY, Q8.OUT_ROAMING_IND, 
+                    Q8.TRF_PLAN_KEY, Q8.EVENT_DURATION, Q8.CALL_PULSE_60, 
+                    Q8.CDR_ID_KEY, Q8.CORE_ACC_CHARGE_AMT, 
+                    Q8.DED_ACC_CHARGE_AMT, Q8.DED_ACC_CONVERSION_FACTOR 
+            FROM 
+               (SELECT Q7.SUBSCRIBER_KEY, Q6.CORE_ACC_CHARGE_AMT, 
+                       Q6.CALL_PULSE_60, Q6.EVENT_DURATION, Q6.TRF_PLAN_KEY, 
+                       Q6.OUT_ROAMING_IND, Q6.EVENT_TYPE_CLSF_KEY, 
+                       Q6.EVENT_DIR, Q6.EVENT_TYPE_KEY, 
+                       Q6.SUBSCRIBER_CIRCLE_ID, Q6.SUBSCRIBER_MSISDN, 
+                       Q6.CDR_ID_KEY, Q6.DED_ACC_CONVERSION_FACTOR, 
+                       Q6.DED_ACC_CHARGE_AMT 
+               FROM 
+               (SELECT Q1.DED_ACC_CONVERSION_FACTOR, Q5.CORE_ACC_CHARGE_AMT, 
+                       Q5.CALL_PULSE_60, Q5.EVENT_DURATION, Q5.TRF_PLAN_KEY, 
+                       Q5.OUT_ROAMING_IND, Q5.EVENT_TYPE_CLSF_KEY, 
+                       Q5.EVENT_DIR, Q5.EVENT_TYPE_KEY, '02/02/2009', 
+                       Q5.SUBSCRIBER_CIRCLE_ID, Q5.SUBSCRIBER_MSISDN, 
+                       Q5.CDR_ID_KEY, Q5.DED_ACC_CHARGE_AMT 
+               FROM GRP1261278480789_12.DEDICATED_ACCOUNT_DPF AS Q1 RIGHT 
+                       OUTER JOIN 
+               (SELECT Q4.DED_ACC_CHARGE_AMT, Q4.DED_ACC_KEY, 
+                       Q3.CORE_ACC_CHARGE_AMT, Q3.CALL_PULSE_60, 
+                       Q3.EVENT_DURATION, Q3.TRF_PLAN_KEY, Q3.OUT_ROAMING_IND, 
+                       Q3.EVENT_TYPE_CLSF_KEY, Q3.EVENT_DIR, 
+                       Q3.EVENT_TYPE_KEY, '02/02/2009', 
+                       Q3.SUBSCRIBER_CIRCLE_ID, Q3.SUBSCRIBER_MSISDN, 
+                       Q3.CDR_ID_KEY 
+               FROM 
+               (SELECT Q2.OUT_ROAMING_IND, Q2.EVENT_DURATION, 
+                       Q2.CORE_ACC_CHARGE_AMT, Q2.EVENT_TYPE_KEY, 
+                       Q2.CDR_ID_KEY, Q2.EVENT_TYPE_CLSF_KEY, 
+                       Q2.SUBSCRIBER_CIRCLE_ID, Q2.SUBSCRIBER_MSISDN, 
+                       Q2.CALL_PULSE_60, Q2.EVENT_DIR, Q2.TRF_PLAN_KEY 
+               FROM GRP1261278480789_12.SUBSCRIBER_RATED_USAGE_DPF AS Q2 
+               WHERE (Q2.SUBSCRIBER_CIRCLE_ID = 3) AND (Q2.EVENT_START_DT = 
+                       '02/02/2009')) AS Q3 LEFT OUTER JOIN 
+GRP1261278480789_12.SUBSCRIBER_DEDICATED_ACCOUNT_USAGE_DPF AS Q4 ON 
+                       (Q3.SUBSCRIBER_MSISDN = Q4.SUBSCRIBER_MSISDN) AND 
+                       (Q3.CDR_ID_KEY = Q4.CDR_ID_KEY)) AS Q5 ON 
+                       (Q1.CIRCLE_ID = 3) AND (Q5.$C10 < Q1.DED_ACC_END_DT) 
+                       AND (Q1.DED_ACC_EFF_DT <= Q5.$C10) AND (Q5.DED_ACC_KEY 
+                       = Q1.DED_ACC_KEY) AND (Q5.SUBSCRIBER_CIRCLE_ID = 
+                       Q1.CIRCLE_ID)) AS Q6 LEFT OUTER JOIN 
+                       GRP1261278480789_12.SUBSCRIBER_MSISDN_HISTORY_DPF AS 
+                       Q7 ON (Q6.$C9 < Q7.MSISDN_END_DT) AND 
+                       (Q7.MSISDN_START_DT <= Q6.$C9) AND 
+                       (Q6.SUBSCRIBER_MSISDN = Q7.SUBSCRIBER_MSISDN)) AS Q8) 
+                 AS Q9 
+         GROUP BY Q9.TRF_PLAN_KEY, Q9.OUT_ROAMING_IND, Q9.EVENT_TYPE_CLSF_KEY, 
+                 Q9.EVENT_DIR, Q9.SUBSCRIBER_CIRCLE_ID, Q9.EVENT_TYPE_KEY, 
+                 Q9.SUBSCRIBER_KEY, Q9.SUBSCRIBER_MSISDN) AS Q10) AS Q11 
+   GROUP BY Q11.TRF_PLAN_KEY, Q11.SUBSCRIBER_CIRCLE_ID, Q11.SUBSCRIBER_MSISDN, 
+        Q11.SUBSCRIBER_KEY) AS Q12
+
+Access Plan:
+-----------
+	Total Cost: 		406.735
+	Query Degree:		1
+
+                                                                             Rows 
+                                                                            RETURN
+                                                                            (   1)
+                                                                             Cost 
+                                                                              I/O 
+                                                                              |
+                                                                            6169.96 
+                                                                            DTQ   
+                                                                            (   2)
+                                                                            406.735 
+                                                                              178 
+                                                                              |
+                                                                            2056.65 
+                                                                            GRPBY 
+                                                                            (   3)
+                                                                            402.01 
+                                                                              178 
+                                                                              |
+                                                                            2056.65 
+                                                                            GRPBY 
+                                                                            (   4)
+                                                                             401.7 
+                                                                              178 
+                                                                              |
+                                                                            2056.65 
+                                                                            TBSCAN
+                                                                            (   5)
+                                                                            401.589 
+                                                                              178 
+                                                                              |
+                                                                            2056.65 
+                                                                            SORT  
+                                                                            (   6)
+                                                                            401.477 
+                                                                              178 
+                                                                              |
+                                                                            2056.65 
+                                                                            >HSJOIN
+                                                                            (   7)
+                                                                            398.632 
+                                                                              178 
+                                                         /--------------------+--------------------\
+                                                     2056.65                                        7484 
+                                                     >HSJOIN                                       TBSCAN
+                                                     (   8)                                        (  14)
+                                                     303.698                                       93.5523 
+                                                       166                                           12 
+                                /----------------------+-----------------------\                     |
+                            2056.65                                              15                 7484 
+                            >HSJOIN                                            BTQ       TABLE: GRP1261278480789_12
+                            (   9)                                             (  12)   SUBSCRIBER_MSISDN_HISTORY_DPF
+                            295.355                                            7.61656               Q7
+                              165                                                 1 
+               /--------------+--------------\                                   |
+           2056.65                            6756                               15 
+           TBSCAN                            TBSCAN                            TBSCAN
+           (  10)                            (  11)                            (  13)
+           170.858                           123.532                           7.59244 
+             149                               16                                 1 
+             |                                 |                                 |
+            33834                             6756                               45 
+ TABLE: GRP1261278480789_12        TABLE: GRP1261278480789_12        TABLE: GRP1261278480789_12
+ SUBSCRIBER_RATED_USAGE_DPF  SUBSCRIBER_DEDICATED_ACCOUNT_USAGE_DPF     DEDICATED_ACCOUNT_DPF
+             Q2                                Q4                                Q1
+
+
+
+Extended Diagnostic Information:
+--------------------------------
+
+No extended Diagnostic Information for this statement.
+
+
+Plan Details:
+-------------
+
+
+	1) RETURN: (Return Result)
+		Cumulative Total Cost: 		406.735
+		Cumulative CPU Cost: 		1.66545e+008
+		Cumulative I/O Cost: 		178
+		Cumulative Re-Total Cost: 	403.891
+		Cumulative Re-CPU Cost: 	1.53404e+008
+		Cumulative Re-I/O Cost: 	0
+		Cumulative First Row Cost: 	401.495
+		Cumulative Comm Cost:		1073.59
+		Cumulative First Comm Cost:	4.02273
+		Estimated Bufferpool Buffers: 	0
+
+		Arguments:
+		---------
+		BLDLEVEL: (Build level)
+			DB2 v9.7.100.122 : s090920
+		HEAPUSE : (Maximum Statement Heap Usage)
+			288 Pages
+		PREPNODE: (Prepare Node Number)
+			0
+		PREPTIME: (Statement prepare time)
+			       775 milliseconds
+		STMTHEAP: (Statement heap size)
+			2227
+
+		Input Streams:
+		-------------
+			17) From Operator #2
+
+				Estimated number of rows: 	6169.96
+				Partition Map ID:  			-100
+				Partitioning:      		(COOR )
+								Coordinator Partition
+				Number of columns: 		25
+				Subquery predicate ID: 		Not Applicable
+
+				Column Names:
+				------------
+				+Q13.STD_IC_OR_DED_AMT+Q13.STD_IC_OR_CORE_AMT
+				+Q13.STD_IC_OR_COUNT+Q13.STD_IC_OR_PULSE_60
+				+Q13.STD_IC_OR_MOU+Q13.STD_OG_DED_AMT
+				+Q13.STD_OG_CORE_AMT+Q13.STD_OG_COUNT
+				+Q13.STD_OG_PULSE_60+Q13.STD_OG_MOU
+				+Q13.LOCAL_IC_OR_DED_AMT
+				+Q13.LOCAL_IC_OR_CORE_AMT
+				+Q13.LOCAL_IC_OR_COUNT
+				+Q13.LOCAL_IC_OR_PULSE_60+Q13.LOCAL_IC_OR_MOU
+				+Q13.LOCAL_OG_DED_AMT+Q13.LOCAL_OG_CORE_AMT
+				+Q13.LOCAL_OG_COUNT+Q13.LOCAL_OG_PULSE_60
+				+Q13.LOCAL_OG_MOU+Q13.TRF_PLAN_KEY
+				+Q13.SUBSCRIBER_CIRCLE_ID
+				+Q13.SUBSCRIBER_MSISDN+Q13.SUBSCRIBER_KEY
+				+Q13.EVENT_START_DT
+
+				Partition Column Names:
+				----------------------
+				+NONE
+
+
+	2) TQ    : (Table Queue)
+		Cumulative Total Cost: 		406.735
+		Cumulative CPU Cost: 		1.66545e+008
+		Cumulative I/O Cost: 		178
+		Cumulative Re-Total Cost: 	403.891
+		Cumulative Re-CPU Cost: 	1.53404e+008
+		Cumulative Re-I/O Cost: 	0
+		Cumulative First Row Cost: 	401.495
+		Cumulative Comm Cost:		1073.59
+		Cumulative First Comm Cost:	4.02273
+		Estimated Bufferpool Buffers: 	0
+
+		Arguments:
+		---------
+		LISTENER: (Listener Table Queue type)
+			FALSE
+		TQMERGE : (Merging Table Queue flag)
+			FALSE
+		TQREAD  : (Table Queue Read type)
+			READ AHEAD
+		TQSEND  : (Table Queue Write type)
+			DIRECTED
+		UNIQUE  : (Uniqueness required flag)
+			FALSE
+
+		Input Streams:
+		-------------
+			16) From Operator #3
+
+				Estimated number of rows: 	2056.65
+				Partition Map ID:  			3
+				Partitioning:      		(MULT )
+								Multiple Partitions
+				Number of columns: 		25
+				Subquery predicate ID: 		Not Applicable
+
+				Column Names:
+				------------
+				+Q13.STD_IC_OR_DED_AMT+Q13.STD_IC_OR_CORE_AMT
+				+Q13.STD_IC_OR_COUNT+Q13.STD_IC_OR_PULSE_60
+				+Q13.STD_IC_OR_MOU+Q13.STD_OG_DED_AMT
+				+Q13.STD_OG_CORE_AMT+Q13.STD_OG_COUNT
+				+Q13.STD_OG_PULSE_60+Q13.STD_OG_MOU
+				+Q13.LOCAL_IC_OR_DED_AMT
+				+Q13.LOCAL_IC_OR_CORE_AMT
+				+Q13.LOCAL_IC_OR_COUNT
+				+Q13.LOCAL_IC_OR_PULSE_60+Q13.LOCAL_IC_OR_MOU
+				+Q13.LOCAL_OG_DED_AMT+Q13.LOCAL_OG_CORE_AMT
+				+Q13.LOCAL_OG_COUNT+Q13.LOCAL_OG_PULSE_60
+				+Q13.LOCAL_OG_MOU+Q13.TRF_PLAN_KEY
+				+Q13.SUBSCRIBER_CIRCLE_ID
+				+Q13.SUBSCRIBER_MSISDN+Q13.SUBSCRIBER_KEY
+				+Q13.EVENT_START_DT
+
+				Partition Column Names:
+				----------------------
+				+1: Q13.SUBSCRIBER_MSISDN
+
+
+		Output Streams:
+		--------------
+			17) To Operator #1
+
+				Estimated number of rows: 	6169.96
+				Partition Map ID:  			-100
+				Partitioning:      		(COOR )
+								Coordinator Partition
+				Number of columns: 		25
+				Subquery predicate ID: 		Not Applicable
+
+				Column Names:
+				------------
+				+Q13.STD_IC_OR_DED_AMT+Q13.STD_IC_OR_CORE_AMT
+				+Q13.STD_IC_OR_COUNT+Q13.STD_IC_OR_PULSE_60
+				+Q13.STD_IC_OR_MOU+Q13.STD_OG_DED_AMT
+				+Q13.STD_OG_CORE_AMT+Q13.STD_OG_COUNT
+				+Q13.STD_OG_PULSE_60+Q13.STD_OG_MOU
+				+Q13.LOCAL_IC_OR_DED_AMT
+				+Q13.LOCAL_IC_OR_CORE_AMT
+				+Q13.LOCAL_IC_OR_COUNT
+				+Q13.LOCAL_IC_OR_PULSE_60+Q13.LOCAL_IC_OR_MOU
+				+Q13.LOCAL_OG_DED_AMT+Q13.LOCAL_OG_CORE_AMT
+				+Q13.LOCAL_OG_COUNT+Q13.LOCAL_OG_PULSE_60
+				+Q13.LOCAL_OG_MOU+Q13.TRF_PLAN_KEY
+				+Q13.SUBSCRIBER_CIRCLE_ID
+				+Q13.SUBSCRIBER_MSISDN+Q13.SUBSCRIBER_KEY
+				+Q13.EVENT_START_DT
+
+				Partition Column Names:
+				----------------------
+				+NONE
+
+
+	3) GRPBY : (Group By)
+		Cumulative Total Cost: 		402.01
+		Cumulative CPU Cost: 		1.44717e+008
+		Cumulative I/O Cost: 		178
+		Cumulative Re-Total Cost: 	399.165
+		Cumulative Re-CPU Cost: 	1.31576e+008
+		Cumulative Re-I/O Cost: 	0
+		Cumulative First Row Cost: 	401.478
+		Cumulative Comm Cost:		4.02273
+		Cumulative First Comm Cost:	4.02273
+		Estimated Bufferpool Buffers: 	0
+
+		Arguments:
+		---------
+		AGGMODE : (Aggregation Mode)
+			COMPLETE
+		GROUPBYC: (Group By columns)
+			TRUE
+		GROUPBYN: (Number of Group By columns)
+			3
+		GROUPBYR: (Group By requirement)
+			1: Q11.SUBSCRIBER_KEY
+			2: Q11.SUBSCRIBER_MSISDN
+			3: Q11.TRF_PLAN_KEY
+		ONEFETCH: (One Fetch flag)
+			FALSE
+
+		Input Streams:
+		-------------
+			15) From Operator #4
+
+				Estimated number of rows: 	2056.65
+				Partition Map ID:  			3
+				Partitioning:      		(MULT )
+								Multiple Partitions
+				Number of columns: 		13
+				Subquery predicate ID: 		Not Applicable
+
+				Column Names:
+				------------
+				+Q11.SUBSCRIBER_KEY(A)
+				+Q11.SUBSCRIBER_MSISDN(A)+Q11.TRF_PLAN_KEY(A)
+				+Q11.EVENT_TYPE_CLSF_KEY(A)+Q11.EVENT_DIR(A)
+				+Q11.EVENT_TYPE_KEY(A)+Q11.OUT_ROAMING_IND(A)
+				+Q11.$C12+Q11.$C11+Q11.$C10+Q11.$C9+Q11.$C8
+				+Q11.SUBSCRIBER_CIRCLE_ID
+
+				Partition Column Names:
+				----------------------
+				+1: Q11.SUBSCRIBER_MSISDN
+
+
+		Output Streams:
+		--------------
+			16) To Operator #2
+
+				Estimated number of rows: 	2056.65
+				Partition Map ID:  			3
+				Partitioning:      		(MULT )
+								Multiple Partitions
+				Number of columns: 		25
+				Subquery predicate ID: 		Not Applicable
+
+				Column Names:
+				------------
+				+Q13.STD_IC_OR_DED_AMT+Q13.STD_IC_OR_CORE_AMT
+				+Q13.STD_IC_OR_COUNT+Q13.STD_IC_OR_PULSE_60
+				+Q13.STD_IC_OR_MOU+Q13.STD_OG_DED_AMT
+				+Q13.STD_OG_CORE_AMT+Q13.STD_OG_COUNT
+				+Q13.STD_OG_PULSE_60+Q13.STD_OG_MOU
+				+Q13.LOCAL_IC_OR_DED_AMT
+				+Q13.LOCAL_IC_OR_CORE_AMT
+				+Q13.LOCAL_IC_OR_COUNT
+				+Q13.LOCAL_IC_OR_PULSE_60+Q13.LOCAL_IC_OR_MOU
+				+Q13.LOCAL_OG_DED_AMT+Q13.LOCAL_OG_CORE_AMT
+				+Q13.LOCAL_OG_COUNT+Q13.LOCAL_OG_PULSE_60
+				+Q13.LOCAL_OG_MOU+Q13.TRF_PLAN_KEY
+				+Q13.SUBSCRIBER_CIRCLE_ID
+				+Q13.SUBSCRIBER_MSISDN+Q13.SUBSCRIBER_KEY
+				+Q13.EVENT_START_DT
+
+				Partition Column Names:
+				----------------------
+				+1: Q13.SUBSCRIBER_MSISDN
+
+
+	4) GRPBY : (Group By)
+		Cumulative Total Cost: 		401.7
+		Cumulative CPU Cost: 		1.43287e+008
+		Cumulative I/O Cost: 		178
+		Cumulative Re-Total Cost: 	398.855
+		Cumulative Re-CPU Cost: 	1.30146e+008
+		Cumulative Re-I/O Cost: 	0
+		Cumulative First Row Cost: 	401.478
+		Cumulative Comm Cost:		4.02273
+		Cumulative First Comm Cost:	4.02273
+		Estimated Bufferpool Buffers: 	0
+
+		Arguments:
+		---------
+		AGGMODE : (Aggregation Mode)
+			COMPLETE
+		GROUPBYC: (Group By columns)
+			TRUE
+		GROUPBYN: (Number of Group By columns)
+			7
+		GROUPBYR: (Group By requirement)
+			1: Q9.SUBSCRIBER_MSISDN
+			2: Q9.SUBSCRIBER_KEY
+			3: Q9.EVENT_TYPE_KEY
+			4: Q9.EVENT_DIR
+			5: Q9.EVENT_TYPE_CLSF_KEY
+			6: Q9.OUT_ROAMING_IND
+			7: Q9.TRF_PLAN_KEY
+		ONEFETCH: (One Fetch flag)
+			FALSE
+
+		Input Streams:
+		-------------
+			14) From Operator #5
+
+				Estimated number of rows: 	2056.65
+				Partition Map ID:  			3
+				Partitioning:      		(MULT )
+								Multiple Partitions
+				Number of columns: 		14
+				Subquery predicate ID: 		Not Applicable
+
+				Column Names:
+				------------
+				+Q9.SUBSCRIBER_KEY(A)+Q9.SUBSCRIBER_MSISDN(A)
+				+Q9.TRF_PLAN_KEY(A)+Q9.EVENT_TYPE_CLSF_KEY(A)
+				+Q9.EVENT_DIR(A)+Q9.EVENT_TYPE_KEY(A)
+				+Q9.OUT_ROAMING_IND(A)
+				+Q9.DED_ACC_CONVERSION_FACTOR
+				+Q9.DED_ACC_CHARGE_AMT+Q9.CORE_ACC_CHARGE_AMT
+				+Q9.CDR_ID_KEY+Q9.CALL_PULSE_60
+				+Q9.EVENT_DURATION+Q9.SUBSCRIBER_CIRCLE_ID
+
+				Partition Column Names:
+				----------------------
+				+1: Q9.SUBSCRIBER_MSISDN
+
+
+		Output Streams:
+		--------------
+			15) To Operator #3
+
+				Estimated number of rows: 	2056.65
+				Partition Map ID:  			3
+				Partitioning:      		(MULT )
+								Multiple Partitions
+				Number of columns: 		13
+				Subquery predicate ID: 		Not Applicable
+
+				Column Names:
+				------------
+				+Q11.SUBSCRIBER_KEY(A)
+				+Q11.SUBSCRIBER_MSISDN(A)+Q11.TRF_PLAN_KEY(A)
+				+Q11.EVENT_TYPE_CLSF_KEY(A)+Q11.EVENT_DIR(A)
+				+Q11.EVENT_TYPE_KEY(A)+Q11.OUT_ROAMING_IND(A)
+				+Q11.$C12+Q11.$C11+Q11.$C10+Q11.$C9+Q11.$C8
+				+Q11.SUBSCRIBER_CIRCLE_ID
+
+				Partition Column Names:
+				----------------------
+				+1: Q11.SUBSCRIBER_MSISDN
+
+
+	5) TBSCAN: (Table Scan)
+		Cumulative Total Cost: 		401.589
+		Cumulative CPU Cost: 		1.42773e+008
+		Cumulative I/O Cost: 		178
+		Cumulative Re-Total Cost: 	398.744
+		Cumulative Re-CPU Cost: 	1.29632e+008
+		Cumulative Re-I/O Cost: 	0
+		Cumulative First Row Cost: 	401.478
+		Cumulative Comm Cost:		4.02273
+		Cumulative First Comm Cost:	4.02273
+		Estimated Bufferpool Buffers: 	0
+
+		Arguments:
+		---------
+		MAXPAGES: (Maximum pages for prefetch)
+			ALL
+		PREFETCH: (Type of Prefetch)
+			NONE
+		SCANDIR : (Scan Direction)
+			FORWARD
+		SPEED   : (Assumed speed of scan, in sharing structures)
+			SLOW
+		THROTTLE: (Scan may be throttled, for scan sharing)
+			FALSE
+		VISIBLE : (May be included in scan sharing structures)
+			FALSE
+		WRAPPING: (Scan may start anywhere and wrap)
+			FALSE
+
+		Input Streams:
+		-------------
+			13) From Operator #6
+
+				Estimated number of rows: 	2056.65
+				Partition Map ID:  			3
+				Partitioning:      		(MULT )
+								Multiple Partitions
+				Number of columns: 		14
+				Subquery predicate ID: 		Not Applicable
+
+				Column Names:
+				------------
+				+Q9.SUBSCRIBER_KEY(A)+Q9.SUBSCRIBER_MSISDN(A)
+				+Q9.TRF_PLAN_KEY(A)+Q9.EVENT_TYPE_CLSF_KEY(A)
+				+Q9.EVENT_DIR(A)+Q9.EVENT_TYPE_KEY(A)
+				+Q9.OUT_ROAMING_IND(A)
+				+Q9.DED_ACC_CONVERSION_FACTOR
+				+Q9.DED_ACC_CHARGE_AMT+Q9.CORE_ACC_CHARGE_AMT
+				+Q9.CDR_ID_KEY+Q9.CALL_PULSE_60
+				+Q9.EVENT_DURATION+Q9.SUBSCRIBER_CIRCLE_ID
+
+				Partition Column Names:
+				----------------------
+				+1: Q9.SUBSCRIBER_MSISDN
+
+
+		Output Streams:
+		--------------
+			14) To Operator #4
+
+				Estimated number of rows: 	2056.65
+				Partition Map ID:  			3
+				Partitioning:      		(MULT )
+								Multiple Partitions
+				Number of columns: 		14
+				Subquery predicate ID: 		Not Applicable
+
+				Column Names:
+				------------
+				+Q9.SUBSCRIBER_KEY(A)+Q9.SUBSCRIBER_MSISDN(A)
+				+Q9.TRF_PLAN_KEY(A)+Q9.EVENT_TYPE_CLSF_KEY(A)
+				+Q9.EVENT_DIR(A)+Q9.EVENT_TYPE_KEY(A)
+				+Q9.OUT_ROAMING_IND(A)
+				+Q9.DED_ACC_CONVERSION_FACTOR
+				+Q9.DED_ACC_CHARGE_AMT+Q9.CORE_ACC_CHARGE_AMT
+				+Q9.CDR_ID_KEY+Q9.CALL_PULSE_60
+				+Q9.EVENT_DURATION+Q9.SUBSCRIBER_CIRCLE_ID
+
+				Partition Column Names:
+				----------------------
+				+1: Q9.SUBSCRIBER_MSISDN
+
+
+	6) SORT  : (Sort)
+		Cumulative Total Cost: 		401.477
+		Cumulative CPU Cost: 		1.42257e+008
+		Cumulative I/O Cost: 		178
+		Cumulative Re-Total Cost: 	398.632
+		Cumulative Re-CPU Cost: 	1.29116e+008
+		Cumulative Re-I/O Cost: 	0
+		Cumulative First Row Cost: 	401.477
+		Cumulative Comm Cost:		4.02273
+		Cumulative First Comm Cost:	4.02273
+		Estimated Bufferpool Buffers: 	149
+
+		Arguments:
+		---------
+		DUPLWARN: (Duplicates Warning flag)
+			FALSE
+		NUMROWS : (Estimated number of rows)
+			2057
+		ROWWIDTH: (Estimated width of rows)
+			100
+		SORTKEY : (Sort Key column)
+			1: Q9.SUBSCRIBER_KEY(A)
+			2: Q9.SUBSCRIBER_MSISDN(A)
+			3: Q9.TRF_PLAN_KEY(A)
+			4: Q9.EVENT_TYPE_CLSF_KEY(A)
+			5: Q9.EVENT_DIR(A)
+			6: Q9.EVENT_TYPE_KEY(A)
+			7: Q9.OUT_ROAMING_IND(A)
+		TEMPSIZE: (Temporary Table Page Size)
+			32768
+		UNIQUE  : (Uniqueness required flag)
+			FALSE
+
+		Input Streams:
+		-------------
+			12) From Operator #7
+
+				Estimated number of rows: 	2056.65
+				Partition Map ID:  			3
+				Partitioning:      		(MULT )
+								Multiple Partitions
+				Number of columns: 		14
+				Subquery predicate ID: 		Not Applicable
+
+				Column Names:
+				------------
+				+Q9.DED_ACC_CONVERSION_FACTOR
+				+Q9.DED_ACC_CHARGE_AMT+Q9.CORE_ACC_CHARGE_AMT
+				+Q9.CDR_ID_KEY+Q9.CALL_PULSE_60
+				+Q9.EVENT_DURATION+Q9.TRF_PLAN_KEY
+				+Q9.OUT_ROAMING_IND+Q9.EVENT_TYPE_CLSF_KEY
+				+Q9.EVENT_DIR+Q9.SUBSCRIBER_CIRCLE_ID
+				+Q9.EVENT_TYPE_KEY+Q9.SUBSCRIBER_KEY
+				+Q9.SUBSCRIBER_MSISDN
+
+				Partition Column Names:
+				----------------------
+				+1: Q9.SUBSCRIBER_MSISDN
+
+
+		Output Streams:
+		--------------
+			13) To Operator #5
+
+				Estimated number of rows: 	2056.65
+				Partition Map ID:  			3
+				Partitioning:      		(MULT )
+								Multiple Partitions
+				Number of columns: 		14
+				Subquery predicate ID: 		Not Applicable
+
+				Column Names:
+				------------
+				+Q9.SUBSCRIBER_KEY(A)+Q9.SUBSCRIBER_MSISDN(A)
+				+Q9.TRF_PLAN_KEY(A)+Q9.EVENT_TYPE_CLSF_KEY(A)
+				+Q9.EVENT_DIR(A)+Q9.EVENT_TYPE_KEY(A)
+				+Q9.OUT_ROAMING_IND(A)
+				+Q9.DED_ACC_CONVERSION_FACTOR
+				+Q9.DED_ACC_CHARGE_AMT+Q9.CORE_ACC_CHARGE_AMT
+				+Q9.CDR_ID_KEY+Q9.CALL_PULSE_60
+				+Q9.EVENT_DURATION+Q9.SUBSCRIBER_CIRCLE_ID
+
+				Partition Column Names:
+				----------------------
+				+1: Q9.SUBSCRIBER_MSISDN
+
+
+	7) HSJOIN: (Hash Join)
+		Cumulative Total Cost: 		398.632
+		Cumulative CPU Cost: 		1.29116e+008
+		Cumulative I/O Cost: 		178
+		Cumulative Re-Total Cost: 	398.632
+		Cumulative Re-CPU Cost: 	1.29116e+008
+		Cumulative Re-I/O Cost: 	178
+		Cumulative First Row Cost: 	398.632
+		Cumulative Comm Cost:		4.02273
+		Cumulative First Comm Cost:	4.02273
+		Estimated Bufferpool Buffers: 	149
+
+		Arguments:
+		---------
+		BITFLTR : (Hash Join Bit Filter used)
+			FALSE
+		EARLYOUT: (Early Out flag)
+			NONE
+		HASHCODE: (Hash Code Size)
+			24 BIT
+		HASHTBSZ: (Number of hash table entries)
+			6912
+		OUTERJN : (Outer Join type)
+			LEFT
+		TEMPSIZE: (Temporary Table Page Size)
+			32768
+		TUPBLKSZ: (Unrecognized Argument)
+			16000
+
+		Predicates:
+		----------
+		14) Residual Predicate, 
+			Comparison Operator: 		Less Than (<)
+			Subquery Input Required: 	No
+			Filter Factor: 			0.919428
+
+			Predicate Text:
+			--------------
+			(Q6.$C9 < Q7.MSISDN_END_DT)
+
+
+		15) Residual Predicate, 
+			Comparison Operator: 		Less Than or Equal (<=)
+			Subquery Input Required: 	No
+			Filter Factor: 			1
+
+			Predicate Text:
+			--------------
+			(Q7.MSISDN_START_DT <= Q6.$C9)
+
+
+		16) Predicate used in Join, 
+			Comparison Operator: 		Equal (=)
+			Subquery Input Required: 	No
+			Filter Factor: 			4.82253e-005
+
+			Predicate Text:
+			--------------
+			(Q6.SUBSCRIBER_MSISDN = Q7.SUBSCRIBER_MSISDN)
+
+
+
+		Input Streams:
+		-------------
+			9) From Operator #8
+
+				Estimated number of rows: 	2056.65
+				Partition Map ID:  			3
+				Partitioning:      		(MULT )
+								Multiple Partitions
+				Number of columns: 		14
+				Subquery predicate ID: 		Not Applicable
+
+				Column Names:
+				------------
+				+Q6.DED_ACC_CHARGE_AMT+Q6.CDR_ID_KEY
+				+Q6.SUBSCRIBER_MSISDN+Q6.SUBSCRIBER_CIRCLE_ID
+				+Q6.$C9+Q6.EVENT_TYPE_KEY+Q6.EVENT_DIR
+				+Q6.EVENT_TYPE_CLSF_KEY+Q6.OUT_ROAMING_IND
+				+Q6.TRF_PLAN_KEY+Q6.EVENT_DURATION
+				+Q6.CALL_PULSE_60+Q6.CORE_ACC_CHARGE_AMT
+				+Q6.DED_ACC_CONVERSION_FACTOR
+
+				Partition Column Names:
+				----------------------
+				+1: Q6.SUBSCRIBER_MSISDN
+
+			11) From Operator #14
+
+				Estimated number of rows: 	7484
+				Partition Map ID:  			3
+				Partitioning:      		(MULT )
+								Multiple Partitions
+				Number of columns: 		5
+				Subquery predicate ID: 		Not Applicable
+
+				Column Names:
+				------------
+				+Q7.$RID$+Q7.SUBSCRIBER_KEY+Q7.MSISDN_END_DT
+				+Q7.MSISDN_START_DT+Q7.SUBSCRIBER_MSISDN
+
+				Partition Column Names:
+				----------------------
+				+1: Q7.SUBSCRIBER_MSISDN
+
+
+		Output Streams:
+		--------------
+			12) To Operator #6
+
+				Estimated number of rows: 	2056.65
+				Partition Map ID:  			3
+				Partitioning:      		(MULT )
+								Multiple Partitions
+				Number of columns: 		14
+				Subquery predicate ID: 		Not Applicable
+
+				Column Names:
+				------------
+				+Q9.DED_ACC_CONVERSION_FACTOR
+				+Q9.DED_ACC_CHARGE_AMT+Q9.CORE_ACC_CHARGE_AMT
+				+Q9.CDR_ID_KEY+Q9.CALL_PULSE_60
+				+Q9.EVENT_DURATION+Q9.TRF_PLAN_KEY
+				+Q9.OUT_ROAMING_IND+Q9.EVENT_TYPE_CLSF_KEY
+				+Q9.EVENT_DIR+Q9.SUBSCRIBER_CIRCLE_ID
+				+Q9.EVENT_TYPE_KEY+Q9.SUBSCRIBER_KEY
+				+Q9.SUBSCRIBER_MSISDN
+
+				Partition Column Names:
+				----------------------
+				+1: Q9.SUBSCRIBER_MSISDN
+
+
+	8) HSJOIN: (Hash Join)
+		Cumulative Total Cost: 		303.698
+		Cumulative CPU Cost: 		1.09648e+008
+		Cumulative I/O Cost: 		166
+		Cumulative Re-Total Cost: 	303.698
+		Cumulative Re-CPU Cost: 	1.09648e+008
+		Cumulative Re-I/O Cost: 	166
+		Cumulative First Row Cost: 	303.698
+		Cumulative Comm Cost:		4.02273
+		Cumulative First Comm Cost:	4.02273
+		Estimated Bufferpool Buffers: 	149
+
+		Arguments:
+		---------
+		BITFLTR : (Hash Join Bit Filter used)
+			FALSE
+		EARLYOUT: (Early Out flag)
+			NONE
+		HASHCODE: (Hash Code Size)
+			24 BIT
+		HASHTBSZ: (Number of hash table entries)
+			15
+		JN INPUT: (Join input leg)
+			OUTER
+		OUTERJN : (Outer Join type)
+			LEFT
+		TEMPSIZE: (Temporary Table Page Size)
+			32768
+		TUPBLKSZ: (Unrecognized Argument)
+			4000
+
+		Predicates:
+		----------
+		18) Residual Predicate, 
+			Comparison Operator: 		Less Than (<)
+			Subquery Input Required: 	No
+			Filter Factor: 			1
+
+			Predicate Text:
+			--------------
+			(Q5.$C10 < Q1.DED_ACC_END_DT)
+
+
+		19) Residual Predicate, 
+			Comparison Operator: 		Less Than or Equal (<=)
+			Subquery Input Required: 	No
+			Filter Factor: 			1
+
+			Predicate Text:
+			--------------
+			(Q1.DED_ACC_EFF_DT <= Q5.$C10)
+
+
+		20) Predicate used in Join, 
+			Comparison Operator: 		Equal (=)
+			Subquery Input Required: 	No
+			Filter Factor: 			0.0625
+
+			Predicate Text:
+			--------------
+			(Q5.DED_ACC_KEY = Q1.DED_ACC_KEY)
+
+
+		21) Predicate used in Join, 
+			Comparison Operator: 		Equal (=)
+			Subquery Input Required: 	No
+			Filter Factor: 			1
+
+			Predicate Text:
+			--------------
+			(Q5.SUBSCRIBER_CIRCLE_ID = Q1.CIRCLE_ID)
+
+
+
+		Input Streams:
+		-------------
+			5) From Operator #9
+
+				Estimated number of rows: 	2056.65
+				Partition Map ID:  			3
+				Partitioning:      		(MULT )
+								Multiple Partitions
+				Number of columns: 		14
+				Subquery predicate ID: 		Not Applicable
+
+				Column Names:
+				------------
+				+Q5.CDR_ID_KEY+Q5.SUBSCRIBER_MSISDN
+				+Q5.SUBSCRIBER_CIRCLE_ID+Q5.$C10
+				+Q5.EVENT_TYPE_KEY+Q5.EVENT_DIR
+				+Q5.EVENT_TYPE_CLSF_KEY+Q5.OUT_ROAMING_IND
+				+Q5.TRF_PLAN_KEY+Q5.EVENT_DURATION
+				+Q5.CALL_PULSE_60+Q5.CORE_ACC_CHARGE_AMT
+				+Q5.DED_ACC_KEY+Q5.DED_ACC_CHARGE_AMT
+
+				Partition Column Names:
+				----------------------
+				+1: Q5.SUBSCRIBER_MSISDN
+
+			8) From Operator #12
+
+				Estimated number of rows: 	15
+				Partition Map ID:  			3
+				Partitioning:      		(MULT )
+								Multiple Partitions
+				Number of columns: 		5
+				Subquery predicate ID: 		Not Applicable
+
+				Column Names:
+				------------
+				+Q1.CIRCLE_ID+Q1.DED_ACC_CONVERSION_FACTOR
+				+Q1.DED_ACC_END_DT+Q1.DED_ACC_EFF_DT
+				+Q1.DED_ACC_KEY
+
+				Partition Column Names:
+				----------------------
+				+NONE
+
+
+		Output Streams:
+		--------------
+			9) To Operator #7
+
+				Estimated number of rows: 	2056.65
+				Partition Map ID:  			3
+				Partitioning:      		(MULT )
+								Multiple Partitions
+				Number of columns: 		14
+				Subquery predicate ID: 		Not Applicable
+
+				Column Names:
+				------------
+				+Q6.DED_ACC_CHARGE_AMT+Q6.CDR_ID_KEY
+				+Q6.SUBSCRIBER_MSISDN+Q6.SUBSCRIBER_CIRCLE_ID
+				+Q6.$C9+Q6.EVENT_TYPE_KEY+Q6.EVENT_DIR
+				+Q6.EVENT_TYPE_CLSF_KEY+Q6.OUT_ROAMING_IND
+				+Q6.TRF_PLAN_KEY+Q6.EVENT_DURATION
+				+Q6.CALL_PULSE_60+Q6.CORE_ACC_CHARGE_AMT
+				+Q6.DED_ACC_CONVERSION_FACTOR
+
+				Partition Column Names:
+				----------------------
+				+1: Q6.SUBSCRIBER_MSISDN
+
+
+	9) HSJOIN: (Hash Join)
+		Cumulative Total Cost: 		295.355
+		Cumulative CPU Cost: 		1.06032e+008
+		Cumulative I/O Cost: 		165
+		Cumulative Re-Total Cost: 	295.355
+		Cumulative Re-CPU Cost: 	1.06032e+008
+		Cumulative Re-I/O Cost: 	165
+		Cumulative First Row Cost: 	295.355
+		Cumulative Comm Cost:		0
+		Cumulative First Comm Cost:	0
+		Estimated Bufferpool Buffers: 	149
+
+		Arguments:
+		---------
+		BITFLTR : (Hash Join Bit Filter used)
+			FALSE
+		EARLYOUT: (Early Out flag)
+			NONE
+		HASHCODE: (Hash Code Size)
+			24 BIT
+		HASHTBSZ: (Number of hash table entries)
+			6756
+		JN INPUT: (Join input leg)
+			OUTER
+		OUTERJN : (Outer Join type)
+			LEFT
+		TEMPSIZE: (Temporary Table Page Size)
+			32768
+		TUPBLKSZ: (Unrecognized Argument)
+			16000
+
+		Predicates:
+		----------
+		22) Predicate used in Join, 
+			Comparison Operator: 		Equal (=)
+			Subquery Input Required: 	No
+			Filter Factor: 			4.82253e-005
+
+			Predicate Text:
+			--------------
+			(Q3.SUBSCRIBER_MSISDN = Q4.SUBSCRIBER_MSISDN)
+
+
+		23) Predicate used in Join, 
+			Comparison Operator: 		Equal (=)
+			Subquery Input Required: 	No
+			Filter Factor: 			1.79761e-005
+
+			Predicate Text:
+			--------------
+			(Q3.CDR_ID_KEY = Q4.CDR_ID_KEY)
+
+
+
+		Input Streams:
+		-------------
+			2) From Operator #10
+
+				Estimated number of rows: 	2056.65
+				Partition Map ID:  			3
+				Partitioning:      		(MULT )
+								Multiple Partitions
+				Number of columns: 		11
+				Subquery predicate ID: 		Not Applicable
+
+				Column Names:
+				------------
+				+Q3.CORE_ACC_CHARGE_AMT+Q3.CALL_PULSE_60
+				+Q3.EVENT_DURATION+Q3.TRF_PLAN_KEY
+				+Q3.OUT_ROAMING_IND+Q3.EVENT_TYPE_CLSF_KEY
+				+Q3.EVENT_DIR+Q3.EVENT_TYPE_KEY
+				+Q3.SUBSCRIBER_CIRCLE_ID+Q3.SUBSCRIBER_MSISDN
+				+Q3.CDR_ID_KEY
+
+				Partition Column Names:
+				----------------------
+				+1: Q3.SUBSCRIBER_MSISDN
+
+			4) From Operator #11
+
+				Estimated number of rows: 	6756
+				Partition Map ID:  			3
+				Partitioning:      		(MULT )
+								Multiple Partitions
+				Number of columns: 		5
+				Subquery predicate ID: 		Not Applicable
+
+				Column Names:
+				------------
+				+Q4.$RID$+Q4.DED_ACC_CHARGE_AMT+Q4.DED_ACC_KEY
+				+Q4.SUBSCRIBER_MSISDN+Q4.CDR_ID_KEY
+
+				Partition Column Names:
+				----------------------
+				+1: Q4.SUBSCRIBER_MSISDN
+
+
+		Output Streams:
+		--------------
+			5) To Operator #8
+
+				Estimated number of rows: 	2056.65
+				Partition Map ID:  			3
+				Partitioning:      		(MULT )
+								Multiple Partitions
+				Number of columns: 		14
+				Subquery predicate ID: 		Not Applicable
+
+				Column Names:
+				------------
+				+Q5.CDR_ID_KEY+Q5.SUBSCRIBER_MSISDN
+				+Q5.SUBSCRIBER_CIRCLE_ID+Q5.$C10
+				+Q5.EVENT_TYPE_KEY+Q5.EVENT_DIR
+				+Q5.EVENT_TYPE_CLSF_KEY+Q5.OUT_ROAMING_IND
+				+Q5.TRF_PLAN_KEY+Q5.EVENT_DURATION
+				+Q5.CALL_PULSE_60+Q5.CORE_ACC_CHARGE_AMT
+				+Q5.DED_ACC_KEY+Q5.DED_ACC_CHARGE_AMT
+
+				Partition Column Names:
+				----------------------
+				+1: Q5.SUBSCRIBER_MSISDN
+
+
+	10) TBSCAN: (Table Scan)
+		Cumulative Total Cost: 		170.858
+		Cumulative CPU Cost: 		8.96951e+007
+		Cumulative I/O Cost: 		149
+		Cumulative Re-Total Cost: 	19.2093
+		Cumulative Re-CPU Cost: 	8.87303e+007
+		Cumulative Re-I/O Cost: 	0
+		Cumulative First Row Cost: 	7.64609
+		Cumulative Comm Cost:		0
+		Cumulative First Comm Cost:	0
+		Estimated Bufferpool Buffers: 	149
+
+		Arguments:
+		---------
+		CUR_COMM: (Currently Committed)
+			TRUE
+		JN INPUT: (Join input leg)
+			OUTER
+		LCKAVOID: (Lock Avoidance)
+			TRUE
+		MAXPAGES: (Maximum pages for prefetch)
+			ALL
+		PREFETCH: (Type of Prefetch)
+			SEQUENTIAL
+		ROWLOCK : (Row Lock intent)
+			SHARE (CS/RS)
+		SCANDIR : (Scan Direction)
+			FORWARD
+		SKIP_INS: (Skip Inserted Rows)
+			TRUE
+		SPEED   : (Assumed speed of scan, in sharing structures)
+			FAST
+		TABLOCK : (Table Lock intent)
+			INTENT SHARE
+		TBISOLVL: (Table access Isolation Level)
+			CURSOR STABILITY
+		THROTTLE: (Scan may be throttled, for scan sharing)
+			TRUE
+		VISIBLE : (May be included in scan sharing structures)
+			TRUE
+		WRAPPING: (Scan may start anywhere and wrap)
+			TRUE
+
+		Predicates:
+		----------
+		24) Sargable Predicate, 
+			Comparison Operator: 		Equal (=)
+			Subquery Input Required: 	No
+			Filter Factor: 			0.237003
+
+			Predicate Text:
+			--------------
+			(Q2.SUBSCRIBER_CIRCLE_ID = 3)
+
+
+		25) Sargable Predicate, 
+			Comparison Operator: 		Equal (=)
+			Subquery Input Required: 	No
+			Filter Factor: 			0.25648
+
+			Predicate Text:
+			--------------
+			(Q2.EVENT_START_DT = '02/02/2009')
+
+
+
+		Input Streams:
+		-------------
+			1) From Object GRP1261278480789_12.SUBSCRIBER_RATED_USAGE_DPF
+
+				Estimated number of rows: 	33834
+				Partition Map ID:  			3
+				Partitioning:      		(MULT )
+								Multiple Partitions
+				Number of columns: 		13
+				Subquery predicate ID: 		Not Applicable
+
+				Column Names:
+				------------
+				+Q2.$RID$+Q2.TRF_PLAN_KEY+Q2.EVENT_DIR
+				+Q2.CALL_PULSE_60+Q2.SUBSCRIBER_MSISDN
+				+Q2.SUBSCRIBER_CIRCLE_ID
+				+Q2.EVENT_TYPE_CLSF_KEY+Q2.CDR_ID_KEY
+				+Q2.EVENT_TYPE_KEY+Q2.CORE_ACC_CHARGE_AMT
+				+Q2.EVENT_DURATION+Q2.EVENT_START_DT
+				+Q2.OUT_ROAMING_IND
+
+				Partition Column Names:
+				----------------------
+				+1: Q2.SUBSCRIBER_MSISDN
+
+
+		Output Streams:
+		--------------
+			2) To Operator #9
+
+				Estimated number of rows: 	2056.65
+				Partition Map ID:  			3
+				Partitioning:      		(MULT )
+								Multiple Partitions
+				Number of columns: 		11
+				Subquery predicate ID: 		Not Applicable
+
+				Column Names:
+				------------
+				+Q3.CORE_ACC_CHARGE_AMT+Q3.CALL_PULSE_60
+				+Q3.EVENT_DURATION+Q3.TRF_PLAN_KEY
+				+Q3.OUT_ROAMING_IND+Q3.EVENT_TYPE_CLSF_KEY
+				+Q3.EVENT_DIR+Q3.EVENT_TYPE_KEY
+				+Q3.SUBSCRIBER_CIRCLE_ID+Q3.SUBSCRIBER_MSISDN
+				+Q3.CDR_ID_KEY
+
+				Partition Column Names:
+				----------------------
+				+1: Q3.SUBSCRIBER_MSISDN
+
+
+	11) TBSCAN: (Table Scan)
+		Cumulative Total Cost: 		123.532
+		Cumulative CPU Cost: 		1.18811e+007
+		Cumulative I/O Cost: 		16
+		Cumulative Re-Total Cost: 	2.51899
+		Cumulative Re-CPU Cost: 	1.16356e+007
+		Cumulative Re-I/O Cost: 	0
+		Cumulative First Row Cost: 	7.57133
+		Cumulative Comm Cost:		0
+		Cumulative First Comm Cost:	0
+		Estimated Bufferpool Buffers: 	16
+
+		Arguments:
+		---------
+		CUR_COMM: (Currently Committed)
+			TRUE
+		JN INPUT: (Join input leg)
+			INNER
+		LCKAVOID: (Lock Avoidance)
+			TRUE
+		MAXPAGES: (Maximum pages for prefetch)
+			ALL
+		PREFETCH: (Type of Prefetch)
+			NONE
+		ROWLOCK : (Row Lock intent)
+			SHARE (CS/RS)
+		SCANDIR : (Scan Direction)
+			FORWARD
+		SKIP_INS: (Skip Inserted Rows)
+			TRUE
+		SPEED   : (Assumed speed of scan, in sharing structures)
+			FAST
+		TABLOCK : (Table Lock intent)
+			INTENT SHARE
+		TBISOLVL: (Table access Isolation Level)
+			CURSOR STABILITY
+		THROTTLE: (Scan may be throttled, for scan sharing)
+			TRUE
+		VISIBLE : (May be included in scan sharing structures)
+			TRUE
+		WRAPPING: (Scan may start anywhere and wrap)
+			TRUE
+
+		Input Streams:
+		-------------
+			3) From Object GRP1261278480789_12.SUBSCRIBER_DEDICATED_ACCOUNT_USAGE_DPF
+
+				Estimated number of rows: 	6756
+				Partition Map ID:  			3
+				Partitioning:      		(MULT )
+								Multiple Partitions
+				Number of columns: 		5
+				Subquery predicate ID: 		Not Applicable
+
+				Column Names:
+				------------
+				+Q4.$RID$+Q4.DED_ACC_CHARGE_AMT+Q4.DED_ACC_KEY
+				+Q4.SUBSCRIBER_MSISDN+Q4.CDR_ID_KEY
+
+				Partition Column Names:
+				----------------------
+				+1: Q4.SUBSCRIBER_MSISDN
+
+
+		Output Streams:
+		--------------
+			4) To Operator #9
+
+				Estimated number of rows: 	6756
+				Partition Map ID:  			3
+				Partitioning:      		(MULT )
+								Multiple Partitions
+				Number of columns: 		5
+				Subquery predicate ID: 		Not Applicable
+
+				Column Names:
+				------------
+				+Q4.$RID$+Q4.DED_ACC_CHARGE_AMT+Q4.DED_ACC_KEY
+				+Q4.SUBSCRIBER_MSISDN+Q4.CDR_ID_KEY
+
+				Partition Column Names:
+				----------------------
+				+1: Q4.SUBSCRIBER_MSISDN
+
+
+	12) TQ    : (Table Queue)
+		Cumulative Total Cost: 		7.61656
+		Cumulative CPU Cost: 		261278
+		Cumulative I/O Cost: 		1
+		Cumulative Re-Total Cost: 	0.0456115
+		Cumulative Re-CPU Cost: 	210685
+		Cumulative Re-I/O Cost: 	0
+		Cumulative First Row Cost: 	7.59025
+		Cumulative Comm Cost:		4.02273
+		Cumulative First Comm Cost:	0
+		Estimated Bufferpool Buffers: 	1
+
+		Arguments:
+		---------
+		JN INPUT: (Join input leg)
+			INNER
+		LISTENER: (Listener Table Queue type)
+			FALSE
+		TQMERGE : (Merging Table Queue flag)
+			FALSE
+		TQREAD  : (Table Queue Read type)
+			READ AHEAD
+		TQSEND  : (Table Queue Write type)
+			BROADCAST
+		UNIQUE  : (Uniqueness required flag)
+			FALSE
+
+		Input Streams:
+		-------------
+			7) From Operator #13
+
+				Estimated number of rows: 	15
+				Partition Map ID:  			4
+				Partitioning:      		(    3)
+								Single Node (#    3) Partition
+				Number of columns: 		6
+				Subquery predicate ID: 		Not Applicable
+
+				Column Names:
+				------------
+				+Q1.$RID$+Q1.CIRCLE_ID
+				+Q1.DED_ACC_CONVERSION_FACTOR
+				+Q1.DED_ACC_END_DT+Q1.DED_ACC_EFF_DT
+				+Q1.DED_ACC_KEY
+
+				Partition Column Names:
+				----------------------
+				+NONE
+
+
+		Output Streams:
+		--------------
+			8) To Operator #8
+
+				Estimated number of rows: 	15
+				Partition Map ID:  			3
+				Partitioning:      		(MULT )
+								Multiple Partitions
+				Number of columns: 		5
+				Subquery predicate ID: 		Not Applicable
+
+				Column Names:
+				------------
+				+Q1.CIRCLE_ID+Q1.DED_ACC_CONVERSION_FACTOR
+				+Q1.DED_ACC_END_DT+Q1.DED_ACC_EFF_DT
+				+Q1.DED_ACC_KEY
+
+				Partition Column Names:
+				----------------------
+				+NONE
+
+
+	13) TBSCAN: (Table Scan)
+		Cumulative Total Cost: 		7.59244
+		Cumulative CPU Cost: 		149830
+		Cumulative I/O Cost: 		1
+		Cumulative Re-Total Cost: 	0.0214839
+		Cumulative Re-CPU Cost: 	99237
+		Cumulative Re-I/O Cost: 	0
+		Cumulative First Row Cost: 	7.57236
+		Cumulative Comm Cost:		0
+		Cumulative First Comm Cost:	0
+		Estimated Bufferpool Buffers: 	1
+
+		Arguments:
+		---------
+		CUR_COMM: (Currently Committed)
+			TRUE
+		LCKAVOID: (Lock Avoidance)
+			TRUE
+		MAXPAGES: (Maximum pages for prefetch)
+			ALL
+		PREFETCH: (Type of Prefetch)
+			NONE
+		ROWLOCK : (Row Lock intent)
+			SHARE (CS/RS)
+		SCANDIR : (Scan Direction)
+			FORWARD
+		SKIP_INS: (Skip Inserted Rows)
+			TRUE
+		SPEED   : (Assumed speed of scan, in sharing structures)
+			FAST
+		TABLOCK : (Table Lock intent)
+			INTENT SHARE
+		TBISOLVL: (Table access Isolation Level)
+			CURSOR STABILITY
+		THROTTLE: (Scan may be throttled, for scan sharing)
+			TRUE
+		VISIBLE : (May be included in scan sharing structures)
+			TRUE
+		WRAPPING: (Scan may start anywhere and wrap)
+			TRUE
+
+		Predicates:
+		----------
+		17) Sargable Predicate, 
+			Comparison Operator: 		Equal (=)
+			Subquery Input Required: 	No
+			Filter Factor: 			0.333333
+
+			Predicate Text:
+			--------------
+			(Q1.CIRCLE_ID = 3)
+
+
+
+		Input Streams:
+		-------------
+			6) From Object GRP1261278480789_12.DEDICATED_ACCOUNT_DPF
+
+				Estimated number of rows: 	45
+				Partition Map ID:  			4
+				Partitioning:      		(    3)
+								Single Node (#    3) Partition
+				Number of columns: 		6
+				Subquery predicate ID: 		Not Applicable
+
+				Column Names:
+				------------
+				+Q1.$RID$+Q1.CIRCLE_ID
+				+Q1.DED_ACC_CONVERSION_FACTOR
+				+Q1.DED_ACC_END_DT+Q1.DED_ACC_EFF_DT
+				+Q1.DED_ACC_KEY
+
+				Partition Column Names:
+				----------------------
+				+NONE
+
+
+		Output Streams:
+		--------------
+			7) To Operator #12
+
+				Estimated number of rows: 	15
+				Partition Map ID:  			4
+				Partitioning:      		(    3)
+								Single Node (#    3) Partition
+				Number of columns: 		6
+				Subquery predicate ID: 		Not Applicable
+
+				Column Names:
+				------------
+				+Q1.$RID$+Q1.CIRCLE_ID
+				+Q1.DED_ACC_CONVERSION_FACTOR
+				+Q1.DED_ACC_END_DT+Q1.DED_ACC_EFF_DT
+				+Q1.DED_ACC_KEY
+
+				Partition Column Names:
+				----------------------
+				+NONE
+
+
+	14) TBSCAN: (Table Scan)
+		Cumulative Total Cost: 		93.5523
+		Cumulative CPU Cost: 		1.30828e+007
+		Cumulative I/O Cost: 		12
+		Cumulative Re-Total Cost: 	2.79039
+		Cumulative Re-CPU Cost: 	1.28892e+007
+		Cumulative Re-I/O Cost: 	0
+		Cumulative First Row Cost: 	7.57133
+		Cumulative Comm Cost:		0
+		Cumulative First Comm Cost:	0
+		Estimated Bufferpool Buffers: 	12
+
+		Arguments:
+		---------
+		CUR_COMM: (Currently Committed)
+			TRUE
+		JN INPUT: (Join input leg)
+			INNER
+		LCKAVOID: (Lock Avoidance)
+			TRUE
+		MAXPAGES: (Maximum pages for prefetch)
+			ALL
+		PREFETCH: (Type of Prefetch)
+			NONE
+		ROWLOCK : (Row Lock intent)
+			SHARE (CS/RS)
+		SCANDIR : (Scan Direction)
+			FORWARD
+		SKIP_INS: (Skip Inserted Rows)
+			TRUE
+		SPEED   : (Assumed speed of scan, in sharing structures)
+			FAST
+		TABLOCK : (Table Lock intent)
+			INTENT SHARE
+		TBISOLVL: (Table access Isolation Level)
+			CURSOR STABILITY
+		THROTTLE: (Scan may be throttled, for scan sharing)
+			TRUE
+		VISIBLE : (May be included in scan sharing structures)
+			TRUE
+		WRAPPING: (Scan may start anywhere and wrap)
+			TRUE
+
+		Input Streams:
+		-------------
+			10) From Object GRP1261278480789_12.SUBSCRIBER_MSISDN_HISTORY_DPF
+
+				Estimated number of rows: 	7484
+				Partition Map ID:  			3
+				Partitioning:      		(MULT )
+								Multiple Partitions
+				Number of columns: 		5
+				Subquery predicate ID: 		Not Applicable
+
+				Column Names:
+				------------
+				+Q7.$RID$+Q7.SUBSCRIBER_KEY+Q7.MSISDN_END_DT
+				+Q7.MSISDN_START_DT+Q7.SUBSCRIBER_MSISDN
+
+				Partition Column Names:
+				----------------------
+				+1: Q7.SUBSCRIBER_MSISDN
+
+
+		Output Streams:
+		--------------
+			11) To Operator #7
+
+				Estimated number of rows: 	7484
+				Partition Map ID:  			3
+				Partitioning:      		(MULT )
+								Multiple Partitions
+				Number of columns: 		5
+				Subquery predicate ID: 		Not Applicable
+
+				Column Names:
+				------------
+				+Q7.$RID$+Q7.SUBSCRIBER_KEY+Q7.MSISDN_END_DT
+				+Q7.MSISDN_START_DT+Q7.SUBSCRIBER_MSISDN
+
+				Partition Column Names:
+				----------------------
+				+1: Q7.SUBSCRIBER_MSISDN
+
+
+Objects Used in Access Plan:
+---------------------------
+
+	Schema: GRP1261278480789_12
+	Name: 	DEDICATED_ACCOUNT_DPF
+	Type: 	Table
+			Time of creation: 		2009-12-19-23.59.05.207002
+			Last statistics update: 	2009-12-19-00.00.00.000000
+			Number of columns: 		5
+			Number of rows: 		45
+			Width of rows: 			29
+			Number of buffer pool pages: 	1
+			Number of data partitions: 	1
+			Distinct row values: 		No
+			Tablespace name: 		DIMSPACE          
+			Tablespace overhead: 		7.500000
+			Tablespace transfer rate: 	0.060000
+			Source for statistics: 		Single Node
+			Prefetch page count: 		32
+			Container extent page count: 	32
+			Table overflow record count: 	0
+			Table Active Blocks: 		-1
+			Average Row Compression Ratio: 	0
+			Percentage Rows Compressed: 	0
+			Average Compressed Row Size: 	0
+
+	Schema: GRP1261278480789_12
+	Name: 	SUBSCRIBER_DEDICATED_ACCOUNT_USAGE_DPF
+	Type: 	Table
+			Time of creation: 		2009-12-19-23.59.04.426002
+			Last statistics update: 	2009-12-19-00.00.00.000000
+			Number of columns: 		9
+			Number of rows: 		6756
+			Width of rows: 			61
+			Number of buffer pool pages: 	16
+			Number of data partitions: 	1
+			Distinct row values: 		No
+			Tablespace name: 		FACTSPACE         
+			Tablespace overhead: 		7.500000
+			Tablespace transfer rate: 	0.060000
+			Source for statistics: 		Single Node
+			Prefetch page count: 		32
+			Container extent page count: 	32
+			Table overflow record count: 	0
+			Table Active Blocks: 		-1
+			Average Row Compression Ratio: 	0
+			Percentage Rows Compressed: 	0
+			Average Compressed Row Size: 	0
+
+	Schema: GRP1261278480789_12
+	Name: 	SUBSCRIBER_MSISDN_HISTORY_DPF
+	Type: 	Table
+			Time of creation: 		2009-12-19-23.59.04.816002
+			Last statistics update: 	2009-12-19-00.00.00.000000
+			Number of columns: 		7
+			Number of rows: 		7484
+			Width of rows: 			61
+			Number of buffer pool pages: 	12
+			Number of data partitions: 	1
+			Distinct row values: 		No
+			Tablespace name: 		FACTSPACE         
+			Tablespace overhead: 		7.500000
+			Tablespace transfer rate: 	0.060000
+			Source for statistics: 		Single Node
+			Prefetch page count: 		32
+			Container extent page count: 	32
+			Table overflow record count: 	0
+			Table Active Blocks: 		-1
+			Average Row Compression Ratio: 	0
+			Percentage Rows Compressed: 	0
+			Average Compressed Row Size: 	0
+
+	Schema: GRP1261278480789_12
+	Name: 	SUBSCRIBER_RATED_USAGE_DPF
+	Type: 	Table
+			Time of creation: 		2009-12-19-23.59.03.624000
+			Last statistics update: 	2009-12-19-00.00.00.000000
+			Number of columns: 		19
+			Number of rows: 		33834
+			Width of rows: 			159
+			Number of buffer pool pages: 	149
+			Number of data partitions: 	1
+			Distinct row values: 		No
+			Tablespace name: 		FACTSPACE         
+			Tablespace overhead: 		7.500000
+			Tablespace transfer rate: 	0.060000
+			Source for statistics: 		Single Node
+			Prefetch page count: 		32
+			Container extent page count: 	32
+			Table overflow record count: 	0
+			Table Active Blocks: 		-1
+			Average Row Compression Ratio: 	0
+			Percentage Rows Compressed: 	0
+			Average Compressed Row Size: 	0
+
+</PRE>

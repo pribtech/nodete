@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tutorial name="XQuery Let Statement" autoCloseWindowsInRightStage="true" autoClearAdhocResults="true">
+    <flowRestriction>Free</flowRestriction>
+    <closeAction/>
+    <openAction />
+    <globalCodeHighlightOptions highlightCode = "true" />
+    <pageList>
+    	<page name="XQuery Let Statement" type="intro">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>01_XQueryLetStatement.html</contentFile>
+            <SQLText/>
+            <autoLoadLink>
+    	        <pageWindow target="informationWindow">
+    	            <panel name="main">
+    	                <URL>http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.xml.doc/doc/xqrletclau.html?noframes=true</URL>
+    	            </panel>
+    	        </pageWindow>
+    	      </autoLoadLink>
+      </page>
+        
+      <page name="Let statement" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>02_LetStatement.html</contentFile>
+            <SQLFile>01_LetStatement.sql</SQLFile>
+            <SQLExecutionOptions xmlinline="true" xml="true" clob="false" blob="false" dbclob="false" termChar=";" cursor="forward" commitPerStmt="true" numRowReturned="100" />
+      </page>
+      <page name="Let statement with data type specification" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>03_LetStatementWithDataTypeSpecification.html</contentFile>
+            <SQLFile>02_LetStatementWithDataTypeSpecification.sql</SQLFile>
+            <SQLExecutionOptions xmlinline="true" xml="true" clob="false" blob="false" dbclob="false" termChar=";" cursor="forward" commitPerStmt="true" numRowReturned="100" />
+      </page>
+      <page name="Let statement with invalid values (static error)" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>04_LetStatementWithInvalidValues(staticError).html</contentFile>
+            <SQLFile>03_LetStatementWithInvalidValues(staticError).sql</SQLFile>
+            <SQLExecutionOptions xmlinline="true" xml="true" clob="false" blob="false" dbclob="false" termChar=";" cursor="forward" commitPerStmt="true" numRowReturned="100" />
+      </page>
+      <page name="Let statement with invalid values (dynamic error)" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>05_LetStatementWithInvalidValues(dynamicError).html</contentFile>
+            <SQLFile>04_LetStatementWithInvalidValues(dynamicError).sql</SQLFile>
+            <SQLExecutionOptions xmlinline="true"  xml="true" clob="false" blob="false" dbclob="false" termChar=";" cursor="forward" commitPerStmt="true" numRowReturned="100" />
+      </page>
+      <page name="Return multiple values" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>06_ReturnMultipleValues.html</contentFile>
+            <SQLFile>05_ReturnMultipleValues.sql</SQLFile>
+            <SQLExecutionOptions xmlinline="true" xml="true" clob="false" blob="false" dbclob="false" termChar=";" cursor="forward" commitPerStmt="true" numRowReturned="100" />
+      </page>
+      <page name="Assigning Sets of Values" type="last">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>07_AssigningSetsOfValues.html</contentFile>
+            <SQLFile>06_AssigningSetsOfValues.sql</SQLFile>
+            <SQLExecutionOptions xmlinline="true" xml="true" clob="false" blob="false" dbclob="false" termChar=";" cursor="forward" commitPerStmt="true" numRowReturned="100" />
+      </page>
+   </pageList>
+</tutorial>

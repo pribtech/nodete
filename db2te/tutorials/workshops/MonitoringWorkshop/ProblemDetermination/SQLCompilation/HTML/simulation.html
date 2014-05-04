@@ -1,0 +1,57 @@
+<h2> Run sample workload </h2>
+<HR>
+<P>
+
+<BR>The SQL compilation problem scenario can be simulated by a java program<code>(SampleCompilationProblem_Literals.java)</code> available in <CODE>"[tutorial-base-directory]/extras"</CODE> directory.<P>
+This program prepares and executes many SQL queries, which introduces many compilation at runtime on the server. <P>
+
+<h2>Steps to run workload on command line</h2>
+<hr>
+<BR>
+<ul>
+	<li>Verify java is available in your system PATH. To add java to the path, use following command:</li>
+	<ul>
+		<li>On windows: <code>set PATH=&lt;DB2 install path&gt;java\jdk\bin;%PATH%</code></li>
+		<li>On Unix: <code>export PATH=&lt;DB2 install path&gt;/java/jdk/bin:$PATH</code></li>
+	</ul>
+	<li>Change directory to <CODE>"[TE-directory]/tutorials/Workshops/MonitoringWorkshop/ProblemDetermination/SQLCompilation/extras"</CODE> directory</li>
+	<li>Compile the sample java workload </li>
+	<ul>
+			<li><code>javac SampleCompilationProblem_Literals.java</code></li>
+	</ul>
+	<li>Execute the program</li>
+	<ul>
+			<li><code>java SampleCompilationProblem_Literals &lt;userid&gt; &lt;password&gt; &lt;hostname&gt; &lt;DB2_port_number&gt;</code></li>
+	</ul>
+</ul>
+
+
+<BR><BR>
+<h2>Pre-Requisites</h2>
+<hr>
+Before proceeding to the next step, make sure that:
+<ul>
+	<li>Sample database is created. Use following command to create sample database:</li>
+	<ul>
+		<li><CODE>'db2sampl'</CODE></li>
+	</ul>
+	<li>All monitor switches are turned ON. Use following commands to turn ON the monitor switches:
+		<ul>
+			<li><CODE>UPDATE DBM CFG USING DFT_MON_BUFPOOL ON</CODE></li>
+			<li><CODE>UPDATE DBM CFG USING DFT_MON_LOCK ON</CODE></li>
+			<li><CODE>UPDATE DBM CFG USING DFT_MON_SORT ON</CODE></li>
+			<li><CODE>UPDATE DBM CFG USING DFT_MON_STMT ON</CODE></li>
+			<li><CODE>UPDATE DBM CFG USING DFT_MON_TABLE ON</CODE></li>
+			<li><CODE>UPDATE DBM CFG USING DFT_MON_TIMESTAMP ON</CODE></li>
+			<li><CODE>UPDATE DBM CFG USING DFT_MON_UOW ON</CODE></li>
+		</ul>
+	</li>
+	<li>Database is activated. Use following command to activate the database:
+		<ul>
+			<li><CODE>ACTIVATE DATABASE SAMPLE</CODE></li>
+		</ul>
+	</li>
+</ul>
+
+	
+

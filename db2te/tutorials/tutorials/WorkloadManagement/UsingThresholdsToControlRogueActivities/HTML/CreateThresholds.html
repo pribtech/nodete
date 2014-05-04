@@ -1,0 +1,48 @@
+Create two thresholds, one of which (th_estcost) is an
+  ESTIMATEDSQLCOST threshold and another (th_sqlrows) is a
+  SQLROWSRETURNED threshold and apply them to the service
+  class you wish to control the activities for (in this case,
+  work1_sc service class) using the <a onclick="OpenURLInFloatingWindow
+('http://publib.boulder.ibm.com/infocenter/db2luw/v9r7/topic/com.ibm.db2.luw.sql.ref.doc/doc/r0050563.html?noframes=true');">CREATE THRESHOLD</a> statement. 
+  <p>
+  The th_estcost threshold specifies an upper bound (10000
+  timerons) for the optimizer-estimated cost (in timerons) for
+  an activity running in the work1_sc service class. If any
+  query with an estimated cost greater than 100 timerons,
+  tries to execute in the work1_sc service class, this
+  threshold is violated and the query is not allowed to run. </p>
+  <p>
+  The th_sqlrows threshold specifies that any activity running
+  in the work1_sc service class can return at most 30 rows
+  from the data server. If any query tries to return more than
+  30 rows, this threshold is violated, only 30 rows will be
+  returned to the client and the query will be stopped.  In
+  addition, data about the activity that caused the threshold
+  violation will be collected. </p>
+  <p>
+  In either case, when an activity violates the threshold, a
+  threshold violation record is written to the THRESHOLD
+  VIOLATIONS event monitor as defined in step 1 and the
+  execution of the activity is stopped (because of the STOP
+  EXECUTION action). The application that submitted the
+  activity will receive an SQL4712N error. </p>
+  <p>
+  Additional information: A threshold can be either predictive
+  or reactive: </p>
+  <ul>
+  <li>Predictive threshold: The boundaries of a predictive
+  threshold are checked before the activity starts running. To
+  check whether a predictive threshold would be violated, the
+  data server obtains usage estimates from the SQL compiler.
+  For this example, the th_estcost threshold is a predictive
+  threshold. </li>
+    
+  <li>Reactive threshold: The boundaries of a reactive
+  threshold are checked while an activity is executing.
+  Approximate runtime usage estimates of the controlled
+  resource are used to evaluate the boundaries of reactive
+  thresholds. The runtime usage estimates are not obtained
+  continuously but rather at selected predefined checkpoints
+  during the lifetime of the tracked work. For this example,
+  the th_sqlrows is a reactive threshold.  </li>
+  </ul>

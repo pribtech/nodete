@@ -1,0 +1,12 @@
+<p>Other statistics that accompany a linear-regression analysis can be computed in terms of the functions we already looked at in this tutorial. For example:</p>
+
+<ul>
+    <li>Adjusted R2:<br/><strong>1 - ( (1 - REGR_R2) * ((REGR_COUNT - 1) / (REGR_COUNT - 2)) )</strong></li>
+    <li>Standard error:<br/><strong>SQRT( (REGR_SYY-(POWER(REGR_SXY,2)/REGR_SXX))/(REGR_COUNT-2) )</strong></li>
+    <li>Total sum of squares:<br/><strong>REGR_SYY</strong></li>
+    <li>Regression sum of squares:<br/><strong>POWER(REGR_SXY,2) / REGR_SXX</strong></li>
+    <li>Residual sum of squares:<br/><strong>(Total sum of squares)-(Regression sum of squares)</strong></li>
+    <li>t-Statistic for a slope:<br/><strong>REGR_SLOPE * SQRT(REGR_SXX) / (Standard error)</strong></li>
+    <li>t-Statistic for the y-intercept:<br/><strong>REGR_INTERCEPT/((Standard error)*SQRT((1/REGR_COUNT)+(POWER(REGR_AVGX,2)/REGR_SXX))</strong>
+</ul>
+

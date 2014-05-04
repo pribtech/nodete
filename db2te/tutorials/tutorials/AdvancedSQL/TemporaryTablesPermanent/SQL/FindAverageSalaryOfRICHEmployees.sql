@@ -1,0 +1,1 @@
+select dec(avg(salary+bonus+comm),15,2) as avg_rich from rich;

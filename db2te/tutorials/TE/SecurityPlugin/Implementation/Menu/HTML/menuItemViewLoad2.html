@@ -1,0 +1,26 @@
+<H3>Loading a Window</H3><hr>
+<p>Since this menu item is going to load a layout, it is best to start by opening or designating a window to place the contents within.</p>
+
+<p><h2>Steps:</h2>
+<ol>
+  <li>Make the changes to your 'menu_01_Db2auth.xml' document as indicated on the right</li>
+</ol>
+</p>
+
+<p>The 'pageWindow' element allows us to open a new window or load a layout into an existing window within the Technology Explorer. </p>
+
+<p><h4> What is a window? </h4></p>
+
+<p>A window is any tab or floating object you see with a title bar. What truly defines a window element are the controls to navigate forward and backward, and to reload the current page.  </p>
+
+<p>The attribute 'target' indicates which window to load the content into. There are three reserved names you should know about; '_active' will load the contents into whatever window is selected on the default stage, '_blank' will open a new window on the default stage, and '_self' will open the link in the current calling window. '_self' should not be used in menu items. If a window of the given name exists within a stage, that page will be loaded into that window; however, if the name does not exist a new window will be created.</p>
+
+<p><h4>What is a stage? </h4></p>
+
+<p>Stages are locations that can contain windows. You can direct a page to a given stage using the attribute 'windowStage'.</p>
+
+<p>Simply put, a stage is an area that can contain windows. By default there are two stages you can use; the 'defaultStage' which is the stage this tutorial is loaded into and the 'floatingStage' that contains floating windows. There is also a third stage loaded called the 'SuperStage' in which all of the Technology Explorer content is loaded into. You should NEVER send content to this stage.</p>
+
+<p>As an aside there is a stage loaded in the right panel of the tutorial that is the default stage for tutorial content. A stage is also used in the bottom panel of the Ad Hoc query to display the results within. </p>
+
+<p>You will learn more about creating a stage in part '3. Stages' of this tutorial.<br/></p><br/>

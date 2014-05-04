@@ -1,0 +1,28 @@
+<p>This page compares the performance of a query (i.e query execution time) run against the tables with and without indexes</p>
+
+<H2><B>Operation</B></H2><HR>
+<p>The following query is run against the tables first without indexes and then with indexes and the performance in each case is compared</p>
+
+<p>Query to estimate the total amount of sales in the first quarter for products with IDs 2 and 3 :</p>
+
+<p><pre><code>
+SELECT a.order_master_ID, a.customer_ID, a.order_date, b.product_ID, b.total_cost 
+  FROM order_master a, order_details b 
+  WHERE a.order_date BETWEEN '02-01-2009' AND '04-30-2009' 
+    AND a.order_master_ID = b.order_details_ID 
+	AND b.product_ID IN (2,3) 
+  GROUP BY a.order_master_ID, a.customer_ID, a.order_date, b.product_ID, b.total_cost 
+  ORDER BY a.order_master_ID, a.customer_ID, a.order_date, b.product_ID, b.total_cost
+</code></pre></p>
+
+<br><p>The query :</p>
+<p>
+<ol>
+<li>Selects the 'order_master_ID' and 'customer_ID' of the 'order_master' table. A unique index has been created on these columns</li>
+<li>Specifies the 'order_date' column in the WHERE clause. A clustered index has been created on this column</li> 
+<li>Compares the order_IDs of the 'order_master' and 'order_details' tables and then specifies particular product_IDs in the 'order_details' table. A composite index has been created on these columns</li>
+</ol>
+</p>
+
+<BR><H2><B>Result</B></H2><HR>
+<p>The graph shows better query performance in case of tables with indexes i.e. the query processing time is significantly reduced with the use of indexes</p>

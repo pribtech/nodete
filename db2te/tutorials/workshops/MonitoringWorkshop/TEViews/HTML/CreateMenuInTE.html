@@ -1,0 +1,32 @@
+<h3>Create MENU in Technology Explorer</h3>
+<hr>
+By now, we have our XML profile created and copied in respective directory. Now we need to create a menu item in Technology Explorer. Menu items in TE are also XML profiles.
+<p>
+<B>Steps Involved:</B>
+<ul>
+	<li>Refer to the sample menu XML profile on right pane.</li>
+	<li>Open a text editor and copy the sample menu XML profile presented on the right pane</li>
+	<li>Modify the section highlighed in yellow according to the view XML profile name and its location.
+		<ul>
+			<li>Description element is the textual description of the view to be created.</li>
+			<li>If the file is saved as <CODE>'testTabDef.xml'</CODE> in <CODE>'test'</CODE> directory under tableDefinitions directory, then the parameterList element will look like this: </li>
+		</ul>
+	</li>
+</ul>
+
+<table><tr><td class="sourceCopiedFrom"><PRE>&lt;parameterList&gt;
+&nbsp&nbsp&nbsp&nbsp&lt;parameter name="table"&gt;<font  class="sourceChange">test/testTabDef</font>&lt;/parameter&gt;
+&nbsp&nbsp&nbsp&nbsp&lt;parameter name="action"&gt;list_table&lt;/parameter&gt;
+&lt;/parameterList&gt;</PRE></td></tr></table>
+<ul>		
+	<li>Once the XML profile for menu is ready, save the file as <code>menu_50_testTabDef.xml</code> in the <code>menu</code> directory which can be found under the TE base directory. The number 50 in the file name identifies where the order of this menu item relative to the other menus in TE. testTabDef is any name you give for this menu.</li>	
+	<li>Once the xml file is copied, click on <CODE>"File-->Reload Menu"</CODE>. (Note: 'File' menu is part of Technology Explorer, not the browser's main menu)</li>
+	<li>Once the menu is reloaded, you will see a new menu item in main TE menu list. When you click on this menu, it will open the view created in a new pane.</li>
+	<li>You can find more examples of views under <CODE>'View, Statistics, Health and Tools'</CODE> menu.</li>
+</ul>
+
+
+
+
+
+Once the XML profile for menu is ready, you need to copy it in menu directory(under TE base directory)
