@@ -17,9 +17,10 @@
  *  limitations under the License.
  *********************************************************************************/
 if( isset($_SERVER['VCAP_APPLICATION'])) {
-	setDefine("BLUEMIX", true);
+	setDefine("CLOUD", true);
 	setDefine("VCAP_APPLICATION", json_decode($_SERVER['VCAP_APPLICATION'], true));
 	setDefine("VCAP_SERVICES", json_decode($_SERVER['VCAP_SERVICES'], true));
-	setDefine("VCAP_APP_PORT", json_decode($_SERVER['VCAP_APP_PORT'], true));
+	if( isset($_SERVER['VCAP_APP_PORT']))
+		setDefine("VCAP_APP_PORT", $_SERVER['VCAP_APP_PORT']);
 } else 
-	setDefine("BLUEMIX", false);
+	setDefine("CLOUD", false);
