@@ -42,16 +42,10 @@ function setDefineDirectory($var,$valueWindows,$valueLinux=null) {
  * VERSION INFORMATION
  *****************************************************************************/
 
-/** DB2 Monitoring Console version number
- * @global string $MAJOR_VERSION
- * @global string $MINOR_VERSION
- * @global string $SUB_VERSION
- */
-@define("MAJOR_VERSION", 4);
-
-@define("MINOR_VERSION", 1);
-
+@define("MAJOR_VERSION", 5);
+@define("MINOR_VERSION", 0);
 @define("SUB_VERSION", "1953");
+@define("TE_VERSION", "v".MAJOR_VERSION.".".MINOR_VERSION);
 
 /******************************************************************************
  * END - VERSION INFORMATION

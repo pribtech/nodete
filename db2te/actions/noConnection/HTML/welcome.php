@@ -1,11 +1,11 @@
 <div class="generalHTML">
-<div id="title">Welcome to the Technology Explorer for IBM DB2 v4.1</div>
+<div id="title">Welcome to the Technology Explorer for IBM DB2 <?php echo TE_VERSION ?></div>
 
 <p>
 <table>
 <tr><td>
 <img src="./images/logo.jpg"/>
-</td><td><h1>The Technology Explorer for IBM DB2 v4.1</h1></td></tr></table>
+</td><td><h1>The Technology Explorer for IBM DB2 <?php echo TE_VERSION ?></h1></td></tr></table>
 			<table border="0" cellspacing="0" cellpadding="5">
 			  <tr>
 				<td class="tableText">
