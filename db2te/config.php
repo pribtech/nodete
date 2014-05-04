@@ -51,9 +51,9 @@ function setDefineDirectory($var,$valueWindows,$valueLinux=null) {
  * END - VERSION INFORMATION
  *****************************************************************************/
 require_once("./config.bluemix.php");
-if( isset($_SERVER['TE_SETTINGS']) )
+if( getenv('TE_SETTINGS') )
 	try{
-		$settings =  json_decode($_SERVER['TE_SETTINGS'], true);
+		$settings =  json_decode(getenv('TE_SETTINGS'), true);
 		foreach ($settings as $key => $value) {
 			error_log("Env set ".$key." = ".$value,0);
 			@define($key,$value);

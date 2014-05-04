@@ -49,7 +49,7 @@ try {
 			try {
 				include_once(PHP_INCLUDE_BASE_DIRECTORY . $currentFile);
 			} catch (Exception $e){
-				if(DEBUG_LOG_2_CONSOLE) error_log("error ".$e->getMessage(),0)
+				if(DEBUG_LOG_2_CONSOLE) error_log("error ".$e->getMessage(),0);
 				echo '<font style="background-color:RED;padding:5px;">';
 				echo $currentFile . ' PHP module has problem loading. Error: '.$e->getMessage();
 				echo '</font><br/><br/>';

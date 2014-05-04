@@ -16,11 +16,11 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  *********************************************************************************/
-if( isset($_SERVER['VCAP_APPLICATION'])) {
+if( getenv('VCAP_APPLICATION')) {
 	setDefine("CLOUD", true);
-	setDefine("VCAP_APPLICATION", json_decode($_SERVER['VCAP_APPLICATION'], true));
-	setDefine("VCAP_SERVICES", json_decode($_SERVER['VCAP_SERVICES'], true));
-	if( isset($_SERVER['VCAP_APP_PORT']))
-		setDefine("VCAP_APP_PORT", $_SERVER['VCAP_APP_PORT']);
+	setDefine("VCAP_APPLICATION", json_decode(getenv('VCAP_APPLICATION'), true));
+	setDefine("VCAP_SERVICES", json_decode(getenv('VCAP_SERVICES'), true));
+	if( getenv('VCAP_APP_PORT'))
+		setDefine("VCAP_APP_PORT", getenv('VCAP_APP_PORT'));
 } else 
 	setDefine("CLOUD", false);
