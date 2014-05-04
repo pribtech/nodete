@@ -1,0 +1,129 @@
+<!--
+  Peter Prib, Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2012 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<table name="rowCache">
+	<sqlName>V$ROWCACHE</sqlName>
+	<singularName>Row Cache</singularName>
+	<pluralName>Row Cache</pluralName>
+	<description></description>
+	<output>
+		<type name="DDL" destination="" title="" generator=""/>
+	</output>
+   	<disable_edit/>
+	<orderBy name="GETS" direction="D"/>
+	<displayColumns>
+		<col type="column" name="PARAMETER"/>
+		<col type="column" name="COUNT"/>
+		<col type="column" name="USAGE"/>
+		<col type="column" name="FIXED"/>
+		<col type="column" name="GETS"/>
+		<col type="column" name="GETMISSES"/>
+		<col type="column" name="SCANS"/>
+		<col type="column" name="SCANMISSES"/>
+		<col type="column" name="SCANCOMPLETES"/>
+		<col type="column" name="MODIFICATIONS"/>
+		<col type="column" name="FLUSHES"/>
+		<col type="column" name="DLM_REQUESTS"/>
+		<col type="column" name="DLM_CONFLICTS"/>
+		<col type="column" name="DLM_RELEASES"/>
+	</displayColumns>
+	<column name="CACHE#">
+		<sqlName>CACHE#</sqlName>
+		<title>Cache Id.</title>
+		<type>n</type>
+	</column>
+	<column name="TYPE">
+		<sqlName>TYPE</sqlName>
+		<title>Type</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="SUBORDINATE#">
+		<sqlName>SUBORDINATE#</sqlName>
+		<title>Subordinate</title>
+		<type>n</type>
+	</column>
+	<column name="PARAMETER">
+		<sqlName>PARAMETER</sqlName>
+		<title>Parameter</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="COUNT">
+		<sqlName>COUNT</sqlName>
+		<title>Count</title>
+		<type>n</type>
+	</column>
+	<column name="USAGE">
+		<sqlName>USAGE</sqlName>
+		<title>Usage</title>
+		<type>n</type>
+	</column>
+	<column name="FIXED">
+		<sqlName>FIXED</sqlName>
+		<title>Fixed</title>
+		<type>n</type>
+	</column>
+	<column name="GETS">
+		<sqlName>GETS</sqlName>
+		<title>Gets</title>
+		<type>n</type>
+	</column>
+	<column name="GETMISSES">
+		<sqlName>GETMISSES</sqlName>
+		<title>Get Misses</title>
+		<type>n</type>
+	</column>
+	<column name="SCANS">
+		<sqlName>SCANS</sqlName>
+		<title>Scans</title>
+		<type>n</type>
+	</column>
+	<column name="SCANMISSES">
+		<sqlName>SCANMISSES</sqlName>
+		<title>Scan Misses</title>
+		<type>n</type>
+	</column>
+	<column name="SCANCOMPLETES">
+		<sqlName>SCANCOMPLETES</sqlName>
+		<title>Scan Completes</title>
+		<type>n</type>
+	</column>
+	<column name="MODIFICATIONS">
+		<sqlName>MODIFICATIONS</sqlName>
+		<title>Modifications</title>
+		<type>n</type>
+	</column>
+	<column name="FLUSHES">
+		<sqlName>FLUSHES</sqlName>
+		<title>Flushes</title>
+		<type>n</type>
+	</column>
+	<column name="DLM_REQUESTS">
+		<sqlName>DLM_REQUESTS</sqlName>
+		<title>DLM Requests</title>
+		<type>n</type>
+	</column>
+	<column name="DLM_CONFLICTS">
+		<sqlName>DLM_CONFLICTS</sqlName>
+		<title>DLM Conflicts</title>
+		<type>n</type>
+	</column>
+	<column name="DLM_RELEASES">
+		<sqlName>DLM_RELEASES</sqlName>
+		<title>DLM Releases</title>
+		<type>n</type>
+	</column>
+</table>

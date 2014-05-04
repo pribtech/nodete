@@ -1,0 +1,222 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2010 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+
+<table name="ibmsnap_register">
+	<sql_name>ibmsnap_register</sql_name>
+	<singular_name>Replication Registration</singular_name>
+	<plural_name>Replication Registrations</plural_name>
+	<edit>y</edit>
+	<messages><SQL0204N>Capture replication not installed or its schema is not the default ASN</SQL0204N></messages>
+	<inlinequery>
+<![CDATA[
+SELECT * FROM "?"."IBMSNAP_REGISTER"  as "IBMSNAP_REGISTER"
+]]>
+	</inlinequery>
+	<parameters>
+		<parm name="tabSchema">
+			<title>Schema</title>
+			<value>ASN</value>
+			<type>n</type>
+		</parm>
+	</parameters>
+	<description></description>
+
+	<display_columns>
+		<col type="column" name="SOURCE_OWNER" />
+		<col type="column" name="SOURCE_TABLE" />
+		<col type="column" name="SOURCE_VIEW_QUAL" />
+		<col type="column" name="GLOBAL_RECORD" />
+		<col type="column" name="SOURCE_STRUCTURE" />
+		<col type="column" name="SOURCE_CONDENSED" />
+		<col type="column" name="SOURCE_COMPLETE" />
+		<col type="column" name="CD_OWNER" />
+		<col type="column" name="CD_TABLE" />
+		<col type="column" name="PHYS_CHANGE_OWNER" />
+		<col type="column" name="PHYS_CHANGE_TABLE" />
+		<col type="column" name="CD_OLD_SYNCHPOINT" />
+		<col type="column" name="CD_NEW_SYNCHPOINT" />
+		<col type="column" name="DISABLE_REFRESH" />
+		<col type="column" name="CCD_OWNER" />
+		<col type="column" name="CCD_TABLE" />
+		<col type="column" name="CCD_OLD_SYNCHPOINT" />
+		<col type="column" name="SYNCHPOINT" />
+		<col type="column" name="SYNCHTIME" />
+		<col type="column" name="CCD_CONDENSED" />
+		<col type="column" name="CCD_COMPLETE" />
+		<col type="column" name="ARCH_LEVEL" />
+		<col type="column" name="DESCRIPTION" />
+		<col type="column" name="BEFORE_IMG_PREFIX" />
+		<col type="column" name="CONFLICT_LEVEL" />
+		<col type="column" name="CHG_UPD_TO_DEL_INS" />
+		<col type="column" name="CHGONLY" />
+		<col type="column" name="RECAPTURE" />
+		<col type="column" name="OPTION_FLAGS" />
+		<col type="column" name="STOP_ON_ERROR" />
+		<col type="column" name="STATE" />
+		<col type="column" name="STATE_INFO" />
+	</display_columns>
+	<column name="SOURCE_OWNER">
+		<c_sql_name>SOURCE_OWNER</c_sql_name>
+		<c_title>Owner</c_title>
+		<c_pkey>p</c_pkey>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="SOURCE_TABLE">
+		<c_sql_name>SOURCE_TABLE</c_sql_name>
+		<c_title>Table</c_title>
+		<c_pkey>p</c_pkey>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="SOURCE_VIEW_QUAL">
+		<c_sql_name>SOURCE_VIEW_QUAL</c_sql_name>
+		<c_title>View Qualifier</c_title>
+		<c_pkey>p</c_pkey>
+	</column>
+	<column name="GLOBAL_RECORD">
+		<c_sql_name>GLOBAL_RECORD</c_sql_name>
+		<c_title>Global</c_title>
+	</column>
+	<column name="SOURCE_STRUCTURE">
+		<c_sql_name>SOURCE_STRUCTURE</c_sql_name>
+		<c_title>Structure</c_title>
+		<c_column_mask>
+			<value_mask value="1"><mask>User table</mask></value_mask>
+			<value_mask value="3"><mask>CCD table</mask></value_mask>
+			<value_mask value="4"><mask>Point-in-time table</mask></value_mask>
+			<value_mask value="5"><mask>Base aggregate table</mask></value_mask>
+			<value_mask value="6"><mask>Change aggregate table</mask></value_mask>
+			<value_mask value="7"><mask>Replica table</mask></value_mask>
+			<value_mask value="8"><mask>User copy table</mask></value_mask>
+			<value_mask value="9"><mask>CCD table without a join of the IBMSNAP_UOW and CD tables</mask></value_mask>
+	   	</c_column_mask>
+	</column>
+	<column name="SOURCE_CONDENSED">
+		<c_sql_name>SOURCE_CONDENSED</c_sql_name>
+		<c_title>Condensed</c_title>
+		<c_column_mask>
+			<value_mask value="Y"><mask>Yes</mask></value_mask>
+			<value_mask value="N"><mask>No</mask></value_mask>
+			<value_mask value="A"><mask>Aggregation</mask></value_mask>
+	   	</c_column_mask> 
+	</column>
+	<column name="SOURCE_COMPLETE">
+		<c_sql_name>SOURCE_COMPLETE</c_sql_name>
+		<c_title>Complete</c_title>
+	</column>
+	<column name="CD_OWNER">
+		<c_sql_name>CD_OWNER</c_sql_name>
+		<c_title>CD Owner</c_title>
+	</column>
+	<column name="CD_TABLE">
+		<c_sql_name>CD_TABLE</c_sql_name>
+		<c_title>CD Table</c_title>
+	</column>
+	<column name="PHYS_CHANGE_OWNER">
+		<c_sql_name>PHYS_CHANGE_OWNER</c_sql_name>
+		<c_title>Phys. Change Owner</c_title>
+	</column>
+	<column name="PHYS_CHANGE_TABLE">
+		<c_sql_name>PHYS_CHANGE_TABLE</c_sql_name>
+		<c_title>Phys. Change Table</c_title>
+	</column>
+	<column name="CD_OLD_SYNCHPOINT">
+		<c_sql_name>CD_OLD_SYNCHPOINT</c_sql_name>
+		<c_title>CD OLD Synch. Point</c_title>
+	</column>
+	<column name="CD_NEW_SYNCHPOINT">
+		<c_sql_name>CD_NEW_SYNCHPOINT</c_sql_name>
+		<c_title>CD New Synch. Point</c_title>
+	</column>
+	<column name="DISABLE_REFRESH">
+		<c_sql_name>DISABLE_REFRESH</c_sql_name>
+		<c_title>Disable Refresh</c_title>
+	</column>
+	<column name="CCD_OWNER">
+		<c_sql_name>CCD_OWNER</c_sql_name>
+		<c_title>CCD Owner</c_title>
+	</column>
+	<column name="CCD_TABLE">
+		<c_sql_name>CCD_TABLE</c_sql_name>
+		<c_title>CCD Table</c_title>
+	</column>
+	<column name="CCD_OLD_SYNCHPOINT">
+		<c_sql_name>CCD_OLD_SYNCHPOINT</c_sql_name>
+		<c_title>CCD Old Synch. Point</c_title>
+	</column>
+	<column name="SYNCHPOINT">
+		<c_sql_name>SYNCHPOINT</c_sql_name>
+		<c_title>Synch. Point</c_title>
+	</column>
+	<column name="SYNCHTIME">
+		<c_sql_name>SYNCHTIME</c_sql_name>
+		<c_title>Synch. Time</c_title>
+	</column>
+	<column name="CCD_CONDENSED">
+		<c_sql_name>CCD_CONDENSED</c_sql_name>
+		<c_title>CCD Condensed</c_title>
+	</column>
+	<column name="CCD_COMPLETE">
+		<c_sql_name>CCD_COMPLETE</c_sql_name>
+		<c_title>CCD Complete</c_title>
+	</column>
+	<column name="ARCH_LEVEL">
+		<c_sql_name>ARCH_LEVEL</c_sql_name>
+		<c_title>Arch. Level</c_title>
+	</column>
+	<column name="DESCRIPTION">
+		<c_sql_name>DESCRIPTION</c_sql_name>
+		<c_title>Description</c_title>
+	</column>
+	<column name="BEFORE_IMG_PREFIX">
+		<c_sql_name>BEFORE_IMG_PREFIX</c_sql_name>
+		<c_title>Before Image Prefix</c_title>
+	</column>
+	<column name="CONFLICT_LEVEL">
+		<c_sql_name>CONFLICT_LEVEL</c_sql_name>
+		<c_title>Conflict Level</c_title>
+	</column>
+	<column name="CHG_UPD_TO_DEL_INS">
+		<c_sql_name>CHG_UPD_TO_DEL_INS</c_sql_name>
+		<c_title>Change to Delete Insert</c_title>
+	</column>
+	<column name="CHGONLY">
+		<c_sql_name>CHGONLY</c_sql_name>
+		<c_title>Change Only</c_title>
+	</column>
+	<column name="RECAPTURE">
+		<c_sql_name>RECAPTURE</c_sql_name>
+		<c_title>Recapture</c_title>
+	</column>
+	<column name="OPTION_FLAGS">
+		<c_sql_name>OPTION_FLAGS</c_sql_name>
+		<c_title>Option Flags</c_title>
+	</column>
+	<column name="STOP_ON_ERROR">
+		<c_sql_name>STOP_ON_ERROR</c_sql_name>
+		<c_title>Stop On Error</c_title>
+	</column>
+	<column name="STATE">
+		<c_sql_name>STATE</c_sql_name>
+		<c_title>State</c_title>
+	</column>
+	<column name="STATE_INFO">
+		<c_sql_name>STATE_INFO</c_sql_name>
+		<c_title>State Info</c_title>
+	</column>
+</table>
+

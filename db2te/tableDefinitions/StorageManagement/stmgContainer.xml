@@ -1,0 +1,207 @@
+<!--
+  Author: Peter Prib
+  
+  Copyright Independent Systems Integrators Pty Ltd 2008 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+<table name="stmgContainer">
+	<sql_name>stmgContainer</sql_name>
+	<singular_name>Storage Container</singular_name>
+	<plural_name>Storage Containers</plural_name>
+	<description />
+	<messages>
+		<SQL0204N action="menu" type="leaf" message="Storage management monitoring not installed">
+			<description>Install Storage Management</description>
+			<tutorial source="TEScripts/Install/installStorageMgmtTables.xml"/>
+		</SQL0204N>
+	</messages>
+	<inlinequery>
+<![CDATA[
+	select s.*,obj_name ,obj_schema ,ts_name
+	from SYSTOOLS.STMG_CONTAINER s
+	join systools.stmg_object o
+		on o.obj_id=s.obj_id
+		and o.obj_type=3
+		and o.stmg_timestamp=s.stmg_timestamp
+	where s.stmg_timestamp = (select max(stmg_timestamp)
+							from systools.stmg_object mo
+							where mo.obj_name=o.obj_name
+							  and mo.obj_type=o.obj_type
+							)
+]]></inlinequery>
+	<rows_per_page>50</rows_per_page>
+	<order_by_index name="ts_name" direction="A"/>
+	<order_by_index name="container_id" direction="A"/>
+	<display_columns>
+		<col type="reference" name="History"/>
+		<col type="column" name="ts_name" />
+		<col type="column" name="container_id" />
+		<col type="column" name="obj_name" />
+		<col type="column" name="partition_num" />
+		<col type="column" name="container_type" />
+		<col type="column" name="total_pages" />
+		<col type="column" name="usable_pages" />
+		<col type="column" name="accessible" />
+	</display_columns>
+	<reference name="History">
+		<c_title>History</c_title>
+		<reftype>table</reftype>
+		<refvalue>StorageManagement/stmgContainerHist</refvalue>
+		<icon>images/icon-histo.gif</icon>
+		<ref foreign_column_name="ts_name">
+			<local_column_name>ts_name</local_column_name>
+		</ref>
+		<ref foreign_column_name="container_id">
+			<local_column_name>container_id</local_column_name>
+		</ref>
+	</reference>
+	<column name="stmg_timestamp">
+		<c_sql_name>STMG_TIMESTAMP</c_sql_name>
+		<c_title>Timestamp</c_title>
+		<c_presentation>s</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="obj_id">
+		<c_sql_name>OBJ_ID</c_sql_name>
+		<c_title>OBJ_ID</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="ts_name">
+		<c_sql_name>TS_NAME</c_sql_name>
+		<c_title>Tablespace</c_title>
+		<c_presentation>s</c_presentation>
+		<c_drill>y</c_drill>
+		<c_pkey>p</c_pkey>
+	</column>
+	<column name="obj_name">
+		<c_sql_name>OBJ_NAME</c_sql_name>
+		<c_title>Container</c_title>
+		<c_presentation>s</c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="complete_timestamp">
+		<c_sql_name>COMPLETE_TIMESTAMP</c_sql_name>
+		<c_title>Completed Timestamp</c_title>
+		<c_presentation>s</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="tablespace_id">
+		<c_sql_name>TABLESPACE_ID</c_sql_name>
+		<c_title>Tablespace Id.</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="container_id">
+		<c_sql_name>CONTAINER_ID</c_sql_name>
+		<c_title>Container Id.</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+		<c_pkey>p</c_pkey>
+	</column>
+	<column name="partition_num">
+		<c_sql_name>PARTITION_NUM</c_sql_name>
+		<c_title>Partition No.</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="container_type">
+		<c_sql_name>CONTAINER_TYPE</c_sql_name>
+		<c_title>Container Type</c_title>
+		<c_presentation>s</c_presentation>
+		<c_drill>y</c_drill>
+		<c_column_mask>
+			<value_mask value="D"><mask>Device</mask></value_mask>
+			<value_mask value="F"><mask>File</mask></value_mask>
+			<value_mask value="P"><mask>Path</mask></value_mask>
+   		</c_column_mask>
+	</column>
+	<column name="total_pages">
+		<c_sql_name>TOTAL_PAGES</c_sql_name>
+		<c_title>Total Pages</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="usable_pages">
+		<c_sql_name>USABLE_PAGES</c_sql_name>
+		<c_title>Usable Pages</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="accessible">
+		<c_sql_name>ACCESSIBLE</c_sql_name>
+		<c_title>Accessible</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+		<c_column_mask>
+			<value_mask value="1"><mask>Yes</mask></value_mask>
+			<value_mask value="0"><mask>No</mask></value_mask>
+   		</c_column_mask>
+	</column>
+	<column name="stripe_set">
+		<c_sql_name>STRIPE_SET</c_sql_name>
+		<c_title>Stripe Set</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="filesystem_nodename">
+		<c_sql_name>FILESYSTEM_NODENAME</c_sql_name>
+		<c_title>File System Node Name</c_title>
+		<c_presentation>s</c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="filesystem_id">
+		<c_sql_name>FILESYSTEM_ID</c_sql_name>
+		<c_title>File System Id.</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="filesystem_mount_point">
+		<c_sql_name>FILESYSTEM_MOUNT_POINT</c_sql_name>
+		<c_title>File System Mount Point</c_title>
+		<c_presentation>s</c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="filesystem_type_name">
+		<c_sql_name>FILESYSTEM_TYPE_NAME</c_sql_name>
+		<c_title>File System Type</c_title>
+		<c_presentation>s</c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="filesystem_device_type">
+		<c_sql_name>FILESYSTEM_DEVICE_TYPE</c_sql_name>
+		<c_title>File System Device Type</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="filesystem_total_size">
+		<c_sql_name>FILESYSTEM_TOTAL_SIZE</c_sql_name>
+		<c_title>File System Total Size</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="filesystem_free_size">
+		<c_sql_name>FILESYSTEM_FREE_SIZE</c_sql_name>
+		<c_title>File System Free Size</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="remarks">
+		<c_sql_name>REMARKS</c_sql_name>
+		<c_title>Remarks</c_title>
+		<c_presentation>s</c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+</table>

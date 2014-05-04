@@ -1,0 +1,141 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2013 All rights reserved.
+  
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+
+<table name="locks">
+	<sqlName>pg_locks</sqlName>
+	<singularName>Lock</singularName>
+	<pluralName>Locks</pluralName>
+	<description></description>
+	<orderBy name="databaseName" direction="A"/>
+	<orderBy name="schema" direction="A"/>
+	<orderBy name="tableName" direction="A"/>
+	<disableEdit/>
+	<output>
+		<type name="DDL" destination="" title="" generator=""/>
+	</output>
+	<displayColumns>
+		<col type="column" name="databaseName"/>
+		<col type="column" name="locktype"/>
+		<col type="column" name="schema"/>
+		<col type="column" name="tableName"/>
+		<col type="column" name="relation"/>
+		<col type="column" name="page"/>
+		<col type="column" name="tuple"/>
+		<col type="column" name="virtualxid"/>
+		<col type="column" name="transactionid"/>
+		<col type="column" name="classid"/>
+		<col type="column" name="objid"/>
+		<col type="column" name="objsubid"/>
+		<col type="column" name="virtualtransaction"/>
+		<col type="column" name="pid"/>
+		<col type="column" name="mode"/>
+		<col type="column" name="granted"/>
+		<col type="column" name="fastpath"/>
+	</displayColumns>
+	<column name="locktype">
+		<sqlName>locktype</sqlName>
+		<title>Locktype</title>
+		<type>n</type>
+	</column>
+	<column name="database">
+		<sqlName>database</sqlName>
+		<title>Database ID</title>
+		<type>n</type>
+	</column>
+	<column name="databaseName">
+		<sqlName>(select datname from pg_database d where d.oid=database)</sqlName>
+		<title>Database</title>
+	</column>
+	<column name="schema">
+		<sqlName>(select s.nspname from pg_class t, pg_namespace s where pg_locks.relation = t.oid and t.relnamespace=s.oid )</sqlName>
+		<title>Schema</title>
+	</column>
+	<column name="tableName">
+		<sqlName>(select t.relname from pg_class t where pg_locks.relation = t.oid)</sqlName>
+		<title>Table</title>
+	</column>
+	<column name="relation">
+		<sqlName>relation</sqlName>
+		<title>Relation</title>
+		<type>n</type>
+	</column>
+	<column name="page">
+		<sqlName>page</sqlName>
+		<title>Page</title>
+		<type>n</type>
+	</column>
+	<column name="tuple">
+		<sqlName>tuple</sqlName>
+		<title>Tuple</title>
+		<type>n</type>
+	</column>
+	<column name="virtualxid">
+		<sqlName>virtualxid</sqlName>
+		<title>Virtualxid</title>
+		<type>n</type>
+	</column>
+	<column name="transactionid">
+		<sqlName>transactionid</sqlName>
+		<title>Transaction Id</title>
+		<type>n</type>
+	</column>
+	<column name="transaction">
+		<sqlName>transactionid</sqlName>
+		<title>Transaction</title>
+	</column>
+	<column name="classid">
+		<sqlName>classid</sqlName>
+		<title>Classid</title>
+		<type>n</type>
+	</column>
+	<column name="objid">
+		<sqlName>objid</sqlName>
+		<title>Objid</title>
+		<type>n</type>
+	</column>
+	<column name="objsubid">
+		<sqlName>objsubid</sqlName>
+		<title>Objsubid</title>
+		<type>n</type>
+	</column>
+	<column name="virtualtransaction">
+		<sqlName>virtualtransaction</sqlName>
+		<title>Virtualtransaction</title>
+		<type>n</type>
+	</column>
+	<column name="pid">
+		<sqlName>pid</sqlName>
+		<title>Pid</title>
+		<type>n</type>
+	</column>
+	<column name="mode">
+		<sqlName>mode</sqlName>
+		<title>Mode</title>
+		<type>n</type>
+	</column>
+	<column name="granted">
+		<sqlName>granted</sqlName>
+		<title>Granted</title>
+		<type>n</type>
+	</column>
+	<column name="fastpath">
+		<sqlName>fastpath</sqlName>
+		<title>Fastpath</title>
+		<type>n</type>
+	</column>
+</table>

@@ -1,0 +1,316 @@
+<!--
+  Copyright IBM Corp. 2007 All rights reserved.
+
+  Changes by: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2009 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<table name="thresholds">
+    <sql_name>SYSCAT.THRESHOLDS</sql_name>
+    <singular_name>Workload Management Threshold</singular_name>
+    <plural_name>Workload Management Thresholds</plural_name>
+    <description>
+    Each row represents a workload management
+    &lt;a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.admin.wlm.doc/doc/c0051910.html?noframes=true');"&gt;threshold&lt;/a&gt;.
+	You can use thresholds to detect resource misuse or the beginning of system overload.
+	Using thresholds, you can explicitly establish limits over the consumption of a specific resource. If a threshold is violated you can continue monitoring, stop the action or collect specific information.
+   	Thresholds act on either a database or a partition domain and many different scopes. 
+   	The following 
+    &lt;a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.admin.wlm.doc/doc/r0051932.html?noframes=true');"&gt;threshold summary table&lt;/a&gt;
+   	outlines your options.
+	This list is generated from the &lt;a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.sql.ref.doc/doc/r0050565.html?noframes=true');"&gt;SYSCAT.THRESHOLDS&lt;/a&gt; catalog view.
+    </description>
+    <menu type="leaf">
+		<description>New</description>
+    	<actionScript>
+    		<task>
+		    	<assignSharedConstant name="command" type="raw">
+					<value>SQL/Create/createThreshold</value>
+				</assignSharedConstant>
+		   		<callGlobalAction name="commandExecution"/>
+	   		</task>
+    	</actionScript>
+    </menu>
+	<disableEdit/>
+	<output>
+		<type name="DDL" destination="" title="" generator=""/>
+	</output>
+    <display_columns>
+        <col type="column" name="thresholdclass"/>
+        <col type="column" name="thresholdid"/>
+        <col type="column" name="thresholdname"/>
+        <col type="column" name="thresholdpredicate"/>
+        <col type="column" name="thresholdpredicateid"/>
+        <col type="column" name="domain"/>
+        <col type="column" name="domainid"/>
+				<col type="action" name="able"/>
+        <col type="column" name="enabled"/>
+        <col type="column" name="enforcement"/>
+        <col type="column" name="collectactdata"/>
+        <col type="column" name="collectactpartition"/>
+        <col type="column" name="execution"/>
+        <col type="column" name="maxvalue"/>
+        <col type="column" name="origin"/>
+        <col type="column" name="queuing"/>
+        <col type="column" name="queuesize"/>
+        <col type="column" name="create_time"/>
+        <col type="column" name="alter_time"/>
+        <col type="column" name="remarks"/>
+    </display_columns>
+	<disable_edit/>
+
+<!-- added peter prib, Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2009 All rights reserved. -->
+	<action name="dropThreshold">
+		<c_title>Remove</c_title>
+		<icon>images/trash.gif</icon>   
+    	<actionScript>
+    		<task>
+		    	<assignSharedConstant name="objectType" type="raw">
+					<value>Threshold</value>
+				</assignSharedConstant>
+				<assignSharedConstant name="objectName" type="fixed">
+					<value>?thresholdname?</value>
+				</assignSharedConstant>
+		   		<callGlobalAction name="dropSQLObject"/>
+	   		</task>
+    	</actionScript>
+    </action>
+<!-- end added -->
+
+		<action name="able">
+				<title>Able</title>
+				<icon>images/switch.gif</icon>	
+				<actionScript name="disenable" type="serverAction">
+						<parameterList>
+							<parameter name="action" type="fixed">
+								<value>executeSQL</value>
+							</parameter>
+							<parameter name="SQL" type="fixed">
+								<value>ALTER THRESHOLD "?THRESHOLD?" ?ABLED?</value>
+							</parameter>
+							<parameter name="parameter[THRESHOLD]" type="blockValue">
+								<value>thresholdname</value>
+							</parameter>
+							<parameter name="parameter[ABLED]" type="blockValue">
+								<value>enabled</value>
+								<check>
+									<onMatch condition="[Yy]">
+										<task>
+											<assignLocalParameter name="parameter[ABLED]" type="raw">
+												<value>DISABLE</value>
+											</assignLocalParameter>
+										</task>
+									</onMatch>
+									<onMatch condition="[Nn]">
+										<task>
+											<assignLocalParameter name="parameter[ABLED]" type="raw">
+												<value>ENABLE</value>
+											</assignLocalParameter>
+										</task>
+									</onMatch>
+								</check>
+							</parameter>
+						</parameterList>
+						<followOnAction condition="true" negCondition="true">
+								<task>
+									<action name="raiseError" type="alert">
+										<message>
+											Error: ?ABLED? threshold ?THRESHOLD? failed.
+											?THRESHOLD? is automatically generated and can only be altered through its associated work action.
+										</message>
+										<parameterList>
+											<parameter name="THRESHOLD" type="blockValue">
+												<value>thresholdname</value>						
+											</parameter>				
+											<parameter name="ABLED" type="blockValue">
+												<value>enabled</value>
+												<check>
+													<onMatch condition="[Yy]">
+														<task>
+															<assignLocalParameter name="ABLED" type="raw">
+																<value>Disabling</value>
+															</assignLocalParameter>
+														</task>
+													</onMatch>
+													<onMatch condition="[Nn]">
+														<task>
+															<assignLocalParameter name="ABLED" type="raw">
+																<value>Enabling</value>
+															</assignLocalParameter>
+														</task>
+													</onMatch>
+												</check>
+											</parameter>
+										</parameterList>
+								</action>
+							</task>
+						</followOnAction>
+						<followOnAction condition="true">
+								<task>
+									<panelReload/>
+								</task>
+					  </followOnAction>
+				</actionScript>
+		</action>
+	 
+    <column name="alter_time">
+        <c_sql_name>ALTER_TIME</c_sql_name>
+        <c_title>Alter</c_title>
+        <c_presentation>n</c_presentation>
+        <c_sort>n</c_sort>
+    </column>
+    <column name="collectactdata">
+        <c_sql_name>COLLECTACTDATA</c_sql_name>
+        <c_title>Collect Data</c_title>
+        <c_presentation>s</c_presentation>
+        <c_sort>y</c_sort>
+  		<c_column_mask>
+			<value_mask value="A"><mask>activity data without details</mask></value_mask>        
+			<value_mask value="D"><mask>activity data with details</mask></value_mask>        			
+			<value_mask value="N"><mask>none</mask></value_mask>        			
+			<value_mask value="V"><mask>activity data with details and values</mask></value_mask>        			
+   		</c_column_mask>              
+    </column>
+    <column name="collectactpartition">
+        <c_sql_name>COLLECTACTPARTITION</c_sql_name>
+        <c_title>Collection Partition</c_title>
+        <c_presentation>s</c_presentation>
+        <c_sort>y</c_sort>
+  		<c_column_mask>
+			<value_mask value="C"><mask>coordinator</mask></value_mask>        
+			<value_mask value="D"><mask>all</mask></value_mask>        			
+   		</c_column_mask>       
+    </column>
+    <column name="create_time">
+        <c_sql_name>CREATE_TIME</c_sql_name>
+        <c_title>Create</c_title>
+        <c_presentation>n</c_presentation>
+        <c_sort>n</c_sort>
+    </column>
+    <column name="domain">
+        <c_sql_name>DOMAIN</c_sql_name>
+        <c_title>Domain</c_title>
+        <c_presentation>s</c_presentation>
+        <c_sort>y</c_sort>
+   		<c_column_mask>
+			<value_mask value="DB"><mask>database</mask></value_mask>        
+			<value_mask value="SB"><mask>service subclass</mask></value_mask>        			
+			<value_mask value="SP"><mask>service superclass</mask></value_mask>        			
+			<value_mask value="WA"><mask>work action set</mask></value_mask>        			
+			<value_mask value="WD"><mask>workload definition</mask></value_mask>        												
+   		</c_column_mask>        
+    </column>
+    <column name="domainid">
+        <c_sql_name>DOMAINID</c_sql_name>
+        <c_title>Domain ID</c_title>
+        <c_presentation>n</c_presentation>
+        <c_sort>n</c_sort>
+    </column>
+    <column name="enabled">
+        <c_sql_name>ENABLED</c_sql_name>
+        <c_title>Enabled</c_title>
+        <c_presentation>s</c_presentation>
+        <c_sort>y</c_sort>
+    </column>
+    <column name="enforcement">
+        <c_sql_name>ENFORCEMENT</c_sql_name>
+        <c_title>Enforcement</c_title>
+        <c_presentation>s</c_presentation>
+        <c_sort>y</c_sort>
+   		<c_column_mask>
+			<value_mask value="D"><mask>database</mask></value_mask>        
+			<value_mask value="P"><mask>database partition</mask></value_mask>        			
+			<value_mask value="W"><mask>workload occurance</mask></value_mask>        			
+   		</c_column_mask>        
+    </column>
+    <column name="execution">
+        <c_sql_name>EXECUTION</c_sql_name>
+        <c_title>Execution</c_title>
+        <c_presentation>s</c_presentation>
+        <c_sort>y</c_sort>
+   		<c_column_mask>
+			<value_mask value="C"><mask>continues</mask></value_mask>        
+			<value_mask value="S"><mask>stops</mask></value_mask>        			
+   		</c_column_mask>        
+    </column>
+    <column name="maxvalue">
+        <c_sql_name>MAXVALUE</c_sql_name>
+        <c_title>Max Value</c_title>
+        <c_presentation>n</c_presentation>
+        <c_sort>n</c_sort>
+    </column>
+    <column name="origin">
+        <c_sql_name>ORIGIN</c_sql_name>
+        <c_title>Origin</c_title>
+        <c_presentation>s</c_presentation>
+        <c_sort>y</c_sort>
+   		<c_column_mask>
+			<value_mask value="U"><mask>user</mask></value_mask>        
+			<value_mask value="W"><mask>work action set</mask></value_mask>        			
+   		</c_column_mask>        
+    </column>
+    <column name="queuesize">
+        <c_sql_name>QUEUESIZE</c_sql_name>
+        <c_title>Queue Size</c_title>
+        <c_presentation>n</c_presentation>
+        <c_sort>n</c_sort>
+    </column>
+    <column name="queuing">
+        <c_sql_name>QUEUING</c_sql_name>
+        <c_title>Queuing</c_title>
+        <c_presentation>s</c_presentation>
+        <c_sort>y</c_sort>
+    </column>
+    <column name="remarks">
+        <c_sql_name>REMARKS</c_sql_name>
+        <c_title>Remarks</c_title>
+        <c_presentation>s</c_presentation>
+        <c_sort>y</c_sort>
+    </column>
+    <column name="thresholdclass">
+        <c_sql_name>THRESHOLDCLASS</c_sql_name>
+        <c_title>Class</c_title>
+        <c_presentation>s</c_presentation>
+        <c_sort>y</c_sort>
+   		<c_column_mask>
+			<value_mask value="A"><mask>aggregate</mask></value_mask>        
+			<value_mask value="C"><mask>activity</mask></value_mask>        			
+   		</c_column_mask>        
+    </column>
+    <column name="thresholdid">
+        <c_sql_name>THRESHOLDID</c_sql_name>
+        <c_title>ID</c_title>
+        <c_presentation>n</c_presentation>
+        <c_sort>n</c_sort>
+        <c_pkey>p</c_pkey>
+    </column>
+    <column name="thresholdname">
+        <c_sql_name>THRESHOLDNAME</c_sql_name>
+        <c_title>Name</c_title>
+        <c_presentation>s</c_presentation>
+        <c_sort>y</c_sort>
+    </column>
+    <column name="thresholdpredicate">
+        <c_sql_name>THRESHOLDPREDICATE</c_sql_name>
+        <c_title>Predicate</c_title>
+        <c_presentation>s</c_presentation>
+        <c_sort>y</c_sort>
+    </column>
+    <column name="thresholdpredicateid">
+        <c_sql_name>THRESHOLDPREDICATEID</c_sql_name>
+        <c_title>Predicate ID</c_title>
+        <c_presentation>n</c_presentation>
+        <c_sort>n</c_sort>
+    </column>
+</table>

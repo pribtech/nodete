@@ -1,0 +1,277 @@
+<!--
+  Copyright IBM Corp. 2007 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+	<table name="regvar">
+		<sql_name>SYSIBMADM.REG_VARIABLES</sql_name>
+		<singular_name>Database Registry Variable</singular_name>
+		<plural_name>DB2 Registry Variables</plural_name>
+		<description>Each row represents a 
+		&lt;a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.admin.dbobj.doc/doc/c0007340.html?noframes=true');"&gt;DB2 registry or environment variable&lt;/a&gt;.
+		This list is generated from the &lt;a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.admin.dbobj.doc/doc/r0022350.html?noframes=true');"&gt;SYSIBMADM.REG_VARIABLES&lt;/a&gt; adinistrative view.
+		The following table lists all the DB2 registry variables. It is based on the REG_VARIABLES administrative view</description>
+<inlinequery>
+select DBPARTITIONNUM,coalesce(r.REG_VAR_NAME,lr.REG_VAR_NAME) as REG_VAR_NAME,REG_VAR_VALUE,IS_AGGREGATE,AGGREGATE_NAME,LEVEL,GROUPING from 
+(
+SYSIBMADM.REG_VARIABLES AS R
+right join (
+values('DB2ACCOUNT','General')
+,('DB2ADMINSERVER','General')
+,('DB2_ALLOCATION_SIZE',null)
+,('DB2_ALTERNATE_GROUP_LOOKUP',null)
+,('DB2_ANTIJOIN','Performance')
+,('DB2_APM_PERFORMANCE',null)
+,('DB2ASSUMEUPDATE',null)
+,('DB2_ASYNC_IO_MAXFILOP','Performance')
+,('DB2ATLD_PORTS','General')
+,('DB2_ATS_ENABLE','General')
+,('DB2AUTH',null)
+,('DB2_AVOID_PREFETCH',null)
+,('DB2_AVOID_SECONDARY_DELETE',null)
+,('DB2BIDI',null)
+,('DB2BQTIME',null)
+,('DB2BQTRY',null)
+,('DB2_CAPTURE_LOCKTIMEOUT',null)
+,('DB2_CF_API_SAMPLING_COUNT',null)
+,('DB2_CF_API_SAMPLING_INTERVAL',null)
+,('DB2_CF_API_SPIN_YIELD_THRESHOLD',null)
+,('DB2CHECKCLIENTINTERVAL',null)
+,('DB2CHGPWD_EEE',null)
+,('DB2CHKPTR',null)
+,('DB2CHKSQLDA',null)
+,('DB2CLIINIPATH',null)
+,('DB2_CLP_EDITOR',null)
+,('DB2_CLP_HISTSIZE',null)
+,('DB2_CLPPROMPT',null)
+,('DB2CODEPAGE',null)
+,('DB2_COLLECT_TS_REC_INFO',null)
+,('DB2COMM',null)
+,('DB2CONNECT_DISCONNECT_ON_INTERRUPT',null)
+,('DB2CONNECT_ENABLE_EURO_CODEPAGE',null)
+,('DB2CONNECT_IN_APP_PROCESS',null)
+,('DB2_CONNRETRIES_INTERVAL',null)
+,('DB2COUNTRY','General')
+,('DB2_CPU_BINDING',null)
+,('DB2DBDFT','General')
+,('DB2DBMSADDR',null)
+,('DB2_DDL_SOFT_INVAL',null)
+,('DB2_DEFERRED_PREPARE_SEMANTICS',null)
+,('DB2DEFPREP',null)
+,('DB2_DISABLE_FLUSH_LOG',null)
+,('DB2DISCOVERYTIME',null)
+,('DB2_DISPATCHER_PEEKTIMEOUT',null)
+,('DB2_DJ_COMM',null)
+,('DB2_DJ_INI',null)
+,('DB2DMNBCKCTLR',null)
+,('DB2_DOCHOST','General')
+,('DB2_DOCPORT','General')
+,('DB2DOMAINLIST',null)
+,('DB2_DXX_PATHS_ALLOWED_READ',null)
+,('DB2_DXX_PATHS_ALLOWED_WRITE',null)
+,('DB2_ENABLE_AUTOCONFIG_DEFAULT',null)
+,('DB2_ENABLE_LDAP',null)
+,('DB2_ENABLE_SINGLE_NIS_GROUP',null)
+,('DB2_ENFORCE_MEMBER_SYNTAX',null)
+,('DB2ENVLIST','General')
+,('DB2_EVALUNCOMMITTED',null)
+,('DB2_EVMON_EVENT_LIST_SIZE',null)
+,('DB2_EVMON_STMT_FILTER',null)
+,('DB2_EXTENDED_IO_FEATURES',null)
+,('DB2_EXTENDED_OPTIMIZATION',null)
+,('DB2_FALLBACK',null)
+,('DB2FCMCOMM',null)
+,('DB2_FCM_SETTINGS',null)
+,('DB2FFDC',null)
+,('DB2_FMP_COMM_HEAPSZ',null)
+,('DB2FODC',null)
+,('DB2_FORCE_APP_ON_MAX_LOG',null)
+,('DB2_FORCE_NLS_CACHE',null)
+,('DB2_FORCE_OFFLINE_ADD_PARTITION',null)
+,('DB2GRAPHICUNICODESERVER',null)
+,('DB2_GRP_LOOKUP',null)
+,('DB2_HADR_BUF_SIZE','HADR')
+,('DB2_HADR_NO_IP_CHECK','HADR')
+,('DB2_HADR_PEER_WAIT_LIMIT','HADR')
+,('DB2_HADR_ROS','HADR')
+,('DB2_HADR_SORCVBUF','HADR')
+,('DB2_HADR_SOSNDBUF','HADR')
+,('DB2_HASH_JOIN','Performance')
+,('DB2INCLUDE','General')
+,('DB2_INDEX_FREE',null)
+,('DB2_INLIST_TO_NLJN',null)
+,('DB2INSTDEF','General')
+,('DB2INSTOWNER','General')
+,('DB2INSTPROF','General')
+,('DB2_IO_PRIORITY_SETTING',null)
+,('DB2IQTIME',null)
+,('DB2_KEEP_AS_AND_DMS_CONTAINERS_OPEN',null)
+,('DB2_KEEPTABLELOCK',null)
+,('DB2_LARGE_PAGE_MEM',null)
+,('DB2LDAP_BASEDN',null)
+,('DB2LDAPCACHE',null)
+,('DB2LDAP_CLIENT_PROVIDER',null)
+,('DB2LDAPHOST',null)
+,('DB2LIBPATH','General')
+,('DB2_LIC_STAT_SIZE',null)
+,('DB2_LIKE_VARCHAR','Performance')
+,('DB2_LIMIT_FENCED_GROUP',null)
+,('DB2_LOAD_COPY_NO_OVERRIDE',null)
+,('DB2LOADFLAGS',null)
+,('DB2LOADREC',null)
+,('DB2LOCALE','General')
+,('DB2LOCK_TO_RB','Performance')
+,('DB2_LOGGER_NON_BUFFERED_IO',null)
+,('DB2_LOGGING_DETAIL',null)
+,('DB2_MAP_XML_AS_CLOB_FOR_DLC',null)
+,('DB2_MAX_CLIENT_CONNRETRIES',null)
+,('DB2MAXFSCRSEARCH',null)
+,('DB2_MAX_INACT_STMTS',null)
+,('DB2_MAX_LOB_BLOCK_SIZE',null)
+,('DB2_MAX_NON_TABLE_LOCKS',null)
+,('DB2_MDC_ROLLOUT','Performance')
+,('DB2_MEMBER_LOAD_WEIGHT_COMPOSITION',null)
+,('DB2MEMDISCLAIM',null)
+,('DB2_MEMORY_PROTECT',null)
+,('DB2_MEM_TUNING_RANGE','Performance')
+,('DB2_MIN_IDLE_RESOURCES','Performance')
+,('DB2_MINIMIZE_LISTPREFETCH','Performance')
+,('DB2_MINIMUM_CLIENT_LEVEL',null)
+,('DB2_MMAP_READ',null)
+,('DB2_MMAP_WRITE',null)
+,('DB2_NEW_CORR_SQ_FF','Performance')
+,('DB2NOEXITLIST',null)
+,('DB2_NO_FORK_CHECK',null)
+,('DB2NTMEMSIZE',null)
+,('DB2NTNOCACHE',null)
+,('DB2NTPRICLASS',null)
+,('DB2NTWORKSET',null)
+,('DB2_NUM_CKPW_DAEMONS',null)
+,('DB2_NUM_FAILOVER_NODES',null)
+,('DB2_OBJECT_TABLE_ENTRIES',null)
+,('DB2OPTIONS','General')
+,('DB2_OPT_MAX_TEMP_SIZE',null)
+,('DB2_OPTSTATS_LOG',null)
+,('DB2_OVERRIDE_BPF',null)
+,('DB2_PARALLEL_IO','Performance')
+,('DB2_PARTITIONEDLOAD_DEFAULT',null)
+,('DB2PATH','General')
+,('DB2_PINNED_BP','Performance')
+,('DB2_PMAP_COMPATIBILITY',null)
+,('DB2PORTRANGE','General')
+,('DB2PRIORITIES',null)
+,('DB2PROCESSORS',null)
+,('DB2_REDUCED_OPTIMIZATION','Performance')
+,('DB2REMOTEPREG',null)
+,('DB2RESILIENCE',null)
+,('DB2_RESOLVE_CALL_CONFLICT',null)
+,('DB2_RESOURCE_POLICY',null)
+,('DB2ROUTINE_DEBUG','General')
+,('DB2RQTIME',null)
+,('DB2RSHCMD',null)
+,('DB2RSHTIMEOUT',null)
+,('DB2SATELLITEID','General')
+,('DB2_SELECTIVITY','Performance')
+,('DB2_SELUDI_COMM_BUFFER',null)
+,('DB2_SERVER_CONTIMEOUT',null)
+,('DB2_SET_MAX_CONTAINER_SIZE','General')
+,('DB2_SKIPDELETED','Performance')
+,('DB2_SKIPINSERTED','Performance')
+,('DB2_SMS_TRUNC_TMPTABLE_THRESH','General')
+,('DB2_SNAPSHOT_NOAUTH','General')
+,('DB2SORCVBUF',null)
+,('DB2SORT','Performance')
+,('DB2_SORT_AFTER_TQ',null)
+,('DB2SOSNDBUF',null)
+,('DB2_SQLROUTINE_PREPOPTS','General')
+,('DB2_STANDBY_ISO',null)
+,('DB2SYSTEM','General')
+,('DB2_SYSTEM_MONITOR_SETTINGS',null)
+,('DB2_TAPEMGR_TAPE_EXPIRATION',null)
+,('DB2TCP_CLIENT_CONTIMEOUT',null)
+,('DB2TCP_CLIENT_KEEPALIVE_TIMEOUT',null)
+,('DB2TCP_CLIENT_RCVTIMEOUT',null)
+,('DB2TCPCONNMGRS',null)
+,('DB2TERRITORY','General')
+,('DB2TRC_DEF_BUFFSIZE',null)
+,('DB2_TRUNCATE_REUSESTORAGE',null)
+,('DB2_TRUSTED_BINDIN',null)
+,('DB2_UPDDBCFG_SINGLE_DBPARTITION',null)
+,('DB2_USE_ALTERNATE_PAGE_CLEANING',null)
+,('DB2_USE_DB2JCCT2_JROUTINE',null)
+,('DB2_USE_FAST_PREALLOCATION',null)
+,('DB2_USE_PAGE_CONTAINER_TAG',null)
+,('DB2_UTIL_MSGPATH','General')
+,('DB2_VENDOR_INI','General')
+,('DB2_VIEW_REOPT_VALUES',null)
+,('DB2_WORKLOAD','General')
+,('DB2_XBSA_LIBRARY','General')
+,('DB2YIELD',null)
+) as lr(REG_VAR_NAME,grouping)
+on lr.REG_VAR_NAME=r.REG_VAR_NAME
+)
+</inlinequery>
+		<order_by_index name="LEVEL" direction="A"/>
+		<order_by_index name="GROUPING" direction="A"/>
+		<order_by_index name="REG_VAR_NAME" direction="A"/>
+		<display_columns>
+			<col type="column" name="LEVEL"/>
+			<col type="column" name="GROUPING"/>
+			<col type="column" name="REG_VAR_NAME"/>
+			<col type="column" name="REG_VAR_VALUE"/>
+			<col type="column" name="IS_AGGREGATE"/>
+			<col type="column" name="AGGREGATE_NAME"/>
+		</display_columns>		
+		<disableEdit/>
+		<output>
+			<type name="DDL" destination="" title="" generator=""/>
+		</output>
+		<column name="DBPARTITIONNUM">
+			<c_sql_name>DBPARTITIONNUM</c_sql_name>
+			<c_title>Partition</c_title>
+		</column>
+		<column name="REG_VAR_NAME">
+			<c_sql_name>REG_VAR_NAME</c_sql_name>
+			<c_title>Registry Variable</c_title>
+			<c_pkey>p</c_pkey>			
+			<c_drill>n</c_drill>
+			<c_mask_display_order>lv</c_mask_display_order>
+			<c_column_mask_file>masks/db2set.v97.xml</c_column_mask_file>
+		</column>
+		<column name="REG_VAR_VALUE">
+			<c_sql_name>REG_VAR_VALUE</c_sql_name>
+			<c_title>Registry Variable Value</c_title>
+			<c_drill>n</c_drill>
+		</column>
+		<column name="IS_AGGREGATE">
+			<c_sql_name>IS_AGGREGATE</c_sql_name>
+			<c_title>Is Aggregate</c_title>
+			<c_drill>n</c_drill>
+		</column>
+		<column name="AGGREGATE_NAME">
+			<c_sql_name>AGGREGATE_NAME</c_sql_name>
+			<c_title>Aggregate Name</c_title>
+			<c_drill>n</c_drill>
+		</column>
+		<column name="LEVEL">
+			<c_sql_name>LEVEL</c_sql_name>
+			<c_title>Level</c_title>
+			<c_drill>n</c_drill>
+			<c_pkey>p</c_pkey>			
+		</column>
+		<column name="GROUPING">
+			<c_sql_name>GROUPING</c_sql_name>
+			<c_title>Grouping</c_title>
+			<c_drill>n</c_drill>
+		</column>
+	</table>

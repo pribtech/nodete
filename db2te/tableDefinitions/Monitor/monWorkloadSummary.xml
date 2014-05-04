@@ -1,0 +1,208 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2010 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+<table name="monWorkloadSummary">
+	<sql_name>SYSIBMADM.MON_WORKLOAD_SUMMARY</sql_name>
+	<singular_name>Workload Summary</singular_name>
+	<plural_name>Workload Summary</plural_name>
+	<messages><SQL0551N>Security issue. Please install "Monitoring Switches/Security" in Tools -> Installed Components</SQL0551N></messages>
+	<description></description>
+	<!-- <orderBy name="acolumn" direction="A"/> -->
+	<displayColumns>
+		<col type="column" name="WORKLOAD_NAME"/>
+		<col type="column" name="WORKLOAD_ID"/>
+		<col type="column" name="TOTAL_APP_COMMITS"/>
+		<col type="column" name="TOTAL_APP_ROLLBACKS"/>
+		<col type="column" name="ACT_COMPLETED_TOTAL"/>
+		<col type="column" name="APP_RQSTS_COMPLETED_TOTAL"/>
+		<col type="column" name="AVG_RQST_CPU_TIME"/>
+		<col type="column" name="ROUTINE_TIME_RQST_PERCENT"/>
+		<col type="column" name="RQST_WAIT_TIME_PERCENT"/>
+		<col type="column" name="ACT_WAIT_TIME_PERCENT"/>
+		<col type="column" name="IO_WAIT_TIME_PERCENT"/>
+		<col type="column" name="LOCK_WAIT_TIME_PERCENT"/>
+		<col type="column" name="AGENT_WAIT_TIME_PERCENT"/>
+		<col type="column" name="NETWORK_WAIT_TIME_PERCENT"/>
+		<col type="column" name="SECTION_PROC_TIME_PERCENT"/>
+		<col type="column" name="SECTION_SORT_PROC_TIME_PERCENT"/>
+		<col type="column" name="COMPILE_PROC_TIME_PERCENT"/>
+		<col type="column" name="TRANSACT_END_PROC_TIME_PERCENT"/>
+		<col type="column" name="UTILS_PROC_TIME_PERCENT"/>
+		<col type="column" name="AVG_LOCK_WAITS_PER_ACT"/>
+		<col type="column" name="AVG_LOCK_TIMEOUTS_PER_ACT"/>
+		<col type="column" name="AVG_DEADLOCKS_PER_ACT"/>
+		<col type="column" name="AVG_LOCK_ESCALS_PER_ACT"/>
+		<col type="column" name="ROWS_READ_PER_ROWS_RETURNED"/>
+		<col type="column" name="TOTAL_BP_HIT_RATIO_PERCENT"/>
+		<col type="column" name="TOTAL_GBP_HIT_RATIO_PERCENT"/>
+		<col type="column" name="TOTAL_CACHING_TIER_HIT_RATIO_PERCENT"/>
+		<col type="column" name="CF_WAIT_TIME_PERCENT"/>
+		<col type="column" name="RECLAIM_WAIT_TIME_PERCENT"/>
+		<col type="column" name="SPACEMAPPAGE_RECLAIM_WAIT_TIME_PERCENT"/>
+	</displayColumns>
+	<column name="WORKLOAD_NAME">
+		<sqlName>WORKLOAD_NAME</sqlName>
+		<title>Workload Name</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="WORKLOAD_ID">
+		<sqlName>WORKLOAD_ID</sqlName>
+		<title>Workload Id</title>
+		<type>n</type>
+	</column>
+	<column name="TOTAL_APP_COMMITS">
+		<sqlName>TOTAL_APP_COMMITS</sqlName>
+		<title>App Commits</title>
+		<type>n</type>
+	</column>
+	<column name="TOTAL_APP_ROLLBACKS">
+		<sqlName>TOTAL_APP_ROLLBACKS</sqlName>
+		<title>App Rollbacks</title>
+		<type>n</type>
+	</column>
+	<column name="ACT_COMPLETED_TOTAL">
+		<sqlName>ACT_COMPLETED_TOTAL</sqlName>
+		<title>Act Completed Total</title>
+		<type>n</type>
+	</column>
+	<column name="APP_RQSTS_COMPLETED_TOTAL">
+		<sqlName>APP_RQSTS_COMPLETED_TOTAL</sqlName>
+		<title>App Rqsts Completed</title>
+		<type>n</type>
+	</column>
+	<column name="AVG_RQST_CPU_TIME">
+		<sqlName>AVG_RQST_CPU_TIME</sqlName>
+		<title>Avg Rqst Cpu Time</title>
+		<type>n</type>
+	</column>
+	<column name="ROUTINE_TIME_RQST_PERCENT">
+		<sqlName>ROUTINE_TIME_RQST_PERCENT</sqlName>
+		<title>Routine Time Rqst %</title>
+		<type>n</type>
+	</column>
+	<column name="RQST_WAIT_TIME_PERCENT">
+		<sqlName>RQST_WAIT_TIME_PERCENT</sqlName>
+		<title>Rqst Wait Time %</title>
+		<type>n</type>
+	</column>
+	<column name="ACT_WAIT_TIME_PERCENT">
+		<sqlName>ACT_WAIT_TIME_PERCENT</sqlName>
+		<title>Act Wait Time %</title>
+		<type>n</type>
+	</column>
+	<column name="IO_WAIT_TIME_PERCENT">
+		<sqlName>IO_WAIT_TIME_PERCENT</sqlName>
+		<title>Io Wait Time %</title>
+		<type>n</type>
+	</column>
+	<column name="LOCK_WAIT_TIME_PERCENT">
+		<sqlName>LOCK_WAIT_TIME_PERCENT</sqlName>
+		<title>Lock Wait Time %</title>
+		<type>n</type>
+	</column>
+	<column name="AGENT_WAIT_TIME_PERCENT">
+		<sqlName>AGENT_WAIT_TIME_PERCENT</sqlName>
+		<title>Agent Wait Time %</title>
+		<type>n</type>
+	</column>
+	<column name="NETWORK_WAIT_TIME_PERCENT">
+		<sqlName>NETWORK_WAIT_TIME_PERCENT</sqlName>
+		<title>Network Wait Time %</title>
+		<type>n</type>
+	</column>
+	<column name="SECTION_PROC_TIME_PERCENT">
+		<sqlName>SECTION_PROC_TIME_PERCENT</sqlName>
+		<title>Section Proc Time %</title>
+		<type>n</type>
+	</column>
+	<column name="SECTION_SORT_PROC_TIME_PERCENT">
+		<sqlName>SECTION_SORT_PROC_TIME_PERCENT</sqlName>
+		<title>Section Sort Proc Time %</title>
+		<type>n</type>
+	</column>
+	<column name="COMPILE_PROC_TIME_PERCENT">
+		<sqlName>COMPILE_PROC_TIME_PERCENT</sqlName>
+		<title>Compile Proc Time %</title>
+		<type>n</type>
+	</column>
+	<column name="TRANSACT_END_PROC_TIME_PERCENT">
+		<sqlName>TRANSACT_END_PROC_TIME_PERCENT</sqlName>
+		<title>Transact End Proc Time %</title>
+		<type>n</type>
+	</column>
+	<column name="UTILS_PROC_TIME_PERCENT">
+		<sqlName>UTILS_PROC_TIME_PERCENT</sqlName>
+		<title>Utils Proc Time %</title>
+		<type>n</type>
+	</column>
+	<column name="AVG_LOCK_WAITS_PER_ACT">
+		<sqlName>AVG_LOCK_WAITS_PER_ACT</sqlName>
+		<title>Avg Lock Waits Per Act</title>
+		<type>n</type>
+	</column>
+	<column name="AVG_LOCK_TIMEOUTS_PER_ACT">
+		<sqlName>AVG_LOCK_TIMEOUTS_PER_ACT</sqlName>
+		<title>Avg Lock Timeouts Per Act</title>
+		<type>n</type>
+	</column>
+	<column name="AVG_DEADLOCKS_PER_ACT">
+		<sqlName>AVG_DEADLOCKS_PER_ACT</sqlName>
+		<title>Avg Deadlocks Per Act</title>
+		<type>n</type>
+	</column>
+	<column name="AVG_LOCK_ESCALS_PER_ACT">
+		<sqlName>AVG_LOCK_ESCALS_PER_ACT</sqlName>
+		<title>Avg Lock Escals Per Act</title>
+		<type>n</type>
+	</column>
+	<column name="ROWS_READ_PER_ROWS_RETURNED">
+		<sqlName>ROWS_READ_PER_ROWS_RETURNED</sqlName>
+		<title>Rows Read Per Rows Returned</title>
+		<type>n</type>
+	</column>
+	<column name="TOTAL_BP_HIT_RATIO_PERCENT">
+		<sqlName>TOTAL_BP_HIT_RATIO_PERCENT</sqlName>
+		<title>BP Hit Ratio %</title>
+		<type>n</type>
+	</column>
+	<column name="TOTAL_GBP_HIT_RATIO_PERCENT">
+		<sqlName>TOTAL_GBP_HIT_RATIO_PERCENT</sqlName>
+		<title>GBP Hit Ratio %</title>
+		<type>n</type>
+	</column>
+	<column name="TOTAL_CACHING_TIER_HIT_RATIO_PERCENT">
+		<sqlName>TOTAL_CACHING_TIER_HIT_RATIO_PERCENT</sqlName>
+		<title>Caching Tier Hit Ratio %</title>
+		<type>n</type>
+	</column>
+	<column name="CF_WAIT_TIME_PERCENT">
+		<sqlName>CF_WAIT_TIME_PERCENT</sqlName>
+		<title>CF Wait Time %</title>
+		<type>n</type>
+	</column>
+	<column name="RECLAIM_WAIT_TIME_PERCENT">
+		<sqlName>RECLAIM_WAIT_TIME_PERCENT</sqlName>
+		<title>Reclaim Wait Time %</title>
+		<type>n</type>
+	</column>
+	<column name="SPACEMAPPAGE_RECLAIM_WAIT_TIME_PERCENT">
+		<sqlName>SPACEMAPPAGE_RECLAIM_WAIT_TIME_PERCENT</sqlName>
+		<title>Space Map Page Reclaim Wait Time %</title>
+		<type>n</type>
+	</column>
+</table>

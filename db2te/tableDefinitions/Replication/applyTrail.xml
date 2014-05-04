@@ -1,0 +1,318 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2009 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+
+<table name="applyTrail">
+	<sql_name>ASN.IBMSNAP_APPLYTRAIL</sql_name>
+	<singular_name>Apply Trail</singular_name>
+	<plural_name>Apply Trail</plural_name>
+	<description/>
+	<edit>n</edit>
+	<messages><SQL0204N>Apply replication not installed or its schema is not the default ASN</SQL0204N></messages>
+	<order_by_index name="lastrun" direction="D"/>
+	<rowStyle interfaceColumn='status'>
+		<option eq='-1' style='background-color:#ff7e7e;'/>
+		<option eq='0' style='background-color:#a7ffa7;'/>
+		<option eq='1' style='background-color:#fffe82;'/>
+		<option eq='2' style='background-color:#fffe82;'/>
+		<option eq='16' style='background-color:#ff7e7e;'/>
+		<option eq='18' style='background-color:#ff7e7e;'/>
+	</rowStyle>
+	<display_columns>
+		<col type="column" name="lastrun"/>
+		<col type="column" name="apply_qual"/>
+		<col type="column" name="set_name"/>
+		<col type="column" name="set_type"/>
+		<col type="column" name="lag"/>
+		<col type="column" name="lagGraph"/>
+		<col type="column" name="set_inserted"/>
+		<col type="column" name="set_deleted"/>
+		<col type="column" name="set_updated"/>
+		<col type="column" name="set_reworked"/>
+		<col type="column" name="set_rejected_trxs"/>
+		<col type="column" name="commit_count"/>
+		<col type="column" name="asnload"/>
+		<col type="column" name="full_refresh"/>
+		<col type="column" name="status"/>
+		<col type="column" name="sqlstate"/>
+		<col type="column" name="sqlcode"/>
+		<col type="column" name="lastsuccess"/>
+	</display_columns>
+	<column name="lag">
+		<c_sql_name>timestampdiff(2,char(SOURCE_CONN_TIME-SYNCHTIME))</c_sql_name>
+		<c_title>Lag (seconds)</c_title>
+		<c_presentation>n</c_presentation>
+	</column>
+	<column name="lagGraph">
+		<c_sql_name>coalesce(timestampdiff(2,char(SOURCE_CONN_TIME-SYNCHTIME)),0)</c_sql_name>
+		<c_title>Lag</c_title>
+		<c_presentation>bg</c_presentation>
+		<inline_histogram flipColor="n">
+			<value>60</value>
+		</inline_histogram>
+	</column>
+	<column name="apply_qual">
+		<c_sql_name>APPLY_QUAL</c_sql_name>
+		<c_title>Qualifier</c_title>
+		<c_presentation>s</c_presentation>
+	</column>
+	<column name="set_name">
+		<c_sql_name>SET_NAME</c_sql_name>
+		<c_title>Set</c_title>
+		<c_presentation>s</c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="set_type">
+		<c_sql_name>SET_TYPE</c_sql_name>
+		<c_title>Type</c_title>
+		<c_presentation>s</c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="whos_on_first">
+		<c_sql_name>WHOS_ON_FIRST</c_sql_name>
+		<c_title>whos on first</c_title>
+		<c_presentation>s</c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="asnload">
+		<c_sql_name>ASNLOAD</c_sql_name>
+		<c_title>ASNLOAD</c_title>
+		<c_presentation>s</c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="full_refresh">
+		<c_sql_name>FULL_REFRESH</c_sql_name>
+		<c_title>Full Refresh</c_title>
+		<c_presentation>s</c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="effective_members">
+		<c_sql_name>EFFECTIVE_MEMBERS</c_sql_name>
+		<c_title>Effective Members</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="set_inserted">
+		<c_sql_name>SET_INSERTED</c_sql_name>
+		<c_title>Inserted</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="set_deleted">
+		<c_sql_name>SET_DELETED</c_sql_name>
+		<c_title>Deleted</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="set_updated">
+		<c_sql_name>SET_UPDATED</c_sql_name>
+		<c_title>Updated</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="set_reworked">
+		<c_sql_name>SET_REWORKED</c_sql_name>
+		<c_title>Reworked</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="set_rejected_trxs">
+		<c_sql_name>SET_REJECTED_TRXS</c_sql_name>
+		<c_title>Rejected</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="status">
+		<c_sql_name>STATUS</c_sql_name>
+		<c_title>Status</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="lastrun">
+		<c_sql_name>LASTRUN</c_sql_name>
+		<c_title>Last Run</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="lastsuccess">
+		<c_sql_name>LASTSUCCESS</c_sql_name>
+		<c_title>Last Success</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="synchpoint">
+		<c_sql_name>SYNCHPOINT</c_sql_name>
+		<c_title>Synch Point</c_title>
+		<c_presentation>s</c_presentation>
+	</column>
+	<column name="synchtime">
+		<c_sql_name>SYNCHTIME</c_sql_name>
+		<c_title>Synch time</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="source_server">
+		<c_sql_name>SOURCE_SERVER</c_sql_name>
+		<c_title>Source</c_title>
+		<c_presentation>s</c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="source_alias">
+		<c_sql_name>SOURCE_ALIAS</c_sql_name>
+		<c_title>Source Alias</c_title>
+		<c_presentation>s</c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="source_owner">
+		<c_sql_name>SOURCE_OWNER</c_sql_name>
+		<c_title>Source Owner</c_title>
+		<c_presentation>s</c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="source_table">
+		<c_sql_name>SOURCE_TABLE</c_sql_name>
+		<c_title>Source Table</c_title>
+		<c_presentation>s</c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="source_view_qual">
+		<c_sql_name>SOURCE_VIEW_QUAL</c_sql_name>
+		<c_title>Source View Qual.</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="target_server">
+		<c_sql_name>TARGET_SERVER</c_sql_name>
+		<c_title>Target</c_title>
+		<c_presentation>s</c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="target_alias">
+		<c_sql_name>TARGET_ALIAS</c_sql_name>
+		<c_title>Target Alias</c_title>
+		<c_presentation>s</c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="target_owner">
+		<c_sql_name>TARGET_OWNER</c_sql_name>
+		<c_title>Target Owner</c_title>
+		<c_presentation>s</c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="target_table">
+		<c_sql_name>TARGET_TABLE</c_sql_name>
+		<c_title>Target Table</c_title>
+		<c_presentation>s</c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="capture_schema">
+		<c_sql_name>CAPTURE_SCHEMA</c_sql_name>
+		<c_title>Capture Schema</c_title>
+		<c_presentation>s</c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="tgt_capture_schema">
+		<c_sql_name>TGT_CAPTURE_SCHEMA</c_sql_name>
+		<c_title>Target Capture Schema</c_title>
+		<c_presentation>s</c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="federated_src_srvr">
+		<c_sql_name>FEDERATED_SRC_SRVR</c_sql_name>
+		<c_title>Federated Source</c_title>
+		<c_presentation>s</c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="federated_tgt_srvr">
+		<c_sql_name>FEDERATED_TGT_SRVR</c_sql_name>
+		<c_title>Federated Target</c_title>
+		<c_presentation>s</c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="jrn_lib">
+		<c_sql_name>JRN_LIB</c_sql_name>
+		<c_title>JRN_LIB</c_title>
+		<c_presentation>s</c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="jrn_name">
+		<c_sql_name>JRN_NAME</c_sql_name>
+		<c_title>JRN_NAME</c_title>
+		<c_presentation>s</c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="commit_count">
+		<c_sql_name>COMMIT_COUNT</c_sql_name>
+		<c_title>Commits</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="option_flags">
+		<c_sql_name>OPTION_FLAGS</c_sql_name>
+		<c_title>Option</c_title>
+		<c_presentation>s</c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="event_name">
+		<c_sql_name>EVENT_NAME</c_sql_name>
+		<c_title>Event</c_title>
+		<c_presentation>s</c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="endtime">
+		<c_sql_name>ENDTIME</c_sql_name>
+		<c_title>End Time</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="source_conn_time">
+		<c_sql_name>SOURCE_CONN_TIME</c_sql_name>
+		<c_title>Source Connect Time</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="sqlstate">
+		<c_sql_name>SQLSTATE</c_sql_name>
+		<c_title>SQLSTATE</c_title>
+		<c_presentation>s</c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="sqlcode">
+		<c_sql_name>SQLCODE</c_sql_name>
+		<c_title>SQLCODE</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="sqlerrp">
+		<c_sql_name>SQLERRP</c_sql_name>
+		<c_title>SQLERRP</c_title>
+		<c_presentation>s</c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="sqlerrm">
+		<c_sql_name>SQLERRM</c_sql_name>
+		<c_title>SQLERRM</c_title>
+		<c_presentation>s</c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="apperrm">
+		<c_sql_name>APPERRM</c_sql_name>
+		<c_title>APPERRM</c_title>
+		<c_presentation>s</c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+</table>

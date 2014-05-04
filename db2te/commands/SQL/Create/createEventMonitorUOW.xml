@@ -1,0 +1,72 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2009 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<command name="createEventMonitorUOW" title="Create Event Monitor Unit of Work">
+<![CDATA[
+>>-CREATE EVENT MONITOR--event-monitor-name--------------------->
+
+>----FOR UNIT OF WORK------------------------------------------->
+
+]]>
+	<text>CREATE EVENT MONITOR</text><clauseReference name="event-monitor-name"/><text>FOR UNIT OF WORK</text>
+	<br/>
+<![CDATA[
+>----WRITE TO UNFORMATTED EVENT TABLE--+-------------------------------------------+---->
+                                       '-(--| unformatted-event-table-options |--)-'     
+]]>
+	<text>WRITE TO UNFORMATTED EVENT TABLE</text>
+	<select>
+		<option default="true"><note>default options</note></option>
+		<option><text>(</text><clauseReference name="unformatted-event-table-options"/><text>)</text></option>
+	</select>
+	<br/>
+<![CDATA[
+   .-AUTOSTART---.   
+>--+-------------+---------------------------------------------><
+   '-MANUALSTART-'   
+]]>
+	<select>
+		<option><text>MANUALSTART</text></option>
+		<option default="true"><note>MANUALSTART</note></option>
+		<option><text>AUTOSTART</text></option>
+	</select>
+
+	<clause name="unformatted-event-table-options" title="unformatted event table options">
+<![CDATA[
+   .--------------------------------------.   
+   V  (1)                                 |   
+|----------+-TABLE--table name----------+-+---------------------|
+           +-IN--tablespace name--------+     
+           | .-PCTDEACTIVATE--100-----. |     
+           '-+-PCTDEACTIVATE--integer-+-'     
+]]>
+		<select>
+			<option></option>
+			<option default="true"><text>TABLE</text><clauseReference name="table-name"/></option>
+		</select>
+		<select>
+			<option default="true"></option>
+			<option><text>IN</text><clauseReference name="tablespace-name"/></option>
+		</select>
+		<select>
+			<option default="true"><text>PCTDEACTIVATE 100</text></option>
+			<option><text>PCTDEACTIVATE</text><input size="2" type="int"/></option>
+		</select>
+	</clause>
+
+</command>
+

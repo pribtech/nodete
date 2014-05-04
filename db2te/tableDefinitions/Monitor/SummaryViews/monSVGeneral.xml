@@ -1,0 +1,69 @@
+<!--
+   
+  Updated by Author: Peter Kohlmann
+  Copyright IBM Canada Ltd 2008 All rights reserved.
+
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2010 All rights reserved.
+  Updated by Author: Peter Prib
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+ -->
+<table name="monWorkload">
+	<sql_name>monTest</sql_name>
+	<singular_name>Database Metrics</singular_name>
+	<plural_name>Database Metrics</plural_name>
+	<inlinequery>
+<![CDATA[
+  SELECT * FROM (
+  			SELECT 2, 'Max Connections' COL, char(CONNECTIONS_TOP) VALUE FROM SYSIBMADM.SNAPDB
+  	UNION	SELECT 3, 'IO(Write)' COL, Char(SUM(total_writes)) VALUE FROM SYSIBMADM.BP_write_io
+  	UNION	SELECT 4, 'IO(Read)' COL, Char(SUM(TOTAL_PHYSICAL_READS)) VALUE FROM SYSIBMADM.BP_READ_IO
+  	UNION	SELECT 5, 'Lock Waits' COL, Char(LOCK_WAITS) VALUE FROM SYSIBMADM.SNAPDB
+  	UNION	SELECT 7, 'Deadlocks' COL, Char(DEADLOCKS) VALUE FROM SYSIBMADM.SNAPDB
+	UNION	SELECT 8, 'Lock Escalations' COL, Char(LOCK_ESCALS) VALUE FROM SYSIBMADM.SNAPDB
+	UNION	SELECT 9, 'Avg sort time' COL, Char((TOTAL_SORT_TIME/nullif(TOTAL_SORTS,0))) VALUE FROM SYSIBMADM.SNAPDB
+	UNION	SELECT 10, 'Sort overflows' COL, Char(SORT_OVERFLOWS) VALUE FROM SYSIBMADM.SNAPDB
+	UNION	SELECT 11, 'Rows read per row selected' COL, Char((ROWS_READ/nullif(ROWS_SELECTED,0))) VALUE FROM SYSIBMADM.SNAPDB
+	UNION	SELECT 12, 'Avg sorts per transaction' COL, Char((TOTAL_SORTS/nullif(COMMIT_SQL_STMTS,0))) VALUE FROM SYSIBMADM.SNAPDB
+	UNION	SELECT 13, 'Package cache overflow' COL, Char(PKG_CACHE_NUM_OVERFLOWS) VALUE FROM SYSIBMADM.SNAPDB
+	)
+	ORDER BY 1
+]]>
+	</inlinequery>
+	<description>This pane gives the general information about the database</description>
+	<messages><SQL0551N>Security issue. Please install "Monitoring Switches/Security" in Tools -> Installed Components</SQL0551N></messages>
+	<order_by_index/>
+	<display_columns>
+		<col type="column" name="COL"/>
+		<col type="column" name="VALUE"/>
+	</display_columns>
+	<column name="COL">
+		<c_sql_name>COL</c_sql_name>
+		<c_title>Parameter</c_title>
+		<c_presentation/>
+		<c_drill>n</c_drill>
+		
+		<c_column_mask_file>masks/skipNulls.xml</c_column_mask_file>
+	</column>
+	<column name="VALUE">
+		<c_sql_name>VALUE</c_sql_name>
+		<c_title>Parameter Value</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+		<c_pkey>p</c_pkey>
+		
+		<c_column_mask_file>masks/skipNulls.xml</c_column_mask_file>
+	</column>
+	
+</table>

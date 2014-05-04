@@ -1,0 +1,208 @@
+<table name="workloadMetrics">
+	<sql_name>metrics</sql_name>
+	<singular_name>Workload metrics</singular_name>
+	<plural_name>Workload metrics</plural_name>
+	<dataRetrievalAction name="WMDproxy"/>
+	<messages>
+		<SQL_NO_DATA>No metrics returned</SQL_NO_DATA>
+	</messages>
+	<reloadIndicator threshHold="5"/>
+	<rows_per_page>50</rows_per_page>
+	<parameters>
+		<parm name="WMDSystemName">
+			<title>System</title>
+			<value>localhost</value>
+			<type>s</type>
+		</parm>
+		<parm name="WMDMethod">
+			<title>Method</title>
+			<value>GET</value>
+			<type>s</type>
+		</parm>
+		<parm name="WMDAction">
+			<title>Action</title>
+			<value>metric/</value>
+			<type>s</type>
+		</parm>
+	</parameters>
+	
+	<disable_search/>
+	<disable_edit/>
+	<disable_sort/>
+	<disable_filter/>
+	
+	<graph name="TransactonsPerRead">
+		<title>Transaction per Interval</title>
+		<type>line</type>
+			<style>
+					<legend>
+						 <display>right</display>
+					</legend>
+					<animationEnabled>false</animationEnabled>
+			</style>
+	</graph>
+	
+	<graph name="TransactionsSecond">
+		<title>Transactions per second</title>
+		<type>line</type>
+			<style>
+					<legend>
+						 <display>right</display>
+					</legend>
+					<animationEnabled>false</animationEnabled>
+			</style>
+	</graph>
+	
+	<graph name="TransactionTimes">
+		<title>Transaction times</title>
+		<type>line</type>
+			<style>
+					<legend>
+						 <display>right</display>
+					</legend>
+					<animationEnabled>false</animationEnabled>
+			</style>
+	</graph>
+	
+	<display_columns>
+		<col type="column" name="TIME"/>
+		<col type="column" name="TOTAL_WRITES"/>
+		<col type="column" name="TOTAL_READS"/>
+		<col type="column" name="MIN_TIME_PER_TRANSACTION"/>
+		<!--<col type="column" name="MAX_TIME_PER_TRANSACTION"/>-->
+		<col type="column" name="AVG_TIME_PER_TRANSACTION"/>
+	    <col type="column" name="TOTAL_TRANSACTIONS_PER_SECOND"/>
+		<col type="column" name="WRITES_PER_SECOND"/>
+		<col type="column" name="READS_PER_SECOND"/>
+	</display_columns>
+
+	<column name="TIME">
+		<c_sql_name>TIME</c_sql_name>
+		<c_title>Time</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+		<axisdataset name="TransactonsPerRead">
+				<g_x_categories>y</g_x_categories>
+				<label>Time</label>
+		</axisdataset>
+		<axisdataset name="TransactionsSecond">
+				<g_x_categories>y</g_x_categories>
+				<label>Time</label>
+		</axisdataset>
+		<axisdataset name="TransactionTimes">
+				<g_x_categories>y</g_x_categories>
+				<label>Time</label>
+		</axisdataset>
+	</column>
+	<column name="TIMESTAMP">
+		<c_sql_name>TIMESTAMP</c_sql_name>
+		<c_title>Timestamp</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="TOTAL_WRITES">
+		<c_sql_name>TOTAL_WRITES</c_sql_name>
+		<c_title>Writes since last</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+		<axisdataset name="TransactonsPerRead">
+			<style>
+				<color>0x007D00</color>
+				<size>1</size>
+			</style>			
+			<g_description>Writes since last</g_description>
+		</axisdataset>
+	</column>
+	<column name="TOTAL_READS">
+		<c_sql_name>TOTAL_READS</c_sql_name>
+		<c_title>Reads since last</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+		<axisdataset name="TransactonsPerRead">
+			<style>
+				<color>0x0081FE</color>
+				<size>1</size>
+			</style>			
+			<g_description>Reads since last</g_description>
+		</axisdataset>
+	</column>
+<!--	<column name="MAX_TIME_PER_TRANSACTION">
+		<c_sql_name>MAX_TIME_PER_TRANSACTION</c_sql_name>
+		<c_title>Max time per statement (ms)</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+		<axisdataset name="TransactionTimes">
+			<style>
+				<color>0x007D00</color>
+				<size>1</size>
+			</style>			
+			<g_description>Max time per statement (ms)</g_description>
+		</axisdataset>
+	</column>-->
+	<column name="MIN_TIME_PER_TRANSACTION">
+		<c_sql_name>MIN_TIME_PER_TRANSACTION</c_sql_name>
+		<c_title>Min time per statement (ms)</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+		<axisdataset name="TransactionTimes">
+			<style>
+				<color>0x0081FE</color>
+				<size>1</size>
+			</style>			
+			<g_description>Min time per statement (ms)</g_description>
+		</axisdataset>
+	</column>
+	<column name="AVG_TIME_PER_TRANSACTION">
+		<c_sql_name>AVG_TIME_PER_TRANSACTION</c_sql_name>
+		<c_title>Average time per statement (ms)</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+		<axisdataset name="TransactionTimes">
+			<style>
+				<color>0xFE7D41</color>
+				<size>1</size>
+			</style>			
+			<g_description>Average time per statement (ms)</g_description>
+		</axisdataset>
+	</column>
+	<column name="TOTAL_TRANSACTIONS_PER_SECOND">
+		<c_sql_name>TOTAL_TRANSACTIONS_PER_SECOND</c_sql_name>
+		<c_title>Transactions (s)</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+		<axisdataset name="TransactionsSecond">
+			<style>
+				<color>0xFE7D41</color>
+			</style>
+			<g_description>Transactions (s)</g_description>
+		</axisdataset>
+	</column>
+	<column name="WRITES_PER_SECOND">
+		<c_sql_name>WRITES_PER_SECOND</c_sql_name>
+		<c_title>Writes (s)</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+		<axisdataset name="TransactionsSecond">
+			<style>
+				<color>0x007D00</color>
+				<size>1</size>
+			</style>
+			<g_description>Writes (s)</g_description>
+		</axisdataset>
+	</column>
+	<column name="READS_PER_SECOND">
+		<c_sql_name>READS_PER_SECOND</c_sql_name>
+		<c_title>Reads (s)</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+		<axisdataset name="TransactionsSecond">
+			<style>
+				<color>0x0081FE</color>
+				<size>1</size>
+			</style>
+			<g_description>Reads (s)</g_description>
+		</axisdataset>
+	</column>
+</table>
+
+

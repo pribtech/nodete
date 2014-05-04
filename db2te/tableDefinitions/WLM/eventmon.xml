@@ -1,0 +1,172 @@
+<table name="SystemEventMonitors">
+	<sql_name>SystemEventMonitors</sql_name>
+	<singular_name>System event monitor</singular_name>
+	<plural_name>System event monitors</plural_name>
+	<inlinequery>
+<![CDATA[
+SELECT
+		EVMON.AUTOSTART,
+		EVENT.TYPE,
+		EVMON.EVMONNAME,
+		EVMON.OWNER,
+		EVMON.TARGET,
+		EVMON.TARGET_TYPE,
+		EVMON.NODENUM,
+		EVMON.REMARKS
+	FROM
+		SYSCAT.EVENTMONITORS AS EVMON
+			JOIN
+		SYSCAT.EVENTS AS EVENT 
+			ON 
+				EVMON.EVMONNAME = EVENT.EVMONNAME
+]]>
+	</inlinequery>
+	<description>This is a list of current event monitors on the system</description>
+	<disableEdit/>
+	<output>
+		<type name="DDL" destination="" title="" generator=""/>
+	</output>
+	<order_by_index></order_by_index>
+	<display_columns>
+		<col type="column" name="AUTOSTART"/>
+		<col type="column" name="TYPE"/>
+		<col type="column" name="EVMONNAME"/>
+		<col type="column" name="OWNER"/>
+		<col type="column" name="TARGET_TYPE"/>
+		<col type="column" name="TARGET"/>
+		<col type="column" name="NODENUM"/>
+		<col type="column" name="REMARKS"/>
+	</display_columns>
+	
+	<column name="TARGET_TYPE">
+		<c_sql_name>TARGET_TYPE</c_sql_name>
+		<c_title>Open</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>y</c_drill>
+		<column_mask>
+			<value_mask value="F">
+				<mask></mask>
+			</value_mask>
+			<value_mask value="P">
+				<mask></mask>
+			</value_mask>
+			<value_mask value="T">
+				<mask></mask>
+				
+			</value_mask>
+			<value_mask value="U">
+				<mask></mask>
+			</value_mask>
+		</column_mask>
+	</column>
+	
+	<column name="AUTOSTART">
+		<c_sql_name>AUTOSTART</c_sql_name>
+		<c_title>Auto start</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="TYPE">
+		<c_sql_name>TYPE</c_sql_name>
+		<c_title>Type</c_title>
+		<c_presentation></c_presentation>
+		<column_mask>
+			<value_mask value="ACTIVITIES">
+				<mask>Activities</mask>
+			</value_mask>
+			<value_mask value="CONNECTIONS">
+				<mask>Connections</mask>
+			</value_mask>
+			<value_mask value="DATABASE">
+				<mask>Database</mask>
+			</value_mask>
+			<value_mask value="DEADLOCKS">
+				<mask>Deadlocks</mask>
+			</value_mask>
+			<value_mask value="DETAILDEADLOCKS">
+				<mask>Detail deadlocks</mask>
+			</value_mask>
+			<value_mask value="LOCKING">
+				<mask>Locking</mask>
+			</value_mask>
+			<value_mask value="PKGCACHEBASE">
+				<mask>Package cache base</mask>
+			</value_mask>
+			<value_mask value="PKGCACHEDETAILED">
+				<mask>Package cache details</mask>
+			</value_mask>
+			<value_mask value="STATEMENTS">
+				<mask>Statements</mask>
+			</value_mask>
+			<value_mask value="TABLES">
+				<mask>Tables</mask>
+			</value_mask>
+			<value_mask value="TABLESPACES">
+				<mask>Tablespaces</mask>
+			</value_mask>
+			<value_mask value="THRESHOLDVIOLATIONS">
+				<mask>Threshhold violations</mask>
+			</value_mask>
+			<value_mask value="TRANSACTIONS">
+				<mask>Transactions</mask>
+			</value_mask>
+			<value_mask value="STATISTICS">
+				<mask>Statistics</mask>
+			</value_mask>
+			<value_mask value="UOW">
+				<mask>Unit of work</mask>
+			</value_mask>
+		</column_mask>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="EVMONNAME">
+		<c_sql_name>EVMONNAME</c_sql_name>
+		<c_title>Name</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="OWNER">
+		<c_sql_name>OWNER</c_sql_name>
+		<c_title>Owner</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="TARGET">
+		<c_sql_name>TARGET</c_sql_name>
+		<c_title>Target</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="TARGET_TYPE">
+		<c_sql_name>TARGET_TYPE</c_sql_name>
+		<c_title>Output type</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>y</c_drill>
+		<column_mask>
+			<value_mask value="F">
+				<mask>File</mask>
+			</value_mask>
+			<value_mask value="P">
+				<mask>Pipe</mask>
+			</value_mask>
+			<value_mask value="T">
+				<mask>Table</mask>
+			</value_mask>
+			<value_mask value="U">
+				<mask>Unformatted event table</mask>
+			</value_mask>
+		</column_mask>
+	</column>
+	<column name="NODENUM">
+		<c_sql_name>NODENUM</c_sql_name>
+		<c_title>Node number</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="REMARKS">
+		<c_sql_name>REMARKS</c_sql_name>
+		<c_title>Remarks</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+</table>

@@ -1,0 +1,162 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2013 All rights reserved.
+  
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+<table name="mpstat">
+	<sqlName>mpstat</sqlName>
+	<singularName>System CPU</singularName>
+	<pluralName>System CPU</pluralName>
+	<inlinequery>
+<![CDATA[
+mpstat -P ALL
+]]>
+	</inlinequery>
+	<description>
+<pre>
+	CPU
+              Processor number. The keyword all indicates that statistics  are
+              calculated as averages among all processors.
+       %user
+              Show  the percentage of CPU utilization that occurred while exe-
+              cuting at the user level (application).
+       %nice
+              Show the percentage of CPU utilization that occurred while  exe-
+              cuting at the user level with nice priority.
+       %system
+              Show  the percentage of CPU utilization that occurred while exe-
+              cuting at the system level (kernel). Note  that  this  does  not
+              include the time spent servicing interrupts or softirqs.
+       %iowait
+              Show  the percentage of time that the CPU or CPUs were idle dur-
+              ing which the system had an outstanding disk I/O request.
+       %irq
+              Show the percentage of time spent by the CPU or CPUs to  service
+              interrupts.
+       %soft
+              Show  the percentage of time spent by the CPU or CPUs to service
+              softirqs.  A softirq (software interrupt) is one  of  up  to  32
+              enumerated software interrupts which can run on multiple CPUs at
+              once.
+       %idle
+              Show the percentage of time that the CPU or CPUs were  idle  and
+              the system did not have an outstanding disk I/O request.
+       intr/s
+              Show  the  total number of interrupts received per second by the
+              CPU or CPUs.
+</pre>
+</description>
+<!-- 
+Linux 2.6.18-238.9.1.el5xen (ip-10-164-89-187)  11/10/2013
+
+09:23:47 AM  CPU   %user   %nice    %sys %iowait    %irq   %soft  %steal   %idle    intr/s
+09:23:47 AM  all    1.31    0.00    0.27    1.03    0.00    0.00    0.01   97.39     59.58
+
+
+11:31:43 PM  CPU    %usr   %nice    %sys %iowait    %irq   %soft  %steal  %guest   %idle
+11:31:43 PM  all    0.89    0.02    0.54    1.13    0.00    0.00    0.01    0.00   97.40
+ -->
+	<filters>
+		<row operator="first" value="3"/>
+		<row operator="last" value="1"/>
+	</filters>
+	<output>
+		<type name="DDL" destination="" title="" generator=""/>
+	</output>
+	<displayColumns>
+		<col type="column" name="cpu"/>
+		<col type="column" name="user"/>
+		<col type="column" name="nice"/>
+		<col type="column" name="sys"/>
+		<col type="column" name="iowait"/>
+		<col type="column" name="irq"/>
+		<col type="column" name="soft"/>
+		<col type="column" name="steal"/>
+		<col type="column" name="guest"/>
+		<col type="column" name="idle"/>
+	</displayColumns>
+	<history depth="30" time="SAMPLE_TS"/>
+	<column name="SAMPLE_TS">
+		<generated>timestamp</generated>
+		<title>Time</title>
+		<type>s</type>
+	</column>
+	<column name="Line">
+		<sqlName>Line</sqlName>
+		<title>Line</title>
+		<type>c</type>
+	</column>
+	<column name="cpu">
+		<sortDisable/>
+		<title>CPU</title>
+		<generated>word,Line,3</generated>
+		<primaryKey/>
+	</column>
+	<column name="user">
+		<sortDisable/>
+		<title>User %</title>
+		<generated>word,Line,4</generated>
+		<type>bg</type>
+	</column>
+	<column name="nice">
+		<sortDisable/>
+		<title>Nice %</title>
+		<generated>word,Line,5</generated>
+		<type>bg</type>
+	</column>
+	<column name="sys">
+		<sortDisable/>
+		<title>System %</title>
+		<generated>word,Line,6</generated>
+		<type>bg</type>
+	</column>
+	<column name="iowait">
+		<sortDisable/>
+		<title>IO Wait %</title>
+		<generated>word,Line,7</generated>
+		<type>bg</type>
+	</column>
+	<column name="irq">
+		<sortDisable/>
+		<title>irq %</title>
+		<generated>word,Line,8</generated>
+		<type>bg</type>
+	</column>
+	<column name="soft">
+		<sortDisable/>
+		<title>Soft irq %</title>
+		<generated>word,Line,9</generated>
+		<type>bg</type>
+	</column>
+	<column name="steal">
+		<sortDisable/>
+		<title>Steal %</title>
+		<generated>word,Line,10</generated>
+		<type>bg</type>
+	</column>
+	<column name="guest">
+		<sortDisable/>
+		<title>Guest %</title>
+		<generated>word,Line,11</generated>
+		<type>bg</type>
+	</column>
+	<column name="idle">
+		<sortDisable/>
+		<title>Idle %</title>
+		<generated>word,Line,12</generated>
+		<type>bg</type>
+		<graphattributes flipColor="y"/>
+	</column>
+</table>

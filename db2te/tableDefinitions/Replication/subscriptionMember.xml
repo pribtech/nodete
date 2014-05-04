@@ -1,0 +1,228 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2011 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+<table name="ASN.IBMSNAP_SUBS_MEMBR">
+	<sql_name>ASN.IBMSNAP_SUBS_MEMBR</sql_name>
+	<singular_name>Subscription Member</singular_name>
+	<plural_name>Subscription Member</plural_name>
+	<description/>
+	<messages><SQL0204N>Apply replication not installed or its schema is not the default ASN</SQL0204N></messages>
+	<disable_edit/>
+	<order_by_index name="apply_qual" direction="A"/>   
+	<order_by_index name="set_name" direction="A"/>   
+	<order_by_index name="whos_on_first" direction="A"/>  
+	<order_by_index name="source_owner" direction="A"/>  
+	<order_by_index name="source_table" direction="A"/>  
+	<order_by_index name="source_view_qual" direction="A"/>  
+	<order_by_index name="target_owner" direction="A"/>  
+	<order_by_index name="target_table" direction="A"/>  
+	<display_columns>
+		<col type="column" name="apply_qual"/>
+		<col type="column" name="set_name"/>
+		<col type="column" name="whos_on_first"/>
+		<col type="column" name="source_owner"/>
+		<col type="column" name="source_table"/>
+		<col type="column" name="source_view_qual"/>
+		<col type="column" name="target_owner"/>
+		<col type="column" name="target_table"/>
+		<col type="reference" name="columns"/>
+		<col type="column" name="target_condensed"/>
+		<col type="column" name="target_complete"/>
+		<col type="column" name="target_structure"/>
+		<col type="column" name="predicates"/>
+		<col type="column" name="member_state"/>
+		<col type="column" name="target_key_chg"/>
+		<col type="column" name="uow_cd_predicates"/>
+		<col type="column" name="join_uow_cd"/>
+		<col type="column" name="loadx_type"/>
+		<col type="column" name="loadx_src_n_owner"/>
+		<col type="column" name="loadx_src_n_table"/>
+	</display_columns>
+	<column name="apply_qual">
+		<c_sql_name>APPLY_QUAL</c_sql_name>
+		<c_title>Apply Qual</c_title>
+		<c_presentation>s</c_presentation>
+		<c_pkey>p</c_pkey>	
+	</column>
+	<column name="set_name">
+		<c_sql_name>SET_NAME</c_sql_name>
+		<c_title>Set Name</c_title>
+		<c_presentation>s</c_presentation>
+		<c_pkey>p</c_pkey>	
+	</column>
+	<column name="whos_on_first">
+		<c_sql_name>WHOS_ON_FIRST</c_sql_name>
+		<c_title>Whos On First</c_title>
+		<c_presentation>s</c_presentation>
+		<c_pkey>p</c_pkey>	
+   		<c_column_mask>
+			<value_mask value="F"><mask>First</mask></value_mask>
+			<value_mask value="S"><mask>Second</mask></value_mask>
+   		</c_column_mask>
+	</column>
+	<column name="source_owner">
+		<c_sql_name>SOURCE_OWNER</c_sql_name>
+		<c_title>Source Owner</c_title>
+		<c_presentation>s</c_presentation>
+		<c_pkey>p</c_pkey>	
+		<c_prefill>y</c_prefill>
+	</column>
+	<column name="source_table">
+		<c_sql_name>SOURCE_TABLE</c_sql_name>
+		<c_title>Source Table</c_title>
+		<c_presentation>s</c_presentation>
+		<c_pkey>p</c_pkey>	
+	</column>
+	<column name="source_view_qual">
+		<c_sql_name>SOURCE_VIEW_QUAL</c_sql_name>
+		<c_title>Source View Qual</c_title>
+		<c_presentation>n</c_presentation>
+		<c_pkey>p</c_pkey>	
+	</column>
+	<column name="target_owner">
+		<c_sql_name>TARGET_OWNER</c_sql_name>
+		<c_title>Target Owner</c_title>
+		<c_presentation>s</c_presentation>
+		<c_pkey>p</c_pkey>	
+		<c_prefill>y</c_prefill>
+	</column>
+	<column name="target_table">
+		<c_sql_name>TARGET_TABLE</c_sql_name>
+		<c_title>Target Table</c_title>
+		<c_presentation>s</c_presentation>
+		<c_pkey>p</c_pkey>	
+	</column>
+	<column name="target_condensed">
+		<c_sql_name>TARGET_CONDENSED</c_sql_name>
+		<c_title>Target Condensed</c_title>
+		<c_presentation>s</c_presentation>
+  		<c_column_mask>
+			<value_mask value="Y"><mask>Mirror</mask></value_mask>
+			<value_mask value="N"><mask>All Changes</mask></value_mask>
+			<value_mask value="A"><mask>Aggregation</mask></value_mask>
+   		</c_column_mask>
+	</column>
+	<column name="target_complete">
+		<c_sql_name>TARGET_COMPLETE</c_sql_name>
+		<c_title>Target Complete</c_title>
+		<c_presentation>s</c_presentation>
+  		<c_column_mask>
+			<value_mask value="Y"><mask>All</mask></value_mask>
+			<value_mask value="N"><mask>Subset</mask></value_mask>
+   		</c_column_mask>
+	</column>
+	<column name="target_structure">
+		<c_sql_name>TARGET_STRUCTURE</c_sql_name>
+		<c_title>Target Structure</c_title>
+		<c_presentation>n</c_presentation>
+  		<c_column_mask>
+			<value_mask value="1"><mask>User</mask></value_mask>
+			<value_mask value="3"><mask>CCD</mask></value_mask>
+			<value_mask value="4"><mask>Point-in-time</mask></value_mask>
+			<value_mask value="5"><mask>Base aggregate</mask></value_mask>
+			<value_mask value="6"><mask>Change aggregate</mask></value_mask>
+			<value_mask value="7"><mask>Replica</mask></value_mask>
+			<value_mask value="8"><mask>User copy</mask></value_mask>
+			<value_mask value="8"><mask>CCD without UOW+CD</mask></value_mask>
+   		</c_column_mask>
+	</column>
+	<column name="predicates">
+		<c_sql_name>PREDICATES</c_sql_name>
+		<c_title>Predicates</c_title>
+		<c_presentation>s</c_presentation>
+	</column>
+	<column name="member_state">
+		<c_sql_name>MEMBER_STATE</c_sql_name>
+		<c_title>Member State</c_title>
+		<c_presentation>s</c_presentation>
+  		<c_column_mask>
+			<value_mask value="N"><mask>New</mask></value_mask>
+			<value_mask value="L"><mask>Loaded</mask></value_mask>
+			<value_mask value="S"><mask>Synchronized</mask></value_mask>
+			<value_mask value="D"><mask>Disabled</mask></value_mask>
+   		</c_column_mask>
+	</column>
+	<column name="target_key_chg">
+		<c_sql_name>TARGET_KEY_CHG</c_sql_name>
+		<c_title>Target Key Change</c_title>
+		<c_presentation>s</c_presentation>
+  		<c_column_mask>
+			<value_mask value="Y"><mask>Before</mask></value_mask>
+			<value_mask value="N"><mask>Not Changed</mask></value_mask>
+   		</c_column_mask>
+	</column>
+	<column name="uow_cd_predicates">
+		<c_sql_name>UOW_CD_PREDICATES</c_sql_name>
+		<c_title>Uow Cd Predicates</c_title>
+		<c_presentation>s</c_presentation>
+	</column>
+	<column name="join_uow_cd">
+		<c_sql_name>JOIN_UOW_CD</c_sql_name>
+		<c_title>Join Uow Cd</c_title>
+		<c_presentation>s</c_presentation>
+  		<c_column_mask>
+			<value_mask value="Y"><mask>Yes</mask></value_mask>
+			<value_mask value="N"><mask>No</mask></value_mask>
+			<value_mask value=""><mask>Ignore</mask></value_mask>
+   		</c_column_mask>
+	</column>
+	<column name="loadx_type">
+		<c_sql_name>LOADX_TYPE</c_sql_name>
+		<c_title>Loadx Type</c_title>
+		<c_presentation>n</c_presentation>
+  		<c_column_mask>
+			<value_mask value=""><mask>Cursor</mask></value_mask>
+			<value_mask value="1"><mask>Turned off</mask></value_mask>
+			<value_mask value="2"><mask>User</mask></value_mask>
+			<value_mask value="3"><mask>Cursor</mask></value_mask>
+			<value_mask value="4"><mask>Export/Load</mask></value_mask>
+			<value_mask value="5"><mask>Export/Import</mask></value_mask>
+			<value_mask value="6"><mask>Not Loaded</mask></value_mask>
+   		</c_column_mask>
+	</column>
+	<column name="loadx_src_n_owner">
+		<c_sql_name>LOADX_SRC_N_OWNER</c_sql_name>
+		<c_title>Loadx Src N Owner</c_title>
+		<c_presentation>s</c_presentation>
+	</column>
+	<column name="loadx_src_n_table">
+		<c_sql_name>LOADX_SRC_N_TABLE</c_sql_name>
+		<c_title>Loadx Src N Table</c_title>
+		<c_presentation>s</c_presentation>
+	</column>
+	<reference name="columns">
+		<c_title>Columns</c_title>
+		<reftype>table</reftype>
+		<refvalue>Replication/subscriptionColumns</refvalue>
+		<icon>images/icon-link-calendar.gif</icon>
+		<ref foreign_column_name="apply_qual">
+			<local_column_name>apply_qual</local_column_name>
+		</ref>
+		<ref foreign_column_name="set_name">
+			<local_column_name>set_name</local_column_name>
+		</ref>
+		<ref foreign_column_name="whos_on_first">
+			<local_column_name>whos_on_first</local_column_name>
+		</ref>
+		<ref foreign_column_name="target_owner">
+			<local_column_name>target_owner</local_column_name>
+		</ref>
+		<ref foreign_column_name="target_table">
+			<local_column_name>target_table</local_column_name>
+		</ref>
+	</reference>	
+</table>

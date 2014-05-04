@@ -1,0 +1,265 @@
+<!--
+  Peter Prib, Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2012 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<table name="queue">
+	<sqlName>ALL_QUEUES</sqlName>
+	<singularName>Queue</singularName>
+	<pluralName>Queues</pluralName>
+	<description></description>
+	<disable_edit/>
+	<orderBy name="OWNER" direction="A"/>
+	<orderBy name="NAME" direction="A"/>
+	<displayColumns>
+		<col type="column" name="OWNER"/>
+		<col type="column" name="NAME"/>
+		<col type="column" name="QUEUE_TABLE"/>
+		<col type="action" name="msgCount"/>
+		<col type="reference" name="contents"/>
+		<col type="column" name="QID"/>
+		<col type="column" name="QUEUE_TYPE"/>
+		<col type="column" name="MAX_RETRIES"/>
+		<col type="column" name="RETRY_DELAY"/>
+		<col type="column" name="ENQUEUE_ENABLED"/>
+		<col type="column" name="DEQUEUE_ENABLED"/>
+		<col type="column" name="RETENTION"/>
+		<col type="column" name="USER_COMMENT"/>
+		<col type="column" name="NETWORK_NAME"/>
+	</displayColumns>
+	<action name="msgCount">
+		<title>Count</title>
+		<icon>images/icon-count.gif</icon>			
+		<actionScript name="count" type="serverAction">
+			<parameterList>
+				<parameter name="action" type="fixed">
+					<value>rowCount</value>
+				</parameter>
+				<parameter name="schema"  type="fixed">
+					<value>"?OWNER?"</value>
+				</parameter>
+				<parameter name="name" type="fixed">
+					<value>"?QUEUE_TABLE?"</value>
+				</parameter>
+			</parameterList>
+			<followOnAction condition="true">
+				<task>	
+					<assignLocalParameter name="RETURN_VALUE" type="returnObject">
+						<value>count.returnValue</value>
+					</assignLocalParameter>
+					<alert>Total number of rows: ?RETURN_VALUE?</alert>
+				</task>
+			</followOnAction>
+			<followOnAction condition="true" negCondition="true">
+				<task>
+					<alert>Error retrieving row count.</alert>
+				</task>
+			</followOnAction>
+		</actionScript>
+	</action>
+	<action name="start">
+		<title>Start</title>
+		<icon>images/trash.gif</icon>   
+    	<actionScript>
+    		<task>
+				<assignSharedConstant name="sql" type="fixed">
+					<value>
+<![CDATA[
+begin
+    dbms_aqadm.start_queue('?OWNER?.?NAME?');
+end;
+]]>
+					</value>
+				</assignSharedConstant>
+		   		<callGlobalAction name="sqlExecution"/>
+	   		</task>
+    	</actionScript>
+    </action>
+	<action name="stop">
+		<title>Stop</title>
+		<icon>images/trash.gif</icon>   
+    	<actionScript>
+    		<task>
+				<assignSharedConstant name="sql" type="fixed">
+					<value>
+<![CDATA[
+begin
+    dbms_aqadm.stop_queue('?OWNER?.?NAME?');
+end;
+]]>
+					</value>
+				</assignSharedConstant>
+		   		<callGlobalAction name="sqlExecution"/>
+	   		</task>
+    	</actionScript>
+    </action>
+	<action name="Drop">
+		<title>Drop</title>
+		<icon>images/trash.gif</icon>   
+    	<actionScript>
+    		<task>
+				<assignSharedConstant name="sql" type="fixed">
+					<value>
+<![CDATA[
+begin
+  DBMS_AQADM.STOP_QUEUE (Queue_name => '?OWNER?.?NAME?');
+  DBMS_AQADM.DROP_QUEUE( Queue_name => '?OWNER?.?NAME?' );
+  DBMS_AQADM.DROP_QUEUE_TABLE ( Queue_table => '?QUEUE_TABLE?' , force => TRUE);
+end;
+]]>
+					</value>
+				</assignSharedConstant>
+		   		<callGlobalAction name="sqlExecution"/>
+	   		</task>
+    	</actionScript>
+    </action>
+	<reference name="contents">
+		<title>Contents</title>
+		<reftype>table</reftype>
+		<refvalue></refvalue>
+		<frame>main</frame>
+		<window>_blank</window>
+		<icon>images/icon-link-calendar.gif</icon>
+		<ref foreign_column_name="schema">
+			<local_column_name>OWNER</local_column_name>
+		</ref>
+		<ref foreign_column_name="table">
+			<local_column_name>QUEUE_TABLE</local_column_name>
+		</ref>
+	</reference>
+	<action name="putTest">
+		<title>Send Test</title>
+		<icon>images/trash.gif</icon>   
+    	<actionScript>
+    		<task>
+				<assignSharedConstant name="sql" type="fixed">
+					<value>
+<![CDATA[
+declare
+  enqueue_options dbms_aq.enqueue_options_t;
+  message_properties dbms_aq.message_properties_t;
+  msgid RAW(16);
+  header sys.mgw_name_value_array_t;
+BEGIN
+  header := sys.mgw_name_value_array_t(
+      sys.mgw_name_value_t.construct_integer('MGW_MQ_characterSet', '1208')
+      ,sys.mgw_name_value_t.construct_integer('MGW_MQ_priority', '7')
+    ) ;
+  dbms_aq.enqueue(queue_name => '?OWNER?.?NAME?'
+               ,enqueue_options => enqueue_options
+               ,message_properties => message_properties
+               ,payload => 
+			sys.mgw_basic_msg_t(header
+                               , sys.mgw_text_value_t('Test message produced:'||to_char(sysdate,'YYYY-MM-DD HH24:MI:SS'), NULL)
+                               , NULL)
+               ,msgid => msgid
+        );
+  commit;
+END enqueue;
+]]>
+					</value>
+				</assignSharedConstant>
+		   		<callGlobalAction name="sqlExecution"/>
+	   		</task>
+    	</actionScript>
+    </action>
+
+	<action name="maxSize">
+		<title>Max Size</title>
+		<icon>images/trash.gif</icon>   
+    	<actionScript>
+    		<task>
+				<assignSharedConstant name="sql" type="fixed">
+					<value>
+<![CDATA[
+select 	 Enq_tid ,length(a.user_data.text_body.large_value)
+from "J2"."POS_REF_TRANS_OUT" a
+where length(a.user_data.text_body.large_value) =  (select max(length(m.user_data.text_body.large_value)) from "J2"."POS_REF_TRANS_OUT" m)
+]]>
+					</value>
+				</assignSharedConstant>
+		   		<callGlobalAction name="sqlExecution"/>
+	   		</task>
+    	</actionScript>
+    </action>
+
+	<column name="OWNER">
+		<sqlName>OWNER</sqlName>
+		<title>Owner</title>
+		<type>s</type>
+		<primaryKey/>
+	</column>
+	<column name="NAME">
+		<sqlName>NAME</sqlName>
+		<title>Name</title>
+		<type>s</type>
+		<primaryKey/>
+	</column>
+	<column name="QUEUE_TABLE">
+		<sqlName>QUEUE_TABLE</sqlName>
+		<title>Queue Table</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="QID">
+		<sqlName>QID</sqlName>
+		<title>Qid</title>
+		<type>n</type>
+	</column>
+	<column name="QUEUE_TYPE">
+		<sqlName>QUEUE_TYPE</sqlName>
+		<title>Queue Type</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="MAX_RETRIES">
+		<sqlName>MAX_RETRIES</sqlName>
+		<title>Max Retries</title>
+		<type>n</type>
+	</column>
+	<column name="RETRY_DELAY">
+		<sqlName>RETRY_DELAY</sqlName>
+		<title>Retry Delay</title>
+		<type>n</type>
+	</column>
+	<column name="ENQUEUE_ENABLED">
+		<sqlName>ENQUEUE_ENABLED</sqlName>
+		<title>Enqueue Enabled</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="DEQUEUE_ENABLED">
+		<sqlName>DEQUEUE_ENABLED</sqlName>
+		<title>Dequeue Enabled</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="RETENTION">
+		<sqlName>RETENTION</sqlName>
+		<title>Retention</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="USER_COMMENT">
+		<sqlName>USER_COMMENT</sqlName>
+		<title>User Comment</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="NETWORK_NAME">
+		<sqlName>NETWORK_NAME</sqlName>
+		<title>Network Name</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+</table>

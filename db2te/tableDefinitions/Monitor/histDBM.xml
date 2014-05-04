@@ -1,0 +1,546 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2009 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+<table name="histDBM">
+	<sql_name>histDBM</sql_name>
+	<singular_name>History Instance Rates per sec.</singular_name>
+	<plural_name>History Instance Rates per sec.</plural_name>
+	<messages><SQL0204N>Not installed. Please install "DB2TE add monitoring tables V95" in Tools-> Installed Components</SQL0204N></messages>
+	<inlinequery>
+<![CDATA[
+select *
+from "s#db2mc".HIST_SNAPDBM_DELTA
+,(select case when upper(startTs) = 'CURRENT' then current timestamp else timestamp(startTs) end as startTS 
+	,duration
+	from (values(cast('?' as varchar(26)),cast(? as int))) as timePeriod(startTs,duration)
+ ) period
+where SNAPSHOT_TIMESTAMP between period.startTS - period.duration hours and period.startTS
+]]>
+	</inlinequery>
+	<parameters>
+		<parm name="start">
+			<title>Start</title>
+			<value>current</value>
+			<type>timestamp</type>
+		</parm>
+		<parm name="Period">
+			<title>Period (hours)</title>
+			<value>3</value>
+			<type>n</type>
+		</parm>
+	</parameters>	<description>History Collection from snapdbm convert to rate per sec.</description>
+	<rows_per_page>50</rows_per_page>
+	<order_by_index name="SNAPSHOT_TIMESTAMP" direction="D"/>
+	<display_columns>
+		<col type="column" name="SNAPSHOT_TIMESTAMP"/>
+		<col type="column" name="PERIOD"/>
+		<col type="column" name="SORT_HEAP_ALLOCATED"/>
+		<col type="column" name="POST_THRESHOLD_SORTS"/>
+		<col type="column" name="PIPED_SORTS_REQUESTED"/>
+		<col type="column" name="PIPED_SORTS_ACCEPTED"/>
+		<col type="column" name="REM_CONS_IN"/>
+		<col type="column" name="REM_CONS_IN_EXEC"/>
+		<col type="column" name="LOCAL_CONS"/>
+		<col type="column" name="LOCAL_CONS_IN_EXEC"/>
+		<col type="column" name="CON_LOCAL_DBASES"/>
+		<col type="column" name="AGENTS_REGISTERED"/>
+		<col type="column" name="AGENTS_WAITING_ON_TOKEN"/>
+		<col type="column" name="AGENTS_REGISTERED_TOP"/>
+		<col type="column" name="AGENTS_WAITING_TOP"/>
+		<col type="column" name="COMM_PRIVATE_MEM"/>
+		<col type="column" name="IDLE_AGENTS"/>
+		<col type="column" name="AGENTS_FROM_POOL"/>
+		<col type="column" name="AGENTS_CREATED_EMPTY_POOL"/>
+		<col type="column" name="COORD_AGENTS_TOP"/>
+		<col type="column" name="MAX_AGENT_OVERFLOWS"/>
+		<col type="column" name="AGENTS_STOLEN"/>
+		<col type="column" name="GW_TOTAL_CONS"/>
+		<col type="column" name="GW_CUR_CONS"/>
+		<col type="column" name="GW_CONS_WAIT_HOST"/>
+		<col type="column" name="GW_CONS_WAIT_CLIENT"/>
+		<col type="column" name="POST_THRESHOLD_HASH_JOINS"/>
+		<col type="column" name="NUM_GW_CONN_SWITCHES"/>
+		<col type="column" name="SORT_HEAP_TOP"/>
+		<col type="column" name="POST_THRESHOLD_OLAP_FUNCS"/>
+	</display_columns>
+	<graph>
+		<title>History Instance rates per sec.</title>
+		<type>line</type>
+ 		<style>
+ 			<legend>
+ 			 	<display>right</display>
+ 			</legend>
+ 			<animationEnabled>false</animationEnabled>
+ 		</style>
+	</graph>
+	<charts>
+		<chart name="detail" historyInclude="true">
+			<highlight>first</highlight>
+			<type>line</type>
+			<title>Instance History</title>
+			<axis>
+				<x><column name="SNAPSHOT_TIMESTAMP"/></x>
+				<y scaling="EXPONENTIAL">
+					<column name="SORT_HEAP_ALLOCATED"/>
+					<column name="AGENTS_WAITING_ON_TOKEN"/>
+					<column name="PIPED_SORTS_REQUESTED"/>
+					<column name="CONS_IN_EXEC"/>
+					<column name="AGENTS_REGISTERED"/>
+				</y>
+			</axis>
+		</chart>
+	</charts>	
+	<column name="SNAPSHOT_TIMESTAMP" dimension="timestamp">
+		<sqlName>SNAPSHOT_TIMESTAMP</sqlName>
+		<title>Time</title>
+		<type/>
+		<c_graph>
+			<g_x_categories>y</g_x_categories>
+			<label>Time</label>
+		</c_graph>		
+	</column>
+	<column name="PERIOD" measure="amount">
+		<sqlName>PERIOD</sqlName>
+		<title>Periods Secs</title>
+	</column>
+	<column name="CONS_IN_EXEC">
+		<sqlName>REM_CONS_IN_EXEC+LOCAL_CONS_IN_EXEC</sqlName>
+		<title>Executing Connections</title>
+	</column>
+	<column name="SORT_HEAP_ALLOCATED">
+		<sqlName>SORT_HEAP_ALLOCATED</sqlName>
+		<title>Sort Heap Allocated</title>
+		<c_graph>
+			<g_description>Sort Heap Allocated</g_description>
+			<datastyle>
+				<graph_type>line</graph_type>
+					<color>0x000040</color>
+					<size>2</size>
+					<lineSize>1</lineSize>
+				</datastyle>
+		</c_graph>
+	</column>
+	<column name="POST_THRESHOLD_SORTS" measure="amount">
+		<sqlName>POST_THRESHOLD_SORTS</sqlName>
+		<title>Post Threshold Sorts</title>
+	</column>
+	<column name="POST_THRESHOLD_SORTS_RATE">
+		<generated>normalize,POST_THRESHOLD_SORTS,PERIOD</generated>
+		<title>Post Threshold Sorts (/s)</title>
+		<c_graph>
+			<g_description>Post Threshold Sorts</g_description>
+			<datastyle>
+				<graph_type>line</graph_type>
+					<color>0x000080</color>
+					<size>2</size>
+					<lineSize>1</lineSize>
+				</datastyle>
+		</c_graph>
+	</column>
+	<column name="PIPED_SORTS_REQUESTED" measure="amount">
+		<sqlName>PIPED_SORTS_REQUESTED</sqlName>
+		<title>Piped Sorts Requested</title>
+		<type/>
+	</column>
+	<column name="PIPED_SORTS_REQUESTED_RATE">
+		<generated>normalize,PIPED_SORTS_REQUESTED,PERIOD</generated>
+		<title>Piped Sorts Requested (/s)</title>
+		<c_graph>
+			<g_description>Piped Sorts Requested</g_description>
+			<datastyle>
+				<graph_type>line</graph_type>
+					<color>0x0000A0</color>
+					<size>2</size>
+					<lineSize>1</lineSize>
+				</datastyle>
+		</c_graph>
+	</column>
+	<column name="PIPED_SORTS_ACCEPTED" measure="amount">
+		<sqlName>PIPED_SORTS_ACCEPTED</sqlName>
+		<title>Piped Sorts Accepted</title>
+	</column>
+	<column name="PIPED_SORTS_ACCEPTED_RATE">
+		<generated>normalize,PIPED_SORTS_ACCEPTED,PERIOD</generated>
+		<title>Piped Sorts Accepted (/s)</title>
+		<c_graph>
+			<g_description>Piped Sorts Accepted</g_description>
+			<datastyle>
+				<graph_type>line</graph_type>
+					<color>0x0000F0</color>
+					<size>2</size>
+					<lineSize>1</lineSize>
+				</datastyle>
+		</c_graph>
+	</column>
+	<column name="REM_CONS_IN">
+		<sqlName>REM_CONS_IN</sqlName>
+		<title>Remote Conn. In</title>
+		<type/>
+		<c_drill>n</c_drill>
+		<c_graph>
+			<g_description>Remote Conn. In</g_description>
+			<datastyle>
+				<graph_type>line</graph_type>
+					<color>0x004000</color>
+					<size>2</size>
+					<lineSize>1</lineSize>
+				</datastyle>
+		</c_graph>
+	</column>
+	<column name="REM_CONS_IN_EXEC">
+		<sqlName>REM_CONS_IN_EXEC</sqlName>
+		<title>Remote Conn. In Exec</title>
+		<type/>
+		<c_drill>n</c_drill>
+		<c_graph>
+			<g_description>Remote Conn. In Exec</g_description>
+			<datastyle>
+				<graph_type>line</graph_type>
+					<color>0x008000</color>
+					<size>2</size>
+					<lineSize>1</lineSize>
+				</datastyle>
+		</c_graph>
+	</column>
+	<column name="LOCAL_CONS">
+		<sqlName>LOCAL_CONS</sqlName>
+		<title>Local Connections</title>
+		<type/>
+		<c_drill>n</c_drill>
+		<c_graph>
+			<g_description>Local Connections</g_description>
+			<datastyle>
+				<graph_type>line</graph_type>
+					<color>0x00A000</color>
+					<size>2</size>
+					<lineSize>1</lineSize>
+				</datastyle>
+		</c_graph>
+	</column>
+	<column name="LOCAL_CONS_IN_EXEC">
+		<sqlName>LOCAL_CONS_IN_EXEC</sqlName>
+		<title>Local Connections in Exec</title>
+		<type/>
+		<c_drill>n</c_drill>
+		<c_graph>
+			<g_description>Local Connections in Exec</g_description>
+			<datastyle>
+				<graph_type>line</graph_type>
+					<color>0x00F000</color>
+					<size>2</size>
+					<lineSize>1</lineSize>
+				</datastyle>
+		</c_graph>
+	</column>
+	<column name="CON_LOCAL_DBASES">
+		<sqlName>CON_LOCAL_DBASES</sqlName>
+		<title>Conn. Local DB</title>
+		<type/>
+		<c_drill>n</c_drill>
+		<c_graph>
+			<g_description>Conn. Local DB</g_description>
+			<datastyle>
+				<graph_type>line</graph_type>
+					<color>0x400000</color>
+					<size>2</size>
+					<lineSize>1</lineSize>
+				</datastyle>
+		</c_graph>
+	</column>
+	<column name="AGENTS_REGISTERED">
+		<sqlName>AGENTS_REGISTERED</sqlName>
+		<title>Agents Registered</title>
+		<type/>
+		<c_drill>n</c_drill>
+		<c_graph>
+			<g_description>Agents Registered</g_description>
+			<datastyle>
+				<graph_type>line</graph_type>
+					<color>0x800000</color>
+					<size>2</size>
+					<lineSize>1</lineSize>
+				</datastyle>
+		</c_graph>
+	</column>
+	<column name="AGENTS_WAITING_ON_TOKEN">
+		<sqlName>AGENTS_WAITING_ON_TOKEN</sqlName>
+		<title>Agents Waiting on Token</title>
+		<type/>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="AGENTS_REGISTERED_TOP">
+		<sqlName>AGENTS_REGISTERED_TOP</sqlName>
+		<title>Agents Registered Top</title>
+		<type/>
+		<c_drill>n</c_drill>
+		<c_graph>
+			<g_description>Agents Registered Top</g_description>
+			<datastyle>
+				<graph_type>line</graph_type>
+					<color>0xF00000</color>
+					<size>2</size>
+					<lineSize>1</lineSize>
+				</datastyle>
+		</c_graph>
+	</column>
+	<column name="AGENTS_WAITING_TOP">
+		<sqlName>AGENTS_WAITING_TOP</sqlName>
+		<title>Agents Waiting Top</title>
+		<type/>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="COMM_PRIVATE_MEM">
+		<sqlName>COMM_PRIVATE_MEM</sqlName>
+		<title>Comm. Private Memory</title>
+		<type/>
+		<c_drill>n</c_drill>
+		<c_graph>
+			<g_description>Comm. Private Memory</g_description>
+			<datastyle>
+				<graph_type>line</graph_type>
+					<color>0xF00080</color>
+					<size>2</size>
+					<lineSize>1</lineSize>
+				</datastyle>
+		</c_graph>
+	</column>
+	<column name="IDLE_AGENTS">
+		<sqlName>IDLE_AGENTS</sqlName>
+		<title>Agents Idle</title>
+		<type/>
+		<c_drill>n</c_drill>
+		<c_graph>
+			<g_description>Agents Idle</g_description>
+			<datastyle>
+				<graph_type>line</graph_type>
+					<color>0xF000A0</color>
+					<size>2</size>
+					<lineSize>1</lineSize>
+				</datastyle>
+		</c_graph>
+	</column>
+	<column name="AGENTS_FROM_POOL">
+		<sqlName>AGENTS_FROM_POOL</sqlName>
+		<title>Agents From Pool</title>
+		<type/>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="AGENTS_FROM_POOL_RATE">
+		<generated>normalize,AGENTS_FROM_POOL,PERIOD</generated>
+		<title>Agents From Pool (/s)</title>
+		<type/>
+		<c_drill>n</c_drill>
+		<c_graph>
+			<g_description>Agents From Pool</g_description>
+			<datastyle>
+				<graph_type>line</graph_type>
+					<color>0xF000F0</color>
+					<size>2</size>
+					<lineSize>1</lineSize>
+				</datastyle>
+		</c_graph>
+	</column>
+	<column name="AGENTS_CREATED_EMPTY_POOL" measure="amount">
+		<sqlName>AGENTS_CREATED_EMPTY_POOL</sqlName>
+		<title>Agents Created Empty Pool</title>
+	</column>
+	<column name="AGENTS_CREATED_EMPTY_POOL_RATE">
+		<generated>normalize,AGENTS_CREATED_EMPTY_POOL,PERIOD</generated>
+		<title>Agents Created Empty Pool (/s)</title>
+		<c_graph>
+			<g_description>Agents Created Empty Pool</g_description>
+			<datastyle>
+				<graph_type>line</graph_type>
+					<color>0xF04000</color>
+					<size>2</size>
+					<lineSize>1</lineSize>
+				</datastyle>
+		</c_graph>
+	</column>
+	<column name="COORD_AGENTS_TOP">
+		<sqlName>COORD_AGENTS_TOP</sqlName>
+		<title>Agents Coord Top</title>
+		<c_graph>
+			<g_description>Agents Coord Top</g_description>
+			<datastyle>
+				<graph_type>line</graph_type>
+					<color>0xF08000</color>
+					<size>2</size>
+					<lineSize>1</lineSize>
+				</datastyle>
+		</c_graph>
+	</column>
+	<column name="MAX_AGENT_OVERFLOWS" measure="amount">
+		<sqlName>MAX_AGENT_OVERFLOWS</sqlName>
+		<title>Max Agent Overflows</title>
+	</column>
+	<column name="MAX_AGENT_OVERFLOWS_RATE">
+		<generated>normalize,MAX_AGENT_OVERFLOWS,PERIOD</generated>
+		<sqlName></sqlName>
+		<title>Max Agent Overflows (/s)</title>
+	</column>
+	<column name="AGENTS_STOLEN" measure="amount">
+		<sqlName>AGENTS_STOLEN</sqlName>
+		<title>Agents Stolen</title>
+	</column>
+	<column name="AGENTS_STOLEN_RATE">
+		<generated>normalize,AGENTS_STOLEN,PERIOD</generated>
+		<title>Agents Stolen (/s)</title>
+		<c_graph>
+			<g_description>Agents Stolen</g_description>
+			<datastyle>
+				<graph_type>line</graph_type>
+					<color>0xF0A000</color>
+					<size>2</size>
+					<lineSize>1</lineSize>
+				</datastyle>
+		</c_graph>
+	</column>
+	<column name="GW_TOTAL_CONS" measure="amount">
+		<sqlName>GW_TOTAL_CONS</sqlName>
+		<title>GW Total Cons</title>
+		<type/>
+		<c_drill>n</c_drill>
+		<c_graph>
+			<g_description>GW Total Cons</g_description>
+			<datastyle>
+				<graph_type>line</graph_type>
+					<color>0xF0F000</color>
+					<size>2</size>
+					<lineSize>1</lineSize>
+				</datastyle>
+		</c_graph>
+	</column>
+	<column name="GW_CUR_CONS" measure="amount">
+		<sqlName>GW_CUR_CONS</sqlName>
+		<title>GW Cur Cons</title>
+		<type/>
+		<c_drill>n</c_drill>
+		<c_graph>
+			<g_description>GW Cur Cons</g_description>
+			<datastyle>
+				<graph_type>line</graph_type>
+					<color>0xF0F040</color>
+					<size>2</size>
+					<lineSize>1</lineSize>
+				</datastyle>
+		</c_graph>
+	</column>
+	<column name="GW_CONS_WAIT_HOST" measure="amount">
+		<sqlName>GW_CONS_WAIT_HOST</sqlName>
+		<title>GW Cons Wait Host</title>
+		<type/>
+		<c_drill>n</c_drill>
+		<c_graph>
+			<g_description>GW Cons Wait Host</g_description>
+			<datastyle>
+				<graph_type>line</graph_type>
+					<color>0xF0F080</color>
+					<size>2</size>
+					<lineSize>1</lineSize>
+				</datastyle>
+		</c_graph>
+	</column>
+	<column name="GW_CONS_WAIT_CLIENT" measure="amount">
+		<sqlName>GW_CONS_WAIT_CLIENT</sqlName>
+		<title>GW Cons Wait Client</title>
+	</column>
+	<column name="GW_CONS_WAIT_CLIENT_RATE">
+		<generated>normalize,GW_CONS_WAIT_CLIENT,PERIOD</generated>
+		<title>GW Cons Wait Client (/s)</title>
+		<type/>
+		<c_drill>n</c_drill>
+		<c_graph>
+			<g_description>GW Cons Wait Client</g_description>
+			<datastyle>
+				<graph_type>line</graph_type>
+					<color>0xF0F0A0</color>
+					<size>2</size>
+					<lineSize>1</lineSize>
+				</datastyle>
+		</c_graph>
+	</column>
+	<column name="POST_THRESHOLD_HASH_JOINS" measure="amount">
+		<sqlName>POST_THRESHOLD_HASH_JOINS</sqlName>
+		<title>Post Threshold Hash Joins</title>
+	</column>
+	<column name="POST_THRESHOLD_HASH_JOINS_RATE">
+		<generated>normalize,POST_THRESHOLD_HASH_JOINS,PERIOD</generated>
+		<title>Post Threshold Hash Joins (/s)</title>
+		<type/>
+		<c_drill>n</c_drill>
+		<c_graph>
+			<g_description>Post Threshold Hash Joins</g_description>
+			<datastyle>
+				<graph_type>line</graph_type>
+					<color>0xF0F0A0</color>
+					<size>2</size>
+					<lineSize>1</lineSize>
+				</datastyle>
+		</c_graph>
+	</column>
+	<column name="NUM_GW_CONN_SWITCHES" measure="amount">
+		<sqlName>NUM_GW_CONN_SWITCHES</sqlName>
+		<title>Num GW Conn. Switches</title>
+	</column>
+	<column name="NUM_GW_CONN_SWITCHES_RATE">
+		<generated>normalize,NUM_GW_CONN_SWITCHES,PERIOD</generated>
+		<title>Num GW Conn. Switches (/s)</title>
+		<type/>
+		<c_drill>n</c_drill>
+		<c_graph>
+			<g_description>Num GW Conn. Switches</g_description>
+			<datastyle>
+				<graph_type>line</graph_type>
+					<color>0xF0F0F0</color>
+					<size>2</size>
+					<lineSize>1</lineSize>
+				</datastyle>
+		</c_graph>
+	</column>
+	<column name="SORT_HEAP_TOP">
+		<sqlName>SORT_HEAP_TOP</sqlName>
+		<title>Sort Heap Top</title>
+		<type/>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="DBPARTITIONNUM">
+		<sqlName>DBPARTITIONNUM</sqlName>
+		<title>Partition</title>
+		<type/>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="POST_THRESHOLD_OLAP_FUNCS" measure="amount"  version="9.5">
+		<sqlName>POST_THRESHOLD_OLAP_FUNCS</sqlName>
+		<title>Post Threshold Olap Funcs</title>
+		<type>n</type>
+	</column>
+	<column name="POST_THRESHOLD_OLAP_FUNCS_RATE" version="9.5">
+		<generated>normalize,POST_THRESHOLD_OLAP_FUNCS,PERIOD</generated>
+		<title>Post Threshold Olap Funcs (/s)</title>
+		<type>n</type>
+		<c_graph>
+			<g_description>Post Threshold Olap Funcs</g_description>
+			<datastyle>
+				<graph_type>line</graph_type>
+					<color>0xA0F0F0</color>
+					<size>2</size>
+					<lineSize>1</lineSize>
+				</datastyle>
+		</c_graph>
+	</column>
+</table>

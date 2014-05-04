@@ -1,0 +1,340 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2009-2013 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+<table name="SYSCAT.EVENTTABLES">
+	<sqlName>SYSCAT.EVENTTABLES</sqlName>
+	<singularName>Event Table</singularName>
+	<pluralName>Event Tables</pluralName>
+	<description />
+	<orderBy name="evmonname" direction="A"/>
+	<displayColumns>
+		<col type="column" name="evmonname" />
+		<col type="column" name="chart" />
+		<col type="column" name="logical_group" />
+		<col type="column" name="tabschema" />
+		<col type="column" name="tabname" />
+		<col type="column" name="pctdeactivate" />
+	</displayColumns>
+	<disableEdit/>
+	<column name="evmonname">
+		<sqlName>EVMONNAME</sqlName>
+		<title>Event Monitor Name</title>
+		<type>s</type>
+		<enableDrill/>
+		<primaryKey/>
+	</column>
+	<column name="chart">
+		<sqlName>LOGICAL_GROUP</sqlName>
+		<title>Chart</title>
+		<type>s</type>
+		<c_drill>n</c_drill>
+		<c_column_mask>
+			<value_mask value="ACTIVITY"><mask></mask></value_mask>
+			<value_mask value="ACTIVITYSTMT"><mask></mask></value_mask>
+			<value_mask value="ACTIVITYVALS"><mask></mask></value_mask>
+			<value_mask value="ACTIVITYHISTORY"><mask></mask></value_mask>
+			<value_mask value="BUFFERPOOL"><mask></mask></value_mask>
+			<value_mask value="CONN"><mask></mask></value_mask>
+			<value_mask value="CONNHEADER"><mask></mask></value_mask>
+			<value_mask value="CONTROL"><mask></mask></value_mask>
+			<value_mask value="DATAVAL"><mask>DATAVAL</mask></value_mask>
+			<value_mask value="DB"><mask></mask></value_mask>
+			<value_mask value="DEADLOCK"><mask></mask></value_mask>
+			<value_mask value="DLCONN"><mask></mask></value_mask>
+			<value_mask value="DLLOCK"><mask></mask></value_mask>
+			<value_mask value="HISTOGRAMBIN"><mask></mask></value_mask>
+			<value_mask value="LOCKING"><mask></mask></value_mask>
+			<value_mask value="PACKAGECACHESTMT"><mask></mask></value_mask>
+			<value_mask value="QSTATS"><mask></mask></value_mask>
+			<value_mask value="SCSTATS"><mask></mask>
+				<reference name="graphScStats">
+					<title>Graph History</title>
+					<reftype>chart</reftype>
+					<refvalue>Events/scStats</refvalue>
+					<icon>images/icon-histo.gif</icon>
+					<ref foreign_column_name="tabschema">
+						<local_column_name>tabschema</local_column_name>
+					</ref>
+					<ref foreign_column_name="tabname">
+						<local_column_name>tabname</local_column_name>
+					</ref>
+				</reference>
+			</value_mask>
+			<value_mask value="STMT"><mask></mask></value_mask>
+			<value_mask value="STMTHIST"><mask></mask></value_mask>
+			<value_mask value="STMTVALS"><mask></mask></value_mask>
+			<value_mask value="SUBSECTION"><mask></mask></value_mask>
+			<value_mask value="TABLE"><mask></mask></value_mask>
+			<value_mask value="TABLESPACE"><mask></mask></value_mask>
+			<value_mask value="THRESHOLDVIOLATIONS"><mask></mask></value_mask>
+			<value_mask value="UOW"><mask></mask></value_mask>
+			<value_mask value="WCSTATS"><mask></mask>
+				<reference name="graphHistory">
+					<title>Graph History</title>
+					<reftype>chart</reftype>
+					<refvalue>Events/wcStats</refvalue>
+					<icon>images/icon-histo.gif</icon>
+					<ref foreign_column_name="tabschema">
+						<local_column_name>tabschema</local_column_name>
+					</ref>
+					<ref foreign_column_name="tabname">
+						<local_column_name>tabname</local_column_name>
+					</ref>
+				</reference>
+			</value_mask>
+			<value_mask value="WLSTATS"><mask></mask>
+				<reference name="graphWlStats">
+					<title>Graph History</title>
+					<reftype>chart</reftype>
+					<refvalue>Events/wlStats</refvalue>
+					<icon>images/icon-histo.gif</icon>
+					<ref foreign_column_name="tabschema">
+						<local_column_name>tabschema</local_column_name>
+					</ref>
+					<ref foreign_column_name="tabname">
+						<local_column_name>tabname</local_column_name>
+					</ref>
+				</reference>
+			</value_mask>
+			<value_mask value="XACT"><mask></mask></value_mask>
+		</c_column_mask>
+ 	</column>
+	<column name="logical_group">
+		<sqlName>LOGICAL_GROUP</sqlName>
+		<title>Logical Group</title>
+		<type>s</type>
+		<enableDrill/>
+		<primaryKey/>
+		<reference name="contents">
+			<title>Contents</title>
+			<reftype>table</reftype>
+			<refvalue/>
+			<icon>images/sout.gif</icon>
+			<ref foreign_column_name="schema">
+				<local_column_name>tabschema</local_column_name>
+			</ref>
+			<ref foreign_column_name="table">
+				<local_column_name>tabname</local_column_name>
+			</ref>
+		</reference>
+ 		<c_column_mask>
+			<value_mask value="ACTIVITY"><mask>Activity</mask>
+				<reference name="history">
+						<reftype>table</reftype>
+						<refvalue>Events/activity</refvalue>
+						<icon>images/sout.gif</icon>
+						<ref foreign_column_name="tabschema">
+							<local_column_name>tabschema</local_column_name>
+						</ref>
+						<ref foreign_column_name="tabname">
+							<local_column_name>tabname</local_column_name>
+						</ref>
+				</reference>
+			</value_mask>
+			<value_mask value="ACTIVITYSTMT"><mask>Activity Statement</mask>
+				<reference name="history">
+						<reftype>table</reftype>
+						<refvalue>Events/activityStmt</refvalue>
+						<icon>images/sout.gif</icon>
+						<ref foreign_column_name="tabschema">
+							<local_column_name>tabschema</local_column_name>
+						</ref>
+						<ref foreign_column_name="tabname">
+							<local_column_name>tabname</local_column_name>
+						</ref>
+				</reference>
+			</value_mask>
+			<value_mask value="ACTIVITYVALS"><mask>Activity Values</mask>
+				<reference name="history">
+						<reftype>table</reftype>
+						<refvalue>Events/activityVals</refvalue>
+						<icon>images/sout.gif</icon>
+						<ref foreign_column_name="tabschema">
+							<local_column_name>tabschema</local_column_name>
+						</ref>
+						<ref foreign_column_name="tabname">
+							<local_column_name>tabname</local_column_name>
+						</ref>
+				</reference>
+			</value_mask>
+			<value_mask value="ACTIVITYHISTORY"><mask>Activity History</mask></value_mask>
+			<value_mask value="BUFFERPOOL"><mask>Bufferpool</mask></value_mask>
+			<value_mask value="CHANGESUMMARY"><mask>Change Summary</mask>
+				<reference name="history">
+						<reftype>table</reftype>
+						<refvalue>Events/changeSummary</refvalue>
+						<icon>images/sout.gif</icon>
+						<ref foreign_column_name="tabschema">
+							<local_column_name>tabschema</local_column_name>
+						</ref>
+						<ref foreign_column_name="tabname">
+							<local_column_name>tabname</local_column_name>
+						</ref>
+				</reference>
+			</value_mask>
+			<value_mask value="CONN"><mask></mask>Connection</value_mask>
+			<value_mask value="CONNHEADER"><mask>Connection Header</mask></value_mask>
+			<value_mask value="CONTROL"><mask>Control</mask>
+				<reference name="history">
+						<reftype>table</reftype>
+						<refvalue>Events/control</refvalue>
+						<icon>images/sout.gif</icon>
+						<ref foreign_column_name="tabschema">
+							<local_column_name>tabschema</local_column_name>
+						</ref>
+						<ref foreign_column_name="tabname">
+							<local_column_name>tabname</local_column_name>
+						</ref>
+				</reference>
+			</value_mask>
+			<value_mask value="DATAVAL"><mask>DATAVAL</mask></value_mask>
+			<value_mask value="DB"><mask>Database</mask></value_mask>
+			<value_mask value="DEADLOCK"><mask>Deadlock</mask></value_mask>
+			<value_mask value="DLCONN"><mask>DLCONN</mask></value_mask>
+			<value_mask value="DLLOCK"><mask>DLLOCK</mask></value_mask>
+			<value_mask value="HISTOGRAMBIN"><mask>Histogram Bin</mask>
+				<reference name="history">
+						<reftype>table</reftype>
+						<refvalue>Events/histogramBin</refvalue>
+						<icon>images/sout.gif</icon>
+						<ref foreign_column_name="tabschema">
+							<local_column_name>tabschema</local_column_name>
+						</ref>
+						<ref foreign_column_name="tabname">
+							<local_column_name>tabname</local_column_name>
+						</ref>
+				</reference>
+			</value_mask>
+			<value_mask value="LOCKING"><mask>Locking</mask>
+				<reference name="history">
+						<reftype>table</reftype>
+						<refvalue>Events/unformatted</refvalue>
+						<icon>images/sout.gif</icon>
+						<ref foreign_column_name="tabschema">
+							<local_column_name>tabschema</local_column_name>
+						</ref>
+						<ref foreign_column_name="tabname">
+							<local_column_name>tabname</local_column_name>
+						</ref>
+				</reference>
+			</value_mask>
+			<value_mask value="PACKAGECACHESTMT"><mask>Package Cache Statement</mask></value_mask>
+			<value_mask value="QSTATS"><mask>Queue Stats</mask>
+				<reference name="history">
+						<reftype>table</reftype>
+						<refvalue>Events/qStats</refvalue>
+						<icon>images/sout.gif</icon>
+						<ref foreign_column_name="tabschema">
+							<local_column_name>tabschema</local_column_name>
+						</ref>
+						<ref foreign_column_name="tabname">
+							<local_column_name>tabname</local_column_name>
+						</ref>
+				</reference>
+			</value_mask>
+			<value_mask value="SCSTATS"><mask>Service Class Stats</mask>
+				<reference name="history">
+						<reftype>table</reftype>
+						<refvalue>Events/scStats</refvalue>
+						<icon>images/sout.gif</icon>
+						<ref foreign_column_name="tabschema">
+							<local_column_name>tabschema</local_column_name>
+						</ref>
+						<ref foreign_column_name="tabname">
+							<local_column_name>tabname</local_column_name>
+						</ref>
+				</reference>
+			</value_mask>
+			<value_mask value="STMT"><mask>Statement</mask></value_mask>
+			<value_mask value="STMTHIST"><mask>Statement History</mask></value_mask>
+			<value_mask value="STMTVALS"><mask>Statement Values</mask></value_mask>
+			<value_mask value="SUBSECTION"><mask>Sub Section</mask></value_mask>
+			<value_mask value="TABLE"><mask>Table</mask></value_mask>
+			<value_mask value="TABLESPACE"><mask>Tablespace</mask></value_mask>
+			<value_mask value="THRESHOLDVIOLATIONS"><mask>Threshold Violations</mask>
+				<reference name="history">
+						<reftype>table</reftype>
+						<refvalue>Events/thresholdViolation</refvalue>
+						<icon>images/sout.gif</icon>
+						<ref foreign_column_name="tabschema">
+							<local_column_name>tabschema</local_column_name>
+						</ref>
+						<ref foreign_column_name="tabname">
+							<local_column_name>tabname</local_column_name>
+						</ref>
+				</reference>
+			</value_mask>
+			<value_mask value="UOW"><mask>UOW</mask>
+				<reference name="history">
+						<reftype>table</reftype>
+						<refvalue>Events/unformatted</refvalue>
+						<icon>images/sout.gif</icon>
+						<ref foreign_column_name="tabschema">
+							<local_column_name>tabschema</local_column_name>
+						</ref>
+						<ref foreign_column_name="tabname">
+							<local_column_name>tabname</local_column_name>
+						</ref>
+				</reference>
+			</value_mask>
+			<value_mask value="WCSTATS"><mask>Work Class Stats</mask>
+				<reference name="history">
+						<reftype>table</reftype>
+						<refvalue>Events/wcStats</refvalue>
+						<icon>images/sout.gif</icon>
+						<ref foreign_column_name="tabschema">
+							<local_column_name>tabschema</local_column_name>
+						</ref>
+						<ref foreign_column_name="tabname">
+							<local_column_name>tabname</local_column_name>
+						</ref>
+				</reference>
+			</value_mask>
+			<value_mask value="WLSTATS"><mask>Work Load Stats</mask>
+				<reference name="history">
+						<reftype>table</reftype>
+						<refvalue>Events/wlStats</refvalue>
+						<icon>images/sout.gif</icon>
+						<ref foreign_column_name="tabschema">
+							<local_column_name>tabschema</local_column_name>
+						</ref>
+						<ref foreign_column_name="tabname">
+							<local_column_name>tabname</local_column_name>
+						</ref>
+				</reference>
+			</value_mask>
+			<value_mask value="XACT"><mask>XACT</mask></value_mask>
+		</c_column_mask>
+ 	</column>
+	<column name="tabschema">
+		<sqlName>TABSCHEMA</sqlName>
+		<title>Schema</title>
+		<type>s</type>
+		<enableDrill/>
+	</column>
+	<column name="tabname">
+		<sqlName>TABNAME</sqlName>
+		<title>Table</title>
+		<type>s</type>
+		<enableDrill/>
+	</column>
+	<column name="pctdeactivate">
+		<sqlName>PCTDEACTIVATE</sqlName>
+		<title>Percent Deactivate</title>
+		<type>n</type>
+	</column>
+</table>

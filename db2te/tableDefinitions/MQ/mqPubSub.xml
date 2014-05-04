@@ -1,0 +1,96 @@
+<!--
+  Peter Prib, Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2012 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<table name="mqPubSub">
+	<sqlName>DB2MQ.MQPUBSUB</sqlName>
+	<singularName>MQ Publisher/Subscriber</singularName>
+	<pluralName>MQ Publisher/Subscriber</pluralName>
+	<description/>
+	<orderBy name="pubsubname" direction="A"/>
+	<displayColumns>
+		<col type="column" name="pubsubname"/>
+		<col type="column" name="broker"/>
+		<col type="column" name="receiver"/>
+		<col type="column" name="type"/>
+		<col type="column" name="description"/>
+	</displayColumns>
+	<column name="pubsubname">
+		<sql_name>PUBSUBNAME</sql_name>
+		<title>Publisher/Subscriber</title>
+		<type>s</type>
+		<primaryKey/>
+	</column>
+	<column name="broker" nullable="false">
+		<sql_name>BROKER</sql_name>
+		<title>Broker</title>
+		<type>s</type>
+		<drillEnable/>
+		<prefill>
+			<table>DB2MQ.MQSERVICE</table>
+			<column>SERVICENAME</column>
+		</prefill>
+	</column>
+	<column name="receiver" nullable="false">
+		<sql_name>RECEIVER</sql_name>
+		<title>Receiver</title>
+		<type>s</type>
+		<default> </default>
+	    <prefill>
+			<table>DB2MQ.MQSERVICE</table>
+			<column>SERVICENAME</column>
+		</prefill>
+	</column>
+	<column name="type" nullable="false">
+		<sql_name>TYPE</sql_name>
+		<title>Type</title>
+		<type>s</type>
+		<prefillEnable/>
+		<columnMask>
+			<value_mask value="S"><mask>Subscriber</mask></value_mask>
+			<value_mask value="P"><mask>Publisher</mask></value_mask>
+		</columnMask>
+	</column>
+	<column name="description">
+		<sql_name>DESCRIPTION</sql_name>
+		<title>Description</title>
+		<type>s</type>
+	</column>
+	<action name="TestMessage">
+		<title>Test Message</title>
+		<icon>images/trash.gif</icon>   
+    	<actionScript>
+    		<task>
+				<assignSharedConstant name="sql" type="fixed">
+					<value>
+<![CDATA[
+  VALUES db2mq.MQPUBLISH('?pubsubname?','Test publish message '||char(current timestamp),'TESTTOPIC','TESTCORRID')
+]]>
+					</value>
+				</assignSharedConstant>
+		   		<callGlobalAction name="sqlExecution"/>
+	   		</task>
+    	</actionScript>
+    </action>
+	<reference name="services">
+		<title>Services</title>
+		<reftype>table</reftype>
+		<refvalue>MQ/mqPublishPolicyQueue</refvalue>
+		<icon>images/icon-tbs.gif</icon>
+		<ref foreign_column_name="pubsubname">
+			<local_column_name>pubsubname</local_column_name>
+		</ref>
+	</reference>
+</table>

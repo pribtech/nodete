@@ -1,0 +1,96 @@
+<!--
+  Peter Prib, Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2012 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<table name="catalog">
+	<sql_name>all_catalog</sql_name>
+	<singular_name>Catalog</singular_name>
+	<plural_name>Catalog</plural_name>
+	<description></description>
+	<order_by_index name="OWNER" direction="A"/>
+	<order_by_index name="TABLE_NAME" direction="A"/>
+	<display_columns>
+		<col type="column" name="OWNER"/>
+		<col type="column" name="TABLE_NAME"/>
+		<col type="column" name="TABLE_TYPE"/>
+	</display_columns>
+	<disable_edit/>
+	<column name="OWNER">
+		<sql_name>OWNER</sql_name>
+		<title>Owner</title>
+		<type>s</type>
+		<primaryKey/>
+		<prefillEnable/>
+	</column>
+	<column name="TABLE_NAME">
+		<sql_name>TABLE_NAME</sql_name>
+		<title>Name</title>
+		<type>s</type>
+		<primaryKey/>
+	</column>
+	<column name="TABLE_TYPE">
+		<sql_name>TABLE_TYPE</sql_name>
+		<title>Type</title>
+		<type>s</type>
+		<prefillEnable/>
+		<drillEnable/>
+		<column_mask>
+			<value_mask value="SEQUENCE">
+				<mask>Sequence</mask>
+			</value_mask>
+			<value_mask value="SYNONYM">
+				<mask>Synonym</mask>
+				<reference name="details">
+					<reftype>displayRow</reftype>
+					<refvalue>Oracle/synonym</refvalue>
+					<icon>images/fw_bold.gif</icon>
+					<ref foreign_column_name="OWNER">
+						<local_column_name>OWNER</local_column_name>
+					</ref>
+					<ref foreign_column_name="SYNONYM_NAME">
+						<local_column_name>TABLE_NAME</local_column_name>
+					</ref>
+				</reference>
+			</value_mask>
+			<value_mask value="TABLE">
+				<mask>Table</mask>
+				<reference name="details">
+					<reftype>displayRow</reftype>
+					<refvalue>Oracle/table</refvalue>
+					<icon>images/fw_bold.gif</icon>
+					<ref foreign_column_name="OWNER">
+						<local_column_name>OWNER</local_column_name>
+					</ref>
+					<ref foreign_column_name="TABLE_NAME">
+						<local_column_name>TABLE_NAME</local_column_name>
+					</ref>
+				</reference>
+			</value_mask>
+			<value_mask value="VIEW">
+				<mask>View</mask>
+				<reference name="details">
+					<reftype>displayRow</reftype>
+					<refvalue>Oracle/view</refvalue>
+					<icon>images/fw_bold.gif</icon>
+					<ref foreign_column_name="OWNER">
+						<local_column_name>OWNER</local_column_name>
+					</ref>
+					<ref foreign_column_name="VIEW_NAME">
+						<local_column_name>TABLE_NAME</local_column_name>
+					</ref>
+				</reference>
+			</value_mask>
+		</column_mask>
+	</column>
+</table>

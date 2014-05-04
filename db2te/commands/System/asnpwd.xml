@@ -1,0 +1,135 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2010 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<command name="asnpwd" title="asnpwd">
+<![CDATA[
+>>-asnpwd--+-init--| Init parameters |-----+-------------------><
+           +-add--| Add parameters |-------+   
+           +-modify--| Modify parameters |-+   
+           +-delete--| Delete parameters |-+   
+           '-list--| List parameters |-----'   
+]]>
+	<text>asnpwd</text>
+	<select>
+		<option default="true"><text>init</text><clauseReference name="Init parameters"/></option> 
+		<option><text>add</text><clauseReference name="Add parameters"/></option> 
+		<option><text>modify</text><clauseReference name="Modify parameters"/></option> 
+		<option><text>delete</text><clauseReference name="Delete parameters"/></option> 
+		<option><text>list</text><clauseReference name="List parameters"/></option> 
+	</select>
+	<clause name="Init parameters">
+<![CDATA[
+|--+-----------------------+--+--------------------------+------|
+   '-encrypt--+-all------+-'  |        .-asnpwd.aut----. |   
+              '-password-'    '-using--+-filepath_name-+-'   
+]]>
+		<select>
+			<option default="true"></option> 
+			<option><text>encrypt</text>
+				<select>
+					<option default="true"><text>all</text></option> 
+					<option><text>password</text></option>
+				</select>
+			</option> 
+		</select>
+		<select>
+			<option default="true"></option> 
+			<option><text>using</text>
+				<select>
+					<option>asnpwd.aut</option>
+					<option default="true"><clauseReference name="file-name"/></option> 
+				</select>
+			</option> 
+		</select>
+		
+ 	</clause>
+	<clause name="Add parameters">
+<![CDATA[
+|--alias--db_alias--id--userid--password--password-------------->
+
+>--+--------------------------+---------------------------------|
+   |        .-asnpwd.aut----. |   
+   '-using--+-filepath_name-+-'   
+]]>
+		<text>alias</text><clauseReference name="database-name"/>
+		<text>id</text><clauseReference name="username"/>
+		<text>passsword</text><clauseReference name="password"/>
+		<select>
+			<option default="true"></option> 
+			<option><text>using</text>
+				<select>
+					<option>asnpwd.aut</option>
+					<option default="true"><clauseReference name="file-name"/></option> 
+				</select>
+			</option> 
+		</select>
+ 	</clause>
+	<clause name="Modify parameters">
+<![CDATA[
+|--alias--db_alias--id--userid--password--password-------------->
+
+>--+--------------------------+---------------------------------|
+   |        .-asnpwd.aut----. |   
+   '-using--+-filepath_name-+-'   
+]]>
+		<text>alias</text><clauseReference name="database-name"/>
+		<text>id</text><clauseReference name="username"/>
+		<text>passsword</text><clauseReference name="password"/>
+		<select>
+			<option default="true"></option> 
+			<option><text>using</text>
+				<select>
+					<option>asnpwd.aut</option>
+					<option default="true"><clauseReference name="file-name"/></option> 
+				</select>
+			</option> 
+		</select>
+ 	</clause>
+	<clause name="Delete parameters">
+<![CDATA[
+|--alias--db_alias--+--------------------------+----------------|
+                    |        .-asnpwd.aut----. |   
+                    '-using--+-filepath_name-+-'   
+]]>
+		<text>alias</text><clauseReference name="database-name"/>
+		<select>
+			<option default="true"></option> 
+			<option><text>using</text>
+				<select>
+					<option>asnpwd.aut</option>
+					<option default="true"><clauseReference name="file-name"/></option> 
+				</select>
+			</option> 
+		</select>
+ 	</clause>
+	<clause name="List parameters">
+<![CDATA[
+|--+--------------------------+---------------------------------|
+   |        .-asnpwd.aut----. |   
+   '-using--+-filepath_name-+-'   
+]]>
+		<select>
+			<option default="true"></option> 
+			<option><text>using</text>
+				<select>
+					<option>asnpwd.aut</option>
+					<option default="true"><clauseReference name="file-name"/></option> 
+				</select>
+			</option> 
+		</select>
+ 	</clause>
+</command>

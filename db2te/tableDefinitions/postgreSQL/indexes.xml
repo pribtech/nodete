@@ -1,0 +1,57 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2013 All rights reserved.
+  
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+<table name="indexes">
+	<sqlName>pg_indexes</sqlName>
+	<singularName>Index</singularName>
+	<pluralName>Indexes</pluralName>
+	<description></description>
+	<orderBy name="schemaname" direction="A"/>
+	<orderBy name="tablename" direction="A"/>
+	<orderBy name="indexname" direction="A"/>
+	<disableEdit/>
+	<output>
+		<type name="DDL" destination="" title="" generator=""/>
+	</output>
+	<displayColumns>
+		<col type="column" name="schemaname"/>
+		<col type="column" name="tablename"/>
+		<col type="column" name="indexname"/>
+		<col type="column" name="tablespace"/>
+		<col type="column" name="indexdef"/>
+	</displayColumns>
+	<column name="schemaname">
+		<sqlName>schemaname</sqlName>
+		<title>Schema</title>
+	</column>
+	<column name="tablename">
+		<sqlName>tablename</sqlName>
+		<title>Table</title>
+	</column>
+	<column name="indexname">
+		<sqlName>indexname</sqlName>
+		<title>Index</title>
+	</column>
+	<column name="tablespace">
+		<sqlName>tablespace</sqlName>
+		<title>Tablespace</title>
+	</column>
+	<column name="indexdef">
+		<sqlName>indexdef</sqlName>
+		<title>Definition</title>
+	</column>
+</table>

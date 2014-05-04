@@ -1,0 +1,270 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2010 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+<table name="wlStats">
+	<sql_name>wlStats</sql_name>
+	<singular_name>Work Load Stats</singular_name>
+	<plural_name>Work Load Stats</plural_name>
+	<inlinequery>SELECT	* FROM "?"."?"</inlinequery>
+	<parameters>
+		<parm name="tabschema">
+			<title>tabschema</title>
+			<value>no schema</value>
+			<type>n</type>
+		</parm>
+		<parm name="tabname">
+			<title>tabname</title>
+			<value>no table</value>
+			<type>n</type>
+		</parm>
+	</parameters>
+	<description />
+	<order_by_index name="STATISTICS_TIMESTAMP" direction="D"/>
+	<order_by_index name="WORKLOAD_NAME" direction="A"/>
+	<display_columns>
+		<col type="column" name="STATISTICS_TIMESTAMP"/>
+		<col type="column" name="WORKLOAD_NAME"/>
+		<col type="column" name="PARTITION_KEY"/>
+		<col type="column" name="ACT_CPU_TIME_TOP"/>
+		<col type="column" name="ACT_ROWS_READ_TOP"/>
+		<col type="column" name="CONCURRENT_WLO_ACT_TOP"/>
+		<col type="column" name="CONCURRENT_WLO_TOP"/>
+		<col type="column" name="COORD_ACT_ABORTED_TOTAL"/>
+		<col type="column" name="COORD_ACT_COMPLETED_TOTAL"/>
+		<col type="column" name="COORD_ACT_EST_COST_AVG"/>
+		<col type="column" name="COORD_ACT_EXEC_TIME_AVG"/>
+		<col type="column" name="COORD_ACT_INTERARRIVAL_TIME_AVG"/>
+		<col type="column" name="COORD_ACT_LIFETIME_AVG"/>
+		<col type="column" name="COORD_ACT_LIFETIME_TOP"/>
+		<col type="column" name="COORD_ACT_QUEUE_TIME_AVG"/>
+		<col type="column" name="COORD_ACT_REJECTED_TOTAL"/>
+		<col type="column" name="COST_ESTIMATE_TOP"/>
+		<col type="column" name="LAST_WLM_RESET"/>
+		<col type="column" name="LOCK_WAIT_TIME_TOP"/>
+		<col type="column" name="PARTITION_NUMBER"/>
+		<col type="column" name="ROWS_RETURNED_TOP"/>
+		<col type="column" name="TEMP_TABLESPACE_TOP"/>
+		<col type="column" name="WLO_COMPLETED_TOTAL"/>
+	</display_columns>
+	<charts>
+		<chart>
+			<type>line</type><title>Workload Statistics</title>
+			<axis>
+				<x><column name="STATISTICS_TIMESTAMP"/></x>
+				<y>
+					<column name="ACT_CPU_TIME_TOP"/>
+					<column name="ACT_ROWS_READ_TOP"/>
+					<column name="CONCURRENT_WLO_ACT_TOP"/>
+					<column name="COORD_ACT_COMPLETED_TOTAL"/>
+					<column name="COORD_ACT_EXEC_TIME_AVG"/>
+					<column name="ROWS_RETURNED_TOP"/>
+				</y>
+			</axis>
+		</chart>
+	</charts>
+	<graph>
+		<title>Workload Statitistic</title>
+		<type>line</type>
+ 		<style>
+ 			<legend>
+ 			 	<display>right</display>
+ 			</legend>
+ 			<animationEnabled>false</animationEnabled>
+ 		</style>
+	</graph>
+	<column name="PARTITION_KEY" minVersion="9.7">
+		<sql_name>PARTITION_KEY</sql_name>
+		<title>Partition Key</title>
+	</column>
+	<column name="ACT_CPU_TIME_TOP" minVersion="9.7">
+		<sql_name>nullif(ACT_CPU_TIME_TOP,-1)</sql_name>
+		<title>Activity CPU Top</title>
+		<type>n</type>
+		<c_graph>
+			<g_description>CPU Top</g_description>
+			<datastyle>
+				<graph_type>line</graph_type>
+					<color>0x00FF00</color>
+					<size>2</size>
+					<lineSize>1</lineSize>
+				</datastyle>
+		</c_graph>
+	</column>
+	<column name="ACT_ROWS_READ_TOP" minVersion="9.7">
+		<sql_name>nullif(ACT_ROWS_READ_TOP,-1)</sql_name>
+		<title>Activity Rows Read top</title>
+		<type>n</type>
+		<c_graph>
+			<g_description>Rows Read Top</g_description>
+			<datastyle>
+				<graph_type>line</graph_type>
+					<color>0x0000FF</color>
+					<size>2</size>
+					<lineSize>1</lineSize>
+				</datastyle>
+		</c_graph>
+	</column>
+	<column name="CONCURRENT_WLO_ACT_TOP">
+		<sql_name>CONCURRENT_WLO_ACT_TOP</sql_name>
+		<title>Concurrent Activity Top</title>
+		<type>n</type>
+		<c_graph>
+			<g_description>Concurrent Active Top</g_description>
+			<datastyle>
+				<graph_type>line</graph_type>
+					<color>0xFFFF00</color>
+					<size>2</size>
+					<lineSize>1</lineSize>
+				</datastyle>
+		</c_graph>
+	</column>
+	<column name="CONCURRENT_WLO_TOP">
+		<sql_name>CONCURRENT_WLO_TOP</sql_name>
+		<title>Concurrent Top</title>
+		<type>n</type>
+	</column>
+	<column name="COORD_ACT_ABORTED_TOTAL">
+		<sql_name>nullif(COORD_ACT_ABORTED_TOTAL,-1)</sql_name>
+		<title>Co-ord. Activity Aborted</title>
+		<type>n</type>
+	</column>
+	<column name="COORD_ACT_COMPLETED_TOTAL">
+		<sql_name>nullif(COORD_ACT_COMPLETED_TOTAL,-1)</sql_name>
+		<title>Co-ord. Activity Completed</title>
+		<type>n</type>
+		<c_graph>
+			<g_description>CoOrd Completed Activities</g_description>
+			<datastyle>
+				<graph_type>line</graph_type>
+					<color>0x000000</color>
+					<size>2</size>
+					<lineSize>1</lineSize>
+				</datastyle>
+		</c_graph>
+	</column>
+	<column name="COORD_ACT_EST_COST_AVG" minVersion="9.7">
+		<sql_name>nullif(COORD_ACT_EST_COST_AVG,-1)</sql_name>
+		<title>Co-ord. Activity Estimated Cost Average</title>
+		<type>n</type>
+	</column>
+	<column name="COORD_ACT_EXEC_TIME_AVG" minVersion="9.7">
+		<sql_name>nullif(COORD_ACT_EXEC_TIME_AVG,-1)</sql_name>
+		<title>Co-ord. Activity Exec. Average</title>
+		<type>n</type>
+		<c_graph>
+			<g_description>co-ord Exec Avg</g_description>
+			<datastyle>
+				<graph_type>line</graph_type>
+					<color>0x00FFFF</color>
+					<size>2</size>
+					<lineSize>1</lineSize>
+				</datastyle>
+		</c_graph>
+	</column>
+	<column name="COORD_ACT_INTERARRIVAL_TIME_AVG" minVersion="9.7">
+		<sql_name>nullif(COORD_ACT_INTERARRIVAL_TIME_AVG,-1)</sql_name>
+		<title>Co-ord. Activity Inter-Arrival Average</title>
+		<type>n</type>
+	</column>
+	<column name="COORD_ACT_LIFETIME_AVG" minVersion="9.7">
+		<sql_name>nullif(COORD_ACT_LIFETIME_AVG,-1)</sql_name>
+		<title>Co-ord. Activity LifeTime Average</title>
+		<type>n</type>
+	</column>
+	<column name="COORD_ACT_LIFETIME_TOP" minVersion="9.7">
+		<sql_name>nullif(COORD_ACT_LIFETIME_TOP,-1)</sql_name>
+		<title>Co-ord. Activity Life Time Top</title>
+		<type>n</type>
+	</column>
+	<column name="COORD_ACT_QUEUE_TIME_AVG" minVersion="9.7">
+		<sql_name>nullif(COORD_ACT_QUEUE_TIME_AVG,-1)</sql_name>
+		<title>Co-ord. Activity Queue Time Average</title>
+		<type>n</type>
+	</column>
+	<column name="COORD_ACT_REJECTED_TOTAL">
+		<sql_name>nullif(COORD_ACT_REJECTED_TOTAL,-1)</sql_name>
+		<title>Co-ord. Activity Rejected</title>
+		<type>n</type>
+	</column>
+	<column name="COST_ESTIMATE_TOP" minVersion="9.7">
+		<sql_name>COST_ESTIMATE_TOP</sql_name>
+		<title>Cost Estimate Top</title>
+		<type>n</type>
+	</column>
+	<column name="DETAILS_XML" minVersion="9.7">
+		<sql_name>DETAILS_XML</sql_name>
+		<title>Details</title>
+		<type>y</type>
+	</column>
+	<column name="LAST_WLM_RESET">
+		<sql_name>LAST_WLM_RESET</sql_name>
+		<title>Last Reset</title>
+	</column>
+	<column name="LOCK_WAIT_TIME_TOP" minVersion="9.7">
+		<sql_name>LOCK_WAIT_TIME_TOP</sql_name>
+		<title>Lock Wait Top</title>
+		<type>n</type>
+	</column>
+	<column name="PARTITION_NUMBER" minVersion="9.7">
+		<sql_name>PARTITION_NUMBER</sql_name>
+		<title>Partition</title>
+		<type>n</type>
+	</column>
+	<column name="ROWS_RETURNED_TOP" minVersion="9.7">
+		<sql_name>nullif(ROWS_RETURNED_TOP,-1)</sql_name>
+		<title>Rows Returned Top</title>
+		<type>n</type>
+		<c_graph>
+			<g_description>Rows Returned Top</g_description>
+			<datastyle>
+				<graph_type>line</graph_type>
+					<color>0xC0C0C0</color>
+					<size>2</size>
+					<lineSize>1</lineSize>
+				</datastyle>
+		</c_graph>
+	</column>
+	<column name="STATISTICS_TIMESTAMP">
+		<sql_name>STATISTICS_TIMESTAMP</sql_name>
+		<title>Time</title>
+		<primaryKey/>
+		<c_graph>
+			<g_x_categories>y</g_x_categories>
+			<label>Time</label>
+		</c_graph>
+	</column>
+	<column name="TEMP_TABLESPACE_TOP" minVersion="9.7">
+		<sql_name>nullif(TEMP_TABLESPACE_TOP,-1)</sql_name>
+		<title>Temp Tablespace Top</title>
+		<type>n</type>
+	</column>
+	<column name="WLO_COMPLETED_TOTAL">
+		<sql_name>WLO_COMPLETED_TOTAL</sql_name>
+		<title>Completed</title>
+		<type>n</type>
+	</column>
+	<column name="WORKLOAD_ID">
+		<sql_name>WORKLOAD_ID</sql_name>
+		<title>Workload Id.</title>
+		<primaryKey/>
+	</column>
+	<column name="WORKLOAD_NAME">
+		<sql_name>WORKLOAD_NAME</sql_name>
+		<title>Workload Name</title>
+		<c_drill>y</c_drill>
+	</column>
+</table>

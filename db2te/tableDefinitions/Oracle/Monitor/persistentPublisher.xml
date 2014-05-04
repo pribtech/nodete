@@ -1,0 +1,83 @@
+<!--
+  Peter Prib, Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2012 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<table name="persistentPublisher">
+	<sqlName>V$PERSISTENT_PUBLISHERS</sqlName>
+	<singularName>Persistent Publishers</singularName>
+	<pluralName>Persistent Publishers</pluralName>
+	<description></description>
+	<orderBy name="QUEUE_SCHEMA" direction="A"/>
+	<orderBy name="QUEUE_NAME" direction="A"/>
+	<orderBy name="PUBLISHER_NAME" direction="A"/>
+	<displayColumns>
+		<col type="column" name="QUEUE_SCHEMA"/>
+		<col type="column" name="QUEUE_NAME"/>
+		<col type="column" name="PUBLISHER_NAME"/>
+		<col type="column" name="PROTOCOL"/>
+		<col type="column" name="ENQUEUED_MSGS"/>
+		<col type="column" name="ELAPSED_ENQUEUE_TIME"/>
+		<col type="column" name="LAST_ENQUEUE_TIME"/>
+	</displayColumns>
+	<column name="QUEUE_ID">
+		<sqlName>QUEUE_ID</sqlName>
+		<title>QID</title>
+		<type>n</type>
+	</column>
+	<column name="QUEUE_SCHEMA">
+		<sqlName>QUEUE_SCHEMA</sqlName>
+		<title>Schema</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="QUEUE_NAME">
+		<sqlName>QUEUE_NAME</sqlName>
+		<title>Queue</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="PUBLISHER_NAME">
+		<sqlName>PUBLISHER_NAME</sqlName>
+		<title>Publisher</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="PUBLISHER_ADDRESS">
+		<sqlName>PUBLISHER_ADDRESS</sqlName>
+		<title>Publisher Address</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="PROTOCOL">
+		<sqlName>PROTOCOL</sqlName>
+		<title>Protocol</title>
+		<type>n</type>
+	</column>
+	<column name="ENQUEUED_MSGS">
+		<sqlName>ENQUEUED_MSGS</sqlName>
+		<title>Enqueued Msgs</title>
+		<type>n</type>
+	</column>
+	<column name="ELAPSED_ENQUEUE_TIME">
+		<sqlName>ELAPSED_ENQUEUE_TIME</sqlName>
+		<title>Elapsed Enqueue Time</title>
+		<type>n</type>
+	</column>
+	<column name="LAST_ENQUEUE_TIME">
+		<sqlName>LAST_ENQUEUE_TIME</sqlName>
+		<title>Last Enqueue Time</title>
+		<type>n</type>
+	</column>
+</table>

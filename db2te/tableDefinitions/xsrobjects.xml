@@ -1,0 +1,173 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2010 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+
+<table name="xsrobjects">
+	<sql_name>SYSCAT.XSROBJECTS</sql_name>
+	<singular_name>XSR Object</singular_name>
+	<plural_name>XSR Object</plural_name>
+	<display_columns>
+		<col type="column" name="OBJECTID"/>
+		<col type="action" name="dropXSRObject"/>
+		<col type="reference" name="hierarchy"/>
+		<col type="reference" name="components"/>
+		<col type="column" name="OBJECTSCHEMA"/>
+		<col type="column" name="localOBJECTNAME"/>
+		<col type="column" name="STATUS"/>
+		<col type="column" name="DECOMPOSITION"/>
+		<col type="column" name="TARGETNAMESPACE"/>
+		<col type="column" name="SCHEMALOCATION"/>
+		<col type="column" name="localOBJECTTYPE"/>
+		<col type="column" name="OBJECTINFO"/>
+	</display_columns>
+	<disableEdit/>
+	<output>
+		<type name="DDL" destination="" title="" generator=""/>
+	</output>
+	<action name="dropXSRObject">
+		<c_title>Drop</c_title>
+		<icon>images/trash.gif</icon>   
+    	<actionScript>
+    		<task>
+		    	<assignSharedConstant name="objectType" type="fixed">
+					<value>XSROBJECT</value>
+				</assignSharedConstant>
+				<assignSharedConstant name="objectName" type="fixed">
+					<value>"?OBJECTSCHEMA?"."?localOBJECTNAME?" </value>
+				</assignSharedConstant>
+		   		<callGlobalAction name="dropSQLObject"/>
+	   		</task>
+    	</actionScript>
+    </action>
+	<reference name="hierarchy">
+		<c_title>Hierarchy</c_title>
+		<reftype>table</reftype>
+		<refvalue>xsrObjectHierarchies</refvalue>
+		<icon>images/icon-link-calendar.gif</icon>
+		<ref foreign_column_name="OBJECTID">
+			<local_column_name>OBJECTID</local_column_name>
+		</ref>
+	</reference>		
+	<reference name="components">
+		<c_title>Components</c_title>
+		<reftype>table</reftype>
+		<refvalue>xsrObjectComponents</refvalue>
+		<icon>images/icon-link-calendar.gif</icon>
+		<ref foreign_column_name="OBJECTID">
+			<local_column_name>OBJECTID</local_column_name>
+		</ref>
+	</reference>		
+	<column name="OBJECTID">
+		<c_sql_name>OBJECTID</c_sql_name>
+		<c_title>Object Id.</c_title>
+		<c_presentation>n</c_presentation>
+	</column>
+	<column name="OBJECTSCHEMA">
+		<c_sql_name>OBJECTSCHEMA</c_sql_name>
+		<c_title>Schema</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>y</c_drill>
+		<primary_key/>
+		<c_prefill>y</c_prefill>
+	</column>
+	<column name="localOBJECTNAME">
+		<c_sql_name>OBJECTNAME</c_sql_name>
+		<c_title>Name</c_title>
+		<c_presentation></c_presentation>
+		<primary_key/>
+	</column>
+	<column name="TARGETNAMESPACE">
+		<c_sql_name>TARGETNAMESPACE</c_sql_name>
+		<c_title>Target Namespace</c_title>
+		<c_presentation></c_presentation>
+	</column>
+	<column name="SCHEMALOCATION">
+		<c_sql_name>SCHEMALOCATION</c_sql_name>
+		<c_title>Location</c_title>
+		<c_presentation></c_presentation>
+	</column>
+	<column name="OBJECTINFO">
+		<c_sql_name>OBJECTINFO</c_sql_name>
+		<c_title>Information</c_title>
+		<c_presentation>s</c_presentation>
+	</column>
+	<column name="localOBJECTTYPE">
+		<c_sql_name>OBJECTTYPE</c_sql_name>
+		<c_title>Type</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>y</c_drill>
+		<c_column_mask>
+			<value_mask value="D"><mask>DTD</mask></value_mask>
+			<value_mask value="E"><mask>External entity</mask></value_mask>
+			<value_mask value="S"><mask>XML schema</mask></value_mask>
+		</c_column_mask>					
+	</column>
+	<column name="OWNER">
+		<c_sql_name>OWNER</c_sql_name>
+		<c_title>Owner</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="OWNERTYPE">
+		<c_sql_name>OWNERTYPE</c_sql_name>
+		<c_title>Owner Type</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>y</c_drill>
+		<c_column_mask>
+			<value_mask value="S"><mask>System</mask></value_mask>
+			<value_mask value="U"><mask>User</mask></value_mask>
+		</c_column_mask>		
+	</column>
+	<column name="CREATE_TIME">
+		<c_sql_name>CREATE_TIME</c_sql_name>
+		<c_title>Create</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="ALTER_TIME">
+		<c_sql_name>ALTER_TIME</c_sql_name>
+		<c_title>Altered</c_title>
+		<c_presentation></c_presentation>
+	</column>
+	<column name="STATUS">
+		<c_sql_name>STATUS</c_sql_name>
+		<c_title>Status</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>y</c_drill>
+		<c_column_mask>
+			<value_mask value="C"><mask>Complete</mask></value_mask>
+			<value_mask value="I"><mask>Incomplete</mask></value_mask>
+			<value_mask value="R"><mask>Replace</mask></value_mask>
+			<value_mask value="T"><mask>Temporary</mask></value_mask>
+		</c_column_mask>		
+	</column>
+	<column name="DECOMPOSITION">
+		<c_sql_name>DECOMPOSITION</c_sql_name>
+		<c_title>Decomposition</c_title>
+		<c_presentation></c_presentation>
+		<c_column_mask>
+			<value_mask value="N"><mask>Not enabled</mask></value_mask>
+			<value_mask value="X"><mask>Inoperative</mask></value_mask>
+			<value_mask value="Y"><mask>Enabled</mask></value_mask>
+		</c_column_mask>		
+	</column>
+	<column name="REMARKS">
+		<c_sql_name>REMARKS</c_sql_name>
+		<c_title>Remarks</c_title>
+		<c_presentation></c_presentation>
+	</column>
+</table>

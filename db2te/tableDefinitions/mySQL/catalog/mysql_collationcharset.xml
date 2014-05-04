@@ -1,0 +1,40 @@
+<!--
+  Copyright IBM Corp. 2007 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<table name="mysql_collationcharset">
+	<sql_name>INFORMATION_SCHEMA.COLLATION_CHARACTER_SET_APPLICABILITY</sql_name>
+	<singular_name>CollationCharacterSet</singular_name>
+	<plural_name>CollationCharacterSet</plural_name>
+	<description/>
+	<disable_edit/>
+	<order_by_index name="COLLATION_NAME"  direction="A"/>
+	<display_columns>
+		<col type="column" name="COLLATION_NAME"/>
+		<col type="column" name="CHARACTER_SET_NAME"/>
+	</display_columns>
+	<column name="COLLATION_NAME">
+		<c_sql_name>COLLATION_NAME</c_sql_name>
+		<c_title>Collation</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>y</c_drill>
+		<c_pkey>p</c_pkey>
+	</column>
+	<column name="CHARACTER_SET_NAME">
+		<c_sql_name>CHARACTER_SET_NAME</c_sql_name>
+		<c_title>Character Set</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+</table>

@@ -1,0 +1,134 @@
+<!--
+  Peter Prib, Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2012 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<table name="plSqlProfilerUnits">
+	<sqlName>plSqlProfilerUnits</sqlName>
+	<singularName>PL/SQL Profiler Units</singularName>
+	<pluralName>PL/SQL Profiler Units</pluralName>
+	<inlinequery>
+		SELECT	'?' as tabschema,u.*
+				,to_char(100*u.TOTAL_TIME/nullif(r.RUN_TOTAL_TIME,0), '990.99') AS run_percent
+		FROM "?".PLSQL_PROFILER_UNITS u
+		JOIN "?".PLSQL_PROFILER_RUNS R
+		  ON  U.RUNID        = R.RUNID
+	</inlinequery>
+	<parameters>
+		<parm name="tabSchema">
+			<title>Schema</title>
+			<value>no schema</value>
+			<type>n</type>
+		</parm>
+		<parm name="tabSchema">
+			<title>Schema</title>
+			<value>no schema</value>
+			<type>n</type>
+		</parm>
+		<parm name="tabSchema">
+			<title>Schema</title>
+			<value>no schema</value>
+			<type>n</type>
+		</parm>
+	</parameters>
+	<description/>
+	<disableEdit/>
+	<output>
+		<type name="DDL" destination="" title="" generator=""/>
+	</output>	<order_by_index name="runid" direction="d"/>
+	<order_by_index name="unit_number" direction="A"/>
+	<displayColumns>
+		<col type="column" name="runid"/>
+		<col type="column" name="unit_number"/>
+		<col type="reference" name="Data"/>
+		<col type="column" name="unit_type"/>
+		<col type="column" name="unit_owner"/>
+		<col type="column" name="unit_name"/>
+		<col type="column" name="unit_timestamp"/>
+		<col type="column" name="run_percent"/>
+		<col type="column" name="total_time"/>
+	</displayColumns>
+	<reference name="Data">
+		<title>Data</title>
+		<reftype>table</reftype>
+		<refvalue>Oracle/Monitor/plSqlProfilerData</refvalue>
+		<icon>images/icon-histo.gif</icon>
+		<panel>data</panel>
+		<ref foreign_column_name="tabSchema">
+			<local_column_name>tabSchema</local_column_name>
+		</ref>
+		<ref foreign_column_name="runid">
+			<local_column_name>runid</local_column_name>
+		</ref>
+		<ref foreign_column_name="unit_number">
+			<local_column_name>unit_number</local_column_name>
+		</ref>
+	</reference>
+	<column name="runid">
+		<sql_name>RUNID</sql_name>
+		<title>Run Id.</title>
+		<type>n</type>
+	</column>
+	<column name="unit_number">
+		<sql_name>UNIT_NUMBER</sql_name>
+		<title>No.</title>
+		<type>n</type>
+	</column>
+	<column name="unit_type">
+		<sql_name>UNIT_TYPE</sql_name>
+		<title>Type</title>
+		<type>s</type>
+	</column>
+	<column name="unit_owner">
+		<sql_name>UNIT_OWNER</sql_name>
+		<title>Owner</title>
+		<type>s</type>
+	</column>
+	<column name="unit_name">
+		<sql_name>UNIT_NAME</sql_name>
+		<title>Name</title>
+		<type>s</type>
+	</column>
+	<column name="unit_timestamp">
+		<sql_name>UNIT_TIMESTAMP</sql_name>
+		<title>Timestamp</title>
+		<type>s</type>
+	</column>
+	<column name="run_percent">
+		<sql_name>RUN_PERCENT</sql_name>
+		<title>Run %</title>
+		<type>n</type>
+		<graphattributes flipColor="n"/>
+	</column>
+	<column name="total_time">
+		<sql_name>TOTAL_TIME/1000000000</sql_name>
+		<title>Total Time</title>
+		<type>n</type>
+		<formatNumber toDuration="ss"/> 
+	</column>
+	<column name="spare1">
+		<sql_name>SPARE1</sql_name>
+		<title>Spare1</title>
+		<type>n</type>
+	</column>
+	<column name="spare2">
+		<sql_name>SPARE2</sql_name>
+		<title>Spare2</title>
+		<type>n</type>
+	</column>
+	<column name="tabSchema">
+		<c_sql_name>tabSchema</c_sql_name>
+		<c_title>Profile Table Schema</c_title>
+		<c_presentation/>
+	</column>
+</table>

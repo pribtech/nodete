@@ -1,0 +1,163 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2011 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+
+<table name="alias">
+	<sql_name>alias</sql_name>
+	<singular_name>Alias</singular_name>
+	<plural_name>Aliases</plural_name>
+	<inlinequery>
+<![CDATA[
+select a.* from syscat.tables a where type='A'
+]]>
+	</inlinequery>
+	<description>&lt;a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.admin.dbobj.doc/doc/c0004097.html?noframes=true');"&gt;Aliases&lt;/a&gt; of table objects</description>
+    <menu type="leaf">
+		<description>New</description>
+    	<actionScript>
+    		<task>
+		    	<assignSharedConstant name="command" type="raw">
+					<value>SQL/Create/createAlias</value>
+				</assignSharedConstant>
+		   		<callGlobalAction name="commandExecution"/>
+	   		</task>
+    	</actionScript>
+    </menu>
+
+	<disableEdit/>
+	<output>
+		<type name="DDL" destination="" title="" generator=""/>
+	</output>
+	<order_by_index name="aliasSchema" direction="A"/>
+	<order_by_index name="aliasName" direction="A"/>
+	<display_columns>
+		<col type="column" name="aliasSchema"/>
+		<col type="column" name="aliasName"/>
+		<col type="column" name="owner"/>
+		<col type="column" name="status"/>
+		<col type="reference" name="table"/>
+		<col type="column" name="tableSchema"/>
+		<col type="column" name="tableName"/>
+		<col type="column" name="baseState"/>
+		<col type="action" name="dropAlias"/>
+		<col type="column" name="createTime"/>
+		<col type="column" name="invalidateTime"/>
+		<col type="column" name="definer"/>
+		<col type="column" name="remarks"/>
+	</display_columns>
+
+<!-- added peter prib, Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2009 All rights reserved. -->
+	<action name="dropAlias">
+		<c_title>Remove</c_title>
+		<icon>images/trash.gif</icon>   
+    	<actionScript>
+    		<task>
+		    	<assignSharedConstant name="objectType" type="raw">
+					<value>ALIAS</value>
+				</assignSharedConstant>
+				<assignSharedConstant name="objectName" type="fixed">
+					<value>"?aliasSchema?"."?AliasName?" </value>
+				</assignSharedConstant>
+		   		<callGlobalAction name="dropSQLObject"/>
+	   		</task>
+    	</actionScript>
+    </action>
+<!-- added end -->  
+	
+	<reference name="table">
+		<c_title>Table</c_title>
+		<reftype>displayRow</reftype>
+		<refvalue>tablecat</refvalue>
+		<icon>images/icon-link-calendar.gif</icon>
+		<ref foreign_column_name="tabschema">
+			<local_column_name>tableSchema</local_column_name>
+		</ref>
+		<ref foreign_column_name="tabname">
+			<local_column_name>tableName</local_column_name>
+		</ref>
+	</reference>
+	
+	<column name="aliasSchema">
+		<c_pkey>p</c_pkey>
+		<c_sql_name>TABSCHEMA</c_sql_name>
+		<c_title>Schema</c_title>
+		<c_drill>n</c_drill>
+		<c_prefill>
+			<table>schema</table>
+			<column>SCHEMANAME</column>
+		</c_prefill>
+	</column>
+	<column name="aliasName">
+		<c_pkey>p</c_pkey>
+		<c_sql_name>TABNAME</c_sql_name>
+		<c_title>Name</c_title>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="owner" DBMS="DB2">
+		<c_sql_name>OWNER</c_sql_name>
+		<c_title>Owner</c_title>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="status">
+		<c_sql_name>STATUS</c_sql_name>
+		<c_title>Status</c_title>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="tableSchema">
+		<c_sql_name>BASE_TABSCHEMA</c_sql_name>
+		<c_title>Table Schema</c_title>
+		<c_drill>n</c_drill>
+		<c_prefill>
+			<table>schema</table>
+			<column>SCHEMANAME</column>
+		</c_prefill>
+	</column>
+	<column name="tableName">
+		<c_sql_name>BASE_TABNAME</c_sql_name>
+		<c_title>Table Name</c_title>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="baseState" DBMS="DB2">
+		<c_sql_name>case when not exists (select 1 from syscat.tables c where alias.BASE_TABSCHEMA=c.TABSCHEMA and alias.BASE_TABNAME=c.TABNAME) then 'Missing' else '' end </c_sql_name>
+		<c_title>Base State</c_title>
+		<c_drill>n</c_drill>
+	</column>
+
+	<column name="createTime">
+		<c_sql_name>CREATE_TIME</c_sql_name>
+		<c_title>Created Time</c_title>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="invalidateTime"  DBMS="DB2">
+		<c_sql_name>INVALIDATE_TIME</c_sql_name>
+		<c_title>Invalidate Time</c_title>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="definer">
+		<c_sql_name>DEFINER</c_sql_name>
+		<c_title>Definer</c_title>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="remarks">
+		<c_sql_name>REMARKS</c_sql_name>
+		<c_title>Remarks</c_title>
+		<c_column_mask>
+			<value_mask value=""><mask></mask></value_mask>
+	   	</c_column_mask>
+	   	<c_drill>n</c_drill>
+	</column>
+</table>

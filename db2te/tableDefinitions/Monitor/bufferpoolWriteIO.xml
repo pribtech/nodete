@@ -1,0 +1,96 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2011 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+
+<table name="buffepoolWriteIO">
+	<sql_name>SYSIBMADM.BP_WRITE_IO</sql_name>
+	<singular_name>Bufferpool Write IO</singular_name>
+	<plural_name>Bufferpool Write IO</plural_name>
+	<description/>
+	<disable_edit/>
+	<order_by_index/>
+	<history depth="10" time="snapshot_timestamp"/>
+	<display_columns>
+		<col type="column" name="bp_name"/>
+		<col type="column" name="total_writes"/>
+		<col type="column" name="average_write_time_ms"/>
+		<col type="column" name="total_async_writes"/>
+		<col type="column" name="percent_writes_async"/>
+		<col type="column" name="average_async_write_time_ms"/>
+		<col type="column" name="total_sync_writes"/>
+		<col type="column" name="average_sync_write_time_ms"/>
+		<col type="column" name="dbpartitionnum"/>
+		<col type="column" name="member"/>
+	</display_columns>
+	<column name="snapshot_timestamp">
+		<sql_name>SNAPSHOT_TIMESTAMP</sql_name>
+		<title>Snapshot Timestamp</title>
+		<type>n</type>
+	</column>
+	<column name="bp_name">
+		<sql_name>BP_NAME</sql_name>
+		<title>Bufferpool</title>
+		<type>s</type>
+		<primaryKey/>
+		<drill_enable/>
+	</column>
+	<column name="total_writes">
+		<sql_name>TOTAL_WRITES</sql_name>
+		<title>Total Writes</title>
+		<type>n</type>
+	</column>
+	<column name="average_write_time_ms">
+		<sql_name>AVERAGE_WRITE_TIME_MS</sql_name>
+		<title>Avg Write (ms)</title>
+		<type>n</type>
+	</column>
+	<column name="total_async_writes">
+		<sql_name>TOTAL_ASYNC_WRITES</sql_name>
+		<title>Total Async Writes</title>
+		<type>n</type>
+	</column>
+	<column name="percent_writes_async">
+		<sql_name>PERCENT_WRITES_ASYNC</sql_name>
+		<title>% Writes Async</title>
+		<type>n</type>
+	</column>
+	<column name="average_async_write_time_ms">
+		<sql_name>AVERAGE_ASYNC_WRITE_TIME_MS</sql_name>
+		<title>Average Async Write (ms)</title>
+		<type>n</type>
+	</column>
+	<column name="total_sync_writes">
+		<sql_name>TOTAL_SYNC_WRITES</sql_name>
+		<title>Total Sync Writes</title>
+		<type>n</type>
+	</column>
+	<column name="average_sync_write_time_ms">
+		<sql_name>AVERAGE_SYNC_WRITE_TIME_MS</sql_name>
+		<title>Avg Sync Write (ms)</title>
+		<type>n</type>
+	</column>
+	<column name="dbpartitionnum">
+		<sql_name>DBPARTITIONNUM</sql_name>
+		<title>Partition</title>
+		<type>n</type>
+	</column>
+	<column name="member" minVersion="9.8">
+		<sql_name>MEMBER</sql_name>
+		<title>Member</title>
+		<type>n</type>
+	</column>
+</table>

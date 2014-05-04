@@ -1,0 +1,450 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2009-2012 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+
+<table name="histBufferpoolDelta">
+	<sqlName>histBufferpoolDelta</sqlName>
+	<singular_name>Bufferpool</singular_name>
+	<plural_name>History Bufferpool</plural_name>
+	<description>History extracted out using snaps</description>
+	<messages><SQL0204N>Not installed. Please install "DB2TE add monitoring tables V95" in Tools-> Installed Components</SQL0204N></messages>
+	<inlinequery>
+<![CDATA[
+select
+    CASE WHEN logical_reads > 0
+     THEN DEC((1 - (physical_reads /nullif(logical_reads,0))) * 100,6,2)
+     ELSE NULL
+    END AS HIT_RATIO
+    ,a.*
+from (
+SELECT 
+    double(pool_data_l_reads + pool_temp_data_l_reads +
+    pool_index_l_reads + pool_temp_index_l_reads +
+    pool_xda_l_reads + pool_temp_xda_l_reads) as logical_reads
+    ,double(pool_data_p_reads + pool_temp_data_p_reads +
+    pool_index_p_reads + pool_temp_index_p_reads +
+    pool_xda_p_reads + pool_temp_xda_p_reads) as physical_reads
+   ,b.* from (
+SELECT d.*
+FROM "s#db2mc"."HIST_SNAPBP_DELTA" as d
+,(select case when upper(startTs) = 'CURRENT' then current timestamp else timestamp(startTs) end as startTS 
+	,duration
+	from (values(cast('?' as varchar(26)),cast(? as int))) as timePeriod(startTs,duration)
+ ) period
+where SNAPSHOT_TIMESTAMP between period.startTS	- period.duration hours and period.startTS
+) b
+) a
+]]>
+	</inlinequery>
+	<parameters>
+		<parm name="start">
+			<title>Start</title>
+			<value>current</value>
+			<type>timestamp</type>
+		</parm>
+		<parm name="Period">
+			<title>Period (hours)</title>
+			<value>24</value>
+			<type>n</type>
+		</parm>
+	</parameters>	
+	<order_by_index name="SNAPSHOT_TIMESTAMP" direction="D"/>
+	<display_columns>
+		<col type="column" name="SNAPSHOT_TIMESTAMP"/>
+		<col type="column" name="DB_NAME"/>
+		<col type="column" name="BP_NAME"/>
+		<col type="column" name="DBPARTITIONNUM"/>
+		<col type="column" name="PERIOD"/>
+		<col type="column" name="HIT_RATIO"/>
+		<col type="column" name="LOGICAL_READS"/>
+		<col type="column" name="PHYSICAL_READS"/>
+		<col type="column" name="POOL_DATA_L_READS"/>
+		<col type="column" name="POOL_DATA_P_READS"/>
+		<col type="column" name="POOL_DATA_WRITES"/>
+		<col type="column" name="POOL_INDEX_L_READS"/>
+		<col type="column" name="POOL_INDEX_P_READS"/>
+		<col type="column" name="POOL_INDEX_WRITES"/>
+		<col type="column" name="POOL_XDA_L_READS"/>
+		<col type="column" name="POOL_XDA_P_READS"/>
+		<col type="column" name="POOL_XDA_WRITES"/>
+		<col type="column" name="POOL_READ_TIME"/>
+		<col type="column" name="POOL_WRITE_TIME"/>
+		<col type="column" name="POOL_ASYNC_DATA_READS"/>
+		<col type="column" name="POOL_ASYNC_DATA_WRITES"/>
+		<col type="column" name="POOL_ASYNC_INDEX_READS"/>
+		<col type="column" name="POOL_ASYNC_INDEX_WRITES"/>
+		<col type="column" name="POOL_ASYNC_XDA_READS"/>
+		<col type="column" name="POOL_ASYNC_XDA_WRITES"/>
+		<col type="column" name="POOL_ASYNC_READ_TIME"/>
+		<col type="column" name="POOL_ASYNC_WRITE_TIME"/>
+		<col type="column" name="POOL_ASYNC_DATA_READ_REQS"/>
+		<col type="column" name="POOL_ASYNC_INDEX_READ_REQS"/>
+		<col type="column" name="POOL_ASYNC_XDA_READ_REQS"/>
+		<col type="column" name="DIRECT_READS"/>
+		<col type="column" name="DIRECT_WRITES"/>
+		<col type="column" name="DIRECT_READ_REQS"/>
+		<col type="column" name="DIRECT_WRITE_REQS"/>
+		<col type="column" name="DIRECT_READ_TIME"/>
+		<col type="column" name="DIRECT_WRITE_TIME"/>
+		<col type="column" name="UNREAD_PREFETCH_PAGES"/>
+		<col type="column" name="FILES_CLOSED"/>
+		<col type="column" name="POOL_TEMP_DATA_L_READS"/>
+		<col type="column" name="POOL_TEMP_DATA_P_READS"/>
+		<col type="column" name="POOL_TEMP_INDEX_L_READS"/>
+		<col type="column" name="POOL_TEMP_INDEX_P_READS"/>
+		<col type="column" name="POOL_TEMP_XDA_L_READS"/>
+		<col type="column" name="POOL_TEMP_XDA_P_READS"/>
+		<col type="column" name="POOL_NO_VICTIM_BUFFER"/>
+		<col type="column" name="PAGES_FROM_BLOCK_IOS"/>
+		<col type="column" name="PAGES_FROM_VECTORED_IOS"/>
+		<col type="column" name="VECTORED_IOS"/>
+	</display_columns>
+	<charts>
+		<chart name="detail" historyInclude="true">
+			<highlight>first</highlight>
+			<type>setline</type>
+			<title>Buffer Pools History</title>
+			<grouping>DB_NAME</grouping>
+			<grouping>BP_NAME</grouping>
+			<axis>
+				<x><column name="SNAPSHOT_TIMESTAMP"/></x>
+				<y scaling="EXPONENTIAL">
+					<column name="LOGICAL_READS"/>
+					<column name="PHYSICAL_READS"/>
+				</y>
+			</axis>
+		</chart>
+	</charts>
+	<graph>
+		<title>BufferPool History</title>
+		<type>line</type>
+ 		<style>
+ 			<legend>
+ 			 	<display>right</display>
+ 			</legend>
+ 			<animationEnabled>false</animationEnabled>
+ 		</style>
+	</graph>
+	<column name="SNAPSHOT_TIMESTAMP" dimension="timestamp">
+		<sqlName>SNAPSHOT_TIMESTAMP</sqlName>
+		<title>Time</title>
+		<c_graph>
+			<g_x_categories>y</g_x_categories>
+			<label>Time</label>
+		</c_graph>		
+		
+	</column>
+	<column name="DB_NAME">
+		<sqlName>DB_NAME</sqlName>
+		<title>Database</title>
+		<primaryKey/>
+	</column>
+	<column name="BP_NAME">
+		<sqlName>BP_NAME</sqlName>
+		<title>Bufferpool</title>
+		<primaryKey/>
+	</column>
+	<column name="DBPARTITIONNUM">
+		<sqlName>DBPARTITIONNUM</sqlName>
+		<title>Partitition</title>
+		<primaryKey/>
+	</column>
+	<column name="PERIOD">
+		<sqlName>PERIOD</sqlName>
+		<title>Period</title>
+	</column>
+	<column name="HIT_RATIO">
+		<sqlName>HIT_RATIO</sqlName>
+		<title>Hit Ratio</title>
+		<type>n</type>>		
+		<c_presentation>bg</c_presentation>
+		<graphattributes flipColor="y"/>
+		<c_graph>
+			<g_description>Hit Ration</g_description>
+			<datastyle>
+				<graph_type>line</graph_type>
+					<color>0x00FF00</color>
+					<size>2</size>
+					<lineSize>1</lineSize>
+				</datastyle>
+		</c_graph>
+	</column>
+	<column name="LOGICAL_READS" measure="amount">
+		<sqlName>LOGICAL_READS</sqlName>
+		<title>Logical Reads</title>
+		<type>n</type>>		
+		<c_graph>
+			<g_description>Logical Reads</g_description>
+			<datastyle>
+				<graph_type>line</graph_type>
+					<color>0x0000FF</color>
+					<size>2</size>
+					<lineSize>1</lineSize>
+				</datastyle>
+		</c_graph>
+	</column>
+	<column name="PHYSICAL_READS"  measure="amount">
+		<sqlName>PHYSICAL_READS</sqlName>
+		<title>Physical Reads</title>
+		<type>n</type>>		
+		<c_graph>
+			<g_description>Physical Reads</g_description>
+			<datastyle>
+				<graph_type>line</graph_type>
+					<color>0xFF0000</color>
+					<size>2</size>
+					<lineSize>1</lineSize>
+				</datastyle>
+		</c_graph>
+	</column>
+	<column name="POOL_DATA_L_READS" measure="amount">
+		<sqlName>POOL_DATA_L_READS</sqlName>
+		<title>Pool Data Logical Reads</title>
+		<type>n</type>>		
+	</column>
+	<column name="POOL_DATA_P_READS" measure="amount">
+		<sqlName>POOL_DATA_P_READS</sqlName>
+		<title>Pool Data Physical Reads</title>
+		<type>n</type>>		
+	</column>
+	<column name="POOL_DATA_WRITES" measure="amount">
+		<sqlName>POOL_DATA_WRITES</sqlName>
+		<title>Poo Data Writes</title>
+		<type>n</type>>		
+	</column>
+	<column name="POOL_INDEX_L_READS" measure="amount">
+		<sqlName>POOL_INDEX_L_READS</sqlName>
+		<title>Pool Index Logical Reads</title>
+		<type>n</type>>		
+	</column>
+	<column name="POOL_INDEX_P_READS" measure="amount">
+		<sqlName>POOL_INDEX_P_READS</sqlName>
+		<title>Pool Index Physical Reads</title>
+		<type>n</type>>		
+	</column>
+	<column name="POOL_INDEX_WRITES" measure="amount">
+		<sqlName>POOL_INDEX_WRITES</sqlName>
+		<title>Pool Index Writes</title>
+		<type>n</type>>		
+	</column>
+	<column name="POOL_XDA_L_READS" measure="amount">
+		<sqlName>POOL_XDA_L_READS</sqlName>
+		<title>Pool XDA Logical Reads</title>
+		<type>n</type>>		
+	</column>
+	<column name="POOL_XDA_P_READS" measure="amount">
+		<sqlName>POOL_XDA_P_READS</sqlName>
+		<title>Pool XDA Physical Reads</title>
+		<type>n</type>>		
+	</column>
+	<column name="POOL_XDA_WRITES" measure="amount">
+		<sqlName>POOL_XDA_WRITES</sqlName>
+		<title>Pool XDA Writes</title>
+		<type>n</type>>		
+	</column>
+	<column name="POOL_READ_TIME" measure="amount">
+		<sqlName>POOL_READ_TIME</sqlName>
+		<title>Pool Read Time</title>
+		<type>n</type>>		
+	</column>
+	<column name="POOL_WRITE_TIME" measure="amount">
+		<sqlName>POOL_WRITE_TIME</sqlName>
+		<title>Pool Write Time</title>
+		<type>n</type>>		
+	</column>
+	<column name="POOL_ASYNC_DATA_READS" measure="amount">
+		<sqlName>POOL_ASYNC_DATA_READS</sqlName>
+		<title>Pool Async Data Reads</title>
+		<type>n</type>>		
+	</column>
+	<column name="POOL_ASYNC_DATA_WRITES" measure="amount">
+		<sqlName>POOL_ASYNC_DATA_WRITES</sqlName>
+		<title>Pool Async Data Writes</title>
+		<type>n</type>>		
+	</column>
+	<column name="POOL_ASYNC_INDEX_READS" measure="amount">
+		<sqlName>POOL_ASYNC_INDEX_READS</sqlName>
+		<title>Pool Async Index Reads</title>
+		<type>n</type>>		
+	</column>
+	<column name="POOL_ASYNC_INDEX_WRITES" measure="amount">
+		<sqlName>POOL_ASYNC_INDEX_WRITES</sqlName>
+		<title>Pool Async Index Writes</title>
+		<type>n</type>>		
+	</column>
+	<column name="POOL_ASYNC_XDA_READS" measure="amount">
+		<sqlName>POOL_ASYNC_XDA_READS</sqlName>
+		<title>Pool Async XDA Reads</title>
+		<type>n</type>>		
+	</column>
+	<column name="POOL_ASYNC_XDA_WRITES" measure="amount">
+		<sqlName>POOL_ASYNC_XDA_WRITES</sqlName>
+		<title>Pool Async XDA Writes</title>
+		<type>n</type>>		
+	</column>
+	<column name="POOL_ASYNC_READ_TIME" measure="amount">
+		<sqlName>POOL_ASYNC_READ_TIME</sqlName>
+		<title>Pool Async Read Time</title>
+		<type>n</type>>		
+	</column>
+	<column name="POOL_ASYNC_WRITE_TIME" measure="amount">
+		<sqlName>POOL_ASYNC_WRITE_TIME</sqlName>
+		<title>Pool Async Write Time</title>
+		<type>n</type>>		
+	</column>
+	<column name="POOL_ASYNC_DATA_READ_REQS" measure="amount">
+		<sqlName>POOL_ASYNC_DATA_READ_REQS</sqlName>
+		<title>Pool Async Data Read Requests</title>
+		<type>n</type>>		
+	</column>
+	<column name="POOL_ASYNC_INDEX_READ_REQS" measure="amount">
+		<sqlName>POOL_ASYNC_INDEX_READ_REQS</sqlName>
+		<title>Pool Async Index Read Requests</title>
+		<type>n</type>>		
+	</column>
+	<column name="POOL_ASYNC_XDA_READ_REQS" measure="amount">
+		<sqlName>POOL_ASYNC_XDA_READ_REQS</sqlName>
+		<title>Pool Async XDA Read Requests</title>
+		<type>n</type>>		
+	</column>
+	<column name="DIRECT_READS" measure="amount">
+		<sqlName>DIRECT_READS</sqlName>
+		<title>Direct Reads</title>
+		<type>n</type>>		
+		<c_graph>
+			<g_description>Direct Reads</g_description>
+			<datastyle>
+				<graph_type>line</graph_type>
+					<color>0xFF0044</color>
+					<size>2</size>
+					<lineSize>1</lineSize>
+				</datastyle>
+		</c_graph>
+	</column>
+	<column name="DIRECT_WRITES" measure="amount">
+		<sqlName>DIRECT_WRITES</sqlName>
+		<title>Direct Writes</title>
+		<type>n</type>>		
+		<c_graph>
+			<g_description>Direct Writes</g_description>
+			<datastyle>
+				<graph_type>line</graph_type>
+					<color>0xFF0080</color>
+					<size>2</size>
+					<lineSize>1</lineSize>
+				</datastyle>
+		</c_graph>
+	</column>
+	<column name="DIRECT_READ_REQS" measure="amount">
+		<sqlName>DIRECT_READ_REQS</sqlName>
+		<title>Direct Read Requests</title>
+		<type>n</type>>		
+	</column>
+	<column name="DIRECT_WRITE_REQS" measure="amount">
+		<sqlName>DIRECT_WRITE_REQS</sqlName>
+		<title>Direct Write Requests</title>
+		<type>n</type>>		
+	</column>
+	<column name="DIRECT_READ_TIME" measure="amount">
+		<sqlName>DIRECT_READ_TIME</sqlName>
+		<title>Direct Read Time</title>
+		<type>n</type>>		
+		<c_graph>
+			<g_description>Direct Read Time</g_description>
+			<datastyle>
+				<graph_type>line</graph_type>
+					<color>0xFF00AA</color>
+					<size>2</size>
+					<lineSize>1</lineSize>
+				</datastyle>
+		</c_graph>
+	</column>
+	<column name="DIRECT_WRITE_TIME" measure="amount">
+		<sqlName>DIRECT_WRITE_TIME</sqlName>
+		<title>Direct Write Time</title>
+		<type>n</type>>		
+		<c_graph>
+			<g_description>Direct Write Time</g_description>
+			<datastyle>
+				<graph_type>line</graph_type>
+					<color>0xFF00FF</color>
+					<size>2</size>
+					<lineSize>1</lineSize>
+				</datastyle>
+		</c_graph>
+	</column>
+	<column name="UNREAD_PREFETCH_PAGES" measure="amount">
+		<sqlName>UNREAD_PREFETCH_PAGES</sqlName>
+		<title>Unread Prefetch Pages</title>
+		<type>n</type>>		
+	</column>
+	<column name="FILES_CLOSED" measure="amount">
+		<sqlName>FILES_CLOSED</sqlName>
+		<title>Files Closed</title>
+		<type>n</type>>		
+	</column>
+	<column name="POOL_TEMP_DATA_L_READS" measure="amount">
+		<sqlName>POOL_TEMP_DATA_L_READS</sqlName>
+		<title>Pool Temp Data Logical Reads</title>
+		<type>n</type>>		
+	</column>
+	<column name="POOL_TEMP_DATA_P_READS" measure="amount">
+		<sqlName>POOL_TEMP_DATA_P_READS</sqlName>
+		<title>Pool Temp Data Physical Reads</title>
+		<type>n</type>>		
+	</column>
+	<column name="POOL_TEMP_INDEX_L_READS" measure="amount">
+		<sqlName>POOL_TEMP_INDEX_L_READS</sqlName>
+		<title>Pool Temp Index Logical Reads</title>
+		<type>n</type>>		
+	</column>
+	<column name="POOL_TEMP_INDEX_P_READS" measure="amount">
+		<sqlName>POOL_TEMP_INDEX_P_READS</sqlName>
+		<title>Pool Temp Index Physical Reads</title>
+		<type>n</type>>		
+	</column>
+	<column name="POOL_TEMP_XDA_L_READS" measure="amount">
+		<sqlName>POOL_TEMP_XDA_L_READS</sqlName>
+		<title>Pool Temp XDA Logical Reads</title>
+		<type>n</type>>		
+	</column>
+	<column name="POOL_TEMP_XDA_P_READS" measure="amount">
+		<sqlName>POOL_TEMP_XDA_P_READS</sqlName>
+		<title>Pool Temp XDA Physical Reads</title>
+		<type>n</type>>		
+	</column>
+	<column name="POOL_NO_VICTIM_BUFFER" measure="amount">
+		<sqlName>POOL_NO_VICTIM_BUFFER</sqlName>
+		<title>Pool No Victim Buffer</title>
+		<type>n</type>>		
+	</column>
+	<column name="PAGES_FROM_BLOCK_IOS" measure="amount">
+		<sqlName>PAGES_FROM_BLOCK_IOS</sqlName>
+		<title>Pages From Block IOs</title>
+		<type>n</type>>		
+	</column>
+	<column name="PAGES_FROM_VECTORED_IOS" measure="amount">
+		<sqlName>PAGES_FROM_VECTORED_IOS</sqlName>
+		<title>Pages From Vectored IOs</title>
+		<type>n</type>>		
+	</column>
+	<column name="VECTORED_IOS" measure="amount">
+		<sqlName>VECTORED_IOS</sqlName>
+		<title>Vectored IOs</title>
+		<type>n</type>>		
+	</column>
+</table>

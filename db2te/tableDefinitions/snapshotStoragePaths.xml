@@ -1,0 +1,91 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2009-2011 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+<table name="snapshotStoragePaths">
+	<sql_name>SYSIBMADM.SNAPSTORAGE_PATHS</sql_name>
+	<singular_name>Storage Path</singular_name>
+	<plural_name>Storage Paths</plural_name>
+	<description>Database Automatic &lt;a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/index.jsp?topic=/com.ibm.db2.luw.admin.gui.doc/doc/c0021183.html?noframes=true');"&gt;Storage Paths&lt;/a&gt;</description>
+<messages><SQL0551N>Security issue. Please install "Monitoring Switches/Security" in Tools -> Installed Components</SQL0551N></messages>
+	<order_by_index></order_by_index>
+   	<menu type="leaf">
+		<description>New</description>
+   		<actionScript>
+   			<task>
+	    	<assignSharedConstant name="command" type="raw">
+				<value>SQL/Alter/alterDatabase</value>
+				</assignSharedConstant>
+		   		<callGlobalAction name="commandExecution"/>
+   			</task>
+   		</actionScript>
+   	</menu>
+	<display_columns>
+		<col type="column" name="DB_STORAGE_PATH"/>
+		<col type="column" name="FS_ID"/>
+		<col type="column" name="FS_TOTAL_SIZE"/>
+		<col type="column" name="FS_USED_SIZE"/>
+		<col type="column" name="STO_PATH_FREE_SIZE"/>
+	</display_columns>
+	<disableEdit/>
+	<output>
+		<type name="DDL" destination="" title="" generator=""/>
+	</output>
+
+	<column name="SNAPSHOT_TIMESTAMP">
+		<sql_name>SNAPSHOT_TIMESTAMP</sql_name>
+		<title>Snapshot Timestamp</title>
+		<primary_key/>
+		<type>s</type>
+	</column>
+	<column name="DB_NAME">
+		<sql_name>DB_NAME</sql_name>
+		<title>database name</title>
+		<type>s</type>
+		<primary_key/>
+	</column>
+	<column name="DB_STORAGE_PATH">
+		<sql_name>DB_STORAGE_PATH</sql_name>
+		<title>Storage Path</title>
+		<type>s</type>
+		<primary_key/>
+	</column>
+	<column name="DBPARTITIONNUM">
+		<sql_name>DBPARTITIONNUM</sql_name>
+		<title>Partition</title>
+		<type>n</type>
+	</column>
+	<column name="FS_ID">
+		<sql_name>FS_ID</sql_name>
+		<title>File System id.</title>
+		<type></type>
+	</column>
+	<column name="FS_TOTAL_SIZE">
+		<sql_name>FS_TOTAL_SIZE</sql_name>
+		<title>File System Total Size</title>
+		<type>n</type>
+	</column>
+	<column name="FS_USED_SIZE">
+		<sql_name>FS_USED_SIZE</sql_name>
+		<title>File System Used Size</title>
+		<type>n</type>
+	</column>
+	<column name="STO_PATH_FREE_SIZE">
+		<sql_name>STO_PATH_FREE_SIZE</sql_name>
+		<title>Storage Path Free Size</title>
+		<type>n</type>
+	</column>
+</table>

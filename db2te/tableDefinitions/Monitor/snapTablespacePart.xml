@@ -1,0 +1,278 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2011 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+
+<table name="snapTablspacePart">
+	<sql_name>snapTablspacePart</sql_name>
+	<singular_name>Tablspace Part.</singular_name>
+	<plural_name>Tablspace Part.</plural_name>
+	<inlinequery>
+<![CDATA[
+select tsp.*, ts.PAGESIZE,ts.EXTENTSIZE
+FROM TABLE(SNAP_GET_TBSP_PART_V91(CAST(NULL AS VARCHAR(128)),-1)) AS TSP
+JOIN SYSCAT.TABLESPACES TS ON TS.TBSPACEID = TSP.TBSP_ID
+]]>
+	</inlinequery>
+	<messages><SQL0551N>Security issue. Please install "Monitoring Switches/Security" in Tools -> Installed Components</SQL0551N></messages>
+	<order_by_index></order_by_index>
+	<display_columns titleDepth="2">
+		<col type="reference" name="ranges"/>
+		<col type="column" name="TBSP_NAME"/>
+		<col type="column" name="TBSP_STATE"/>
+		<col type="column" name="rebalanced"/>
+		<col type="column" name="rebalance_amount_processed" title="Rebalanced\\nAmount"/>
+		<col type="column" name="TBSP_NUM_QUIESCERS" title="No.\\nQuiescers"/>
+		<col type="column" name="TBSP_STATE_CHANGE_OBJECT_ID" title="State Change\\nObject Id"/>
+		<col type="column" name="TBSP_STATE_CHANGE_TBSP_ID" title="State Change\\nTablespace Id"/>
+		<col type="column" name="TBSP_TOTAL_PAGES" title="Pages\\nTotal"/>
+		<col type="column" name="TBSP_USABLE_PAGES" title="Pages\\nUsable"/>
+		<col type="column" name="TBSP_USED_PAGES" title="Pages\\nUsed"/>
+		<col type="column" name="TBSP_FREE_PAGES"/>
+		<col type="column" name="TBSP_PENDING_FREE_PAGES" title="Pending\\nFree Pages"/>
+		<col type="column" name="TBSP_PAGE_TOP"/>
+		<col type="column" name="REBALANCER_MODE" title="Rebalancer\\nMode"/>
+		<col type="column" name="REBALANCER_EXTENTS_REMAINING" title="Extents\\nRemaining"/>
+		<col type="column" name="REBALANCER_EXTENTS_PROCESSED" title="Extents\\nProcessed"/>
+		<col type="column" name="REBALANCER_LAST_EXTENT_MOVED" title="Rebalancer\\nLast Moved"/>
+		<col type="column" name="REBALANCER_PRIORITY" title="Rebalancer\\nPriority"/>
+		<col type="column" name="REBALANCER_START_TIME" title="Rebalancer\\nStart Time"/>
+		<col type="column" name="REBALANCER_RESTART_TIME" title="Rebalancer\\nRestart Time"/>
+		<col type="column" name="TBSP_MIN_RECOVERY_TIME"/>
+		<col type="column" name="TBSP_NUM_RANGES"/>
+		<col type="column" name="TBSP_NUM_CONTAINERS"/>
+		<col type="column" name="TBSP_INITIAL_SIZE"/>
+		<col type="column" name="TBSP_CURRENT_SIZE"/>
+		<col type="column" name="TBSP_MAX_SIZE"/>
+		<col type="column" name="TBSP_INCREASE_SIZE" title="Increase\\nSize"/>
+		<col type="column" name="TBSP_INCREASE_SIZE_PERCENT" title="Increase\\n%"/>
+		<col type="column" name="TBSP_LAST_RESIZE_TIME"/>
+		<col type="column" name="TBSP_LAST_RESIZE_FAILED"/>
+		<col type="column" name="DBPARTITIONNUM"/>
+		<col type="column" name="SNAPSHOT_TIMESTAMP"/>
+	</display_columns>
+	<reference name="ranges">
+		<title>Ranges</title>
+		<reftype>table</reftype>
+		<refvalue>Monitor/snapTablespaceRange</refvalue>
+		<icon>images/icon-column.gif</icon>
+		<displayColumnsSet>tablespaceSpecific</displayColumnsSet>
+		<ref foreign_column_name="TBSP_NAME">
+			<local_column_name>TBSP_NAME</local_column_name>
+		</ref>
+	</reference>	
+	<column name="SNAPSHOT_TIMESTAMP">
+		<sql_name>SNAPSHOT_TIMESTAMP</sql_name>
+		<title>Timestamp</title>
+		<type>n</type>
+	</column>
+	<column name="TBSP_NAME">
+		<sql_name>TBSP_NAME</sql_name>
+		<title>Tablespace</title>
+		<type>s</type>
+	</column>
+	<column name="TBSP_ID">
+		<sql_name>TBSP_ID</sql_name>
+		<title>Id.</title>
+		<type>n</type>
+	</column>
+	<column name="TBSP_STATE">
+		<sql_name>TBSP_STATE</sql_name>
+		<title>State</title>
+		<type>s</type>
+		<column_mask_file>masks/tablespaceState.xml</column_mask_file>
+	</column>
+	<column name="TBSP_PREFETCH_SIZE">
+		<sql_name>TBSP_PREFETCH_SIZE</sql_name>
+		<title>Prefetch Size</title>
+		<type>n</type>
+	</column>
+	<column name="TBSP_NUM_QUIESCERS">
+		<sql_name>TBSP_NUM_QUIESCERS</sql_name>
+		<title>Num Quiescers</title>
+		<type>n</type>
+	</column>
+	<column name="TBSP_STATE_CHANGE_OBJECT_ID">
+		<sql_name>TBSP_STATE_CHANGE_OBJECT_ID</sql_name>
+		<title>State Change Object Id</title>
+		<type>n</type>
+	</column>
+	<column name="TBSP_STATE_CHANGE_TBSP_ID">
+		<sql_name>TBSP_STATE_CHANGE_TBSP_ID</sql_name>
+		<title>State Shange Tablespace Id.</title>
+		<type>n</type>
+	</column>
+	<column name="TBSP_MIN_RECOVERY_TIME">
+		<sql_name>TBSP_MIN_RECOVERY_TIME</sql_name>
+		<title>Min Recovery Time</title>
+		<type>n</type>
+	</column>
+    <column name="PAGESIZE">
+        <sql_name>PAGESIZE</sql_name>
+        <title>Page Size</title>
+        <type>n</type>
+    </column>
+    <column name="EXTENTSIZE">
+        <sql_name>EXTENTSIZE</sql_name>
+        <title>Extent Size</title>
+        <type>n</type>
+    </column>
+	<column name="TBSP_TOTAL_PAGES">
+		<sql_name>TBSP_TOTAL_PAGES</sql_name>
+		<title>Total Pages</title>
+		<type>n</type>
+		<formatNumber toAbbreviated="4" separator=","/> 
+	</column>
+	<column name="TBSP_USABLE_PAGES">
+		<sql_name>TBSP_USABLE_PAGES</sql_name>
+		<title>Usable pages</title>
+		<type>n</type>
+		<formatNumber toAbbreviated="4"/> 
+	</column>
+	<column name="TBSP_USED_PAGES">
+		<sql_name>TBSP_USED_PAGES</sql_name>
+		<title>Used Pages</title>
+		<type>n</type>
+		<formatNumber toAbbreviated="4"/> 
+	</column>
+	<column name="TBSP_FREE_PAGES">
+		<sql_name>TBSP_FREE_PAGES</sql_name>
+		<title>Free Pages</title>
+		<type>n</type>
+		<formatNumber toAbbreviated="4"/> 
+	</column>
+	<column name="TBSP_PENDING_FREE_PAGES">
+		<sql_name>TBSP_PENDING_FREE_PAGES</sql_name>
+		<title>Pending Free Pages</title>
+		<type>n</type>
+		<formatNumber separator=","/> 
+	</column>
+	<column name="TBSP_PAGE_TOP">
+		<sql_name>TBSP_PAGE_TOP</sql_name>
+		<title>Page Top</title>
+		<type>n</type>
+		<formatNumber separator=","/> 
+	</column>
+	<column name="REBALANCER_MODE">
+		<sql_name>REBALANCER_MODE</sql_name>
+		<title>Rebalancer Mode</title>
+		<type>s</type>
+		<drill_enable/>
+   		<column_mask>
+			<value_mask value="NO_REBAL"><mask></mask></value_mask>
+			<value_mask value="FWD_REBAL"><mask>Forward</mask></value_mask>
+			<value_mask value="REV_REBAL"><mask>Reverse</mask></value_mask>
+   		</column_mask>
+	</column>
+	<column name="rebalanced">
+		<sql_name>float(REBALANCER_EXTENTS_PROCESSED)*100/nullif((REBALANCER_EXTENTS_PROCESSED+REBALANCER_EXTENTS_REMAINING),0)</sql_name>
+		<title>% Rebal.</title>
+		<type>bg</type>
+	</column>
+	<column name="REBALANCER_EXTENTS_REMAINING">
+		<sql_name>REBALANCER_EXTENTS_REMAINING</sql_name>
+		<title>Rebalancer Extents Remaining</title>
+		<type>n</type>
+		<formatNumber separator=","/> 
+	</column>
+	<column name="REBALANCER_EXTENTS_PROCESSED">
+		<sql_name>REBALANCER_EXTENTS_PROCESSED</sql_name>
+		<title>Rebalancer Extents Processed</title>
+		<type>n</type>
+		<formatNumber separator=","/> 
+	</column>
+	<column name="rebalance_amount_processed">
+		<sql_name>REBALANCER_EXTENTS_PROCESSED*EXTENTSIZE*PAGESIZE</sql_name>
+		<title>Rebalancer Processed</title>
+		<type>n</type>
+		<formatNumber toAbbreviated="4"/> 
+	</column>
+	<column name="REBALANCER_PRIORITY">
+		<sql_name>REBALANCER_PRIORITY</sql_name>
+		<title>Rebalancer Priority</title>
+		<type>n</type>
+	</column>
+	<column name="REBALANCER_START_TIME">
+		<sql_name>REBALANCER_START_TIME</sql_name>
+		<title>Rebalancer Start Time</title>
+		<type>n</type>
+	</column>
+	<column name="REBALANCER_RESTART_TIME">
+		<sql_name>REBALANCER_RESTART_TIME</sql_name>
+		<title>Rebalancer Restart Time</title>
+		<type>n</type>
+	</column>
+	<column name="REBALANCER_LAST_EXTENT_MOVED">
+		<sql_name>REBALANCER_LAST_EXTENT_MOVED</sql_name>
+		<title>Rebalancer Last Extent Moved</title>
+		<type>n</type>
+		<formatNumber separator=","/> 
+	</column>
+	<column name="TBSP_NUM_RANGES">
+		<sql_name>TBSP_NUM_RANGES</sql_name>
+		<title>No. Ranges</title>
+		<type>n</type>
+	</column>
+	<column name="TBSP_NUM_CONTAINERS">
+		<sql_name>TBSP_NUM_CONTAINERS</sql_name>
+		<title>No. Containers</title>
+		<type>n</type>
+	</column>
+	<column name="TBSP_INITIAL_SIZE">
+		<sql_name>TBSP_INITIAL_SIZE</sql_name>
+		<title>Initial Size</title>
+		<type>n</type>
+		<formatNumber separator="," prependAbbreviated="4"/> 
+	</column>
+	<column name="TBSP_CURRENT_SIZE">
+		<sql_name>TBSP_CURRENT_SIZE</sql_name>
+		<title>Current Size</title>
+		<type>n</type>
+		<formatNumber separator="," prependAbbreviated="4"/> 
+	</column>
+	<column name="TBSP_MAX_SIZE">
+		<sql_name>TBSP_MAX_SIZE</sql_name>
+		<title>Max Size</title>
+		<type>n</type>
+		<formatNumber separator="," prependAbbreviated="4"/> 
+	</column>
+	<column name="TBSP_INCREASE_SIZE">
+		<sql_name>TBSP_INCREASE_SIZE</sql_name>
+		<title>Increased Size</title>
+		<type>n</type>
+		<formatNumber separator="," prependAbbreviated="4"/> 
+	</column>
+	<column name="TBSP_INCREASE_SIZE_PERCENT">
+		<sql_name>TBSP_INCREASE_SIZE_PERCENT</sql_name>
+		<title>Increased %</title>
+		<type>n</type>
+	</column>
+	<column name="TBSP_LAST_RESIZE_TIME">
+		<sql_name>TBSP_LAST_RESIZE_TIME</sql_name>
+		<title>Last Resize</title>
+		<type>n</type>
+	</column>
+	<column name="TBSP_LAST_RESIZE_FAILED">
+		<sql_name>TBSP_LAST_RESIZE_FAILED</sql_name>
+		<title>Last Resize Failed</title>
+		<type>n</type>
+	</column>
+	<column name="DBPARTITIONNUM">
+		<sql_name>DBPARTITIONNUM</sql_name>
+		<title>Partition</title>
+		<type>n</type>
+	</column>
+</table>

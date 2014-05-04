@@ -1,0 +1,48 @@
+<!--
+   
+  
+  Copyright Independent Systems Integrators Pty Ltd 2008 All rights reserved.
+  
+  Updated by Author: Peter Kohlmann
+  Copyright IBM Canada Ltd 2008 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+ -->
+<table name="monWorkload">
+	<sql_name>monTest</sql_name>
+	<singular_name>Log Space Usage</singular_name>
+	<plural_name>Log Space Usage</plural_name>
+	<inlinequery>
+<![CDATA[
+SELECT LOG_UTILIZATION_PERCENT FROM SYSIBMADM.LOG_UTILIZATION
+]]>
+	</inlinequery>
+	<messages><SQL0551N>Security issue. Please install "Monitoring Switches/Security" in Tools -> Installed Components</SQL0551N></messages>
+	<description></description>
+	<order_by_index/>
+	<display_columns>
+		<col type="column" name="LOG_UTILIZATION_PERCENT"/>	
+	</display_columns>
+	<column name="LOG_UTILIZATION_PERCENT">
+		<c_sql_name>LOG_UTILIZATION_PERCENT</c_sql_name>
+		<c_title>Percent Log Utilization</c_title>
+		<c_presentation/>
+		<c_drill>n</c_drill>
+		<c_reference name="instance">
+			<reftype>table</reftype>
+			<refvalue>Monitor/SummaryViews/monSVLogUsageDetails</refvalue>
+			<icon>images/sout.gif</icon>
+		</c_reference>
+	</column>
+
+</table>

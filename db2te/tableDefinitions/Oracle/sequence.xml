@@ -1,0 +1,82 @@
+<!--
+  Peter Prib, Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2012 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<table name="sequence">
+	<sql_name>ALL_SEQUENCES</sql_name>
+	<singular_name>Sequence</singular_name>
+	<plural_name>Sequences</plural_name>
+	<description></description>
+	<order_by_index name="SEQUENCE_OWNER" direction="A"/>
+	<order_by_index name="SEQUENCE_NAME" direction="A"/>
+	<display_columns>
+		<col type="column" name="SEQUENCE_OWNER"/>
+		<col type="column" name="SEQUENCE_NAME"/>
+		<col type="column" name="MIN_VALUE"/>
+		<col type="column" name="MAX_VALUE"/>
+		<col type="column" name="INCREMENT_BY"/>
+		<col type="column" name="CYCLE_FLAG"/>
+		<col type="column" name="ORDER_FLAG"/>
+		<col type="column" name="CACHE_SIZE"/>
+		<col type="column" name="LAST_NUMBER"/>
+	</display_columns>
+	<column name="SEQUENCE_OWNER">
+		<sql_name>SEQUENCE_OWNER</sql_name>
+		<title>Owner</title>
+		<type>s</type>
+		<primaryKey/>
+		<prefillEnable/>
+	</column>
+	<column name="SEQUENCE_NAME">
+		<sql_name>SEQUENCE_NAME</sql_name>
+		<title>Name</title>
+		<type>s</type>
+		<primaryKey/>
+	</column>
+	<column name="MIN_VALUE">
+		<sql_name>MIN_VALUE</sql_name>
+		<title>Min Value</title>
+		<type>n</type>
+	</column>
+	<column name="MAX_VALUE">
+		<sql_name>MAX_VALUE</sql_name>
+		<title>Max Value</title>
+		<type>n</type>
+	</column>
+	<column name="INCREMENT_BY">
+		<sql_name>INCREMENT_BY</sql_name>
+		<title>Increment By</title>
+		<type>n</type>
+	</column>
+	<column name="CYCLE_FLAG">
+		<sql_name>CYCLE_FLAG</sql_name>
+		<title>Cycle</title>
+		<type>s</type>
+	</column>
+	<column name="ORDER_FLAG">
+		<sql_name>ORDER_FLAG</sql_name>
+		<title>Order</title>
+		<type>s</type>
+	</column>
+	<column name="CACHE_SIZE">
+		<sql_name>CACHE_SIZE</sql_name>
+		<title>Cache Size</title>
+		<type>n</type>
+	</column>
+	<column name="LAST_NUMBER">
+		<sql_name>LAST_NUMBER</sql_name>
+		<title>Last No.</title>
+		<type>n</type>
+	</column>
+</table>

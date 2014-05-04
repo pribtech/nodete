@@ -1,0 +1,198 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2009 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<command name="alterServiceClass" title="Alter ServiceClass">
+<![CDATA[
+>>-ALTER SERVICE CLASS--service-class-name---------------------->
+]]>
+	<text>ALTER SERVICE CLASS</text>
+	<clauseReference name="service-class-name"/>
+	<br/>
+<![CDATA[
+>--+--------------------------------+--------------------------->
+   '-UNDER--service-superclass-name-'   
+]]>
+	<text>UNDER</text>
+	<clauseReference name="service-superclass-name"/>
+	<br/>
+<![CDATA[
+   .---------------------------------------------------------------------------------.   
+   V  (1)                                                                            |   
+>--------+-AGENT PRIORITY--+-DEFAULT----------+------------------------------------+-+-><
+         |                 '-integer-constant-'                                    |     
+         +-PREFETCH PRIORITY--+-DEFAULT-+------------------------------------------+     
+         |                    +-HIGH----+                                          |     
+         |                    +-MEDIUM--+                                          |     
+         |                    '-LOW-----'                                          |     
+         +-OUTBOUND CORRELATOR--+-NONE------------+--------------------------------+     
+         |                      '-string-constant-'                                |     
+         +-BUFFERPOOL PRIORITY--+-DEFAULT-+----------------------------------------+     
+         |                      +-HIGH----+                                        |     
+         |                      +-MEDIUM--+                                        |     
+         |                      '-LOW-----'                                        |     
+         |  (2)                                                                    |     
+         +-------COLLECT ACTIVITY DATA--+-| alter-collect-activity-data-clause |-+-+     
+         |                              '-NONE-----------------------------------' |     
+         |                                  .-BASE-----.                           |     
+         +-COLLECT AGGREGATE ACTIVITY DATA--+----------+---------------------------+     
+         |                                  +-EXTENDED-+                           |     
+         |                                  '-NONE-----'                           |     
+         |                                 .-BASE-.                                |     
+         +-COLLECT AGGREGATE REQUEST DATA--+------+--------------------------------+     
+         |                                 '-NONE-'                                |     
+         |  (3)                           .-NONE-----.                             |     
+         +-------COLLECT REQUEST METRICS--+----------+-----------------------------+     
+         |                                +-BASE-----+                             |     
+         |                                '-EXTENDED-'                             |     
+         |  (4)                                                                    |     
+         +-------ACTIVITY LIFETIME HISTOGRAM TEMPLATE--template-name---------------+     
+         +-ACTIVITY QUEUETIME HISTOGRAM TEMPLATE--template-name--------------------+     
+         +-ACTIVITY EXECUTETIME HISTOGRAM TEMPLATE--template-name------------------+     
+         +-REQUEST EXECUTETIME HISTOGRAM TEMPLATE--template-name-------------------+     
+         +-ACTIVITY ESTIMATEDCOST HISTOGRAM TEMPLATE--template-name----------------+     
+         +-ACTIVITY INTERARRIVALTIME  HISTOGRAM TEMPLATE--template-name------------+     
+         '-+-ENABLE--+-------------------------------------------------------------'     
+           '-DISABLE-'                                                                   
+]]>
+	<repeatable separator="">
+		<select>
+			<option default="true">
+				<text>AGENT PRIORITY</text>
+				<select>
+					<option default="true"><text>DEFAULT</text></option> 
+					<option><clauseReference name="integer-constant"/></option> 
+				</select>
+			</option> 
+			<option>
+				<text>PREFETCH PRIORITY</text>
+				<select>
+					<option default="true"><text>DEFAULT</text></option> 
+					<option><text>HIGH</text></option> 
+					<option><text>MEDIUM</text></option> 
+					<option><text>LOW</text></option> 
+				</select>
+			</option> 
+			<option> 
+         		<text>OUTBOUND CORRELATOR</text>     
+				<select>
+					<option default="true"><text>NONE</text></option> 
+					<option><clauseReference name="string-constant"/></option> 
+				</select>
+			</option> 
+			<option> 
+				<text>BUFFERPOOL PRIORITY</text>
+				<select>
+					<option><text>DEFAULT</text></option> 
+					<option><text>HIGH</text></option> 
+					<option><text>MEDIUM</text></option> 
+					<option><text>LOW</text></option> 
+				</select>
+			</option> 
+			<option> 
+				<text>COLLECT ACTIVITY DATA</text>
+				<select>
+					<option  default="true"><clauseReference name="alter-collect-activity-data-clause"/></option> 
+					<option><text>NONE</text></option> 
+				</select>
+			</option> 
+			<option> 
+				<text>COLLECT AGGREGATE ACTIVITY DATA</text>
+				<select>
+					<option><text>BASE</text></option> 
+					<option default="true"><note>BASE</note></option> 
+					<option><text>EXTENDED</text></option> 
+					<option><text>NONE</text></option> 
+				</select>
+			</option> 
+			<option> 
+				<text>COLLECT REQUEST ACTIVITY DATA</text>
+				<select>
+					<option><text>BASE</text></option> 
+					<option default="true"><note>BASE</note></option> 
+					<option><text>NONE</text></option> 
+				</select>
+			</option> 
+			<option> 
+				<text>COLLECT REQUEST METRICS</text>
+				<select>
+					<option><text>NONE</text></option> 
+					<option default="true"><note>NONE</note></option> 
+					<option><text>BASE</text></option> 
+					<option><text>EXTENDED</text></option> 
+				</select>
+			</option>
+			<option><text>ACTIVITY LIFETIME HISTOGRAM TEMPLATE</text><clauseReference name="template-name"/></option> 
+			<option><text>ACTIVITY QUEUETIME HISTOGRAM TEMPLATE</text><clauseReference name="template-name"/></option> 
+			<option><text>ACTIVITY EXECUTETIME HISTOGRAM TEMPLATE</text><clauseReference name="template-name"/></option> 
+			<option><text>REQUEST EXECUTETIME HISTOGRAM TEMPLATE</text><clauseReference name="template-name"/></option> 
+			<option><text>ACTIVITY ESTIMATEDCOST HISTOGRAM TEMPLATE</text><clauseReference name="template-name"/></option> 
+			<option><text>ACTIVITY INTERARRIVALTIME HISTOGRAM TEMPLATE</text><clauseReference name="template-name"/></option> 
+			<option> 
+				<select>
+					<option default="true"><text>ENABLE</text></option> 
+					<option><text>DISABLE</text></option> 
+				</select>
+			</option> 
+		</select>
+	</repeatable>
+
+	<clause name="alter-collect-activity-data-clause" title="alter collect activity data clause">
+<![CDATA[
+
+                       .-DATABASE PARTITION-.                                                      
+|----+-ON COORDINATOR--+--------------------+-+--+-WITHOUT DETAILS---------------------------+----|
+     |         .-DATABASE PARTITIONS-.        |  |       .-,---------------.                 |     
+     '-ON ALL--+---------------------+--------'  |       V           (5)   |                 |     
+                                                 '-WITH----+-DETAILS-----+-+--+------------+-'     
+                                                           '-SECTION-----'    '-AND VALUES-'       
+]]>
+		<select>
+			<option  default="true">
+				<text>ON COORDINATOR</text>
+				<select>
+					<option><text>DATABASE PARTITIONS</text></option>
+					<option default="true"><note>DATABASE PARTITIONS</note></option>
+				</select>
+			</option> 
+			<option>
+				<text>ON ALL</text>
+				<select>
+					<option><text>DATABASE PARTITIONS</text></option>
+					<option default="true"><note>DATABASE PARTITIONS</note></option>
+				</select>
+			</option> 
+		</select>
+		<select>
+			<option default="true"><text>WITHOUT DETAILS</text></option> 
+			<option>
+				<text>WITH</text>
+				<repeatable>
+					<select>
+						<option default="true"><text>DETAILS</text></option>
+						<option><text>SECTION</text></option>
+					</select>
+				</repeatable>
+				<select>
+					<option default="true"><note>no values</note></option>
+					<option><text>AND VALUES</text></option>
+				</select>
+			</option> 
+		</select>
+	</clause>
+
+</command>
+        

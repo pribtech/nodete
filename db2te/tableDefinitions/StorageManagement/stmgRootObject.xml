@@ -1,0 +1,124 @@
+<!--
+  Author: Peter Prib
+  
+  Copyright Independent Systems Integrators Pty Ltd 2008 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+<table name="SYSTOOLS.STMG_ROOT_OBJECT">
+	<sql_name>SYSTOOLS.STMG_ROOT_OBJECT</sql_name>
+	<singular_name>Capture History</singular_name>
+	<plural_name>Capture History</plural_name>
+	<description />
+	<messages>
+		<SQL0204N> Not installed. Please install "Storage Management Object" in Tools-> Installed Components </SQL0204N>
+	</messages>
+	<rows_per_page>50</rows_per_page>
+	<order_by_index name="stmg_timestamp" direction="D"/>
+	<display_columns>
+		<col type="reference" name="Details"/>	
+		<col type="action" name="deleteCapture"/>	
+		<col type="column" name="stmg_timestamp" />
+		<col type="column" name="obj_type" />
+	</display_columns>
+	<disable_edit/>
+	<reference name="Details">
+		<c_title>Details</c_title>
+		<reftype>table</reftype>
+		<refvalue>StorageManagement/stmgThresholdHistory</refvalue>
+		<icon>images/sout.gif</icon>
+		<ref foreign_column_name="stmg_timestamp">
+			<local_column_name>stmg_timestamp</local_column_name>
+		</ref>
+	</reference>
+	
+	<action name="deleteCapture">
+		<c_title>Delete</c_title>
+		<icon>images/icon-link-delete-light.gif</icon>	
+		<actionScript name="deleteCaptureScript" type="form" lockScreen="true">
+			<message><![CDATA[
+<div style='width:500px'>
+<table>
+<p>Delete all capture records for date ?stmg_timestamp?</p>
+</table>
+]]>
+	    	</message>
+    		<parameterList>
+				<parameter name="buttonOK" type="raw">
+					<value>Delete</value>
+				</parameter>
+				<parameter name="stmg_timestamp" type="blockValue">
+					<value>stmg_timestamp</value>
+				</parameter>
+			</parameterList>
+			<if condition="true">
+				<task>
+					<action name="delete" type="serverAction">
+						<parameterList>
+							<parameter name="action" type="fixed">
+								<value>executeSQL</value>
+							</parameter>
+							<parameter name="stmg_timestamp" type="blockValue">
+								<value>stmg_timestamp</value>
+							</parameter>
+							<parameter name="SQL" type="fixed">
+								<value>delete SYSTOOLS.STMG_ROOT_OBJECT 
+										where stmg_timestamp= '?stmg_timestamp?'
+								</value>
+							</parameter>
+<!-- bug temp fix see above
+							<parameter name="parameter[stmg_timestamp]" type="blockValue">
+								<value>stmg_timestamp</value>
+							</parameter>
+- -->
+						</parameterList>
+						<if condition="true" negCondition="true">
+							<task>
+								<assignSharedConstant name="ERROR_MSG" type="returnObject">
+									<value>delete.returnValue.STMTMSG</value>
+								</assignSharedConstant>
+								<alert>Error: ?ERROR_MSG?</alert>
+							</task>
+						</if>
+						<if condition="true">
+							<task>
+								<panelReload/>
+							</task>
+						</if>
+					</action>
+				</task>
+			</if>
+		</actionScript>
+	</action>
+	
+	<column name="stmg_timestamp">
+		<c_sql_name>STMG_TIMESTAMP</c_sql_name>
+		<c_title>Timestamp</c_title>
+		<c_presentation>s</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="obj_type">
+		<c_sql_name>OBJ_TYPE</c_sql_name>
+		<c_title>Capture Level</c_title>
+		<c_presentation>s</c_presentation>
+		<c_drill>y</c_drill>
+        <c_column_mask_file>masks/stmgObjectType.xml</c_column_mask_file>
+	</column>
+	<column name="root_id">
+		<c_sql_name>ROOT_ID</c_sql_name>
+		<c_title>ROOT_ID</c_title>
+		<c_presentation>s</c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+</table>

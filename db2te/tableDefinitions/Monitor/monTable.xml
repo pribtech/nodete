@@ -1,0 +1,607 @@
+<!--
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2013 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+<table name="monTable">
+	<sqlName>monTable</sqlName>
+	<singularName>Monitored Table</singularName>
+	<pluralName>Monitored Tables</pluralName>
+	<inlinequery>
+<![CDATA[
+SELECT current timestamp as sample_ts, t.*
+FROM TABLE(MON_GET_TABLE('','',-2)) AS t
+where ROWS_READ > 0 
+or TABLE_SCANS > 0
+or ROWS_READ > 0 
+or ROWS_INSERTED > 0 
+or ROWS_UPDATED > 0 
+or ROWS_DELETED > 0 
+or OVERFLOW_ACCESSES > 0 
+or OVERFLOW_CREATES > 0 
+or PAGE_REORGS > 0 
+]]>
+	</inlinequery>
+	<messages><SQL0551N>Security issue. Please install "Monitoring Switches/Security" in Tools -> Installed Components</SQL0551N></messages>
+	<description>
+	You can use this view to 
+	&lt;a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.admin.mon.doc/doc/c0001138.html?noframes=true');"&gt;monitor&lt;/a&gt;
+	table activity.
+	The view retrieves information using a 	
+  &lt;a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.sql.rtn.doc/doc/c0053963.html?noframes=true');"&gt;monitor table function&lt;/a&gt;
+  introduced in DB2 9.7.
+  Each row displays metrics for a single table returned by the
+	&lt;a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.sql.rtn.doc/doc/r0053945.html?noframes=true');"&gt;MON_GET_TABLE&lt;/a&gt;		
+	table function.
+	This view is not available for databases prior to DB2 9.7.
+	</description>	
+	<history depth="10" time="SAMPLE_TS"/>
+	<order_by_index name="ROWS_READ" direction="D"/>
+	<display_columns>
+		<col type="reference" name="tabDetails"/>
+		<col type="reference" name="indexes"/>
+		<col type="reference" name="dynSQL"/>
+		<col type="column" name="TABSCHEMA"/>
+		<col type="column" name="TABNAME"/>
+		<col type="column" name="DATA_PARTITION_ID"/>
+		<col type="column" name="MEMBER"/>
+		<col type="column" name="TABLE_SCANS"/>
+		<col type="column" name="ROWS_READ"/>
+		<col type="column" name="ROWS_INSERTED"/>
+		<col type="column" name="ROWS_UPDATED"/>
+		<col type="column" name="ROWS_DELETED"/>
+		<col type="column" name="OVERFLOW_ACCESSES"/>
+		<col type="column" name="OVERFLOW_CREATES"/>
+		<col type="column" name="PAGE_REORGS"/>
+		<col type="column" name="TAB_TYPE"/>
+		<col type="column" name="TAB_FILE_ID"/>
+		<col type="column" name="TBSP_ID"/>
+		<col type="column" name="INDEX_TBSP_ID"/>
+		<col type="column" name="LONG_TBSP_ID"/>
+		<col type="column" name="DATA_OBJECT_L_PAGES"/>
+		<col type="column" name="LOB_OBJECT_L_PAGES"/>
+		<col type="column" name="LONG_OBJECT_L_PAGES"/>
+		<col type="column" name="INDEX_OBJECT_L_PAGES"/>
+		<col type="column" name="XDA_OBJECT_L_PAGES"/>
+		<col type="column" name="DBPARTITIONNUM"/>
+		<col type="column" name="NO_CHANGE_UPDATES"/>
+		<col type="column" name="LOCK_WAIT_TIME"/>
+		<col type="column" name="LOCK_WAIT_TIME_GLOBAL"/>
+		<col type="column" name="LOCK_WAITS"/>
+		<col type="column" name="LOCK_WAITS_GLOBAL"/>
+		<col type="column" name="LOCK_ESCALS"/>
+		<col type="column" name="LOCK_ESCALS_GLOBAL"/>
+		<col type="column" name="DATA_SHARING_STATE"/>
+		<col type="column" name="DATA_SHARING_STATE_CHANGE_TIME"/>
+		<col type="column" name="DATA_SHARING_REMOTE_LOCKWAIT_COUNT"/>
+		<col type="column" name="DATA_SHARING_REMOTE_LOCKWAIT_TIME"/>
+		<col type="column" name="DIRECT_WRITES"/>
+		<col type="column" name="DIRECT_WRITE_REQS"/>
+		<col type="column" name="DIRECT_READS"/>
+		<col type="column" name="DIRECT_READ_REQS"/>
+		<col type="column" name="OBJECT_DATA_L_READS"/>
+		<col type="column" name="OBJECT_DATA_P_READS"/>
+		<col type="column" name="OBJECT_DATA_GBP_L_READS"/>
+		<col type="column" name="OBJECT_DATA_GBP_P_READS"/>
+		<col type="column" name="OBJECT_DATA_GBP_INVALID_PAGES"/>
+		<col type="column" name="OBJECT_DATA_LBP_PAGES_FOUND"/>
+		<col type="column" name="OBJECT_DATA_GBP_INDEP_PAGES_FOUND_IN_LBP"/>
+		<col type="column" name="OBJECT_XDA_L_READS"/>
+		<col type="column" name="OBJECT_XDA_P_READS"/>
+		<col type="column" name="OBJECT_XDA_GBP_L_READS"/>
+		<col type="column" name="OBJECT_XDA_GBP_P_READS"/>
+		<col type="column" name="OBJECT_XDA_GBP_INVALID_PAGES"/>
+		<col type="column" name="OBJECT_XDA_LBP_PAGES_FOUND"/>
+		<col type="column" name="OBJECT_XDA_GBP_INDEP_PAGES_FOUND_IN_LBP"/>
+		<col type="column" name="NUM_PAGE_DICT_BUILT"/>
+		<col type="column" name="STATS_ROWS_MODIFIED"/>
+		<col type="column" name="RTS_ROWS_MODIFIED"/>
+		<col type="column" name="COL_OBJECT_L_PAGES"/>
+		<col type="column" name="TAB_ORGANIZATION"/>
+		<col type="column" name="OBJECT_COL_L_READS"/>
+		<col type="column" name="OBJECT_COL_P_READS"/>
+		<col type="column" name="OBJECT_COL_GBP_L_READS"/>
+		<col type="column" name="OBJECT_COL_GBP_P_READS"/>
+		<col type="column" name="OBJECT_COL_GBP_INVALID_PAGES"/>
+		<col type="column" name="OBJECT_COL_LBP_PAGES_FOUND"/>
+		<col type="column" name="OBJECT_COL_GBP_INDEP_PAGES_FOUND_IN_LBP"/>
+		<col type="column" name="NUM_COLUMNS_REFERENCED"/>
+		<col type="column" name="SECTION_EXEC_WITH_COL_REFERENCES"/>
+		<col type="column" name="OBJECT_DATA_CACHING_TIER_L_READS"/>
+		<col type="column" name="OBJECT_DATA_CACHING_TIER_PAGES_FOUND"/>
+		<col type="column" name="OBJECT_DATA_CACHING_TIER_GBP_INVALID_PAGES"/>
+		<col type="column" name="OBJECT_DATA_CACHING_TIER_GBP_INDEP_PAGES_FOUND"/>
+		<col type="column" name="OBJECT_XDA_CACHING_TIER_L_READS"/>
+		<col type="column" name="OBJECT_XDA_CACHING_TIER_PAGES_FOUND"/>
+		<col type="column" name="OBJECT_XDA_CACHING_TIER_GBP_INVALID_PAGES"/>
+		<col type="column" name="OBJECT_XDA_CACHING_TIER_GBP_INDEP_PAGES_FOUND"/>
+		<col type="column" name="OBJECT_COL_CACHING_TIER_L_READS"/>
+		<col type="column" name="OBJECT_COL_CACHING_TIER_PAGES_FOUND"/>
+		<col type="column" name="OBJECT_COL_CACHING_TIER_GBP_INVALID_PAGES"/>
+		<col type="column" name="OBJECT_COL_CACHING_TIER_GBP_INDEP_PAGES_FOUND"/>
+	</display_columns>
+	<reference name="indexes">
+		<title>Indexes</title>
+		<reftype>table</reftype>
+		<refvalue>Monitor/monIndex</refvalue>
+		<icon>images/icon-index.gif</icon>
+		<ref foreign_column_name="TABSCHEMA">
+			<local_column_name>TABSCHEMA</local_column_name>
+		</ref>
+		<ref foreign_column_name="TABNAME">
+			<local_column_name>TABNAME</local_column_name>
+		</ref>
+	</reference>
+	<reference name="dynSQL">
+		<title>Possible SQL</title>
+		<reftype>table</reftype>
+		<refvalue>Monitor/monPackageCacheStmt</refvalue>
+		<icon>images/icon-link-calendar.gif</icon>								
+		<ref foreign_column_name="STMT_TEXT">
+			<comparetype>locateAnyCase</comparetype> 
+			<local_column_name>TABNAME</local_column_name>
+		</ref>
+	</reference>
+	<reference name="tabDetails">
+		<reftype>displayRow</reftype>
+		<refvalue>tableOnlyCat</refvalue>
+		<icon>images/fw_bold.gif</icon>
+		<ref foreign_column_name="TABSCHEMA">
+				<local_column_name>tabschema</local_column_name>
+		</ref>
+		<ref foreign_column_name="tabname">
+			<local_column_name>TABNAME</local_column_name>
+		</ref>
+	</reference>
+	<column name="SAMPLE_TS">
+		<sqlName>SAMPLE_TS</sqlName>
+		<title>Timestamp</title>
+	</column>
+	<column name="TABSCHEMA">
+		<sqlName>TABSCHEMA</sqlName>
+		<title>Schema</title>
+		<type/>
+		<enableDrill/>
+		<primaryKey/>
+		<prefill>
+			<table>schema</table>
+			<column>SCHEMANAME</column>
+		</prefill>
+	</column>
+	<column name="TABNAME">
+		<sqlName>TABNAME</sqlName>
+		<title>Name</title>
+		<primaryKey/>
+	</column>
+	<column name="MEMBER">
+		<sqlName>MEMBER</sqlName>
+		<title>Member</title>
+		<type>n</type>
+		<primaryKey/>
+	</column>
+	<column name="TAB_TYPE">
+		<sqlName>TAB_TYPE</sqlName>
+		<title>Type</title>
+		<type/>
+   		<columnMask>
+			<valueMask value="CATALOG_TABLE"><mask>Catalog</mask></valueMask>
+			<valueMask value="USER_TABLE"><mask>User</mask></valueMask>
+   		</columnMask>
+	</column>
+	<column name="TAB_FILE_ID">
+		<sqlName>TAB_FILE_ID</sqlName>
+		<title>File Id.</title>
+		<type>n</type>
+	</column>
+	<column name="DATA_PARTITION_ID">
+		<sqlName>DATA_PARTITION_ID</sqlName>
+		<title>Data Partition Id.</title>
+		<type>n</type>
+		<primaryKey/>
+	</column>
+	<column name="TBSP_ID">
+		<sqlName>TBSP_ID</sqlName>
+		<title>Tablespace Id.</title>
+		<type>n</type>
+	</column>
+	<column name="INDEX_TBSP_ID">
+		<sqlName>INDEX_TBSP_ID</sqlName>
+		<title>Index Space Id.</title>
+		<type>n</type>
+	</column>
+	<column name="LONG_TBSP_ID">
+		<sqlName>LONG_TBSP_ID</sqlName>
+		<title>Long Space Id.</title>
+		<type>n</type>
+	</column>
+	<column name="TABLE_SCANS" accumulation="y">
+		<sqlName>TABLE_SCANS</sqlName>
+		<title>Scans</title>
+		<type>n</type>
+	</column>
+	<column name="ROWS_READ" accumulation="y">
+		<sqlName>ROWS_READ</sqlName>
+		<title>Rows Read</title>
+		<type>n</type>
+	</column>
+	<column name="ROWS_INSERTED" accumulation="y">
+		<sqlName>ROWS_INSERTED</sqlName>
+		<title>Rows Inserted</title>
+		<type>n</type>
+	</column>
+	<column name="ROWS_UPDATED" accumulation="y">
+		<sqlName>ROWS_UPDATED</sqlName>
+		<title>Rows Updated</title>
+		<type>n</type>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="ROWS_DELETED" accumulation="y">
+		<sqlName>ROWS_DELETED</sqlName>
+		<title>Rows Deleted</title>
+		<type>n</type>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="OVERFLOW_ACCESSES" accumulation="y">
+		<sqlName>OVERFLOW_ACCESSES</sqlName>
+		<title>Overflow Accesses</title>
+		<type>n</type>
+	</column>
+	<column name="OVERFLOW_CREATES" accumulation="y">
+		<sqlName>OVERFLOW_CREATES</sqlName>
+		<title>Overflow Creates</title>
+		<type>n</type>
+	</column>
+	<column name="PAGE_REORGS" accumulation="y">
+		<sqlName>PAGE_REORGS</sqlName>
+		<title>Page REORGs</title>
+		<type>n</type>
+	</column>
+	<column name="ADDITIONAL_DETAILS">
+		<sqlName>'ADDITIONAL_DETAILS reserved for future use'</sqlName>
+		<title>Additional Detail</title>
+		<type>l</type>
+	</column>
+	<column name="TAB_TYPE" minVersion="10.5">
+		<sqlName>TAB_TYPE</sqlName>
+		<title>Tab Type</title>
+		<type>s</type>
+	</column>
+	<column name="TAB_FILE_ID" minVersion="10.5">
+		<sqlName>TAB_FILE_ID</sqlName>
+		<title>Tab File Id</title>
+		<type>n</type>
+	</column>
+	<column name="TBSP_ID" minVersion="10.5">
+		<sqlName>TBSP_ID</sqlName>
+		<title>Tbsp Id</title>
+		<type>n</type>
+	</column>
+	<column name="INDEX_TBSP_ID" minVersion="10.5">
+		<sqlName>INDEX_TBSP_ID</sqlName>
+		<title>Index Tbsp Id</title>
+		<type>n</type>
+	</column>
+	<column name="LONG_TBSP_ID" minVersion="10.5">
+		<sqlName>LONG_TBSP_ID</sqlName>
+		<title>Long Tbsp Id</title>
+		<type>n</type>
+	</column>
+	<column name="DATA_OBJECT_L_PAGES" minVersion="10.5">
+		<sqlName>DATA_OBJECT_L_PAGES</sqlName>
+		<title>Data Object L Pages</title>
+		<type>n</type>
+	</column>
+	<column name="LOB_OBJECT_L_PAGES" minVersion="10.5">
+		<sqlName>LOB_OBJECT_L_PAGES</sqlName>
+		<title>Lob Object L Pages</title>
+		<type>n</type>
+	</column>
+	<column name="LONG_OBJECT_L_PAGES" minVersion="10.5">
+		<sqlName>LONG_OBJECT_L_PAGES</sqlName>
+		<title>Long Object L Pages</title>
+		<type>n</type>
+	</column>
+	<column name="INDEX_OBJECT_L_PAGES" minVersion="10.5">
+		<sqlName>INDEX_OBJECT_L_PAGES</sqlName>
+		<title>Index Object L Pages</title>
+		<type>n</type>
+	</column>
+	<column name="XDA_OBJECT_L_PAGES" minVersion="10.5">
+		<sqlName>XDA_OBJECT_L_PAGES</sqlName>
+		<title>Xda Object L Pages</title>
+		<type>n</type>
+	</column>
+	<column name="DBPARTITIONNUM" minVersion="10.5">
+		<sqlName>DBPARTITIONNUM</sqlName>
+		<title>Dbpartitionnum</title>
+		<type>n</type>
+	</column>
+	<column name="NO_CHANGE_UPDATES" minVersion="10.5">
+		<sqlName>NO_CHANGE_UPDATES</sqlName>
+		<title>No Change Updates</title>
+		<type>n</type>
+	</column>
+	<column name="LOCK_WAIT_TIME" minVersion="10.5">
+		<sqlName>LOCK_WAIT_TIME</sqlName>
+		<title>Lock Wait Time</title>
+		<type>n</type>
+	</column>
+	<column name="LOCK_WAIT_TIME_GLOBAL" minVersion="10.5">
+		<sqlName>LOCK_WAIT_TIME_GLOBAL</sqlName>
+		<title>Lock Wait Time Global</title>
+		<type>n</type>
+	</column>
+	<column name="LOCK_WAITS" minVersion="10.5">
+		<sqlName>LOCK_WAITS</sqlName>
+		<title>Lock Waits</title>
+		<type>n</type>
+	</column>
+	<column name="LOCK_WAITS_GLOBAL" minVersion="10.5">
+		<sqlName>LOCK_WAITS_GLOBAL</sqlName>
+		<title>Lock Waits Global</title>
+		<type>n</type>
+	</column>
+	<column name="LOCK_ESCALS" minVersion="10.5">
+		<sqlName>LOCK_ESCALS</sqlName>
+		<title>Lock Escals</title>
+		<type>n</type>
+	</column>
+	<column name="LOCK_ESCALS_GLOBAL" minVersion="10.5">
+		<sqlName>LOCK_ESCALS_GLOBAL</sqlName>
+		<title>Lock Escals Global</title>
+		<type>n</type>
+	</column>
+	<column name="DATA_SHARING_STATE" minVersion="10.5">
+		<sqlName>DATA_SHARING_STATE</sqlName>
+		<title>Data Sharing State</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="DATA_SHARING_STATE_CHANGE_TIME" minVersion="10.5">
+		<sqlName>DATA_SHARING_STATE_CHANGE_TIME</sqlName>
+		<title>Data Sharing State Change Time</title>
+		<type>n</type>
+	</column>
+	<column name="DATA_SHARING_REMOTE_LOCKWAIT_COUNT" minVersion="10.5">
+		<sqlName>DATA_SHARING_REMOTE_LOCKWAIT_COUNT</sqlName>
+		<title>Data Sharing Remote Lockwait Count</title>
+		<type>n</type>
+	</column>
+	<column name="DATA_SHARING_REMOTE_LOCKWAIT_TIME" minVersion="10.5">
+		<sqlName>DATA_SHARING_REMOTE_LOCKWAIT_TIME</sqlName>
+		<title>Data Sharing Remote Lockwait Time</title>
+		<type>n</type>
+	</column>
+	<column name="DIRECT_WRITES" minVersion="10.5">
+		<sqlName>DIRECT_WRITES</sqlName>
+		<title>Direct Writes</title>
+		<type>n</type>
+	</column>
+	<column name="DIRECT_WRITE_REQS" minVersion="10.5">
+		<sqlName>DIRECT_WRITE_REQS</sqlName>
+		<title>Direct Write Reqs</title>
+		<type>n</type>
+	</column>
+	<column name="DIRECT_READS" minVersion="10.5">
+		<sqlName>DIRECT_READS</sqlName>
+		<title>Direct Reads</title>
+		<type>n</type>
+	</column>
+	<column name="DIRECT_READ_REQS" minVersion="10.5">
+		<sqlName>DIRECT_READ_REQS</sqlName>
+		<title>Direct Read Reqs</title>
+		<type>n</type>
+	</column>
+	<column name="OBJECT_DATA_L_READS" minVersion="10.5">
+		<sqlName>OBJECT_DATA_L_READS</sqlName>
+		<title>Object Data L Reads</title>
+		<type>n</type>
+	</column>
+	<column name="OBJECT_DATA_P_READS" minVersion="10.5">
+		<sqlName>OBJECT_DATA_P_READS</sqlName>
+		<title>Object Data P Reads</title>
+		<type>n</type>
+	</column>
+	<column name="OBJECT_DATA_GBP_L_READS" minVersion="10.5">
+		<sqlName>OBJECT_DATA_GBP_L_READS</sqlName>
+		<title>Object Data Gbp L Reads</title>
+		<type>n</type>
+	</column>
+	<column name="OBJECT_DATA_GBP_P_READS" minVersion="10.5">
+		<sqlName>OBJECT_DATA_GBP_P_READS</sqlName>
+		<title>Object Data Gbp P Reads</title>
+		<type>n</type>
+	</column>
+	<column name="OBJECT_DATA_GBP_INVALID_PAGES" minVersion="10.5">
+		<sqlName>OBJECT_DATA_GBP_INVALID_PAGES</sqlName>
+		<title>Object Data Gbp Invalid Pages</title>
+		<type>n</type>
+	</column>
+	<column name="OBJECT_DATA_LBP_PAGES_FOUND" minVersion="10.5">
+		<sqlName>OBJECT_DATA_LBP_PAGES_FOUND</sqlName>
+		<title>Object Data Lbp Pages Found</title>
+		<type>n</type>
+	</column>
+	<column name="OBJECT_DATA_GBP_INDEP_PAGES_FOUND_IN_LBP" minVersion="10.5">
+		<sqlName>OBJECT_DATA_GBP_INDEP_PAGES_FOUND_IN_LBP</sqlName>
+		<title>Object Data Gbp Indep Pages Found In Lbp</title>
+		<type>n</type>
+	</column>
+	<column name="OBJECT_XDA_L_READS" minVersion="10.5">
+		<sqlName>OBJECT_XDA_L_READS</sqlName>
+		<title>Object Xda L Reads</title>
+		<type>n</type>
+	</column>
+	<column name="OBJECT_XDA_P_READS" minVersion="10.5">
+		<sqlName>OBJECT_XDA_P_READS</sqlName>
+		<title>Object Xda P Reads</title>
+		<type>n</type>
+	</column>
+	<column name="OBJECT_XDA_GBP_L_READS" minVersion="10.5">
+		<sqlName>OBJECT_XDA_GBP_L_READS</sqlName>
+		<title>Object Xda Gbp L Reads</title>
+		<type>n</type>
+	</column>
+	<column name="OBJECT_XDA_GBP_P_READS" minVersion="10.5">
+		<sqlName>OBJECT_XDA_GBP_P_READS</sqlName>
+		<title>Object Xda Gbp P Reads</title>
+		<type>n</type>
+	</column>
+	<column name="OBJECT_XDA_GBP_INVALID_PAGES" minVersion="10.5">
+		<sqlName>OBJECT_XDA_GBP_INVALID_PAGES</sqlName>
+		<title>Object Xda Gbp Invalid Pages</title>
+		<type>n</type>
+	</column>
+	<column name="OBJECT_XDA_LBP_PAGES_FOUND" minVersion="10.5">
+		<sqlName>OBJECT_XDA_LBP_PAGES_FOUND</sqlName>
+		<title>Object Xda Lbp Pages Found</title>
+		<type>n</type>
+	</column>
+	<column name="OBJECT_XDA_GBP_INDEP_PAGES_FOUND_IN_LBP" minVersion="10.5">
+		<sqlName>OBJECT_XDA_GBP_INDEP_PAGES_FOUND_IN_LBP</sqlName>
+		<title>Object Xda Gbp Indep Pages Found In Lbp</title>
+		<type>n</type>
+	</column>
+	<column name="NUM_PAGE_DICT_BUILT" minVersion="10.5">
+		<sqlName>NUM_PAGE_DICT_BUILT</sqlName>
+		<title>Num Page Dict Built</title>
+		<type>n</type>
+	</column>
+	<column name="STATS_ROWS_MODIFIED" minVersion="10.5">
+		<sqlName>STATS_ROWS_MODIFIED</sqlName>
+		<title>Stats Rows Modified</title>
+		<type>n</type>
+	</column>
+	<column name="RTS_ROWS_MODIFIED" minVersion="10.5">
+		<sqlName>RTS_ROWS_MODIFIED</sqlName>
+		<title>Rts Rows Modified</title>
+		<type>n</type>
+	</column>
+	<column name="COL_OBJECT_L_PAGES" minVersion="10.5">
+		<sqlName>COL_OBJECT_L_PAGES</sqlName>
+		<title>Col Object L Pages</title>
+		<type>n</type>
+	</column>
+	<column name="TAB_ORGANIZATION" minVersion="10.5">
+		<sqlName>TAB_ORGANIZATION</sqlName>
+		<title>Tab Organization</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="OBJECT_COL_L_READS" minVersion="10.5">
+		<sqlName>OBJECT_COL_L_READS</sqlName>
+		<title>Object Col L Reads</title>
+		<type>n</type>
+	</column>
+	<column name="OBJECT_COL_P_READS" minVersion="10.5">
+		<sqlName>OBJECT_COL_P_READS</sqlName>
+		<title>Object Col P Reads</title>
+		<type>n</type>
+	</column>
+	<column name="OBJECT_COL_GBP_L_READS" minVersion="10.5">
+		<sqlName>OBJECT_COL_GBP_L_READS</sqlName>
+		<title>Object Col Gbp L Reads</title>
+		<type>n</type>
+	</column>
+	<column name="OBJECT_COL_GBP_P_READS" minVersion="10.5">
+		<sqlName>OBJECT_COL_GBP_P_READS</sqlName>
+		<title>Object Col Gbp P Reads</title>
+		<type>n</type>
+	</column>
+	<column name="OBJECT_COL_GBP_INVALID_PAGES" minVersion="10.5">
+		<sqlName>OBJECT_COL_GBP_INVALID_PAGES</sqlName>
+		<title>Object Col Gbp Invalid Pages</title>
+		<type>n</type>
+	</column>
+	<column name="OBJECT_COL_LBP_PAGES_FOUND" minVersion="10.5">
+		<sqlName>OBJECT_COL_LBP_PAGES_FOUND</sqlName>
+		<title>Object Col Lbp Pages Found</title>
+		<type>n</type>
+	</column>
+	<column name="OBJECT_COL_GBP_INDEP_PAGES_FOUND_IN_LBP" minVersion="10.5">
+		<sqlName>OBJECT_COL_GBP_INDEP_PAGES_FOUND_IN_LBP</sqlName>
+		<title>Object Col Gbp Indep Pages Found In Lbp</title>
+		<type>n</type>
+	</column>
+	<column name="NUM_COLUMNS_REFERENCED" minVersion="10.5">
+		<sqlName>NUM_COLUMNS_REFERENCED</sqlName>
+		<title>Num Columns Referenced</title>
+		<type>n</type>
+	</column>
+	<column name="SECTION_EXEC_WITH_COL_REFERENCES" minVersion="10.5">
+		<sqlName>SECTION_EXEC_WITH_COL_REFERENCES</sqlName>
+		<title>Section Exec With Col References</title>
+		<type>n</type>
+	</column>
+	<column name="OBJECT_DATA_CACHING_TIER_L_READS" minVersion="10.5">
+		<sqlName>OBJECT_DATA_CACHING_TIER_L_READS</sqlName>
+		<title>Object Data Caching Tier L Reads</title>
+		<type>n</type>
+	</column>
+	<column name="OBJECT_DATA_CACHING_TIER_PAGES_FOUND" minVersion="10.5">
+		<sqlName>OBJECT_DATA_CACHING_TIER_PAGES_FOUND</sqlName>
+		<title>Object Data Caching Tier Pages Found</title>
+		<type>n</type>
+	</column>
+	<column name="OBJECT_DATA_CACHING_TIER_GBP_INVALID_PAGES" minVersion="10.5">
+		<sqlName>OBJECT_DATA_CACHING_TIER_GBP_INVALID_PAGES</sqlName>
+		<title>Object Data Caching Tier Gbp Invalid Pages</title>
+		<type>n</type>
+	</column>
+	<column name="OBJECT_DATA_CACHING_TIER_GBP_INDEP_PAGES_FOUND" minVersion="10.5">
+		<sqlName>OBJECT_DATA_CACHING_TIER_GBP_INDEP_PAGES_FOUND</sqlName>
+		<title>Object Data Caching Tier Gbp Indep Pages Found</title>
+		<type>n</type>
+	</column>
+	<column name="OBJECT_XDA_CACHING_TIER_L_READS" minVersion="10.5">
+		<sqlName>OBJECT_XDA_CACHING_TIER_L_READS</sqlName>
+		<title>Object Xda Caching Tier L Reads</title>
+		<type>n</type>
+	</column>
+	<column name="OBJECT_XDA_CACHING_TIER_PAGES_FOUND" minVersion="10.5">
+		<sqlName>OBJECT_XDA_CACHING_TIER_PAGES_FOUND</sqlName>
+		<title>Object Xda Caching Tier Pages Found</title>
+		<type>n</type>
+	</column>
+	<column name="OBJECT_XDA_CACHING_TIER_GBP_INVALID_PAGES" minVersion="10.5">
+		<sqlName>OBJECT_XDA_CACHING_TIER_GBP_INVALID_PAGES</sqlName>
+		<title>Object Xda Caching Tier Gbp Invalid Pages</title>
+		<type>n</type>
+	</column>
+	<column name="OBJECT_XDA_CACHING_TIER_GBP_INDEP_PAGES_FOUND" minVersion="10.5">
+		<sqlName>OBJECT_XDA_CACHING_TIER_GBP_INDEP_PAGES_FOUND</sqlName>
+		<title>Object Xda Caching Tier Gbp Indep Pages Found</title>
+		<type>n</type>
+	</column>
+	<column name="OBJECT_COL_CACHING_TIER_L_READS" minVersion="10.5">
+		<sqlName>OBJECT_COL_CACHING_TIER_L_READS</sqlName>
+		<title>Object Col Caching Tier L Reads</title>
+		<type>n</type>
+	</column>
+	<column name="OBJECT_COL_CACHING_TIER_PAGES_FOUND" minVersion="10.5">
+		<sqlName>OBJECT_COL_CACHING_TIER_PAGES_FOUND</sqlName>
+		<title>Object Col Caching Tier Pages Found</title>
+		<type>n</type>
+	</column>
+	<column name="OBJECT_COL_CACHING_TIER_GBP_INVALID_PAGES" minVersion="10.5">
+		<sqlName>OBJECT_COL_CACHING_TIER_GBP_INVALID_PAGES</sqlName>
+		<title>Object Col Caching Tier Gbp Invalid Pages</title>
+		<type>n</type>
+	</column>
+	<column name="OBJECT_COL_CACHING_TIER_GBP_INDEP_PAGES_FOUND" minVersion="10.5">
+		<sqlName>OBJECT_COL_CACHING_TIER_GBP_INDEP_PAGES_FOUND</sqlName>
+		<title>Object Col Caching Tier Gbp Indep Pages Found</title>
+		<type>n</type>
+	</column>
+</table>

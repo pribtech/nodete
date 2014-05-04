@@ -1,0 +1,84 @@
+<table name="indexColumn">
+	<sqlName>SYS.DBA_IND_COLUMNS</sqlName>
+	<singularName>Index Column</singularName>
+	<pluralName>Index Columns</pluralName>
+
+	<description></description>
+	<orderBy name="INDEX_OWNER" direction="A"/>
+	<orderBy name="INDEX_NAME" direction="A"/>
+	<orderBy name="TABLE_OWNER" direction="A"/>
+	<orderBy name="TABLE_NAME" direction="A"/>
+	<orderBy name="COLUMN_POSITION" direction="A"/>
+	<displayColumns>
+		<col type="column" name="INDEX_OWNER" break="column"/>
+		<col type="column" name="INDEX_NAME" break="column"/>
+		<col type="column" name="TABLE_OWNER" break="column"/>
+		<col type="column" name="TABLE_NAME" break="column"/>
+		<col type="column" name="COLUMN_POSITION"/>
+		<col type="column" name="COLUMN_NAME"/>
+		<col type="column" name="COLUMN_LENGTH"/>
+		<col type="column" name="CHAR_LENGTH"/>
+		<col type="column" name="DESCEND"/>
+	</displayColumns>
+	<displayColumns name="table">
+		<col type="column" name="INDEX_OWNER" break="column"/>
+		<col type="column" name="INDEX_NAME" break="column"/>
+		<col type="column" name="COLUMN_NAME"/>
+		<col type="column" name="COLUMN_POSITION"/>
+		<col type="column" name="COLUMN_LENGTH"/>
+		<col type="column" name="CHAR_LENGTH"/>
+		<col type="column" name="DESCEND"/>
+	</displayColumns>
+	
+	<column name="INDEX_OWNER">
+		<sqlName>INDEX_OWNER</sqlName>
+		<title>Index Owner</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="INDEX_NAME">
+		<sqlName>INDEX_NAME</sqlName>
+		<title>Index Name</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="TABLE_OWNER">
+		<sqlName>TABLE_OWNER</sqlName>
+		<title>Table Owner</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="TABLE_NAME">
+		<sqlName>TABLE_NAME</sqlName>
+		<title>Table Name</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="COLUMN_NAME">
+		<sqlName>COLUMN_NAME</sqlName>
+		<title>Column Name</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="COLUMN_POSITION">
+		<sqlName>COLUMN_POSITION</sqlName>
+		<title>Column Position</title>
+		<type>n</type>
+	</column>
+	<column name="COLUMN_LENGTH">
+		<sqlName>COLUMN_LENGTH</sqlName>
+		<title>Column Length</title>
+		<type>n</type>
+	</column>
+	<column name="CHAR_LENGTH">
+		<sqlName>CHAR_LENGTH</sqlName>
+		<title>Char Length</title>
+		<type>n</type>
+	</column>
+	<column name="DESCEND">
+		<sqlName>DESCEND</sqlName>
+		<title>Descend</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+</table>

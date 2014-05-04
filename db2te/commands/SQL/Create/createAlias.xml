@@ -1,0 +1,86 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2009 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<command name="createAlias" title="Create Alias">
+<![CDATA[
+>>-CREATE--+--------+----ALIAS----+-| table-alias |----+-------><
+           '-PUBLIC-'             +-| module-alias |---+   
+                                  '-| sequence-alias |-'   
+]]>
+
+	<text>CREATE</text>
+	<select>
+		<option default="true"><note>private</note></option> 
+		<option><text>PUBLIC</text></option> 
+	</select>
+	<text>ALIAS</text>
+	<select>
+		<option default="true"><clauseReference name="table-alias"/></option> 
+		<option><clauseReference name="module-alias"/></option> 
+		<option><clauseReference name="sequence-alias"/></option> 
+	</select>
+
+	<clause name="table-alias" title="table alias">
+<![CDATA[
+                    .-TABLE-.                    
+|--alias-name--FOR--+-------+--+-table-name--+------------------|
+                               +-view-name---+   
+                               +-nickname----+   
+                               '-alias-name2-'   
+]]>
+		<clauseReference name="alias-name"/>
+		<text>FOR</text>
+		<select>
+			<option><text>TABLE</text></option> 
+			<option default="true"><note>table</note></option> 
+		</select>
+		<select>
+			<option default="true"><clauseReference name="table-name"/></option> 
+			<option><clauseReference name="view-name"/></option> 
+			<option><clauseReference name="nickname"/></option> 
+			<option><clauseReference name="alias-name"/></option> 
+		</select>
+	</clause>
+
+	<clause name="module-alias" title="module alias">
+<![CDATA[
+|--alias-name--FOR--MODULE--+-module-name-+---------------------|
+                            '-alias-name2-'   
+]]>
+		<clauseReference name="alias-name"/>
+		<text>FOR MODULE</text>
+		<select>
+			<option default="true"><clauseReference name="module-name"/></option> 
+			<option><clauseReference name="alias-name"/></option> 
+		</select>
+	</clause>
+
+	<clause name="sequence-alias" title="sequence alias">
+<![CDATA[
+|--alias-name--FOR--SEQUENCE--+-sequence-name-+-----------------|
+                              '-alias-name2---'  
+]]>
+		<clauseReference name="alias-name"/>
+		<text>FOR SEQUENCE</text>
+		<select>
+			<option default="true"><clauseReference name="sequence-name"/></option> 
+			<option><clauseReference name="alias-name"/></option> 
+		</select>
+	</clause>
+
+</command>
+        

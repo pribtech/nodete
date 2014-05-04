@@ -1,0 +1,89 @@
+<!--
+  Peter Prib, Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2012 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<table name="bufferedQueue">
+	<sqlName>V$BUFFERED_QUEUES</sqlName>
+	<singularName>Buffered Queue</singularName>
+	<pluralName>Buffered Queues</pluralName>
+	<description></description>
+	<orderBy name="QUEUE_SCHEMA" direction="A"/>
+	<orderBy name="QUEUE_NAME" direction="A"/>
+	<displayColumns>
+		<col type="column" name="QUEUE_SCHEMA"/>
+		<col type="column" name="QUEUE_NAME"/>
+		<col type="column" name="STARTUP_TIME"/>
+		<col type="column" name="NUM_MSGS"/>
+		<col type="column" name="SPILL_MSGS"/>
+		<col type="column" name="CNUM_MSGS"/>
+		<col type="column" name="CSPILL_MSGS"/>
+		<col type="column" name="EXPIRED_MSGS"/>
+		<col type="column" name="QUEUE_STATE"/>
+	</displayColumns>
+	<column name="QUEUE_ID">
+		<sqlName>QUEUE_ID</sqlName>
+		<title>QID</title>
+		<type>n</type>
+	</column>
+	<column name="QUEUE_SCHEMA">
+		<sqlName>QUEUE_SCHEMA</sqlName>
+		<title>Schema</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="QUEUE_NAME">
+		<sqlName>QUEUE_NAME</sqlName>
+		<title>Queue</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="STARTUP_TIME">
+		<sqlName>STARTUP_TIME</sqlName>
+		<title>Startup Time</title>
+		<type>n</type>
+		<drillEnable/>
+	</column>
+	<column name="NUM_MSGS">
+		<sqlName>NUM_MSGS</sqlName>
+		<title>Num Msgs</title>
+		<type>n</type>
+	</column>
+	<column name="SPILL_MSGS">
+		<sqlName>SPILL_MSGS</sqlName>
+		<title>Spill Msgs</title>
+		<type>n</type>
+	</column>
+	<column name="CNUM_MSGS">
+		<sqlName>CNUM_MSGS</sqlName>
+		<title>Cnum Msgs</title>
+		<type>n</type>
+	</column>
+	<column name="CSPILL_MSGS">
+		<sqlName>CSPILL_MSGS</sqlName>
+		<title>Cspill Msgs</title>
+		<type>n</type>
+	</column>
+	<column name="EXPIRED_MSGS">
+		<sqlName>EXPIRED_MSGS</sqlName>
+		<title>Expired Msgs</title>
+		<type>n</type>
+	</column>
+	<column name="QUEUE_STATE">
+		<sqlName>QUEUE_STATE</sqlName>
+		<title>Queue State</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+</table>

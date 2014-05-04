@@ -1,0 +1,81 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2011 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+<table name="stogroup">
+	<sql_name>syscat.stogroup</sql_name>
+	<singular_name>Stogroup</singular_name>
+	<plural_name>Stogroups</plural_name>
+	<description></description>
+	<order_by_index name="GROUPNAME" direction="A"/>
+	<display_columns>
+		<col type="column" name="GROUPNAME"/>
+		<col type="reference" name="Volumes"/>
+		<col type="column" name="SGSCHEMA"/>
+		<col type="column" name="VCAT"/>
+		<col type="column" name="DEFINER"/>
+		<col type="column" name="STAT_TIME"/>
+		<col type="column" name="CREATE_TIME"/>
+		<col type="column" name="ALTER_TIME"/>
+	</display_columns>
+	<reference name="Volumes">
+		<c_title>Volumes</c_title>
+		<reftype>table</reftype>
+		<refvalue>db2z/volumes</refvalue>
+		<icon>images/icon-link-calendar.gif</icon>
+		<ref foreign_column_name="SGNAME">
+			<local_column_name>GROUPNAME</local_column_name>
+		</ref>
+	</reference>
+	<column name="GROUPNAME">
+		<c_sql_name>GROUPNAME</c_sql_name>
+		<title>Name</title>
+		<type>s</type>
+	</column>
+	<column name="SGSCHEMA">
+		<c_sql_name>SGSCHEMA</c_sql_name>
+		<title>Schema</title>
+		<type>s</type>
+	</column>
+	<column name="VCAT">
+		<c_sql_name>VCAT</c_sql_name>
+		<title>VCAT</title>
+		<type>s</type>
+	</column>
+	<column name="DEFINER">
+		<c_sql_name>DEFINER</c_sql_name>
+		<title>Definer</title>
+		<type>s</type>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="STAT_TIME">
+		<c_sql_name>STAT_TIME</c_sql_name>
+		<title>Stats Time</title>
+		<type>n</type>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="CREATE_TIME">
+		<c_sql_name>CREATE_TIME</c_sql_name>
+		<title>Created</title>
+		<type>n</type>
+	</column>
+	<column name="ALTER_TIME">
+		<c_sql_name>ALTER_TIME</c_sql_name>
+		<title>Altered</title>
+		<type>n</type>
+	</column>
+</table>
+

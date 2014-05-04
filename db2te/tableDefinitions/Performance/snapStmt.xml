@@ -1,0 +1,467 @@
+<!--
+  Author: Peter Prib
+  
+  Copyright Independent Systems Integrators Pty Ltd 2008 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+
+<table name="SYSIBMADM.SNAPSTMT">
+	<sql_name>SYSIBMADM.SNAPSTMT</sql_name>
+	<singular_name>Statement</singular_name>
+	<plural_name>Statements</plural_name>
+	<description />
+	<order_by_index name="query_cost_estimate" direction="D"/>
+	<disable_edit/>
+	<output>
+		<type name="DDL" destination="" title="" generator=""/>
+		<type name="ADHOC" destination="adhoc" title="Statement" generator="XSL/compareSQLStmtTxt.xsl"/>
+	</output>
+	<rowStyle interfaceColumn='stmt_stop'>
+		<option isnull='true' style='WARNING'/>
+	</rowStyle>		
+	<display_columns titleDepth="2">
+		<col type="action" name="force" />
+		<col type="reference" name="statement"/>
+		<col type="reference" name="applicationInfo"/>
+		<col type="reference" name="locks"/>
+		<col type="column" name="AGENT_ID" />
+		<col type="column" name="rows_read" />
+		<col type="column" name="rows_written" />
+		<col type="column" name="num_agents" />
+		<col type="column" name="stmt_type" />
+		<col type="column" name="stmt_text" />
+		<col type="column" name="stmt_operation" />
+		<col type="column" name="section_number" />
+		<col type="column" name="query_cost_estimate" />
+		<col type="column" name="query_card_estimate" />
+		<col type="column" name="degree_parallelism" />
+		<col type="column" name="stmt_sorts" />
+		<col type="column" name="total_sort_time" />
+		<col type="column" name="sort_overflows" />
+		<col type="column" name="int_rows_deleted" />
+		<col type="column" name="int_rows_updated" />
+		<col type="column" name="int_rows_inserted" />
+		<col type="column" name="fetch_count" />
+		<col type="column" name="stmt_start" />
+		<col type="column" name="stmt_stop" />
+		<col type="column" name="stmt_usr_cpu_time" />
+		<col type="column" name="stmt_sys_cpu_time" />
+		<col type="column" name="stmt_elapsed_time" />
+		<col type="column" name="blocking_cursor" />
+		<col type="column" name="stmt_node_number" />
+		<col type="column" name="cursor_name" />
+		<col type="column" name="creator" />
+		<col type="column" name="package_name" />
+		<col type="column" name="consistency_token" />
+		<col type="column" name="package_version_id" />
+		<col type="column" name="pool_data_l_reads" />
+		<col type="column" name="pool_data_p_reads" />
+		<col type="column" name="pool_index_l_reads" />
+		<col type="column" name="pool_index_p_reads" />
+		<col type="column" name="pool_xda_l_reads" />
+		<col type="column" name="pool_xda_p_reads" />
+		<col type="column" name="pool_temp_data_l_reads" />
+		<col type="column" name="pool_temp_data_p_reads" />
+		<col type="column" name="pool_temp_index_l_reads" />
+		<col type="column" name="pool_temp_index_p_reads" />
+		<col type="column" name="pool_temp_xda_l_reads" />
+		<col type="column" name="pool_temp_xda_p_reads" />
+		<col type="column" name="dbpartitionnum" />
+	</display_columns>
+
+<!-- added peter prib, Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2009 All rights reserved. -->
+	<action name="visualExplain">
+		<title>Explain</title>
+    	<actionScript>
+    		<task>
+				<assignSharedConstant name="stmttext" type="blockValue">
+					<value>stmt_text</value>
+				</assignSharedConstant>
+	   			<callGlobalAction name="DB2ExplainDynamicSQL"/>				
+	   		</task>
+    	</actionScript>
+    </action>
+	<action name="db2expln">
+		<title>db2expln</title>
+    	<actionScript>
+    		<task>
+    			<lock/>
+    			<action name="getSession" type="serverAction" >
+					<parameterList>
+						<parameter name="action" type="raw">
+							<value>getSessionVariable</value>
+						</parameter>
+						<parameter name="name[database]" type="fixed">
+							<value>Connections.USE_DATABASE_CONNECTION.database</value>
+						</parameter>
+						<parameter name="name[schema]" type="fixed">
+							<value>Connections.USE_DATABASE_CONNECTION.schema</value>
+						</parameter>
+					</parameterList>
+				</action>
+		    	<assignSharedConstant name="database-name" type="returnObject">
+					<value>getSession.returnValue.database</value>
+				</assignSharedConstant>
+		    	<assignSharedConstant name="schema-name" type="returnObject">
+					<value>getSession.returnValue.schema</value>
+				</assignSharedConstant>
+				<assignSharedConstant name="query-statement" type="blockValue">
+							<value>stmt_text</value>
+				</assignSharedConstant>
+		   		<assignSharedConstant name="command" type="raw">
+					<value>System/db2expln.statement</value>
+				</assignSharedConstant>
+	   			<callGlobalAction name="systemCommandExecution"/>				
+    			<unlock/>
+	   		</task>
+    	</actionScript>
+    </action>
+
+	<action name="db2advis">
+		<title>Advisor</title>
+    	<actionScript>
+    		<task>
+    			<lock/>
+    			<action name="getSession" type="serverAction" >
+					<parameterList>
+						<parameter name="action" type="raw">
+							<value>getSessionVariable</value>
+						</parameter>
+						<parameter name="name[database]" type="fixed">
+							<value>Connections.USE_DATABASE_CONNECTION.database</value>
+						</parameter>
+						<parameter name="name[schema]" type="fixed">
+							<value>Connections.USE_DATABASE_CONNECTION.schema</value>
+						</parameter>
+					</parameterList>
+				</action>
+		    	<assignSharedConstant name="database-name" type="returnObject">
+					<value>getSession.returnValue.database</value>
+				</assignSharedConstant>
+		    	<assignSharedConstant name="schema-name" type="returnObject">
+					<value>getSession.returnValue.schema</value>
+				</assignSharedConstant>
+				<assignSharedConstant name="statement" type="blockValue">
+							<value>stmt_text</value>
+				</assignSharedConstant>
+		   		<assignSharedConstant name="command" type="raw">
+					<value>System/db2advis.statement</value>
+				</assignSharedConstant>
+	   			<callGlobalAction name="systemCommandExecution"/>				
+    			<unlock/>
+	   		</task>
+    	</actionScript>
+    </action>
+ <!-- added end -->  
+	
+	<action name="force">
+		<title>Force</title>
+		<icon>images/cancel.gif</icon>   
+   		<actionScript>
+   			<task>
+		    	<assignSharedConstant name="AGENT_ID" type="blockValue">
+					<value>AGENT_ID</value>
+				</assignSharedConstant>
+	   			<callGlobalAction name="forceAgent"/>
+   			</task>
+   		</actionScript>
+   	</action>
+	<reference name="applicationInfo">
+		<title>App. Info</title>
+		<reftype>displayRow</reftype>
+		<refvalue>Performance/snapApplicationInfo</refvalue>
+		<icon>images/icon-application.gif</icon>
+		<ref foreign_column_name="AGENT_ID">
+			<local_column_name>AGENT_ID</local_column_name>
+		</ref>
+	</reference>
+	<reference name="statement">
+		<title>Statement</title>
+		<reftype>displayRow</reftype>
+		<refvalue>staticStatements</refvalue>
+		<icon>images/icon-application.gif</icon>
+		<ref foreign_column_name="plcreator">
+			<local_column_name>creator</local_column_name>
+		</ref>
+		<ref foreign_column_name="plname">
+			<local_column_name>package_name</local_column_name>
+		</ref>
+		<ref foreign_column_name="sectno">
+			<local_column_name>section_number</local_column_name>
+		</ref>
+	</reference>
+	<reference name="locks">
+		<title>Locks</title>
+		<reftype>table</reftype>
+		<refvalue>Performance/toplock</refvalue>
+		<icon>images/icon-application.gif</icon>
+		<ref foreign_column_name="AGENT_ID">
+			<local_column_name>AGENT_ID</local_column_name>
+		</ref>
+	</reference>	
+	<column name="db_name">
+		<sql_name>DB_NAME</sql_name>
+		<title>Database</title>
+		<type>s</type>
+	</column>
+	<column name="AGENT_ID">
+		<sql_name>AGENT_ID</sql_name>
+		<title>Agent Id.</title>
+		<type>n</type>
+		<reference name="stmt">
+			<title/>
+			<reftype>table</reftype>
+			<refvalue>Performance/snapStmt</refvalue>
+			<icon>images/icon-application.gif</icon>
+			<ref foreign_column_name="AGENT_ID">
+				<local_column_name>AGENT_ID</local_column_name>
+			</ref>
+		</reference>
+	</column>
+	<column name="stmt_text">
+		<sql_name>STMT_TEXT</sql_name>
+		<title>Statement</title>
+		<type>l</type>
+	</column>
+	<column name="rows_read">
+		<sql_name>ROWS_READ</sql_name>
+		<title>Rows Read</title>
+		<type>n</type>
+		<formatNumber separator=","/>
+	</column>
+	<column name="rows_written">
+		<sql_name>ROWS_WRITTEN</sql_name>
+		<title>Rows Written</title>
+		<type>n</type>
+		<formatNumber separator=","/>
+	</column>
+	<column name="num_agents">
+		<sql_name>NUM_AGENTS</sql_name>
+		<title>No. Agents</title>
+		<type>n</type>
+	</column>
+	<column name="agents_top">
+		<sql_name>AGENTS_TOP</sql_name>
+		<title>No. Agents Top</title>
+		<type>n</type>
+	</column>
+	<column name="stmt_type">
+		<sql_name>STMT_TYPE</sql_name>
+		<title>Statement Type</title>
+		<type>s</type>
+		<c_drill>y</c_drill>
+		<c_column_mask_file>masks/statementType.xml</c_column_mask_file>
+	</column>
+	<column name="stmt_operation">
+		<sql_name>STMT_OPERATION</sql_name>
+		<title>Statement Operation</title>
+		<type>s</type>
+		<column_mask_file>masks/statementOperation.xml</column_mask_file>
+	</column>
+	<column name="section_number">
+		<sql_name>SECTION_NUMBER</sql_name>
+		<title>Section No.</title>
+		<type>n</type>
+	</column>
+	<column name="query_cost_estimate">
+		<sql_name>QUERY_COST_ESTIMATE</sql_name>
+		<title>Query Cost Estimate</title>
+		<type>n</type>
+	</column>
+	<column name="query_card_estimate">
+		<sql_name>QUERY_CARD_ESTIMATE</sql_name>
+		<title>Query Cardinality Estimate</title>
+		<type>n</type>
+	</column>
+	<column name="degree_parallelism">
+		<sql_name>DEGREE_PARALLELISM</sql_name>
+		<title>Degree Parrallelism</title>
+		<type>n</type>
+	</column>
+	<column name="stmt_sorts">
+		<sql_name>STMT_SORTS</sql_name>
+		<title>Statement Sorts</title>
+		<type>n</type>
+	</column>
+	<column name="total_sort_time">
+		<sql_name>TOTAL_SORT_TIME</sql_name>
+		<title>Total Sort Time</title>
+		<type>n</type>
+	</column>
+	<column name="sort_overflows">
+		<sql_name>SORT_OVERFLOWS</sql_name>
+		<title>Sort Overflows</title>
+		<type>n</type>
+	</column>
+	<column name="int_rows_deleted">
+		<sql_name>INT_ROWS_DELETED</sql_name>
+		<title>Internal Rows Deleted</title>
+		<type>n</type>
+		<formatNumber separator=","/>
+	</column>
+	<column name="int_rows_updated">
+		<sql_name>INT_ROWS_UPDATED</sql_name>
+		<title>Internal Rows Updated</title>
+		<type>n</type>
+		<formatNumber separator=","/>
+	</column>
+	<column name="int_rows_inserted">
+		<sql_name>INT_ROWS_INSERTED</sql_name>
+		<title>Internal Rows Inserted</title>
+		<type>n</type>
+		<formatNumber separator=","/>
+	</column>
+	<column name="fetch_count">
+		<sql_name>FETCH_COUNT</sql_name>
+		<title>Fetch Count</title>
+		<type>n</type>
+		<formatNumber separator=","/>
+	</column>
+	<column name="stmt_start">
+		<sql_name>STMT_START</sql_name>
+		<title>Statement Start</title>
+		<type>n</type>
+	</column>
+	<column name="stmt_stop">
+		<sql_name>STMT_STOP</sql_name>
+		<title>Statement Stop</title>
+		<type>n</type>
+	</column>
+	<column name="stmt_usr_cpu_time">
+		<sql_name>Decimal(STMT_USR_CPU_TIME_S,31,6) + Decimal(STMT_USR_CPU_TIME_MS,31,6)/1000000</sql_name>
+		<title>Statement User CPU Time(s)</title>
+		<type>n</type>
+	</column>
+	<column name="stmt_sys_cpu_time">
+		<sql_name>Decimal(STMT_SYS_CPU_TIME_S,31,6) + Decimal(STMT_SYS_CPU_TIME_MS,31,6)/1000000</sql_name>
+		<title>Statement System CPU Time(s)</title>
+		<type>n</type>
+	</column>
+	<column name="stmt_elapsed_time">
+		<sql_name>Decimal(STMT_ELAPSED_TIME_S,31,6) + Decimal(STMT_ELAPSED_TIME_MS,31,6)/1000000</sql_name>
+		<title>Statement Elapsed Time(s)</title>
+		<type>n</type>
+	</column>
+	<column name="blocking_cursor">
+		<sql_name>BLOCKING_CURSOR</sql_name>
+		<title>Blocking Cursor</title>
+		<type>n</type>
+	</column>
+	<column name="stmt_node_number">
+		<sql_name>STMT_NODE_NUMBER</sql_name>
+		<title>Statement Node Number</title>
+		<type>n</type>
+	</column>
+	<column name="cursor_name">
+		<sql_name>CURSOR_NAME</sql_name>
+		<title>Cursor Name</title>
+		<type>s</type>
+	</column>
+	<column name="creator">
+		<sql_name>CREATOR</sql_name>
+		<title>Creator</title>
+		<type>s</type>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="package_name">
+		<sql_name>PACKAGE_NAME</sql_name>
+		<title>Package Name</title>
+		<type>s</type>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="consistency_token">
+		<sql_name>CONSISTENCY_TOKEN</sql_name>
+		<title>Consistency Token</title>
+		<type>s</type>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="package_version_id">
+		<sql_name>PACKAGE_VERSION_ID</sql_name>
+		<title>Package Version</title>
+		<type>s</type>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="pool_data_l_reads">
+		<sql_name>POOL_DATA_L_READS</sql_name>
+		<title>Pool Data Logical Reads</title>
+		<type>n</type>
+	</column>
+	<column name="pool_data_p_reads">
+		<sql_name>POOL_DATA_P_READS</sql_name>
+		<title>Pool Data Physical Reads</title>
+		<type>n</type>
+	</column>
+	<column name="pool_index_l_reads">
+		<sql_name>POOL_INDEX_L_READS</sql_name>
+		<title>Pool Index Logical Reads</title>
+		<type>n</type>
+	</column>
+	<column name="pool_index_p_reads">
+		<sql_name>POOL_INDEX_P_READS</sql_name>
+		<title>Pool index Physical Reads</title>
+		<type>n</type>
+	</column>
+	<column name="pool_xda_l_reads">
+		<sql_name>POOL_XDA_L_READS</sql_name>
+		<title>Pool XDA Logical Reads</title>
+		<type>n</type>
+	</column>
+	<column name="pool_xda_p_reads">
+		<sql_name>POOL_XDA_P_READS</sql_name>
+		<title>Pool XDA Physical Reads</title>
+		<type>n</type>
+	</column>
+	<column name="pool_temp_data_l_reads">
+		<sql_name>POOL_TEMP_DATA_L_READS</sql_name>
+		<title>Pool Temp Data Logical Reads</title>
+		<type>n</type>
+	</column>
+	<column name="pool_temp_data_p_reads">
+		<sql_name>POOL_TEMP_DATA_P_READS</sql_name>
+		<title>Pool Temp Data Phsyical Reads</title>
+		<type>n</type>
+	</column>
+	<column name="pool_temp_index_l_reads">
+		<sql_name>POOL_TEMP_INDEX_L_READS</sql_name>
+		<title>Pool Temp Index Logical Reads</title>
+		<type>n</type>
+	</column>
+	<column name="pool_temp_index_p_reads">
+		<sql_name>POOL_TEMP_INDEX_P_READS
+		</sql_name>
+		<title>Pool Temp Index Physical Reads</title>
+		<type>n</type>
+	</column>
+	<column name="pool_temp_xda_l_reads">
+		<sql_name>POOL_TEMP_XDA_L_READS</sql_name>
+		<title>Pool Temp XDA Logical Reads</title>
+		<type>n</type>
+	</column>
+	<column name="pool_temp_xda_p_reads">
+		<sql_name>POOL_TEMP_XDA_P_READS</sql_name>
+		<title>Pool Temp XDA Physical Reads</title>
+		<type>n</type>
+	</column>
+	<column name="dbpartitionnum">
+		<sql_name>DBPARTITIONNUM</sql_name>
+		<title>Database Partition Number</title>
+		<type>n</type>
+	</column>
+	<column name="snapshot_timestamp">
+		<sql_name>SNAPSHOT_TIMESTAMP</sql_name>
+		<title>Snapshot Timestamp</title>
+		<type>n</type>
+	</column>
+</table>

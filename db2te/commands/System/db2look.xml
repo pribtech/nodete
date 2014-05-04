@@ -1,0 +1,216 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2009 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<command name="db2look" title="db2look">
+<![CDATA[
+>>-db2look-- -d--DBname--+-----+--+--------------+-------------->
+                         '- -e-'  '- -u--Creator-'   
+]]>
+	<text>db2look -d</text>
+	<clauseReference name="database-name"/>
+	<select>
+		<option default="true"><note>no extract</note></option> 
+		<option><text>-e</text><note>extract</note></option> 
+	</select>
+	<select>
+		<option default="true"><note>all creators</note></option> 
+		<option><text>-u</text><input size="32" title="creator"/></option> 
+	</select>
+	<br statement='false'/>
+<![CDATA[
+>--+-------------+--+-------------------------------------+----->
+   '- -z--schema-'  '-+----------------+--+-------------+-'   
+                      |      .-------. |  '- -tw--Tname-'     
+                      |      V       | |                      
+                      '- -t----Tname-+-'                      
+]]>
+	<select>
+		<option default="true"><note>all schemas</note></option> 
+		<option><text>-z</text><clauseReference name="schema-name"/></option> 
+	</select>
+	<select>
+		<option default="true"><note>all tables</note></option> 
+		<option>
+			<select>
+				<option default="true"><note>all tables</note></option> 
+				<option>
+					<text>-t</text>
+					<repeatable>
+						<clauseReference name="table-name"/>
+					</repeatable>
+				</option> 
+			</select>
+			<select>
+				<option default="true"><note>all schemas</note></option> 
+				<option><text>-tw</text><input size="32" title="table mask"/></option> 
+			</select>
+		</option> 
+	</select>
+	<br statement='false'/>
+<![CDATA[
+>--+------+--+------+--+----------------+--+-----+--+------+---->
+   '- -ct-'  '- -dp-'  |      .-------. |  '- -h-'  '- -ap-'   
+                       |      V       | |                      
+                       '- -v----Vname-+-'                      
+]]>
+	<select>
+		<option default="true"><note>order</note></option> 
+		<option><text>-ct</text><note>Generate DDL by object creation time</note></option> 
+	</select>
+	<select>
+		<option default="true"><note>no drop</note></option> 
+		<option><text>-dp</text><note>Generate DROP statement before CREATE statement</note></option> 
+	</select>
+	<select>
+		<option default="true"><note>all views</note></option> 
+		<option>
+			<text>-v</text>
+			<repeatable>
+				<clauseReference name="view-name"/>
+			</repeatable>
+		</option> 
+	</select>
+	<select>
+		<option default="true"><note>no audit DDL</note></option> 
+		<option><text>-ap</text><note>Generate audit</note></option> 
+	</select>
+	<br statement='false'/>
+<![CDATA[
+>--+------------+--+-----+--+-----------------------+----------->
+   '- -o--Fname-'  '- -a-'  '- -m--+-----+--+-----+-'   
+                                   '- -c-'  '- -r-'     
+]]>
+	<select>
+		<option default="true"><note>output to terminal</note></option> 
+		<option>
+			<text>-o</text><note>output file</note>
+			<clauseReference name="file-name"/>
+		</option> 
+	</select>
+	<select>
+		<option default="true"><note>limited objects</note></option> 
+		<option><text>-a</text><note>all objects</note></option> 
+	</select>
+	<select>
+		<option default="true"><note>no statistics</note></option> 
+		<option>
+			<text>-m</text><note>Generates the required UPDATE statements to replicate the statistics on tables, statistical views, columns and indexes. </note>
+			<select>
+				<option default="true"><note>commits</note></option> 
+				<option><text>-c</text><note>no commits</note></option> 
+			</select>
+			<select>
+				<option default="true"><note>runstats</note></option> 
+				<option><text>-r</text><note>no runstats</note></option> 
+			</select>
+		</option> 
+	</select>
+	<br statement='false'/>
+<![CDATA[
+>--+-----+--+-----+--+------+--+-----+--+-----------------+----->
+   '- -l-'  '- -x-'  '- -xd-'  '- -f-'  '- -td--delimiter-'   
+]]>
+	<select>
+		<option default="true"><note>limited object types</note></option> 
+		<option><text>-l</text><note>generate DDL for user defined table spaces, database partition groups and buffer pools</note></option> 
+	</select>
+	<select>
+		<option default="true"><note>no authorizations</note></option> 
+		<option><text>-x</text><note>generate authorization DDL</note></option> 
+	</select>
+	<select>
+		<option default="true"><note>no authorizations</note></option> 
+		<option><text>-xd</text><note>generate all authorization DDL's</note></option> 
+	</select>
+	<select>
+		<option default="true"><note>no configuration data</note></option> 
+		<option><text>-f</text><note>generate configuration </note></option> 
+	</select>
+
+	<select>
+		<option default="true"><note>delimiter ;</note></option> 
+		<option><text>-td</text><input size="1" /><note>delimiter</note></option> 
+	</select>
+	<br statement='false'/>
+<![CDATA[
+>--+----------+--+----------------------------+--+-------+------>
+   '- -noview-'  '- -i--userid-- -w--password-'  '- -wlm-'   
+]]>
+	<select>
+		<option default="true"><note>generate views</note></option> 
+		<option><text>-noview</text><note>don't generate views</note></option> 
+	</select>
+	<select>
+		<option default="true"><note>default user</note></option> 
+		<option><text>-i</text><note>user</note><clauseReference name="username"/></option> 
+	</select>
+	<select>
+		<option default="true"><note>no password</note></option> 
+		<option><text>-w</text><note>password</note><clauseReference name="password"/></option> 
+	</select>
+	<select>
+		<option default="true"><note>no WLM</note></option> 
+		<option><text>-wlm</text><note>generate WLM DDL</note></option> 
+	</select>
+	<br statement='false'/>
+<![CDATA[
+>--+------------------+--+---------+--+-----------+------------->
+   +- -wrapper--Wname-+  '- -nofed-'  '- -fedonly-'   
+   '- -server--Sname--'                               
+]]>
+	<select>
+		<option default="true"><note>generate views</note></option> 
+		<option><text>-wrapper</text><input size="32" title="wrapper name"/></option> 
+		<option><text>-server</text><input size="32" title="server name"/></option> 
+	</select>
+	<select>
+		<option default="true"><note>federated DDl</note></option> 
+		<option><text>-nofed</text><note>no federated DDL statements</note></option> 
+	</select>
+	<select>
+		<option default="true"><note>all DDL</note></option> 
+		<option><text>-fedonly</text><note>only federated DDL statements will be generated</note></option> 
+	</select>
+	<br statement='false'/>
+<![CDATA[
+>--+-------+--+---------------------------+--+-------+---------><
+   '- -mod-'  '- -xs--+-----------------+-'  '- -cor-'   
+                      '- -xdir--dirname-'                
+]]>
+	<select>
+		<option default="true"><note>no module DDl</note></option> 
+		<option><text>-mod</text><note>Generate module DDL</note></option> 
+	</select>
+	<select>
+		<option default="true"><note>no XML/DTD</note></option> 
+		<option>
+			<text>-xs</text>
+			<note>All files necessary to register XML schemas and DTDs at the target database</note>
+			<select>
+				<option default="true"><note>no XML/DTD</note></option>
+				<option><text>-xdir</text><clauseReference name="path-name"/></option> 
+			</select>
+		</option>
+	</select>
+	<select>
+		<option default="true"><note>no CREATE OR REPLACE clause</note></option> 
+		<option><text>-cor</text><note>Generate CREATE OR REPLACE clause</note></option> 
+	</select>
+
+
+</command>
+        

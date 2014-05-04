@@ -1,0 +1,100 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2011 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+
+<table name="SYSCAT.INVALIDOBJECTS">
+	<sql_name>SYSCAT.INVALIDOBJECTS</sql_name>
+	<singular_name>Invalid Object</singular_name>
+	<plural_name>Invalid Objects</plural_name>
+	<description/>
+	<disable_edit/>
+	<order_by_index/>
+	<display_columns>
+		<col type="column" name="objectschema"/>
+		<col type="column" name="objectmodulename"/>
+		<col type="column" name="objectname"/>
+		<col type="column" name="routinename"/>
+		<col type="column" name="objecttype"/>
+		<col type="column" name="sqlcode"/>
+		<col type="column" name="sqlstate"/>
+		<col type="column" name="errormessage"/>
+		<col type="column" name="linenumber"/>
+		<col type="column" name="invalidate_time"/>
+		<col type="column" name="last_regen_time"/>
+	</display_columns>
+	<column name="objectschema">
+		<sql_name>OBJECTSCHEMA</sql_name>
+		<title>Schema</title>
+		<type>s</type>
+		<drill_enable/>
+	</column>
+	<column name="objectmodulename">
+		<sql_name>OBJECTMODULENAME</sql_name>
+		<title>Module</title>
+		<type>s</type>
+		<drill_enable/>
+	</column>
+	<column name="objectname">
+		<sql_name>OBJECTNAME</sql_name>
+		<title>Name</title>
+		<type>s</type>
+		<drill_enable/>
+	</column>
+	<column name="routinename">
+		<sql_name>ROUTINENAME</sql_name>
+		<title>Routine</title>
+		<type>s</type>
+	</column>
+	<column name="objecttype">
+		<sql_name>OBJECTTYPE</sql_name>
+		<title>Type</title>
+		<type>s</type>
+		<drill_enable/>
+	</column>
+	<column name="sqlcode">
+		<sql_name>SQLCODE</sql_name>
+		<title>Sqlcode</title>
+		<type>n</type>
+	</column>
+	<column name="sqlstate">
+		<sql_name>SQLSTATE</sql_name>
+		<title>Sqlstate</title>
+		<type>s</type>
+		<drill_enable/>
+	</column>
+	<column name="errormessage">
+		<sql_name>ERRORMESSAGE</sql_name>
+		<title>Error</title>
+		<type>s</type>
+		<drill_enable/>
+	</column>
+	<column name="linenumber">
+		<sql_name>LINENUMBER</sql_name>
+		<title>Line No.</title>
+		<type>n</type>
+	</column>
+	<column name="invalidate_time">
+		<sql_name>INVALIDATE_TIME</sql_name>
+		<title>Invalidated</title>
+		<type>n</type>
+	</column>
+	<column name="last_regen_time">
+		<sql_name>LAST_REGEN_TIME</sql_name>
+		<title>Last Regenerated</title>
+		<type>n</type>
+	</column>
+</table>

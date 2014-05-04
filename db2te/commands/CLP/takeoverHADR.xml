@@ -1,0 +1,65 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2009 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<command name="startHADR" title="Start HADR">
+<![CDATA[
+Read syntax diagramSkip visual syntax diagram
+>>-TAKEOVER HADR ON--+-DATABASE-+--database-alias--------------->
+                     '-DB-------'                   
+
+>--+--------------------------------------+--------------------->
+   '-USER--user-name--+-----------------+-'   
+                      '-USING--password-'     
+
+>--+--------------------------------+--------------------------><
+   '-BY FORCE--+------------------+-'   
+               '-PEER WINDOW ONLY-'  
+]]>
+	<text>TAKEOVER HADR ON</text>
+	<select>
+		<option default="true"><text>DATABASE</text></option> 
+		<option><text>DB</text></option> 
+	</select>
+	<clauseReference name="database-name"/>
+	<br statement='false'/>
+	<select>
+		<option default="true"><note>default user</note></option> 
+		<option>
+			<text>USER</text>
+			<clauseReference name="username"/>
+			<select>
+				<option default="true"><note>prompt password</note></option> 
+				<option>
+					<text>USING</text>
+					<clauseReference name="password"/>
+				</option>
+			</select>
+		</option> 
+	</select>
+	<br statement='false'/>
+	<select>
+		<option default="true"><note></note></option> 
+		<option>
+			<text><text>BY FORCE</text></text>
+			<select>
+				<option default="true"><note></note></option> 
+				<option><text>PEER WINDOW ONLY</text></option> 
+			</select>
+		</option> 
+	</select>
+</command>
+        

@@ -1,0 +1,179 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2013 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+<table name="subscriptions">
+	<sqlName>subscriptions</sqlName>
+	<singularName>Subscription</singularName>
+	<pluralName>Subscriptions</pluralName>
+	<inlinequery>
+<![CDATA[
+MQCMD_INQUIRE_SUBSCRIPTION ? 
+]]>
+	</inlinequery>
+	<parameters>
+		<parm name="MQCACF_SUB_NAME">
+			<title>Subscription Mask</title>
+			<value>*</value>
+			<type>s</type>
+		</parm>
+	</parameters>
+	<displayColumns>
+		<col type="column" name="MQBACF_SUB_ID"/>
+		<col type="column" name="MQCACF_SUB_NAME"/>
+		<col type="column" name="MQCA_TOPIC_STRING"/>
+		<col type="column" name="MQCA_TOPIC_NAME"/>
+		<col type="column" name="MQCACF_DESTINATION"/>
+		<col type="column" name="MQCACF_DESTINATION_Q_MGR"/>
+		<col type="column" name="MQCACF_APPL_IDENTITY_DATA"/>
+		<col type="column" name="MQCACF_SUB_SELECTOR"/>
+		<col type="column" name="MQIACF_SELECTOR_TYPE"/>
+		<col type="column" name="MQCACF_SUB_USER_DATA"/>
+		<col type="column" name="MQBACF_ACCOUNTING_TOKEN"/>
+		<col type="column" name="MQBACF_DESTINATION_CORREL_ID"/>
+		<col type="column" name="MQIACF_DESTINATION_CLASS"/>
+		<col type="column" name="MQIACF_DURABLE_SUBSCRIPTION"/>
+		<col type="column" name="MQIACF_EXPIRY"/>
+		<col type="column" name="MQIACF_PUBSUB_PROPERTIES"/>
+		<col type="column" name="MQIACF_PUB_PRIORITY"/>
+		<col type="column" name="MQIACF_REQUEST_ONLY"/>
+		<col type="column" name="MQIACF_SUBSCRIPTION_SCOPE"/>
+		<col type="column" name="MQIACF_SUB_LEVEL"/>
+		<col type="column" name="MQIACF_SUB_TYPE"/>
+		<col type="column" name="MQIACF_VARIABLE_USER_ID"/>
+		<col type="column" name="MQIACF_WILDCARD_SCHEMA"/>
+		<col type="column" name="MQCACF_SUB_USER_ID"/>
+		<col type="column" name="MQCA_CREATION_DATE"/>
+		<col type="column" name="MQCA_CREATION_TIME"/>
+		<col type="column" name="MQCA_ALTERATION_DATE"/>
+		<col type="column" name="MQCA_ALTERATION_TIME"/>
+	</displayColumns>
+	<column name="MQBACF_SUB_ID">
+		<sqlName>MQBACF_SUB_ID</sqlName>
+		<title>Id</title>
+	</column>
+	<column name="MQCACF_SUB_NAME">
+		<sqlName>MQCACF_SUB_NAME</sqlName>
+		<title>Name</title>
+	</column>
+	<column name="MQCA_TOPIC_STRING">
+		<sqlName>MQCA_TOPIC_STRING</sqlName>
+		<title>Topic String</title>
+	</column>
+	<column name="MQCA_TOPIC_NAME">
+		<sqlName>MQCA_TOPIC_NAME</sqlName>
+		<title>Topic Name</title>
+	</column>
+	<column name="MQCACF_DESTINATION">
+		<sqlName>MQCACF_DESTINATION</sqlName>
+		<title>Destination</title>
+	</column>
+	<column name="MQCACF_DESTINATION_Q_MGR">
+		<sqlName>MQCACF_DESTINATION_Q_MGR</sqlName>
+		<title>Destination Q Mgr</title>
+	</column>
+	<column name="MQCACF_APPL_IDENTITY_DATA">
+		<sqlName>MQCACF_APPL_IDENTITY_DATA</sqlName>
+		<title>Appl Identity Data</title>
+	</column>
+	<column name="MQCACF_SUB_SELECTOR">
+		<sqlName>MQCACF_SUB_SELECTOR</sqlName>
+		<title>Selector</title>
+	</column>
+	<column name="MQIACF_SELECTOR_TYPE">
+		<sqlName>MQIACF_SELECTOR_TYPE</sqlName>
+		<title>Selector Type</title>
+	</column>
+	<column name="MQCACF_SUB_USER_DATA">
+		<sqlName>MQCACF_SUB_USER_DATA</sqlName>
+		<title>User Data</title>
+
+	</column>
+	<column name="MQBACF_ACCOUNTING_TOKEN">
+		<sqlName>MQBACF_ACCOUNTING_TOKEN</sqlName>
+		<title>Accounting Token</title>
+	</column>
+	<column name="MQBACF_DESTINATION_CORREL_ID">
+		<sqlName>MQBACF_DESTINATION_CORREL_ID</sqlName>
+		<title>Destination Correl Id</title>
+	</column>
+	<column name="MQIACF_DESTINATION_CLASS">
+		<sqlName>MQIACF_DESTINATION_CLASS</sqlName>
+		<title>Destination Class</title>
+	</column>
+	<column name="MQIACF_DURABLE_SUBSCRIPTION">
+		<sqlName>MQIACF_DURABLE_SUBSCRIPTION</sqlName>
+		<title>Durable</title>
+	</column>
+	<column name="MQIACF_EXPIRY">
+		<sqlName>MQIACF_EXPIRY</sqlName>
+		<title>Expiry</title>
+	</column>
+	<column name="MQIACF_PUBSUB_PROPERTIES">
+		<sqlName>MQIACF_PUBSUB_PROPERTIES</sqlName>
+		<title>Properties</title>
+	</column>
+	<column name="MQIACF_PUB_PRIORITY">
+		<sqlName>MQIACF_PUB_PRIORITY</sqlName>
+		<title>Pub Priority</title>
+		<type>n</type>
+	</column>
+	<column name="MQIACF_REQUEST_ONLY">
+		<sqlName>MQIACF_REQUEST_ONLY</sqlName>
+		<title>Request Only</title>
+	</column>
+	<column name="MQIACF_SUBSCRIPTION_SCOPE">
+		<sqlName>MQIACF_SUBSCRIPTION_SCOPE</sqlName>
+		<title>Scope</title>
+	</column>
+	<column name="MQIACF_SUB_LEVEL">
+		<sqlName>MQIACF_SUB_LEVEL</sqlName>
+		<title>Sub Level</title>
+		<type>n</type>
+	</column>
+	<column name="MQIACF_SUB_TYPE">
+		<sqlName>MQIACF_SUB_TYPE</sqlName>
+		<title>Type</title>
+	</column>
+	<column name="MQIACF_VARIABLE_USER_ID">
+		<sqlName>MQIACF_VARIABLE_USER_ID</sqlName>
+		<title>Variable User Id</title>
+	</column>
+	<column name="MQIACF_WILDCARD_SCHEMA">
+		<sqlName>MQIACF_WILDCARD_SCHEMA</sqlName>
+		<title>Wildcard Schema</title>
+	</column>
+	<column name="MQCACF_SUB_USER_ID">
+		<sqlName>MQCACF_SUB_USER_ID</sqlName>
+		<title>Sub User Id</title>
+	</column>
+	<column name="MQCA_CREATION_DATE">
+		<sqlName>MQCA_CREATION_DATE</sqlName>
+		<title>Creation Date</title>
+	</column>
+	<column name="MQCA_CREATION_TIME">
+		<sqlName>MQCA_CREATION_TIME</sqlName>
+		<title>Creation Time</title>
+	</column>
+	<column name="MQCA_ALTERATION_DATE">
+		<sqlName>MQCA_ALTERATION_DATE</sqlName>
+		<title>Alteration Date</title>
+	</column>
+	<column name="MQCA_ALTERATION_TIME">
+		<sqlName>MQCA_ALTERATION_TIME</sqlName>
+		<title>Alteration Time</title>
+	</column>
+</table>

@@ -1,0 +1,415 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2009 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<clause name="OLAP-specification" title="OLAP specification">
+<![CDATA[
+|--+-| ordered-OLAP-specification |-+---------------------------|
+   +-| numbering-specification |----+   
+   '-| aggregation-specification |--'   
+]]>
+	<select>
+		<option default="true"><clauseReference name="ordered-OLAP-specification"/></option>
+		<option><clauseReference name="numbering-specification"/></option>
+		<option><clauseReference name="aggregation-specification"/></option>
+	</select>
+
+	<clause name="ordered-OLAP-specification" title="ordered OLAP specification">
+<![CDATA[
+|--+-| lag-function |--+--OVER---------------------------------->
+   +-| lead-function |-+         
+   +-RANK ()-----------+         
+   '------'         
+
+>--(--+-----------------------------+--------------------------->
+      '-| window-partition-clause |-'   
+
+>--| window-order-clause |--)-----------------------------------|
+]]>
+		<select>
+			<option default="true"><clauseReference name="lag-function"/></option>
+			<option><clauseReference name="lead-function"/></option>
+			<option><text>RANK ()</text></option>
+			<option><text>DENSE RANK ()</text></option>
+		</select>
+		<text>OVER</text>
+		<br/>
+		<text>(</text>
+		<select>
+			<option default="true"><note>window partition</note></option>
+			<option><clauseReference name="window-partition-clause"/></option>
+		</select>
+		<br/>
+		<clauseReference name="window-order-clause"/>
+		<text>)</text>
+	</clause>
+
+	<clause name="lag-function" title="lag function">
+<![CDATA[
+|--LAG--(--expression------------------------------------------->
+
+>--+-------------------------------------------------------------+--)--|
+   '-,--offset--+----------------------------------------------+-'      
+                '-,--default-value--+------------------------+-'        
+                                    '-,--+-'RESPECT NULLS'-+-'          
+                                         '-'IGNORE NULLS'--'            
+]]>
+		<text>LAG (</text>
+		<clauseReference name="expression"/>
+		<select>
+			<option default="true"><note>no offset</note></option>
+			<option>
+				<text>,</text>
+				<clauseReference name="offset"/>
+			</option>
+			<option>
+				<select>
+					<option default="true"><note>no default</note></option>
+					<option>
+						<text>,</text>
+						<clauseReference name="default-value"/>
+					</option>
+					<option>
+						<select>
+							<option default="true"><note>no null override</note></option>
+							<option>
+								<text>,</text>
+								<select>
+									<option default="true"><text>'RESPECT NULLS'</text></option>
+									<option><text>'IGNORE NULLS'</text></option>
+								</select>
+							</option>
+						</select>
+					</option>
+					</select>
+			</option>
+		</select>
+		<text>)</text>
+	</clause>
+
+	<clause name="lead-function" title="lead functionn">
+<![CDATA[
+|--LEAD--(--expression------------------------------------------>
+
+>--+-------------------------------------------------------------+--)--|
+   '-,--offset--+----------------------------------------------+-'      
+                '-,--default-value--+------------------------+-'        
+                                    '-,--+-'RESPECT NULLS'-+-'          
+                                         '-'IGNORE NULLS'--'            
+]]>
+		<text>LEAD (</text>
+		<clauseReference name="expression"/>
+		<select>
+			<option default="true"><note>no offset</note></option>
+			<option>
+				<text>,</text>
+				<clauseReference name="offset"/>
+			</option>
+			<option>
+				<select>
+					<option default="true"><note>no default</note></option>
+					<option>
+						<text>,</text>
+						<clauseReference name="default-value"/>
+					</option>
+					<option>
+						<select>
+							<option default="true"><note>no null override</note></option>
+							<option>
+								<text>,</text>
+								<select>
+									<option default="true"><text>'RESPECT NULLS'</text></option>
+									<option><text>'IGNORE NULLS'</text></option>
+								</select>
+							</option>
+						</select>
+					</option>
+					</select>
+			</option>
+		</select>
+		<text>)</text>
+	</clause>
+
+	<clause name="window-partition-clause" title="window partition clause">
+<![CDATA[
+                 .-,-----------------------.   
+                 V                         |   
+|--PARTITION BY----partitioning-expression-+--------------------|
+]]>
+		<text>PARTITION BY</text>
+		<repeatable>
+			<clauseReference name="partitioning-expression"/>
+		</repeatable>
+	</clause>
+
+	<clause name="window-order-clause" title="window order clause">
+<![CDATA[
+             .-,--------------------------------------------.   
+             V                                              |   
+|--ORDER BY----+-sort-key-expression--+-| asc-option |--+-+-+---|
+               |                      '-| desc-option |-' |     
+               '-ORDER OF--table-designator---------------'     
+]]>
+		<text>ORDER BY</text>
+		<repeatable>
+			<select>
+				<option default="true">
+					<clauseReference name="sort-key-expression"/>
+					<select>
+						<option default="true"><clauseReference name="asc-option"/></option>
+						<option><clauseReference name="desc-option"/></option>
+					</select>
+				</option>
+				<option><text>ORDER OF</text><clauseReference name="table-designator"/></option>
+			</select>
+		</repeatable>
+	</clause>
+
+	<clause name="asc-option" title="asc option">
+<![CDATA[
+   .-ASC-.  .-NULLS LAST--.   
+|--+-----+--+-------------+-------------------------------------|
+            '-NULLS FIRST-'   
+]]>
+		<select>
+			<option><text>ASC</text></option>
+			<option default="true"><note>ASC</note></option>
+		</select>
+		<select>
+			<option><text>NULLS LAST</text></option>
+			<option default="true"><note>null last</note></option>
+			<option><text>NULLS FIRST</text></option>
+		</select>
+	</clause>
+
+	<clause name="desc-option" title="desc-option">
+<![CDATA[
+         .-NULLS FIRST-.   
+|--DESC--+-------------+----------------------------------------|
+         '-NULLS LAST--'   
+]]>
+	</clause>
+
+	<clause name="numbering-specification" title="numbering-specification">
+<![CDATA[
+|--ROW_NUMBER ()--OVER--(--+-----------------------------+------>
+                           '-| window-partition-clause |-'   
+
+>--+-------------------------+--)-------------------------------|
+   '-| window-order-clause |-'      
+
+]]>
+		<text>ROW_NUMBER () OVER (</text>
+		<select>
+			<option default="true"><note>no window partition</note></option>
+			<option><clauseReference name="window-partition-clause"/></option>
+		</select>
+		<br/>
+		<select>
+			<option default="true"><note>no order</note></option>
+			<option><clauseReference name="window-order-clause"/></option>
+		</select>
+	</clause>
+
+	<clause name="aggregation-specification" title="aggregation specification">
+<![CDATA[
+                     (1)                
+|--+-column-function----------+--OVER--------------------------->
+   '-| OLAP-column-function |-'         
+
+>--(--+-----------------------------+--------------------------->
+      '-| window-partition-clause |-'   
+
+   .-RANGE BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING----------------------.   
+>--+--------------------------------------------------------------------------------+-->
+   |                          .-RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW-. |   
+   '-| window-order-clause |--+---------------------------------------------------+-'   
+                              '-| window-aggregation-group-clause |---------------'     
+
+>--)------------------------------------------------------------|
+]]>
+		<select>
+			<option default="true"><clauseReference name="column-function"/></option>
+			<option><clauseReference name="OLAP-column-function"/></option>
+		</select>
+		<text>OVER</text>
+		<br/>
+		<text>(</text>
+		<select>
+			<option><text>RANGE BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING</text></option>
+			<option default="true"><note>range between unbounded preceding and unbounded following</note></option>
+			<option>
+				<clauseReference name="window-order-clause"/>
+				<select>
+					<option><text>RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW</text></option>
+					<option default="true"><note>range between unbounded preceding and current row</note></option>
+					<option><clauseReference name="window-aggregation-group-clause"/></option>
+				</select>
+			</option>
+		</select>
+		<br/>
+		<text>)</text>
+	</clause>
+
+	<clause name="OLAP-column-function" title="OLAP column function">
+<![CDATA[
+|--+-| first-value-function |-+---------------------------------|
+   '-| last-value-function |--'   
+]]>
+		<select>
+			<option default="true"><clauseReference name="first-value-function"/></option>
+			<option><clauseReference name="last-value-function"/></option>
+		</select>
+	</clause>
+
+	<clause name="first-value-function" title="first value function">
+<![CDATA[
+|--FIRST_VALUE--(--expression--+------------------------+--)----|
+                               '-,--+-'RESPECT NULLS'-+-'      
+                                    '-'IGNORE NULLS'--'        
+]]>
+		<text>FIRST_VALUE (</text>
+		<clauseReference name="expression"/>
+		<select>
+			<option default="true"><note>no null override</note></option>
+			<option>
+				<text>,</text>
+				<select>
+					<option default="true"><text>'RESPECT NULLS'</text></option>
+					<option><text>'IGNORE NULLS'</text></option>
+				</select>
+			</option>
+		</select>
+	</clause>
+
+	<clause name="last-value-function" title="last value function">
+<![CDATA[
+|--LAST_VALUE--(--expression--+------------------------+--)-----|
+                              '-,--+-'RESPECT NULLS'-+-'      
+                                   '-'IGNORE NULLS'--'        
+]]>
+		<text>LAST_VALUE (</text>
+		<clauseReference name="expression"/>
+		<select>
+			<option default="true"><note>no null override</note></option>
+			<option>
+				<text>,</text>
+				<select>
+					<option default="true"><text>'RESPECT NULLS'</text></option>
+					<option><text>'IGNORE NULLS'</text></option>
+				</select>
+			</option>
+		</select>
+	</clause>
+
+	<clause name="window-aggregation-group-clause" title="window aggregation group clause">
+<![CDATA[
+|--+-ROWS--+--+-| group-start |---+-----------------------------|
+   '-RANGE-'  +-| group-between |-+   
+              '-| group-end |-----'   
+]]>
+		<select>
+			<option default="true"><text>ROWS</text></option>
+			<option><text>RANGE</text></option>
+		</select>
+		<select>
+			<option default="true"><clauseReference name="group-start"/></option>
+			<option><clauseReference name="group-between"/></option>
+			<option><clauseReference name="group-end"/></option>
+		</select>
+	</clause>
+
+	<clause name="group-start" title="group start">
+<![CDATA[
+|--+-UNBOUNDED PRECEDING----------+-----------------------------|
+   +-unsigned-constant--PRECEDING-+   
+   '-CURRENT ROW------------------'   
+]]>
+		<select>
+			<option default="true"><text>UNBOUNDED PRECEDING</text></option>
+			<option><clauseReference name="unsigned-constant"/><text>PRECEDING</text></option>
+			<option><text>CURRENT ROW</text></option>
+		</select>
+	</clause>
+
+	<clause name="group-between" title="group between">
+<![CDATA[
+|--BETWEEN--| group-bound1 |--AND--| group-bound2 |-------------|
+]]>
+		<text>BETWEEN</text>
+		<clauseReference name="group-bound1"/>
+		<text>AND</text>
+		<clauseReference name="group-bound2"/>
+	</clause>
+
+	<clause name="group-bound1" title="group bound1">
+<![CDATA[
+|--+-UNBOUNDED PRECEDING----------+-----------------------------|
+   +-unsigned-constant--PRECEDING-+   
+   +-unsigned-constant--FOLLOWING-+   
+   '-CURRENT ROW------------------'   
+]]>
+		<select>
+			<option default="true"><text>UNBOUNDED PRECEDING</text></option>
+			<option><clauseReference name="unsigned-constant"/><text>PRECEDING</text></option>
+			<option><clauseReference name="unsigned-constant"/><text>FOLLOWING</text></option>
+			<option><text>CURRENT ROW</text></option>
+		</select>
+	</clause>
+
+	<clause name="group-bound2" title="group-bound2">
+<![CDATA[
+|--+-UNBOUNDED FOLLOWING----------+-----------------------------|
+   +-unsigned-constant--PRECEDING-+   
+   +-unsigned-constant--FOLLOWING-+   
+   '-CURRENT ROW------------------'   
+]]>
+		<select>
+			<option default="true"><text>UNBOUNDED FOLLOWING</text></option>
+			<option><clauseReference name="unsigned-constant"/><text>PRECEDING</text></option>
+			<option><clauseReference name="unsigned-constant"/><text>FOLLOWING</text></option>
+			<option><text>CURRENT ROW</text></option>
+		</select>
+	</clause>
+
+	<clause name="group-end" title="group end">
+<![CDATA[
+|--+-UNBOUNDED FOLLOWING----------+-----------------------------|
+   '-unsigned-constant--FOLLOWING-'   
+]]>
+		<select>
+			<option default="true"><text>UNBOUNDED FOLLOWING</text></option>
+			<option><clauseReference name="unsigned-constant"/><text>FOLLOWING</text></option>
+		</select>
+	</clause>
+
+	<clause name="offset">
+		<text>offset *** to be done ***</text>
+	</clause>
+	<clause name="default-value">
+		<text>default-value *** to be done ***</text>
+	</clause>
+	<clause name="partitioning-expression">
+		<text>partitioning-expression *** to be done ***</text>
+	</clause>
+	<clause name="column-function">
+		<text>column-function *** to be done ***</text>
+	</clause>
+	<clause name="unsigned-constant">
+		<text>column-function *** to be done ***</text>
+	</clause>
+ 
+</clause>

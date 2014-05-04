@@ -1,0 +1,70 @@
+<table name="sessionIO">
+	<sqlName>v$sess_io</sqlName>
+	<singularName>Session IO</singularName>
+	<pluralName>Sessions IO</pluralName>
+	<description></description>
+	<output>
+		<type name="DDL" destination="" title="" generator=""/>
+	</output>
+	<disable_edit/>
+	<orderBy name="PHYSICAL_READS" direction="d"/>
+	<displayColumns>
+		<col type="column" name="SID"/>
+		<col type="reference" name="session"/>
+		<col type="column" name="RATIO"/>
+		<col type="column" name="BLOCK_GETS"/>
+		<col type="column" name="CONSISTENT_GETS"/>
+		<col type="column" name="PHYSICAL_READS"/>
+		<col type="column" name="BLOCK_CHANGES"/>
+		<col type="column" name="CONSISTENT_CHANGES"/>
+	</displayColumns>
+	<reference name="session">
+		<title>Session</title>
+		<reftype>displayRow</reftype>
+		<refvalue>Oracle/Monitor/session</refvalue>
+		<icon>images/icon-column.gif</icon>
+		<ref foreign_column_name="SID">
+			<local_column_name>SID</local_column_name>
+		</ref>
+	</reference>
+	<column name="SID">
+		<sqlName>SID</sqlName>
+		<title>Sid</title>
+		<type>n</type>
+	</column>
+	<column name="BLOCK_GETS">
+		<sqlName>BLOCK_GETS</sqlName>
+		<title>Block Gets</title>
+		<type>n</type>
+	</column>
+	<column name="CONSISTENT_GETS">
+		<sqlName>CONSISTENT_GETS</sqlName>
+		<title>Consistent Gets</title>
+		<type>n</type>
+	</column>
+	<column name="PHYSICAL_READS">
+		<sqlName>PHYSICAL_READS</sqlName>
+		<title>Physical Reads</title>
+		<type>n</type>
+	</column>
+	<column name="BLOCK_CHANGES">
+		<sqlName>BLOCK_CHANGES</sqlName>
+		<title>Block Changes</title>
+		<type>n</type>
+	</column>
+	<column name="CONSISTENT_CHANGES">
+		<sqlName>CONSISTENT_CHANGES</sqlName>
+		<title>Consistent Changes</title>
+		<type>n</type>
+	</column>
+	<column name="RATIO">
+		<sqlName>(100*(CONSISTENT_GETS+BLOCK_GETS-PHYSICAL_READS) / nullif(CONSISTENT_GETS+BLOCK_GETS,0)) </sqlName>
+		<title>Hit Ratio(%)</title>
+		<type>n</type>
+		<formatNumber round="true" toFixedVal="1" />
+		<style>
+			<option lt='80.0' style='ERROR'/>
+			<option lt='90.0' style='WARNING'/>
+		</style>		
+	</column>
+</table>

@@ -1,0 +1,293 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2009 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+<table name="snapDBM">
+	<sql_name>SYSIBMADM.SNAPDBM</sql_name>
+	<singular_name>Instance</singular_name>
+	<plural_name>Instances</plural_name>
+	<description></description>
+	<display_columns>
+		<col type="column" name="SNAPSHOT_TIMESTAMP"/>
+		<col type="column" name="SORT_HEAP_ALLOCATED"/>
+		<col type="column" name="POST_THRESHOLD_SORTS"/>
+		<col type="column" name="PIPED_SORTS_REQUESTED"/>
+		<col type="column" name="PIPED_SORTS_ACCEPTED"/>
+		<col type="column" name="REM_CONS_IN"/>
+		<col type="column" name="REM_CONS_IN_EXEC"/>
+		<col type="column" name="LOCAL_CONS"/>
+		<col type="column" name="LOCAL_CONS_IN_EXEC"/>
+		<col type="column" name="CON_LOCAL_DBASES"/>
+		<col type="column" name="AGENTS_REGISTERED"/>
+		<col type="column" name="AGENTS_WAITING_ON_TOKEN"/>
+		<col type="column" name="DB2_STATUS"/>
+		<col type="column" name="AGENTS_REGISTERED_TOP"/>
+		<col type="column" name="AGENTS_WAITING_TOP"/>
+		<col type="column" name="COMM_PRIVATE_MEM"/>
+		<col type="column" name="IDLE_AGENTS"/>
+		<col type="column" name="AGENTS_FROM_POOL"/>
+		<col type="column" name="AGENTS_CREATED_EMPTY_POOL"/>
+		<col type="column" name="COORD_AGENTS_TOP"/>
+		<col type="column" name="MAX_AGENT_OVERFLOWS"/>
+		<col type="column" name="AGENTS_STOLEN"/>
+		<col type="column" name="GW_TOTAL_CONS"/>
+		<col type="column" name="GW_CUR_CONS"/>
+		<col type="column" name="GW_CONS_WAIT_HOST"/>
+		<col type="column" name="GW_CONS_WAIT_CLIENT"/>
+		<col type="column" name="POST_THRESHOLD_HASH_JOINS"/>
+		<col type="column" name="NUM_GW_CONN_SWITCHES"/>
+		<col type="column" name="DB2START_TIME"/>
+		<col type="column" name="LAST_RESET"/>
+		<col type="column" name="NUM_NODES_IN_DB2_INSTANCE"/>
+		<col type="column" name="PRODUCT_NAME"/>
+		<col type="column" name="SERVICE_LEVEL"/>
+		<col type="column" name="SORT_HEAP_TOP"/>
+		<col type="column" name="DBPARTITIONNUM"/>
+		<col type="column" name="POST_THRESHOLD_OLAP_FUNCS"/>
+	</display_columns>
+	<disable_edit/>
+	<column name="SNAPSHOT_TIMESTAMP">
+		<c_sql_name>SNAPSHOT_TIMESTAMP</c_sql_name>
+		<c_title>Timestamp</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="SORT_HEAP_ALLOCATED">
+		<c_sql_name>SORT_HEAP_ALLOCATED</c_sql_name>
+		<c_title>Sort Heap Allocated</c_title>
+		<c_presentation></c_presentation>
+
+		<c_drill>n</c_drill>
+	</column>
+	<column name="POST_THRESHOLD_SORTS">
+		<c_sql_name>POST_THRESHOLD_SORTS</c_sql_name>
+		<c_title>Post Threshold Sorts</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>n</c_drill>
+
+	</column>
+	<column name="PIPED_SORTS_REQUESTED">
+		<c_sql_name>PIPED_SORTS_REQUESTED</c_sql_name>
+		<c_title>Piped Sorts Requested</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+
+	<column name="PIPED_SORTS_ACCEPTED">
+		<c_sql_name>PIPED_SORTS_ACCEPTED</c_sql_name>
+		<c_title>Piped Sorts Accepted</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="REM_CONS_IN">
+		<c_sql_name>REM_CONS_IN</c_sql_name>
+		<c_title>Remote In</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="REM_CONS_IN_EXEC">
+		<c_sql_name>REM_CONS_IN_EXEC</c_sql_name>
+		<c_title>Remote In Exec.</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="LOCAL_CONS">
+		<c_sql_name>LOCAL_CONS</c_sql_name>
+		<c_title>Local Conn's</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="LOCAL_CONS_IN_EXEC">
+		<c_sql_name>LOCAL_CONS_IN_EXEC</c_sql_name>
+		<c_title>Local In Exec.</c_title>
+		<c_presentation></c_presentation>
+
+		<c_drill>n</c_drill>
+	</column>
+	<column name="CON_LOCAL_DBASES">
+		<c_sql_name>CON_LOCAL_DBASES</c_sql_name>
+		<c_title>Conn's Local</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>n</c_drill>
+
+	</column>
+	<column name="AGENTS_REGISTERED">
+		<c_sql_name>AGENTS_REGISTERED</c_sql_name>
+		<c_title>Agents Registered</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+
+	<column name="AGENTS_WAITING_ON_TOKEN">
+		<c_sql_name>AGENTS_WAITING_ON_TOKEN</c_sql_name>
+		<c_title>Agents Waiting on Token</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="DB2_STATUS">
+		<c_sql_name>DB2_STATUS</c_sql_name>
+		<c_title>DB2 Status</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="AGENTS_REGISTERED_TOP">
+		<c_sql_name>AGENTS_REGISTERED_TOP</c_sql_name>
+		<c_title>Agents Registered Top</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="AGENTS_WAITING_TOP">
+		<c_sql_name>AGENTS_WAITING_TOP</c_sql_name>
+		<c_title>Agents Waiting Top</c_title>
+
+		<c_presentation></c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="COMM_PRIVATE_MEM">
+		<c_sql_name>COMM_PRIVATE_MEM</c_sql_name>
+		<c_title>Comm. Private Mem.</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="IDLE_AGENTS">
+		<c_sql_name>IDLE_AGENTS</c_sql_name>
+		<c_title>Idle Agents</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>n</c_drill>
+
+	</column>
+	<column name="AGENTS_FROM_POOL">
+		<c_sql_name>AGENTS_FROM_POOL</c_sql_name>
+		<c_title>Agents From Pool</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+
+	<column name="AGENTS_CREATED_EMPTY_POOL">
+		<c_sql_name>AGENTS_CREATED_EMPTY_POOL</c_sql_name>
+		<c_title>Agents Created Empty Pool</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="COORD_AGENTS_TOP">
+		<c_sql_name>COORD_AGENTS_TOP</c_sql_name>
+		<c_title>Co-ord. Agents Top</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="MAX_AGENT_OVERFLOWS">
+		<c_sql_name>MAX_AGENT_OVERFLOWS</c_sql_name>
+		<c_title>Max Agents Overflows</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="AGENTS_STOLEN">
+		<c_sql_name>AGENTS_STOLEN</c_sql_name>
+		<c_title>Agents Stolen</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="GW_TOTAL_CONS">
+		<c_sql_name>GW_TOTAL_CONS</c_sql_name>
+		<c_title>GW Total Conns.</c_title>
+		<c_presentation></c_presentation>
+
+		<c_drill>n</c_drill>
+	</column>
+	<column name="GW_CUR_CONS">
+		<c_sql_name>GW_CUR_CONS</c_sql_name>
+		<c_title>GW Connections</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>n</c_drill>
+
+	</column>
+	<column name="GW_CONS_WAIT_HOST">
+		<c_sql_name>GW_CONS_WAIT_HOST</c_sql_name>
+		<c_title>GW Conns Wait Host</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+
+	<column name="GW_CONS_WAIT_CLIENT">
+		<c_sql_name>GW_CONS_WAIT_CLIENT</c_sql_name>
+		<c_title>GW Conns Wait Client</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="POST_THRESHOLD_HASH_JOINS">
+		<c_sql_name>POST_THRESHOLD_HASH_JOINS</c_sql_name>
+		<c_title>Post Threshold Hash Joins</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="NUM_GW_CONN_SWITCHES">
+		<c_sql_name>NUM_GW_CONN_SWITCHES</c_sql_name>
+		<c_title>No. GW Conn. Switches</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="DB2START_TIME">
+		<c_sql_name>DB2START_TIME</c_sql_name>
+		<c_title>DB2 Start Time</c_title>
+
+		<c_presentation></c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="LAST_RESET">
+		<c_sql_name>LAST_RESET</c_sql_name>
+		<c_title>Last Reset</c_title>
+		<c_presentation></c_presentation>
+
+		<c_drill>n</c_drill>
+	</column>
+	<column name="NUM_NODES_IN_DB2_INSTANCE">
+		<c_sql_name>NUM_NODES_IN_DB2_INSTANCE</c_sql_name>
+		<c_title>Num Nodes In DB2 Instance</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>n</c_drill>
+
+	</column>
+	<column name="PRODUCT_NAME">
+		<c_sql_name>PRODUCT_NAME</c_sql_name>
+		<c_title>Product</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="SERVICE_LEVEL">
+		<c_sql_name>SERVICE_LEVEL</c_sql_name>
+		<c_title>Service Level</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="SORT_HEAP_TOP">
+		<c_sql_name>SORT_HEAP_TOP</c_sql_name>
+		<c_title>Sort Heal Top</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="DBPARTITIONNUM">
+		<c_sql_name>DBPARTITIONNUM</c_sql_name>
+		<c_title>Partition</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="POST_THRESHOLD_OLAP_FUNCS">
+		<c_sql_name>POST_THRESHOLD_OLAP_FUNCS</c_sql_name>
+		<c_title>Post Threshoild OLAP Funcs</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+</table>

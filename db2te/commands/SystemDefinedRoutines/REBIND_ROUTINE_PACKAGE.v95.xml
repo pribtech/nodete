@@ -1,0 +1,64 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2011 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<command name="REBIND_ROUTINE_PACKAGE_V95" title="REBIND_ROUTINE_PACKAGE">
+<![CDATA[
+Read syntax diagramSkip visual syntax diagram
+>>-REBIND_ROUTINE_PACKAGE--------------------------------------->
+
+>--(--type--,--routine-name-string--,--resolve--)--------------><
+
+
+]]>
+	<text>CALL REBIND_ROUTINE_PACKAGE (</text>
+		<clauseReference name="type"/>
+		<text spacepad="false"> , '</text>
+		<input size="64" name='routine-name' title="routine name"/> 
+		<text spacepad="false">' , '</text>
+		<input spacepad="false" type="list" name='resolve' help="resolve">
+			<option>ANY</option>
+			<option>CONSERVATIVE</option>
+		</input>
+		<text spacepad="false">'</text>
+	<text>)</text>
+
+	<clause name="type">
+			<text spacepad="false">'</text>
+			<input spacepad="false" name='type' type="list" help="type">
+				<option>P</option>
+				<option>SP</option>
+			</input>
+			<text spacepad="false">'</text>
+	</clause>
+	<help name='type'>
+		<![CDATA[
+			<table>
+				<tr><td>'P' </td><td>for a procedure</td></tr>
+				<tr><td>'SP'</td><td>for the specific name of a procedure</td></tr>
+			</table>
+		]]>
+	</help>
+	<help name='resolve'>
+		<![CDATA[
+			<table>
+				<tr><td>ANY</td><td>All possible matches in the SQL path are considered for resolving references to any objects that use the SQL path for object resolution</td></tr>
+				<tr><td>CONSERVATIVE</td><td>Only those objects that were defined before the last explicit bind time stamp are considered for resolution</td></tr>
+			</table>
+		]]>
+	</help>
+</command>
+        

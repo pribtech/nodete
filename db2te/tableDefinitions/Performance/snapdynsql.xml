@@ -1,0 +1,363 @@
+<!--
+  Copyright IBM Corp. 2007 All rights reserved.
+  Modified peter prib, Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2012 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+
+<table name="snapdynsql">
+	<sql_name>SNAPDYNSQL</sql_name>
+	<singular_name>Dynamic Statement</singular_name>
+	<plural_name>Dynamic Statements</plural_name>
+	<queryfile>predefined/Dynamic.SQL</queryfile>
+	<description>This returns the top &lt;a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.admin.dbobj.doc/doc/c0021364.html?noframes=true');"&gt;dynamic SQL or XQuery&lt;/a&gt;		
+		&lt;a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.admin.dbobj.doc/doc/r0011049.html?noframes=true');"&gt;statement&lt;/a&gt;.
+		sortable by number of executions, average execution time, number of sorts, or sorts per statement. 
+		These are the queries that should get focus to ensure they are well tuned.
+		This list is based on the &lt;a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.admin.dbobj.doc/doc/r0022005.html?noframes=true');"&gt;SYSIBMADM.SNAPDYN_SQL&lt;/a&gt; administrative view.
+	</description>		
+	<rowStyle interfaceColumn='average_execution_time'>
+		<option gt='1' style='ERROR'/>
+		<option gt='0.01' style='WARNING'/>
+	</rowStyle>		
+	<order_by_index name="average_execution_time" direction="D"/>
+	<output>
+		<type name="DDL" destination="" title="" generator=""/>
+		<type name="ADHOC" destination="adhoc" title="Statement" generator="XSL/compareSQLStmtTxt.xsl"/>
+	</output>		
+	<display_columns>
+		<col type="column" name="numexec"/>
+		<col type="column" name="average_execution_time"/>
+		<col type="column" name="cpu_per_execution"/>
+		<col type="column" name="sorts_per_execution"/>
+		<col type="column" name="rowsread_per_execution"/>
+		<col type="column" name="stmt_sorts"/>
+		<col type="column" name="rowsread"/>
+		<col type="column" name="rowwrite"/>
+		<col type="column" name="exectime"/>
+		<col type="column" name="totCpuTime"/>
+		<col type="action" name="visualExplain"/>
+		<col type="action" name="db2advis"/>
+		<col type="column" name="stmttext"/>
+	</display_columns>
+	<action name="visualExplain">
+		<title>Explain</title>
+    	<actionScript>
+    		<task>
+				<assignSharedConstant name="stmttext" type="blockValue" transform="dropSquareBracketPrefix">
+					<value>stmttext</value>
+				</assignSharedConstant>
+	   			<callGlobalAction name="DB2ExplainDynamicSQL"/>				
+	   		</task>
+    	</actionScript>
+    </action>
+	<action name="db2expln">
+		<title>db2expln</title>
+    	<actionScript>
+    		<task>
+    			<lock/>
+    			<action name="getSession" type="serverAction" >
+					<parameterList>
+						<parameter name="action" type="raw">
+							<value>getSessionVariable</value>
+						</parameter>
+						<parameter name="name[database]" type="fixed">
+							<value>Connections.USE_DATABASE_CONNECTION.database</value>
+						</parameter>
+						<parameter name="name[schema]" type="fixed">
+							<value>Connections.USE_DATABASE_CONNECTION.schema</value>
+						</parameter>
+					</parameterList>
+				</action>
+		    	<assignSharedConstant name="database-name" type="returnObject">
+					<value>getSession.returnValue.database</value>
+				</assignSharedConstant>
+		    	<assignSharedConstant name="schema-name" type="returnObject">
+					<value>getSession.returnValue.schema</value>
+				</assignSharedConstant>
+				<assignSharedConstant name="query-statement" type="blockValue" transform="dropSquareBracketPrefix">
+							<value>stmttext</value>
+				</assignSharedConstant>
+		   		<assignSharedConstant name="command" type="raw">
+					<value>System/db2expln.statement</value>
+				</assignSharedConstant>
+	   			<callGlobalAction name="systemCommandExecution"/>				
+    			<unlock/>
+	   		</task>
+    	</actionScript>
+    </action>
+	<action name="db2advis">
+		<title>Advisor</title>
+    	<actionScript>
+    		<task>
+    			<lock/>
+    			<action name="getSession" type="serverAction" >
+					<parameterList>
+						<parameter name="action" type="raw">
+							<value>getSessionVariable</value>
+						</parameter>
+						<parameter name="name[database]" type="fixed">
+							<value>Connections.USE_DATABASE_CONNECTION.database</value>
+						</parameter>
+						<parameter name="name[schema]" type="fixed">
+							<value>Connections.USE_DATABASE_CONNECTION.schema</value>
+						</parameter>
+					</parameterList>
+				</action>
+		    	<assignSharedConstant name="database-name" type="returnObject">
+					<value>getSession.returnValue.database</value>
+				</assignSharedConstant>
+		    	<assignSharedConstant name="schema-name" type="returnObject">
+					<value>getSession.returnValue.schema</value>
+				</assignSharedConstant>
+				<assignSharedConstant name="statement" type="blockValue" transform="dropSquareBracketPrefix">
+							<value>stmttext</value>
+				</assignSharedConstant>
+		   		<assignSharedConstant name="command" type="raw">
+					<value>System/db2advis.statement</value>
+				</assignSharedConstant>
+	   			<callGlobalAction name="systemCommandExecution"/>				
+    			<unlock/>
+	   		</task>
+    	</actionScript>
+    </action>
+    <action name="recommendIndexes">
+		<title>Indices Recommend</title>
+		<icon>images/trash.gif</icon>   
+    	<actionScript>
+    		<task>
+				<assignSharedConstant name="sql" type="fixed">
+					<value>
+<![CDATA[
+set current explain mode recommend indexes;
+?stmttext?;
+set current explain mode evaluate indexes;
+?stmttext?;
+set current explain mode not;
+]]>
+					</value>
+				</assignSharedConstant>
+		   		<callGlobalAction name="sqlExecution"/>
+	   		</task>
+    	</actionScript>
+    </action>
+    <action name="recommendPartitions">
+		<title>Recommend Partitions</title>
+		<icon>images/trash.gif</icon>   
+    	<actionScript>
+    		<task>
+				<assignSharedConstant name="sql" type="fixed">
+					<value>
+<![CDATA[
+set current explain mode recommend PARTITIONINGS;
+?stmttext?;
+set current explain mode evaluate PARTITIONINGS;
+?stmttext?;
+set current explain mode not;
+]]>
+					</value>
+				</assignSharedConstant>
+		   		<callGlobalAction name="sqlExecution"/>
+	   		</task>
+    	</actionScript>
+    </action>
+	<column name="numexec">
+		<sql_name>NUM_EXECUTIONS</sql_name>
+		<title>Executions</title>
+		<type>n</type>			
+	</column>
+	<column name="average_execution_time">
+		<sql_name>AVERAGE_EXECUTION_TIME</sql_name>
+		<title>Avg Elapse(s)</title>
+		<type>n</type>
+	</column>
+	<column name="stmt_sorts">
+		<sql_name>STMT_SORTS</sql_name>
+		<title>Stmt Sorts</title>
+		<type>n</type>
+	</column>
+	<column name="cpu_per_execution">
+		<sql_name>CPU_PER_EXECUTION</sql_name>
+		<title>Avg CPU</title>
+		<type>n</type>
+		<style>
+			<option gt='1' style='ERROR'/>
+			<option gt='0.01' style='WARNING'/>
+		</style>
+	</column>
+	<column name="sorts_per_execution">
+		<sql_name>SORTS_PER_EXECUTION</sql_name>
+		<title>Avg Sorts</title>
+		<type>n</type>
+		<style>
+			<option gt='1' style='ERROR'/>
+			<option gt='0.01' style='WARNING'/>
+		</style>
+	</column>
+	<column name="rowsread_per_execution">
+		<sql_name>ROWS_READ_PER_EXECUTION</sql_name>
+		<title>Avg Rows Read</title>
+		<type>n</type>
+		<style>
+			<option gt='10000.0' style='ERROR'/>
+			<option gt='100.0' style='WARNING'/>
+		</style>
+	</column>
+	<column name="rowsread">
+		<sql_name>ROWS_READ</sql_name>
+		<title>Rows Read</title>
+		<type>n</type>
+	</column>
+	<column name="rowwrite">
+		<sql_name>ROWS_WRITTEN</sql_name>
+		<title>Rows Written</title>
+		<type>n</type>
+	</column>		
+	<column name="exectime">
+		<sql_name>TOTAL_EXEC_TIME</sql_name>
+		<title>Total Elapse(s)</title>
+		<type>n</type>
+	</column>
+	<column name="totcputime">
+		<sql_name>TOTAL_CPU_TIME</sql_name>
+		<title>Total CPU (s)</title>
+		<type>n</type>
+	</column>
+	<column name="totusercputime">
+		<sql_name>TOTAL_USR_CPU_TIME</sql_name>
+		<title>Total User CPU (s)</title>
+		<type>n</type>
+	</column>
+	<column name="totsyscputime">
+		<sql_name>TOTAL_SYS_CPU_TIME</sql_name>
+		<title>Total System CPU (s)</title>
+		<type>n</type>
+	</column>
+	<column name="dbpartitionnum">
+		<sql_name>DBPARTITIONNUM</sql_name>
+		<title>Partition Number</title>
+		<type>n</type>
+	</column>
+	<column name="stmttext">
+		<sql_name>STMT_TEXT</sql_name>
+		<title>Statement Text</title>
+		<type>l</type>						
+	</column>
+	<column name="snapshot_timestamp">
+		<sql_name>SNAPSHOT_TIMESTAMP</sql_name>
+		<title>Timestamp</title>
+		<type>n</type>
+		<c_sort>n</c_sort>
+	</column>
+	<column name="NUM_COMPILATIONS">
+		<sql_name>NUM_COMPILATIONS</sql_name>
+		<title>Compiles</title>
+		<type>n</type>			
+	</column>
+	<column name="PREP_TIME_WORST">
+		<sql_name>PREP_TIME_WORST</sql_name>
+		<title>Prep Time Worst</title>
+		<type>n</type>			
+	</column>
+	<column name="PREP_TIME_BEST">
+		<sql_name>PREP_TIME_BEST</sql_name>
+		<title>Prep Time Best</title>
+		<type>n</type>			
+	</column>
+	<column name="INT_ROWS_DELETED">
+		<sql_name>INT_ROWS_DELETED</sql_name>
+		<title>Internal Rows Delete</title>
+		<type>n</type>			
+	</column>
+	<column name="INT_ROWS_INSERTED">
+		<sql_name>INT_ROWS_INSERTED</sql_name>
+		<title>Internal Rows Inserted</title>
+		<type>n</type>			
+	</column>
+	<column name="INT_ROWS_UPDATED">
+		<sql_name>INT_ROWS_UPDATED</sql_name>
+		<title>Internal Rows Updated</title>
+		<type>n</type>			
+	</column>
+	<column name="SORT_OVERFLOWS">
+		<sql_name>SORT_OVERFLOWS</sql_name>
+		<title>Sort Overflows</title>
+		<type>n</type>			
+	</column>
+	<column name="TOTAL_SORT_TIME">
+		<sql_name>TOTAL_SORT_TIME</sql_name>
+		<title>Total Sort Time</title>
+		<type>n</type>			
+	</column>
+	<column name="POOL_DATA_L_READS">
+		<sql_name>POOL_DATA_L_READS</sql_name>
+		<title>Pool Data Logical Reads</title>
+		<type>n</type>			
+	</column>
+	<column name="POOL_DATA_P_READS">
+		<sql_name>POOL_DATA_P_READS</sql_name>
+		<title>Pool Data Physical Reads</title>
+		<type>n</type>			
+	</column>
+	<column name="POOL_TEMP_DATA_L_READS">
+		<sql_name>POOL_TEMP_DATA_L_READS</sql_name>
+		<title>Pool Temp Data Logical Reads</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_TEMP_DATA_P_READS">
+		<sql_name>POOL_TEMP_DATA_P_READS</sql_name>
+		<title>Pool Temp Data Physical Reads</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_INDEX_L_READS">
+		<sql_name>POOL_INDEX_L_READS</sql_name>
+		<title>Pool Index Logical Reads</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_INDEX_P_READS">
+		<sql_name>POOL_INDEX_P_READS</sql_name>
+		<title>Pool Index Physical Reads</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_TEMP_INDEX_L_READS">
+		<sql_name>POOL_TEMP_INDEX_L_READS</sql_name>
+		<title>Pool Temp Index Logical Reads</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_TEMP_INDEX_P_READS">
+		<sql_name>POOL_TEMP_INDEX_P_READS</sql_name>
+		<title>Pool Temp Index Physical Reads</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_XDA_L_READS">
+		<sql_name>POOL_XDA_L_READS</sql_name>
+		<title>Pool XDA Logical Reads</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_XDA_P_READS">
+		<sql_name>POOL_XDA_P_READS</sql_name>
+		<title>Pool XDA Physical Reads</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_TEMP_XDA_L_READS">
+		<sql_name>POOL_TEMP_XDA_L_READS</sql_name>
+		<title>Pool Temp XDA Logical Reads</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_TEMP_XDA_P_READS">
+		<sql_name>POOL_TEMP_XDA_P_READS</sql_name>
+		<title>Pool Temp XDA Physical Reads</title>
+		<type>n</type>
+	</column>
+</table>

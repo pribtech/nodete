@@ -1,0 +1,90 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2009 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<command name="Audit" title="Audit">
+<![CDATA[
+          .-,---------------------------------------.   
+          V  (1)                                    |   
+>>-AUDIT----------+-DATABASE----------------------+-+----------->
+                  +-TABLE--table-name-------------+     
+                  +-TRUSTED CONTEXT--context-name-+     
+                  +-+-USER--+--authorization-name-+     
+                  | +-GROUP-+                     |     
+                  | '-ROLE--'                     |     
+                  '-+-ACCESSCTRL-+----------------'     
+                    +-DATAACCESS-+                      
+                    +-DBADM------+                      
+                    +-SECADM-----+                      
+                    +-SQLADM-----+                      
+                    +-SYSADM-----+                      
+                    +-SYSCTRL----+                      
+                    +-SYSMAINT---+                      
+                    +-SYSMON-----+                      
+                    '-WLMADM-----'                      
+]]>
+
+	<text>AUDIT</text>
+	<repeatable>
+		<select>
+			<option default="true"><text>DATABASE</text></option> 
+			<option><text>TABLE</text><clauseReference name="table-name"/></option> 
+			<option><text>TRUSTED CONTEXT</text><clauseReference name="context-name"/></option>
+			<option>
+				<select>
+					<option default="true"><text>USER</text></option>
+					<option><text>GROUP</text></option>
+					<option><text>ROLE</text></option>
+				</select>
+				<clauseReference name="authorization-name"/>
+			</option>
+			<option>
+				<select>
+					<option default="true"><text>ACCESSCTRL</text></option>
+					<option><text>DATAACCESS</text></option>
+					<option><text>DBADM</text></option>
+					<option><text>SECADM</text></option>
+					<option><text>SQLADM</text></option>
+					<option><text>SYSADM</text></option>
+					<option><text>SYSCTRL</text></option>
+					<option><text>SYSMAINT</text></option>
+					<option><text>SYSMON</text></option>
+					<option><text>WLMADM</text></option>
+					<option><text>DBADM</text></option>
+				</select>
+			</option>
+		</select>
+	</repeatable>
+	<BR/>
+<![CDATA[
+>--+-+-USING---+--POLICY--policy-name-+------------------------><
+   | '-REPLACE-'                      |   
+   '-REMOVE POLICY--------------------'   
+]]>
+	<select>
+		<option default="true">
+			<select>
+				<option><text>REPLACE</text></option> 
+				<option default="true"><text>USING</text></option> 
+			</select>
+			<text>POLICY</text>
+			<clauseReference name="policy-name"/>
+		</option>
+		<option><text>REMOVE POLICY</text></option> 
+	</select>
+
+</command>
+        

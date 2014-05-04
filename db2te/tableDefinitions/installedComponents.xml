@@ -1,0 +1,369 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2009-2013 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+
+<table name="installedComponents">
+	<sqlName>installedComponents</sqlName>
+	<singularName>Installed Component</singularName>
+	<pluralName>Installed Components</pluralName>
+	<queryOptimization>5</queryOptimization>
+	<inlinequery>
+		<value>
+<![CDATA[
+select * 
+from 
+(
+select -99 
+	,'Monitoring Switches/Security (required to use many features)' 
+	,(case when not exists(SELECT 1 FROM SYSIBMADM.DBMCFG WHERE NAME LIKE 'dft_mon%' and DEFERRED_VALUE='OFF' ) then'Yes'end) 
+	,cast('installMonitorSwitches' as varchar(128))
+	,cast('installMonitorSwitches' as varchar(128))
+	from sysibm.sysdummy1
+union select -2 
+	,'SYSTOOL tablespace' 
+	,(SELECT 'Yes' from syscat.tablespaces where TBSPACE='SYSTOOLSPACE') 
+	,'installTablespaceSystool'
+	,cast(null as varchar(128))
+	from sysibm.sysdummy1
+union select -1 
+	,'DB2TE base objects' 
+	,(SELECT 'Yes' from syscat.tables where tabschema='s#db2mc' and tabname='PARAMETER') 
+	,'baseDB2mcObjects'
+	,'baseDB2mcObjects'
+	from sysibm.sysdummy1
+union select 9 
+	,'General Explain Tables (SYSTOOLS)' 
+	,(SELECT 'Yes' from syscat.tables where tabschema='SYSTOOLS' and tabname='EXPLAIN_INSTANCE') 
+	,'installGeneralExplain'
+	,'uninstallGeneralExplain'
+	from sysibm.sysdummy1
+union select 12
+	,'DB2TE Base Event Monitors' 
+	,(SELECT 'Yes' from syscat.tables where tabschema='s#db2mc' and tabname='EVENT_MONITOR_CHANGE_CONTROL')  
+	,cast('installEventMonitors' as varchar(128))
+	,cast('installEventMonitors' as varchar(128))
+	from sysibm.sysdummy1
+union select 19
+	,'ATS (Auto Task Scheduler) activated plus Prune' 
+	,(SELECT 'Yes' from SYSIBMADM.REG_VARIABLES where REG_VAR_NAME='DB2_ATS_ENABLE' and upper(REG_VAR_VALUE) in ('1','T','TRUE','ON','Y','YES') and exists(SELECT 1 from syscat.tables where tabschema='SYSTOOLS' and tabname='ADMIN_TASK_LIST'))  
+	,cast('installATSActivate' as varchar(128))
+	,cast('installATSActivate' as varchar(128))
+	from sysibm.sysdummy1
+union select 40
+	,'Storage Management Object' 
+	,(SELECT 'Yes' from syscat.tables where tabschema='SYSTOOLS' and tabname='STMG_OBJECT' and 
+		EXISTS(SELECT * from syscat.tables where tabschema='SYSTOOLS' and tabname='STMG_DBSIZE_INFO'))  
+	,cast('installStorageMgmtTables' as varchar(128))
+	,cast('installStorageMgmtTables' as varchar(128))
+	from sysibm.sysdummy1
+union select 41
+	,'Storage management' 
+	,(SELECT 'Yes' from syscat.tables where tabschema='SYSTOOLS' and tabname='STMG_DBSIZE_INFO')  
+	,cast('installStorageManagement' as varchar(128))
+	,cast('installStorageManagement' as varchar(128))
+	from sysibm.sysdummy1
+union select 50
+	,'Optimization profile table' 
+	,(SELECT 'Yes' from syscat.tables where tabschema='SYSTOOLS' and tabname='OPT_PROFILE')  
+	,cast('installOptimizationProfile' as varchar(128))
+	,cast('installOptimizationProfile' as varchar(128))
+	from sysibm.sysdummy1
+union select 60
+	,'Policy (tables and triggers)' 
+	,(SELECT 'Yes' from syscat.tables where tabschema='SYSTOOLS' and tabname='POLICY')  
+	,cast('installPolicy' as varchar(128))
+	,cast('uninstallPolicy' as varchar(128))
+	from sysibm.sysdummy1
+union select 91
+	,'DB2TE added Features' 
+	,case when exists (SELECT 1 from SYSIBM.SYSJAROBJECTS where JAR_ID='DB2MCUDF' ) then 'Yes' end  
+	,cast('installDB2mcUdf' as varchar(128))
+	,cast('installDB2mcUdf' as varchar(128))
+	from sysibm.sysdummy1
+union select 99
+	,'DB2TE Alerts' 
+	,(SELECT 'Yes' from syscat.tables where tabschema='s#db2mc' and tabname='ALERT')  
+	,cast('installDB2mcAlerts' as varchar(128))
+	,cast('installDB2mcAlerts' as varchar(128))
+	from sysibm.sysdummy1
+union select 110
+	,'SOAP' 
+	,case when exists(SELECT 1 from SYSCAT.FUNCTIONS where FUNCSCHEMA='DB2XML' and FUNCNAME='SOAPHTTPV' ) then 'Yes' end
+	,cast('installSOAPudf' as varchar(128))
+	,cast('installSOAPudf' as varchar(128))
+	from sysibm.sysdummy1
+union select 120
+	,'MQ features' 
+	,case when exists(SELECT 1 from syscat.tables where tabschema='DB2MQ') then 'Yes' end
+	,cast('installMQ' as varchar(128))
+	,cast('installMQ' as varchar(128))
+	from sysibm.sysdummy1
+]]>
+		</value>
+		<value maxVersion="9.1">
+<![CDATA[
+union select 10
+	,'DB2TE Monitoring tables V91' 
+	,(SELECT 'Yes' from syscat.tables where tabschema='s#db2mc' and tabname='HIST_LOG_UTILIZATION')  
+	,cast('installDB2mcMonitorsV91' as varchar(128))
+	,cast('uninstallDB2mcMonitorsV91' as varchar(128))
+	from sysibm.sysdummy1
+union select 11
+	,'DB2TE Dynamic Cache Sampling' 
+	,(SELECT 'Yes' from syscat.tables where tabschema='s#db2mc' and tabname='HIST_SNAP_GET_DYN_SQL')  
+	,cast('installDynamicCacheSampling' as varchar(128))
+	,cast('uninstallDynamicCacheSampling' as varchar(128))
+	from sysibm.sysdummy1
+]]>
+		</value>
+		<value maxVersion="9.5">
+<![CDATA[
+union select 90
+	,'DB2TE added functions' 
+	,(SELECT 'Yes' from SYSCAT.FUNCTIONS where FUNCSCHEMA='s#db2mc' and FUNCNAME='EXPLAINEXPANDNODE')  
+	,cast('installDB2mcPre97' as varchar(128))
+	,cast('uninstallDB2mcPre97' as varchar(128))
+	from sysibm.sysdummy1
+]]>
+		</value>
+		<value minVersion="9.5" maxVersion="9.5">
+<![CDATA[
+union select 10
+	,'DB2TE add monitoring tables V95' 
+	,(SELECT 'Yes' from syscat.tables where tabschema='s#db2mc' and tabname='MONITOR_CONTROL')  
+	,cast('installDB2mcMonitorsV95' as varchar(128))
+	,cast('installDB2mcMonitorsV95' as varchar(128))
+	from sysibm.sysdummy1
+]]>
+		</value>
+		<value minVersion="9.5" maxVersion="10.1">
+<![CDATA[
+union select 11
+	,'DB2TE Dynamic Cache Sampling' 
+	,(SELECT 'Yes' from syscat.tables where tabschema='s#db2mc' and tabname='HIST_SNAP_GET_DYN_SQL')  
+	,cast('installDynamicCacheSamplingV97' as varchar(128))
+	,cast('installDynamicCacheSamplingV97' as varchar(128))
+	from sysibm.sysdummy1
+]]>
+		</value>
+		<value minVersion="9.5">
+<![CDATA[
+union select 51
+	,'APS (Auto Stats Profiling)' 
+	,(SELECT 'Yes' from syscat.tables where tabschema='SYSTOOLS' and tabname='OPT_FEEDBACK_RANKING')  
+	,cast('installAutoStatsProfiling' as varchar(128))
+	,cast('uninstallAutoStatsProfiling' as varchar(128))
+	from sysibm.sysdummy1
+union select 70
+	,'DB2TE added functions' 
+	,(SELECT 'Yes' from SYSCAT.FUNCTIONS where FUNCSCHEMA='s#db2mc' and FUNCNAME='EXPLAINEXPANDNODE')  
+	,cast('installDB2mc' as varchar(128))
+	,cast('uninstallDB2mc' as varchar(128))
+	from sysibm.sysdummy1
+union select 80
+	,'DB2TE old functions' 
+	,'Yes'  
+	,cast(null as varchar(128))
+	,cast('uninstallDB2mcPre97' as varchar(128))
+	from sysibm.sysdummy1 where exists(SELECT 1 from SYSCAT.PROCEDURES where PROCSCHEMA='s#db2mc' and PROCNAME='EXPLAINEXPANDNODEP')
+]]>
+		</value>
+		<value maxVersion="9.7">
+<![CDATA[
+union select 20
+	,'AM - activity monitor objects (deprecated v9.7)' 
+	,(SELECT 'Yes' from syscat.tables where tabschema='SYSTOOLS' and tabname='AM_TASKS')  
+	,'installActivityMonitor'
+	,'uninstallActivityMonitor'
+	from sysibm.sysdummy1
+union select 30
+	,'DB2AC - Autonomous computing (health monitor deprecated v9.7)' 
+	,(SELECT 'Yes' from syscat.tables where tabschema='SYSTOOLS' and tabname='HMON_COLLECTION')
+	,cast('installHealthMonitor' as varchar(128))
+	,cast('uninstallHealthMonitor' as varchar(128))
+	from sysibm.sysdummy1
+]]>
+		</value>
+		<value minVersion="9.7">
+<![CDATA[
+union select -98
+	,'Database Monitoring Switches - default (required to use many features)' 
+	,(case when not exists(SELECT 1 FROM SYSIBMADM.DBCFG 
+					where name in('mon_act_metrics','mon_obj_metrics','mon_req_metrics') and value='NONE'
+					   or name='mon_lw_thresh' and value='4294967295') then'Yes'end) 
+	,cast('installMonitorSwitches' as varchar(128))
+	,cast(null as varchar(128))
+	from sysibm.sysdummy1
+union select 10
+	,'DB2TE monitoring tables old version - remove ' 
+	,(SELECT 'Yes' from syscat.tables where tabschema='s#db2mc' and tabname='HIST_ENV_SYS_RESOURCES')  
+	,cast(null as varchar(128))
+	,cast('uninstallDB2mcMonitors' as varchar(128))
+	from sysibm.sysdummy1
+	where not exists (SELECT * from syscat.tables where tabschema='s#db2mc' and tabname='MONITOR_CONTROL')
+	  and exists (SELECT * from syscat.tables where tabschema='s#db2mc' and tabname='HIST_ENV_SYS_RESOURCES')
+union select 21
+	,'Remove AM - activity monitor objects  (deprecated v9.7)' 
+	,'Yes'  
+	,cast(null as varchar(128))
+	,'uninstallActivityMonitor'
+	from sysibm.sysdummy1 where exists (SELECT 'Yes' from syscat.tables where tabschema='SYSTOOLS' and tabname='AM_TASKS')
+union select 31
+	,'remove DB2AC - Autonomous computing (health monitor deprecated v9.7)' 
+	,'Yes'
+	,cast(null as varchar(128))
+	,cast('uninstallHealthMonitor' as varchar(128))
+	from sysibm.sysdummy1 where exists (SELECT 'Yes' from syscat.tables where tabschema='SYSTOOLS' and tabname='HMON_COLLECTION')
+]]>
+		</value>
+		<value minVersion="9.7" maxVersion="9.7">
+<![CDATA[
+union select 10
+	,'DB2TE Monitoring tables' 
+	,(SELECT 'Yes' from syscat.tables where tabschema='s#db2mc' and tabname='MONITOR_CONTROL')  
+	,cast('installDB2mcMonitorsV97' as varchar(128))
+	,cast('installDB2mcMonitorsV97' as varchar(128))
+	from sysibm.sysdummy1
+]]>
+		</value>
+	<value minVersion="10.0">
+<![CDATA[
+union select 10
+	,'DB2TE Monitoring tables' 
+	,(SELECT 'Yes' from syscat.tables where tabschema='s#db2mc' and tabname='MONITOR_CONTROL')  
+	,cast('installDB2mcMonitorsV105' as varchar(128))
+	,cast('installDB2mcMonitorsV105' as varchar(128))
+	from sysibm.sysdummy1
+]]>
+		</value>
+		<value>
+<![CDATA[
+) as i(list_order,description,installed,install,uninstall)
+]]>
+	</value>
+	</inlinequery>
+	<description>Installable component state</description>
+	<disableEdit/>
+	<output>
+		<type name="DDL" destination="" title="" generator=""/>
+	</output>
+	<order_by_index name="list_order" direction="A"/>
+	<display_columns>
+		<col type="column" name="DESCRIPTION"/>
+		<col type="column" name="INSTALLED"/>
+		<col type="column" name="actionProcess"/>
+	</display_columns>
+
+	
+	<column name="DESCRIPTION">
+		<sqlName>DESCRIPTION</sqlName>
+		<title>Description</title>
+		<type></type>
+	</column>
+	<column name="INSTALLED">
+		<sqlName>INSTALLED</sqlName>
+		<title>Installed</title>
+	</column>
+	<column name="actionProcess">
+		<sqlName>case when INSTALLED is null and install is not null then 'install' when INSTALLED is not null and uninstall is not null then 'uninstall' end </sqlName>
+		<title>Action</title>
+		<columnMask>
+			<value_mask value="install">
+				<mask>install</mask>
+				<reference name="installComponent">
+					<reftype>action</reftype>
+					<refvalue>callAction</refvalue>
+					<ref foreignColumnName="name">
+						<localColumnName>INSTALL</localColumnName>
+					</ref>
+					<ref foreignColumnName="directory">
+						<value>Install</value>
+					</ref>
+					<ref foreignColumnName="title">
+						<localColumnName>DESCRIPTION</localColumnName>
+					</ref>
+					<ref foreignColumnName="reloadPanel">
+						<value>true</value>
+					</ref>
+				</reference>	
+			</value_mask>
+			<value_mask value="uninstall">
+				<mask>uninstall</mask>
+				<reference name="uninstallComponent">
+					<reftype>action</reftype>
+					<refvalue>callAction</refvalue>
+					<ref foreignColumnName="name">
+						<localColumnName>UNINSTALL</localColumnName>
+					</ref>
+					<ref foreignColumnName="directory">
+						<value>Install</value>
+					</ref>
+					<ref foreignColumnName="title">
+						<localColumnName>DESCRIPTION</localColumnName>
+					</ref>
+					<ref foreignColumnName="reloadPanel">
+						<value>true</value>
+					</ref>
+					<ref foreignColumnName="startAtPage">
+						<value>Uninstall</value>
+					</ref>
+				</reference>	
+			</value_mask>
+		</columnMask>
+	</column>
+	<column name="INSTALL">
+		<sqlName>INSTALL</sqlName>
+		<title>Install Action</title>
+		<type>s</type>
+	</column>
+	<column name="UNINSTALL">
+		<sqlName>UNINSTALL</sqlName>
+		<title>Unstall Action</title>
+		<type>s</type>
+	</column>
+	<reference name="install">
+		<title>Install</title>
+		<reftype>action</reftype>
+		<refvalue>callAction</refvalue>
+		<ref foreignColumnName="name">
+			<localColumnName>INSTALL</localColumnName>
+		</ref>
+		<ref foreignColumnName="directory">
+			<value>Install</value>
+		</ref>
+		<ref foreignColumnName="title">
+			<localColumnName>DESCRIPTION</localColumnName>
+		</ref>
+	</reference>	
+	<reference name="uninstall">
+		<title>Uninstall</title>
+		<reftype>action</reftype>
+		<refvalue>callAction</refvalue>
+		<ref foreignColumnName="name">
+			<localColumnName>UNINSTALL</localColumnName>
+		</ref>
+		<ref foreignColumnName="directory">
+			<value>Install</value>
+		</ref>
+		<ref foreignColumnName="title">
+			<localColumnName>DESCRIPTION</localColumnName>
+		</ref>
+		<ref foreignColumnName="startAtPage">
+			<value>Uninstall</value>
+		</ref>
+	</reference>	
+</table>

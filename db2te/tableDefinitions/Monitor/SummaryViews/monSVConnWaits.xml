@@ -1,0 +1,258 @@
+<!--
+   
+  
+  Copyright Independent Systems Integrators Pty Ltd 2008 All rights reserved.
+  
+  Updated by Author: Peter Kohlmann
+  Copyright IBM Canada Ltd 2008 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+ -->
+<table name="monWorkload">
+	<sql_name>monTest</sql_name>
+	<singular_name>Workload Metrics</singular_name>
+	<plural_name>Workload Metrics</plural_name>
+	<inlinequery>
+<![CDATA[
+SELECT APPLICATION_HANDLE, AGENT_WAIT_TIME, POOL_READ_TIME, POOL_WRITE_TIME, CLIENT_IDLE_WAIT_TIME, DIRECT_READ_TIME, DIRECT_WRITE_TIME, FCM_RECV_WAIT_TIME, FCM_SEND_WAIT_TIME, IPC_RECV_WAIT_TIME, IPC_SEND_WAIT_TIME, LOCK_WAIT_TIME, LOG_BUFFER_WAIT_TIME, LOG_DISK_WAIT_TIME, TCPIP_RECV_WAIT_TIME, TCPIP_SEND_WAIT_TIME, TOTAL_APP_RQST_TIME, TOTAL_RQST_TIME, WLM_QUEUE_TIME_TOTAL, TOTAL_WAIT_TIME, TOTAL_SECTION_SORT_TIME, TOTAL_SECTION_SORT_PROC_TIME
+	FROM TABLE(MON_GET_CONNECTION(cast(NULL as bigint), -2)) AS t
+]]>
+	</inlinequery>
+	<messages><SQL0551N>Security issue. Please install "Monitoring Switches/Security" in Tools -> Installed Components</SQL0551N></messages>
+	<description></description>
+	<order_by_index/>
+	<display_columns>
+		<col type="column" name="APPLICATION_HANDLE"/>
+		<col type="column" name="TOTAL_APP_RQST_TIME"/>
+		<col type="column" name="TOTAL_RQST_TIME"/>
+		<col type="column" name="TOTAL_WAIT_TIME"/>
+		<col type="column" name="AGENT_WAIT_TIME"/>
+		<col type="column" name="POOL_READ_TIME"/>
+		<col type="column" name="POOL_WRITE_TIME"/>
+		<col type="column" name="CLIENT_IDLE_WAIT_TIME"/>
+		<col type="column" name="LOCK_WAIT_TIME"/>
+		<col type="column" name="DIRECT_READ_TIME"/>
+		<col type="column" name="DIRECT_WRITE_TIME"/>
+		<col type="column" name="FCM_RECV_WAIT_TIME"/>
+		<col type="column" name="FCM_SEND_WAIT_TIME"/>
+		<col type="column" name="IPC_RECV_WAIT_TIME"/>
+		<col type="column" name="IPC_SEND_WAIT_TIME"/>
+		<col type="column" name="LOCK_WAIT_TIME"/>
+		<col type="column" name="LOG_BUFFER_WAIT_TIME"/>
+		<col type="column" name="LOG_DISK_WAIT_TIME"/>
+		<col type="column" name="TCPIP_RECV_WAIT_TIME"/>
+		<col type="column" name="TCPIP_SEND_WAIT_TIME"/>
+		<col type="column" name="WLM_QUEUE_TIME_TOTAL"/>
+		<col type="column" name="TOTAL_SECTION_SORT_TIME"/>
+		<col type="column" name="TOTAL_SECTION_SORT_PROC_TIME"/>
+	</display_columns>
+	<column name="APPLICATION_HANDLE">
+		<c_sql_name>APPLICATION_HANDLE</c_sql_name>
+		<c_title>APPLICATION_HANDLE</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+		<c_pkey>p</c_pkey>
+	</column>
+	<column name="AGENT_WAIT_TIME">
+		<c_sql_name>AGENT_WAIT_TIME</c_sql_name>
+		<c_title>Agent wait time</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+		<c_pkey>p</c_pkey>
+	</column>
+	<column name="POOL_READ_TIME">
+		<c_sql_name>POOL_READ_TIME</c_sql_name>
+		<c_title>Pool Read Time</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+		<c_reference name="instance">
+			<reftype>table</reftype>
+			<refvalue>Monitor/monWorkLoad</refvalue>
+			<icon>images/sout.gif</icon>
+			<ref foreign_column_name="WORKLOAD_ID">
+				<local_column_name>WORKLOAD_ID</local_column_name>
+			</ref>
+		</c_reference>
+	</column>
+	<column name="POOL_WRITE_TIME">
+		<c_sql_name>POOL_WRITE_TIME</c_sql_name>
+		<c_title>POOL_WRITE_TIME</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+		
+		<c_column_mask_file>masks/skipNulls.xml</c_column_mask_file>
+	</column>
+	<column name="CLIENT_IDLE_WAIT_TIME">
+		<c_sql_name>CLIENT_IDLE_WAIT_TIME</c_sql_name>
+		<c_title>Client idle wait time</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+		
+		<c_column_mask_file>masks/skipNulls.xml</c_column_mask_file>
+	</column>
+	<column name="DIRECT_READ_TIME">
+		<c_sql_name>DIRECT_READ_TIME</c_sql_name>
+		<c_title>DIRECT_READ_TIME</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+		
+		<c_column_mask_file>masks/skipNulls.xml</c_column_mask_file>
+	</column>
+	<column name="LOCK_WAIT_TIME">
+		<c_sql_name>LOCK_WAIT_TIME</c_sql_name>
+		<c_title>Lock wait time</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+		
+		<c_column_mask_file>masks/skipNulls.xml</c_column_mask_file>
+	</column>
+	<column name="DIRECT_WRITE_TIME">
+		<c_sql_name>DIRECT_WRITE_TIME</c_sql_name>
+		<c_title>DIRECT_WRITE_TIME</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+		
+		<c_column_mask_file>masks/skipNulls.xml</c_column_mask_file>
+	</column>
+	<column name="TOTAL_WAIT_TIME">
+		<c_sql_name>TOTAL_WAIT_TIME</c_sql_name>
+		<c_title>Total wait time</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+		
+		<c_column_mask_file>masks/skipNulls.xml</c_column_mask_file>
+	</column>
+	<column name="FCM_RECV_WAIT_TIME">
+		<c_sql_name>FCM_RECV_WAIT_TIME</c_sql_name>
+		<c_title>FCM_RECV_WAIT_TIME</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+		
+		<c_column_mask_file>masks/skipNulls.xml</c_column_mask_file>
+	</column>
+	<column name="FCM_SEND_WAIT_TIME">
+		<c_sql_name>FCM_SEND_WAIT_TIME</c_sql_name>
+		<c_title>FCM_SEND_WAIT_TIME</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+		
+		<c_column_mask_file>masks/skipNulls.xml</c_column_mask_file>
+	</column>
+	<column name="IPC_RECV_WAIT_TIME">
+		<c_sql_name>IPC_RECV_WAIT_TIME</c_sql_name>
+		<c_title>IPC_RECV_WAIT_TIME</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+		
+		<c_column_mask_file>masks/skipNulls.xml</c_column_mask_file>
+	</column>
+	<column name="IPC_SEND_WAIT_TIME">
+		<c_sql_name>IPC_SEND_WAIT_TIME</c_sql_name>
+		<c_title>IPC_SEND_WAIT_TIME</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+		
+		<c_column_mask_file>masks/skipNulls.xml</c_column_mask_file>
+	</column>
+	<column name="LOCK_WAIT_TIME">
+		<c_sql_name>LOCK_WAIT_TIME</c_sql_name>
+		<c_title>LOCK_WAIT_TIME</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+		
+		<c_column_mask_file>masks/skipNulls.xml</c_column_mask_file>
+	</column>
+	<column name="LOG_BUFFER_WAIT_TIME">
+		<c_sql_name>LOG_BUFFER_WAIT_TIME</c_sql_name>
+		<c_title>LOG_BUFFER_WAIT_TIME</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+		
+		<c_column_mask_file>masks/skipNulls.xml</c_column_mask_file>
+	</column>
+	<column name="LOG_DISK_WAIT_TIME">
+		<c_sql_name>LOG_DISK_WAIT_TIME</c_sql_name>
+		<c_title>LOG_DISK_WAIT_TIME</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+		
+		<c_column_mask_file>masks/skipNulls.xml</c_column_mask_file>
+	</column>
+	<column name="TCPIP_RECV_WAIT_TIME">
+		<c_sql_name>TCPIP_RECV_WAIT_TIME</c_sql_name>
+		<c_title>TCPIP_RECV_WAIT_TIME</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+		
+		<c_column_mask_file>masks/skipNulls.xml</c_column_mask_file>
+	</column>
+	<column name="TCPIP_SEND_WAIT_TIME">
+		<c_sql_name>TCPIP_SEND_WAIT_TIME</c_sql_name>
+		<c_title>TCPIP_SEND_WAIT_TIME</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+		
+		<c_column_mask_file>masks/skipNulls.xml</c_column_mask_file>
+	</column>
+	<column name="TOTAL_APP_RQST_TIME">
+		<c_sql_name>TOTAL_APP_RQST_TIME</c_sql_name>
+		<c_title>TOTAL_APP_RQST_TIME</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+		
+		<c_column_mask_file>masks/skipNulls.xml</c_column_mask_file>
+	</column>
+	<column name="TOTAL_RQST_TIME">
+		<c_sql_name>TOTAL_RQST_TIME</c_sql_name>
+		<c_title>TOTAL_RQST_TIME</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+		
+		<c_column_mask_file>masks/skipNulls.xml</c_column_mask_file>
+	</column>
+	<column name="WLM_QUEUE_TIME_TOTAL">
+		<c_sql_name>WLM_QUEUE_TIME_TOTAL</c_sql_name>
+		<c_title>WLM_QUEUE_TIME_TOTAL</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+		
+		<c_column_mask_file>masks/skipNulls.xml</c_column_mask_file>
+	</column>
+	<column name="TOTAL_WAIT_TIME">
+		<c_sql_name>TOTAL_WAIT_TIME</c_sql_name>
+		<c_title>TOTAL_WAIT_TIME</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+		
+		<c_column_mask_file>masks/skipNulls.xml</c_column_mask_file>
+	</column>
+	<column name="TOTAL_SECTION_SORT_TIME">
+		<c_sql_name>TOTAL_SECTION_SORT_TIME</c_sql_name>
+		<c_title>TOTAL_SECTION_SORT_TIME</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+		
+		<c_column_mask_file>masks/skipNulls.xml</c_column_mask_file>
+	</column>
+	<column name="TOTAL_SECTION_SORT_PROC_TIME">
+		<c_sql_name>TOTAL_SECTION_SORT_PROC_TIME</c_sql_name>
+		<c_title>TOTAL_SECTION_SORT_PROC_TIME</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+		
+		<c_column_mask_file>masks/skipNulls.xml</c_column_mask_file>
+	</column>
+	
+
+
+</table>

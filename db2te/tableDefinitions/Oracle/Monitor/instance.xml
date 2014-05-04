@@ -1,0 +1,141 @@
+<!--
+  Peter Prib, Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2012 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+
+<table name="instance">
+	<sqlName>v$instance</sqlName>
+	<singularName>Instance</singularName>
+	<pluralName>Instances</pluralName>
+	<description></description>
+	<disable_edit/>
+	<output>
+		<type name="DDL" destination="" title="" generator=""/>
+	</output>
+	<orderBy name="INSTANCE_NAME" direction="A"/>
+	<displayColumns>
+		<col type="column" name="INSTANCE_NUMBER"/>
+		<col type="column" name="INSTANCE_NAME"/>
+		<col type="column" name="HOST_NAME"/>
+		<col type="column" name="VERSION"/>
+		<col type="column" name="STARTUP_TIME"/>
+		<col type="column" name="STATUS"/>
+		<col type="column" name="PARALLEL"/>
+		<col type="column" name="THREAD#"/>
+		<col type="column" name="ARCHIVER"/>
+		<col type="column" name="LOG_SWITCH_WAIT"/>
+		<col type="column" name="LOGINS"/>
+		<col type="column" name="SHUTDOWN_PENDING"/>
+		<col type="column" name="DATABASE_STATUS"/>
+		<col type="column" name="INSTANCE_ROLE"/>
+		<col type="column" name="ACTIVE_STATE"/>
+		<col type="column" name="BLOCKED"/>
+	</displayColumns>
+	<column name="INSTANCE_NUMBER">
+		<sqlName>INSTANCE_NUMBER</sqlName>
+		<title>Instance Number</title>
+		<type>n</type>
+	</column>
+	<column name="INSTANCE_NAME">
+		<sqlName>INSTANCE_NAME</sqlName>
+		<title>Instance Name</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="HOST_NAME">
+		<sqlName>HOST_NAME</sqlName>
+		<title>Host Name</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="VERSION">
+		<sqlName>VERSION</sqlName>
+		<title>Version</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="STARTUP_TIME">
+		<sqlName>STARTUP_TIME</sqlName>
+		<title>Startup Time</title>
+		<type>n</type>
+		<drillEnable/>
+	</column>
+	<column name="STATUS">
+		<sqlName>STATUS</sqlName>
+		<title>Status</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="PARALLEL">
+		<sqlName>PARALLEL</sqlName>
+		<title>Parallel</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="THREAD#">
+		<sqlName>THREAD#</sqlName>
+		<title>Thread No.</title>
+		<type>n</type>
+	</column>
+	<column name="ARCHIVER">
+		<sqlName>ARCHIVER</sqlName>
+		<title>Archiver</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="LOG_SWITCH_WAIT">
+		<sqlName>LOG_SWITCH_WAIT</sqlName>
+		<title>Log Switch Wait</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="LOGINS">
+		<sqlName>LOGINS</sqlName>
+		<title>Logins</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="SHUTDOWN_PENDING">
+		<sqlName>SHUTDOWN_PENDING</sqlName>
+		<title>Shutdown Pending</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="DATABASE_STATUS">
+		<sqlName>DATABASE_STATUS</sqlName>
+		<title>Database Status</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="INSTANCE_ROLE">
+		<sqlName>INSTANCE_ROLE</sqlName>
+		<title>Instance Role</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="ACTIVE_STATE">
+		<sqlName>ACTIVE_STATE</sqlName>
+		<title>Active State</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="BLOCKED">
+		<sqlName>BLOCKED</sqlName>
+		<title>Blocked</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+</table>
+

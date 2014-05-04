@@ -1,0 +1,219 @@
+<!--
+  Copyright IBM Corp. 2007 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+	<table name="hitratioV97">
+		<sqlName>SYSIBMADM.BP_HITRATIO</sqlName>
+		<singular_name>Buffer Pool Performance</singular_name>
+		<plural_name>Buffer Pool Performance</plural_name>
+		<description>Each row represents a
+		&lt;a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.admin.dbobj.doc/doc/t0011076.html?noframes=true');"&gt;buffer pool&lt;/a&gt;.
+		The ratio of physical reads to logical reads gives the hit ratio for the bufferpool. The lower the hit ratio, the more the data is being read from disk rather than the cached buffer pool which can be a more costly operation.
+		This table is based on the &lt;a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.admin.dbobj.doc/doc/r0022013.html?noframes=true');"&gt;SYSIBMADM.BP_HITRATIO&lt;/a&gt; administrative view.
+		</description>
+<inlinequery>
+<value>
+select s.*
+	,100 - 100*double(TOTAL_PHYSICAL_READS)/nullif(TOTAL_LOGICAL_READS,0)as TOTAL_HIT_RATIO_PERCENT
+	,100 - 100*double(POOL_DATA_P_READS)/nullif(POOL_DATA_L_READS,0) as DATA_HIT_RATIO_PERCENT
+	,100 - 100*double(POOL_INDEX_P_READS)/nullif(POOL_INDEX_L_READS,0) as INDEX_HIT_RATIO_PERCENT
+	,100 - 100*double(POOL_XDA_P_READS)/nullif(POOL_XDA_L_READS,0)as XDA_HIT_RATIO_PERCENT
+from (
+	select t.*
+		,(select BP_CUR_BUFFSZ from table(SNAP_GET_BP_PART('', -2)) AS T2
+		WHERE 
+</value>
+<value minVersion="9.8"> 
+		(T.BP_NAME,T.DB_NAME,T.DBPARTITIONNUM,T.MEMBER)
+			=(T2.BP_NAME,T2.DB_NAME,T2.DBPARTITIONNUM,T2.MEMBER)
+</value>
+<value maxVersion="9.7"> 
+		(T.BP_NAME,T.DB_NAME,T.DBPARTITIONNUM)
+			=(T2.BP_NAME,T2.DB_NAME,T2.DBPARTITIONNUM)
+</value>
+<value> 
+			) AS BUFFSZ
+		,POOL_DATA_L_READS + POOL_INDEX_L_READS + POOL_XDA_L_READS 
+		+ POOL_TEMP_DATA_L_READS + POOL_TEMP_INDEX_L_READS + POOL_TEMP_XDA_L_READS
+			as TOTAL_LOGICAL_READS
+		,  POOL_DATA_P_READS + POOL_INDEX_P_READS + POOL_XDA_P_READS 
+		+ POOL_TEMP_DATA_P_READS + POOL_TEMP_INDEX_P_READS + POOL_TEMP_XDA_P_READS
+			as TOTAL_PHYSICAL_READS
+		from TABLE(SNAP_GET_BP(CAST(' ' AS VARCHAR(128)), -1)) AS t
+) s
+</value>
+</inlinequery>	
+		<order_by_index name="physical" direction="D"/>
+		<history depth="10" time="snapshot_timestamp"/>
+		<disable_edit/>
+		<display_columns>
+			<col type="reference" name="bufferpool"/>					
+			<col type="reference" name="buffpool"/>	
+			<col type="reference" name="tableActivity"/>		
+			<col type="column" name="bpname"/>
+			<col type="column" name="logical"/>
+			<col type="dynamicColumnSimple" name="logicalread"/>
+			<col type="dynamicColumnSimple" name="logicalReadsPerSec"/>
+			<col type="column" name="physical"/>
+			<col type="dynamicColumnSimple" name="physicalReadsPerSec"/>
+			<col type="column" name="totalhit"/>
+			<col type="column" name="datahit"/>
+			<col type="column" name="indexhit"/>
+			<col type="column" name="xdahit"/>
+			<col type="column" name="directReads"/>
+			<col type="dynamiccolumnsimple" name="directReadsRate"/>
+			<col type="column" name="directWrites"/>
+			<col type="dynamiccolumnsimple" name="directWritesRate"/>
+		</display_columns>
+		<charts>
+			<chart name="Detail">
+				<type>bubble</type>
+				<title>Buffer Detail</title>
+				<filter>
+					<column name="logical" operator="eq" value="0"/>
+				</filter>
+				<axis autoDelta="false">
+					<x><column name="logical"/></x>
+					<y>
+						<column name="directReads"/>
+					</y>
+					<z><column name="buffsz"/></z>
+				</axis>
+				<grouping>bpname</grouping>
+			</chart>
+			<chart name="History" historyInclude="true">
+				<type>bubbleAndLine</type>
+				<title>History Buffers</title>
+				<filter>
+					<column name="logical" operator="eq" value="0"/>
+				</filter>
+				<axis>
+					<x><column name="snapshot_timestamp"/></x>
+					<y scaling="EXPONENTIAL">
+						<column name="logical,physical"/>
+					</y>
+					<z><column name="physical,directReads"/></z>
+				</axis>
+				<grouping>bpname</grouping>
+			</chart>
+		</charts>
+		<reference name="tableActivity">
+			<title>Table Activity</title>
+			<reftype>table</reftype>
+			<refvalue>Performance/toptable</refvalue>
+			<icon>images/icon-tbs.gif</icon>
+			<ref foreign_column_name="BPNAME">
+				<local_column_name>bpname</local_column_name>
+			</ref>
+		</reference>
+		<reference name="bufferpool">
+			<title>Bufferpool</title>
+			<reftype>displayRow</reftype>
+			<refvalue>bufferpool</refvalue>
+			<icon>images/icon-buffer.gif</icon>								
+			<ref foreign_column_name="bpname">
+				<local_column_name>bpname</local_column_name>
+			</ref>
+		</reference>	
+		<reference name="buffpool">
+			<title>Details</title>
+			<reftype>displayrow</reftype>
+			<refvalue>Performance/topbufferpool</refvalue>
+			<ref foreign_column_name="bp_name">
+			<local_column_name>bpname</local_column_name>
+			</ref>
+		</reference>	
+		<dynamicColumnSimple name="logicalread" type="DELTA" column="logical" title="Logical Rate"/>
+		<dynamicColumnSimple name="logicalReadsPerSec" type="DELTA_NORMALIZED" column="logical" title="Logical (/sec)">
+			<formatNumber round="true" toFixedVal="2"/> 
+		</dynamicColumnSimple>
+		<dynamicColumnSimple name="physicalread" type="DELTA" column="physical" title="Physical Rate"/>
+		<dynamicColumnSimple name="physicalReadsPerSec" type="DELTA_NORMALIZED" column="physical" title="Physical (/sec)">
+			<formatNumber round="true" toFixedVal="2"/> 
+		</dynamicColumnSimple>
+		<dynamicColumnSimple name="directReadsRate" type="DELTA_NORMALIZED" column="directReads" title="Direct Read (/sec)">
+			<formatNumber round="true" toFixedVal="2"/> 
+		</dynamicColumnSimple>
+		<dynamicColumnSimple name="directWritesRate" type="DELTA_NORMALIZED" column="directWrites" title="Direct Write (/sec)">
+			<formatNumber round="true" toFixedVal="2"/> 
+		</dynamicColumnSimple>
+		<column name="bpname">
+			<sqlName>BP_NAME</sqlName>
+			<primary_key/>
+			<title>Buffer Pool</title>
+			<c_drill>n</c_drill>
+		</column>
+		<column name="logical" accumulation="y">
+			<sqlName>TOTAL_LOGICAL_READS</sqlName>
+			<title>Logical Reads</title>
+			<c_drill>n</c_drill>
+			<type>n</type>			
+		</column>
+		<column name="physical" accumulation="y">
+			<sqlName>TOTAL_PHYSICAL_READS</sqlName>
+			<title>Physical Reads</title>
+			<c_drill>n</c_drill>
+			<type>n</type>			
+		</column>
+		<column name="totalhit" accumulation="y">
+			<sqlName>TOTAL_HIT_RATIO_PERCENT</sqlName>
+			<title>Total Hit Ratio</title>
+			<c_drill>n</c_drill>
+			<type>bg</type>
+			<graphattributes flipColor="y"/>					
+		</column>
+		<column name="datahit">
+			<sqlName>DATA_HIT_RATIO_PERCENT</sqlName>
+			<title>Data Hit Ratio</title>
+			<c_drill>n</c_drill>
+			<type>bg</type>
+			<graphattributes flipColor="y"/>
+		</column>
+		<column name="indexhit">
+			<sqlName>INDEX_HIT_RATIO_PERCENT</sqlName>
+			<title>Index Hit Ratio</title>
+			<c_drill>n</c_drill>
+			<type>bg</type>
+			<graphattributes flipColor="y"/>					
+		</column>
+		<column name="xdahit">
+			<sqlName>XDA_HIT_RATIO_PERCENT</sqlName>
+			<title>XDA Hit Ratio</title>
+			<c_drill>n</c_drill>
+			<type>bg</type>
+			<graphattributes flipColor="y"/>					
+		</column>
+		<column name="directReads" accumulation="y">
+			<sqlName>DIRECT_READS</sqlName>
+			<title>Direct Reads</title>
+			<c_drill>n</c_drill>
+			<type>n</type>			
+		</column>
+		<column name="directWrites" accumulation="y">
+			<sqlName>DIRECT_WRITES</sqlName>
+			<title>Direct Writes</title>
+			<c_drill>n</c_drill>
+			<type>n</type>			
+		</column>
+		<column name="snapshot_timestamp">
+			<sqlName>SNAPSHOT_TIMESTAMP</sqlName>
+			<title>Timestamp</title>
+			<type>n</type>
+		</column>
+		<column name="buffsz">
+			<sqlName>BUFFSZ</sqlName>
+			<title>Size Pages</title>
+			<type>n</type>
+		</column>
+</table>

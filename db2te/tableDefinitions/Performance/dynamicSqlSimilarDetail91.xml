@@ -1,0 +1,369 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2010 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+
+<table name="dynamicSqlSimilarDetail">
+	<sql_name>dynamicSqlSimilarDetail</sql_name>
+	<singular_name>Dynamic Similar SQL</singular_name>
+	<plural_name>Dynamic Similar SQL</plural_name>
+	<messages><SQL0440N>Not installed. Please install "DB2TE added functions" in Tools-> Installed Components</SQL0440N></messages>
+	<inlinequery>
+<![CDATA[
+SELECT  hash,
+	NUM_EXECUTIONS,
+	stmt_text,
+    coalesce(TOTAL_EXEC_TIME / nullif(NUM_EXECUTIONS,0),0) AS AVERAGE_EXECUTION_TIME,  
+    coalesce(STMT_SORTS / nullif(NUM_EXECUTIONS,0),0) AS SORTS_PER_EXECUTION, 
+    coalesce(ROWS_READ / nullif(NUM_EXECUTIONS,0),0) AS ROWS_READ_PER_EXECUTION, 
+	TOTAL_EXEC_TIME,
+	TOTAL_SYS_CPU_TIME + TOTAL_USR_CPU_TIME as TOTAL_CPU_TIME,
+	TOTAL_SYS_CPU_TIME,
+	TOTAL_USR_CPU_TIME,
+	NUM_COMPILATIONS,
+	PREP_TIME_WORST,
+	PREP_TIME_BEST,
+	INT_ROWS_DELETED,
+	INT_ROWS_INSERTED,
+	INT_ROWS_UPDATED,
+	ROWS_READ,
+	ROWS_WRITTEN,
+	STMT_SORTS,
+	SORT_OVERFLOWS,
+	TOTAL_SORT_TIME,
+	POOL_DATA_L_READS,
+	POOL_DATA_P_READS,
+	POOL_TEMP_DATA_L_READS,
+	POOL_TEMP_DATA_P_READS,
+	POOL_INDEX_L_READS,
+	POOL_INDEX_P_READS,
+	POOL_TEMP_INDEX_L_READS,
+	POOL_TEMP_INDEX_P_READS
+from (
+select  
+	"s#db2mc".HashSqlSimilar(stmt_text) as hash
+	,stmt_text
+	,NUM_EXECUTIONS
+	,NUM_COMPILATIONS
+	,PREP_TIME_WORST
+	,PREP_TIME_BEST
+	,INT_ROWS_DELETED
+	,INT_ROWS_INSERTED
+	,INT_ROWS_UPDATED
+	,ROWS_READ
+	,ROWS_WRITTEN
+	,STMT_SORTS
+	,SORT_OVERFLOWS
+	,TOTAL_SORT_TIME
+	,POOL_DATA_L_READS
+	,POOL_DATA_P_READS
+	,POOL_TEMP_DATA_L_READS
+	,POOL_TEMP_DATA_P_READS
+	,POOL_INDEX_L_READS
+	,POOL_INDEX_P_READS
+	,POOL_TEMP_INDEX_L_READS
+	,POOL_TEMP_INDEX_P_READS
+	,decimal(TOTAL_EXEC_TIME,31,6) + decimal(TOTAL_EXEC_TIME_MS,31,6)/1000000 as TOTAL_EXEC_TIME
+	,decimal(TOTAL_USR_TIME,31,6) + decimal(TOTAL_USR_TIME_MS,31,6)/1000000 as TOTAL_USR_CPU_TIME
+	,decimal(TOTAL_SYS_TIME,31,6) + decimal(TOTAL_SYS_TIME_MS,31,6)/1000000 as TOTAL_SYS_CPU_TIME
+from TABLE(SNAP_GET_DYN_SQL('',-1)) as s 
+) as sim
+]]>
+	</inlinequery>
+	<rowStyle interfaceColumn='average_execution_time'>
+		<option gt='1' style='ERROR'/>
+		<option gt='0.01' style='WARNING'/>
+	</rowStyle>	
+	<order_by_index name="average_execution_time" direction="D"/>
+	<display_columns>
+		<col type="column" name="numexec"/>
+		<col type="column" name="average_execution_time"/>
+		<col type="column" name="stmt_sorts"/>
+		<col type="column" name="sorts_per_execution"/>
+		<col type="column" name="rowsread"/>
+		<col type="column" name="rowsread_per_execution"/>
+		<col type="column" name="rowwrite"/>
+		<col type="column" name="exectime"/>
+		<col type="column" name="totCpuTime"/>
+		<col type="action" name="visualExplain"/>
+		<col type="action" name="db2advis"/>
+		<col type="column" name="stmttext"/>
+	</display_columns>
+	<action name="visualExplain">
+		<c_title>Explain</c_title>
+    	<actionScript>
+    		<task>
+				<assignSharedConstant name="stmttext" type="blockValue">
+					<value>stmttext</value>
+				</assignSharedConstant>
+	   			<callGlobalAction name="DB2ExplainDynamicSQL"/>				
+	   		</task>
+    	</actionScript>
+    </action>
+
+	<action name="db2expln">
+		<c_title>db2expln</c_title>
+    	<actionScript>
+    		<task>
+    			<lock/>
+    			<action name="getSession" type="serverAction" >
+					<parameterList>
+						<parameter name="action" type="raw">
+							<value>getSessionVariable</value>
+						</parameter>
+						<parameter name="name[database]" type="fixed">
+							<value>Connections.USE_DATABASE_CONNECTION.database</value>
+						</parameter>
+						<parameter name="name[schema]" type="fixed">
+							<value>Connections.USE_DATABASE_CONNECTION.schema</value>
+						</parameter>
+					</parameterList>
+				</action>
+		    	<assignSharedConstant name="database-name" type="returnObject">
+					<value>getSession.returnValue.database</value>
+				</assignSharedConstant>
+		    	<assignSharedConstant name="schema-name" type="returnObject">
+					<value>getSession.returnValue.schema</value>
+				</assignSharedConstant>
+				<assignSharedConstant name="query-statement" type="blockValue">
+							<value>stmttext</value>
+				</assignSharedConstant>
+		   		<assignSharedConstant name="command" type="raw">
+					<value>System/db2expln.statement</value>
+				</assignSharedConstant>
+	   			<callGlobalAction name="systemCommandExecution"/>				
+    			<unlock/>
+	   		</task>
+    	</actionScript>
+    </action>
+
+	<action name="db2advis">
+		<c_title>Advisor</c_title>
+    	<actionScript>
+    		<task>
+    			<lock/>
+    			<action name="getSession" type="serverAction" >
+					<parameterList>
+						<parameter name="action" type="raw">
+							<value>getSessionVariable</value>
+						</parameter>
+						<parameter name="name[database]" type="fixed">
+							<value>Connections.USE_DATABASE_CONNECTION.database</value>
+						</parameter>
+						<parameter name="name[schema]" type="fixed">
+							<value>Connections.USE_DATABASE_CONNECTION.schema</value>
+						</parameter>
+					</parameterList>
+				</action>
+		    	<assignSharedConstant name="database-name" type="returnObject">
+					<value>getSession.returnValue.database</value>
+				</assignSharedConstant>
+		    	<assignSharedConstant name="schema-name" type="returnObject">
+					<value>getSession.returnValue.schema</value>
+				</assignSharedConstant>
+				<assignSharedConstant name="statement" type="blockValue">
+							<value>stmttext</value>
+				</assignSharedConstant>
+		   		<assignSharedConstant name="command" type="raw">
+					<value>System/db2advis.statement</value>
+				</assignSharedConstant>
+	   			<callGlobalAction name="systemCommandExecution"/>				
+    			<unlock/>
+	   		</task>
+    	</actionScript>
+    </action>
+	<column name="hash">
+		<c_sql_name>hash</c_sql_name>
+		<c_title>Hash</c_title>
+		<c_presentation>n</c_presentation>			
+		<c_drill>n</c_drill>
+	</column>
+	<column name="numexec">
+		<c_sql_name>NUM_EXECUTIONS</c_sql_name>
+		<c_title>Executions</c_title>
+		<c_presentation>n</c_presentation>			
+		<c_drill>n</c_drill>
+	</column>
+	<column name="stmttext">
+		<c_sql_name>STMT_TEXT</c_sql_name>
+		<c_title>Statement Text</c_title>
+		<c_presentation>l</c_presentation>						
+		<c_drill>n</c_drill>
+	</column>
+	<column name="average_execution_time">
+		<c_sql_name>AVERAGE_EXECUTION_TIME</c_sql_name>
+		<c_title>Avg Elapse(s)</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>									
+	</column>
+	<column name="stmt_sorts">
+		<c_sql_name>STMT_SORTS</c_sql_name>
+		<c_title>Avg Stmt Sorts</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>									
+	</column>
+	<column name="sorts_per_execution">
+		<c_sql_name>SORTS_PER_EXECUTION</c_sql_name>
+		<c_title>Avg Sorts</c_title>
+		<c_presentation>n</c_presentation>
+		<c_sort>n</c_sort>			
+		<c_drill>n</c_drill>									
+	</column>
+	<column name="rowsread_per_execution">
+		<c_sql_name>ROWS_READ_PER_EXECUTION</c_sql_name>
+		<c_title>Avg Rows Read</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>									
+	</column>
+	<column name="rowsread">
+		<c_sql_name>ROWS_READ</c_sql_name>
+		<c_title>Rows Read</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>									
+	</column>
+	<column name="rowwrite">
+		<c_sql_name>ROWS_WRITTEN</c_sql_name>
+		<c_title>Rows Written</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>									
+	</column>		
+	<column name="exectime">
+		<c_sql_name>TOTAL_EXEC_TIME</c_sql_name>
+		<c_title>Total Elapse(s)</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>									
+	</column>
+	<column name="totcputime">
+		<c_sql_name>TOTAL_CPU_TIME</c_sql_name>
+		<c_title>Total CPU (s)</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>									
+	</column>
+	<column name="totusercputime">
+		<c_sql_name>TOTAL_USR_CPU_TIME</c_sql_name>
+		<c_title>Total User CPU (s)</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>									
+	</column>
+	<column name="totsyscputime">
+		<c_sql_name>TOTAL_SYS_CPU_TIME</c_sql_name>
+		<c_title>Total System CPU (s)</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>									
+	</column>
+	<column name="TOTAL_USR_CPU_TIME">
+		<c_sql_name>TOTAL_USR_CPU_TIME</c_sql_name>
+		<c_title>Total User CPU (s)</c_title>
+		<c_presentation>n</c_presentation>			
+		<c_drill>n</c_drill>
+	</column>
+	<column name="NUM_COMPILATIONS">
+		<c_sql_name>NUM_COMPILATIONS</c_sql_name>
+		<c_title>Compiles</c_title>
+		<c_presentation>n</c_presentation>			
+		<c_drill>n</c_drill>
+	</column>
+	<column name="PREP_TIME_WORST">
+		<c_sql_name>PREP_TIME_WORST</c_sql_name>
+		<c_title>Prep Time Worst</c_title>
+		<c_presentation>n</c_presentation>			
+		<c_drill>n</c_drill>
+	</column>
+	<column name="PREP_TIME_BEST">
+		<c_sql_name>PREP_TIME_BEST</c_sql_name>
+		<c_title>Prep Time Best</c_title>
+		<c_presentation>n</c_presentation>			
+		<c_drill>n</c_drill>
+	</column>
+	<column name="INT_ROWS_DELETED">
+		<c_sql_name>INT_ROWS_DELETED</c_sql_name>
+		<c_title>Internal Rows Delete</c_title>
+		<c_presentation>n</c_presentation>			
+		<c_drill>n</c_drill>
+	</column>
+	<column name="INT_ROWS_INSERTED">
+		<c_sql_name>INT_ROWS_INSERTED</c_sql_name>
+		<c_title>Internal Rows Inserted</c_title>
+		<c_presentation>n</c_presentation>			
+		<c_drill>n</c_drill>
+	</column>
+	<column name="INT_ROWS_UPDATED">
+		<c_sql_name>INT_ROWS_UPDATED</c_sql_name>
+		<c_title>Internal Rows Updated</c_title>
+		<c_presentation>n</c_presentation>			
+		<c_drill>n</c_drill>
+	</column>
+	<column name="SORT_OVERFLOWS">
+		<c_sql_name>SORT_OVERFLOWS</c_sql_name>
+		<c_title>Sort Overflows</c_title>
+		<c_presentation>n</c_presentation>			
+		<c_drill>n</c_drill>
+	</column>
+	<column name="TOTAL_SORT_TIME">
+		<c_sql_name>TOTAL_SORT_TIME</c_sql_name>
+		<c_title>Total Sort Time</c_title>
+		<c_presentation>n</c_presentation>			
+		<c_drill>n</c_drill>
+	</column>
+	<column name="POOL_DATA_L_READS">
+		<c_sql_name>POOL_DATA_L_READS</c_sql_name>
+		<c_title>Pool Data Logical Reads</c_title>
+		<c_presentation>n</c_presentation>			
+		<c_drill>n</c_drill>
+	</column>
+	<column name="POOL_DATA_P_READS">
+		<c_sql_name>POOL_DATA_P_READS</c_sql_name>
+		<c_title>Pool Data Physical Reads</c_title>
+		<c_presentation>n</c_presentation>			
+		<c_drill>n</c_drill>
+	</column>
+	<column name="POOL_TEMP_DATA_L_READS">
+		<c_sql_name>POOL_TEMP_DATA_L_READS</c_sql_name>
+		<c_title>Pool Temp Data Logical Reads</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="POOL_TEMP_DATA_P_READS">
+		<c_sql_name>POOL_TEMP_DATA_P_READS</c_sql_name>
+		<c_title>Pool Temp Data Physical Reads</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="POOL_INDEX_L_READS">
+		<c_sql_name>POOL_INDEX_L_READS</c_sql_name>
+		<c_title>Pool Index Logical Reads</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="POOL_INDEX_P_READS">
+		<c_sql_name>POOL_INDEX_P_READS</c_sql_name>
+		<c_title>Pool Index Physical Reads</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="POOL_TEMP_INDEX_L_READS">
+		<c_sql_name>POOL_TEMP_INDEX_L_READS</c_sql_name>
+		<c_title>Pool Temp Index Logical Reads</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="POOL_TEMP_INDEX_P_READS">
+		<c_sql_name>POOL_TEMP_INDEX_P_READS</c_sql_name>
+		<c_title>Pool Temp Index Physical Reads</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+</table>

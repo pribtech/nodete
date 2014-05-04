@@ -1,0 +1,93 @@
+<table name="SYSPROC.ADMIN_TASK_ADD">
+    <sql_name>SYSPROC.ADMIN_TASK_ADD</sql_name>
+    <singular_name>SYSPROC.ADMIN_TASK_ADD</singular_name>
+    <plural_name>SYSPROC.ADMIN_TASK_ADD</plural_name>
+    <function>SYSPROC.ADMIN_TASK_ADD</function>
+    <description/>
+    <parameters>
+        <parm name="NAME" ordinal="1" mode="IN">
+            <title>Task name</title>
+            <type>VARCHAR</type>
+        </parm>
+        <parm name="BEGIN_DATE" ordinal="2" mode="IN">
+            <title>First run date</title>
+            <type>TIMESTAMP</type>
+        </parm>
+        <parm name="BEGIN_TIME" ordinal="2" mode="IN">
+            <title>First run time</title>
+            <type>TIMESTAMP</type>
+        </parm>
+        <parm name="END_DATE" ordinal="3" mode="IN">
+            <title>Last run date</title>
+            <type>TIMESTAMP</type>
+        </parm>
+        <parm name="END_TIME" ordinal="3" mode="IN">
+            <title>Last run time</title>
+            <type>TIMESTAMP</type>
+        </parm>
+        <parm name="MAX_INVOCATIONS" ordinal="4" mode="IN">
+            <title>Maximum runs allowed</title>
+            <type>INTEGER</type>
+        </parm>
+        <parm name="SCHEDULE" ordinal="5" mode="IN">
+            <title>Cron schedule</title>
+            <type>VARCHAR</type>
+        </parm>
+        <parm name="PROCEDURE_SCHEMA" ordinal="6" mode="IN">
+            <title>Procedure's schema</title>
+            <type>VARCHAR</type>
+        </parm>
+        <parm name="PROCEDURE_NAME" ordinal="7" mode="IN">
+            <title>Procedure's name</title>
+            <type>VARCHAR</type>
+        </parm>
+        <parm name="PROCEDURE_INPUT" ordinal="8" mode="IN">
+            <title>PROCEDURE_INPUT</title>
+            <type>CLOB</type>
+		    <info>
+<![CDATA[
+<pre><code>
+Specifies the input parameters of the DB2 stored procedure this task will execute.
+
+This parameter must contain an SQL statement that returns one row of data.
+
+The returned values will be passed as parameters to the stored procedure
+
+The number of columns returned by the SQL statement must match the total 
+number (and type) of arguments for the procedure and must contain a single 
+row. For output parameters, the value itself is ignored, but should be of 
+the same SQL data type the stored procedure requires.
+
+This SQL statement is executed every time the task is executed.  If the SQL 
+statement fails, the task's status will be set to "NOTRUN" and specific SQLCODE 
+information will be recorded.  If the statement does not return a result set,
+does not return a row, returns multiple rows or result sets the task will not be
+executed.  The task's status will be set to "NOTRUN" and SQLCODE SQL1465N will
+be set to indicate that this parameter is invalid.  
+
+If the statement result contains serialized XML parameters, the total size of
+all XML parameters combined is limited to 256 kilobytes.  If the result exceeds
+this threshold, the task's status will be set to "NOTRUN".  SQLCODE -302 and
+SQLSTATE 22001 will be set to indicate that data truncation has occurred.
+
+To view the task’s status, use the SYSTOOL.ADMIN_TASK_STATUS view.
+
+If this parameter is set to NULL, no parameters are passed to the stored
+procedure.
+
+This is an input parameter of type CLOB(2M)
+</code></pre>
+]]>
+		</info>
+        </parm>
+        <parm name="OPTIONS" ordinal="9" mode="IN" visible="false" disabled="true">
+            <title>Option</title>
+            <type>INT</type>
+	        <value>NULL</value>
+        </parm>
+        <parm name="REMARKS" ordinal="10" mode="IN">
+            <title>Comments</title>
+            <type>VARCHAR</type>
+        </parm>
+    </parameters>
+</table>

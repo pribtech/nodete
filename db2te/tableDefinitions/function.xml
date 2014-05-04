@@ -1,0 +1,366 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2009-2012 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+
+<table name="function.xml">
+	<sqlName>SYSCAT.FUNCTIONS</sqlName>
+	<singular_name>Function</singular_name>
+	<plural_name>Functions</plural_name>
+	<description>&lt;a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.admin.dbobj.doc/doc/r0000735.html?noframes=true');"&gt;Functions&lt;/a&gt;</description>
+	<disableEdit/>
+	<output>
+		<type name="REBIND" destination="adhoc" title="Rebind" generator="XSL/compareTableUpdates.xsl">
+			<parameterList>
+				<parameter name="type" type="raw"><value>rebind</value></parameter>
+			</parameterList>
+		</type>
+		<type name="GRANT" destination="adhoc" title="Grant" generator="XSL/compareTableUpdates.xsl">
+			<parameterList>
+				<parameter name="type" type="raw"><value>grant</value></parameter>
+				<parameter name="to" title="Grant to" type="input"><value>PUBLIC</value></parameter>
+			</parameterList>
+		</type>
+	</output>
+	<order_by_index name="FUNCSCHEMA" direction="A"/>
+	<order_by_index name="FUNCNAME" direction="A"/>
+	<order_by_index name="SPECIFICNAME" direction="A"/>
+	<display_columns>
+		<col type="column" name="FUNCSCHEMA"/>
+		<col type="column" name="FUNCNAME"/>
+		<col type="column" name="SPECIFICNAME"/>
+		<col type="reference" name="parms"/>
+		<col type="reference" name="auth"/>
+		<col type="column" name="DEFINER"/>
+		<col type="column" name="FUNCID"/>
+		<col type="column" name="RETURN_TYPE"/>
+		<col type="column" name="ORIGIN"/>
+		<col type="column" name="TYPE"/>
+		<col type="column" name="METHOD"/>
+		<col type="column" name="EFFECT"/>
+		<col type="column" name="PARM_COUNT"/>
+		<col type="column" name="CREATE_TIME"/>
+		<col type="column" name="QUALIFIER"/>
+		<col type="column" name="WITH_FUNC_ACCESS"/>
+		<col type="column" name="TYPE_PRESERVING"/>
+		<col type="column" name="VARIANT"/>
+		<col type="column" name="SIDE_EFFECTS"/>
+		<col type="column" name="FENCED"/>
+		<col type="column" name="NULLCALL"/>
+		<col type="column" name="CAST_FUNCTION"/>
+		<col type="column" name="ASSIGN_FUNCTION"/>
+		<col type="column" name="SCRATCHPAD"/>
+		<col type="column" name="FINAL_CALL"/>
+		<col type="column" name="PARALLELIZABLE"/>
+		<col type="column" name="CONTAINS_SQL"/>
+		<col type="column" name="DBINFO"/>
+		<col type="column" name="RESULT_COLS"/>
+		<col type="column" name="LANGUAGE"/>
+		<col type="column" name="IMPLEMENTATION"/>
+		<col type="column" name="CLASS"/>
+		<col type="column" name="JAR_ID"/>
+		<col type="column" name="PARM_STYLE"/>
+		<col type="column" name="SOURCE_SCHEMA"/>
+		<col type="column" name="SOURCE_SPECIFIC"/>
+		<col type="column" name="IOS_PER_INVOC"/>
+		<col type="column" name="INSTS_PER_INVOC"/>
+		<col type="column" name="IOS_PER_ARGBYTE"/>
+		<col type="column" name="INSTS_PER_ARGBYTE"/>
+		<col type="column" name="PERCENT_ARGBYTES"/>
+		<col type="column" name="INITIAL_IOS"/>
+		<col type="column" name="INITIAL_INSTS"/>
+		<col type="column" name="CARDINALITY"/>
+		<col type="column" name="IMPLEMENTED"/>
+		<col type="column" name="SELECTIVITY"/>
+		<col type="column" name="OVERRIDDEN_FUNCID"/>
+		<col type="column" name="SUBJECT_TYPESCHEMA"/>
+		<col type="column" name="SUBJECT_TYPENAME"/>
+	</display_columns>
+	<reference name="dynSQL" DBMS="DB2">
+		<title>Possible SQL</title>
+		<reftype>table</reftype>
+		<refvalue>Performance/snapdynsql</refvalue>
+		<icon>images/icon-link-calendar.gif</icon>								
+		<ref foreign_column_name="stmttext">
+			<comparetype>locateAnyCase</comparetype>
+			<local_column_name>FUNCNAME</local_column_name>
+		</ref>
+	</reference>
+	<reference name="auth">
+		<title>Privilege</title>
+		<reftype>table</reftype>
+		<refvalue>Authority/routineauth</refvalue>
+		<icon>images/icon-privilege.gif</icon>
+		<ref foreign_column_name="specificname">
+			<local_column_name>SPECIFICNAME</local_column_name>
+		</ref>
+	</reference>
+	<reference name="parms">
+		<title>Parms</title>
+		<reftype>table</reftype>
+		<refvalue>functionParm</refvalue>
+		<displayColumnsSet>Specific Function</displayColumnsSet>
+		<icon>images/icon-column.gif</icon>
+		<ref foreign_column_name="FUNCSCHEMA">
+			<local_column_name>FUNCSCHEMA</local_column_name>
+		</ref>
+		<ref foreign_column_name="FUNCNAME">
+			<local_column_name>FUNCNAME</local_column_name>
+		</ref>
+		<ref foreign_column_name="SPECIFICNAME">
+			<local_column_name>SPECIFICNAME</local_column_name>
+		</ref>
+	</reference>
+	<column name="FUNCSCHEMA">
+		<sqlName>FUNCSCHEMA</sqlName>
+		<title>Schema</title>
+		<c_drill>y</c_drill>
+		<primaryKey/>			
+		<c_prefill>
+			<table>schema</table>
+			<column>SCHEMANAME</column>
+		</c_prefill>
+	</column>
+	<column name="FUNCNAME">
+		<sqlName>FUNCNAME</sqlName>
+		<title>Name</title>
+		<c_drill>y</c_drill>
+		<primaryKey/>			
+	</column>
+	<column name="SPECIFICNAME">
+		<sqlName>SPECIFICNAME</sqlName>
+		<title>Specific Name</title>
+	</column>
+	<column name="DEFINER">
+		<sqlName>DEFINER</sqlName>
+		<title>Definer</title>
+	</column>
+	<column name="FUNCID">
+		<sqlName>FUNCID</sqlName>
+		<title>FUNCID</title>
+	</column>
+	<column name="RETURN_TYPE">
+		<sqlName>RETURN_TYPE</sqlName>
+		<title>Return Type</title>
+	</column>
+	<column name="ORIGIN">
+		<sqlName>ORIGIN</sqlName>
+		<title>Origin</title>
+	</column>
+	<column name="TYPE">
+		<sqlName>TYPE</sqlName>
+		<title>Type</title>
+	</column>
+	<column name="METHOD" DBMS="DB2">
+		<sqlName>METHOD</sqlName>
+		<title>Method</title>
+	</column>
+	<column name="EFFECT" DBMS="DB2">
+		<sqlName>EFFECT</sqlName>
+		<title>Effect</title>
+	</column>
+	<column name="PARM_COUNT">
+		<sqlName>PARM_COUNT</sqlName>
+		<title>Parm Count</title>
+	</column>
+	<column name="PARM_SIGNATURE">
+		<sqlName>PARM_SIGNATURE</sqlName>
+		<title>Parm Signature</title>
+	</column>
+	<column name="CREATE_TIME">
+		<sqlName>CREATE_TIME</sqlName>
+		<title>Create Time</title>
+	</column>
+	<column name="QUALIFIER" DBMS="DB2">
+		<sqlName>QUALIFIER</sqlName>
+		<title>Qualifier</title>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="WITH_FUNC_ACCESS">
+		<sqlName>WITH_FUNC_ACCESS</sqlName>
+		<title>With Func Access</title>
+	</column>
+	<column name="TYPE_PRESERVING">
+		<sqlName>TYPE_PRESERVING</sqlName>
+		<title>Type Perserving</title>
+	</column>
+	<column name="VARIANT">
+		<sqlName>VARIANT</sqlName>
+		<title>Variant</title>
+	</column>
+	<column name="SIDE_EFFECTS">
+		<sqlName>SIDE_EFFECTS</sqlName>
+		<title>Side Effects</title>
+	</column>
+	<column name="FENCED">
+		<sqlName>FENCED</sqlName>
+		<title>Fenced</title>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="NULLCALL">
+		<sqlName>NULLCALL</sqlName>
+		<title>Null Call</title>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="CAST_FUNCTION">
+		<sqlName>CAST_FUNCTION</sqlName>
+		<title>Cat Function</title>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="ASSIGN_FUNCTION">
+		<sqlName>ASSIGN_FUNCTION</sqlName>
+		<title>Assign Function</title>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="SCRATCHPAD">
+		<sqlName>SCRATCHPAD</sqlName>
+		<title>Scratch PAD</title>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="FINAL_CALL">
+		<sqlName>FINAL_CALL</sqlName>
+		<title>Final Call</title>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="PARALLELIZABLE">
+		<sqlName>PARALLELIZABLE</sqlName>
+		<title>Parellelizable</title>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="CONTAINS_SQL">
+		<sqlName>CONTAINS_SQL</sqlName>
+		<title>Contains SQL</title>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="DBINFO">
+		<sqlName>DBINFO</sqlName>
+		<title>DB Info</title>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="RESULT_COLS">
+		<sqlName>RESULT_COLS</sqlName>
+		<title>Recults Cols</title>
+	</column>
+	<column name="LANGUAGE">
+		<sqlName>LANGUAGE</sqlName>
+		<title>Language</title>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="IMPLEMENTATION">
+		<sqlName>IMPLEMENTATION</sqlName>
+		<title>Implementation</title>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="CLASS">
+		<sqlName>CLASS</sqlName>
+		<title>Class</title>
+	</column>
+	<column name="JAR_ID">
+		<sqlName>JAR_ID</sqlName>
+		<title>JAR Id.</title>
+	</column>
+	<column name="PARM_STYLE">
+		<sqlName>PARM_STYLE</sqlName>
+		<title>Parm Style</title>
+	</column>
+	<column name="SOURCE_SCHEMA">
+		<sqlName>SOURCE_SCHEMA</sqlName>
+		<title>Source Schema</title>
+		<c_drill>y</c_drill>
+		<c_prefill>
+			<table>schema</table>
+			<column>SCHEMANAME</column>
+		</c_prefill>
+	</column>
+	<column name="SOURCE_SPECIFIC">
+		<sqlName>SOURCE_SPECIFIC</sqlName>
+		<title>Source Specific</title>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="IOS_PER_INVOC">
+		<sqlName>IOS_PER_INVOC</sqlName>
+		<title>IOs per Invocation</title>
+	</column>
+	<column name="INSTS_PER_INVOC">
+		<sqlName>INSTS_PER_INVOC</sqlName>
+		<title>Instructions per Invocation</title>
+	</column>
+	<column name="IOS_PER_ARGBYTE">
+		<sqlName>IOS_PER_ARGBYTE</sqlName>
+		<title>IOs per Arg. byte</title>
+	</column>
+	<column name="INSTS_PER_ARGBYTE">
+		<sqlName>INSTS_PER_ARGBYTE</sqlName>
+		<title>Instructions per Arg. byte</title>
+	</column>
+	<column name="PERCENT_ARGBYTES">
+		<sqlName>PERCENT_ARGBYTES</sqlName>
+		<title>% Arg. bytes</title>
+	</column>
+	<column name="INITIAL_IOS">
+		<sqlName>INITIAL_IOS</sqlName>
+		<title>Initial IOs</title>
+	</column>
+	<column name="INITIAL_INSTS">
+		<sqlName>INITIAL_INSTS</sqlName>
+		<title>Initial Instructions</title>
+	</column>
+	<column name="CARDINALITY">
+		<sqlName>CARDINALITY</sqlName>
+		<title>Cardinality</title>
+	</column>
+	<column name="IMPLEMENTED">
+		<sqlName>IMPLEMENTED</sqlName>
+		<title>Implemented</title>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="SELECTIVITY">
+		<sqlName>SELECTIVITY</sqlName>
+		<title>Selectivity</title>
+	</column>
+	<column name="OVERRIDDEN_FUNCID">
+		<sqlName>OVERRIDDEN_FUNCID</sqlName>
+		<title>Overridden Func. id.</title>
+	</column>
+	<column name="SUBJECT_TYPESCHEMA">
+		<sqlName>SUBJECT_TYPESCHEMA</sqlName>
+		<title>Subject Type Schema</title>
+		<c_drill>y</c_drill>
+		<c_prefill>
+			<table>schema</table>
+			<column>SCHEMANAME</column>
+		</c_prefill>
+	</column>
+	<column name="SUBJECT_TYPENAME">
+		<sqlName>SUBJECT_TYPENAME</sqlName>
+		<title>Subject Type Name</title>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="FUNC_PATH">
+		<sqlName>FUNC_PATH</sqlName>
+		<title>Function Path</title>
+		<type>y</type>
+	</column>
+	<column name="BODY">
+		<sqlName>BODY</sqlName>
+		<title>Body</title>
+		<type>y</type>
+	</column>
+	<column name="REMARKS">
+		<sqlName>REMARKS</sqlName>
+		<title>Remarks</title>
+	</column>
+</table>

@@ -1,0 +1,159 @@
+<!--
+  Peter Prib, Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2012 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<table name="sqlWorkArea">
+	<sqlName>V$SQL_WORKAREA</sqlName>
+	<singularName>SQL Work Area</singularName>
+	<pluralName>SQL Work Areas</pluralName>
+	<description></description>
+	<output>
+		<type name="DDL" destination="" title="" generator=""/>
+	</output>
+   	<disable_edit/>
+	<orderBy name="SQL_ID" direction="A"/>
+	<displayColumns>
+		<col type="column" name="HASH_VALUE"/>
+		<col type="column" name="SQL_ID"/>
+		<col type="column" name="CHILD_NUMBER"/>
+		<col type="column" name="WORKAREA_ADDRESS"/>
+		<col type="column" name="OPERATION_TYPE"/>
+		<col type="column" name="OPERATION_ID"/>
+		<col type="column" name="POLICY"/>
+		<col type="column" name="ESTIMATED_OPTIMAL_SIZE"/>
+		<col type="column" name="ESTIMATED_ONEPASS_SIZE"/>
+		<col type="column" name="LAST_MEMORY_USED"/>
+		<col type="column" name="LAST_EXECUTION"/>
+		<col type="column" name="LAST_DEGREE"/>
+		<col type="column" name="TOTAL_EXECUTIONS"/>
+		<col type="column" name="OPTIMAL_EXECUTIONS"/>
+		<col type="column" name="ONEPASS_EXECUTIONS"/>
+		<col type="column" name="MULTIPASSES_EXECUTIONS"/>
+		<col type="column" name="ACTIVE_TIME"/>
+		<col type="column" name="MAX_TEMPSEG_SIZE"/>
+		<col type="column" name="LAST_TEMPSEG_SIZE"/>
+	</displayColumns>
+	<column name="ADDRESS">
+		<sqlName>ADDRESS</sqlName>
+		<title>Address</title>
+		<type>n</type>
+	</column>
+	<column name="HASH_VALUE">
+		<sqlName>HASH_VALUE</sqlName>
+		<title>Hash Value</title>
+		<type>n</type>
+	</column>
+	<column name="SQL_ID">
+		<sqlName>SQL_ID</sqlName>
+		<title>SQL Id.</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="CHILD_NUMBER">
+		<sqlName>CHILD_NUMBER</sqlName>
+		<title>Child Number</title>
+		<type>n</type>
+	</column>
+	<column name="WORKAREA_ADDRESS">
+		<sqlName>WORKAREA_ADDRESS</sqlName>
+		<title>Workarea Address</title>
+		<type>n</type>
+	</column>
+	<column name="OPERATION_TYPE">
+		<sqlName>OPERATION_TYPE</sqlName>
+		<title>Operation Type</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="OPERATION_ID">
+		<sqlName>OPERATION_ID</sqlName>
+		<title>Operation Id</title>
+		<type>n</type>
+	</column>
+	<column name="POLICY">
+		<sqlName>POLICY</sqlName>
+		<title>Policy</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="ESTIMATED_OPTIMAL_SIZE">
+		<sqlName>ESTIMATED_OPTIMAL_SIZE</sqlName>
+		<title>Estimated Optimal Size</title>
+		<type>n</type>
+		<formatNumber toAbbreviated="4"/> 
+	</column>
+	<column name="ESTIMATED_ONEPASS_SIZE">
+		<sqlName>ESTIMATED_ONEPASS_SIZE</sqlName>
+		<title>Estimated Onepass Size</title>
+		<type>n</type>
+		<formatNumber toAbbreviated="4"/> 
+	</column>
+	<column name="LAST_MEMORY_USED">
+		<sqlName>LAST_MEMORY_USED</sqlName>
+		<title>Last Memory Used</title>
+		<type>n</type>
+		<formatNumber toAbbreviated="4"/> 
+	</column>
+	<column name="LAST_EXECUTION">
+		<sqlName>LAST_EXECUTION</sqlName>
+		<title>Last Execution</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="LAST_DEGREE">
+		<sqlName>LAST_DEGREE</sqlName>
+		<title>Last Degree</title>
+		<type>n</type>
+	</column>
+	<column name="TOTAL_EXECUTIONS">
+		<sqlName>TOTAL_EXECUTIONS</sqlName>
+		<title>Total Executions</title>
+		<type>n</type>
+		<formatNumber toAbbreviated="4"/> 
+	</column>
+	<column name="OPTIMAL_EXECUTIONS">
+		<sqlName>OPTIMAL_EXECUTIONS</sqlName>
+		<title>Optimal Executions</title>
+		<type>n</type>
+		<formatNumber toAbbreviated="4"/> 
+	</column>
+	<column name="ONEPASS_EXECUTIONS">
+		<sqlName>ONEPASS_EXECUTIONS</sqlName>
+		<title>Onepass Executions</title>
+		<type>n</type>
+		<formatNumber toAbbreviated="4"/> 
+	</column>
+	<column name="MULTIPASSES_EXECUTIONS">
+		<sqlName>MULTIPASSES_EXECUTIONS</sqlName>
+		<title>Multipasses Executions</title>
+		<type>n</type>
+	</column>
+	<column name="ACTIVE_TIME">
+		<sqlName>ACTIVE_TIME</sqlName>
+		<title>Active Time</title>
+		<type>n</type>
+	</column>
+	<column name="MAX_TEMPSEG_SIZE">
+		<sqlName>MAX_TEMPSEG_SIZE</sqlName>
+		<title>Max Temp Seg Size</title>
+		<type>n</type>
+		<formatNumber toAbbreviated="4"/> 
+	</column>
+	<column name="LAST_TEMPSEG_SIZE">
+		<sqlName>LAST_TEMPSEG_SIZE</sqlName>
+		<title>Last Temp Seg. Size</title>
+		<type>n</type>
+		<formatNumber toAbbreviated="4"/> 
+	</column>
+</table>

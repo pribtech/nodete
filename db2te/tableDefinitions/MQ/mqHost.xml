@@ -1,0 +1,68 @@
+<!--
+  Peter Prib, Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2012 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<table name="mqHost">
+	<sqlName>DB2MQ.MQHOST</sqlName>
+	<singularName>MQ Host</singularName>
+	<pluralName>MQ Hosts</pluralName>
+	<description />
+	<orderBy name="connectionname" direction="A"/>
+	<displayColumns>
+		<col type="column" name="connectionname" />
+		<col type="column" name="queuemgrname" />
+		<col type="reference" name="policies" />
+		<col type="reference" name="messages" />
+		<col type="reference" name="listeners" />
+	</displayColumns>
+	<reference name="messages">
+		<title>Messages</title>
+		<reftype>table</reftype>
+		<refvalue>MQ/mqServicePolicyQueue</refvalue>
+		<icon>images/icon-tbs.gif</icon>
+		<ref foreign_column_name="servicename">
+			<local_column_name>servicename</local_column_name>
+		</ref>
+	</reference>
+	<reference name="policies">
+		<title>Policies</title>
+		<reftype>table</reftype>
+		<refvalue>MQ/mqPolicy</refvalue>
+		<icon>images/icon-tbs.gif</icon>
+		<ref foreign_column_name="connectionname">
+			<local_column_name>connectionname</local_column_name>
+		</ref>
+	</reference>
+	<reference name="listeners">
+		<title>Listeners</title>
+		<reftype>table</reftype>
+		<refvalue>MQ/mqListener</refvalue>
+		<icon>images/icon-tbs.gif</icon>
+		<ref foreign_column_name="QUEUEMANAGER">
+			<local_column_name>queuemgrname</local_column_name>
+		</ref>
+	</reference>
+	<column name="connectionname">
+		<sql_name>"CONNECTIONNAME"</sql_name>
+		<title>Logical Name</title>
+		<type>s</type>
+		<primaryKey/>
+	</column>
+	<column name="queuemgrname">
+		<sql_name>"QUEUEMGRNAME"</sql_name>
+		<title>Queue Manager</title>
+		<type>s</type>
+		<drillEnable />
+	</column>
+</table>

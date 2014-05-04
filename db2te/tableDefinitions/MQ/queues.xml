@@ -1,0 +1,388 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2013 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+
+<table name="queues">
+	<sqlName>queues</sqlName>
+	<singularName>Queue</singularName>
+	<pluralName>Queues</pluralName>
+	<inlinequery>
+<![CDATA[
+MQCMD_INQUIRE_Q  ?
+]]>
+	</inlinequery>
+	<parameters>
+		<parm name="MQCA_Q_NAME">
+			<title>Queue Mask</title>
+			<value>*</value>
+			<type>s</type>
+		</parm>
+	</parameters>
+	<description></description>
+	<displayColumns>
+		<col type="column" name="MQCA_Q_NAME"/>
+		<col type="column" name="MQIA_Q_TYPE"/>
+		<col type="column" name="MQIA_ACCOUNTING_Q"/>
+		<col type="column" name="MQCA_ALTERATION_DATE"/>
+		<col type="column" name="MQCA_ALTERATION_TIME"/>
+		<col type="column" name="MQCA_BACKOUT_REQ_Q_NAME"/>
+		<col type="column" name="MQIA_BACKOUT_THRESHOLD"/>
+		<col type="column" name="MQCA_CLUSTER_NAMELIST"/>
+		<col type="column" name="MQCA_CLUSTER_NAME"/>
+		<col type="column" name="MQIA_CLWL_Q_PRIORITY"/>
+		<col type="column" name="MQIA_CLWL_Q_RANK"/>
+		<col type="column" name="MQIA_CLWL_USEQ"/>
+		<col type="column" name="MQCA_CREATION_DATE"/>
+		<col type="column" name="MQCA_CREATION_TIME"/>
+		<col type="column" name="MQIA_CURRENT_Q_DEPTH"/>
+		<col type="column" name="MQCA_CUSTOM"/>
+		<col type="column" name="MQIA_DEF_BIND"/>
+		<col type="column" name="MQIA_DEF_PRIORITY"/>
+		<col type="column" name="MQIA_DEF_PERSISTENCE"/>
+		<col type="column" name="MQIA_DEF_PUT_RESPONSE_TYPE"/>
+		<col type="column" name="MQIA_DEF_READ_AHEAD"/>
+		<col type="column" name="MQIA_DEF_INPUT_OPEN_OPTION"/>
+		<col type="column" name="MQIA_DEFINITION_TYPE"/>
+		<col type="column" name="MQCA_Q_DESC"/>
+		<col type="column" name="MQIA_DIST_LISTS"/>
+		<col type="column" name="MQIA_INHIBIT_GET"/>
+		<col type="column" name="MQIA_HARDEN_GET_BACKOUT"/>
+		<col type="column" name="MQCA_INITIATION_Q_NAME"/>
+		<col type="column" name="MQIA_OPEN_INPUT_COUNT"/>
+		<col type="column" name="MQIA_MAX_Q_DEPTH"/>
+		<col type="column" name="MQIA_MAX_MSG_LENGTH"/>
+		<col type="column" name="MQIA_MONITORING_Q"/>
+		<col type="column" name="MQIA_MSG_DELIVERY_SEQUENCE"/>
+		<col type="column" name="MQIA_TRIGGER_CONTROL"/>
+		<col type="column" name="MQIA_NPM_CLASS"/>
+		<col type="column" name="MQIA_OPEN_OUTPUT_COUNT"/>
+		<col type="column" name="MQCA_PROCESS_NAME"/>
+		<col type="column" name="MQIA_INHIBIT_PUT"/>
+		<col type="column" name="MQIA_PROPERTY_CONTROL"/>
+		<col type="column" name="MQIA_Q_DEPTH_HIGH_LIMIT"/>
+		<col type="column" name="MQIA_Q_DEPTH_LOW_LIMIT"/>
+		<col type="column" name="MQIA_Q_DEPTH_HIGH_EVENT"/>
+		<col type="column" name="MQIA_Q_DEPTH_LOW_EVENT"/>
+		<col type="column" name="MQIA_Q_DEPTH_MAX_EVENT"/>
+		<col type="column" name="MQIA_Q_SERVICE_INTERVAL_EVENT"/>
+		<col type="column" name="MQIA_Q_SERVICE_INTERVAL"/>
+		<col type="column" name="MQIA_RETENTION_INTERVAL"/>
+		<col type="column" name="MQIA_SCOPE"/>
+		<col type="column" name="MQIA_SHAREABILITY"/>
+		<col type="column" name="MQIA_STATISTICS_Q"/>
+		<col type="column" name="MQCA_TRIGGER_DATA"/>
+		<col type="column" name="MQIA_TRIGGER_DEPTH"/>
+		<col type="column" name="MQIA_TRIGGER_MSG_PRIORITY"/>
+		<col type="column" name="MQIA_TRIGGER_TYPE"/>
+		<col type="column" name="MQIA_USAGE"/>
+		<col type="column" name="MQCA_BASE_OBJECT_NAME/MQCA_BASE_Q_NAME"/>
+		<col type="column" name="MQIA_BASE_TYPE"/>
+		<col type="column" name="MQCA_REMOTE_Q_MGR_NAME"/>
+		<col type="column" name="MQCA_REMOTE_Q_NAME"/>
+		<col type="column" name="MQCA_XMIT_Q_NAME"/>
+	</displayColumns>
+	<column name="MQCA_Q_NAME">
+		<sqlName>MQCA_Q_NAME</sqlName>
+		<title>Name</title>
+	</column>
+	<column name="MQIA_Q_TYPE">
+		<sqlName>MQIA_Q_TYPE</sqlName>
+		<title>Type</title>
+		<type>n</type>
+	</column>
+	<column name="MQIA_ACCOUNTING_Q">
+		<sqlName>MQIA_ACCOUNTING_Q</sqlName>
+		<title>Accounting</title>
+		<type>n</type>
+	</column>
+	<column name="MQCA_ALTERATION_DATE">
+		<sqlName>MQCA_ALTERATION_DATE</sqlName>
+		<title>Alteration Date</title>
+		<type>n</type>
+		<drillEnable/>
+	</column>
+	<column name="MQCA_ALTERATION_TIME">
+		<sqlName>MQCA_ALTERATION_TIME</sqlName>
+		<title>Alteration Time</title>
+		<type>n</type>
+	</column>
+	<column name="MQCA_BACKOUT_REQ_Q_NAME">
+		<sqlName>MQCA_BACKOUT_REQ_Q_NAME</sqlName>
+		<title>Backout Required Queue Name</title>
+		<type>s</type>
+	</column>
+	<column name="MQIA_BACKOUT_THRESHOLD">
+		<sqlName>MQIA_BACKOUT_THRESHOLD</sqlName>
+		<title>Backout Threshold</title>
+		<type>n</type>
+	</column>
+	<column name="MQCA_CLUSTER_NAMELIST">
+		<sqlName>MQCA_CLUSTER_NAMELIST</sqlName>
+		<title>Cluster Namelist</title>
+		<type>s</type>
+	</column>
+	<column name="MQCA_CLUSTER_NAME">
+		<sqlName>MQCA_CLUSTER_NAME</sqlName>
+		<title>Cluster Name</title>
+		<type>s</type>
+	</column>
+	<column name="MQIA_CLWL_Q_PRIORITY">
+		<sqlName>MQIA_CLWL_Q_PRIORITY</sqlName>
+		<title>Clwl Q Priority</title>
+		<type>n</type>
+	</column>
+	<column name="MQIA_CLWL_Q_RANK">
+		<sqlName>MQIA_CLWL_Q_RANK</sqlName>
+		<title>Clwl Q Rank</title>
+		<type>n</type>
+	</column>
+	<column name="MQIA_CLWL_USEQ">
+		<sqlName>MQIA_CLWL_USEQ</sqlName>
+		<title>Clwl Useq</title>
+		<type>n</type>
+	</column>
+	<column name="MQCA_CREATION_DATE">
+		<sqlName>MQCA_CREATION_DATE</sqlName>
+		<title>Creation Date</title>
+		<type>n</type>
+	</column>
+	<column name="MQCA_CREATION_TIME">
+		<sqlName>MQCA_CREATION_TIME</sqlName>
+		<title>Creation Time</title>
+		<type>n</type>
+	</column>
+	<column name="MQIA_CURRENT_Q_DEPTH">
+		<sqlName>MQIA_CURRENT_Q_DEPTH</sqlName>
+		<title>Current Q Depth</title>
+		<type>n</type>
+	</column>
+	<column name="MQCA_CUSTOM">
+		<sqlName>MQCA_CUSTOM</sqlName>
+		<title>Custom</title>
+		<type>n</type>
+	</column>
+	<column name="MQIA_DEF_BIND">
+		<sqlName>MQIA_DEF_BIND</sqlName>
+		<title>Def Bind</title>
+		<type>n</type>
+	</column>
+	<column name="MQIA_DEF_PRIORITY">
+		<sqlName>MQIA_DEF_PRIORITY</sqlName>
+		<title>Def Priority</title>
+		<type>n</type>
+	</column>
+	<column name="MQIA_DEF_PERSISTENCE">
+		<sqlName>MQIA_DEF_PERSISTENCE</sqlName>
+		<title>Def Persistence</title>
+		<type>n</type>
+	</column>
+	<column name="MQIA_DEF_PUT_RESPONSE_TYPE">
+		<sqlName>MQIA_DEF_PUT_RESPONSE_TYPE</sqlName>
+		<title>Def Put Response Type</title>
+		<type>n</type>
+	</column>
+	<column name="MQIA_DEF_READ_AHEAD">
+		<sqlName>MQIA_DEF_READ_AHEAD</sqlName>
+		<title>Def Read Ahead</title>
+		<type>n</type>
+	</column>
+	<column name="MQIA_DEF_INPUT_OPEN_OPTION">
+		<sqlName>MQIA_DEF_INPUT_OPEN_OPTION</sqlName>
+		<title>Def Input Open Option</title>
+		<type>n</type>
+	</column>
+	<column name="MQIA_DEFINITION_TYPE">
+		<sqlName>MQIA_DEFINITION_TYPE</sqlName>
+		<title>Definition Type</title>
+		<type>n</type>
+	</column>
+	<column name="MQCA_Q_DESC">
+		<sqlName>MQCA_Q_DESC</sqlName>
+		<title>Description</title>
+	</column>
+	<column name="MQIA_DIST_LISTS">
+		<sqlName>MQIA_DIST_LISTS</sqlName>
+		<title>Dist Lists</title>
+	</column>
+	<column name="MQIA_INHIBIT_GET">
+		<sqlName>MQIA_INHIBIT_GET</sqlName>
+		<title>Inhibit Get</title>
+	</column>
+	<column name="MQIA_HARDEN_GET_BACKOUT">
+		<sqlName>MQIA_HARDEN_GET_BACKOUT</sqlName>
+		<title>Harden Get Backout</title>
+	</column>
+	<column name="MQCA_INITIATION_Q_NAME">
+		<sqlName>MQCA_INITIATION_Q_NAME</sqlName>
+		<title>Initiation Q Name</title>
+	</column>
+	<column name="MQIA_OPEN_INPUT_COUNT">
+		<sqlName>MQIA_OPEN_INPUT_COUNT</sqlName>
+		<title>Open Input Count</title>
+		<type>n</type>
+	</column>
+	<column name="MQIA_MAX_Q_DEPTH">
+		<sqlName>MQIA_MAX_Q_DEPTH</sqlName>
+		<title>Max Q Depth</title>
+		<type>n</type>
+	</column>
+	<column name="MQIA_MAX_MSG_LENGTH">
+		<sqlName>MQIA_MAX_MSG_LENGTH</sqlName>
+		<title>Max Msg Length</title>
+		<type>n</type>
+	</column>
+	<column name="MQIA_MONITORING_Q">
+		<sqlName>MQIA_MONITORING_Q</sqlName>
+		<title>Monitoring Q</title>
+		<type>n</type>
+	</column>
+	<column name="MQIA_MSG_DELIVERY_SEQUENCE">
+		<sqlName>MQIA_MSG_DELIVERY_SEQUENCE</sqlName>
+		<title>Msg Delivery Sequence</title>
+		<type>n</type>
+	</column>
+	<column name="MQIA_TRIGGER_CONTROL">
+		<sqlName>MQIA_TRIGGER_CONTROL</sqlName>
+		<title>Trigger Control</title>
+		<type>n</type>
+	</column>
+	<column name="MQIA_NPM_CLASS">
+		<sqlName>MQIA_NPM_CLASS</sqlName>
+		<title>NPM Class</title>
+		<type>n</type>
+	</column>
+	<column name="MQIA_OPEN_OUTPUT_COUNT">
+		<sqlName>MQIA_OPEN_OUTPUT_COUNT</sqlName>
+		<title>Open Output Count</title>
+		<type>n</type>
+	</column>
+	<column name="MQCA_PROCESS_NAME">
+		<sqlName>MQCA_PROCESS_NAME</sqlName>
+		<title>Process Name</title>
+	</column>
+	<column name="MQIA_INHIBIT_PUT">
+		<sqlName>MQIA_INHIBIT_PUT</sqlName>
+		<title>Inhibit Put</title>
+		<type>n</type>
+	</column>
+	<column name="MQIA_PROPERTY_CONTROL">
+		<sqlName>MQIA_PROPERTY_CONTROL</sqlName>
+		<title>Property Control</title>
+		<type>n</type>
+	</column>
+	<column name="MQIA_Q_DEPTH_HIGH_LIMIT">
+		<sqlName>MQIA_Q_DEPTH_HIGH_LIMIT</sqlName>
+		<title>Q Depth High Limit</title>
+		<type>n</type>
+	</column>
+	<column name="MQIA_Q_DEPTH_LOW_LIMIT">
+		<sqlName>MQIA_Q_DEPTH_LOW_LIMIT</sqlName>
+		<title>Q Depth Low Limit</title>
+		<type>n</type>
+	</column>
+	<column name="MQIA_Q_DEPTH_HIGH_EVENT">
+		<sqlName>MQIA_Q_DEPTH_HIGH_EVENT</sqlName>
+		<title>Q Depth High Event</title>
+		<type>n</type>
+	</column>
+	<column name="MQIA_Q_DEPTH_LOW_EVENT">
+		<sqlName>MQIA_Q_DEPTH_LOW_EVENT</sqlName>
+		<title>Q Depth Low Event</title>
+		<type>n</type>
+	</column>
+	<column name="MQIA_Q_DEPTH_MAX_EVENT">
+		<sqlName>MQIA_Q_DEPTH_MAX_EVENT</sqlName>
+		<title>Q Depth Max Event</title>
+		<type>n</type>
+	</column>
+	<column name="MQIA_Q_SERVICE_INTERVAL_EVENT">
+		<sqlName>MQIA_Q_SERVICE_INTERVAL_EVENT</sqlName>
+		<title>Q Service Interval Event</title>
+		<type>n</type>
+	</column>
+	<column name="MQIA_Q_SERVICE_INTERVAL">
+		<sqlName>MQIA_Q_SERVICE_INTERVAL</sqlName>
+		<title>Q Service Interval</title>
+		<type>n</type>
+	</column>
+	<column name="MQIA_RETENTION_INTERVAL">
+		<sqlName>MQIA_RETENTION_INTERVAL</sqlName>
+		<title>Retention Interval</title>
+		<type>n</type>
+	</column>
+	<column name="MQIA_SCOPE">
+		<sqlName>MQIA_SCOPE</sqlName>
+		<title>Scope</title>
+		<type>n</type>
+	</column>
+	<column name="MQIA_SHAREABILITY">
+		<sqlName>MQIA_SHAREABILITY</sqlName>
+		<title>Shareability</title>
+		<type>n</type>
+	</column>
+	<column name="MQIA_STATISTICS_Q">
+		<sqlName>MQIA_STATISTICS_Q</sqlName>
+		<title>Statistics Q</title>
+		<type>n</type>
+	</column>
+	<column name="MQCA_TRIGGER_DATA">
+		<sqlName>MQCA_TRIGGER_DATA</sqlName>
+		<title>Trigger Data</title>
+		<type>n</type>
+	</column>
+	<column name="MQIA_TRIGGER_DEPTH">
+		<sqlName>MQIA_TRIGGER_DEPTH</sqlName>
+		<title>Trigger Depth</title>
+		<type>n</type>
+	</column>
+	<column name="MQIA_TRIGGER_MSG_PRIORITY">
+		<sqlName>MQIA_TRIGGER_MSG_PRIORITY</sqlName>
+		<title>Trigger Msg Priority</title>
+		<type>n</type>
+	</column>
+	<column name="MQIA_TRIGGER_TYPE">
+		<sqlName>MQIA_TRIGGER_TYPE</sqlName>
+		<title>Trigger Type</title>
+		<type>n</type>
+	</column>
+	<column name="MQIA_USAGE">
+		<sqlName>MQIA_USAGE</sqlName>
+		<title>Usage</title>
+		<type>n</type>
+	</column>
+	<column name="MQCA_BASE_OBJECT_NAME/MQCA_BASE_Q_NAME">
+		<sqlName>MQCA_BASE_OBJECT_NAME/MQCA_BASE_Q_NAME</sqlName>
+		<title>Base Object/Q Name</title>
+	</column>
+	<column name="MQIA_BASE_TYPE">
+		<sqlName>MQIA_BASE_TYPE</sqlName>
+		<title>Base Type</title>
+		<type>n</type>
+	</column>
+	<column name="MQCA_REMOTE_Q_MGR_NAME">
+		<sqlName>MQCA_REMOTE_Q_MGR_NAME</sqlName>
+		<title>Remote Q Mgr Name</title>
+	</column>
+	<column name="MQCA_REMOTE_Q_NAME">
+		<sqlName>MQCA_REMOTE_Q_NAME</sqlName>
+		<title>Remote Q Name</title>
+	</column>
+	<column name="MQCA_XMIT_Q_NAME">
+		<sqlName>MQCA_XMIT_Q_NAME</sqlName>
+		<title>Xmit Q Name</title>
+	</column>
+</table>

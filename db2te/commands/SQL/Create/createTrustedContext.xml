@@ -1,0 +1,108 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2009 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<command name="createTrustedContext" title="Create Trusted Context">
+<![CDATA[
+>>-CREATE TRUSTED CONTEXT--context-name------------------------->
+]]>
+	<text>CREATE TRUSTED CONTEXT</text>
+	<clauseReference name="context-name"/>
+	<br/>
+<![CDATA[
+>--BASED UPON CONNECTION USING---------------------------------->
+]]>
+	<text>BASED UPON CONNECTION USING</text>
+	<br/>
+<![CDATA[
+>--SYSTEM AUTHID--authorization-name--●------------------------->
+]]>
+	<text>SYSTEM AUTHID</text><clauseReference name="authorization-name"/>
+	<br/>
+<![CDATA[
+                  .-,-----------------------------------------------------------------------------.         
+                  V  (1)   (2)                                                                    |         
+>--ATTRIBUTES--(----------------+-ADDRESS--address-value--+-----------------------------------+-+-+--)--●-->
+                                |                         '-WITH ENCRYPTION--encryption-value-' |           
+                                |  (3)                                                          |           
+                                '-------ENCRYPTION--encryption-value----------------------------'           
+]]>
+	<text>ATTRIBUTES (</text>
+	<repeatable>
+		<select>
+			<option default="true">
+				<text>ADDRESS</text><clauseReference name="address-value"/>
+				<select>
+					<option default="true"></option>
+					<option><text>WITH ENCRYPTION</text><clauseReference name="encryption-value"/></option>
+				</select>
+			</option>
+			<option><text>ENCRYPTION</text><clauseReference name="encryption-value"/></option>
+		</select>
+	</repeatable>
+	<text>)</text>
+	<br/>
+<![CDATA[
+   .-NO DEFAULT ROLE---------.     .-DISABLE-.      
+>--+-------------------------+--●--+---------+--●--------------->
+   '-DEFAULT ROLE--role-name-'     '-ENABLE--'      
+]]>
+	<select>
+		<option><text>NO DEFAULT ROLE</text></option>
+		<option default="true"><note>NO DEFAULT ROLE</note></option>
+		<option><text>DEFAULT ROLE</text><clauseReference name="role-name"/></option>
+	</select>
+	<select>
+		<option><text>DISABLE</text></option>
+		<option default="true"><note>DISABLE</note></option>
+		<option><text>ENABLE</text></option>
+	</select>
+	<br/>
+<![CDATA[
+>--+-------------------------------------------------------------------------------------------+-->
+   |               .-,-----------------------------------------------------------------------. |   
+   |               V                                              .-WITHOUT AUTHENTICATION-. | |   
+   '-WITH USE FOR----+-authorization-name--+-----------------+-+--+------------------------+-+-'   
+                     |                     '-ROLE--role-name-' |  '-WITH AUTHENTICATION----'       
+                     '-PUBLIC----------------------------------'                                   
+]]>
+	<select>
+		<option default="true"></option>
+		<option>
+			<text>WITH USE FOR</text>
+			<repeatable>
+				<select>
+					<option>
+						<clauseReference name="authorization-name"/>
+						<select>
+							<option default="true"></option>
+							<option><text>ROLE</text><clauseReference name="role-name"/></option>
+						</select>
+					</option>
+					<option><text>PUBLIC</text></option>
+				</select>
+				<select>
+					<option><text>WITHOUT AUTHENTICATION</text></option>
+					<option default="true"><note>WITHOUT AUTHENTICATION</note></option>
+					<option><text>WITH AUTHENTICATION</text></option>
+				</select>
+			</repeatable>
+		</option>
+	</select>
+<![CDATA[
+>--●-----------------------------------------------------------><
+]]>
+</command>

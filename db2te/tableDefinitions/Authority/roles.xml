@@ -1,0 +1,67 @@
+<table name="SYSCAT.ROLES">
+    <sql_name>SYSCAT.ROLES</sql_name>
+    <singular_name>Role</singular_name>
+    <plural_name>Roles</plural_name>
+    <description>
+	Each row is a 
+	&lt;a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.admin.sec.doc/doc/c0050531.html?noframes=true');"&gt;role&lt;/a&gt;.
+	This list is generated from the &lt;a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.sql.ref.doc/doc/r0050612.html?noframes=true');"&gt;SYSCAT.ROLES&lt;/a&gt; catalog view.
+    </description>
+    <rows_per_page>50</rows_per_page>
+    <display_columns>
+        <col type="column" name="rolename"></col>
+        <col type="column" name="roleid"></col>
+        <col type="reference" name="rolemembers"></col>                    
+        <col type="column" name="auditpolicyname"></col>        
+        <col type="column" name="auditpolicyid"></col>
+        <col type="column" name="remarks"></col>
+        <col type="column" name="create_time"></col>        
+    </display_columns>
+	<disable_edit/>
+		<order_by_index name="rolename" direction="A"/>				
+		<reference name="rolemembers">
+			<c_title>Members</c_title>
+			<reftype>table</reftype>
+			<refvalue>Authority/roleauth</refvalue>
+			<icon>images/icon-role.gif</icon>								
+			<ref foreign_column_name="rolename">
+				<local_column_name>rolename</local_column_name>
+			</ref>			
+		</reference>  			
+    <column name="rolename">
+        <c_sql_name>ROLENAME</c_sql_name>
+        <c_title>Role</c_title>
+        <c_presentation>s</c_presentation>
+        <c_drill>y</c_drill>
+    </column>
+    <column name="roleid">
+        <c_sql_name>ROLEID</c_sql_name>
+        <c_title>ID</c_title>
+        <c_presentation>n</c_presentation>
+        <c_drill>n</c_drill>
+    </column>
+    <column name="create_time">
+        <c_sql_name>CREATE_TIME</c_sql_name>
+        <c_title>Creation</c_title>
+        <c_presentation>n</c_presentation>
+        <c_drill>n</c_drill>
+    </column>
+    <column name="auditpolicyid">
+        <c_sql_name>AUDITPOLICYID</c_sql_name>
+        <c_title>ID</c_title>
+        <c_presentation>n</c_presentation>
+        <c_drill>n</c_drill>
+    </column>
+    <column name="auditpolicyname">
+        <c_sql_name>AUDITPOLICYNAME</c_sql_name>
+        <c_title>Audit Policy</c_title>
+        <c_presentation>s</c_presentation>
+        <c_drill>y</c_drill>
+    </column>
+    <column name="remarks">
+        <c_sql_name>REMARKS</c_sql_name>
+        <c_title>Remarks</c_title>
+        <c_presentation>s</c_presentation>
+        <c_drill>y</c_drill>
+    </column>
+</table>

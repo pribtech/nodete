@@ -1,0 +1,186 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2009 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+
+<table name="histSystemMemory">
+	<sql_name>histSystemMemory</sql_name>
+	<singular_name>System Memory</singular_name>
+	<plural_name>System Memory History</plural_name>
+	<messages><SQL0204N>Not installed. Please install "DB2TE add monitoring tables V95" in Tools-> Installed Components</SQL0204N></messages>
+	<inlinequery>
+<![CDATA[
+SELECT MEMORY_TOTAL.SAMPLE_TS
+	,cast(MEMORY_TOTAL.VALUE as bigint) as MEMORY_TOTAL
+	,cast(MEMORY_FREE.VALUE as bigint) as MEMORY_FREE
+	,cast(MEMORY_SWAP_TOTAL.VALUE as bigint) as MEMORY_SWAP_TOTAL
+	,cast(MEMORY_SWAP_FREE.VALUE as bigint) as MEMORY_SWAP_FREE
+	,cast(VIRTUAL_MEM_TOTAL.VALUE as bigint) as VIRTUAL_MEM_TOTAL
+	,cast(VIRTUAL_MEM_FREE.VALUE as bigint) as VIRTUAL_MEM_FREE
+FROM "s#db2mc".HIST_ENV_SYS_RESOURCES MEMORY_TOTAL
+join "s#db2mc".HIST_ENV_SYS_RESOURCES MEMORY_FREE
+  on MEMORY_FREE.SAMPLE_TS=MEMORY_TOTAL.SAMPLE_TS
+ and MEMORY_FREE.name='MEMORY_FREE'
+join "s#db2mc".HIST_ENV_SYS_RESOURCES MEMORY_SWAP_TOTAL
+  on MEMORY_SWAP_TOTAL.SAMPLE_TS=MEMORY_TOTAL.SAMPLE_TS
+ and MEMORY_SWAP_TOTAL.name='MEMORY_SWAP_TOTAL'
+join "s#db2mc".HIST_ENV_SYS_RESOURCES MEMORY_SWAP_FREE
+  on MEMORY_SWAP_FREE.SAMPLE_TS=MEMORY_TOTAL.SAMPLE_TS
+ and MEMORY_SWAP_FREE.name='MEMORY_SWAP_FREE'
+join "s#db2mc".HIST_ENV_SYS_RESOURCES VIRTUAL_MEM_TOTAL
+  on VIRTUAL_MEM_TOTAL.SAMPLE_TS=MEMORY_TOTAL.SAMPLE_TS
+ and VIRTUAL_MEM_TOTAL.name='VIRTUAL_MEM_TOTAL'
+join "s#db2mc".HIST_ENV_SYS_RESOURCES VIRTUAL_MEM_FREE
+  on VIRTUAL_MEM_FREE.SAMPLE_TS=MEMORY_TOTAL.SAMPLE_TS
+ and VIRTUAL_MEM_FREE.name='VIRTUAL_MEM_FREE'
+,(select case when upper(startTs) = 'CURRENT' then current timestamp else timestamp(startTs) end as startTS 
+	,duration
+	from (values(cast('?' as varchar(26)),cast(? as int))) as timePeriod(startTs,duration)
+ ) period
+where MEMORY_TOTAL.SAMPLE_TS between period.startTS - period.duration hours and period.startTS
+  and MEMORY_TOTAL.name='MEMORY_TOTAL'
+]]>
+	</inlinequery>
+	<parameters>
+		<parm name="start">
+			<title>Start</title>
+			<value>current</value>
+			<type>timestamp</type>
+		</parm>
+		<parm name="Period">
+			<title>Period (hours)</title>
+			<value>3</value>
+			<type>n</type>
+		</parm>
+	</parameters>
+	<description></description>
+	<rows_per_page>50</rows_per_page>
+	<order_by_index name="SAMPLE_TS" direction="D"/>
+	<display_columns>
+		<col type="column" name="SAMPLE_TS"/>
+		<col type="column" name="MEMORY_TOTAL"/>
+		<col type="column" name="MEMORY_FREE"/>
+		<col type="column" name="MEMORY_SWAP_TOTAL"/>
+		<col type="column" name="MEMORY_SWAP_FREE"/>
+		<col type="column" name="VIRTUAL_MEM_TOTAL"/>
+		<col type="column" name="VIRTUAL_MEM_FREE"/>
+	</display_columns>
+	<graph>
+		<title>System History Memory</title>
+		<type>line</type>
+ 		<style>
+ 			<legend>
+ 			 	<display>right</display>
+ 			</legend>
+ 			<animationEnabled>false</animationEnabled>
+ 		</style>
+	</graph>	
+
+	<column name="SAMPLE_TS">
+		<c_sql_name>SAMPLE_TS</c_sql_name>
+		<c_title>Time</c_title>
+		<c_presentation/>
+		<c_pkey>p</c_pkey>
+		<c_graph>
+			<g_x_categories>y</g_x_categories>
+			<label>Time</label>
+		</c_graph>		
+	</column>
+	<column name="MEMORY_TOTAL">
+		<c_sql_name>MEMORY_TOTAL</c_sql_name>
+		<c_title>Memory Total</c_title>
+		<c_presentation/>
+		<c_graph>
+			<g_description>Memory Total</g_description>
+			<datastyle>
+				<graph_type>line</graph_type>
+					<color>0x00FF00</color>
+					<size>2</size>
+					<lineSize>1</lineSize>
+				</datastyle>
+		</c_graph>
+	</column>
+	<column name="MEMORY_FREE">
+		<c_sql_name>MEMORY_FREE</c_sql_name>
+		<c_title>Memory Free</c_title>
+		<c_presentation/>
+		<c_graph>
+			<g_description>Memory Free</g_description>
+			<datastyle>
+				<graph_type>line</graph_type>
+					<color>0xFFFF00</color>
+					<size>2</size>
+					<lineSize>1</lineSize>
+			</datastyle>
+		</c_graph>
+	</column>
+	<column name="MEMORY_SWAP_TOTAL">
+		<c_sql_name>MEMORY_SWAP_TOTAL</c_sql_name>
+		<c_title>Memory Swap Total</c_title>
+		<c_presentation/>
+		<c_graph>
+			<g_description>Memory Swap Total</g_description>
+			<datastyle>
+				<graph_type>line</graph_type>
+					<color>0x808080</color>
+					<size>2</size>
+					<lineSize>1</lineSize>
+			</datastyle>
+		</c_graph>
+	</column>
+	<column name="MEMORY_SWAP_FREE">
+		<c_sql_name>MEMORY_SWAP_FREE</c_sql_name>
+		<c_title>Memory Swap Free</c_title>
+		<c_presentation/>
+		<c_graph>
+			<g_description>Memory Swap Free</g_description>
+			<datastyle>
+				<graph_type>line</graph_type>
+					<color>0x00FFFF</color>
+					<size>2</size>
+					<lineSize>1</lineSize>
+			</datastyle>
+		</c_graph>
+	</column>
+	<column name="VIRTUAL_MEM_TOTAL">
+		<c_sql_name>VIRTUAL_MEM_TOTAL</c_sql_name>
+		<c_title>Virtual Memory Total</c_title>
+		<c_presentation/>
+		<c_graph>
+			<g_description>Virtual Memory Swap</g_description>
+			<datastyle>
+				<graph_type>line</graph_type>
+					<color>0x000080</color>
+					<size>2</size>
+					<lineSize>1</lineSize>
+			</datastyle>
+		</c_graph>
+	</column>
+	<column name="VIRTUAL_MEM_FREE">
+		<c_sql_name>VIRTUAL_MEM_FREE</c_sql_name>
+		<c_title>Virtual Memory Free</c_title>
+		<c_presentation/>
+		<c_graph>
+			<g_description>Virtual Memory Free</g_description>
+			<datastyle>
+				<graph_type>line</graph_type>
+					<color>0xFF00FF</color>
+					<size>2</size>
+					<lineSize>1</lineSize>
+			</datastyle>
+		</c_graph>
+	</column>
+</table>

@@ -1,0 +1,84 @@
+<!--
+  Peter Prib, Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2012 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<table name="javaPoolAdvice">
+	<sqlName>V$JAVA_POOL_ADVICE</sqlName>
+	<singularName>Java Pool Advice</singularName>
+	<pluralName>Java Pool Advice</pluralName>
+	<description></description>
+	<output>
+		<type name="DDL" destination="" title="" generator=""/>
+	</output>
+   	<disable_edit/>
+	<orderBy name="JAVA_POOL_SIZE_FOR_ESTIMATE" direction="A"/>
+	<displayColumns>
+		<col type="column" name="JAVA_POOL_SIZE_FOR_ESTIMATE"/>
+		<col type="column" name="JAVA_POOL_SIZE_FACTOR"/>
+		<col type="column" name="ESTD_LC_SIZE"/>
+		<col type="column" name="ESTD_LC_MEMORY_OBJECTS"/>
+		<col type="column" name="ESTD_LC_TIME_SAVED"/>
+		<col type="column" name="ESTD_LC_TIME_SAVED_FACTOR"/>
+		<col type="column" name="ESTD_LC_LOAD_TIME"/>
+		<col type="column" name="ESTD_LC_LOAD_TIME_FACTOR"/>
+		<col type="column" name="ESTD_LC_MEMORY_OBJECT_HITS"/>
+	</displayColumns>
+	<column name="JAVA_POOL_SIZE_FOR_ESTIMATE">
+		<sqlName>JAVA_POOL_SIZE_FOR_ESTIMATE</sqlName>
+		<title>Java Pool Size For Estimate</title>
+		<type>n</type>
+	</column>
+	<column name="JAVA_POOL_SIZE_FACTOR">
+		<sqlName>JAVA_POOL_SIZE_FACTOR</sqlName>
+		<title>Java Pool Size Factor</title>
+		<type>n</type>
+	</column>
+	<column name="ESTD_LC_SIZE">
+		<sqlName>ESTD_LC_SIZE</sqlName>
+		<title>LC Size</title>
+		<type>n</type>
+	</column>
+	<column name="ESTD_LC_MEMORY_OBJECTS">
+		<sqlName>ESTD_LC_MEMORY_OBJECTS</sqlName>
+		<title>LC Memory Objects</title>
+		<type>n</type>
+	</column>
+	<column name="ESTD_LC_TIME_SAVED">
+		<sqlName>ESTD_LC_TIME_SAVED</sqlName>
+		<title>LC Time Saved</title>
+		<type>n</type>
+	</column>
+	<column name="ESTD_LC_TIME_SAVED_FACTOR">
+		<sqlName>ESTD_LC_TIME_SAVED_FACTOR</sqlName>
+		<title>LC Time Saved Factor</title>
+		<type>n</type>
+	</column>
+	<column name="ESTD_LC_LOAD_TIME">
+		<sqlName>ESTD_LC_LOAD_TIME</sqlName>
+		<title>LC Load Time</title>
+		<type>n</type>
+		<formatNumber toAbbreviated="4"/> 
+	</column>
+	<column name="ESTD_LC_LOAD_TIME_FACTOR">
+		<sqlName>ESTD_LC_LOAD_TIME_FACTOR</sqlName>
+		<title>LC Load Time Factor</title>
+		<type>n</type>
+	</column>
+	<column name="ESTD_LC_MEMORY_OBJECT_HITS">
+		<sqlName>ESTD_LC_MEMORY_OBJECT_HITS</sqlName>
+		<title>LC Memory Object Hits</title>
+		<type>n</type>
+		<formatNumber toAbbreviated="4"/> 
+	</column>
+</table>

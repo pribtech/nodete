@@ -1,0 +1,296 @@
+
+	<!--
+		Copyright IBM Corp. 2007 All rights reserved. Licensed under the
+		Apache License, Version 2.0 (the "License"); you may not use this file
+		except in compliance with the License. You may obtain a copy of the
+		License at http://www.apache.org/licenses/LICENSE-2.0 Unless required
+		by applicable law or agreed to in writing, software distributed under
+		the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+		CONDITIONS OF ANY KIND, either express or implied. See the License for
+		the specific language governing permissions and limitations under the
+		License.
+	-->
+	<!--
+		peter prib, Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2010
+		All rights reserved.
+	-->
+
+<table name="toptbspDelta">
+	<sqlName>TOP_TBSP_VIEW</sqlName>
+	<singular_name>Table Space IO Rate</singular_name>
+	<plural_name>Table Space IO Rate</plural_name>
+	<inlinequery>
+<![CDATA[
+SELECT TBSP.*,part.tbsp_state 
+FROM table(SNAP_GET_TBSP('', -2)) AS TBSP
+    ,table(SNAP_GET_TBSP_PART('', -2)) AS PART 
+WHERE tbsp.tbsp_id = part.tbsp_id
+]]>
+	</inlinequery>
+	<history depth="10" time="snapshot_timestamp"/>
+	<display_columns>
+		<col type="reference" name="tablespace" />
+		<col type="column" name="tbsp_name" />
+		<col type="column" name="tbsp_state" />
+		<col type="column" name="tbsp_type" />
+		<col type="column" name="tbsp_content_type" />
+		<col type="dynamiccolumnsimple" name="direct_reads_persec" />
+		<col type="dynamiccolumnsimple" name="direct_read_reqs_persec" />
+		<col type="dynamiccolumnsimple" name="direct_writes_persec" />
+		<col type="dynamiccolumnsimple" name="direct_write_time_persec" />
+		<col type="dynamiccolumnsimple" name="files_closed_persec" />
+		<col type="dynamiccolumnsimple" name="pool_async_data_reads_persec" />
+		<col type="dynamiccolumnsimple" name="pool_async_data_read_reqs_persec" />
+		<col type="dynamiccolumnsimple" name="pool_async_data_writes_persec" />
+		<col type="dynamiccolumnsimple" name="pool_async_index_reads_persec" />
+		<col type="dynamiccolumnsimple" name="pool_async_index_read_reqs_persec" />
+		<col type="dynamiccolumnsimple" name="pool_async_index_writes_persec" />
+		<col type="dynamiccolumnsimple" name="pool_data_l_reads_persec" />
+		<col type="dynamiccolumnsimple" name="pool_data_p_reads_persec" />
+		<col type="dynamiccolumnsimple" name="pool_data_writes_persec" />
+		<col type="dynamiccolumnsimple" name="pool_index_l_reads_persec" />
+		<col type="dynamiccolumnsimple" name="pool_index_p_reads_persec" />
+		<col type="dynamiccolumnsimple" name="pool_index_writes_persec" />
+		<col type="dynamiccolumnsimple" name="pool_no_victim_buffer_persec" />
+		<col type="dynamiccolumnsimple" name="pool_temp_data_l_reads_persec" />
+		<col type="dynamiccolumnsimple" name="pool_temp_data_p_reads_persec" />
+		<col type="dynamiccolumnsimple" name="pool_temp_index_l_reads_persec" />
+		<col type="dynamiccolumnsimple" name="pool_temp_index_p_reads_persec" />
+		<col type="dynamiccolumnsimple" name="unread_prefetch_pages_persec" />
+	</display_columns>
+	<reference name="tablespace">
+		<title>Details</title>
+		<reftype>displayRow</reftype>
+		<refvalue>tablespaces</refvalue>
+		<icon>images/icon-tbs.gif</icon>
+		<ref foreign_column_name="tbspace">
+			<local_column_name>tbsp_name</local_column_name>
+		</ref>
+	</reference>
+	<reference name="tableActivity">
+		<title>Table Activity</title>
+		<reftype>table</reftype>
+		<refvalue>Performance/toptableDelta</refvalue>
+		<icon>images/icon-link-calendar.gif</icon>
+		<ref foreign_column_name="tbsp_id">
+			<local_column_name>tbsp_id</local_column_name>
+		</ref>
+	</reference>
+	<column name="direct_reads" accumulation="y">
+		<sqlName>DIRECT_READS</sqlName>
+		<title>Direct Reads</title>
+		<type>n</type>
+	</column>
+	<dynamicColumnSimple name="direct_reads_persec" type="DELTA_NORMALIZED" column="DIRECT_READS" title="Direct Reads (/s)">
+		<formatNumber round="true" toFixedVal="2"/> 
+	</dynamicColumnSimple>
+	<column name="direct_read_reqs" accumulation="y">
+		<sqlName>DIRECT_READ_REQS</sqlName>
+		<title>Direct Read Requests</title>
+		<type>n</type>
+	</column>
+	<dynamicColumnSimple name="direct_read_reqs_persec" type="DELTA_NORMALIZED" column="DIRECT_READ_REQS" title="Direct Read Requests(/s)">
+		<formatNumber round="true" toFixedVal="2"/> 
+	</dynamicColumnSimple>
+	<column name="direct_writes" accumulation="y">
+		<sqlName>DIRECT_WRITES</sqlName>
+		<title>Direct Writes</title>
+		<type>n</type>
+	</column>
+	<dynamicColumnSimple name="direct_writes_persec" type="DELTA_NORMALIZED" column="DIRECT_WRITES" title="Direct Writes(/s)">
+		<formatNumber round="true" toFixedVal="2"/> 
+	</dynamicColumnSimple>
+	<column name="direct_write_time" accumulation="y">
+		<sqlName>DIRECT_WRITE_TIME</sqlName>
+		<title>Direct Write Time</title>
+		<type>n</type>
+	</column>
+	<dynamicColumnSimple name="direct_write_time_persec" type="DELTA_NORMALIZED" column="DIRECT_WRITE_TIME" title="Direct Write Time(/s)">
+		<formatNumber round="true" toFixedVal="2"/> 
+	</dynamicColumnSimple>
+	<column name="files_closed" accumulation="y">
+		<sqlName>FILES_CLOSED</sqlName>
+		<title>Files Closed</title>
+		<type>n</type>
+	</column>
+	<dynamicColumnSimple name="files_closed_persec" type="DELTA_NORMALIZED" column="FILES_CLOSED" title="Files Closed">
+		<formatNumber round="true" toFixedVal="2"/> 
+	</dynamicColumnSimple>
+	<column name="pool_async_data_reads" accumulation="y">
+		<sqlName>POOL_ASYNC_DATA_READS</sqlName>
+		<title>Async Data Reads</title>
+		<type>n</type>
+	</column>
+	<dynamicColumnSimple name="pool_async_data_reads_persec" type="DELTA_NORMALIZED" column="POOL_ASYNC_DATA_READS" title="Async Data Reads(/s)">
+		<formatNumber round="true" toFixedVal="2"/> 
+	</dynamicColumnSimple>
+	<column name="pool_async_data_read_reqs" accumulation="y">
+		<sqlName>POOL_ASYNC_DATA_READ_REQS</sqlName>
+		<title>Async Data Read Requests</title>
+		<type>n</type>
+	</column>
+	<dynamicColumnSimple name="pool_async_data_read_reqs_persec" type="DELTA_NORMALIZED" column="POOL_ASYNC_DATA_READ_REQS" title="Async Data Read Requests(/s)">
+		<formatNumber round="true" toFixedVal="2"/> 
+	</dynamicColumnSimple>
+	<column name="pool_async_data_writes" accumulation="y">
+		<sqlName>POOL_ASYNC_DATA_WRITES</sqlName>
+		<title>Async Data Writes</title>
+		<type>n</type>
+	</column>
+	<dynamicColumnSimple name="pool_async_data_writes_persec" type="DELTA_NORMALIZED" column="POOL_ASYNC_DATA_WRITES" title="Async Data Writes(/s)">
+		<formatNumber round="true" toFixedVal="2"/> 
+	</dynamicColumnSimple>
+	<column name="pool_async_index_reads" accumulation="y">
+		<sqlName>POOL_ASYNC_INDEX_READS</sqlName>
+		<title>Async Index Reads</title>
+		<type>n</type>
+	</column>
+	<dynamicColumnSimple name="pool_async_index_reads_persec" type="DELTA_NORMALIZED" column="POOL_ASYNC_INDEX_READS" title="Async Index Reads(/s)">
+		<formatNumber round="true" toFixedVal="2"/> 
+	</dynamicColumnSimple>
+	<column name="pool_async_index_read_reqs" accumulation="y">
+		<sqlName>POOL_ASYNC_INDEX_READ_REQS</sqlName>
+		<title>Asynch Index Read Requests</title>
+		<type>n</type>
+	</column>
+	<dynamicColumnSimple name="pool_async_index_read_reqs_persec" type="DELTA_NORMALIZED" column="POOL_ASYNC_INDEX_READ_REQS" title="Asynch Index Read Requests(/s)">
+		<formatNumber round="true" toFixedVal="2"/> 
+	</dynamicColumnSimple>
+	<column name="pool_async_index_writes" accumulation="y">
+		<sqlName>POOL_ASYNC_INDEX_WRITES</sqlName>
+		<title>Async Index Writes</title>
+		<type>n</type>
+	</column>
+	<dynamicColumnSimple name="pool_async_index_writes_persec" type="DELTA_NORMALIZED" column="POOL_ASYNC_INDEX_WRITES" title="Async Index Writes(/s)">
+		<formatNumber round="true" toFixedVal="2"/> 
+	</dynamicColumnSimple>
+	<column name="pool_data_l_reads" accumulation="y">
+		<sqlName>POOL_DATA_L_READS</sqlName>
+		<title>Data Logical Reads</title>
+		<type>n</type>
+	</column>
+	<dynamicColumnSimple name="pool_data_l_reads_persec" type="DELTA_NORMALIZED" column="POOL_DATA_L_READS" title="Data Logical Reads(/s)">
+		<formatNumber round="true" toFixedVal="2"/> 
+	</dynamicColumnSimple>
+	<column name="pool_data_p_reads" accumulation="y">
+		<sqlName>POOL_DATA_P_READS</sqlName>
+		<title>Data Physical Reads</title>
+		<type>n</type>
+	</column>
+	<dynamicColumnSimple name="pool_data_p_reads_persec" type="DELTA_NORMALIZED" column="POOL_DATA_P_READS" title="Data Physical Reads(/s)">
+		<formatNumber round="true" toFixedVal="2"/> 
+	</dynamicColumnSimple>
+	<column name="pool_data_writes" accumulation="y">
+		<sqlName>POOL_DATA_WRITES</sqlName>
+		<title>Data Writes</title>
+		<type>n</type>
+	</column>
+	<dynamicColumnSimple name="pool_data_writes_persec" type="DELTA_NORMALIZED" column="POOL_DATA_WRITES" title="Data Writes(/s)">
+		<formatNumber round="true" toFixedVal="2"/> 
+	</dynamicColumnSimple>
+	<column name="pool_index_l_reads" accumulation="y">
+		<sqlName>POOL_INDEX_L_READS</sqlName>
+		<title>Index Logical Reads</title>
+		<type>n</type>
+	</column>
+	<dynamicColumnSimple name="pool_index_l_reads_persec" type="DELTA_NORMALIZED" column="POOL_INDEX_L_READS" title="Index Logical Reads(/s)">
+		<formatNumber round="true" toFixedVal="2"/> 
+	</dynamicColumnSimple>
+	<column name="pool_index_p_reads" accumulation="y">
+		<sqlName>POOL_INDEX_P_READS</sqlName>
+		<title>Index Physical Reads</title>
+		<type>n</type>
+	</column>
+	<dynamicColumnSimple name="pool_index_p_reads_persec" type="DELTA_NORMALIZED" column="POOL_INDEX_P_READS" title="Index Physical Reads(/s)">
+		<formatNumber round="true" toFixedVal="2"/> 
+	</dynamicColumnSimple>
+	<column name="pool_index_writes" accumulation="y">
+		<sqlName>POOL_INDEX_WRITES</sqlName>
+		<title>Index Writes</title>
+		<type>n</type>
+	</column>
+	<dynamicColumnSimple name="pool_index_writes_persec" type="DELTA_NORMALIZED" column="POOL_INDEX_WRITES" title="Index Writes(/s)">
+		<formatNumber round="true" toFixedVal="2"/> 
+	</dynamicColumnSimple>
+	<column name="pool_no_victim_buffer" accumulation="y">
+		<sqlName>POOL_NO_VICTIM_BUFFER</sqlName>
+		<title>No Victim Buffer</title>
+		<type>n</type>
+	</column>
+	<dynamicColumnSimple name="pool_no_victim_buffer_persec" type="DELTA_NORMALIZED" column="POOL_NO_VICTIM_BUFFER" title="No Victim Buffer(/s)">
+		<formatNumber round="true" toFixedVal="2"/> 
+	</dynamicColumnSimple>
+	<column name="pool_temp_data_l_reads" accumulation="y">
+		<sqlName>POOL_TEMP_DATA_L_READS</sqlName>
+		<title>Temp Data Logical Reads</title>
+		<type>n</type>
+	</column>
+	<dynamicColumnSimple name="pool_temp_data_l_reads_persec" type="DELTA_NORMALIZED" column="POOL_TEMP_DATA_L_READS" title="Temp Data Logical Reads(/s)">
+		<formatNumber round="true" toFixedVal="2"/> 
+	</dynamicColumnSimple>
+	<column name="pool_temp_data_p_reads" accumulation="y">
+		<sqlName>POOL_TEMP_DATA_P_READS</sqlName>
+		<title>Temp Data Physical Reads</title>
+		<type>n</type>
+	</column>
+	<dynamicColumnSimple name="pool_temp_data_p_reads_persec" type="DELTA_NORMALIZED" column="POOL_TEMP_DATA_P_READS" title="Temp Data Physical Reads(/s)">
+		<formatNumber round="true" toFixedVal="2"/> 
+	</dynamicColumnSimple>
+	<column name="pool_temp_index_l_reads" accumulation="y">
+		<sqlName>POOL_TEMP_INDEX_L_READS</sqlName>
+		<title>Temp Index Logical Reads</title>
+		<type>n</type>
+	</column>
+	<dynamicColumnSimple name="pool_temp_index_l_reads_persec" type="DELTA_NORMALIZED" column="POOL_TEMP_INDEX_L_READS" title="Temp Index Logical Reads(/s)">
+		<formatNumber round="true" toFixedVal="2"/> 
+	</dynamicColumnSimple>
+	<column name="pool_temp_index_p_reads" accumulation="y">
+		<sqlName>POOL_TEMP_INDEX_P_READS</sqlName>
+		<title>Temp Index Physical Reads</title>
+		<type>n</type>
+		<c_drill>n</c_drill>
+	</column>
+	<dynamicColumnSimple name="pool_temp_index_p_reads_persec" type="DELTA_NORMALIZED" column="POOL_TEMP_INDEX_P_READS" title="Temp Index Physical Reads(/s)">
+		<formatNumber round="true" toFixedVal="2"/> 
+	</dynamicColumnSimple>
+	<column name="tbsp_content_type">
+		<sqlName>TBSP_CONTENT_TYPE</sqlName>
+		<title>Content Type</title>
+		<type>s</type>
+		<column_mask_file>masks/tablespaceDataType.xml</column_mask_file>
+	</column>
+	<column name="tbsp_id">
+		<sqlName>TBSP_ID</sqlName>
+		<title>Id.</title>
+		<type>n</type>
+	</column>
+	<column name="tbsp_name">
+		<sqlName>TBSP_NAME</sqlName>
+		<title>Name</title>
+		<primaryKey/>
+		<type>s</type>
+	</column>
+	<column name="tbsp_state">
+		<sqlName>TBSP_STATE</sqlName>
+		<title>State</title>
+		<type>s</type>
+		<column_mask_file>masks/tablespaceState.xml</column_mask_file>
+	</column>
+	<column name="tbsp_type">
+		<sqlName>TBSP_TYPE</sqlName>
+		<title>Type</title>
+		<type>s</type>
+		<column_mask_file>masks/tablespaceType.xml</column_mask_file>
+	</column>
+	<column name="unread_prefetch_pages">
+		<sqlName>UNREAD_PREFETCH_PAGES</sqlName>
+		<title>Unread Prefetch</title>
+		<type>n</type>
+	</column>
+	<dynamicColumnSimple name="unread_prefetch_pages_persec" type="DELTA_NORMALIZED" column="UNREAD_PREFETCH_PAGES" title="Unread Prefetch"/>
+	<column name="snapshot_timestamp">
+		<sqlName>SNAPSHOT_TIMESTAMP</sqlName>
+		<title>Timestamp</title>
+		<type>n</type>
+	</column>
+</table>

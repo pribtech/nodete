@@ -1,0 +1,64 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2009 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<command name="createToolsCatalog" title="Create Tools Catalog">
+<![CDATA[
+>>-CREATE TOOLS CATALOG--catalog-name--------------------------->
+]]>
+	<text>CREATE TOOLS CATALOG</text>
+	<input size="12" title="catalog-name"/>
+	<br statement='false'/>
+<![CDATA[
+>--+-CREATE NEW DATABASE--database-name-----------------------------------------+-->
+   '-USE EXISTING--+---------------------------------+--DATABASE--database-name-'   
+                   '-TABLESPACE--tablespace-name--IN-'                              
+]]>
+	<select>
+		<option default="true">
+			<text>CREATE NEW DATABASE</text>
+			<clauseReference name="database-name"/>
+		</option> 
+		<option>
+			<text>USE EXISTING</text>
+			<select>
+				<option default="true"></option>
+				<option>
+					<text>TABLESPACE</text>
+					<clauseReference name="tablespace-name"/>
+					<text>IN</text>
+				</option>
+			</select>
+			<text>DATABASE</text>
+			<clauseReference name="database-name"/>
+		</option>
+	</select>
+	<br statement='false'/>
+<![CDATA[
+>--+-------+--+---------------+--------------------------------><
+   '-FORCE-'  '-KEEP INACTIVE-'   
+]]>
+	<select>
+		<option default="true"><note>no force</note></option> 
+		<option><text>FORCE</text></option> 
+	</select>
+	<select>
+		<option default="true"><note>KEEP ACTIVE</note></option> 
+		<option><text>KEEP INACTIVE</text></option> 
+	</select>
+
+</command>
+        

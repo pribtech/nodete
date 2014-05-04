@@ -1,0 +1,96 @@
+<!--
+   
+  
+  Copyright Independent Systems Integrators Pty Ltd 2008 All rights reserved.
+  
+  Updated by Author: Peter Kohlmann
+  Copyright IBM Canada Ltd 2008 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+ -->
+<table name="monWorkload">
+	<sql_name>monTest</sql_name>
+	<singular_name>Physical/Logical IO Rates</singular_name>
+	<plural_name>Physical/Logical IO Rates</plural_name>
+	<inlinequery>
+<![CDATA[
+SELECT DB_NAME,
+       BP_NAME,
+       TOTAL_HIT_RATIO_PERCENT,
+		ROWS_READ/ROWS_RETURNED ROWS_READ_PER_ROWS_RETURNED 
+  FROM SYSIBMADM.BP_HITRATIO
+]]>
+	</inlinequery>
+	<messages><SQL0551N>Security issue. Please install "Monitoring Switches/Security" in Tools -> Installed Components</SQL0551N></messages>
+	<description></description>
+	<order_by_index/>
+	<display_columns>
+		<col type="column" name="DB_NAME"/>
+		<col type="column" name="BP_NAME"/>
+		<col type="column" name="TOTAL_LOGICAL_READS"/>
+		<col type="column" name="TOTAL_PHYSICAL_READS"/>
+		<col type="column" name="TOTAL_HIT_RATIO_PERCENT"/>	
+	</display_columns>
+	<column name="DB_NAME">
+		<c_sql_name>DB_NAME</c_sql_name>
+		<c_title>DB Name</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+		<c_pkey>p</c_pkey>
+	</column>
+	<column name="BP_NAME">
+		<c_sql_name>BP_NAME</c_sql_name>
+		<c_title>Bufferpool</c_title>
+		<c_presentation/>
+		<c_drill>n</c_drill>
+		<c_pkey>p</c_pkey>
+		<c_reference name="instance">
+			<reftype>table</reftype>
+			<refvalue>Monitor/monBufferpool</refvalue>
+			<icon>images/sout.gif</icon>
+			<ref foreign_column_name="BP_NAME">
+				<local_column_name>BP_NAME</local_column_name>
+			</ref>
+		</c_reference>
+		
+		<c_column_mask_file>masks/skipNulls.xml</c_column_mask_file>
+		</column>
+	<column name="TOTAL_LOGICAL_READS">
+		<c_sql_name>TOTAL_LOGICAL_READS</c_sql_name>
+		<c_title>Total Logical Reads</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+		
+		<c_column_mask_file>masks/skipNulls.xml</c_column_mask_file>
+	</column>
+	<column name="TOTAL_PHYSICAL_READS">
+		<c_sql_name>TOTAL_PHYSICAL_READS</c_sql_name>
+		<c_title>Total Physical Reads</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+		
+		<c_column_mask_file>masks/skipNulls.xml</c_column_mask_file>
+	</column>
+	<column name="TOTAL_HIT_RATIO_PERCENT">
+		<c_sql_name>TOTAL_HIT_RATIO_PERCENT</c_sql_name>
+		<c_title>Total Hit Ratio</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+		<c_presentation>bg</c_presentation>
+		<graphattributes flipColor="n"/>
+		
+		<c_column_mask_file>masks/skipNulls.xml</c_column_mask_file>
+	</column>
+
+
+</table>

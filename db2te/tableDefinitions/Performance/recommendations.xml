@@ -1,0 +1,52 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2009 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+
+<table name="recommendations">
+	<sql_name>recommendations</sql_name>
+	<singular_name>Recommendation</singular_name>
+	<plural_name>Recommendations</plural_name>
+	<inlinequery>
+<![CDATA[
+select * from (
+select 'Increase num_iocleaners, writes: ' || rtrim(char(writes)) || ' async writes: '|| rtrim(char(async))
+from (select sum(POOL_DATA_WRITES+POOL_INDEX_WRITES+POOL_XDA_WRITES) as writes,sum(POOL_ASYNC_DATA_WRITES+POOL_ASYNC_INDEX_WRITES+POOL_ASYNC_XDA_WRITES) as async FROM SYSIBMADM.SNAPBP) m where writes > async*1.05 and writes > 100
+union
+select 'Decrease num_iocleaners, writes: ' || rtrim(char(writes)) || ' async writes: '|| rtrim(char(async)) 
+from (select sum(POOL_DATA_WRITES+POOL_INDEX_WRITES+POOL_XDA_WRITES) as writes,sum(POOL_ASYNC_DATA_WRITES+POOL_ASYNC_INDEX_WRITES+POOL_ASYNC_XDA_WRITES) as async FROM SYSIBMADM.SNAPBP) m where writes <= async*1.01 and writes > 100
+union
+select 'Set DB2_PARALLEL_IO=* for parallelism' from sysibm.sysdummy1 where not exists(select 1 from SYSIBMADM.REG_VARIABLES where REG_VAR_NAME='DB2_PARALLEL_IO')
+union
+select 'DBM NOFEDAUTH=YES has security issues' from sysibm.sysdummy1 where exists(select 1 from SYSIBMADM.DBMCFG where NAME='NOFEDAUTH' and VALUE='YES')
+union
+select 'Review tablespace '||TBSP_NAME||' to see if file system caching should be turned off' from table(SNAP_GET_TBSP('',-1)) a where FS_CACHING = 0
+) as a(detail)
+]]>
+	</inlinequery>
+	<description>Recommendations based on different performance metrics from the database</description>
+	<rows_per_page>50</rows_per_page>
+	<order_by_index></order_by_index>
+	<display_columns>
+		<col type="column" name="recommendation"/>
+	</display_columns>
+	<column name="recommendation">
+		<c_sql_name>detail</c_sql_name>
+		<c_title>Recommendation</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+</table>

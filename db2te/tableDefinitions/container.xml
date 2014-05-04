@@ -1,0 +1,179 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2009 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+<table name="container">
+	<sql_name>container</sql_name>
+	<singular_name>Container</singular_name>
+	<plural_name>Containers</plural_name>
+	<inlinequery>
+<![CDATA[
+select c.*,s.pagesize, c.total_pages*s.pagesize as total_size
+  from SYSIBMADM.SNAPCONTAINER c
+  join sysibm.systablespaces s
+   on c.tbsp_id = s.tbspaceid
+]]>
+	</inlinequery>
+	<description>&lt;a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/index.jsp?topic=/com.ibm.db2.abx.dev.doc/abx-c-develop-126.html');"&gt;Container &lt;/a&gt; information</description>
+	<disableEdit/>
+	<output>
+		<type name="DDL" destination="" title="" generator=""/>
+	</output>
+	<order_by_index name="TBSP_NAME" direction="A"/>
+	<order_by_index name="CONTAINER_NAME" direction="A"/>
+	<display_columns>
+		<col type="column" name="TBSP_NAME"/>
+		<col type="column" name="CONTAINER_NAME"/>
+		<col type="column" name="TOTAL_SIZE_TEXT"/>
+		<col type="column" name="CONTAINER_TYPE"/>
+		<col type="column" name="TOTAL_PAGES"/>
+		<col type="column" name="USABLE_PAGES"/>
+		<col type="column" name="ACCESSIBLE"/>
+		<col type="column" name="STRIPE_SET"/>
+		<col type="column" name="PAGESIZE"/>
+	</display_columns>
+	
+	<action name="dropContainer">
+		<title>Drop</title>
+    	<actionScript>
+    		<task>
+		    	<assignSharedConstant name="tablespace-name" type="fixed">
+					<value>?TBSP_NAME?</value>
+				</assignSharedConstant>
+		    	<assignSharedConstant name="container" type="fixed">
+					<value>?CONTAINER_NAME?</value>
+				</assignSharedConstant>
+		    	<assignSharedConstant name="command" type="raw">
+					<value>SQL/Alter/alterTablespaceDropContainer</value>
+				</assignSharedConstant>
+		   		<callGlobalAction name="commandExecution"/>
+	   		</task>
+    	</actionScript>
+    </action>
+	
+	<column name="TBSP_NAME">
+		<sqlName>TBSP_NAME</sqlName>
+		<title>Tablespace</title>
+		<type/>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="TBSP_ID">
+		<sqlName>TBSP_ID</sqlName>
+		<title>Tablespace Id.</title>
+		<type>n</type>
+		<c_drill>n</c_drill>
+		<c_pkey>p</c_pkey>
+	</column>
+	<column name="CONTAINER_NAME">
+		<sqlName>CONTAINER_NAME</sqlName>
+		<title>Container Name</title>
+		<type/>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="CONTAINER_ID">
+		<sqlName>CONTAINER_ID</sqlName>
+		<title>Id.</title>
+		<type>n</type>
+		<c_drill>n</c_drill>
+		<c_pkey>p</c_pkey>
+	</column>
+	<column name="CONTAINER_TYPE">
+		<sqlName>CONTAINER_TYPE</sqlName>
+		<title>Type</title>
+		<type/>
+		<c_drill>y</c_drill>
+		<c_column_mask_file>masks/containerType.xml</c_column_mask_file>
+	</column>
+	<column name="TOTAL_PAGES">
+		<sqlName>TOTAL_PAGES</sqlName>
+		<title>Total Pages</title>
+		<type>n</type>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="USABLE_PAGES">
+		<sqlName>USABLE_PAGES</sqlName>
+		<title>Usable Pages</title>
+		<type>n</type>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="ACCESSIBLE">
+		<sqlName>ACCESSIBLE</sqlName>
+		<title>Accessible</title>
+		<type>n</type>
+		<c_drill>y</c_drill>
+   		<c_column_mask>
+			<value_mask value="1"><mask>Yes</mask></value_mask>
+			<value_mask value="0"><mask>No</mask></value_mask>
+   		</c_column_mask>
+	</column>
+	<column name="STRIPE_SET">
+		<sqlName>STRIPE_SET</sqlName>
+		<title>Stripe Set</title>
+		<type>n</type>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="FS_ID">
+		<sqlName>FS_ID</sqlName>
+		<title>File System Id.</title>
+		<type>n</type>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="FS_TOTAL_SIZE">
+		<sqlName>FS_TOTAL_SIZE</sqlName>
+		<title>File System Total Size</title>
+		<type>n</type>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="FS_USED_SIZE">
+		<sqlName>FS_USED_SIZE</sqlName>
+		<title>File System Used Size</title>
+		<type>n</type>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="PAGESIZE">
+		<sqlName>PAGESIZE</sqlName>
+		<title>Page Size</title>
+		<type>n</type>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="TOTAL_SIZE">
+		<sqlName>TOTAL_SIZE</sqlName>
+		<title>Total Size</title>
+		<type>n</type>
+		
+		<c_drill>n</c_drill>
+	</column>
+	<column name="TOTAL_SIZE_TEXT">
+		<sqlName>TOTAL_SIZE</sqlName>
+		<title>Total Size</title>
+		<type>n</type>
+		<formatNumber toAbbreviated="4"/>
+		<c_drill>n</c_drill>
+		<c_search>n</c_search>
+	</column>
+	<column name="DBPARTITIONNUM">
+		<sqlName>DBPARTITIONNUM</sqlName>
+		<title>DB Partition No.</title>
+		<type>n</type>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="SNAPSHOT_TIMESTAMP">
+		<sqlName>SNAPSHOT_TIMESTAMP</sqlName>
+		<title>Snapshot Timestamp</title>
+		<type/>
+		<c_drill>n</c_drill>
+	</column>
+</table>

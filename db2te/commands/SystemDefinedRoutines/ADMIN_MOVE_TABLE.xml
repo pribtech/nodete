@@ -1,0 +1,216 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2011 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<command name="ADMIN_MOVE_TABLE" title="ADMIN_MOVE_TABLE">
+<![CDATA[
+Method 1:
+
+>>-ADMIN_MOVE_TABLE--(--tabschema--,--tabname--,---------------->
+
+>--data_tbsp--,--index_tbsp--,--lob_tbsp--,--mdc_cols--,-------->
+
+                                             .-,-------.      
+                                             V         |      
+>--partkey_cols--,--data_part--,--coldef--,----options-+--,----->
+
+>--operation--)------------------------------------------------><
+
+Method 2:
+
+Read syntax diagramSkip visual syntax diagram
+>>-ADMIN_MOVE_TABLE--(--tabschema--,--tabname--,---------------->
+
+                      .-,-------.                    
+                      V         |                    
+>--target_tabname--,----options-+--,--operation--)-------------><
+
+
+]]>
+	<text>CALL SYSPROC.ADMIN_MOVE_TABLE(</text>
+	<text spacepad="false">'</text><clauseReference name="schema-name"/><text>'</text>	
+	<text> ,</text><text spacepad="false">'</text><clauseReference name="table-name"/><text>'</text>
+	<br/>
+	<select>
+		<option>
+			<note>just table space</note>
+			<text> ,</text><text spacepad="false">'</text><input size="32" name="data_tbsp" title="data_tbsp" help="data_tbsp"/><text>'</text>
+			<br/>
+			<text> ,</text><text spacepad="false">'</text><input size="32" name="index_tbsp" title="index_tbsp" help="index_tbsp"/><text>'</text><note>Index Space</note>
+			<br/>
+			<text> ,</text><text spacepad="false">'</text><input size="32" name="lob_tbsp" title="lob_tbsp" help="lob_tbsp"/><text>'</text><note>LOB Space</note>
+			<br/>
+			<text> ,</text><text spacepad="false">'</text><input size="32" name="mdc_cols" title="mdc_cols" help="mdc_cols"/><text>'</text>
+			<br/>
+			<text> ,</text><text spacepad="false">'</text><input size="32" name="partkey_cols" title="partkey_cols" help="partkey_cols"/><text>'</text>
+			<br/>
+			<text> ,</text><text spacepad="false">'</text><input size="32" name="data_part" title="data_part" help="data_part"/><text>'</text>
+			<br/>
+			<text> ,</text><text spacepad="false">'</text><input size="32" name="coldef" title="coldef" help="coldef"/><text>'</text>
+		</option>
+		<option>
+			<note>more control and flexibility</note>
+			<text spacepad="false">'</text><clauseReference name="schema-name"/><text>'</text>	
+			<text> ,</text><text spacepad="false">'</text><clauseReference name="table-name"/><text>'</text>
+		</option>
+	</select>
+	<br/>
+	<repeatable><clauseReference name="options"/></repeatable>
+	<br/>
+	<text> ,</text><text spacepad="false">'</text><clauseReference name="operation"/><text>'</text>
+	<br/>
+	<text>)</text>
+
+	<clause name="options">
+<![CDATA[
+                           .-NONRECOVERABLE--------------------------------------------------.   
+>>-+--------------------+--+-----------------------------------------------------------------+-><
+   '-MESSAGES ON SERVER-'  '-COPY----YES--+-USE TSM--+--------------------------+--------+---'   
+                                          |          '-OPEN--num-sess--SESSIONS-'        |       
+                                          |     .-,----------------.                     |       
+                                          |     V                  |                     |       
+                                          +-TO----device/directory-+---------------------+       
+                                          '-LOAD--lib-name--+--------------------------+-'       
+                                                            '-OPEN--num-sess--SESSIONS-'         
+]]>
+		<select>
+			<option default="true"></option>
+			<option><text>MESSAGES ON SERVER</text></option>
+		</select>
+		<select>
+			<option><text>NONRECOVERABLE</text></option>
+			<option default="true"></option>
+			<option>
+				<text>COPY YES</text>
+				<select>
+					<option default="true">
+						<text>USE TSM</text>
+						<select>
+							<option default="true"></option>
+							<option>
+								<text>OPEN</text><input type="int" size="2"/><text>SESSIONS</text>
+							</option>
+						</select>
+					</option>
+					<option>
+						<text>TO</text><repeatable><input size="32" name="directory" title="device or directory"/></repeatable>
+					</option>
+					<option>
+						<text>LOAD</text><input size="32" name="libname" title="lib name"/>
+						<select>
+							<option default="true"></option>
+							<option>
+								<text>OPEN</text><input type="int" size="2"/><text>SESSIONS</text>
+							</option>
+						</select>
+
+					</option>
+				</select>
+			</option>
+		</select>
+	</clause>
+
+	<clause name="operation">
+		<select>
+			<option default="true" help="MOVE"><text>MOVE</text></option>
+			<option help="INIT"><text>INIT</text></option>
+			<option help="COPY"><text>COPY</text></option>
+			<option help="REPLAY"><text>REPLAY</text></option>
+			<option help="VERIFY"><text>VERIFY</text></option>
+			<option help="SWAP"><text>SWAP</text></option>
+			<option help="CLEANUP"><text>CLEANUP</text></option>
+			<option help="CANCEL"><text>CANCEL</text></option>
+		</select>
+	</clause>
+	<help name='MOVE'>
+	* MOVE: Performs the entire table move (INIT, COPY, REPLAY, and SWAP operations) in one step.
+	</help>
+	<help name='INIT'>
+    * INIT: Verifies that a table move can take place, and initializes all of the data needed during the table move process (the target table, staging table, and the triggers on the source table).
+	</help>
+	<help name='COPY'>
+    * COPY: Copies the content from the source table to the target table. Any updates, deletes, or inserts occurring on the source table during this time are captured and stored in the staging table. New indexes are created at the end of the COPY phase, unless the COPY_WITH_INDEXES option is selected. Also, if needed, secondary indexes are created on the source and target tables to improve performance during the REPLAY phase. COPY can be used only after the INIT phase has completed.
+	</help>
+	<help name='REPLAY'>
+    * REPLAY: Copies into the target table any rows that have changed in the source table since the COPY phase began. REPLAY can be used only after the COPY phase has completed.
+	</help>
+	<help name='VERIFY'>
+    * VERIFY: Optionally checks if the table contents of the source and target tables are identical. This process involves obtaining a shared lock on the source and target tables, replaying any changes that have occurred on the source table, and then performing a comparison. If the table has a unique index, this command compares all values between columns that are in both tables. Otherwise, this command compares all values between columns that are in both tables (except for LONG, LOB or XML columns). This is an expensive operation and caution should be taken to decide if it is useful for your move. VERIFY can be used only after the COPY or REPLAY phases have completed.
+	</help>
+	<help name='SWAP'>
+    * SWAP: Executes the REPLAY phase until the number of changes applied during the last scan of the staging table is less than the REPLAY_THRESHOLD value stored in the protocol table. The source table is then taken offline briefly to finish the final REPLAY, and then this command swaps the source table with target table and brings the table back online. SWAP can be used after the COPY phase has completed, but ideally after the REPLAY phase has been called.
+	</help>
+	<help name='CLEANUP'>
+    * CLEANUP: Drops the staging table, any non-unique indexes or triggers created on the source table by the stored procedure, and the source table if the KEEP option has not been set. CLEANUP can be called if the command failed during the SWAP phase.
+	</help>
+	<help name='CANCEL'>
+    * CANCEL: Cancels a multi-step table move while between phases, or cancels a failed table move operation. Executing this command requires that the operation status is not in COMPLETED or CLEANUP state. CANCEL clears up all intermediate data (the indexes, the staging table, the target table, and the triggers on the source table).
+	</help>
+	<help name='data_tbsp'>
+    This input parameter specifies the new data table space for the target table. If a value is provided, the index_tbsp and lob_tbsp parameters are required. If a value is not provided, the data table space of the source table is used. This parameter is case sensitive and has a data type of VARCHAR(128). This parameter can be NULL or the empty string.
+	</help>
+	<help name='index_tbsp'>
+    This input parameter specifies the new index table space for the target table. If a value is provided, the data_tbsp and lob_tbsp parameters are required. If a value is not provided, the index table space of the source table is used. This parameter is case sensitive and has a data type of VARCHAR(128). This parameter can be NULL or the empty string.
+	</help>
+	<help name='lob_tbsp'><![CDATA[
+    This input parameter specifies the new LOB table space for the target table. If a value is provided, the data_tbsp and index_tbsp parameters are required. If a value is not provided, the LOB table space of the source table is used. This parameter is case sensitive and has a data type of VARCHAR(128). This parameter can be NULL or the empty string.
+	]]></help>
+	<help name='mdc_cols'><![CDATA[
+    This input parameter provides the multi-dimensional column (MDC) specification for the target table. The values are entered as a comma separated list of the columns used to cluster data in the target table along multiple dimensions. If a value of NULL or "-" is given, the ORGANIZE BY DIMENSIONS clause is not used. If an empty string or a single blank is given, the procedure checks whether there is an MDC specification on the source table, and uses that specification if located. This parameter has a data type of VARCHAR(32672) and has the same format as the ORGANIZE BY DIMENSIONS clause of the CREATE TABLE statement. This parameter can be NULL, the empty string, or a single blank.
+	<p/>
+    Example: 'C1, C4, (C3,C1), C2'
+	]]></help>
+	<help name='partkey_cols'><![CDATA[
+    This input parameter provides the partitioning key columns specification for the target table. The values are entered as a comma separated list of the key columns that specify how the data is distributed across multiple database partitions. If a value of NULL or "-" is given, the PARTITIONING KEY clause is not used. If an empty string or a single blank is given, the procedure checks whether there is a partitioning key columns specification on the source table, and uses that specification if located. This parameter has a data type of VARCHAR(32672) and has the same format as the DISTRIBUTE BY HASH clause of the CREATE TABLE statement.
+	<p/>
+    Example: 'C1, C3'
+	]]></help>
+	<help name='data_part'><![CDATA[
+    This input parameter provides the data partitioning specification for the target table. This statement defines how to divide table data across multiple storage objects (called data partitions), according to the values in one or more of the table columns. If a value of NULL or "-" is given, the PARTITION BY RANGE clause is not used. If an empty string or a single blank is given, the procedure checks whether there is a data partition scheme on the source table, and uses that information (including partition name) if located. This parameter has a data type of VARCHAR(32672) and has the same format as the PARTITION BY RANGE clause of the CREATE TABLE statement.
+	<p/>
+    Example: '(C1) (STARTING FROM (1) EXCLUSIVE ENDING AT (1000) EVERY (100))'
+	]]></help>
+	<help name='coldef'><![CDATA[
+    This input parameter specifies a new column definition for the target table, allowing you to change the column types as long as they are compatible; however, the column names must remain the same.
+	<p/>
+    This also provides the ability to add new columns and drop existing columns. When adding a column, it must be defined as either nullable or have a default value set. Also, a column can only be dropped if there is a unique or primary index on the table and the column to be dropped is not a part of that unique or primary index. This parameter has a data type of VARCHAR(32672). This parameter can be NULL or the empty string.
+	<p/>
+    Example: 'C1 INT, C2 INT DEFAULT 0'
+	]]></help>
+	<help name='target_tabname'><![CDATA[
+    This input parameter provides the name of an existing table to use as the target table during the move. The following changes can be made to the target table being passed in:
+	<ul>
+        <li> The data, index and LOB table spaces can be changed</li>
+        <li> The multi dimensional column (MDC) specification can be added or changed</li>
+        <li> The partitioning key columns specification can be added or changed</li>
+        <li> The data partitioning specification can be added or changed</li>
+        <li> Data compression can be added or removed</li>
+        <li> A new column definition can be specified; however the same restrictions as when specifying the coldef parameter apply here.</li>
+	</ul>
+	<p/>
+    The following restrictions apply to the named table:
+	<p/>
+	<ul>
+        <li> The table must exist in the same schema as the source table</li>
+        <li> The table must be empty</li>
+        <li> No typed tables, materialized query tables (MQT), staging tables, remote tables or clustered tables are permitted</li>
+	</ul>
+	<p/>
+    If this parameter is set to NULL or the empty string, the stored procedure uses the same definition as the source table. This parameter is case sensitive and has a data type of VARCHAR(128).
+	]]></help>
+	
+</command>
+	

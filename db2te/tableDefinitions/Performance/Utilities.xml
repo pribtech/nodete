@@ -1,0 +1,156 @@
+	<!--
+		Author: Peter Prib Copyright Independent Systems Integrators Pty Ltd
+		2008 All rights reserved. Licensed under the Apache License, Version
+		2.0 (the "License"); you may not use this file except in compliance
+		with the License. You may obtain a copy of the License at
+		http://www.apache.org/licenses/LICENSE-2.0 Unless required by
+		applicable law or agreed to in writing, software distributed under the
+		License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+		CONDITIONS OF ANY KIND, either express or implied. See the License for
+		the specific language governing permissions and limitations under the
+		License.
+	-->
+<table name="SYSIBMADM.SNAPUTIL">
+	<sql_name>SYSIBMADM.SNAPUTIL</sql_name>
+	<singular_name>Utility</singular_name>
+	<plural_name>Utilities</plural_name>
+	<description />
+	<rows_per_page>50</rows_per_page>
+	<order_by_index />
+	<display_columns>
+		<col type="action" name="force" />
+		<col type="reference" name="utilityProgress" />
+		<col type="column" name="utility_id" />
+		<col type="column" name="utility_type" />
+		<col type="column" name="utility_priority" />
+		<col type="column" name="utility_description" />
+		<col type="column" name="utility_dbname" />
+		<col type="column" name="utility_start_time" />
+		<col type="column" name="utility_state" />
+		<col type="column" name="utility_invoker_type" />
+		<col type="column" name="dbpartitionnum" />
+		<col type="column" name="progress_list_attr" />
+		<col type="column" name="progress_list_cur_seq_num" />
+	</display_columns>
+	<disable_edit/>
+	<action name="force">
+		<c_title>Force</c_title>
+		<icon>images/cancel.gif</icon>
+		<actionScript name="force" type="confirm">
+			<message> Force Agent: ?AGENT_ID? Select Ok to drop the connection
+				for agent number ?AGENT_ID?. This will stop all active work for
+				agent ?AGENT_ID?.</message>
+			<parameterList>
+				<parameter name="AGENT_ID" type="blockValue">
+					<value>utility_id</value>
+				</parameter>
+			</parameterList>
+			<followOnAction condition="true">
+				<task>
+					<action name="forceApplication" type="serverAction">
+						<parameterList>
+							<parameter name="action" type="fixed">
+								<value>executeSQL</value>
+							</parameter>
+							<parameter name="SQL" type="fixed">
+								<value>CALL SYSPROC.ADMIN_CMD( 'force application (
+									?AGENT_ID? )' )</value>
+							</parameter>
+							<parameter name="parameter[AGENT_ID]" type="blockValue">
+								<value>utility_id</value>
+							</parameter>
+						</parameterList>
+						<followOnAction condition="true" negCondition="true">
+							<task>
+								<alert>Error: ?RETURN_VALUE?</alert>
+							</task>
+						</followOnAction>
+						<followOnAction condition="true">
+							<task>
+								<assignLocalParameter name="AGENT_ID" type="blockValue">
+									<value>utility_id</value>
+								</assignLocalParameter>
+							</task>
+							<task>
+								<alert>Agent ?AGENT_ID? forced off the database</alert>
+							</task>
+							<task>
+								<panelReload />
+							</task>
+						</followOnAction>
+					</action>
+				</task>
+			</followOnAction>
+		</actionScript>
+	</action>
+	<reference name="utilityProgress">
+		<c_title />
+		<reftype>table</reftype>
+		<refvalue>Performance/utilityProgress</refvalue>
+		<icon>images/fw_bold.gif</icon>
+		<ref foreign_column_name="utility_id">
+			<local_column_name>utility_id</local_column_name>
+		</ref>
+	</reference>
+	<column name="utility_id">
+		<c_sql_name>UTILITY_ID</c_sql_name>
+		<c_title>Id.</c_title>
+		<c_presentation>n</c_presentation>
+	</column>
+	<column name="utility_type">
+		<c_sql_name>UTILITY_TYPE</c_sql_name>
+		<c_title>Type</c_title>
+		<c_presentation>s</c_presentation>
+	</column>
+	<column name="utility_priority">
+		<c_sql_name>UTILITY_PRIORITY</c_sql_name>
+		<c_title>Priority</c_title>
+		<c_presentation>n</c_presentation>
+	</column>
+	<column name="utility_description">
+		<c_sql_name>UTILITY_DESCRIPTION</c_sql_name>
+		<c_title>Description</c_title>
+		<c_presentation>s</c_presentation>
+	</column>
+	<column name="utility_dbname">
+		<c_sql_name>UTILITY_DBNAME</c_sql_name>
+		<c_title>Database</c_title>
+		<c_presentation>s</c_presentation>
+	</column>
+	<column name="utility_start_time">
+		<c_sql_name>UTILITY_START_TIME</c_sql_name>
+		<c_title>Start Time</c_title>
+		<c_presentation>n</c_presentation>
+	</column>
+	<column name="utility_state">
+		<c_sql_name>UTILITY_STATE</c_sql_name>
+		<c_title>State</c_title>
+		<c_presentation>s</c_presentation>
+	</column>
+	<column name="utility_invoker_type">
+		<c_sql_name>UTILITY_INVOKER_TYPE</c_sql_name>
+		<c_title>Invoker Type</c_title>
+		<c_presentation>s</c_presentation>
+	</column>
+	<column name="dbpartitionnum">
+		<c_sql_name>DBPARTITIONNUM</c_sql_name>
+		<c_title>DB Part No.</c_title>
+		<c_presentation>n</c_presentation>
+	</column>
+	<column name="progress_list_attr">
+		<c_sql_name>PROGRESS_LIST_ATTR</c_sql_name>
+		<c_title>Progress List</c_title>
+		<c_presentation>s</c_presentation>
+	</column>
+	<column name="progress_list_cur_seq_num">
+		<c_sql_name>PROGRESS_LIST_CUR_SEQ_NUM
+		</c_sql_name>
+		<c_title>Progress List Current Seq.</c_title>
+		<c_presentation>n</c_presentation>
+	</column>
+	<column name="snapshot_timestamp">
+		<c_sql_name>SNAPSHOT_TIMESTAMP</c_sql_name>
+		<c_title>Snapshot Timestamp</c_title>
+		<c_presentation>n</c_presentation>
+	</column>
+</table>

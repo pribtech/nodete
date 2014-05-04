@@ -1,0 +1,229 @@
+<!--
+  Author: Peter Prib
+  
+  Copyright Independent Systems Integrators Pty Ltd 2008 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+<table name="activity">
+	<sql_name>activities</sql_name>
+	<singular_name>Monitored Activity</singular_name>
+	<plural_name>Monitored Activities</plural_name>
+	<inlinequery>
+<![CDATA[
+select *
+FROM TABLE(WLM_GET_WORKLOAD_OCCURRENCE_ACTIVITIES_V97(null, -2)) as T
+]]>
+	</inlinequery>
+	<messages><SQL0551N>Security issue. Please install "Monitoring Switches/Security" in Tools -> Installed Components</SQL0551N></messages>
+	<description>
+	You can use this view to 
+	&lt;a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.admin.mon.doc/doc/c0001138.html?noframes=true');"&gt;monitor&lt;/a&gt;
+	workload activities currently running.
+	The view retrieves information using a 	
+  &lt;a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.sql.rtn.doc/doc/c0053963.html?noframes=true');"&gt;monitor table function&lt;/a&gt;
+  introduced in DB2 9.7.
+  Each row displays metrics for a single workload activity returned by the
+	&lt;a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.sql.rtn.doc/doc/r0054928.html?noframes=true');"&gt;WLM_GET_WORKLOAD_OCCURRENCE_ACTIVITIES_V97&lt;/a&gt;		
+	table function.
+	This view is not available for databases prior to DB2 9.7.
+	</description>	
+  <order_by_index/>
+	<display_columns titleDepth='2'>
+		<col type="column" name="APPLICATION_HANDLE" title="Application\\nHandle"/>
+		<col type="column" name="DBPARTITIONNUM"/>
+		<col type="column" name="COORD_PARTITION_NUM" title="Co-ord\\nPartition"/>
+		<col type="column" name="LOCAL_START_TIME"/>
+		<col type="column" name="UOW_ID" title="UOW"/>
+		<col type="column" name="ACTIVITY_ID" title="Activity\\nIdentifier"/>
+		<col type="column" name="PARENT_UOW_ID" title="Parent\\nUOW"/>
+		<col type="column" name="PARENT_ACTIVITY_ID" title="Parent\\nActivity Id."/>
+		<col type="column" name="ACTIVITY_STATE"/>
+		<col type="column" name="ACTIVITY_TYPE"/>
+		<col type="column" name="NESTING_LEVEL" title="Nexting\\nLevel"/>
+		<col type="column" name="INVOCATION_ID" title="Invocation\\nIdentifier"/>
+		<col type="column" name="ROUTINE_ID" title="Rountine\\nIdentifier"/>
+		<col type="column" name="UTILITY_ID" title="Utility\\nIdentifier"/>
+		<col type="column" name="SERVICE_CLASS_ID" title="Service\\nClass"/>
+		<col type="column" name="DATABASE_WORK_ACTION_SET_ID" title="Database Work\\nAction Set"/>
+		<col type="column" name="DATABASE_WORK_CLASS_ID" title="Database\\nClass"/>
+		<col type="column" name="SERVICE_CLASS_WORK_ACTION_SET_ID" title="Service Class Work\\nAction Set"/>
+		<col type="column" name="SERVICE_CLASS_WORK_CLASS_ID" title="Service Class Work\\nClass"/>
+		<col type="column" name="EXECUTABLE_ID" title="Executable\\nIndentifier"/>
+		<col type="column" name="TOTAL_CPU_TIME" title="Total\\nCPU"/>
+		<col type="column" name="ROWS_READ" title="Rows\\nRead"/>
+		<col type="column" name="ROWS_RETURNED" title="Rows\\nReturned"/>
+		<col type="column" name="QUERY_COST_ESTIMATE" title="Query Cost\\nEstimate"/>
+		<col type="column" name="DIRECT_READS" title="Direct\\nReads"/>
+		<col type="column" name="DIRECT_WRITES" title="Direct\\nWrites"/>
+	</display_columns>
+	<column name="APPLICATION_HANDLE">
+		<c_sql_name>APPLICATION_HANDLE</c_sql_name>
+		<c_title>Application Handle</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+		<c_pkey>p</c_pkey>
+	</column>
+	<column name="DBPARTITIONNUM">
+		<c_sql_name>DBPARTITIONNUM</c_sql_name>
+		<c_title>Partition</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+		<c_pkey>p</c_pkey>
+	</column>
+	<column name="COORD_PARTITION_NUM">
+		<c_sql_name>COORD_PARTITION_NUM</c_sql_name>
+		<c_title>Co-ord. Partition</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="LOCAL_START_TIME">
+		<c_sql_name>LOCAL_START_TIME</c_sql_name>
+		<c_title>Local Start Time</c_title>
+		<c_presentation/>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="UOW_ID">
+		<c_sql_name>UOW_ID</c_sql_name>
+		<c_title>UOW  Id.</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="ACTIVITY_ID">
+		<c_sql_name>ACTIVITY_ID</c_sql_name>
+		<c_title>Activity Id.</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="PARENT_UOW_ID">
+		<c_sql_name>PARENT_UOW_ID</c_sql_name>
+		<c_title>Parent UOW Id.</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="PARENT_ACTIVITY_ID">
+		<c_sql_name>PARENT_ACTIVITY_ID</c_sql_name>
+		<c_title>Parent Activity Id.</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="ACTIVITY_STATE">
+		<c_sql_name>ACTIVITY_STATE</c_sql_name>
+		<c_title>State</c_title>
+		<c_presentation/>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="ACTIVITY_TYPE">
+		<c_sql_name>ACTIVITY_TYPE</c_sql_name>
+		<c_title>Type</c_title>
+		<c_presentation/>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="NESTING_LEVEL">
+		<c_sql_name>NESTING_LEVEL</c_sql_name>
+		<c_title>Nesting Level</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="INVOCATION_ID">
+		<c_sql_name>INVOCATION_ID</c_sql_name>
+		<c_title>Invocation Id.</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="ROUTINE_ID">
+		<c_sql_name>ROUTINE_ID</c_sql_name>
+		<c_title>Routine Id.</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="UTILITY_ID">
+		<c_sql_name>UTILITY_ID</c_sql_name>
+		<c_title>Utility Id.</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="SERVICE_CLASS_ID">
+		<c_sql_name>SERVICE_CLASS_ID</c_sql_name>
+		<c_title>Service Class Id.</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="DATABASE_WORK_ACTION_SET_ID">
+		<c_sql_name>DATABASE_WORK_ACTION_SET_ID</c_sql_name>
+		<c_title>DB Work Action Set</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="DATABASE_WORK_CLASS_ID">
+		<c_sql_name>DATABASE_WORK_CLASS_ID</c_sql_name>
+		<c_title>DB Work Class</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="SERVICE_CLASS_WORK_ACTION_SET_ID">
+		<c_sql_name>SERVICE_CLASS_WORK_ACTION_SET_ID</c_sql_name>
+		<c_title>Service Class Work Action Set</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="SERVICE_CLASS_WORK_CLASS_ID">
+		<c_sql_name>SERVICE_CLASS_WORK_CLASS_ID</c_sql_name>
+		<c_title>Service Class Work Class</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="EXECUTABLE_ID">
+		<c_sql_name>EXECUTABLE_ID</c_sql_name>
+		<c_title>Executable Id.</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="TOTAL_CPU_TIME">
+		<c_sql_name>TOTAL_CPU_TIME</c_sql_name>
+		<c_title>CPU Time</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="ROWS_READ">
+		<c_sql_name>ROWS_READ</c_sql_name>
+		<c_title>Rows Read</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="ROWS_RETURNED">
+		<c_sql_name>ROWS_RETURNED</c_sql_name>
+		<c_title>Rows Returned</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="QUERY_COST_ESTIMATE">
+		<c_sql_name>QUERY_COST_ESTIMATE</c_sql_name>
+		<c_title>Query Cost Estimator</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="DIRECT_READS">
+		<c_sql_name>DIRECT_READS</c_sql_name>
+		<c_title>Direct Reads</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="DIRECT_WRITES">
+		<c_sql_name>DIRECT_WRITES</c_sql_name>
+		<c_title>Direct Writes</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+</table>

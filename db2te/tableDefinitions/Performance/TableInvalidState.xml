@@ -1,0 +1,224 @@
+<!--
+  Peter Prib, Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2012 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+ 
+
+<table name="tableInvalidState">
+	<sql_name>tableInvalidState</sql_name>
+	<singular_name>Tables in an Invalid State</singular_name>
+	<plural_name>Table in an Invalid State</plural_name>
+	<output>
+		<type name="DDL" destination="" title="" generator=""/>
+		<type name="SETCHECKED" destination="adhoc" title="Set Immediate Checked" generator="XSL/tableSetIntegrity.xsl"/>
+		<type name="SETUNCHECKED" destination="adhoc" title="Set Immediate UnChecked" generator="XSL/tableSetIntegrity.xsl">
+			<parameterList>
+				<parameter name="setLevel" type="raw"><value>IMMEDIATE UNCHECKED</value></parameter>
+			</parameterList>
+		</type>
+	</output>
+	<inlinequery>
+<![CDATA[
+SELECT t.TABSCHEMA
+	,t.TABNAME
+	,t.type
+	,t.STATUS
+    ,t.ACCESS_MODE
+    ,SUBSTR(t.CONST_CHECKED,1,1) AS Foreign_key_constraint
+    ,SUBSTR(t.CONST_CHECKED,2,1) AS check_constraint
+    ,SUBSTR(t.CONST_CHECKED,5,1) AS MQT_constraint
+    ,SUBSTR(t.CONST_CHECKED,6,1) AS Generated_column
+    ,SUBSTR(t.CONST_CHECKED,7,1) AS Staging_table
+    ,SUBSTR(t.CONST_CHECKED,8,1) AS Data_partitioning_constraint
+    ,' ' as REORG_PENDING
+    ,' ' as READ_ACCESS_ONLY
+    ,' ' as INDEXES_REQUIRE_REBUILD
+	,' ' as AVAILABLE
+FROM SYSCAT.TABLES t
+where t.CONST_CHECKED like '%N%'
+   or t.CONST_CHECKED like '%F%'
+   or t.CONST_CHECKED like '%W%'
+   or t.access_mode <> 'F'
+   or t.status <> 'N'
+UNION ALL
+SELECT a.TABSCHEMA
+	,a.TABNAME
+	,'T' as type
+	,' ' as STATUS
+    ,' ' as ACCESS_MODE
+    ,' ' AS Foreign_key_constraint
+    ,' ' AS check_constraint
+    ,' ' AS MQT_constraint
+    ,' ' AS Generated_column
+    ,' ' AS Staging_table
+    ,' ' AS Data_partitioning_constraint
+    ,REORG_PENDING
+    ,READ_ACCESS_ONLY
+    ,INDEXES_REQUIRE_REBUILD
+	,AVAILABLE
+FROM SYSIBMADM.ADMINTABINFO a
+where  a.REORG_PENDING = 'Y' or READ_ACCESS_ONLY <>'N' or  INDEXES_REQUIRE_REBUILD <> 'N' OR AVAILABLE <> 'Y'
+
+]]>
+	</inlinequery>
+	<description>Tables in an invalid state</description>
+	<order_by_index name="tabSchema" direction="A"/>
+	<order_by_index name="tabName" direction="A"/>
+	<display_columns>
+		<col type="action" name="setIntegrity"/>
+		<col type="action" name="setIntegrityImmediate"/>
+		<col type="column" name="tabSchema"/>
+		<col type="column" name="tabName"/>
+		<col type="column" name="type"/>
+		<col type="column" name="status"/>
+		<col type="column" name="accessMode"/>
+		<col type="column" name="foreignKeyConstraint"/>
+		<col type="column" name="checkConstraint"/>
+		<col type="column" name="generatedColumn"/>
+		<col type="column" name="stagingTable"/>
+		<col type="column" name="dataPartitioningConstraint"/>
+		<col type="column" name="REORG_PENDING"/>
+		<col type="column" name="READ_ACCESS_ONLY"/>
+		<col type="column" name="INDEXES_REQUIRE_REBUILD"/>
+		<col type="column" name="AVAILABLE"/>
+	</display_columns>
+    <action name="setIntegrity">
+		<title>Set</title>
+    	<actionScript>
+    		<task>
+		    	<assignSharedConstant name="table-name" type="fixed">
+					<value>"?tabSchema?"."?tabName?" </value>
+				</assignSharedConstant>
+		    	<assignSharedConstant name="command" type="raw">
+					<value>SQL/setIntegrity</value>
+				</assignSharedConstant>
+		   		<callGlobalAction name="commandExecution"/>
+	   		</task>
+    	</actionScript>
+    </action>
+
+	<action name="setIntegrityImmediate">
+		<title>Set Immediate</title>
+		<actionScript name="setIntegrityImmediateX" type="serverAction">
+			<parameterList>
+				<parameter name="action" type="fixed">
+					<value>executeSQL</value>
+				</parameter>
+				<parameter name="SQL" type="fixed">
+					<value>SET INTEGRITY FOR "?tabSchema?"."?tabName?" IMMEDIATE CHECKED</value>
+				</parameter>
+				<parameter name="parameter[tabSchema]" type="blockValue">
+						<value>tabSchema</value>
+				</parameter>
+				<parameter name="parameter[tabName]" type="blockValue">
+						<value>tabName</value>
+				</parameter>
+			</parameterList>
+			<followOnAction condition="true" negCondition="true">
+				<task>
+					<assignLocalParameter name="RETURN_VALUE" type="returnObject">
+						<value>setIntegrityImmediateX.returnValue.STMTMSG</value>
+					</assignLocalParameter>
+					<alert>Error: ?RETURN_VALUE?</alert>
+				</task>
+			</followOnAction>
+			<followOnAction condition="true">
+				<task>
+					<panelReload />
+				</task>
+			</followOnAction>
+		</actionScript>
+	</action>
+	<column name="tabSchema">
+		<sqlName>TABSCHEMA</sqlName>
+		<title>Schema</title>
+		<type>S</type>
+		<primaryKey/>
+	</column>
+	<column name="tabName">
+		<sqlName>TABNAME</sqlName>
+		<title>Table Name</title>
+		<type>S</type>
+		<primaryKey/>
+	</column>
+	<column name="type">
+		<sqlName>TYPE</sqlName>
+		<title>Table Type</title>
+		<type>s</type>
+		<column_mask_file>masks/tableTypeMasks.xml</column_mask_file>	
+	</column>
+	<column name="status">
+		<sqlName>STATUS</sqlName>
+		<title>Status</title>
+		<type>S</type>
+		<column_mask_file>masks/tableStatusMasks.xml</column_mask_file>	
+	</column>
+	<column name="accessMode">
+		<sqlName>ACCESS_MODE</sqlName>
+		<title>Acess Mode</title>
+		<type>S</type>
+		<column_mask_file>masks/tableAccessMode.xml</column_mask_file>
+	</column>
+	<column name="foreignKeyConstraint">
+		<sqlName>FOREIGN_KEY_CONSTRAINT</sqlName>
+		<title>Foreign Key Constraint</title>
+		<type>S</type>
+		<column_mask_file>masks/tableCheckedState.xml</column_mask_file>
+	</column>
+	<column name="checkConstraint">
+		<sqlName>CHECK_CONSTRAINT</sqlName>
+		<title>Check Constraint</title>
+		<type>S</type>
+		<column_mask_file>masks/tableCheckedState.xml</column_mask_file>
+	</column>
+	<column name="generatedColumn">
+		<sqlName>GENERATED_COLUMN</sqlName>
+		<title>Generated Column</title>
+		<type>S</type>
+		<column_mask_file>masks/tableCheckedState.xml</column_mask_file>
+	</column>
+	<column name="stagingTable">
+		<sqlName>STAGING_TABLE</sqlName>
+		<title>Staging Table</title>
+		<type>S</type>
+		<c_drill>n</c_drill>
+		<column_mask_file>masks/tableCheckedState.xml</column_mask_file>
+	</column>
+	<column name="dataPartitioningConstraint">
+		<sqlName>DATA_PARTITIONING_CONSTRAINT</sqlName>
+		<title>Data Partitioning Constraint</title>
+		<type>S</type>
+		<column_mask_file>masks/tableCheckedState.xml</column_mask_file>
+	</column>
+	<column name="REORG_PENDING">
+		<sqlName>REORG_PENDING</sqlName>
+		<title>Reorg Pending</title>
+		<type>S</type>
+	</column>
+	<column name="READ_ACCESS_ONLY">
+		<sqlName>READ_ACCESS_ONLY</sqlName>
+		<title>Read Acess Only</title>
+		<type>S</type>
+	</column>
+	<column name="INDEXES_REQUIRE_REBUILD">
+		<sqlName>INDEXES_REQUIRE_REBUILD</sqlName>
+		<title>Index Rebuild</title>
+		<type>S</type>
+	</column>
+	<column name="AVAILABLE">
+		<sqlName>AVAILABLE</sqlName>
+		<title>Available</title>
+		<type>S</type>
+	</column>
+</table>

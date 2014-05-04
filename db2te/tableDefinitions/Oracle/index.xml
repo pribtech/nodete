@@ -1,0 +1,392 @@
+<!--
+  Peter Prib, Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2012 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<table name="index">
+	<sqlName>SYS.DBA_INDEXES</sqlName>
+	<singularName>Index</singularName>
+	<pluralName>Indices</pluralName>
+	<description></description>
+	<orderBy name="OWNER" direction="A"/>
+	<orderBy name="INDEX_NAME" direction="A"/>
+	<disable_edit/>
+	<displayColumns>
+		<col type="column" name="OWNER"/>
+		<col type="column" name="INDEX_NAME"/>
+		<col type="column" name="INDEX_TYPE"/>
+		<col type="column" name="TABLE_OWNER"/>
+		<col type="column" name="TABLE_NAME"/>
+		<col type="column" name="TABLE_TYPE"/>
+		<col type="column" name="UNIQUENESS"/>
+		<col type="column" name="COMPRESSION"/>
+		<col type="column" name="PREFIX_LENGTH"/>
+		<col type="column" name="TABLESPACE_NAME"/>
+		<col type="column" name="INI_TRANS"/>
+		<col type="column" name="MAX_TRANS"/>
+		<col type="column" name="INITIAL_EXTENT"/>
+		<col type="column" name="NEXT_EXTENT"/>
+		<col type="column" name="MIN_EXTENTS"/>
+		<col type="column" name="MAX_EXTENTS"/>
+		<col type="column" name="PCT_INCREASE"/>
+		<col type="column" name="PCT_THRESHOLD"/>
+		<col type="column" name="INCLUDE_COLUMN"/>
+		<col type="column" name="FREELISTS"/>
+		<col type="column" name="FREELIST_GROUPS"/>
+		<col type="column" name="PCT_FREE"/>
+		<col type="column" name="LOGGING"/>
+		<col type="column" name="BLEVEL"/>
+		<col type="column" name="LEAF_BLOCKS"/>
+		<col type="column" name="DISTINCT_KEYS"/>
+		<col type="column" name="AVG_LEAF_BLOCKS_PER_KEY"/>
+		<col type="column" name="AVG_DATA_BLOCKS_PER_KEY"/>
+		<col type="column" name="CLUSTERING_FACTOR"/>
+		<col type="column" name="STATUS"/>
+		<col type="column" name="NUM_ROWS"/>
+		<col type="column" name="SAMPLE_SIZE"/>
+		<col type="column" name="LAST_ANALYZED"/>
+		<col type="column" name="DEGREE"/>
+		<col type="column" name="INSTANCES"/>
+		<col type="column" name="PARTITIONED"/>
+		<col type="column" name="TEMPORARY"/>
+		<col type="column" name="GENERATED"/>
+		<col type="column" name="SECONDARY"/>
+		<col type="column" name="BUFFER_POOL"/>
+		<col type="column" name="USER_STATS"/>
+		<col type="column" name="DURATION"/>
+		<col type="column" name="PCT_DIRECT_ACCESS"/>
+		<col type="column" name="ITYP_OWNER"/>
+		<col type="column" name="ITYP_NAME"/>
+		<col type="column" name="PARAMETERS"/>
+		<col type="column" name="GLOBAL_STATS"/>
+		<col type="column" name="DOMIDX_STATUS"/>
+		<col type="column" name="DOMIDX_OPSTATUS"/>
+		<col type="column" name="FUNCIDX_STATUS"/>
+		<col type="column" name="JOIN_INDEX"/>
+		<col type="column" name="IOT_REDUNDANT_PKEY_ELIM"/>
+		<col type="column" name="DROPPED"/>
+		<col type="column" name="VISIBILITY"/>
+		<col type="column" name="DOMIDX_MANAGEMENT"/>
+	</displayColumns>
+	<column name="OWNER">
+		<sqlName>OWNER</sqlName>
+		<title>Owner</title>
+		<type>s</type>
+		<prefill>
+			<table>Oracle/schema</table>
+			<column>OWNER</column>
+		</prefill>
+	</column>
+	<column name="INDEX_NAME">
+		<sqlName>INDEX_NAME</sqlName>
+		<title>Name</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="INDEX_TYPE">
+		<sqlName>INDEX_TYPE</sqlName>
+		<title>Index Type</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="TABLE_OWNER">
+		<sqlName>TABLE_OWNER</sqlName>
+		<title>Table Owner</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="TABLE_NAME">
+		<sqlName>TABLE_NAME</sqlName>
+		<title>Table</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="TABLE_TYPE">
+		<sqlName>TABLE_TYPE</sqlName>
+		<title>Table Type</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="UNIQUENESS">
+		<sqlName>UNIQUENESS</sqlName>
+		<title>Uniqueness</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="COMPRESSION">
+		<sqlName>COMPRESSION</sqlName>
+		<title>Compression</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="PREFIX_LENGTH">
+		<sqlName>PREFIX_LENGTH</sqlName>
+		<title>Prefix Length</title>
+		<type>n</type>
+	</column>
+	<column name="TABLESPACE_NAME">
+		<sqlName>TABLESPACE_NAME</sqlName>
+		<title>Tablespace</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="INI_TRANS">
+		<sqlName>INI_TRANS</sqlName>
+		<title>Ini Trans</title>
+		<type>n</type>
+	</column>
+	<column name="MAX_TRANS">
+		<sqlName>MAX_TRANS</sqlName>
+		<title>Max Trans</title>
+		<type>n</type>
+	</column>
+	<column name="INITIAL_EXTENT">
+		<sqlName>INITIAL_EXTENT</sqlName>
+		<title>Initial Extent</title>
+		<type>n</type>
+	</column>
+	<column name="NEXT_EXTENT">
+		<sqlName>NEXT_EXTENT</sqlName>
+		<title>Next Extent</title>
+		<type>n</type>
+	</column>
+	<column name="MIN_EXTENTS">
+		<sqlName>MIN_EXTENTS</sqlName>
+		<title>Min Extents</title>
+		<type>n</type>
+	</column>
+	<column name="MAX_EXTENTS">
+		<sqlName>MAX_EXTENTS</sqlName>
+		<title>Max Extents</title>
+		<type>n</type>
+	</column>
+	<column name="PCT_INCREASE">
+		<sqlName>PCT_INCREASE</sqlName>
+		<title>% Increase</title>
+		<type>n</type>
+	</column>
+	<column name="PCT_THRESHOLD">
+		<sqlName>PCT_THRESHOLD</sqlName>
+		<title>% Threshold</title>
+		<type>n</type>
+	</column>
+	<column name="INCLUDE_COLUMN">
+		<sqlName>INCLUDE_COLUMN</sqlName>
+		<title>Include Column</title>
+		<type>n</type>
+	</column>
+	<column name="FREELISTS">
+		<sqlName>FREELISTS</sqlName>
+		<title>Freelists</title>
+		<type>n</type>
+	</column>
+	<column name="FREELIST_GROUPS">
+		<sqlName>FREELIST_GROUPS</sqlName>
+		<title>Freelist Groups</title>
+		<type>n</type>
+	</column>
+	<column name="PCT_FREE">
+		<sqlName>PCT_FREE</sqlName>
+		<title>% Free</title>
+		<type>n</type>
+	</column>
+	<column name="LOGGING">
+		<sqlName>LOGGING</sqlName>
+		<title>Logging</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="BLEVEL">
+		<sqlName>BLEVEL</sqlName>
+		<title>B Level</title>
+		<type>n</type>
+	</column>
+	<column name="LEAF_BLOCKS">
+		<sqlName>LEAF_BLOCKS</sqlName>
+		<title>Leaf Blocks</title>
+		<type>n</type>
+	</column>
+	<column name="DISTINCT_KEYS">
+		<sqlName>DISTINCT_KEYS</sqlName>
+		<title>Distinct Keys</title>
+		<type>n</type>
+	</column>
+	<column name="AVG_LEAF_BLOCKS_PER_KEY">
+		<sqlName>AVG_LEAF_BLOCKS_PER_KEY</sqlName>
+		<title>Avg Leaf Blocks Per Key</title>
+		<type>n</type>
+	</column>
+	<column name="AVG_DATA_BLOCKS_PER_KEY">
+		<sqlName>AVG_DATA_BLOCKS_PER_KEY</sqlName>
+		<title>Avg Data Blocks Per Key</title>
+		<type>n</type>
+	</column>
+	<column name="CLUSTERING_FACTOR">
+		<sqlName>CLUSTERING_FACTOR</sqlName>
+		<title>Clustering Factor</title>
+		<type>n</type>
+	</column>
+	<column name="STATUS">
+		<sqlName>STATUS</sqlName>
+		<title>Status</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="NUM_ROWS">
+		<sqlName>NUM_ROWS</sqlName>
+		<title>No. Rows</title>
+		<type>n</type>
+	</column>
+	<column name="SAMPLE_SIZE">
+		<sqlName>SAMPLE_SIZE</sqlName>
+		<title>Sample Size</title>
+		<type>n</type>
+	</column>
+	<column name="LAST_ANALYZED">
+		<sqlName>LAST_ANALYZED</sqlName>
+		<title>Last Analyzed</title>
+		<type>n</type>
+		<drillEnable/>
+	</column>
+	<column name="DEGREE">
+		<sqlName>DEGREE</sqlName>
+		<title>Degree</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="INSTANCES">
+		<sqlName>INSTANCES</sqlName>
+		<title>Instances</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="PARTITIONED">
+		<sqlName>PARTITIONED</sqlName>
+		<title>Partitioned</title>
+		<type>s</type>
+	</column>
+	<column name="TEMPORARY">
+		<sqlName>TEMPORARY</sqlName>
+		<title>Temporary</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="GENERATED">
+		<sqlName>GENERATED</sqlName>
+		<title>Generated</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="SECONDARY">
+		<sqlName>SECONDARY</sqlName>
+		<title>Secondary</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="BUFFER_POOL">
+		<sqlName>BUFFER_POOL</sqlName>
+		<title>Buffer Pool</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="USER_STATS">
+		<sqlName>USER_STATS</sqlName>
+		<title>User Stats</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="DURATION">
+		<sqlName>DURATION</sqlName>
+		<title>Duration</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="PCT_DIRECT_ACCESS">
+		<sqlName>PCT_DIRECT_ACCESS</sqlName>
+		<title>Pct Direct Access</title>
+		<type>n</type>
+	</column>
+	<column name="ITYP_OWNER">
+		<sqlName>ITYP_OWNER</sqlName>
+		<title>Ityp Owner</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="ITYP_NAME">
+		<sqlName>ITYP_NAME</sqlName>
+		<title>ITyp Name</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="PARAMETERS">
+		<sqlName>PARAMETERS</sqlName>
+		<title>Parameters</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="GLOBAL_STATS">
+		<sqlName>GLOBAL_STATS</sqlName>
+		<title>Global Stats</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="DOMIDX_STATUS">
+		<sqlName>DOMIDX_STATUS</sqlName>
+		<title>Domidx Status</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="DOMIDX_OPSTATUS">
+		<sqlName>DOMIDX_OPSTATUS</sqlName>
+		<title>Domidx Opstatus</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="FUNCIDX_STATUS">
+		<sqlName>FUNCIDX_STATUS</sqlName>
+		<title>Funcidx Status</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="JOIN_INDEX">
+		<sqlName>JOIN_INDEX</sqlName>
+		<title>Join Index</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="IOT_REDUNDANT_PKEY_ELIM">
+		<sqlName>IOT_REDUNDANT_PKEY_ELIM</sqlName>
+		<title>Iot Redundant Pkey Elim</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="DROPPED">
+		<sqlName>DROPPED</sqlName>
+		<title>Dropped</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="VISIBILITY">
+		<sqlName>VISIBILITY</sqlName>
+		<title>Visibility</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="DOMIDX_MANAGEMENT">
+		<sqlName>DOMIDX_MANAGEMENT</sqlName>
+		<title>Domidx Management</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+</table>

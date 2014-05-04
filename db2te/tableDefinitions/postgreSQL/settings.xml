@@ -1,0 +1,154 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2013 All rights reserved.
+  
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+<table name="settings">
+	<sqlName>pg_settings</sqlName>
+	<singularName>Setting</singularName>
+	<pluralName>Settings</pluralName>
+	<description></description>
+	<orderBy name="category" direction="A"/>
+	<orderBy name="name" direction="A"/>
+	<disableEdit/>
+	<output>
+		<type name="DDL" destination="" title="" generator=""/>
+	</output>
+	<rows_per_page>400</rows_per_page>
+	<displayColumns>
+		<col type="column" name="category" break="column"/>
+		<col type="column" name="name"/>
+		<col type="column" name="setting" maxSize="20"/>
+		<col type="column" name="unit"/>
+		<col type="column" name="short_desc"/>
+		<col type="column" name="extra_desc"/>
+		<col type="column" name="context"/>
+		<col type="column" name="vartype"/>
+		<col type="column" name="source"/>
+		<col type="column" name="min_val"/>
+		<col type="column" name="max_val"/>
+		<col type="column" name="enumvals"/>
+		<col type="column" name="boot_val" maxSize="20"/>
+		<col type="column" name="reset_val" maxSize="20"/>
+		<col type="column" name="sourcefile"/>
+		<col type="column" name="sourceline"/>
+	</displayColumns>
+	<column name="name">
+		<sqlName>name</sqlName>
+		<title>Name</title>
+	</column>
+	<column name="setting">
+		<sqlName>setting</sqlName>
+		<title>Setting</title>
+	</column>
+	<column name="unit">
+		<sqlName>unit</sqlName>
+		<title>Unit</title>
+	</column>
+	<column name="category">
+		<sqlName>category</sqlName>
+		<title>Category</title>
+	</column>
+	<column name="short_desc">
+		<sqlName>short_desc</sqlName>
+		<title>Description</title>
+	</column>
+	<column name="extra_desc">
+		<sqlName>extra_desc</sqlName>
+		<title>Extra</title>
+	</column>
+	<column name="context">
+		<sqlName>context</sqlName>
+		<title>Context</title>
+	</column>
+	<column name="vartype">
+		<sqlName>vartype</sqlName>
+		<title>Type</title>
+		<type>n</type>
+	</column>
+	<column name="source">
+		<sqlName>source</sqlName>
+		<title>Source</title>
+		<type>n</type>
+	</column>
+	<column name="min_val">
+		<sqlName>min_val</sqlName>
+		<title>Min.</title>
+		<type>n</type>
+	</column>
+	<column name="max_val">
+		<sqlName>max_val</sqlName>
+		<title>Max.</title>
+		<type>n</type>
+	</column>
+	<column name="enumvals" maxSize="20">
+		<sqlName>enumvals</sqlName>
+		<title>Enum(s)</title>
+	</column>
+	<column name="boot_val">
+		<sqlName>boot_val</sqlName>
+		<title>Boot</title>
+	</column>
+	<column name="reset_val">
+		<sqlName>reset_val</sqlName>
+		<title>Reset</title>
+	</column>
+	<column name="sourcefile">
+		<sqlName>sourcefile</sqlName>
+		<title>Source File</title>
+	</column>
+	<column name="sourceline">
+		<sqlName>sourceline</sqlName>
+		<title>Line</title>
+		<type>n</type>
+	</column>
+	<action name="databaseSet">
+		<title>Database Set</title>
+    	<actionScript>
+    		<task>
+		    	<assignSharedConstant name="database-name" type="fixed">
+					<value>"?ACTIVE_DATABASE?"</value>
+				</assignSharedConstant>
+		    	<assignSharedConstant name="name" type="fixed">
+					<value>"?name?"</value>
+				</assignSharedConstant>
+		    	<assignSharedConstant name="value" type="fixed">
+					<value>"?setting??unit?"</value>
+				</assignSharedConstant>
+		    	<assignSharedConstant name="command" type="raw">
+					<value>postgreSQL/databaseSet</value>
+				</assignSharedConstant>
+		   		<callGlobalAction name="commandExecution"/>
+	   		</task>
+    	</actionScript>
+    </action>
+	<action name="set">
+		<title>Set</title>
+		<icon>images/trash.gif</icon>   
+    	<actionScript>
+    		<task>
+				<assignSharedConstant name="sql" type="fixed">
+					<value>
+<![CDATA[
+set ?name? = '?setting??unit?';
+]]>
+					</value>
+				</assignSharedConstant>
+		   		<callGlobalAction name="sqlExecution"/>
+	   		</task>
+    	</actionScript>
+    </action>
+</table>
+

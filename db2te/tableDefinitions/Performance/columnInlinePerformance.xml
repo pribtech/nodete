@@ -1,0 +1,262 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2011 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+
+<table name="columnInlinePerformance">
+	<sql_name>columnInlinePerformance</sql_name>
+	<singular_name>Column Inline Performance</singular_name>
+	<plural_name>Column Inline Performance</plural_name>
+	<inlinequery>
+<![CDATA[
+SELECT c.*,t.AVGROWSIZE,t.compression as ROW_COMPRESS,CARD
+FROM syscat.COLUMNS c
+join syscat.tables t
+ on (t.tabschema,t.tabname)= (c.tabschema,c.tabname)
+WHERE c.TYPENAME LIKE '%LOB' 
+  and t.type not in ('V')
+]]>
+	</inlinequery>
+	<description></description>
+	<output>
+		<type name="DDL" destination="" title="" generator=""/>
+		<type name="RUNSTATS" destination="adhoc" title="Runstats" generator="XSL/tableRunstats.xsl"/>
+		<type name="REORGONLINE" destination="adhoc" title="Re-Org Online" generator="XSL/tableReorgOnline.xsl"/>
+		<type name="resizeInlive" destination="adhoc" title="Resize inline" generator="XSL/tableInlineResize.xsl"/>
+	</output>
+	<order_by_index name="PCTINLINED" direction="A"/>
+	<display_columns>
+		<col type="column" name="tabschema"/>
+		<col type="column" name="tabname"/>
+		<col type="column" name="COLNAME"/>
+		<col type="column" name="TYPENAME"/>
+		<col type="column" name="PCTINLINED"/>
+		<col type="action" name="avgLength"/>
+		<col type="action" name="maxLength"/>
+		<col type="action" name="maxEstLength"/>
+		<col type="column" name="AVGCOLLEN"/>
+		<col type="column" name="INLINE_LENGTH"/>
+		<col type="column" name="COMPRESS"/>
+		<col type="column" name="ROW_COMPRESS"/>
+		<col type="column" name="LOGGED"/>
+		<col type="column" name="AVGROWSIZE"/>
+		<col type="column" name="CARD"/>
+	</display_columns>
+	<column name="tabschema">
+		<c_sql_name>TABSCHEMA</c_sql_name>
+		<c_title>Schema</c_title>
+		<c_pkey>p</c_pkey>
+		<c_presentation>s</c_presentation>
+		<c_prefill>y</c_prefill>
+	</column>
+	<column name="tabname">
+		<c_sql_name>TABNAME</c_sql_name>
+		<c_title>Table</c_title>
+		<c_pkey>p</c_pkey>
+		<c_presentation>s</c_presentation>
+	</column>
+	<column name="COLNAME">
+		<c_sql_name>COLNAME</c_sql_name>
+		<c_title>Column Name</c_title>
+		<c_pkey>p</c_pkey>
+		<c_presentation>s</c_presentation>
+	</column>
+	<column name="TYPENAME">
+		<c_sql_name>TYPENAME</c_sql_name>
+		<c_title>Type</c_title>
+		<c_presentation>s</c_presentation>
+	</column>
+	<column name="LENGTH">
+		<c_sql_name>LENGTH</c_sql_name>
+		<c_title>Length</c_title>
+		<c_presentation>s</c_presentation>
+	</column>
+	<column name="LOGGED">
+		<c_sql_name>LOGGED</c_sql_name>
+		<c_title>Logged</c_title>
+		<c_presentation>s</c_presentation>
+	</column>
+	<column name="AVGCOLLEN">
+		<c_sql_name>AVGCOLLEN</c_sql_name>
+		<c_title>Avg. Len.</c_title>
+		<c_presentation>n</c_presentation>
+	</column>
+	<column name="INLINE_LENGTH">
+		<c_sql_name>INLINE_LENGTH</c_sql_name>
+		<c_title>Inline Length</c_title>
+		<c_presentation>n</c_presentation>
+	</column>
+	<column name="PCTINLINED">
+		<c_sql_name>PCTINLINED</c_sql_name>
+		<c_title>Inlined %</c_title>
+		<c_presentation>n</c_presentation>
+	</column>
+	<column name="COMPRESS">
+		<c_sql_name>COMPRESS</c_sql_name>
+		<c_title>Compress</c_title>
+		<c_presentation>s</c_presentation>
+	</column>
+	<column name="ROW_COMPRESS">
+		<c_sql_name>ROW_COMPRESS</c_sql_name>
+		<c_title>Row Compress</c_title>
+		<c_presentation>s</c_presentation>
+	</column>
+	<column name="AVGROWSIZE">
+		<c_sql_name>AVGROWSIZE</c_sql_name>
+		<c_title>Avg. Row Size</c_title>
+		<c_presentation>n</c_presentation>
+	</column>
+	<column name="CARD">
+		<c_sql_name>CARD</c_sql_name>
+		<c_title>No. Rows</c_title>
+		<c_presentation>n</c_presentation>
+	</column>
+
+	<action name="avgLength">
+		<c_title>Avg. Length</c_title>
+		<icon>images/icon-count.gif</icon>			
+		<actionScript name="avgLengthScript" type="serverAction">
+			<parameterList>
+					<parameter name="action" type="fixed">
+						<value>getSqlValue</value>
+					</parameter>
+					<parameter name="query"  type="fixed">
+						<value>select avg(LENGTH("?COLNAME?")) from "?tabschema?"."?tabname?" fetch first 10000 rows only</value>
+					</parameter>
+				</parameterList>
+				<followOnAction condition="true">
+					<task>	
+						<assignLocalParameter name="RETURN_VALUE" type="returnObject">
+							<value>avgLengthScript.returnValue</value>
+						</assignLocalParameter>
+						<alert>Average length in first 10000 rows : ?RETURN_VALUE?</alert>
+					</task>
+				</followOnAction>
+				<followOnAction condition="true" negCondition="true">
+					<task>
+						<assignLocalParameter name="RETURN_VALUE" type="returnObject">
+							<value>avgLengthScript.returnValue</value>
+						</assignLocalParameter>
+						<alert>Error retrieving average length, error: ?RETURN_VALUE?</alert>
+					</task>
+				</followOnAction>
+		</actionScript>
+	</action>
+	<action name="MaxLength">
+		<c_title>Max. Length</c_title>
+		<icon>images/icon-count.gif</icon>			
+		<actionScript name="maxLengthScript" type="serverAction">
+			<parameterList>
+					<parameter name="action" type="fixed">
+						<value>getSqlValue</value>
+					</parameter>
+					<parameter name="query"  type="fixed">
+						<value>select max(LENGTH("?COLNAME?")) from "?tabschema?"."?tabname?" fetch first 10000 rows only</value>
+					</parameter>
+				</parameterList>
+				<followOnAction condition="true">
+					<task>	
+						<assignLocalParameter name="RETURN_VALUE" type="returnObject">
+							<value>maxLengthScript.returnValue</value>
+						</assignLocalParameter>
+						<alert>Maximum length in first 10000 rows : ?RETURN_VALUE?</alert>
+					</task>
+				</followOnAction>
+				<followOnAction condition="true" negCondition="true">
+					<task>
+						<assignLocalParameter name="RETURN_VALUE" type="returnObject">
+							<value>maxLengthScript.returnValue</value>
+						</assignLocalParameter>
+						<alert>Error retrieving average length, error: ?RETURN_VALUE?</alert>
+					</task>
+				</followOnAction>
+		</actionScript>
+	</action>
+	<action name="maxEstLength">
+		<c_title>Est. Inline</c_title>
+		<icon>images/icon-count.gif</icon>			
+		<actionScript name="maxEstScript" type="serverAction">
+			<parameterList>
+					<parameter name="action" type="fixed">
+						<value>getSqlValue</value>
+					</parameter>
+					<parameter name="query"  type="fixed">
+						<value>select max(ADMIN_EST_INLINE_LENGTH("?COLNAME?")) from "?tabschema?"."?tabname?" fetch first 10000 rows only</value>
+					</parameter>
+				</parameterList>
+				<followOnAction condition="true">
+					<task>	
+						<assignLocalParameter name="RETURN_VALUE" type="returnObject">
+							<value>maxEstScript.returnValue</value>
+						</assignLocalParameter>
+						<alert>Maximum estimated inline length in first 10000 rows : ?RETURN_VALUE?</alert>
+					</task>
+				</followOnAction>
+				<followOnAction condition="true" negCondition="true">
+					<task>
+						<assignLocalParameter name="RETURN_VALUE" type="returnObject">
+							<value>maxEstScript.returnValue</value>
+						</assignLocalParameter>
+						<alert>Error retrieving average length, error: ?RETURN_VALUE?</alert>
+					</task>
+				</followOnAction>
+		</actionScript>
+	</action>
+	<action name="runstats">
+		<c_title>Runstats</c_title>
+    	<actionScript>
+    		<task>
+		    	<assignSharedConstant name="schema" type="fixed">
+					<value>"?tabschema?"</value>
+				</assignSharedConstant>
+		    	<assignSharedConstant name="name" type="fixed">
+					<value>"?tabname?"</value>
+				</assignSharedConstant>
+		    	<assignSharedConstant name="command" type="raw">
+					<value>SQL/adminCmdRunstats</value>
+				</assignSharedConstant>
+		   		<callGlobalAction name="commandExecution"/>
+	   		</task>
+    	</actionScript>
+    </action>
+	<action name="reorg">
+		<c_title>Reorg</c_title>
+    	<actionScript>
+    		<task>
+		    	<assignSharedConstant name="table-name" type="fixed">
+					<value>"?tabschema?"."?tabname?"</value>
+				</assignSharedConstant>
+		    	<assignSharedConstant name="command" type="raw">
+					<value>SQL/adminCmdReorg</value>
+				</assignSharedConstant>
+		   		<callGlobalAction name="commandExecution"/>
+	   		</task>
+    	</actionScript>
+    </action>
+	<reference name="syscat">
+		<c_title>SYSCAT</c_title>
+		<reftype>table</reftype>
+		<refvalue>tablecat</refvalue>
+		<icon>images/icon-column.gif</icon>
+		<ref foreign_column_name="tabschema">
+			<local_column_name>tabschema</local_column_name>
+		</ref>
+		<ref foreign_column_name="tabname">
+			<local_column_name>tabname</local_column_name>
+		</ref>
+	</reference>
+
+</table>

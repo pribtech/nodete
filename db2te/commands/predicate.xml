@@ -1,0 +1,393 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2009 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<clause name="predicate"  title="predicate">
+<![CDATA[
+]]>
+	<select>
+		<option default="true"><clauseReference name="basic-predicate"/></option>
+		<option><clauseReference name="quantified-predicate"/></option>
+		<option><clauseReference name="BETWEEN-predicate"/></option>
+		<option><clauseReference name="EXISTS-predicate"/></option>
+		<option><clauseReference name="IN-predicate"/></option>
+		<option><clauseReference name="LIKE-predicate"/></option>
+		<option><clauseReference name="NULL-predicate"/></option>
+		<option><clauseReference name="TYPE-predicate"/></option>
+		<option><clauseReference name="VALIDATED-predicate"/></option>
+		<option><clauseReference name="XMLEXISTS-predicate"/></option>
+	</select>
+
+
+<clause name="basic-predicate"  title="basic predicate">
+<![CDATA[
+>>-expression--+- = ------+----expression----------------------><
+               |      (1) |                   
+               +- <> -----+                   
+               +- < ------+                   
+               +- > ------+                   
+               |      (1) |                   
+               +- <= -----+                   
+               |      (1) |                   
+               '- >= -----'   
+]]>
+	<clauseReference name="expression"/>
+	<select>
+		<option default="true"><text>=</text></option>
+		<option><text><![CDATA[<>]]></text></option>
+		<option><text><![CDATA[>]]></text></option>
+		<option><text><![CDATA[<]]></text></option>
+		<option><text><![CDATA[=>]]></text></option>
+		<option><text><![CDATA[<=]]></text></option>
+	</select>
+	<clauseReference name="expression"/>
+</clause>
+
+<clause name="quantified-predicate"  title="quantified predicate">
+<![CDATA[
+>>-+-expression1--+- = ------+--+-SOME-+--(fullselect1)------+-><
+   |              |      (1) |  +-ANY--+                     |   
+   |              +- <> -----+  '-ALL--'                     |   
+   |              +- < ------+                               |   
+   |              +- > ------+                               |   
+   |              +- <= -----+                               |   
+   |              '- >= -----'                               |   
+   |    .-,---------------.                                  |   
+   |    V                 |                                  |   
+   '-(------expression2---+--)-- = --+-SOME-+--(fullselect2)-'   
+                                     '-ANY--'   
+]]>
+	<select>
+		<option default="true">
+			<clauseReference name="expression"/>
+			<select>
+				<option default="true"><text>=</text></option>
+				<option><text><![CDATA[<>]]></text></option>
+				<option><text><![CDATA[>]]></text></option>
+				<option><text><![CDATA[<]]></text></option>
+				<option><text><![CDATA[=>]]></text></option>
+				<option><text><![CDATA[<=]]></text></option>
+			</select>
+			<select>
+				<option default="true"><text>SOME</text></option>
+				<option><text>ANY</text></option>
+				<option><text>ALL</text></option>
+			</select>
+			<text>(</text>
+			<clauseReference name="fullSelect"/>
+			<text>)</text>
+		</option>
+		<option>
+			<text>(</text>
+			<repeatable>
+				<clauseReference name="expression"/>
+			</repeatable>
+			<text>) =</text>
+			<select>
+				<option default="true"><text>SOME</text></option>
+				<option><text>ANY</text></option>
+			</select>
+			<text>(</text>
+			<clauseReference name="fullSelect"/>
+			<text>)</text>
+		</option>
+	</select>
+</clause>
+
+<clause name="BETWEEN-predicate"  title="BETWEEN predicate">
+<![CDATA[
+>>-expression--+-----+--BETWEEN--expression--AND--expression---><
+               '-NOT-'                                         
+]]>
+	<clauseReference name="expression"/>
+	<select>
+		<option default="true"><text></text></option>
+		<option><text>NOT</text></option>
+	</select>
+	<clauseReference name="expression"/>
+	<text>AND</text>
+	<clauseReference name="expression"/>
+</clause>
+
+<clause name="EXISTS-predicate"  title="EXISTS predicate">
+<![CDATA[
+>>-EXISTS--(fullselect)----------------------------------------><
+]]>
+	<text>EXISTS (</text> 
+	<clauseReference name="fullSelect"/>
+	<text>)</text>
+</clause>
+
+<clause name="IN-predicate"  title="IN predicate">
+<![CDATA[
+>>-+-expression1--+-----+--IN--+-(fullselect1)-------------+-+-><
+   |              '-NOT-'      |    .-,---------------.    | |   
+   |                           |    V                 |    | |   
+   |                           +-(------expression2---+--)-+ |   
+   |                           '-expression2---------------' |   
+   |    .-,---------------.                                  |   
+   |    V                 |                                  |   
+   '-(------expression3---+--)--+-----+--IN--(fullselect2)---'   
+                                '-NOT-'  
+]]>
+	<select>
+		<option default="true">
+			<clauseReference name="expression"/>
+			<select>
+				<option default="true"><text>=</text></option>
+				<option><text>NOT</text></option>
+			</select>
+			<text>IN</text>
+			<select>
+				<option default="true">
+					<text>(</text>
+					<clauseReference name="fullSelect"/>
+					<text>)</text>
+				</option>
+				<option>
+					<text>(</text>
+					<repeatable>
+						<clauseReference name="expression"/>
+					</repeatable>
+					<text>)</text>
+				</option>
+				<option><clauseReference name="expression"/></option>
+			</select>
+		</option>
+		<option>
+			<text>(</text>
+			<repeatable>
+				<clauseReference name="expression"/>
+			</repeatable>
+			<select>
+				<option default="true"><text>=</text></option>
+				<option><text>NOT</text></option>
+			</select>
+			<text>IN (</text>
+			<clauseReference name="fullSelect"/>
+			<text>)</text>
+		</option>
+	</select>
+
+
+</clause>
+
+<clause name="LIKE-predicate"  title="LIKE predicate">
+<![CDATA[
+>>-match-expression--+-----+--LIKE--pattern-expression---------->
+                     '-NOT-'                             
+
+>--+---------------------------+-------------------------------><
+   '-ESCAPE--escape-expression-'   
+
+]]>
+	<clauseReference name="expression"/>
+	<select>
+		<option default="true"><text></text></option>
+		<option><text>NOT</text></option>
+	</select>
+	<text>LIKE</text>
+	<input size="12"/>
+	<select>
+		<option default="true"><text></text></option>
+		<option><text>ESCAPE</text><input size="1"/></option>
+	</select>
+</clause>
+
+<clause name="NULL-predicate"  title="NULL predicate">
+<![CDATA[
+>>-expression--IS--+-----+--NULL-------------------------------><
+                   '-NOT-'         
+]]>
+	<clauseReference name="expression"/>
+	<text>IS</text>
+	<select>
+		<option default="true"><text></text></option>
+		<option><text>NOT</text></option>
+	</select>
+	<text>NULL</text>
+</clause>
+
+<clause name="TYPE-predicate"  title="TYPE predicate">
+<![CDATA[
+>>-expression--+-IS--+-----+--OF------------------+------------->
+               |     '-NOT-'                      |   
+               | .-IS-.                           |   
+               '-+----+--+-----+--OF DYNAMIC TYPE-'   
+                         '-NOT-'                      
+
+      .-,------------------.      
+      V                    |      
+>--(----+------+--typename-+--)--------------------------------><
+        '-ONLY-' 
+
+]]>
+	<clauseReference name="expression"/>
+	<select>
+		<option default="true">
+			<text>IS</text>
+			<select>
+				<option default="true"><text></text></option>
+				<option><text>NOT</text></option>
+			</select>
+			<text>OF</text>
+		</option>
+		<option>
+			<select>
+				<option><text>IS</text></option>
+				<option default="true"><text></text></option>
+			</select>
+			<select>
+				<option default="true"><text></text></option>
+				<option><text>NOT</text></option>
+			</select>
+			<text>OF DYNAMIC TYPE</text>
+		</option>
+	</select>
+	<text>>(</text>
+	<repeatable>
+		<select>
+			<option default="true"><text></text></option>
+			<option><text>only</text></option>
+		</select>
+		<clauseReference name="typename"/>
+	</repeatable>
+	<text>>)</text>
+</clause>
+
+<clause name="VALIDATED-predicate"  title="VALIDATED predicate">
+<![CDATA[
+>>-XML-expression--IS--+-----+--VALIDATED--+-------------------------+-><
+                       '-NOT-'             '-| according-to-clause |-'   
+]]>
+	<text>XML</text>
+	<clauseReference name="expression"/>
+	<text>IS</text>
+	<select>
+		<option default="true"><text></text></option>
+		<option><text>NOT</text></option>
+	</select>
+	<text>IS</text>
+	<select>
+		<option default="true"><text></text></option>
+		<option><clauseReference name="according-to-clause"/></option>
+	</select>
+</clause>
+
+<clause name="according-to-clause">
+<![CDATA[
+|--ACCORDING TO XMLSCHEMA--+-| XML-schema-identification |---------------+--|
+                           |        .-,-----------------------------.    |   
+                           |        V                               |    |   
+                           '-IN--(----| XML-schema-identification |-+--)-'   
+]]>
+	<text>ACCORDING TO XMLSCHEMA</text>
+	<select>
+		<option default="true"><clauseReference name="XML-schema-identification"/></option>
+		<option>
+			<text>IN (</text>
+			<repeatable>
+				<clauseReference name="XML-schema-identification"/>
+			</repeatable>
+			<text>)</text>
+		</option>
+	</select>
+</clause>
+
+<clause name="XML-schema-identification">
+<![CDATA[
+|--+-ID--XML-schema-name-----------------------+----------------|
+   '-+-URI--XML-uri1-+--+--------------------+-'   
+     '-NO NAMESPACE--'  '-LOCATION--XML-uri2-'     
+]]>
+	<select>
+		<option default="true"><text>ID</text><clauseReference name="XML-schema-name"/></option>
+		<option>
+			<select>
+				<option default="true"><text>URI</text><clauseReference name="XML-uri"/></option>
+				<option><text>NO NAMESPACE</text></option>
+			</select>
+			<select>
+				<option default="true"><text></text></option>
+				<option><text>LOCATION</text><clauseReference name="XML-uri"/></option>
+			</select>
+		</option>
+	</select>
+</clause>
+
+
+<clause name="XMLEXISTS-predicate"  title="XMLEXISTS predicate">
+<![CDATA[
+>>-XMLEXISTS--(--xquery-expression-constant--------------------->
+
+>--+--------------------------------------------------+--)-----><
+   |                          .-,-------------------. |      
+   |         (1)  .-BY REF-.  V                     | |      
+   '-PASSING------+--------+----| xquery-argument |-+-'      
+]]>
+	<text>XMLEXISTS (</text>
+	<clauseReference name="xquery-expression-constant"/>
+	<select>
+		<option default="true"><text></text></option>
+		<option>
+			<text>PASSING</text>
+			<select>
+				<option><text>BY REF</text></option>
+				<option default="true"><text></text></option>
+			</select>
+
+
+			<repeatable>
+				<clauseReference name="xquery-argument"/>
+			</repeatable>
+		</option>
+	</select>
+	<text>)</text>
+</clause>
+
+<clause name="xquery-argument">
+<![CDATA[
+|--xquery-variable-expression------AS--identifier--+--------+---|
+                                                   '-BY REF-'   
+]]>
+	<clauseReference name="xquery-variable-expression"/>
+	<text>as</text>
+	<clauseReference name="identifier"/>
+	<select>
+		<option default="true"><text></text></option>
+		<option><text>LOCATION</text></option>
+	</select>
+</clause>
+
+<clause name="typename">
+	<text>typename *** to be done ***</text>
+</clause>
+<clause name="XML-schema-name">
+	<text>XML-schema-name *** to be done ***</text>
+</clause> 
+<clause name="XML-uri">
+	<text>XML-uri *** to be done ***</text>
+</clause>
+<clause name="xquery-expression-constant">
+	<text>xquery-expression-constant *** to be done ***</text>
+</clause>
+<clause name="xquery-variable-expression">
+	<text>xquery-variable-expression *** to be done ***</text>
+</clause> 
+<clause name="identifier">
+	<text>identifier *** to be done ***</text>
+</clause> 
+</clause>

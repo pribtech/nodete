@@ -1,0 +1,101 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2010 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+
+<table name="xsrObjectComponents">
+	<sql_name>SYSCAT.XSROBJECTCOMPONENTS</sql_name>
+	<singular_name>XSR Object Component</singular_name>
+	<plural_name>XSR Object Components</plural_name>
+	<disableEdit/>
+	<output>
+		<type name="DDL" destination="" title="" generator=""/>
+	</output>
+	<order_by_index name="OBJECTID" direction="A"/>
+	<order_by_index name="COMPONENTID" direction="A"/>
+	<display_columns>
+		<col type="column" name="OBJECTID"/>
+		<col type="column" name="OBJECTSCHEMA"/>
+		<col type="column" name="OBJECTNAME"/>
+		<col type="column" name="STATUS"/>
+		<col type="column" name="COMPONENTID"/>
+		<col type="column" name="TARGETNAMESPACE"/>
+		<col type="column" name="SCHEMALOCATION"/>
+		<col type="column" name="COMPONENT"/>
+	</display_columns>
+	<column name="OBJECTID">
+		<c_sql_name>OBJECTID</c_sql_name>
+		<c_title>Object Id.</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="OBJECTSCHEMA">
+		<c_sql_name>OBJECTSCHEMA</c_sql_name>
+		<c_title>Schema</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>y</c_drill>
+		<primary_key/>
+		<c_prefill>
+			<table>schema</table>
+			<column>SCHEMANAME</column>
+		</c_prefill>
+	</column>
+	<column name="OBJECTNAME">
+		<c_sql_name>OBJECTNAME</c_sql_name>
+		<c_title>Name</c_title>
+		<c_presentation></c_presentation>
+		<primary_key/>
+	</column>
+	<column name="COMPONENTID">
+		<c_sql_name>COMPONENTID</c_sql_name>
+		<c_title>Component Id.</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="TARGETNAMESPACE">
+		<c_sql_name>TARGETNAMESPACE</c_sql_name>
+		<c_title>Target Namespace</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="SCHEMALOCATION">
+		<c_sql_name>SCHEMALOCATION</c_sql_name>
+		<c_title>Schema Location</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="COMPONENT">
+		<c_sql_name>COMPONENT</c_sql_name>
+		<c_title>Component</c_title>
+		<c_presentation>l</c_presentation>
+	</column>
+	<column name="CREATE_TIME">
+		<c_sql_name>CREATE_TIME</c_sql_name>
+		<c_title>Created</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="Status">
+		<c_sql_name>STATUS</c_sql_name>
+		<c_title>STATUS</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>y</c_drill>
+		<c_column_mask>
+			<value_mask value="C"><mask>Complete</mask></value_mask>
+			<value_mask value="I"><mask>Incomplete</mask></value_mask>
+		</c_column_mask>		
+	</column>
+</table>

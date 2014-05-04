@@ -1,0 +1,183 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2013 All rights reserved.
+  
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+<table name="pg_stat_activity">
+	<sqlName>pg_stat_activity</sqlName>
+	<singularName>Activity</singularName>
+	<pluralName>Activity</pluralName>
+	<description>
+	One row per server process, showing database OID, database name, process ID, user OID, user name, current query, query's waiting status, time at which the current transaction and current query began execution, time at which the process was started, and client's address and port number. The columns that report data on the current query are available unless the parameter track_activities has been turned off. Furthermore, these columns are only visible if the user examining the view is a superuser or the same as the user owning the process being reported on.
+	</description>
+	<orderBy name="showLevel" direction="A"/>
+	<orderBy name="elapse" direction="D"/>
+	<disableEdit/>
+	<output>
+		<type name="DDL" destination="" title="" generator=""/>
+	</output>
+	<displayColumns>
+		<col type="column" name="datname"/>
+		<col type="column" name="pid"/>
+		<col type="column" name="usename"/>
+		<col type="column" name="waiting"/>
+		<col type="column" name="state"/>
+		<col type="column" name="elapse"/>
+		<col type="reference" name="explainText"/>
+		<col type="column" name="query"/>
+		<col type="column" name="application_name"/>
+		<col type="column" name="client_addr"/>
+		<col type="column" name="client_hostname"/>
+		<col type="column" name="client_port"/>
+		<col type="column" name="backend_start"/>
+		<col type="column" name="xact_start"/>
+		<col type="column" name="query_start"/>
+		<col type="column" name="state_change"/>
+	</displayColumns>
+	<history depth="10" time="SAMPLE_TS"/>
+	<column name="SAMPLE_TS">
+		<generated>timestamp</generated>
+		<title>Time</title>
+		<type>s</type>
+	</column>
+	<column name="showLevel">
+		<sqlName>case when state='idle' then 99 else 0 end</sqlName>
+		<title>Show Level</title>
+		<type>s</type>
+	</column>
+	<column name="elapse">
+		<sqlName>case when state='idle' then state_change else current_timestamp end - query_start</sqlName>
+		<title>Elapse</title>
+		<type>s</type>
+	</column>
+	<column name="datid">
+		<sqlName>datid</sqlName>
+		<title>Datid</title>
+		<type>n</type>
+		<primaryKey/>
+	</column>
+	<column name="datname">
+		<sqlName>datname</sqlName>
+		<title>Datname</title>
+	</column>
+	<column name="pid">
+		<sqlName>pid</sqlName>
+		<title>Pid</title>
+		<type>n</type>
+	</column>
+	<column name="usesysid">
+		<sqlName>usesysid</sqlName>
+		<title>Usesysid</title>
+		<type>n</type>
+	</column>
+	<column name="usename">
+		<sqlName>usename</sqlName>
+		<title>User</title>
+	</column>
+	<column name="application_name">
+		<sqlName>application_name</sqlName>
+		<title>Application Name</title>
+	</column>
+	<column name="client_addr">
+		<sqlName>client_addr</sqlName>
+		<title>Client Addr</title>
+	</column>
+	<column name="client_hostname">
+		<sqlName>client_hostname</sqlName>
+		<title>Client Hostname</title>
+	</column>
+	<column name="client_port">
+		<sqlName>client_port</sqlName>
+		<title>Client Port</title>
+		<type>n</type>
+	</column>
+	<column name="backend_start">
+		<sqlName>backend_start</sqlName>
+		<title>Backend Start</title>
+		<type>n</type>
+	</column>
+	<column name="xact_start">
+		<sqlName>xact_start</sqlName>
+		<title>Xact Start</title>
+		<type>n</type>
+	</column>
+	<column name="query_start">
+		<sqlName>query_start</sqlName>
+		<title>Query Start</title>
+		<type>n</type>
+	</column>
+	<column name="state_change">
+		<sqlName>state_change</sqlName>
+		<title>State Change</title>
+		<type>n</type>
+	</column>
+	<column name="waiting">
+		<sqlName>waiting</sqlName>
+		<title>Waiting</title>
+		<type>n</type>
+	</column>
+	<column name="state">
+		<sqlName>state</sqlName>
+		<title>State</title>
+		<type>n</type>
+	</column>
+	<column name="query">
+		<sqlName>query</sqlName>
+		<title>Query</title>
+	</column>
+	<reference name="explainText">
+		<title>Explain</title>
+		<reftype>table</reftype>
+		<refvalue>postgreSQL/monitor/explainText</refvalue>
+		<icon>images/icon-link-calendar.gif</icon>								
+		<ref foreign_column_name="statement">
+			<local_column_name>query</local_column_name>
+		</ref>
+	</reference>
+	<action name="Explain">
+		<title>Explain Diagram</title>
+		<icon>images/icon-histo.gif</icon>   
+    	<actionScript>
+    		<task>
+				<loadPage>
+					<pageWindow target="_blank" windowStage="?CALLING_STAGE?">
+						<panel name="main" PrimaryContainer="true">
+							<link type="action" target="_self" window="_self" connectionRequired="y">
+								<parameterList>
+									<parameter name="action">chartNodal</parameter>
+									<parameter name="$chartTitle">Explain SQL</parameter>
+									<parameter name="$sourceType">SQL</parameter>
+									<parameter name="$source">explain (VERBOSE TRUE ,COSTS TRUE, FORMAT XML) ?query?</parameter>
+									<parameter name="$transform">XSL/postgreSQL/explain2Summarised.xsl</parameter>
+									<parameter name="$greatestCostAttribute">totalCost</parameter>
+									<parameter name="$nodeControl">
+<![CDATA[
+<nodeControl>
+	<node name='default' textSizeAttribute='5'/>
+	<node name='table' colour='#99CCFF' shape='table'/>
+	<node name='output' colour='#CC66FF' shape='operator' hideAble='true' hide='true'/>	
+</nodeControl>
+]]>
+									</parameter>
+								</parameterList>
+							</link>				
+						</panel>
+					</pageWindow>
+				</loadPage>
+			</task>
+    	</actionScript>
+    </action>
+	
+</table>

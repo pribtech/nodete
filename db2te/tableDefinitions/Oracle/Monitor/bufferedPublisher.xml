@@ -1,0 +1,108 @@
+<!--
+  Peter Prib, Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2012 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<table name="bufferedPublisher">
+	<sqlName>V$BUFFERED_PUBLISHERS</sqlName>
+	<singularName>Buffered Publisher</singularName>
+	<pluralName>Buffered Publishers</pluralName>
+	<description></description>
+	<orderBy name="QUEUE_SCHEMA" direction="A"/>
+	<orderBy name="QUEUE_NAME" direction="A"/>
+	<orderBy name="SENDER_NAME" direction="A"/>
+	<displayColumns>
+		<col type="column" name="QUEUE_SCHEMA"/>
+		<col type="column" name="QUEUE_NAME"/>
+		<col type="column" name="SENDER_NAME"/>
+		<col type="column" name="SENDER_PROTOCOL"/>
+		<col type="column" name="NUM_MSGS"/>
+		<col type="column" name="CNUM_MSGS"/>
+		<col type="column" name="LAST_ENQUEUED_MSG"/>
+		<col type="column" name="UNBROWSED_MSGS"/>
+		<col type="column" name="OVERSPILLED_MSGS"/>
+		<col type="column" name="MEMORY_USAGE"/>
+		<col type="column" name="PUBLISHER_STATE"/>
+	</displayColumns>
+	<column name="QUEUE_ID">
+		<sqlName>QUEUE_ID</sqlName>
+		<title>QID</title>
+		<type>n</type>
+	</column>
+	<column name="QUEUE_SCHEMA">
+		<sqlName>QUEUE_SCHEMA</sqlName>
+		<title>Schema</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="QUEUE_NAME">
+		<sqlName>QUEUE_NAME</sqlName>
+		<title>Queue</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="SENDER_NAME">
+		<sqlName>SENDER_NAME</sqlName>
+		<title>Sender</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="SENDER_ADDRESS">
+		<sqlName>SENDER_ADDRESS</sqlName>
+		<title>Sender Address</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="SENDER_PROTOCOL">
+		<sqlName>SENDER_PROTOCOL</sqlName>
+		<title>Sender Protocol</title>
+		<type>n</type>
+	</column>
+	<column name="NUM_MSGS">
+		<sqlName>NUM_MSGS</sqlName>
+		<title>Num Msgs</title>
+		<type>n</type>
+	</column>
+	<column name="CNUM_MSGS">
+		<sqlName>CNUM_MSGS</sqlName>
+		<title>Cnum Msgs</title>
+		<type>n</type>
+	</column>
+	<column name="LAST_ENQUEUED_MSG">
+		<sqlName>LAST_ENQUEUED_MSG</sqlName>
+		<title>Last Enqueued Msg</title>
+		<type>n</type>
+	</column>
+	<column name="UNBROWSED_MSGS">
+		<sqlName>UNBROWSED_MSGS</sqlName>
+		<title>Unbrowsed Msgs</title>
+		<type>n</type>
+	</column>
+	<column name="OVERSPILLED_MSGS">
+		<sqlName>OVERSPILLED_MSGS</sqlName>
+		<title>Overspilled Msgs</title>
+		<type>n</type>
+	</column>
+	<column name="MEMORY_USAGE">
+		<sqlName>MEMORY_USAGE</sqlName>
+		<title>Memory Usage</title>
+		<type>n</type>
+	</column>
+	<column name="PUBLISHER_STATE">
+		<sqlName>PUBLISHER_STATE</sqlName>
+		<title>Publisher State</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+</table>

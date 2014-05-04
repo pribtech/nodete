@@ -1,0 +1,353 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2009 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<command name="createThreshold" title="Create Threshold">
+	<text>CREATE THRESHOLD</text><input name="name" size="32" help='threshold-name'/><br />
+	<text>FOR</text><clauseReference name="threshold-domain" help='threshold-domain'/><text>ACTIVITIES</text><br />
+	<text>ENFORCEMENT</text><clauseReference name="enforcement-scope"/>
+	<select help='ENABLE or DISABLE'>
+		<option name="Enable" default="true" help='ENABLE'>
+			<text help='ENABLE'>ENABLE</text>
+		</option> 
+		<option name="Disable" help='DISABLE'>
+			<text>DISABLE</text>
+		</option> 
+	</select>
+	<br />
+	<text help='WHEN threshold-predicate'>WHEN</text><br/><clauseReference name="threshold-predicate"/><br />
+	<clauseReference name="threshold-exceeded-actions"/>
+
+	<clause name="threshold-domain">
+		<select>
+			<option name="DATABASE" help='FOR DATABASE'>
+				<text>DATABASE</text>
+			</option> 
+			<option name="SERVICE CLASS" help='SERVICE CLASSservice-class-name'>
+				<text>SERVICE CLASS</text><input name="service-class-name"  size="32"/>
+				<select>	
+					<option><note>no under service class</note></option>
+					<option help='UNDER service-class-name'>
+						<text>UNDER</text><input name="service-class-name" size="32"/>
+					</option>
+				</select>
+			</option> 
+			<option name="WORKLOAD" help='WORKLOAD workload-name'>
+				<text>WORKLOAD</text><input name="workload-name" size="32" help='WORKLOAD workload-name'/>
+			</option> 
+		</select>
+	</clause>
+	
+	<clause name="enforcement-scope">
+		<select>
+			<option help='ENFORCEMENT DATABASE'>
+				<text>DATABASE</text>
+			</option> 
+			<option help='ENFORCEMENT DATABASE PARTITION'>
+				<text>DATABASE PARTITION</text>
+			</option> 
+			<option help='ENFORCEMENT WORKLOAD OCCURRENCE'>
+				<text>WORKLOAD OCCURRENCE</text>
+			</option> 
+		</select>
+	</clause>
+	<clause name="threshold-exceeded-actions">
+		<select>
+			<option default="true" help='COLLECT ACTIVITY DATA NONE'>
+				<text>COLLECT ACTIVITY DATA NONE</text>
+			</option> 
+			<option help='COLLECT ACTIVITY DATA'>
+				<text>COLLECT ACTIVITY DATA </text>
+				<select>
+					<option default="true" help='ON COORDINATOR DATABASE PARTITION'>
+						<text>ON COORDINATOR</text>
+							<select>
+								<option default="true">
+									<text>DATABASE PARTITION</text>
+								</option>
+								<option><note>database partition</note></option>
+							</select>
+					</option>
+					<option><note></note></option>
+					<option default="true" help='ON ALL DATABASE PARTITIONS'>
+						<text>ON ALL</text>
+						<select>
+							<option default="true">
+								<text>DATABASE PARTITIONS</text>
+							</option>
+							<option><note>database partitions</note></option>
+						</select>
+					</option>
+				</select>
+				<select>
+					<option default="true">
+						<text>WITHOUT DETAILS</text>
+					</option>
+					<option><note>without details</note></option>
+					<option help='WITH DETAILS'>
+						<text>WITH DETAILS</text>
+						<select>
+							<option default="true"><note>no values</note></option>
+							<option help='AND VALUES'><text>AND VALUES</text></option>
+						</select>
+					</option>
+				</select>
+			</option> 
+		</select>
+		<br />
+		<select help='threshold-exceeded-actions'>
+			<option default="true" help='STOP EXECUTION'>
+				<text>STOP EXECUTION</text>
+			</option>
+			<option help='CONTINUE'><text>CONTINUE</text></option>
+		</select>
+	</clause>
+	
+	<clause name="threshold-predicate">
+		<select>
+			<option help='TOTALDBPARTITIONCONNECTIONS gt integer-value'>
+				<text>TOTALDBPARTITIONCONNECTIONS ></text><input type="int"/>
+			</option>
+			<option help='TOTALSCPARTITIONCONNECTIONS gt integer-value'>
+				<text>TOTALSCPARTITIONCONNECTIONS ></text><input type="int"/>
+				<select>
+					<option default="true" help='AND QUEUEDCONNECTIONS gt integer-value or AND QUEUEDCONNECTIONS UNBOUNDED'>
+						<text>AND QUEUEDACTIVITIES > 0</text>
+					</option>
+					<option help='AND QUEUEDACTIVITIES gt integer-value or AND QUEUEDACTIVITIES UNBOUNDED'>
+						<text>AND QUEUEDACTIVITIES ></text><input name="integer-value"/></option>
+					<option help='AND QUEUEDACTIVITIES gt integer-value or AND QUEUEDACTIVITIES UNBOUNDED'>
+						<text>AND QUEUEDACTIVITIES UNBOUNDED</text></option>
+               	</select>    
+			</option>
+			<option help='CONNECTIONIDLETIME gt integer-value'>
+				<text>CONNECTIONIDLETIME ></text><input type="int"/>
+				<select>
+					<option><text>DAY</text></option>
+					<option><text>DAYS</text></option>
+					<option><text>HOUR</text></option>
+					<option><text>HOURS</text></option>
+					<option><text>MINUTE</text></option>
+					<option><text>MINUTES</text></option>
+               	</select>    
+			</option>
+			<option help='CONCURRENTWORKLOADOCCURRENCES gt integer-value'>
+				<text>CONCURRENTWORKLOADOCCURRENCES ></text><input type="int"/>
+			</option>
+			<option help='CONCURRENTWORKLOADACTIVITIES gt integer-value'>
+				<text>CONCURRENTWORKLOADACTIVITIES ></text><input type="int"/>
+			</option>
+			<option help='CONCURRENTDBCOORDACTIVITIES gt integer-value'>
+				<text>CONCURRENTDBCOORDACTIVITIES ></text><input type="int"/>
+				<select>
+					<option default="true"><text>AND QUEUEDACTIVITIES gt 0</text></option>
+					<option><text>AND QUEUEDACTIVITIES ></text><input type="int"/></option>
+					<option><text>AND QUEUEDACTIVITIES UNBOUNDED</text></option>
+               	</select>    
+			</option>
+			<option help='ESTIMATEDSQLCOST gt bigint-value'>
+				<text>ESTIMATEDSQLCOST ></text><input type="int"/>
+			</option>
+			<option help='SQLROWSRETURNED gt integer-value'>
+				<text>SQLROWSRETURNED ></text><input type="int"/>=
+			</option>
+			<option help='ACTIVITYTOTALTIME gt integer-value'>
+				<text>ACTIVITYTOTALTIME ></text><input type="int"/>
+				<select>
+					<option><text>DAY</text></option>
+					<option><text>DAYS</text></option>
+					<option><text>HOUR</text></option>
+					<option><text>HOURS</text></option>
+					<option><text>MINUTE</text></option>
+					<option><text>MINUTES</text></option>
+               	</select>    
+			</option>
+			<option help='SQLTEMPSPACE gt integer-value'>
+				<text>SQLTEMPSPACE ></text><input type="int"/>
+				<select>
+					<option><text>K</text></option>   
+					<option><text>M</text></option>                                                          
+					<option><text>G</text></option>
+               	</select>    
+			</option>
+		</select>
+	</clause>
+
+	<help name='threshold-name'>
+    	Names the threshold. This is a one-part name. It is an SQL identifier (either ordinary or delimited). The threshold-name must not identify a threshold that already exists at the current server (SQLSTATE 42710). The name must not begin with the characters 'SYS' (SQLSTATE 42939).
+	</help>
+	<help name='threshold-domain'>
+	    Specifies the definition domain of the threshold.
+	</help>
+	<help name='FOR DATABASE'>
+        This threshold applies to any activity in the database.
+	</help>
+	<help name='SERVICE CLASSservice-class-name'>
+        This threshold applies to activities executing in service class service-class-name. If UNDER is not specified, service-class-name must identify an existing service superclass (SQLSTATE 42704). If UNDER is specified, service-class-name must identify an existing service subclass of the service superclass specified after the UNDER keyword (SQLSTATE 42704).
+	</help>
+	<help name='UNDER service-class-name'>
+        Specifies a service superclass. The service-class-name must identify an existing service superclass (SQLSTATE 42704).
+	</help>
+	<help name='WORKLOAD workload-name'>
+        This threshold applies to the specified workload. The workload-name must identify an existing workload (SQLSTATE 42704).
+	</help>
+	<help name='ENFORCEMENT enforcement-scope'>
+	    The enforcement scope of the threshold.
+	</help>
+	<help name='ENFORCEMENT DATABASE'>
+        The threshold is enforced across all database partitions within the definition domain; that is, all database partitions of the database, and all database partitions of the service class.
+	</help>
+	<help name='ENFORCEMENT DATABASE PARTITION'>
+        The threshold is enforced on a per database partition basis. There is no coordination across all database partitions to enforce the threshold.
+	</help>
+	<help name='ENFORCEMENT WORKLOAD OCCURRENCE'>
+        The threshold is enforced only within a workload occurrence. Two workload occurrences running concurrently on the same database partition will each have their own running count for this threshold.
+	</help>
+	<help name='ENABLE or DISABLE'>
+	    Specifies whether or not the threshold is enabled for use by the database manager.
+	</help>
+	<help name='ENABLE'>
+        The threshold is used by the database manager to restrict the execution of database activities.
+	</help>
+	<help name='DISABLE'>
+        The threshold is not used by the database manager to restrict the execution of database activities.
+	</help>
+	<help name='WHEN threshold-predicate'>
+	    Specifies the condition of the threshold.
+	</help>
+	<help name='TOTALDBPARTITIONCONNECTIONS gt integer-value'>
+        This condition defines an upper bound on the number of coordinator connections that can run concurrently on a database partition. This value can be any positive integer, including zero (SQLSTATE 42820). A value of zero means that any new coordinator connection will be prevented from connecting. All currently running or queued connections will continue. The definition domain for this condition must be DATABASE, and the enforcement scope must be DATABASE PARTITION (SQLSTATE 5U037).
+	</help>
+	<help name='TOTALSCPARTITIONCONNECTIONS gt integer-value'>
+        This condition defines an upper bound on the number of coordinator connections that can run concurrently on a database partition in a specific service superclass. This value can be any positive integer, including zero (SQLSTATE 42820). A value of zero means that any new connection will be prevented from joining the service class. All currently running or queued connections will continue. The definition domain for this condition must be SERVICE SUPERCLASS, and the enforcement scope must be DATABASE PARTITION (SQLSTATE 5U037).
+	</help>
+	<help name='AND QUEUEDCONNECTIONS gt integer-value or AND QUEUEDCONNECTIONS UNBOUNDED'>
+        Specifies a queue size for when the maximum number of coordinator connections is exceeded. This value can be any positive integer, including zero (SQLSTATE 42820). A value of zero means that no coordinator connections are queued. Specifying UNBOUNDED will queue every connection that exceeds the specified maximum number of coordinator connections, and the threshold-exceeded-actions will never be executed. The default is zero.
+	</help>
+	<help name='CONNECTIONIDLETIME gt integer-value'>
+		<![CDATA[
+        This condition defines an upper bound for the amount of time the database manager will allow a connection to remain idle. This value can be any non-zero positive integer (SQLSTATE 42820). Use a valid duration keyword to specify an appropriate unit of time for integer-value. The definition domain for this condition must be DATABASE or SERVICE SUPERCLASS, and the enforcement scope must be DATABASE (SQLSTATE 5U037). This condition is logically enforced at the coordinator database partition.
+		<p/>If you specify the STOP EXECUTION action with CONNECTIONIDLETIME thresholds, the connection for the application is dropped when the threshold is exceeded. Any subsequent attempt by the application to access the data server will not receive SQLSTATE 5U026.
+		<p/>Because the minimum granularity for this threshold is five minutes, specified values are rounded up to the closest non-zero multiple of five minutes. In cases where the rounding generates an overflow or underflow, the closest value in the integer range is selected.
+		<p/>The maximum value for this threshold is 2 147 400 seconds. Any value specified that has a seconds equivalent larger than 2 147 400 seconds will be set to this number of seconds.
+		<p/>Changes to the DB2CHECKCLIENTINTERVAL registry variable causing less frequent checks might affect the granularity of this threshold.
+		]]>
+	</help>
+	<help name='CONCURRENTWORKLOADOCCURRENCES gt integer-value'>
+        This condition defines an upper bound on the number of concurrent occurrences for the workload on each database partition. This value can be any non-zero positive integer (SQLSTATE 42820). The definition domain for this condition must be WORKLOAD and the enforcement scope must be DATABASE PARTITION (SQLSTATE 5U037).
+	</help>
+	<help name='CONCURRENTWORKLOADACTIVITIES gt integer-value'>
+		<![CDATA[
+        This condition defines an upper bound on the number of concurrent coordinator activities and nested activities for the workload on each database partition. This value can be any non-zero positive integer (SQLSTATE 42820). The definition domain for this condition must be WORKLOAD and the enforcement scope for this condition must be WORKLOAD OCCURRENCE (SQLSTATE 5U037).
+		<p/>Each nested activity must satisfy the following conditions:
+		<ul>
+        <li> It must be a recognized coordinator activity. Any nested coordinator activity that does not fall within the recognized types of activities will not be counted. Similarly, nested subagent activities, such as remote node requests, are not counted.
+		</li>
+        <li> It must be directly invoked from user logic, such as a user-written procedure issuing SQL statements.
+		</li>
+		</ul>
+		<p/>Consequently, nested coordinator activities that were automatically started under the invocation of a DB2® utility or routines in the SYSIBM, SYSFUN, or SYSPROC schemas are not counted towards the upper bound specified by this threshold.
+		<p/>Internal SQL activities, such as those initiated by the setting of a constraint or the refreshing of a materialized query table, are also not counted by this threshold, because they are initiated by the database manager and not directly invoked by user logic.
+		]]>
+	</help>
+	<help name='CONCURRENTWORKLOADOCCURRENCES gt integer-value'>
+        This condition defines an upper bound on the number of concurrent occurrences for the workload on each database partition. This value can be any non-zero positive integer (SQLSTATE 42820). The definition domain for this condition must be WORKLOAD and the enforcement scope must be DATABASE PARTITION (SQLSTATE 5U037).
+	</help>
+	<help name='CONCURRENTDBCOORDACTIVITIES gt integer-value'>
+		<![CDATA[
+        This condition defines an upper bound on the number of recognized database coordinator activities that can run concurrently on all database partitions in the specified domain. This value can be any positive integer, including zero (SQLSTATE 42820). A value of zero means that any new database coordinator activities will be prevented from executing. All currently running or queued database coordinator activities will continue. The definition domain for this condition must be DATABASE, work action (a threshold for a work action definition domain is created using a CREATE WORK ACTION SET or ALTER WORK ACTION SET statement), SERVICE SUPERCLASS, or SERVICE SUBCLASS, and the enforcement scope must be DATABASE (SQLSTATE 5U037).
+        <p/>Important: CONCURRENTDBCOORDACTIVITIES thresholds can result in queue-based contention that requires external intervention. For more information see the "CONCURRENTDBCOORDACTIVITIES threshold".
+		]]>
+	</help>
+	<help name='AND QUEUEDACTIVITIES gt integer-value or AND QUEUEDACTIVITIES UNBOUNDED'>
+         Specifies a queue size for when the maximum number of database coordinator activities is exceeded. This value can be any positive integer, including zero (SQLSTATE 42820). A value of zero means that no database coordinator activities are queued. Specifying UNBOUNDED will queue every database coordinator activity that exceeds the specified maximum number of database coordinator activities, and the threshold-exceeded-actions will never be executed. The default is zero.
+	</help>
+	<help name='ESTIMATEDSQLCOST gt bigint-value'>
+		<![CDATA[
+        This condition defines an upper bound for the optimizer-assigned cost (in timerons) of an activity. This value can be any non-zero positive big integer (SQLSTATE 42820). The definition domain for this condition must be DATABASE, work action (a threshold for a work action definition domain is created using a CREATE WORK ACTION SET or ALTER WORK ACTION SET statement), SERVICE SUPERCLASS, or SERVICE SUBCLASS, and the enforcement scope must be DATABASE (SQLSTATE 5U037). This condition is enforced at the coordinator database partition. Activities tracked by this condition are:
+		<ul>
+        <li>Coordinator activities of type data manipulation language (DML)
+		</li>
+        <li>Nested DML activities that are invoked from user logic. Consequently, DML activities that can be initiated by the database manager (such as utilities, procedures, or internal SQL) are not tracked by this condition (unless their cost is included in the parent’s estimate, in which case they are indirectly tracked).
+		</li>
+		</ul>
+		]]>
+	</help>
+	<help name='SQLROWSRETURNED gt integer-value'>
+		<![CDATA[
+        This condition defines an upper bound for the number of rows returned to a client application from the application server. This value can be any non-zero integer (SQLSTATE 42820). The definition domain for this condition must be DATABASE, work action (a threshold for a work action definition domain is created using a CREATE WORK ACTION SET or ALTER WORK ACTION SET statement), SERVICE SUPERCLASS, or SERVICE SUBCLASS, and the enforcement scope must be DATABASE (SQLSTATE 5U037). This condition is enforced at the coordinator database partition. Activities tracked by this condition are:
+		<ul>
+        <li>Coordinator activities of type DML
+		</li>
+        <li>Nested DML activities that are derived from user logic. Activities that are initiated by the database manager through a utility, procedure, or internal SQL are not affected by this condition.
+		</li>
+		</ul>
+        Result sets returned from within a procedure are treated separately as individual activities. There is no aggregation of the rows that are returned by the procedure itself.
+		]]>
+	</help>
+	<help name='ACTIVITYTOTALTIME gt integer-value'>
+		<![CDATA[
+        This condition defines an upper bound for the amount of time the database manager will allow an activity to execute, including the time the activity was queued. This value can be any non-zero positive integer (SQLSTATE 42820). Use a valid duration keyword to specify an appropriate unit of time for integer-value. The definition domain for this condition must be DATABASE, work action (a threshold for a work action definition domain is created using a CREATE WORK ACTION SET or ALTER WORK ACTION SET statement), SERVICE SUPERCLASS, or SERVICE SUBCLASS, and the enforcement scope must be DATABASE (SQLSTATE 5U037). This condition is logically enforced at the coordinator database partition.
+        <p/>Because the minimum granularity for this threshold is five minutes, specified values are rounded up to the closest non-zero multiple of five minutes. In cases where the rounding generates an overflow or underflow, the closest value in the integer range is selected.
+        <p/>The maximum value for this threshold is 2 147 400 seconds. Any value specified that has a seconds equivalent larger than 2 147 400 seconds will be set to this number of seconds.
+		<p/>Changes to the DB2CHECKCLIENTINTERVAL registry variable causing less frequent checks might affect the granularity of this threshold.
+		]]>
+	</help>
+	<help name='SQLTEMPSPACE gt integer-value'>
+		<![CDATA[
+        This condition defines an upper bound for the size of a system temporary table space on any database partition. This value can be any non-zero positive integer (SQLSTATE 42820).
+        <p/>If integer-value K (in either upper- or lowercase) is specified, the maximum size is 1024 times integer-value. If integer-value M is specified, the maximum size is 1 048 576 times integer-value. If integer-value G is specified, the maximum size is 1 073 741 824 times integer-value.
+        <p/>The definition domain for this condition must be DATABASE, work action (a threshold for a work action definition domain is created using a CREATE WORK ACTION SET or ALTER WORK ACTION SET statement), SERVICE SUPERCLASS, or SERVICE SUBCLASS, and the enforcement scope must be DATABASE PARTITION (SQLSTATE 5U037). Activities tracked by this condition are:
+		<ul>
+        <li>Coordinator activities of type DML and corresponding subagent work (subsection execution)
+		</li>
+	    <li>Nested DML activities that are derived from user logic and their corresponding subagent work (subsection execution). Activities that are initiated by the database manager through a utility, procedure, or internal SQL are not affected by this condition.
+		</li>
+		</ul>
+		]]>
+	</help>
+	<help name='threshold-exceeded-actions'>
+	    Specifies what action is to be taken when a condition is exceeded. Each time that a condition is exceeded, an event is recorded in the threshold violations event monitor, if one is active.
+	</help>
+	<help name='STOP EXECUTION'>
+        The execution of the activity is stopped and an error is returned (SQLSTATE 5U026).
+	</help>
+	<help name='CONTINUE'>
+        The execution of the activity is not stopped.
+	</help>
+	<help name='COLLECT ACTIVITY DATA'>
+	    Specifies that data about each activity that exceeded the threshold is to be sent to the activities event monitor, if one is active, when the activity completes. The default is COLLECT ACTIVITY DATA NONE. If COLLECT ACTIVITY DATA is specified, the default is WITHOUT DETAILS.
+	</help>
+	<help name='COLLECT ACTIVITY DATA NONE'>
+        Specifies that activity data should not be collected for each activity that exceeds the threshold.
+	</help>
+	<help name='ON COORDINATOR DATABASE PARTITION'>
+        Specifies that the activity data is to be collected only at the database partition of the coordinator of the activity.
+	</help>
+	<help name='ON ALL DATABASE PARTITIONS'>
+        Specifies that the activity data is to be collected at all database partitions on which the activity is processed. For predictive thresholds, activity information is collected at all partitions only if you also specify the CONTINUE action for exceeded thresholds. For reactive thresholds, the ON ALL DATABASE PARTITIONS clause has no effect and activity information is always collected only at the coordinator partition. For both predictive and reactive thresholds, any activity details or values will be collected only at the coordinator partition.
+	</help>
+	<help name='WITHOUT DETAILS'>
+        Specifies that data about each activity that exceeds the threshold should be sent to the activities event monitor, if one is active, when the activity completes. Statement and compilation environment information are not sent to the event monitor.
+	</help>
+	<help name='WITH DETAILS'>
+        Specifies that statement and compilation environment information are to be sent to the activities event monitor, if one is active, for those activities that have them.
+	</help>
+	<help name='AND VALUES'>
+        Specifies that input data values are to be sent to the activities event monitor, if one is active, for those activities that have them.
+	</help>
+</command>
+        

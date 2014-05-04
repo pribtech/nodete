@@ -1,0 +1,109 @@
+<!--
+  Peter Prib, Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2012 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<table name="mgwForeignQueues">
+	<sqlName>SYS.MGW$_FOREIGN_QUEUES</sqlName>
+	<singularName>MGW Foreign Queue</singularName>
+	<pluralName>MGW Foreign Queue</pluralName>
+	<description></description>
+	<disable_edit/>
+	<orderBy name="NAME" direction="A"/>
+	<orderBy name="LINK_NAME" direction="A"/>
+	<displayColumns>
+		<col type="column" name="NAME"/>
+		<col type="column" name="LINK_NAME"/>
+		<col type="reference" name="subscriberOut"/>
+		<col type="reference" name="subscriberIn"/>
+		<col type="column" name="PROVIDER_QUEUE"/>
+		<col type="column" name="DOMAIN"/>
+		<col type="column" name="QUEUE_COMMENT"/>
+		<col type="column" name="FLAGS"/>
+	</displayColumns>
+	<reference name="subscriberOut">
+		<title>Subscriber Out</title>
+		<reftype>table</reftype>
+		<refvalue>Oracle/mgwSubscriber</refvalue>
+		<icon>images/icon-column.gif</icon>
+		<ref foreign_column_name="DESTINATION">
+			<local_column_name>id</local_column_name>
+		</ref>
+	</reference>
+	<reference name="subscriberIn">
+		<title>Subscriber In</title>
+		<reftype>table</reftype>
+		<refvalue>Oracle/mgwSubscriber</refvalue>
+		<icon>images/icon-column.gif</icon>
+		<ref foreign_column_name="QUEUE_NAME">
+			<local_column_name>id</local_column_name>
+		</ref>
+	</reference>
+	<column name="id">
+		<sqlName>NAME||'@'||LINK_NAME</sqlName>
+		<title>Id.</title>
+		<type>s</type>
+	</column>
+	<column name="NAME">
+		<sqlName>NAME</sqlName>
+		<title>Name</title>
+		<type>s</type>
+		<primaryKey/>
+	</column>
+	<column name="LINK_NAME">
+		<sqlName>LINK_NAME</sqlName>
+		<title>Link Name</title>
+		<type>s</type>
+		<primaryKey/>
+	</column>
+	<column name="PROVIDER_QUEUE">
+		<sqlName>PROVIDER_QUEUE</sqlName>
+		<title>Provider Queue</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="DOMAIN">
+		<sqlName>DOMAIN</sqlName>
+		<title>Domain</title>
+		<type>n</type>
+	</column>
+	<column name="QUEUE_COMMENT">
+		<sqlName>QUEUE_COMMENT</sqlName>
+		<title>Queue Comment</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="FLAGS">
+		<sqlName>FLAGS</sqlName>
+		<title>Flags</title>
+		<type>n</type>
+	</column>
+	<action name="Drop">
+		<title>Drop</title>
+		<icon>images/trash.gif</icon>   
+    	<actionScript>
+    		<task>
+				<assignSharedConstant name="sql" type="fixed">
+					<value>
+<![CDATA[
+begin
+  dbms_mgwadm.unregister_foreign_queue(name =>'?NAME?', linkname =>'?LINK_NAME?');
+end;
+]]>
+					</value>
+				</assignSharedConstant>
+		   		<callGlobalAction name="sqlExecution"/>
+	   		</task>
+    	</actionScript>
+    </action>
+</table>

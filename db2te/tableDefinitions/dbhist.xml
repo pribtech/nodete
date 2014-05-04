@@ -1,0 +1,305 @@
+<!--
+  Copyright IBM Corp. 2007 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<!-- Updated Peter Prib, Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2011 All rights reserved. -->
+
+	<table name="dbhist">
+		<sql_name>SYSIBMADM.DB_HISTORY</sql_name>
+		<singular_name>Database History Record</singular_name>
+		<plural_name>Database History Records</plural_name>
+		<description>
+		The DB_HISTORY administrative view returns information from the 
+	    &lt;a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.admin.dbobj.doc/doc/c0006136.html?noframes=true');"&gt;recovery history file&lt;/a&gt;.
+		This list is generated from the &lt;a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.admin.dbobj.doc/doc/r0022351.html?noframes=true');"&gt;SYSIBMADM.DB_HISTORY&lt;/a&gt; administrative view.
+		</description>
+		<messages><SQL1585N> &lt;a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/index.jsp?topic=/com.ibm.db2.luw.messages.sql.doc/doc/msql01585n.html');"&gt;SQL1585N &lt;/a&gt;A system temporary table space with sufficient page size does not exist. SQLSTATE=54048 SQLCODE=-1585</SQL1585N></messages>
+		<disableEdit/>
+		<output>
+			<type name="DDL" destination="" title="" generator=""/>
+		</output>
+		<order_by_index name="start" direction="D"/>
+		<display_columns>
+			<col type="column" name="entry_status"/>
+			<col type="column" name="start"/>
+			<col type="column" name="end"/>
+			<col type="column" name="elapseTime"/>
+			<col type="column" name="oper"/>
+			<col type="column" name="opertype"/>
+			<col type="column" name="comment"/>
+			<col type="column" name="sqlcode"/>
+			<col type="column" name="sqlstate"/>
+			<col type="column" name="tabschema"/>
+			<col type="column" name="tabname"/>
+		</display_columns>	
+		<column name="start">
+			<sql_name>timestamp(substr(START_TIME,1,4)||'-'||substr(START_TIME,5,2)||'-'||substr(START_TIME,7,2)||'-'||substr(START_TIME,9,2)||'.'||substr(START_TIME,11,2)||'.'||substr(START_TIME,13,2))</sql_name>
+			<title>Start Time</title>
+			<primaryKey/>			
+		</column>
+		<column name="end">
+			<sql_name>timestamp(substr(END_TIME,1,4)||'-'||substr(END_TIME,5,2)||'-'||substr(END_TIME,7,2)||'-'||substr(END_TIME,9,2)||'.'||substr(END_TIME,11,2)||'.'||substr(END_TIME,13,2))</sql_name>
+			<title>End Time</title>
+			<primaryKey/>			
+			<drillEnable/>
+		</column>
+		<column name="elapseTime">
+			<sql_name>END_TIME</sql_name>
+			<sql_name>
+			TIMESTAMPDIFF(2,CHAR(
+			timestamp(substr(END_TIME,1,4)||'-'||substr(END_TIME,5,2)||'-'||substr(END_TIME,7,2)||'-'||substr(END_TIME,9,2)||'.'||substr(END_TIME,11,2)||'.'||substr(END_TIME,13,2))
+			-timestamp(substr(START_TIME,1,4)||'-'||substr(START_TIME,5,2)||'-'||substr(START_TIME,7,2)||'-'||substr(START_TIME,9,2)||'.'||substr(START_TIME,11,2)||'.'||substr(START_TIME,13,2))
+			))
+			</sql_name>
+			<title>Elapse (s)</title>
+			<type>n</type>
+			<formatNumber toDuration="S"/>
+		</column>
+		<column name="oper">
+			<sql_name>OPERATION</sql_name>
+			<title>Operation</title>
+			<prefillEnable/>	
+   			<column_mask>
+				<value_mask value="A"><mask>Add table space</mask></value_mask>					
+				<value_mask value="B"><mask>Backup</mask></value_mask>					
+				<value_mask value="C"><mask>Load copy</mask></value_mask>													
+				<value_mask value="D"><mask>Dropped table</mask></value_mask>					
+				<value_mask value="F"><mask>Rollforward</mask></value_mask>													
+				<value_mask value="G"><mask>Reorganize table</mask></value_mask>									
+				<value_mask value="L"><mask>Load</mask></value_mask>					
+				<value_mask value="N"><mask>Rename table space</mask></value_mask>
+				<value_mask value="O"><mask>Drop table space</mask></value_mask>					
+				<value_mask value="Q"><mask>Quiesce</mask></value_mask>													
+				<value_mask value="R"><mask>Restore</mask></value_mask>									
+				<value_mask value="T"><mask>Alter table space</mask></value_mask>					
+				<value_mask value="U"><mask>Unload</mask></value_mask>													
+				<value_mask value="X"><mask>Archive Logs</mask></value_mask>									
+   			</column_mask>				
+		</column>
+		<column name="opertype">
+			<sql_name>OPERATIONTYPE</sql_name>
+			<title>Operation Type</title>
+			<prefillEnable/>			
+   			<column_mask>
+				<value_mask value="C"><mask>Add containers</mask></value_mask>					
+				<value_mask value="D"><mask>Delta offline</mask></value_mask>					
+ 				<value_mask value="E"><mask>Delta online or End of logs</mask></value_mask>					
+				<value_mask value="F"><mask>Offline</mask></value_mask>													
+				<value_mask value="I"><mask>Incremental offline</mask></value_mask>					
+				<value_mask value="M"><mask>Secondary (mirror) log path</mask></value_mask>
+				<value_mask value="N"><mask>Online or Archive log command</mask></value_mask>													
+				<value_mask value="O"><mask>Incremental online</mask></value_mask>									
+				<value_mask value="P"><mask>Point in time or Primary log path</mask></value_mask>					
+				<value_mask value="R"><mask>Replace, rebuild, rebalance</mask></value_mask>
+				<value_mask value="S"><mask>Quiesce share</mask></value_mask>
+				<value_mask value="U"><mask>Quiesce update</mask></value_mask>
+				<value_mask value="X"><mask>Quiesce exclusive</mask></value_mask>
+				<value_mask value="Z"><mask>Quiesce reset</mask></value_mask>
+				<value_mask value="1"><mask>Primary log archive method</mask></value_mask>
+				<value_mask value="2"><mask>Secondary log archive method</mask></value_mask>
+   			</column_mask>				
+		</column>
+		<column name="comment">
+			<sql_name>COMMENT</sql_name>
+			<title>Comment</title>
+			<type>l</type>			
+		</column>
+	<column name="dbpartitionnum">
+		<sql_name>DBPARTITIONNUM</sql_name>
+		<title>Partition</title>
+		<type>n</type>
+	</column>
+	<column name="eid">
+		<sql_name>EID</sql_name>
+		<title>EID</title>
+		<type>n</type>
+	</column>
+	<column name="seqnum">
+		<sql_name>SEQNUM</sql_name>
+		<title>Sequence</title>
+		<type>n</type>
+	</column>
+	<column name="firstlog">
+		<sql_name>FIRSTLOG</sql_name>
+		<title>First Log</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="lastlog">
+		<sql_name>LASTLOG</sql_name>
+		<title>Last Log</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="backup_id">
+		<sql_name>BACKUP_ID</sql_name>
+		<title>Backup Id.</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="tabschema">
+		<sql_name>TABSCHEMA</sql_name>
+		<title>Schema</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="tabname">
+		<sql_name>TABNAME</sql_name>
+		<title>Table</title>
+		<type>s</type>
+		<drillEnable/>
+		<prefillEnable/>
+	</column>
+	<column name="cmd_text">
+		<sql_name>CMD_TEXT</sql_name>
+		<title>Command</title>
+		<type>l</type>
+	</column>
+	<column name="num_tbsps">
+		<sql_name>NUM_TBSPS</sql_name>
+		<title>No. Tablespaces</title>
+		<type>n</type>
+	</column>
+	<column name="tbspnames">
+		<sql_name>TBSPNAMES</sql_name>
+		<title>Tablespace Names</title>
+		<type>l</type>
+	</column>
+	<column name="objecttype">
+		<sql_name>OBJECTTYPE</sql_name>
+		<title>Object Type</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="location">
+		<sql_name>LOCATION</sql_name>
+		<title>Location</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="devicetype">
+		<sql_name>DEVICETYPE</sql_name>
+		<title>Device Type</title>
+		<type>s</type>
+   		<column_mask>
+			<value_mask value="A"><mask>TSM</mask></value_mask>
+			<value_mask value="C"><mask>client</mask></value_mask>
+			<value_mask value="D"><mask>disk</mask></value_mask>
+			<value_mask value="F"><mask>snapshot backup</mask></value_mask>
+			<value_mask value="K"><mask>diskette</mask></value_mask>
+			<value_mask value="L"><mask>local</mask></value_mask>
+			<value_mask value="N"><mask>(generated internally by DB2®)</mask></value_mask>
+			<value_mask value="O"><mask>other (for other vendor device support)</mask></value_mask>
+			<value_mask value="P"><mask>pipe</mask></value_mask>
+			<value_mask value="Q"><mask>cursor</mask></value_mask>
+			<value_mask value="R"><mask>remote fetch data</mask></value_mask>
+			<value_mask value="S"><mask>server</mask></value_mask>
+			<value_mask value="T"><mask>tape</mask></value_mask>
+			<value_mask value="U"><mask>user exit</mask></value_mask>
+			<value_mask value="X"><mask>X/Open XBSA interface</mask></value_mask>
+   		</column_mask>				
+	</column>
+	<column name="entry_status">
+		<sql_name>ENTRY_STATUS</sql_name>
+		<title>Entry Status</title>
+		<type>s</type>
+		<prefillEnable/>
+		<drillEnable/>
+   		<column_mask>
+			<value_mask value="A"><mask>Active</mask></value_mask>
+			<value_mask value="D"><mask>Deleted</mask></value_mask>
+			<value_mask value="E"><mask>Expired</mask></value_mask>
+			<value_mask value="I"><mask>Inactive</mask></value_mask>
+			<value_mask value="N"><mask>Not yet committed</mask></value_mask>
+			<value_mask value="X"><mask>Do not delete</mask></value_mask>
+			<value_mask value="a"><mask>Incomplete active</mask></value_mask>
+			<value_mask value="i"><mask>Inconplete inactive</mask></value_mask>
+   		</column_mask>				
+	</column>
+	<column name="sqlcaid">
+		<sql_name>SQLCAID</sql_name>
+		<title>SQLCAID</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="sqlcabc">
+		<sql_name>SQLCABC</sql_name>
+		<title>SQLCABC</title>
+		<type>n</type>
+	</column>
+	<column name="sqlcode">
+		<sql_name>SQLCODE</sql_name>
+		<title>SQLCODE</title>
+		<type>n</type>
+	</column>
+	<column name="sqlerrml">
+		<sql_name>SQLERRML</sql_name>
+		<title>SQLERRML</title>
+		<type>n</type>
+	</column>
+	<column name="sqlerrmc">
+		<sql_name>SQLERRMC</sql_name>
+		<title>SQLERRMC</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="sqlerrp">
+		<sql_name>SQLERRP</sql_name>
+		<title>SQLERRP</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="sqlerrd1">
+		<sql_name>SQLERRD1</sql_name>
+		<title>SQLERRD1</title>
+		<type>n</type>
+	</column>
+	<column name="sqlerrd2">
+		<sql_name>SQLERRD2</sql_name>
+		<title>SQLERRD2</title>
+		<type>n</type>
+	</column>
+	<column name="sqlerrd3">
+		<sql_name>SQLERRD3</sql_name>
+		<title>SQLERRD3</title>
+		<type>n</type>
+	</column>
+	<column name="sqlerrd4">
+		<sql_name>SQLERRD4</sql_name>
+		<title>SQLERRD4</title>
+		<type>n</type>
+	</column>
+	<column name="sqlerrd5">
+		<sql_name>SQLERRD5</sql_name>
+		<title>SQLERRD5</title>
+		<type>n</type>
+	</column>
+	<column name="sqlerrd6">
+		<sql_name>SQLERRD6</sql_name>
+		<title>SQLERRD6</title>
+		<type>n</type>
+	</column>
+	<column name="sqlwarn">
+		<sql_name>SQLWARN</sql_name>
+		<title>SQLWARN</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="sqlstate">
+		<sql_name>SQLSTATE</sql_name>
+		<title>SQLSTATE</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+</table>

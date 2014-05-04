@@ -1,0 +1,126 @@
+<!--
+  Peter Prib, Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2012 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<table name="persistentSubscriber">
+	<sqlName>V$PERSISTENT_SUBSCRIBERS</sqlName>
+	<singularName>Persistent Subscriber</singularName>
+	<pluralName>Persistent Subscribers</pluralName>
+	<description></description>
+	<orderBy name="QUEUE_SCHEMA" direction="A"/>
+	<orderBy name="QUEUE_NAME" direction="A"/>
+	<orderBy name="SUBSCRIBER_NAME" direction="A"/>
+	<displayColumns>
+		<col type="column" name="QUEUE_SCHEMA"/>
+		<col type="column" name="QUEUE_NAME"/>
+		<col type="column" name="SUBSCRIBER_NAME"/>
+		<col type="column" name="SUBSCRIBER_ADDRESS"/>
+		<col type="column" name="PROTOCOL"/>
+		<col type="column" name="SUBSCRIBER_TYPE"/>
+		<col type="column" name="FIRST_ACTIVITY_TIME"/>
+		<col type="column" name="ENQUEUED_MSGS"/>
+		<col type="column" name="DEQUEUED_MSGS"/>
+		<col type="column" name="BROWSED_MSGS"/>
+		<col type="column" name="EXPIRED_MSGS"/>
+		<col type="column" name="DEQUEUED_MSG_LATENCY"/>
+		<col type="column" name="LAST_ENQUEUE_TIME"/>
+		<col type="column" name="LAST_DEQUEUE_TIME"/>
+	</displayColumns>
+	<column name="QUEUE_ID">
+		<sqlName>QUEUE_ID</sqlName>
+		<title>QID</title>
+		<type>n</type>
+	</column>
+	<column name="QUEUE_SCHEMA">
+		<sqlName>QUEUE_SCHEMA</sqlName>
+		<title>Schema</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="QUEUE_NAME">
+		<sqlName>QUEUE_NAME</sqlName>
+		<title>Name</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="SUBSCRIBER_ID">
+		<sqlName>SUBSCRIBER_ID</sqlName>
+		<title>Subscriber Id</title>
+		<type>n</type>
+	</column>
+	<column name="SUBSCRIBER_NAME">
+		<sqlName>SUBSCRIBER_NAME</sqlName>
+		<title>Subscriber Name</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="SUBSCRIBER_ADDRESS">
+		<sqlName>SUBSCRIBER_ADDRESS</sqlName>
+		<title>Subscriber Address</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="PROTOCOL">
+		<sqlName>PROTOCOL</sqlName>
+		<title>Protocol</title>
+		<type>n</type>
+	</column>
+	<column name="SUBSCRIBER_TYPE">
+		<sqlName>SUBSCRIBER_TYPE</sqlName>
+		<title>Subscriber Type</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="FIRST_ACTIVITY_TIME">
+		<sqlName>FIRST_ACTIVITY_TIME</sqlName>
+		<title>First Activity Time</title>
+		<type>n</type>
+	</column>
+	<column name="ENQUEUED_MSGS">
+		<sqlName>ENQUEUED_MSGS</sqlName>
+		<title>Enqueued Msgs</title>
+		<type>n</type>
+	</column>
+	<column name="DEQUEUED_MSGS">
+		<sqlName>DEQUEUED_MSGS</sqlName>
+		<title>Dequeued Msgs</title>
+		<type>n</type>
+	</column>
+	<column name="BROWSED_MSGS">
+		<sqlName>BROWSED_MSGS</sqlName>
+		<title>Browsed Msgs</title>
+		<type>n</type>
+	</column>
+	<column name="EXPIRED_MSGS">
+		<sqlName>EXPIRED_MSGS</sqlName>
+		<title>Expired Msgs</title>
+		<type>n</type>
+	</column>
+	<column name="DEQUEUED_MSG_LATENCY">
+		<sqlName>DEQUEUED_MSG_LATENCY</sqlName>
+		<title>Dequeued Msg Latency</title>
+		<type>n</type>
+	</column>
+	<column name="LAST_ENQUEUE_TIME">
+		<sqlName>LAST_ENQUEUE_TIME</sqlName>
+		<title>Last Enqueue Time</title>
+		<type>n</type>
+	</column>
+	<column name="LAST_DEQUEUE_TIME">
+		<sqlName>LAST_DEQUEUE_TIME</sqlName>
+		<title>Last Dequeue Time</title>
+		<type>n</type>
+	</column>
+</table>

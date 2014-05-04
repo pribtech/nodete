@@ -1,0 +1,115 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2009 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<command name="alterSequence" title="Alter Sequence">
+<![CDATA[
+>>-ALTER TABLE--table-name-------------------------------------->
+
+  |       +-ALTER--+--------+--| column-alteration |----------------------------+      
+]]>
+	<text>ALTER TABLE</text>
+	<clauseReference name="table-name"/>
+	<text>ALTER</text>
+	<clauseReference name="column-name"/>
+	<br/>
+
+<![CDATA[
+   .-----------------------------------------------.   
+   V  (1)                                          |   
+>----------+-RESTART--+------------------------+-+-+-----------><
+           |          '-WITH--numeric-constant-' |     
+           +-INCREMENT BY--numeric-constant------+     
+           +-+-MINVALUE--numeric-constant-+------+     
+           | '-NO MINVALUE----------------'      |     
+           +-+-MAXVALUE--numeric-constant-+------+     
+           | '-NO MAXVALUE----------------'      |     
+           +-+-CYCLE----+------------------------+     
+           | '-NO CYCLE-'                        |     
+           +-+-CACHE--integer-constant-+---------+     
+           | '-NO CACHE----------------'         |     
+           '-+-ORDER----+------------------------'     
+             '-NO ORDER-'                              
+
+
+identity-alteration
+
+   .---------------------------------------------.   
+   V  (5)                                        |   
+|--------+-SET INCREMENT BY--numeric-constant--+-+--------------|
+         +-SET--+-NO MINVALUE----------------+-+     
+         |      '-MINVALUE--numeric-constant-' |     
+         +-SET--+-NO MAXVALUE----------------+-+     
+         |      '-MAXVALUE--numeric-constant-' |     
+         +-SET--+-NO CYCLE-+-------------------+     
+         |      '-CYCLE----'                   |     
+         +-SET--+-NO CACHE----------------+----+     
+         |      '-CACHE--integer-constant-'    |     
+         +-SET--+-NO ORDER-+-------------------+     
+         |      '-ORDER----'                   |     
+         '-RESTART--+------------------------+-'     
+                    '-WITH--numeric-constant-'       
+                 
+
+]]>
+	<repeatable separator="">
+		<select>
+			<option><text>SET INCREMENT BY</text><clauseReference name="numeric-constant"/></option> 
+			<option>
+				<text>SET</text>
+				<select>
+					<option default="true"><text>MINVALUE</text><clauseReference name="numeric-constant"/></option> 
+					<option><text>NO MINVALUE</text></option> 
+				</select>
+			</option>
+			<option>
+				<text>SET</text>
+				<select>
+					<option default="true"><text>MAXVALUE</text><clauseReference name="numeric-constant"/></option> 
+					<option><text>NO MAXVALUE</text></option> 
+				</select>
+			</option>
+			<option>
+				<text>SET</text>
+				<select>
+					<option default="true"><text>CYCLE</text></option> 
+					<option><text>NO CYCLE</text></option> 
+				</select>
+			</option>
+			<option>
+				<text>SET</text>
+				<select>
+					<option default="true"><text>CACHE</text><clauseReference name="numeric-constant"/></option> 
+					<option><text>NO CACHE</text></option> 
+				</select>
+			</option>
+			<option>
+				<text>SET</text>
+				<select>
+					<option default="true"><text>ORDER</text></option> 
+					<option><text>NO ORDER</text></option> 
+				</select>
+			</option>
+			<option>
+				<text>RESTART</text>
+				<select>
+					<option default="true"><note></note></option> 
+					<option><text>WITH</text><clauseReference name="numeric-constant"/></option> 
+				</select>
+			</option>
+		</select>
+	</repeatable>
+</command>

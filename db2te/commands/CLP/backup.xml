@@ -1,0 +1,321 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2009 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<command name="backup" title="Backup Database">
+<![CDATA[
+>>-BACKUP--+-DATABASE-+--database-alias------------------------->
+           '-DB-------'                   
+]]>
+	<text>BACKUP</text>
+	<select>
+		<option default="true"><text>DATABASE</text></option> 
+		<option><text>DB</text></option> 
+	</select>
+	<clauseReference name="database-name"/>
+	<br statement='false'/>
+<![CDATA[
+>--+-------------------------------------+---------------------->
+   '-USER--username--+-----------------+-'   
+                     '-USING--password-'     
+]]>
+	<select>
+		<option default="true"><note>default user</note></option> 
+		<option>
+			<text>USER</text>
+			<clauseReference name="username"/>
+			<select>
+				<option default="true"><note>prompt password</note></option> 
+				<option>
+					<text>USING</text>
+					<clauseReference name="password"/>
+				</option>
+			</select>
+		</option> 
+	</select>
+	<br statement='false'/>
+<![CDATA[
+>--+---------------------------------------------------------------------------------------+-->
+   '-ON--+-+-DBPARTITIONNUM--+--| Partition number(s) |----------------------------------+-'   
+         | '-DBPARTITIONNUMS-'                                                           |     
+         '-ALL DBPARTITIONNUMS--+------------------------------------------------------+-'     
+                                '-EXCEPT--+-DBPARTITIONNUM--+--| Partition number(s) |-'       
+                                          '-DBPARTITIONNUMS-'                                  
+]]>
+	<select>
+		<option default="true"><note>partitions</note></option> 
+		<option>
+			<text>ON</text>
+			<select>
+				<option default="true">
+					<select>
+						<option default="true"><text>DBPARTITIONNUM</text></option>
+						<option><text>DBPARTITIONNUMS</text></option>
+					</select>
+					<clauseReference name="Partition number(s)"/>
+				</option> 
+				<option>
+					<text>ALL DBPARTITIONNUMS</text>
+					<select>
+						<option default="true"><note>no exceptions</note></option> 
+						<option>
+							<text>EXCEPT</text>
+							<select>
+								<option default="true"><text>DBPARTITIONNUM</text></option>
+								<option><text>DBPARTITIONNUMS</text></option>
+							</select>
+							<clauseReference name="Partition number(s)"/>
+						</option>
+					</select>
+				</option>
+			</select>
+		</option> 
+	</select>
+	<br statement='false'/>
+<![CDATA[
+>--+---------------------------------------+--+--------+-------->
+   |                .-,---------------.    |  '-ONLINE-'   
+   |                V                 |    |               
+   '-TABLESPACE--(----tablespace-name-+--)-'               
+]]>
+	<select>
+		<option default="true"><note>database</note></option> 
+		<option>
+			<text>TABLESPACE (</text>
+			<repeatable>
+				<clauseReference name="tablespace-name"/>
+			</repeatable>
+			<text>)</text>
+		</option> 
+	</select>
+	<select>
+		<option default="true"><note>offline</note></option> 
+		<option><text>ONLINE</text></option> 
+	</select>
+	<br statement='false'/>
+<![CDATA[
+>--+------------------------+----------------------------------->
+   '-INCREMENTAL--+-------+-'   
+                  '-DELTA-'     
+]]>
+	<select>
+		<option default="true"><note>full</note></option> 
+		<option>
+			<text>INCREMENTAL</text>
+			<select>
+				<option default="true"><note>since full</note></option> 
+				<option>DELTA</option> 
+			</select>
+		</option> 
+	</select>
+	<br statement='false'/>
+<![CDATA[
+>--+-----------------------------------------------------------+-->
+   +-USE--+-+-TSM--+-| Open sessions |----------+--| Options |-+   
+   |      | '-XBSA-'                            |              |   
+   |      '-SNAPSHOT--+-----------------------+-'              |   
+   |                  '-LIBRARY--library-name-'                |   
+   +-LOAD--library-name--| Open sessions |--| Options |--------+   
+   |     .-,-------.                                           |   
+   |     V         |                                           |   
+   '-TO----+-dir-+-+-------------------------------------------'   
+           '-dev-'                                                 
+]]>
+	<select>
+		<option default="true"><note>to default</note></option> 
+		<option>
+			<text>USE</text>
+			<select>
+				<option default="true">
+					<select>
+						<option default="true"><text>TSM</text></option>
+						<option><text>XBSA</text></option>
+					</select>
+					<clauseReference name="Open sessions"/>
+				</option>
+				<option>
+					<text>SNAPSHOT</text>
+					<select>
+						<option default="true"><note>default library</note></option>
+						<option><text>LIBRARY</text><input size="32" title="name"/></option>
+					</select>
+				</option> 
+			</select>
+			<clauseReference name="Options"/>
+		</option> 
+		<option>
+			<text>LOAD</text>
+			<input size="32" title="library name"/>
+			<clauseReference name="Open sessions"/>
+			<clauseReference name="Options"/>
+		</option> 
+		<option>
+			<text>TO</text>
+			<repeatable>
+					<select>
+						<option default="true"><input size="32" title="dir"/></option>
+						<option><input size="32" title="dev"/></option>
+					</select>
+			</repeatable>
+		</option> 
+	</select>
+	<br statement='false'/>
+<![CDATA[
+>--+----------------------------+--+---------------------+------>
+   '-WITH--num-buffers--BUFFERS-'  '-BUFFER--buffer-size-'   
+]]>
+	<select>
+		<option default="true"><note>buffering</note></option> 
+		<option>
+			<text>WITH</text>
+			<input size="4" type="int" title="num"/>
+			<text>BUFFERS</text>
+		</option> 
+	</select>
+	<select>
+		<option default="true"><note>default buffer size</note></option> 
+		<option>
+			<text>BUFFER</text>
+			<input size="8" type="int" title="size"/>
+		</option> 
+	</select>
+	<br statement='false'/>
+<![CDATA[
+>--+----------------+------------------------------------------->
+   '-PARALLELISM--n-'   
+]]>
+	<select>
+		<option default="true"><note>parallelism</note></option> 
+		<option>
+			<text>PARALLELISM</text>
+			<input size="4" type="int" title="num"/>
+		</option> 
+	</select>
+	<br statement='false'/>
+<![CDATA[
+>--+------------------------------------------------------------------+-->
+   '-COMPRESS--+-----------------------------+--+-------------------+-'   
+               '-COMPRLIB--name--+---------+-'  '-COMPROPTS -string-'     
+                                 '-EXCLUDE-'                              
+]]>
+	<select>
+		<option default="true"><note>no compression</note></option> 
+		<option>
+			<text>COMPRESS</text>
+			<select>
+				<option default="true"><note>no compropts</note></option> 
+				<option>
+					<text>COMPRLIB</text>
+					<input size="16" title="name"/>
+					<select>
+						<option default="true"><note>no EXCLUDE</note></option> 
+						<option><text>EXCLUDE</text></option>
+					</select>
+				</option> 
+			</select>
+			<select>
+				<option default="true"><note>no comprlib</note></option> 
+				<option><text>COMPROPTS</text><input size="16"/></option> 
+			</select>
+		</option> 
+	</select>
+	<br statement='false'/>
+<![CDATA[
+                                           .-EXCLUDE LOGS-.   
+>--+------------------------------------+--+--------------+----->
+   '-UTIL_IMPACT_PRIORITY--+----------+-'  '-INCLUDE LOGS-'   
+                           '-priority-'                       
+]]>
+	<select>
+		<option default="true"><note>no priority</note></option> 
+		<option>
+			<text>UTIL_IMPACT_PRIORITY</text>
+			<select>
+				<option default="true"><note>default priority</note></option> 
+				<option><input size="4" type="int"/></option>
+			</select>
+		</option> 
+	</select>
+	<select>
+		<option><text>EXCLUDE LOGS</text></option> 
+		<option default="true"><note>EXCLUDE LOGS</note></option> 
+		<option><text>INCLUDE LOGS</text></option> 
+	</select>
+	<br statement='false'/>
+<![CDATA[
+>--+-------------------+---------------------------------------><
+   '-WITHOUT PROMPTING-'   
+]]>
+	<select>
+		<option default="true"><note>prompting</note></option> 
+		<option><text>WITHOUT PROMPTING</text></option> 
+	</select>
+	
+	<clause name="Partition number(s)" title="Partition number(s)">
+<![CDATA[
+      .-,--------------------------------------------------.      
+      V                                                    |      
+|--(----db-partition-number1--+--------------------------+-+--)--|
+                              '-TO--db-partition-number2-'        
+]]>
+		<text>(</text>
+		<repeatable>
+			<input size="4" type="int"/>
+			<select>
+				<option default="true"><note>no range</note></option> 
+				<option><text>TO</text><input size="4" type="int"/></option> 
+			</select>
+		</repeatable>
+		<text>)</text>
+	</clause>
+	
+	<clause name="Open sessions" title="Open sessions">
+<![CDATA[
+|--+------------------------------+-----------------------------|
+   '-OPEN--num-sessions--SESSIONS-'   
+]]>
+	<select>
+		<option default="true"><note>default sessions</note></option> 
+		<option><text>OPEN</text><input size="4" type="int"/><text>SESSIONS</text></option> 
+	</select>
+	</clause>
+	
+	<clause name="Options" title="Options">
+<![CDATA[
+|--+-------------------------------+----------------------------|
+   '-OPTIONS--+-"options-string"-+-'   
+              '-@--file-name-----'     
+]]>
+	<select>
+		<option default="true"><note>no options</note></option> 
+		<option>
+			<text>OPTIONS</text>
+			<select>
+				<option default="true">
+					<text spacepad="false">"</text> 
+					<input size="16" spacepad="false"/>
+					<text>"</text> 
+				</option> 
+				<option default="true">
+					<text spacepad="false">@</text> 
+					<clauseReference name="file-name"/>
+				</option> 
+			</select>
+		</option> 
+	</select>
+	</clause>
+</command>
+        

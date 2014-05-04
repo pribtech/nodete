@@ -1,0 +1,202 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2013 All rights reserved.
+  
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+
+<table name="proc">
+	<sqlName>pg_proc</sqlName>
+	<singularName>Procedure</singularName>
+	<pluralName>Procedures</pluralName>
+	<description></description>
+	<!-- <orderBy name="acolumn" direction="A"/> -->
+	<displayColumns>
+		<col type="column" name="proname"/>
+		<col type="column" name="schemaname"/>
+		<col type="column" name="owner"/>
+		<col type="column" name="language"/>
+		<col type="column" name="procost"/>
+		<col type="column" name="prorows"/>
+		<col type="column" name="variadic"/>
+		<col type="column" name="protransform"/>
+		<col type="column" name="proisagg"/>
+		<col type="column" name="proiswindow"/>
+		<col type="column" name="prosecdef"/>
+		<col type="column" name="proleakproof"/>
+		<col type="column" name="proisstrict"/>
+		<col type="column" name="proretset"/>
+		<col type="column" name="provolatile"/>
+		<col type="column" name="pronargs"/>
+		<col type="column" name="pronargdefaults"/>
+		<col type="column" name="rettype"/>
+		<col type="column" name="proargtypes"/>
+		<col type="column" name="proallargtypes"/>
+		<col type="column" name="proargmodes"/>
+		<col type="column" name="proargnames"/>
+		<col type="column" name="proargdefaults"/>
+		<col type="column" name="prosrc"/>
+		<col type="column" name="probin"/>
+		<col type="column" name="proconfig"/>
+		<col type="column" name="proacl"/>
+	</displayColumns>
+	<column name="proname">
+		<sqlName>proname</sqlName>
+		<title>Name</title>
+	</column>
+	<column name="pronamespace">
+		<sqlName>pronamespace</sqlName>
+		<title>Pronamespace</title>
+		<type>n</type>
+	</column>
+	<column name="schemaname">
+		<sqlName>(select n.nspname from pg_namespace n where n.oid = pronamespace)</sqlName>
+		<title>Schema</title>
+	</column>
+	<column name="proowner">
+		<sqlName>proowner</sqlName>
+		<title>Owner id</title>
+		<type>n</type>
+	</column>
+	<column name="owner">
+		<sqlName>(select usename from pg_user t where t.usesysid=proowner)</sqlName>
+		<title>Owner</title>
+	</column>
+	<column name="prolang">
+		<sqlName>prolang</sqlName>
+		<title>Language Id</title>
+		<type>n</type>
+	</column>
+	<column name="language">
+		<sqlName>(select lanname from pg_language t where t.oid=prolang)</sqlName>
+		<title>Language</title>
+	</column>
+	<column name="procost">
+		<sqlName>procost</sqlName>
+		<title>Cost</title>
+		<type>n</type>
+	</column>
+	<column name="prorows">
+		<sqlName>prorows</sqlName>
+		<title>Rows</title>
+		<type>n</type>
+	</column>
+	<column name="provariadic">
+		<sqlName>provariadic</sqlName>
+		<title>variadic Id</title>
+		<type>n</type>
+	</column>
+	<column name="variadic">
+		<sqlName>(select typname from pg_type t where t.oid=provariadic)</sqlName>
+		<title>variadic</title>
+	</column>
+	<column name="protransform">
+		<sqlName>protransform</sqlName>
+		<title>Transform</title>
+	</column>
+	<column name="proisagg">
+		<sqlName>proisagg</sqlName>
+		<title>Aggregation</title>
+		<type>boolean</type>
+	</column>
+	<column name="proiswindow">
+		<sqlName>proiswindow</sqlName>
+		<title>Window</title>
+		<type>boolean</type>
+	</column>
+	<column name="prosecdef">
+		<sqlName>prosecdef</sqlName>
+		<title>Sec. Def.</title>
+		<type>boolean</type>
+	</column>
+	<column name="proleakproof">
+		<sqlName>proleakproof</sqlName>
+		<title>Leak Proof</title>
+		<type>boolean</type>
+	</column>
+	<column name="proisstrict">
+		<sqlName>proisstrict</sqlName>
+		<title>Strict</title>
+		<type>boolean</type>
+	</column>
+	<column name="proretset">
+		<sqlName>proretset</sqlName>
+		<title>Returns Set</title>
+		<type>boolean</type>
+	</column>
+	<column name="provolatile">
+		<sqlName>provolatile</sqlName>
+		<title>Volatile</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="pronargs">
+		<sqlName>pronargs</sqlName>
+		<title>No. Args</title>
+		<type>n</type>
+	</column>
+	<column name="pronargdefaults">
+		<sqlName>pronargdefaults</sqlName>
+		<title>No. Default Args</title>
+		<type>n</type>
+	</column>
+	<column name="prorettype">
+		<sqlName>prorettype</sqlName>
+		<title>Return Type Id</title>
+		<type>n</type>
+	</column>
+	<column name="rettype">
+		<sqlName>(select typname from pg_type t where t.oid=prorettype)</sqlName>
+		<title>Return Type</title>
+	</column>
+	<column name="proargtypes">
+		<sqlName>proargtypes</sqlName>
+		<title>Arg Types</title>
+		<type>n</type>
+	</column>
+	<column name="proallargtypes">
+		<sqlName>proallargtypes</sqlName>
+		<title>All Arg Types</title>
+		<type>n</type>
+	</column>
+	<column name="proargmodes">
+		<sqlName>proargmodes</sqlName>
+		<title>Arg Modes</title>
+		<type>s</type>
+	</column>
+	<column name="proargnames">
+		<sqlName>proargnames</sqlName>
+		<title>Arg Names</title>
+	</column>
+	<column name="proargdefaults">
+		<sqlName>proargdefaults</sqlName>
+		<title>Arg Defaults</title>
+	</column>
+	<column name="prosrc">
+		<sqlName>prosrc</sqlName>
+		<title>Source</title>
+	</column>
+	<column name="probin">
+		<sqlName>probin</sqlName>
+		<title>Bin</title>
+	</column>
+	<column name="proconfig">
+		<sqlName>proconfig</sqlName>
+		<title>Config</title>
+	</column>
+	<column name="proacl">
+		<sqlName>proacl</sqlName>
+		<title>ACL</title>
+	</column>
+</table>

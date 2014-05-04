@@ -1,0 +1,214 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2010 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+
+<table name="routineDep">
+	<sql_name>SYSCAT.ROUTINEDEP</sql_name>
+	<singular_name>Routine Dependency</singular_name>
+	<plural_name>Routine Dependency</plural_name>
+	<description></description>
+	<disableEdit/>
+	<output>
+		<type name="REBIND" destination="adhoc" title="Rebind" generator="XSL/compareTableUpdates.xsl">
+			<parameterList>
+				<parameter name="type" type="raw"><value>rebind</value></parameter>
+			</parameterList>
+		</type>
+	</output>
+	<order_by_index name="ROUTINESCHEMA" direction="A"/>
+	<order_by_index name="BTYPE" direction="A"/>
+	<order_by_index name="BSCHEMA" direction="A"/>
+	<order_by_index name="BNAME" direction="A"/>
+	<display_columns>
+		<col type="column" name="ROUTINESCHEMA"/>
+		<col type="column" name="ROUTINENAME"/>
+		<col type="column" name="BTYPE"/>
+		<col type="column" name="BSCHEMA"/>
+		<col type="column" name="BMODULENAME"/>
+		<col type="column" name="BNAME"/>
+		<col type="column" name="BMODULEID"/>
+		<col type="column" name="TABAUTH"/>
+		<col type="column" name="ROUTINEMODULENAME"/>
+		<col type="column" name="SPECIFICNAME"/>
+		<col type="column" name="ROUTINEMODULEID"/>
+	</display_columns>
+	<column name="ROUTINESCHEMA">
+		<sqlName>ROUTINESCHEMA</sqlName>
+		<title>Schema</title>
+		<primaryKey/>
+		<type>s</type>
+		<drillEnable/>
+		<prefillEnable/>
+	</column>
+	<column name="ROUTINENAME">
+		<sqlName>ROUTINENAME</sqlName>
+		<title>Routine Name</title>
+		<primaryKey/>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="ROUTINEMODULENAME" minVersion="9.7">
+		<sqlName>ROUTINEMODULENAME</sqlName>
+		<title>Module Name</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="SPECIFICNAME">
+		<sqlName>SPECIFICNAME</sqlName>
+		<title>Specific Name</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="ROUTINEMODULEID" minVersion="9.7">
+		<sqlName>ROUTINEMODULEID</sqlName>
+		<title>Module Id.</title>
+		<type>n</type>
+	</column>
+	<column name="BTYPE">
+		<sqlName>BTYPE</sqlName>
+		<title>Type</title>
+		<primayKey/>
+		<type>s</type>
+		<drillEnable/>
+		<column_mask_file>masks/tableTypeMasks.xml</column_mask_file>
+		<column_mask>
+			<value_mask value="A"><mask>Alias</mask>
+				<reference name="details">
+					<reftype>displayRow</reftype>
+					<refvalue>alias</refvalue>
+					<icon>images/fw_bold.gif</icon>
+					<ref foreign_column_name="aliasSchema">
+						<local_column_name>BSCHEMA</local_column_name>
+					</ref>
+					<ref foreign_column_name="aliasName">
+						<local_column_name>BNAME</local_column_name>
+					</ref>
+				</reference>
+			</value_mask>
+			<value_mask value="F"><mask>Routine Instance</mask>
+				<reference name="details">
+					<reftype>displayRow</reftype>
+					<refvalue>function</refvalue>
+					<icon>images/fw_bold.gif</icon>
+					<ref foreign_column_name="SPECIFICNAME">
+						<local_column_name>SPECIFICNAME</local_column_name>
+					</ref>
+				</reference>
+			</value_mask>
+			<value_mask value="K"><mask>Package</mask>
+				<reference name="details">
+					<reftype>displayRow</reftype>
+					<refvalue>packages</refvalue>
+					<icon>images/fw_bold.gif</icon>
+					<ref foreign_column_name="pkgschema">
+						<local_column_name>BSCHEMA</local_column_name>
+					</ref>
+					<ref foreign_column_name="pkgname">
+						<local_column_name>BNAME</local_column_name>
+					</ref>
+				</reference>
+			</value_mask>
+			<value_mask value="N"><mask>Nickname</mask>
+				<reference name="details">
+					<reftype>displayRow</reftype>
+					<refvalue>Federation/federatedObjects</refvalue>
+					<icon>images/fw_bold.gif</icon>
+					<ref foreign_column_name="TABSCHEMA">
+						<local_column_name>BSCHEMA</local_column_name>
+					</ref>
+					<ref foreign_column_name="TABNAME">
+						<local_column_name>BNAME</local_column_name>
+					</ref>
+				</reference>
+			</value_mask>
+			<value_mask value="S"><mask>Materialized Query Table</mask>
+				<reference name="details">
+					<reftype>displayRow</reftype>
+					<refvalue>viewcat</refvalue>
+					<icon>images/fw_bold.gif</icon>
+					<ref foreign_column_name="tabschema">
+						<local_column_name>BSCHEMA</local_column_name>
+					</ref>
+					<ref foreign_column_name="tabname">
+						<local_column_name>BNAME</local_column_name>
+					</ref>
+				</reference>
+			</value_mask>
+			<value_mask value="T"><mask>Table</mask>
+				<reference name="details">
+					<reftype>displayRow</reftype>
+						<refvalue>tablecat</refvalue>
+						<icon>images/fw_bold.gif</icon>
+						<ref foreign_column_name="tabschema">
+							<local_column_name>BSCHEMA</local_column_name>
+						</ref>
+						<ref foreign_column_name="tabname">
+							<local_column_name>BNAME</local_column_name>
+						</ref>
+					</reference>
+			</value_mask>
+			<value_mask value="V">
+				<mask>View</mask>
+				<reference name="details">
+					<reftype>displayRow</reftype>
+					<refvalue>viewcat</refvalue>
+					<icon>images/fw_bold.gif</icon>
+					<ref foreign_column_name="viewschema">
+						<local_column_name>BSCHEMA</local_column_name>
+					</ref>
+					<ref foreign_column_name="viewname">
+						<local_column_name>BNAME</local_column_name>
+					</ref>
+				</reference>
+			</value_mask>
+		</column_mask>
+	</column>
+	<column name="BSCHEMA">
+		<sqlName>BSCHEMA</sqlName>
+		<title>Bound Schema</title>
+		<primarKey/>>
+		<type>s</type>
+		<drillEnable/>
+		<prefill>
+			<table>schema</table>
+			<column>SCHEMANAME</column>
+		</prefill>
+	</column>
+	<column name="BMODULENAME" minVersion="9.7">
+		<sqlName>BMODULENAME</sqlName>
+		<title>Bound Module Name</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="BNAME">
+		<sqlName>BNAME</sqlName>
+		<primarKey/>>
+		<title>Bound Name</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="BMODULEID" minVersion="9.7">
+		<sqlName>BMODULEID</sqlName>
+		<title>Bound Module Id.</title>
+		<type>n</type>
+	</column>
+	<column name="TABAUTH">
+		<sqlName>TABAUTH</sqlName>
+		<title>Tab Auth.</title>
+		<type>n</type>
+	</column>
+</table>

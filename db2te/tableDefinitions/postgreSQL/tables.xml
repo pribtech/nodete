@@ -1,0 +1,243 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2013 All rights reserved.
+  
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+
+<table name="tables">
+	<sqlName>information_schema.tables</sqlName>
+	<singularName>Table</singularName>
+	<pluralName>Tables</pluralName>
+	<description></description>
+	<disableEdit/>
+	<output>
+		<type name="DDL" destination="" title="" generator=""/>
+		<type name="SELECT" destination="adhoc" title="Select" generator="XSL/selectTable.xsl" action="getSQLValue">
+			<parameterList>
+				<parameter name="query" type="fixed"><value>file:predefined/Table2XML.postgreSQL[where table_catalog='?table_catalog?' and table_schema='?table_schema?' and table_name='?table_name?']</value></parameter>
+			</parameterList>
+		</type>
+	</output>
+	<orderBy name="table_catalog" direction="A"/>
+	<orderBy name="table_schema" direction="A"/>
+	<orderBy name="table_name" direction="A"/>
+	<displayColumns titleDepth="2">
+		<col type="reference" name="contents"/>
+		<col type="column" name="table_catalog"/>
+		<col type="column" name="table_schema"/>
+		<col type="column" name="table_name"/>
+		<col type="column" name="table_type"/>
+		<col type="reference" name="cols"/>
+		<col type="reference" name="indexCols"/>
+		<col type="column" name="tablespace"/>
+		<col type="column" name="comment"/>
+		<col type="column" name="self_referencing_column_name"/>
+		<col type="column" name="reference_generation"/>
+		<col type="column" name="user_defined_type_catalog"/>
+		<col type="column" name="user_defined_type_schema"/>
+		<col type="column" name="user_defined_type_name"/>
+		<col type="column" name="is_insertable_into"/>
+		<col type="column" name="is_typed"/>
+		<col type="column" name="commit_action"/>
+	</displayColumns>
+	<column name="table_catalog">
+		<sqlName>table_catalog</sqlName>
+		<title>Catalog</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="table_schema">
+		<sqlName>table_schema</sqlName>
+		<title>Schema</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="table_name">
+		<sqlName>table_name</sqlName>
+		<title>Name</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="comment">
+		<sqlName>(select pg_catalog.obj_description(t.oid, 'pg_class') from pg_namespace s, pg_class t where s.nspname = table_schema and s.oid = t.relnamespace and t.relname = table_name)</sqlName>
+		<title>Comment</title>
+	</column>
+	<column name="tablespace">
+		<sqlName>(select spcname from pg_namespace s, pg_class t, pg_tablespace ts where s.nspname = table_schema and s.oid = t.relnamespace and t.relname = table_name and ts.oid=t.reltablespace)</sqlName>
+		<title>Tablespace</title>
+	</column>
+				SELECT
+			  c.relname, n.nspname, u.usename AS relowner,
+			  pg_catalog.obj_description(c.oid, 'pg_class') AS relcomment,
+			  (SELECT spcname FROM pg_catalog.pg_tablespace pt WHERE pt.oid=c.reltablespace) AS tablespace
+			FROM pg_catalog.pg_class c
+			     LEFT JOIN pg_catalog.pg_user u ON u.usesysid = c.relowner
+			     LEFT JOIN pg_catalog.pg_namespace n ON n.oid = c.relnamespace
+			WHERE c.relkind = 'r'
+			      AND n.nspname = '{$c_schema}'
+			      AND n.oid = c.relnamespace
+			      AND c.relname = '{$table}'";
+	
+	
+	<column name="table_type">
+		<sqlName>table_type</sqlName>
+		<title>Type</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="self_referencing_column_name">
+		<sqlName>self_referencing_column_name</sqlName>
+		<title>Self Referencing Column Name</title>
+	</column>
+	<column name="reference_generation">
+		<sqlName>reference_generation</sqlName>
+		<title>Reference Generation</title>
+	</column>
+	<column name="user_defined_type_catalog">
+		<sqlName>user_defined_type_catalog</sqlName>
+		<title>User Defined Type Catalog</title>
+	</column>
+	<column name="user_defined_type_schema">
+		<sqlName>user_defined_type_schema</sqlName>
+		<title>User Defined Type Schema</title>
+	</column>
+	<column name="user_defined_type_name">
+		<sqlName>user_defined_type_name</sqlName>
+		<title>User Defined Type Name</title>
+	</column>
+	<column name="is_insertable_into">
+		<sqlName>is_insertable_into</sqlName>
+		<title>Insertable Into</title>
+	</column>
+	<column name="is_typed">
+		<sqlName>is_typed</sqlName>
+		<title>Typed</title>
+	</column>
+	<column name="commit_action">
+		<sqlName>commit_action</sqlName>
+		<title>Commit Action</title>
+	</column>
+	<reference name="contents">
+		<title>Contents</title>
+		<reftype>table</reftype>
+		<refvalue></refvalue>
+		<frame>main</frame>
+		<window>_blank</window>
+		<icon>images/icon-link-calendar.gif</icon>
+		<ref foreign_column_name="schema">
+			<local_column_name>table_schema</local_column_name>
+		</ref>
+		<ref foreign_column_name="table">
+			<local_column_name>table_name</local_column_name>
+		</ref>
+	</reference>
+	<reference name="cols">
+		<title>Columns</title>
+		<reftype>table</reftype>
+		<refvalue>postgreSQL/columns</refvalue>
+		<icon>images/icon-column.gif</icon>
+		<displayColumnsSet>Specific Table</displayColumnsSet>
+		<ref foreign_column_name="table_catalog">
+			<local_column_name>table_catalog</local_column_name>
+		</ref>
+		<ref foreign_column_name="table_schema">
+			<local_column_name>table_schema</local_column_name>
+		</ref>
+		<ref foreign_column_name="table_name">
+			<local_column_name>table_name</local_column_name>
+		</ref>
+	</reference>
+	<reference name="indexCols">
+		<title>Indexes</title>
+		<reftype>table</reftype>
+		<refvalue>postgreSQL/indexColumns</refvalue>
+		<icon>images/icon-column.gif</icon>
+		<displayColumnsSet>Specific Table</displayColumnsSet>
+		<ref foreign_column_name="table_schema">
+			<local_column_name>table_schema</local_column_name>
+		</ref>
+		<ref foreign_column_name="table_name">
+			<local_column_name>table_name</local_column_name>
+		</ref>
+	</reference>
+	<reference name="constraints">
+		<title>Constraints</title>
+		<reftype>table</reftype>
+		<refvalue>postgreSQL/tableConstraints</refvalue>
+		<icon>images/icon-column.gif</icon>
+		<displayColumnsSet>Specific Table</displayColumnsSet>
+		<ref foreign_column_name="table_schema">
+			<local_column_name>table_schema</local_column_name>
+		</ref>
+		<ref foreign_column_name="table_name">
+			<local_column_name>table_name</local_column_name>
+		</ref>
+	</reference>
+	<reference name="foreignKeys">
+		<title>Foreign Keys</title>
+		<reftype>table</reftype>
+		<refvalue>postgreSQL/foreignKeyColumns</refvalue>
+		<icon>images/icon-column.gif</icon>
+		<displayColumnsSet>Specific Table</displayColumnsSet>
+		<ref foreign_column_name="table_schema">
+			<local_column_name>table_schema</local_column_name>
+		</ref>
+		<ref foreign_column_name="table_name">
+			<local_column_name>table_name</local_column_name>
+		</ref>
+	</reference>
+	<reference name="indexSource">
+		<title>Index Source</title>
+		<reftype>table</reftype>
+		<refvalue>postgreSQL/indexes</refvalue>
+		<icon>images/icon-column.gif</icon>
+		<displayColumnsSet>Specific Table</displayColumnsSet>
+		<ref foreign_column_name="table_schema">
+			<local_column_name>table_schema</local_column_name>
+		</ref>
+		<ref foreign_column_name="table_name">
+			<local_column_name>table_name</local_column_name>
+		</ref>
+	</reference>
+	<reference name="indexInfo">
+		<title>Index Details</title>
+		<reftype>table</reftype>
+		<refvalue>postgreSQL/indexInfo</refvalue>
+		<icon>images/icon-column.gif</icon>
+		<displayColumnsSet>Specific Table</displayColumnsSet>
+		<ref foreign_column_name="table_schema">
+			<local_column_name>table_schema</local_column_name>
+		</ref>
+		<ref foreign_column_name="table_name">
+			<local_column_name>table_name</local_column_name>
+		</ref>
+	</reference>
+	<reference name="privileges">
+		<title>Privileges</title>
+		<reftype>table</reftype>
+		<refvalue>postgreSQL/tablePrivileges</refvalue>
+		<icon>images/icon-column.gif</icon>
+		<displayColumnsSet>Specific Table</displayColumnsSet>
+		<ref foreign_column_name="tablecatalog">
+			<local_column_name>table_catalog</local_column_name>
+		</ref>
+		<ref foreign_column_name="tableschema">
+			<local_column_name>table_schema</local_column_name>
+		</ref>
+		<ref foreign_column_name="tablename">
+			<local_column_name>table_name</local_column_name>
+		</ref>
+	</reference>
+</table>

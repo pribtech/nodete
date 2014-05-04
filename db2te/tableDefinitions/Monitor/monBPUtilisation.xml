@@ -1,0 +1,201 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2013 All rights reserved.
+ 
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<table name="MON_BP_UTILIZATION">
+	<sqlName>SYSIBMADM.MON_BP_UTILIZATION</sqlName>
+	<singularName>BP Utilization</singularName>
+	<pluralName>BP Utilization</pluralName>
+	<description/>
+	<disableEdit/>
+	<!-- <orderBy name="acolumn" direction="A"/> -->
+	<displayColumns>
+		<col type="column" name="BP_NAME"/>
+		<col type="column" name="MEMBER"/>
+		<col type="column" name="DATA_PHYSICAL_READS"/>
+		<col type="column" name="DATA_HIT_RATIO_PERCENT"/>
+		<col type="column" name="INDEX_PHYSICAL_READS"/>
+		<col type="column" name="INDEX_HIT_RATIO_PERCENT"/>
+		<col type="column" name="XDA_PHYSICAL_READS"/>
+		<col type="column" name="XDA_HIT_RATIO_PERCENT"/>
+		<col type="column" name="COL_PHYSICAL_READS"/>
+		<col type="column" name="COL_HIT_RATIO_PERCENT"/>
+		<col type="column" name="TOTAL_PHYSICAL_READS"/>
+		<col type="column" name="AVG_PHYSICAL_READ_TIME"/>
+		<col type="column" name="PREFETCH_RATIO_PERCENT"/>
+		<col type="column" name="ASYNC_NOT_READ_PERCENT"/>
+		<col type="column" name="TOTAL_WRITES"/>
+		<col type="column" name="AVG_WRITE_TIME"/>
+		<col type="column" name="SYNC_WRITES_PERCENT"/>
+		<col type="column" name="GBP_DATA_HIT_RATIO_PERCENT"/>
+		<col type="column" name="GBP_INDEX_HIT_RATIO_PERCENT"/>
+		<col type="column" name="GBP_XDA_HIT_RATIO_PERCENT"/>
+		<col type="column" name="GBP_COL_HIT_RATIO_PERCENT"/>
+		<col type="column" name="CACHING_TIER_DATA_HIT_RATIO_PERCENT"/>
+		<col type="column" name="CACHING_TIER_INDEX_HIT_RATIO_PERCENT"/>
+		<col type="column" name="CACHING_TIER_XDA_HIT_RATIO_PERCENT"/>
+		<col type="column" name="CACHING_TIER_COL_HIT_RATIO_PERCENT"/>
+		<col type="column" name="AVG_SYNC_READ_TIME"/>
+		<col type="column" name="AVG_ASYNC_READ_TIME"/>
+		<col type="column" name="AVG_SYNC_WRITE_TIME"/>
+		<col type="column" name="AVG_ASYNC_WRITE_TIME"/>
+	</displayColumns>
+	<column name="BP_NAME">
+		<sqlName>BP_NAME</sqlName>
+		<title>Bp Name</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="MEMBER">
+		<sqlName>MEMBER</sqlName>
+		<title>Member</title>
+		<type>n</type>
+	</column>
+	<column name="DATA_PHYSICAL_READS">
+		<sqlName>DATA_PHYSICAL_READS</sqlName>
+		<title>Data Physical Reads</title>
+		<type>n</type>
+	</column>
+	<column name="DATA_HIT_RATIO_PERCENT">
+		<sqlName>DATA_HIT_RATIO_PERCENT</sqlName>
+		<title>Data Hit Ratio Percent</title>
+		<type>n</type>
+	</column>
+	<column name="INDEX_PHYSICAL_READS">
+		<sqlName>INDEX_PHYSICAL_READS</sqlName>
+		<title>Index Physical Reads</title>
+		<type>n</type>
+	</column>
+	<column name="INDEX_HIT_RATIO_PERCENT">
+		<sqlName>INDEX_HIT_RATIO_PERCENT</sqlName>
+		<title>Index Hit Ratio Percent</title>
+		<type>n</type>
+	</column>
+	<column name="XDA_PHYSICAL_READS">
+		<sqlName>XDA_PHYSICAL_READS</sqlName>
+		<title>Xda Physical Reads</title>
+		<type>n</type>
+	</column>
+	<column name="XDA_HIT_RATIO_PERCENT">
+		<sqlName>XDA_HIT_RATIO_PERCENT</sqlName>
+		<title>Xda Hit Ratio Percent</title>
+		<type>n</type>
+	</column>
+	<column name="COL_PHYSICAL_READS">
+		<sqlName>COL_PHYSICAL_READS</sqlName>
+		<title>Col Physical Reads</title>
+		<type>n</type>
+	</column>
+	<column name="COL_HIT_RATIO_PERCENT">
+		<sqlName>COL_HIT_RATIO_PERCENT</sqlName>
+		<title>Col Hit Ratio Percent</title>
+		<type>n</type>
+	</column>
+	<column name="TOTAL_PHYSICAL_READS">
+		<sqlName>TOTAL_PHYSICAL_READS</sqlName>
+		<title>Total Physical Reads</title>
+		<type>n</type>
+	</column>
+	<column name="AVG_PHYSICAL_READ_TIME">
+		<sqlName>AVG_PHYSICAL_READ_TIME</sqlName>
+		<title>Avg Physical Read Time</title>
+		<type>n</type>
+	</column>
+	<column name="PREFETCH_RATIO_PERCENT">
+		<sqlName>PREFETCH_RATIO_PERCENT</sqlName>
+		<title>Prefetch Ratio Percent</title>
+		<type>n</type>
+	</column>
+	<column name="ASYNC_NOT_READ_PERCENT">
+		<sqlName>ASYNC_NOT_READ_PERCENT</sqlName>
+		<title>Async Not Read Percent</title>
+		<type>n</type>
+	</column>
+	<column name="TOTAL_WRITES">
+		<sqlName>TOTAL_WRITES</sqlName>
+		<title>Total Writes</title>
+		<type>n</type>
+	</column>
+	<column name="AVG_WRITE_TIME">
+		<sqlName>AVG_WRITE_TIME</sqlName>
+		<title>Avg Write Time</title>
+		<type>n</type>
+	</column>
+	<column name="SYNC_WRITES_PERCENT">
+		<sqlName>SYNC_WRITES_PERCENT</sqlName>
+		<title>Sync Writes Percent</title>
+		<type>n</type>
+	</column>
+	<column name="GBP_DATA_HIT_RATIO_PERCENT">
+		<sqlName>GBP_DATA_HIT_RATIO_PERCENT</sqlName>
+		<title>Gbp Data Hit Ratio Percent</title>
+		<type>n</type>
+	</column>
+	<column name="GBP_INDEX_HIT_RATIO_PERCENT">
+		<sqlName>GBP_INDEX_HIT_RATIO_PERCENT</sqlName>
+		<title>Gbp Index Hit Ratio Percent</title>
+		<type>n</type>
+	</column>
+	<column name="GBP_XDA_HIT_RATIO_PERCENT">
+		<sqlName>GBP_XDA_HIT_RATIO_PERCENT</sqlName>
+		<title>Gbp Xda Hit Ratio Percent</title>
+		<type>n</type>
+	</column>
+	<column name="GBP_COL_HIT_RATIO_PERCENT">
+		<sqlName>GBP_COL_HIT_RATIO_PERCENT</sqlName>
+		<title>Gbp Col Hit Ratio Percent</title>
+		<type>n</type>
+	</column>
+	<column name="CACHING_TIER_DATA_HIT_RATIO_PERCENT">
+		<sqlName>CACHING_TIER_DATA_HIT_RATIO_PERCENT</sqlName>
+		<title>Caching Tier Data Hit Ratio Percent</title>
+		<type>n</type>
+	</column>
+	<column name="CACHING_TIER_INDEX_HIT_RATIO_PERCENT">
+		<sqlName>CACHING_TIER_INDEX_HIT_RATIO_PERCENT</sqlName>
+		<title>Caching Tier Index Hit Ratio Percent</title>
+		<type>n</type>
+	</column>
+	<column name="CACHING_TIER_XDA_HIT_RATIO_PERCENT">
+		<sqlName>CACHING_TIER_XDA_HIT_RATIO_PERCENT</sqlName>
+		<title>Caching Tier Xda Hit Ratio Percent</title>
+		<type>n</type>
+	</column>
+	<column name="CACHING_TIER_COL_HIT_RATIO_PERCENT">
+		<sqlName>CACHING_TIER_COL_HIT_RATIO_PERCENT</sqlName>
+		<title>Caching Tier Col Hit Ratio Percent</title>
+		<type>n</type>
+	</column>
+	<column name="AVG_SYNC_READ_TIME">
+		<sqlName>AVG_SYNC_READ_TIME</sqlName>
+		<title>Avg Sync Read Time</title>
+		<type>n</type>
+	</column>
+	<column name="AVG_ASYNC_READ_TIME">
+		<sqlName>AVG_ASYNC_READ_TIME</sqlName>
+		<title>Avg Async Read Time</title>
+		<type>n</type>
+	</column>
+	<column name="AVG_SYNC_WRITE_TIME">
+		<sqlName>AVG_SYNC_WRITE_TIME</sqlName>
+		<title>Avg Sync Write Time</title>
+		<type>n</type>
+	</column>
+	<column name="AVG_ASYNC_WRITE_TIME">
+		<sqlName>AVG_ASYNC_WRITE_TIME</sqlName>
+		<title>Avg Async Write Time</title>
+		<type>n</type>
+	</column>
+</table>

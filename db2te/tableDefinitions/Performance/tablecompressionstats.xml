@@ -1,0 +1,256 @@
+<!--
+  Copyright IBM Corp. 2007 All rights reserved.
+  Updated: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2011 All rights reserved.
+  
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+	<table name="tablecat">
+		<sql_name>COMPSTATS</sql_name>
+		<singular_name>Table Compression Statistics</singular_name>
+		<plural_name>Table Compression Statistics</plural_name>
+		<description>Each row is 
+		&lt;a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.admin.dbobj.doc/doc/c0023489.html?noframes=true');"&gt;compressed&lt;/a&gt;
+		&lt;a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.admin.dbobj.doc/doc/c0004098.html?noframes=true');"&gt;table&lt;/a&gt; 
+		in the database. 
+		This information is generated from the &lt;a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.sql.ref.doc/doc/r0001063.html?noframes=true');"&gt;SYSCAT.TABLES&lt;/a&gt; catalog view.
+		</description>
+		<inlinequery>	
+	SELECT *
+	FROM SYSCAT.TABLES	
+	WHERE COMPRESSION NOT in (' ', 'N')
+		</inlinequery>		
+		<rows_per_page>100</rows_per_page>
+		<order_by_index name="npages" direction="D"/>
+		<output>
+			<type name="DDL" destination="" title="" generator=""/>
+			<type name="RUNSTATS" destination="adhoc" title="runstats" generator="XSL/tableRunstats.xsl">
+				<parameterList>
+					<parameter name="options" type="raw"><value>use profile</value></parameter>
+				</parameterList>
+			</type>
+			<type name="REORGONLINE" destination="adhoc" title="Re-0rg Online" generator="XSL/tableReorgOnline.xsl"/>
+			<type name="REORGOFFLINE" destination="adhoc" title="Re-0rg Offline" generator="XSL/tableReorgOffline.xsl"/>
+		</output>
+		<display_columns>
+			<col type="reference" name="tab"/>		
+			<col type="column" name="tabschema"/>
+			<col type="column" name="tabname"/>
+			<col type="reference" name="dictionary"/>								
+			<col type="column" name="compression"/>			
+			<col type="column" name="card"/>						
+			<col type="column" name="pctrowscompressed"/>
+			<col type="column" name="npages"/>
+			<col type="column" name="pctpagessaved"/>
+			<col type="column" name="avgrowsize"/>
+			<col type="column" name="avgcompressedrowsize"/>
+			<col type="column" name="avguncompressedrowsize"/>			
+			<col type="column" name="avgrowratio"/>									
+			<col type="reference" name="tbspace"/>
+			<col type="column" name="tbspace"/>
+		</display_columns>
+<!-- added peter prib, Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2009 All rights reserved. -->
+	<action name="dropTable">
+		<title>Drop</title>
+		<icon>images/trash.gif</icon>   
+    	<actionScript>
+    		<task>
+		    	<assignSharedConstant name="objectType" type="raw">
+					<value>TABLE</value>
+				</assignSharedConstant>
+				<assignSharedConstant name="objectName" type="fixed">
+					<value>"?tabschema?"."?tabname?"</value>
+				</assignSharedConstant>
+		   		<callGlobalAction name="dropSQLObject"/>
+	   		</task>
+    	</actionScript>
+    </action>
+	<action name="reorg">
+		<title>Reorg</title>
+    	<actionScript>
+    		<task>
+		    	<assignSharedConstant name="table-name" type="fixed">
+					<value>"?tabschema?"."?tabname?"</value>
+				</assignSharedConstant>
+		    	<assignSharedConstant name="command" type="raw">
+					<value>SQL/adminCmdReorg</value>
+				</assignSharedConstant>
+		   		<callGlobalAction name="commandExecution"/>
+	   		</task>
+    	</actionScript>
+    </action>
+	<action name="runstats">
+		<title>Runstats</title>
+    	<actionScript>
+    		<task>
+		    	<assignSharedConstant name="schema" type="fixed">
+					<value>"?tabschema?"</value>
+				</assignSharedConstant>
+		    	<assignSharedConstant name="name" type="fixed">
+					<value>"?tabname?"</value>
+				</assignSharedConstant>
+		    	<assignSharedConstant name="command" type="raw">
+					<value>SQL/adminCmdRunstats</value>
+				</assignSharedConstant>
+		   		<callGlobalAction name="commandExecution"/>
+	   		</task>
+    	</actionScript>
+    </action>
+	<reference name="tab">
+		<title/>
+		<reftype>table</reftype>
+		<refvalue>tablecat</refvalue>
+		<icon>images/icon-link-calendar.gif</icon>
+			<ref foreign_column_name="tabschema">
+		<local_column_name>tabschema</local_column_name>
+		</ref>
+		<ref foreign_column_name="tabname">
+			<local_column_name>tabname</local_column_name>
+		</ref>
+	</reference>    		
+	<reference name="dictionary">
+		<title>Dictionary Statistics</title>
+		<reftype>table</reftype>
+		<refvalue>Performance/compression</refvalue>
+		<icon>images/icon-dictionary.gif</icon>
+			<ref foreign_column_name="tabschema">
+		<local_column_name>tabschema</local_column_name>
+		</ref>
+			<ref foreign_column_name="tabname">
+		<local_column_name>tabname</local_column_name>
+		</ref>
+	</reference>    		
+	<reference name="tbspace">
+		<title>Tablespace</title>
+		<reftype>displayRow</reftype>
+		<refvalue>Performance/tbsputil</refvalue>
+		<icon>images/icon-tbs.gif</icon>
+		<ref foreign_column_name="tbsp_id">
+			<local_column_name>tbspaceid</local_column_name>
+		</ref>
+	</reference>
+	<column name="tabschema">
+		<sql_name>TABSCHEMA</sql_name>
+		<title>Schema</title>
+		<primaryKey/>			
+		<prefill>
+			<table>schema</table>
+			<column>SCHEMANAME</column>
+		</prefill>
+	</column>
+	<column name="tabname">
+		<sql_name>TABNAME</sql_name>
+		<title>Table Name</title>
+		<primaryKey/>			
+	</column>
+	<column name="card">
+		<sql_name>CARD</sql_name>
+		<title>Number of Rows</title>
+		<type>n</type>
+		<prefill>n</prefill>									
+   		<column_mask>
+			<value_mask value="-1"><mask>No Stats</mask></value_mask>
+   		</column_mask>					
+	</column>
+	<column name="tbspaceid">
+		<sql_name>TBSPACEID</sql_name>
+		<title>Tablespace ID</title>
+		<type>n</type>
+		<prefill>y</prefill>									
+	</column>	
+	<column name="tbspace">
+		<sql_name>TBSPACE</sql_name>
+		<title>Tablespace</title>
+		<prefill>y</prefill>									
+	</column>	
+	<column name="pctrowscompressed">
+		<sql_name>PCTROWSCOMPRESSED</sql_name>
+		<title>Rows Compressed</title>
+		<type>bg</type>		
+		<graphattributes flipColor="y"/>				
+		<column_mask>
+			<value_mask value="-1"><mask>No stats</mask></value_mask>
+		</column_mask>
+		<formatNumber round="true" toFixedVal="2"/>	
+	</column>	
+	<column name="pctpagessaved">
+		<sql_name>PCTPAGESSAVED</sql_name>
+		<title>Pages Saved</title>
+		<type>bg</type>
+		<formatNumber round="true" toFixedVal="2"/>	
+		<graphattributes flipColor="y"/>							
+		<column_mask>
+			<value_mask value="-1"><mask>No stats</mask></value_mask>
+		</column_mask>    			
+	</column>	
+	<column name="npages">
+		<sql_name>NPAGES</sql_name>
+		<title>Pages</title>
+		<type>n</type>			
+			<column_mask>
+				<value_mask value="-1"><mask>No stats</mask></value_mask>
+			</column_mask>    			
+	</column>	
+	<column name="compression">
+		<sql_name>COMPRESSION</sql_name>
+		<title>Type</title>
+		<type>s</type>			
+		<column_mask>
+			<value_mask value="B"><mask>Row and Value</mask></value_mask>
+			<value_mask value="R"><mask>Row</mask></value_mask>
+			<value_mask value="V"><mask>Value</mask></value_mask>
+		</column_mask>    			
+		<prefill>y</prefill>													
+	</column>	
+	<column name="avgrowsize">
+		<sql_name>AVGROWSIZE</sql_name>
+		<title>Row Size (bytes)</title>
+		<type>n</type>			
+		<column_mask>
+			<value_mask value="-1"><mask>No stats</mask></value_mask>
+		</column_mask>    			
+	</column>	
+	<column name="avgcompressedrowsize">
+		<sql_name>AVGCOMPRESSEDROWSIZE</sql_name>
+		<title>Compressed Row Size (bytes)</title>
+		<type>n</type>			
+		<column_mask>
+			<value_mask value="-1"><mask>No stats</mask></value_mask>
+			<value_mask value="0"><mask>Not applicable</mask></value_mask>										
+		</column_mask>    			
+	</column>	
+	<column name="avguncompressedrowsize">
+		<sql_name>INT(AVGROWCOMPRESSIONRATIO * AVGCOMPRESSEDROWSIZE)</sql_name>
+		<title>Estimated Uncompressed Row Size (bytes)</title>
+		<type>n</type>			
+		<column_mask>
+			<value_mask value="-1"><mask>No stats</mask></value_mask>
+			<value_mask value="0"><mask>Not applicable</mask></value_mask>										
+		</column_mask>    			
+	</column>	
+	<column name="avgrowratio">
+		<sql_name>AVGROWCOMPRESSIONRATIO</sql_name>
+		<title>Row Compression Ratio</title>
+		<type>n</type>
+		<formatNumber round="true" toFixedVal="2"/>	
+		<column_mask>
+			<value_mask value="-1"><mask>No stats</mask></value_mask>
+			<value_mask value="0.00"><mask>Not applicable</mask></value_mask>										
+		</column_mask>    			
+	</column>	
+	<column name="statisticsProfile">
+		<sql_name>STATISTICS_PROFILE</sql_name>
+		<title>Statistics Profile</title>
+		<type>l</type>
+	</column>
+</table>

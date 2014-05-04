@@ -1,0 +1,163 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2013 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+<table name="topics">
+	<sqlName>topics</sqlName>
+	<singularName>Topic</singularName>
+	<pluralName>Topics</pluralName>
+	<inlinequery>
+<![CDATA[
+MQCMD_INQUIRE_TOPIC  ?
+]]>
+	</inlinequery>
+	<parameters>
+		<parm name="MQCA_TOPIC_NAME">
+			<title>Topic Mask</title>
+			<value>*</value>
+			<type>s</type>
+		</parm>
+	</parameters>
+	<displayColumns>
+		<col type="column" name="MQCA_TOPIC_NAME"/>
+		<col type="column" name="MQIA_TOPIC_TYPE"/>
+		<col type="column" name="MQCA_TOPIC_STRING"/>
+		<col type="column" name="MQCA_TOPIC_DESC"/>
+		<col type="column" name="MQCA_CLUSTER_NAME"/>
+		<col type="column" name="MQIA_DURABLE_SUB"/>
+		<col type="column" name="MQIA_INHIBIT_PUB"/>
+		<col type="column" name="MQIA_INHIBIT_SUB"/>
+		<col type="column" name="MQIA_TOPIC_DEF_PERSISTENCE"/>
+		<col type="column" name="MQIA_DEF_PRIORITY"/>
+		<col type="column" name="MQIA_DEF_PUT_RESPONSE_TYPE"/>
+		<col type="column" name="MQCA_ALTERATION_DATE"/>
+		<col type="column" name="MQCA_ALTERATION_TIME"/>
+		<col type="column" name="MQIA_PM_DELIVERY"/>
+		<col type="column" name="MQIA_NPM_DELIVERY"/>
+		<col type="column" name="MQIA_PUB_SCOPE"/>
+		<col type="column" name="MQIA_SUB_SCOPE"/>
+		<col type="column" name="MQIA_PROXY_SUB"/>
+		<col type="column" name="MQIA_WILDCARD_OPERATION"/>
+		<col type="column" name="MQCA_MODEL_DURABLE_Q"/>
+		<col type="column" name="MQCA_MODEL_NON_DURABLE_Q"/>
+		<col type="column" name="MQIA_MULTICAST"/>
+		<col type="column" name="MQCA_COMM_INFO_NAME"/>
+		<col type="column" name="MQIA_USE_DEAD_LETTER_Q"/>
+		<col type="column" name="MQCA_CUSTOM"/>
+	</displayColumns>
+	<column name="MQCA_TOPIC_NAME">
+		<sqlName>MQCA_TOPIC_NAME</sqlName>
+		<title>Name</title>
+	</column>
+	<column name="MQIA_TOPIC_TYPE">
+		<sqlName>MQIA_TOPIC_TYPE</sqlName>
+		<title>Type</title>
+	</column>
+	<column name="MQCA_TOPIC_STRING">
+		<sqlName>MQCA_TOPIC_STRING</sqlName>
+		<title>Topic String</title>
+	</column>
+	<column name="MQCA_TOPIC_DESC">
+		<sqlName>MQCA_TOPIC_DESC</sqlName>
+		<title>Description</title>
+	</column>
+	<column name="MQCA_CLUSTER_NAME">
+		<sqlName>MQCA_CLUSTER_NAME</sqlName>
+		<title>Cluster Name</title>
+	</column>
+	<column name="MQIA_DURABLE_SUB">
+		<sqlName>MQIA_DURABLE_SUB</sqlName>
+		<title>Durable Sub</title>
+	</column>
+	<column name="MQIA_INHIBIT_PUB">
+		<sqlName>MQIA_INHIBIT_PUB</sqlName>
+		<title>Inhibit Pub</title>
+	</column>
+	<column name="MQIA_INHIBIT_SUB">
+		<sqlName>MQIA_INHIBIT_SUB</sqlName>
+		<title>Inhibit Sub</title>
+		<type>n</type>
+		<drillEnable/>
+	</column>
+	<column name="MQIA_TOPIC_DEF_PERSISTENCE">
+		<sqlName>MQIA_TOPIC_DEF_PERSISTENCE</sqlName>
+		<title>Topic Def Persistence</title>
+	</column>
+	<column name="MQIA_DEF_PRIORITY">
+		<sqlName>MQIA_DEF_PRIORITY</sqlName>
+		<title>Def Priority</title>
+	</column>
+	<column name="MQIA_DEF_PUT_RESPONSE_TYPE">
+		<sqlName>MQIA_DEF_PUT_RESPONSE_TYPE</sqlName>
+		<title>Def Put Response Type</title>
+	</column>
+	<column name="MQCA_ALTERATION_DATE">
+		<sqlName>MQCA_ALTERATION_DATE</sqlName>
+		<title>Alteration Date</title>
+	</column>
+	<column name="MQCA_ALTERATION_TIME">
+		<sqlName>MQCA_ALTERATION_TIME</sqlName>
+		<title>Alteration Time</title>
+	</column>
+	<column name="MQIA_PM_DELIVERY">
+		<sqlName>MQIA_PM_DELIVERY</sqlName>
+		<title>Pm Delivery</title>
+	</column>
+	<column name="MQIA_NPM_DELIVERY">
+		<sqlName>MQIA_NPM_DELIVERY</sqlName>
+		<title>NPM Delivery</title>
+	</column>
+	<column name="MQIA_PUB_SCOPE">
+		<sqlName>MQIA_PUB_SCOPE</sqlName>
+		<title>Pub Scope</title>
+	</column>
+	<column name="MQIA_SUB_SCOPE">
+		<sqlName>MQIA_SUB_SCOPE</sqlName>
+		<title>Sub Scope</title>
+	</column>
+	<column name="MQIA_PROXY_SUB">
+		<sqlName>MQIA_PROXY_SUB</sqlName>
+		<title>Proxy Sub</title>
+	</column>
+	<column name="MQIA_WILDCARD_OPERATION">
+		<sqlName>MQIA_WILDCARD_OPERATION</sqlName>
+		<title>Wildcard Operation</title>
+	</column>
+	<column name="MQCA_MODEL_DURABLE_Q">
+		<sqlName>MQCA_MODEL_DURABLE_Q</sqlName>
+		<title>Model Durable Q</title>
+	</column>
+	<column name="MQCA_MODEL_NON_DURABLE_Q">
+		<sqlName>MQCA_MODEL_NON_DURABLE_Q</sqlName>
+		<title>Model Non Durable Q</title>
+	</column>
+	<column name="MQIA_MULTICAST">
+		<sqlName>MQIA_MULTICAST</sqlName>
+		<title>Multicast</title>
+	</column>
+	<column name="MQCA_COMM_INFO_NAME">
+		<sqlName>MQCA_COMM_INFO_NAME</sqlName>
+		<title>Comm Info Name</title>
+	</column>
+	<column name="MQIA_USE_DEAD_LETTER_Q">
+		<sqlName>MQIA_USE_DEAD_LETTER_Q</sqlName>
+		<title>Use Dead Letter Q</title>
+	</column>
+	<column name="MQCA_CUSTOM">
+		<sqlName>MQCA_CUSTOM</sqlName>
+		<title>Custom</title>
+	</column>
+</table>

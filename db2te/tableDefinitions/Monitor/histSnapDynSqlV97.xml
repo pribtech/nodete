@@ -1,0 +1,416 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2010-2012 All rights reserved.
+  Copyright IBM Corp. 2007 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<table name="histSnapDynSql">
+	<sqlName>histSnapDynSql</sqlName>
+	<singular_name>Dynamic Statement</singular_name>
+	<plural_name>Dynamic Statements</plural_name>
+	<messages><SQL0204N>Not installed. Please install "DB2TE Dynamic Cache Sampling" in Tools-> Installed Components</SQL0204N></messages>
+	<inlinequery>
+<![CDATA[
+SELECT 
+	t.* 
+FROM "s#db2mc"."HIST_SNAP_GET_DYN_SQL_DELTA" t
+,(select case when upper(startTs) = 'CURRENT' then current timestamp else timestamp(startTs) end as startTS 
+	,duration
+	from (values(cast('?' as varchar(26)),cast(? as int))) as timePeriod(startTs,duration)
+ ) period
+where sample_ts between period.startTS - period.duration hours and period.startTS
+]]>
+	</inlinequery>
+	<parameters>
+		<parm name="start">
+			<title>Start</title>
+			<value>current</value>
+			<type>timestamp</type>
+		</parm>
+		<parm name="Period">
+			<title>Period (hours)</title>
+			<value>3</value>
+			<type>n</type>
+		</parm>
+	</parameters>
+	<description>This returns the top &lt;a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.admin.dbobj.doc/doc/c0021364.html?noframes=true');"&gt;dynamic SQL or XQuery&lt;/a&gt;		
+		&lt;a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.admin.dbobj.doc/doc/r0011049.html?noframes=true');"&gt;statement&lt;/a&gt;.
+		sortable by number of executions, average execution time, number of sorts, or sorts per statement. 
+		These are the queries that should get focus to ensure they are well tuned.
+		This list is based on the &lt;a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.admin.dbobj.doc/doc/r0022005.html?noframes=true');"&gt;SYSIBMADM.SNAPDYN_SQL&lt;/a&gt; administrative view.
+	</description>
+	<output>
+		<type name="DDL" destination="" title="" generator=""/>
+		<type name="ADHOC" destination="adhoc" title="Statement" generator="XSL/compareSQLStmtTxt.xsl"/>
+	</output>		
+	<order_by_index name="sample_ts" direction="D"/>
+	<order_by_index name="average_execution_time" direction="D"/>
+	<rowStyle interfaceColumn='average_execution_time'>
+		<option gt='1' style='ERROR'/>
+		<option gt='0.01' style='WARNING'/>
+	</rowStyle>	
+	<display_columns>
+		<col type="column" name="sample_ts" break="column"/>
+		<col type="column" name="database"/>
+		<col type="column" name="numexec"/>
+		<col type="column" name="average_execution_time"/>
+		<col type="column" name="avgCpuTime"/>
+		<col type="column" name="rowsread_per_execution"/>
+		<col type="column" name="POOL_AVG_L_READS"/>
+		<col type="column" name="POOL_AVG_P_READS"/>
+		<col type="column" name="sorts_per_execution"/>
+		<col type="column" name="rowsread"/>
+		<col type="column" name="rowwrite"/>
+		<col type="column" name="exectime"/>
+		<col type="column" name="totalCpuTime"/>
+		<col type="action" name="visualExplain"/>
+		<col type="action" name="db2advis"/>
+		<col type="column" name="stmttext"/>
+		<col type="column" name="stmt_sorts"/>
+	</display_columns>
+	<display_columns name="timestampDatabaseSpecific">
+		<col type="column" name="numexec"/>
+		<col type="column" name="average_execution_time"/>
+		<col type="column" name="avgCpuTime"/>
+		<col type="column" name="rowsread_per_execution"/>
+		<col type="column" name="POOL_AVG_L_READS"/>
+		<col type="column" name="POOL_AVG_P_READS"/>
+		<col type="column" name="sorts_per_execution"/>
+		<col type="column" name="rowsread"/>
+		<col type="column" name="rowwrite"/>
+		<col type="column" name="exectime"/>
+		<col type="column" name="totalCpuTime"/>
+		<col type="action" name="visualExplain"/>
+		<col type="action" name="db2advis"/>
+		<col type="column" name="stmttext"/>
+		<col type="column" name="stmt_sorts"/>
+	</display_columns>
+
+	<action name="visualExplain">
+		<title>Explain</title>
+    	<actionScript>
+    		<task>
+				<assignSharedConstant name="stmttext" type="blockValue">
+					<value>stmttext</value>
+				</assignSharedConstant>
+	   			<callGlobalAction name="DB2ExplainDynamicSQL"/>				
+	   		</task>
+    	</actionScript>
+    </action>
+
+	<action name="db2expln">
+		<title>db2expln</title>
+    	<actionScript>
+    		<task>
+    			<lock/>
+		    	<assignSharedConstant name="database-name" type="blockValue">
+					<value>database</value>
+				</assignSharedConstant>
+		    	<assignSharedConstant name="schema-name" type="fixed">
+					<value></value>
+				</assignSharedConstant>
+				<assignSharedConstant name="query-statement" type="blockValue">
+							<value>stmttext</value>
+				</assignSharedConstant>
+		   		<assignSharedConstant name="command" type="raw">
+					<value>System/db2expln.statement</value>
+				</assignSharedConstant>
+	   			<callGlobalAction name="systemCommandExecution"/>				
+    			<unlock/>
+	   		</task>
+    	</actionScript>
+    </action>
+
+	<action name="db2advis">
+		<title>Advisor</title>
+    	<actionScript>
+    		<task>
+    			<lock/>
+		    	<assignSharedConstant name="database-name" type="blockValue">
+					<value>database</value>
+				</assignSharedConstant>
+		    	<assignSharedConstant name="schema-name" type="fixed">
+					<value></value>
+				</assignSharedConstant>
+				<assignSharedConstant name="statement" type="blockValue">
+							<value>stmttext</value>
+				</assignSharedConstant>
+		   		<assignSharedConstant name="command" type="raw">
+					<value>System/db2advis.statement</value>
+				</assignSharedConstant>
+	   			<callGlobalAction name="systemCommandExecution"/>				
+    			<unlock/>
+	   		</task>
+    	</actionScript>
+    </action>
+	<column name="sample_ts" dimension="timestamp">
+		<sqlName>sample_ts</sqlName>
+		<title>Time</title>
+		<type>s</type>
+		<sort>n</sort>
+	</column>
+	<column name="database">
+		<sqlName>DATABASE</sqlName>
+		<title>Database</title>
+		<type>s</type>
+		<primaryKey/>
+	</column>
+	<column name="SqlType">
+		<sqlName>SQL_TYPE</sqlName>
+		<title>Type</title>
+		<type>s</type>			
+	</column>
+	<column name="numexec" measure="amount">
+		<sqlName>NUM_EXECUTIONS</sqlName>
+		<title>Executions</title>
+		<type>n</type>			
+		<formatNumber separator=","/>
+	</column>
+	<column name="average_execution_time">
+		<generated>normalize,exectime,numexec</generated>
+		<title>Avg Elapse(s)</title>
+		<type>n</type>
+		<formatNumber toDuration="ss"/> 
+		<style>
+			<option gt="1" style="ERROR"/>
+			<option gt="0.01" style="WARNING"/>
+		</style>
+	</column>
+	<column name="stmt_sorts" measure="amount">
+		<sqlName>STMT_SORTS</sqlName>
+		<title>Sorts</title>
+		<type>n</type>
+		<formatNumber separator=","/>
+	</column>
+	<column name="sorts_per_execution" measure="amount">
+		<generated>normalize,stmt_sorts,numexec</generated>
+		<title>Avg Sorts</title>
+		<type>n</type>
+		<sort>n</sort>			
+		<formatNumber round="true" toFixedVal="1" separator=","/>									
+		<style>
+			<option gt="100" style="ERROR"/>
+			<option gt="2" style="WARNING"/>
+		</style>
+	</column>
+	<column name="rowsread_per_execution" measure="amount">
+		<generated>normalize,rowsread,numexec</generated>
+		<title>Avg Reads</title>
+		<type>n</type>
+		<formatNumber round="true" toFixedVal="1" separator=","/>									
+		<style>
+			<option gt="10000" style="ERROR"/>
+			<option gt="100" style="WARNING"/>
+		</style>
+	</column>
+	<column name="rowsread" measure="amount">
+		<sqlName>ROWS_READ</sqlName>
+		<title>Reads</title>
+		<type>n</type>
+		<formatNumber separator=","/>
+	</column>
+	<column name="rowwrite" measure="amount">
+		<sqlName>ROWS_WRITTEN</sqlName>
+		<title>Writes</title>
+		<type>n</type>
+		<formatNumber separator=","/>
+	</column>		
+	<column name="exectime" measure="amount">
+		<sqlName>EXEC_TIME</sqlName>
+		<title>Elapse(s)</title>
+		<type>n</type>
+		<formatNumber toDuration="ss"/> 									
+	</column>
+	<column name="avgCpuTime">
+		<generated>normalize,totalCpuTime,numexec</generated>
+		<title>avg CPU (s)</title>
+		<type>n</type>
+		<formatNumber toDuration="ss"/> 									
+		<style>
+			<option gt="0.1" style="ERROR"/>
+			<option gt="0.001" style="WARNING"/>
+		</style>
+	</column>
+	<column name="totusercputime" measure="amount">
+		<sqlName>USR_CPU_TIME</sqlName>
+		<title>User CPU (s)</title>
+		<type>n</type>
+		<formatNumber toDuration="ss"/>									
+	</column>
+	<column name="totsyscputime" measure="amount">
+		<sqlName>SYS_CPU_TIME</sqlName>
+		<title>System CPU (s)</title>
+		<type>n</type>
+		<formatNumber toDuration="ss"/> 
+	</column>
+	<column name="dbpartitionnum">
+		<sqlName>DBPARTITIONNUM</sqlName>
+		<title>Partition Number</title>
+		<type>n</type>
+		<primaryKey/>
+	</column>
+	<column name="stmttext">
+		<sqlName>STMT_TEXT</sqlName>
+		<title>Statement Text</title>
+		<type>l</type>						
+	</column>
+	<column name="totalCpuTime" measure="amount">
+		<sqlName>SYS_CPU_TIME + USR_CPU_TIME</sqlName>
+		<title>Total CPU (s)</title>
+		<type>n</type>			
+		<formatNumber toDuration="ss"/> 									
+	</column>
+	<column name="NUM_COMPILATIONS">
+		<sqlName>NUM_COMPILATIONS</sqlName>
+		<title>Compiles</title>
+		<type>n</type>			
+	</column>
+	<column name="PREP_TIME_WORST">
+		<sqlName>PREP_TIME_WORST</sqlName>
+		<title>Prep Time Worst</title>
+		<type>n</type>			
+	</column>
+	<column name="PREP_TIME_BEST">
+		<sqlName>PREP_TIME_BEST</sqlName>
+		<title>Prep Time Best</title>
+		<type>n</type>			
+	</column>
+	<column name="INT_ROWS_DELETED" measure="amount">
+		<sqlName>INT_ROWS_DELETED</sqlName>
+		<title>Internal Rows Delete</title>
+		<type>n</type>			
+		<formatNumber separator=","/>
+	</column>
+	<column name="INT_ROWS_INSERTED" measure="amount">
+		<sqlName>INT_ROWS_INSERTED</sqlName>
+		<title>Internal Rows Inserted</title>
+		<type>n</type>			
+		<formatNumber separator=","/>
+	</column>
+	<column name="INT_ROWS_UPDATED" measure="amount">
+		<sqlName>INT_ROWS_UPDATED</sqlName>
+		<title>Internal Rows Updated</title>
+		<type>n</type>			
+		<formatNumber separator=","/>
+	</column>
+	<column name="SORT_OVERFLOWS" measure="amount">
+		<sqlName>SORT_OVERFLOWS</sqlName>
+		<title>Sort Overflows</title>
+		<type>n</type>			
+		<formatNumber separator=","/>
+	</column>
+	<column name="TOTAL_SORT_TIME" measure="amount">
+		<sqlName>TOTAL_SORT_TIME</sqlName>
+		<title>Total Sort Time</title>
+		<type>n</type>			
+		<formatNumber toDuration="ss"/> 
+	</column>
+	<column name="POOL_AVG_L_READS">
+		<generated>normalize,POOL_TOTAL_L_READS,numexec</generated>
+		<title>Pool Avg Logical Reads</title>
+		<type>n</type>			
+		<formatNumber separator=","/>
+	</column>
+	<column name="POOL_TOTAL_L_READS" measure="amount">
+		<sqlName>(POOL_DATA_L_READS+POOL_TEMP_DATA_L_READS+POOL_INDEX_L_READS+POOL_TEMP_INDEX_L_READS+POOL_XDA_L_READS+POOL_TEMP_XDA_L_READS)</sqlName>
+		<title>Pool Logical Reads</title>
+		<type>n</type>			
+		<formatNumber separator=","/>
+	</column>
+	<column name="POOL_AVG_P_READS">
+		<generated>normalize,POOL_TOTAL_P_READS,numexec</generated>
+		<title>Pool Avg Phys. Reads</title>
+		<type>n</type>			
+		<formatNumber separator=","/>
+	</column>
+	<column name="POOL_TOTAL_P_READS" measure="amount">
+		<sqlName>(POOL_DATA_p_READS+POOL_TEMP_DATA_p_READS+POOL_INDEX_p_READS+POOL_TEMP_INDEX_p_READS+POOL_XDA_p_READS+POOL_TEMP_XDA_p_READS)</sqlName>
+		<title>Pool Physical Reads</title>
+		<type>n</type>			
+		<formatNumber separator=","/>
+	</column>
+	<column name="POOL_DATA_L_READS" measure="amount">
+		<sqlName>POOL_DATA_L_READS</sqlName>
+		<title>Pool Data Logical Reads</title>
+		<type>n</type>			
+		<formatNumber separator=","/>
+	</column>
+	<column name="POOL_DATA_P_READS" measure="amount">
+		<sqlName>POOL_DATA_P_READS</sqlName>
+		<title>Pool Data Physical Reads</title>
+		<type>n</type>			
+		<formatNumber separator=","/>
+	</column>
+	<column name="POOL_TEMP_DATA_L_READS" measure="amount">
+		<sqlName>POOL_TEMP_DATA_L_READS</sqlName>
+		<title>Pool Temp Data Logical Reads</title>
+		<type>n</type>
+		<formatNumber separator=","/>
+	</column>
+	<column name="POOL_TEMP_DATA_P_READS"> measure="amount"
+		<sqlName>POOL_TEMP_DATA_P_READS</sqlName>
+		<title>Pool Temp Data Physical Reads</title>
+		<type>n</type>
+		<formatNumber separator=","/>
+	</column>
+	<column name="POOL_INDEX_L_READS" measure="amount">
+		<sqlName>POOL_INDEX_L_READS</sqlName>
+		<title>Pool Index Logical Reads</title>
+		<type>n</type>
+		<formatNumber separator=","/>
+	</column>
+	<column name="POOL_INDEX_P_READS" measure="amount">
+		<sqlName>POOL_INDEX_P_READS</sqlName>
+		<title>Pool Index Physical Reads</title>
+		<type>n</type>
+		<formatNumber separator=","/>
+	</column>
+	<column name="POOL_TEMP_INDEX_L_READS" measure="amount">
+		<sqlName>POOL_TEMP_INDEX_L_READS</sqlName>
+		<title>Pool Temp Index Logical Reads</title>
+		<type>n</type>
+		<formatNumber separator=","/>
+	</column>
+	<column name="POOL_TEMP_INDEX_P_READS" measure="amount">
+		<sqlName>POOL_TEMP_INDEX_P_READS</sqlName>
+		<title>Pool Temp Index Physical Reads</title>
+		<type>n</type>
+		<formatNumber separator=","/>
+	</column>
+	<column name="POOL_XDA_L_READS" measure="amount">
+		<sqlName>POOL_XDA_L_READS</sqlName>
+		<title>Pool XDA Logical Reads</title>
+		<type>n</type>
+		<formatNumber separator=","/>
+	</column>
+	<column name="POOL_XDA_P_READS" measure="amount">
+		<sqlName>POOL_XDA_P_READS</sqlName>
+		<title>Pool XDA Physical Reads</title>
+		<type>n</type>
+		<formatNumber separator=","/>
+	</column>
+	<column name="POOL_TEMP_XDA_L_READS" measure="amount">
+		<sqlName>POOL_TEMP_XDA_L_READS</sqlName>
+		<title>Pool Temp XDA Logical Reads</title>
+		<type>n</type>
+		<formatNumber separator=","/>
+	</column>
+	<column name="POOL_TEMP_XDA_P_READS" measure="amount">
+		<sqlName>POOL_TEMP_XDA_P_READS</sqlName>
+		<title>Pool Temp XDA Physical Reads</title>
+		<type>n</type>
+		<formatNumber separator=","/>
+	</column>
+</table>

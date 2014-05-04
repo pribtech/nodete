@@ -1,0 +1,126 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2010 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+<table name="histrogramBin">
+	<sql_name>histrogramBin</sql_name>
+	<singular_name>Histrogram Bin</singular_name>
+	<plural_name>Histrogram Bins</plural_name>
+	<inlinequery>SELECT	* FROM "?"."?"</inlinequery>
+	<parameters>
+		<parm name="tabschema">
+			<title>tabschema</title>
+			<value>no schema</value>
+			<type>n</type>
+		</parm>
+		<parm name="tabname">
+			<title>tabname</title>
+			<value>no table</value>
+			<type>n</type>
+		</parm>
+	</parameters>
+	<description />
+	<order_by_index name="STATISTICS_TIMESTAMP" direction="D"/>
+	<order_by_index name="BIN_ID" direction="A"/>
+	<display_columns>
+		<col type="column" name="STATISTICS_TIMESTAMP"/>
+		<col type="column" name="BIN_ID"/>
+		<col type="column" name="BOTTOM"/>
+		<col type="column" name="PARTITION_KEY"/>
+		<col type="column" name="HISTOGRAM_TYPE"/>
+		<col type="column" name="NUMBER_IN_BIN"/>
+		<col type="column" name="PARTITION_NUMBER"/>
+		<col type="column" name="SERVICE_CLASS_ID"/>
+		<col type="column" name="TOP"/>
+		<col type="column" name="WORK_ACTION_SET_ID"/>
+		<col type="column" name="WORK_CLASS_ID"/>
+		<col type="column" name="WORKLOAD_ID"/>
+	</display_columns>
+	<column name="PARTITION_KEY" minVersion="9.7">
+		<c_sql_name>PARTITION_KEY</c_sql_name>
+		<c_title>Partition Key</c_title>
+		<c_presentation/>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="BIN_ID">
+		<c_sql_name>BIN_ID</c_sql_name>
+		<c_title>Bin</c_title>
+		<c_presentation/>
+		<c_drill>n</c_drill>
+		<c_pkey>p</c_pkey>
+	</column>
+	<column name="BOTTOM">
+		<c_sql_name>BOTTOM</c_sql_name>
+		<c_title>Bottom</c_title>
+		<c_presentation/>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="HISTOGRAM_TYPE">
+		<c_sql_name>HISTOGRAM_TYPE</c_sql_name>
+		<c_title>Type</c_title>
+		<c_presentation/>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="NUMBER_IN_BIN">
+		<c_sql_name>NUMBER_IN_BIN</c_sql_name>
+		<c_title>Number</c_title>
+		<c_presentation/>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="PARTITION_NUMBER" minVersion="9.7">
+		<c_sql_name>PARTITION_NUMBER</c_sql_name>
+		<c_title>Partition</c_title>
+		<c_presentation/>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="SERVICE_CLASS_ID">
+		<c_sql_name>SERVICE_CLASS_ID</c_sql_name>
+		<c_title>Service Class</c_title>
+		<c_presentation/>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="STATISTICS_TIMESTAMP">
+		<c_sql_name>STATISTICS_TIMESTAMP</c_sql_name>
+		<c_title>Timestamp</c_title>
+		<c_presentation/>
+		<c_drill>n</c_drill>
+		<c_pkey>p</c_pkey>
+	</column>
+	<column name="TOP">
+		<c_sql_name>TOP</c_sql_name>
+		<c_title>Top</c_title>
+		<c_presentation/>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="WORK_ACTION_SET_ID">
+		<c_sql_name>WORK_ACTION_SET_ID</c_sql_name>
+		<c_title>Work Action Set</c_title>
+		<c_presentation/>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="WORK_CLASS_ID">
+		<c_sql_name>WORK_CLASS_ID</c_sql_name>
+		<c_title>Work Class</c_title>
+		<c_presentation/>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="WORKLOAD_ID" minVersion="9.7">
+		<c_sql_name>WORKLOAD_ID</c_sql_name>
+		<c_title>Workload</c_title>
+		<c_presentation/>
+		<c_drill>n</c_drill>
+	</column>
+</table>

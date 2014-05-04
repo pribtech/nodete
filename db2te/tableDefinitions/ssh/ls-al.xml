@@ -1,0 +1,159 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2013 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+<table name="ls-al">
+	<sqlName>ls-al</sqlName>
+	<singularName>Directory Item</singularName>
+	<pluralName>Directory Items</pluralName>
+	<inlinequery>
+<![CDATA[
+ls -al ?
+]]>
+	</inlinequery>
+	<parameters>
+		<parm name="base">
+			<title>Base</title>
+			<value>/</value>
+		</parm>
+	</parameters>
+	<filters>
+		<column operator="is empty" name="Line" />
+		<row operator="first"/>
+	</filters>
+	<description></description>
+	<displayColumns titleDepth="2">
+		<col type="column" name="type"/>
+		<col type="column" name="node"/>
+		<col type="column" name="userRead"/>
+		<col type="column" name="userWrite"/>
+		<col type="column" name="userExecute"/>
+		<col type="column" name="groupRead"/>
+		<col type="column" name="groupWrite"/>
+		<col type="column" name="groupExecute"/>
+		<col type="column" name="otherRead"/>
+		<col type="column" name="otherWrite"/>
+		<col type="column" name="otherExecute"/>
+		<col type="column" name="owner"/>
+		<col type="column" name="group"/>
+		<col type="column" name="size"/>
+		<col type="column" name="Line"/>
+	</displayColumns>
+	<column name="node">
+		<generated>getStringAfterDelimiter,Line,8</generated>
+		<title>Node</title>
+		<sortDisable/>
+	</column>
+	<column name="owner">
+		<generated>word,Line,3</generated>
+		<title>Owner</title>
+		<sortDisable/>
+	</column>
+	<column name="group">
+		<generated>word,Line,4</generated>
+		<title>Group</title>
+		<sortDisable/>
+	</column>
+	<column name="size">
+		<generated>word,Line,5</generated>
+		<title>Size</title>
+		<sortDisable/>
+	</column>
+	<column name="node">
+		<generated>getStringAfterDelimiter,Line,8</generated>
+		<title>Node</title>
+		<sortDisable/>
+	</column>
+	<column name="type">
+		<generated>substr,Line,0,1</generated>
+		<title>Type</title>
+		<sortDisable/>
+		<columnMask>
+			<value_mask value="d">
+				<mask>Directory</mask>
+				<reference name="details">
+					<reftype>table</reftype>
+					<refvalue>ssh/ls-al</refvalue>
+					<icon>images/fw_bold.gif</icon>
+					<ref foreignColumnName="base">
+						<expression operator="concat">
+							<operand operator="column" name="base"/>
+							<operand operator="constant" value="/"/>
+							<operand operator="column" name="node"/>
+						</expression>
+					</ref>
+					<ref foreignColumnName="extendedTitle">
+						<expression operator="concat">
+							<operand operator="column" name="base"/>
+							<operand operator="constant" value="/"/>
+							<operand operator="column" name="node"/>
+						</expression>
+					</ref>
+				</reference>
+			</value_mask>
+		</columnMask>
+	</column>
+	<column name="userRead">
+		<generated>substr,Line,1,1</generated>
+		<title>User Read</title>
+		<sortDisable/>
+	</column>
+	<column name="userWrite">
+		<generated>substr,Line,2,1</generated>
+		<title>User Write</title>
+		<sortDisable/>
+	</column>
+	<column name="userExecute">
+		<generated>substr,Line,3,1</generated>
+		<title>User Execute</title>
+		<sortDisable/>
+	</column>
+	<column name="groupRead">
+		<generated>substr,Line,4,1</generated>
+		<title>Group Read</title>
+		<sortDisable/>
+	</column>
+	<column name="groupWrite">
+		<generated>substr,Line,5,1</generated>
+		<title>Group Write</title>
+		<sortDisable/>
+	</column>
+	<column name="groupExecute">
+		<generated>substr,Line,6,1</generated>
+		<title>Group Execute</title>
+		<sortDisable/>
+	</column>
+	<column name="otherRead">
+		<generated>substr,Line,7,1</generated>
+		<title>Other Read</title>
+		<sortDisable/>
+	</column>
+	<column name="otherWrite">
+		<generated>substr,Line,8,1</generated>
+		<title>Other Write</title>
+		<sortDisable/>
+	</column>
+	<column name="otherExecute">
+		<generated>substr,Line,9,1</generated>
+		<title>Other Execute</title>
+		<sortDisable/>
+	</column>
+	<column name="Line">
+		<sqlName>Line</sqlName>
+		<title>Line</title>
+		<sortDisable/>
+	</column>
+</table>

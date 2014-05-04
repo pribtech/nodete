@@ -1,0 +1,222 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2009 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<command name="setIntegrity" title="Set Integrity">
+<![CDATA[
+>-SET--INTEGRITY----------------------------------------------->
+]]>
+	<text>SET INTEGRITY</text>
+
+<![CDATA[	
+          .-,----------.
+          V            |
+>--+-FOR----table-name-+--+-OFF--| access-mode-clause |--| cascade-clause |-+-+-><
+   |                      +-TO DATALINK RECONCILE PENDING-------------------+ |
+   |                      +-IMMEDIATE CHECKED--+-------------------+--------+ |
+   |                      |                    '-| check-options |-'        | |
+   |                      +-FULL ACCESS-------------------------------------+ |
+   |                      '-PRUNE-------------------------------------------' |
+   '-FOR--| table-unchecked-options |--IMMEDIATE UNCHECKED--------------------'
+]]>
+	<select>
+		<option default="true">
+			<text>FOR</text>
+			<repeatable>
+				<clauseReference name="table-name"/>
+			</repeatable>
+			<select>
+				<option default="true">
+					<text>OFF</text>
+					<clauseReference name="access-mode-clause"/>
+					<clauseReference name="cascade-clause"/>
+				</option> 
+				<option><text>TO DATALINK RECONCILE PENDING</text></option> 
+				<option>
+					<text>IMMEDIATE CHECKED</text>
+					<select>
+						<option default="true"></option>
+						<option><clauseReference name="check-options"/></option>
+					</select>
+				</option> 
+				<option><text>FULL ACCESS</text></option> 
+				<option><text>PRUNE</text></option> 
+			</select>
+			</option>
+		<option>
+			<text>FOR</text>
+			<clauseReference name="table-unchecked-options"/>
+			<text>IMMEDIATE UNCHECKED</text>
+		</option> 
+	</select>
+
+	<clause name="access-mode-clause">
+<![CDATA[	
+   .-NO ACCESS---.
+|--+-------------+----------------------------------------------|
+   '-READ ACCESS-'
+]]>
+		<select>
+			<option>
+				<text>NO ACCESS</text></option>
+			<option default="true"></option>
+			<option><text>READ ACCESS</text></option>
+		</select>
+ 	</clause>
+	<clause name="cascade-clause">
+<![CDATA[	
+   .-CASCADE IMMEDIATE--| to-descendent-types |-.
+|--+--------------------------------------------+---------------|
+   '-CASCADE DEFERRED---------------------------'
+]]>
+		<select>
+			<option>
+				<text>CASCADE IMMEDIATE</text>
+				<clauseReference name="to-descendent-types"/>
+			</option>
+			<option default="true"></option>
+			<option><text>CASCADE IMMEDIATE</text></option>
+		</select>
+ 	</clause>
+	<clause name="to-descendent-types">
+<![CDATA[	
+   .-TO ALL TABLES-------------------------.
+|--+---------------------------------------+--------------------|
+   |     .-,-----------------------------. |
+   |     V                               | |
+   '-TO----+-MATERIALIZED QUERY TABLES-+-+-'
+           +-FOREIGN KEY TABLES--------+
+           '-STAGING TABLES------------'
+]]>
+		<select>
+			<option><text>TO ALL TABLES</text></option>
+			<option default="true"></option>
+			<option>
+				<text>TO</text>
+				<repeatable>
+					<select>
+						<option default="true"><text>MATERIALIZED QUERY TABLES</text></option>
+						<option><text>FOREIGN KEY TABLES</text></option>
+						<option><text>STAGING TABLES</text></option>
+					</select>
+				</repeatable>
+			</option>
+ 		</select> 	</clause>
+	<clause name="check-options">
+<![CDATA[	
+|--*--| incremental-options |--*--+-----------------+----------->
+                                  '-FORCE GENERATED-'
+
+>--*--+-------+--*--+-------------+----------------------------->
+      '-PRUNE-'     '-FULL ACCESS-'
+
+>--*--+----------------------+----------------------------------|
+      '-| exception-clause |-'
+]]>
+		<clauseReference name="incremental-options"/>
+		<select>
+			<option default="true"></option>
+			<option><text>FORCE GENERATED</text></option>
+ 		</select>
+ 		<br/>
+		<select>
+			<option default="true"></option>
+			<option><text>PRUNE</text></option>
+ 		</select>
+		<select>
+			<option default="true"></option>
+			<option><text>FULL ACCESS</text></option>
+ 		</select>
+		<select>
+			<option default="true"></option>
+			<option><clauseReference name="exception-clause"/></option>
+ 		</select>
+ 	</clause>
+	<clause name="incremental-options">
+<![CDATA[	
+|--+-----------------+------------------------------------------|
+   +-INCREMENTAL-----+
+   '-NOT INCREMENTAL-'
+]]>
+		<select>
+			<option default="true"></option>
+			<option><text>INCREMENTAL</text></option>
+			<option><text>NOT INCREMENTAL</text></option>
+ 		</select>
+ 	</clause>
+	<clause name="exception-clause">
+<![CDATA[	
+                  .-,-----------------------.
+                  V                         |
+|--FOR EXCEPTION----| in-table-use-clause |-+-------------------|
+]]>
+		<text>FOR EXCEPTION</text>
+		<repeatable>
+			<clauseReference name="in-table-use-clause"/>
+		</repeatable>
+ 	</clause>
+ 	<clause name="in-table-use-clause">
+<![CDATA[	
+|--IN--table-name--USE--table-name------------------------------|
+]]>
+		<text>IN</text><clauseReference name="table-name"/><text>USE</text><clauseReference name="table-name"/>
+ 	</clause>
+	<clause name="table-unchecked-options">
+<![CDATA[	
+   .-,--------------------------------------------------.
+   V                                                    |
+|----table-name--| integrity-options |--+-------------+-+-------|
+                                        '-FULL ACCESS-'
+
+]]>
+		<repeatable>
+			<clauseReference name="table-name"/>
+			<clauseReference name="integrity-options"/>
+ 			<select>
+				<option default="true"></option>
+				<option><text>FULL ACCESS</text></option>
+ 			</select>
+		</repeatable>
+ 	</clause>
+ 	<clause name="integrity-options">
+<![CDATA[	
+|--+-ALL--------------------------------+-----------------------|
+   | .-,------------------------------. |
+   | V                                | |
+   '---+-FOREIGN KEY----------------+-+-'
+       +-CHECK----------------------+
+       +-DATALINK RECONCILE PENDING-+
+       +-MATERIALIZED QUERY---------+
+       +-GENERATED COLUMN-----------+
+       '-STAGING--------------------'
+]]>
+		<select>
+			<option default="true"><text>ALL</text></option>
+		 	<option>
+		 		<repeatable>
+		 			<select>
+						<option default="true"><text>FOREIGN KEY</text></option>
+						<option><text>CHECK</text></option>
+						<option><text>DATALINK RECONCILE PENDING</text></option>
+						<option><text>MATERIALIZED QUERY</text></option>
+						<option><text>GENERATED COLUMN</text></option>
+						<option><text>STAGING</text></option>
+		 			</select>
+		 		</repeatable>
+		 	</option>
+		</select>
+ 	</clause>
+</command>

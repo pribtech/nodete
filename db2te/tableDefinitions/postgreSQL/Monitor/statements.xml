@@ -1,0 +1,259 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2013 All rights reserved.
+  
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+<table name="PgStatStatements">
+	<sqlName>public.pg_stat_statements</sqlName>
+	<singularName>Statements</singularName>
+	<pluralName>Statements</pluralName>
+	<description/>
+	<output>
+		<type name="DDL" destination="" title="" generator=""/>
+	</output>
+	<orderBy name="avg_time" direction="D"/>
+	<displayColumns>
+		<col type="column" name="user"/>
+		<col type="column" name="databaseName"/>
+		<col type="column" name="calls"/>
+		<col type="column" name="avg_time"/>
+		<col type="column" name="avg_rows"/>
+		<col type="column" name="hit_ratio"/>
+		<col type="reference" name="explainText"/>
+		<col type="column" name="query"/>
+		<col type="column" name="total_time"/>
+		<col type="column" name="rows"/>
+		<col type="column" name="shared_blks_hit"/>
+		<col type="column" name="shared_blks_read"/>
+		<col type="column" name="shared_blks_dirtied"/>
+		<col type="column" name="shared_blks_written"/>
+		<col type="column" name="local_blks_hit"/>
+		<col type="column" name="local_blks_read"/>
+		<col type="column" name="local_blks_dirtied"/>
+		<col type="column" name="local_blks_written"/>
+		<col type="column" name="temp_blks_read"/>
+		<col type="column" name="temp_blks_written"/>
+		<col type="column" name="blk_read_time"/>
+		<col type="column" name="blk_write_time"/>
+	</displayColumns>
+	<column name="userid">
+		<sqlName>userid</sqlName>
+		<title>User Id</title>
+		<type>n</type>
+	</column>
+	<column name="user">
+		<sqlName>(select usename from pg_user t where t.usesysid=userid)</sqlName>
+		<title>User</title>
+	</column>
+	<column name="dbid">
+		<sqlName>dbid</sqlName>
+		<title>DB Id</title>
+		<type>n</type>
+	</column>
+	<column name="databaseName">
+		<sqlName>(select datname from pg_database d where d.oid=dbid)</sqlName>
+		<title>Database</title>
+	</column>
+	<column name="query">
+		<sqlName>query</sqlName>
+		<title>Query</title>
+		<type>s</type>
+	</column>
+	<column name="calls">
+		<sqlName>calls</sqlName>
+		<title>Calls</title>
+		<type>n</type>
+	</column>
+	<column name="total_time">
+		<sqlName>total_time</sqlName>
+		<title>Total Time (ms)</title>
+		<type>n</type>
+		<formatNumber separator="," toFixedVal="1"/> 
+	</column>
+	<column name="avg_time">
+		<sqlName>total_time/(case calls when 0 then 1 else calls end)</sqlName>
+		<title>Avg Time (ms)</title>
+		<type>n</type>
+		<formatNumber separator="," toFixedVal="1"/> 
+		<style>
+			<option gt='1000.0' style='ERROR'/>
+			<option gt='100.0' style='WARNING'/>
+		</style>
+	</column>
+	<column name="rows">
+		<sqlName>rows</sqlName>
+		<title>Rows</title>
+		<type>n</type>
+		<formatNumber separator=","/> 
+	</column>
+	<column name="avg_rows">
+		<sqlName>rows/(case calls when 0 then 1 else calls end)</sqlName>
+		<title>Avg Rows</title>
+		<type>n</type>
+		<formatNumber separator="," toFixedVal="1"/> 
+		<style>
+			<option gt='10000.0' style='ERROR'/>
+			<option gt='1000.0' style='WARNING'/>
+		</style>
+	</column>
+	<column name="total_iops">
+		<sqlName>shared_blks_read+shared_blks_written+local_blks_read+local_blks_written+temp_blks_read+temp_blks_written</sqlName>
+		<title>IOPs</title>
+		<type>n</type>
+		<formatNumber separator="," toFixedVal="1"/> 
+	</column>
+	<column name="iops_per_rows">
+		<generated>normalize,total_iops,rows</generated>
+		<title>IOPs/Row</title>
+		<type>n</type>
+		<formatNumber separator="," toFixedVal="1"/> 
+		<style>
+			<option gt='10' style='ERROR'/>
+			<option gt='1' style='WARNING'/>
+		</style>
+	</column>
+	<column name="total_hits">
+		<sqlName>shared_blks_hit+local_blks_hit</sqlName>
+		<title>Fetches</title>
+		<type>n</type>
+		<formatNumber separator="," toFixedVal="1"/> 
+	</column>
+	<column name="total_fetches">
+		<sqlName>shared_blks_read+shared_blks_written+local_blks_read+local_blks_written+shared_blks_hit+local_blks_hit</sqlName>
+		<title>Fetches</title>
+		<type>n</type>
+		<formatNumber separator="," toFixedVal="1"/> 
+	</column>
+	<column name="hit_ratio">
+		<generated>percentage,total_hits,total_fetches</generated>
+		<title>Hit Ratio</title>
+		<type>bg</type>
+		<graphattributes flipColor="y"/>	
+	</column>
+	<column name="shared_blks_hit">
+		<sqlName>shared_blks_hit</sqlName>
+		<title>Shared Hits</title>
+		<type>n</type>
+		<formatNumber separator=","/> 
+	</column>
+	<column name="shared_blks_read">
+		<sqlName>shared_blks_read</sqlName>
+		<title>Shared Reads</title>
+		<type>n</type>
+		<formatNumber separator=","/> 
+	</column>
+	<column name="shared_blks_dirtied">
+		<sqlName>shared_blks_dirtied</sqlName>
+		<title>Shared Dirtied</title>
+		<type>n</type>
+		<formatNumber separator=","/> 
+	</column>
+	<column name="shared_blks_written">
+		<sqlName>shared_blks_written</sqlName>
+		<title>Shared Writes</title>
+		<type>n</type>
+		<formatNumber separator=","/> 
+	</column>
+	<column name="local_blks_hit">
+		<sqlName>local_blks_hit</sqlName>
+		<title>Local Hits</title>
+		<type>n</type>
+		<formatNumber separator=","/> 
+	</column>
+	<column name="local_blks_read">
+		<sqlName>local_blks_read</sqlName>
+		<title>Local Reads</title>
+		<type>n</type>
+		<formatNumber separator=","/> 
+	</column>
+	<column name="local_blks_dirtied">
+		<sqlName>local_blks_dirtied</sqlName>
+		<title>Local Dirtied</title>
+		<type>n</type>
+		<formatNumber separator=","/> 
+	</column>
+	<column name="local_blks_written">
+		<sqlName>local_blks_written</sqlName>
+		<title>Local Writes</title>
+		<type>n</type>
+		<formatNumber separator=","/> 
+	</column>
+	<column name="temp_blks_read">
+		<sqlName>temp_blks_read</sqlName>
+		<title>Temp Reads</title>
+		<type>n</type>
+		<formatNumber separator=","/> 
+	</column>
+	<column name="temp_blks_written">
+		<sqlName>temp_blks_written</sqlName>
+		<title>Temp Writes</title>
+		<type>n</type>
+		<formatNumber separator=","/> 
+	</column>
+	<column name="blk_read_time">
+		<sqlName>blk_read_time</sqlName>
+		<title>Block Read Time</title>
+		<type>n</type>
+		<formatNumber separator=","/> 
+	</column>
+	<column name="blk_write_time">
+		<sqlName>blk_write_time</sqlName>
+		<title>Block Write Time</title>
+		<type>n</type>
+		<formatNumber separator=","/> 
+	</column>
+	<reference name="explainText">
+		<title>Explain</title>
+		<reftype>table</reftype>
+		<refvalue>postgreSQL/monitor/explainText</refvalue>
+		<icon>images/icon-link-calendar.gif</icon>								
+		<ref foreign_column_name="statement">
+			<local_column_name>query</local_column_name>
+		</ref>
+	</reference>
+	<action name="Explain">
+		<title>Explain Diagram</title>
+		<icon>images/icon-histo.gif</icon>   
+    	<actionScript>
+    		<task>
+				<loadPage>
+					<pageWindow target="_blank" windowStage="?CALLING_STAGE?">
+						<panel name="main" PrimaryContainer="true">
+							<link type="action" target="_self" window="_self" connectionRequired="y">
+								<parameterList>
+									<parameter name="action">chartNodal</parameter>
+									<parameter name="$chartTitle">Explain SQL</parameter>
+									<parameter name="$sourceType">SQL</parameter>
+									<parameter name="$source">explain (VERBOSE TRUE ,COSTS TRUE, FORMAT XML) ?query?</parameter>
+									<parameter name="$transform">XSL/postgreSQL/explain2Summarised.xsl</parameter>
+									<parameter name="$greatestCostAttribute">totalCost</parameter>
+									<parameter name="$nodeControl">
+<![CDATA[
+<nodeControl>
+	<node name='default' textSizeAttribute='5'/>
+	<node name='table' colour='#99CCFF' shape='table'/>
+	<node name='output' colour='#CC66FF' shape='operator' hideAble='true' hide='true'/>	
+</nodeControl>
+]]>
+									</parameter>
+								</parameterList>
+							</link>				
+						</panel>
+					</pageWindow>
+				</loadPage>
+			</task>
+    	</actionScript>
+    </action>
+</table>

@@ -1,0 +1,561 @@
+<!--
+  Author: Peter Prib
+  
+  Copyright Independent Systems Integrators Pty Ltd 2008 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+<table name="monTablespace">
+	<sql_name>monTablespace</sql_name>
+	<singular_name>Monitored Table Space</singular_name>
+	<plural_name>Monitored Table Spaces</plural_name>
+	<inlinequery>
+<![CDATA[
+select
+    CASE WHEN logical_reads > 0
+     THEN DEC((1 - (FLOAT(physical_reads) / FLOAT(logical_reads))) * 100,5,2)
+     ELSE NULL
+    END AS HIT_RATIO
+    ,a.*
+from (
+SELECT 
+    pool_data_l_reads + pool_temp_data_l_reads +
+    pool_index_l_reads + pool_temp_index_l_reads +
+    pool_xda_l_reads + pool_temp_xda_l_reads as logical_reads
+    ,pool_data_p_reads + pool_temp_data_p_reads +
+    pool_index_p_reads + pool_temp_index_p_reads +
+    pool_xda_p_reads + pool_temp_xda_p_reads as physical_reads
+    ,t.*
+FROM TABLE(MON_GET_TABLESPACE('',-2)) AS t
+) a
+]]>
+	</inlinequery>
+	<messages><SQL0551N>Security issue. Please install "Monitoring Switches/Security" in Tools -> Installed Components</SQL0551N></messages>
+	<description>
+	You can use this view to 
+	&lt;a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.admin.mon.doc/doc/c0001138.html?noframes=true');"&gt;monitor&lt;/a&gt;
+	tablespaces.
+	The view retrieves information using a 	
+  &lt;a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.sql.rtn.doc/doc/c0053963.html?noframes=true');"&gt;monitor table function&lt;/a&gt;
+  introduced in DB2 9.7.
+  Each row displays metrics for a single tablespace returned by the
+	&lt;a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.sql.rtn.doc/doc/r0053943.html?noframes=true');"&gt;MON_GET_TABLESPACE&lt;/a&gt;		
+	table function.
+	This view is not available for databases prior to DB2 9.7.
+	</description>	
+	<order_by_index name="PHYSICAL_READS" direction="D"/>
+	<display_columns>
+		<col type="reference" name="monTable"/>
+		<col type="reference" name="monContainer"/>
+		<col type="column" name="HIT_RATIO"/>
+		<col type="column" name="LOGICAL_READS"/>
+		<col type="column" name="PHYSICAL_READS"/>
+		<col type="column" name="TBSP_NAME"/>
+		<col type="column" name="MEMBER"/>
+		<col type="column" name="TBSP_REBALANCER_MODE"/>
+		<col type="column" name="TBSP_USING_AUTO_STORAGE"/>
+		<col type="column" name="TBSP_AUTO_RESIZE_ENABLED"/>
+		<col type="column" name="DIRECT_READS"/>
+		<col type="column" name="DIRECT_READ_REQS"/>
+		<col type="column" name="DIRECT_WRITES"/>
+		<col type="column" name="DIRECT_WRITE_REQS"/>
+		<col type="column" name="POOL_DATA_L_READS"/>
+		<col type="column" name="POOL_TEMP_DATA_L_READS"/>
+		<col type="column" name="POOL_XDA_L_READS"/>
+		<col type="column" name="POOL_TEMP_XDA_L_READS"/>
+		<col type="column" name="POOL_INDEX_L_READS"/>
+		<col type="column" name="POOL_TEMP_INDEX_L_READS"/>
+		<col type="column" name="POOL_DATA_P_READS"/>
+		<col type="column" name="POOL_TEMP_DATA_P_READS"/>
+		<col type="column" name="POOL_XDA_P_READS"/>
+		<col type="column" name="POOL_TEMP_XDA_P_READS"/>
+		<col type="column" name="POOL_INDEX_P_READS"/>
+		<col type="column" name="POOL_TEMP_INDEX_P_READS"/>
+		<col type="column" name="POOL_DATA_WRITES"/>
+		<col type="column" name="POOL_XDA_WRITES"/>
+		<col type="column" name="POOL_INDEX_WRITES"/>
+		<col type="column" name="DIRECT_READ_TIME"/>
+		<col type="column" name="DIRECT_WRITE_TIME"/>
+		<col type="column" name="POOL_READ_TIME"/>
+		<col type="column" name="POOL_WRITE_TIME"/>
+		<col type="column" name="POOL_ASYNC_DATA_READS"/>
+		<col type="column" name="POOL_ASYNC_DATA_READ_REQS"/>
+		<col type="column" name="POOL_ASYNC_DATA_WRITES"/>
+		<col type="column" name="POOL_ASYNC_INDEX_READS"/>
+		<col type="column" name="POOL_ASYNC_INDEX_READ_REQS"/>
+		<col type="column" name="POOL_ASYNC_INDEX_WRITES"/>
+		<col type="column" name="POOL_ASYNC_XDA_READS"/>
+		<col type="column" name="POOL_ASYNC_XDA_READ_REQS"/>
+		<col type="column" name="POOL_ASYNC_XDA_WRITES"/>
+		<col type="column" name="VECTORED_IOS"/>
+		<col type="column" name="PAGES_FROM_VECTORED_IOS"/>
+		<col type="column" name="BLOCK_IOS"/>
+		<col type="column" name="PAGES_FROM_BLOCK_IOS"/>
+		<col type="column" name="UNREAD_PREFETCH_PAGES"/>
+		<col type="column" name="FILES_CLOSED"/>
+		<col type="column" name="TBSP_STATE"/>
+		<col type="column" name="TBSP_USED_PAGES"/>
+		<col type="column" name="TBSP_FREE_PAGES"/>
+		<col type="column" name="TBSP_USABLE_PAGES"/>
+		<col type="column" name="TBSP_TOTAL_PAGES"/>
+		<col type="column" name="TBSP_PENDING_FREE_PAGES"/>
+		<col type="column" name="TBSP_PAGE_TOP"/>
+		<col type="column" name="TBSP_MAX_PAGE_TOP"/>
+		<col type="column" name="RECLAIMABLE_SPACE_ENABLED"/>
+		<col type="column" name="AUTO_STORAGE_HYBRID"/>
+		<col type="column" name="TBSP_PATHS_DROPPED"/>
+	</display_columns>
+	<reference name="monContainer">
+		<c_title>Monitored Containers</c_title>
+		<reftype>table</reftype>
+		<refvalue>Monitor/monContainer</refvalue>
+		<icon>images/icon-tbs-cont.gif</icon>
+		<ref foreign_column_name="TBSP_ID">
+			<local_column_name>TBSP_ID</local_column_name>
+		</ref>
+	</reference>
+	<reference name="monTable">
+		<c_title>Monitored Tables</c_title>
+		<reftype>table</reftype>
+		<refvalue>Monitor/monTable</refvalue>
+		<icon>images/icon-link-calendar.gif</icon>
+		<ref foreign_column_name="TBSP_ID">
+			<local_column_name>TBSP_ID</local_column_name>
+		</ref>
+	</reference>
+	<column name="HIT_RATIO">
+		<c_sql_name>HIT_RATIO</c_sql_name>
+		<c_title>Hit Ratio</c_title>
+		<c_drill>n</c_drill>
+		<c_presentation>bg</c_presentation>
+		<graphattributes flipColor="y"/>
+	</column>
+	<column name="LOGICAL_READS">
+		<c_sql_name>LOGICAL_READS</c_sql_name>
+		<c_title>Logical Reads</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="PHYSICAL_READS">
+		<c_sql_name>PHYSICAL_READS</c_sql_name>
+		<c_title>Physical Reads</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="TBSP_NAME">
+		<c_sql_name>TBSP_NAME</c_sql_name>
+		<c_title>Name</c_title>
+		<c_presentation/>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="TBSP_ID">
+		<c_sql_name>TBSP_ID</c_sql_name>
+		<c_title>Tablespace Id.</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+		<c_pkey>p</c_pkey>
+	</column>
+	<column name="MEMBER">
+		<c_sql_name>MEMBER</c_sql_name>
+		<c_title>Member</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+		<c_pkey>p</c_pkey>
+	</column>
+	<column name="TBSP_TYPE">
+		<c_sql_name>TBSP_TYPE</c_sql_name>
+		<c_title>Type</c_title>
+		<c_presentation/>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="TBSP_CONTENT_TYPE">
+		<c_sql_name>TBSP_CONTENT_TYPE</c_sql_name>
+		<c_title>Content Type</c_title>
+		<c_presentation/>
+		<c_drill>y</c_drill>
+   	   	<c_column_mask>
+			<value_mask value="ANY"><mask>Regular</mask></value_mask>
+			<value_mask value="LARGE"><mask>Large</mask></value_mask>
+			<value_mask value="SYSTEMP"><mask>System Temporary</mask></value_mask>
+			<value_mask value="USRTEMP"><mask>User Temporary</mask></value_mask>
+	   	</c_column_mask>	
+	</column>
+	<column name="TBSP_PAGE_SIZE">
+		<c_sql_name>TBSP_PAGE_SIZE</c_sql_name>
+		<c_title>Page Size</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="TBSP_EXTENT_SIZE">
+		<c_sql_name>TBSP_EXTENT_SIZE</c_sql_name>
+		<c_title>Extent Size</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="TBSP_PREFETCH_SIZE">
+		<c_sql_name>TBSP_PREFETCH_SIZE</c_sql_name>
+		<c_title>Prefetch Size</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+		<c_column_mask>
+			<value_mask value="-1"><mask>Automatic</mask></value_mask>
+		</c_column_mask>
+	</column>
+	<column name="TBSP_CUR_POOL_ID">
+		<c_sql_name>TBSP_CUR_POOL_ID</c_sql_name>
+		<c_title>Bufferpool Id.</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="TBSP_NEXT_POOL_ID">
+		<c_sql_name>TBSP_NEXT_POOL_ID</c_sql_name>
+		<c_title>Next Bufferpool Id.</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="FS_CACHING">
+		<c_sql_name>FS_CACHING</c_sql_name>
+		<c_title>File System Caching</c_title>
+		<c_presentation/>
+		<c_drill>n</c_drill>
+		<c_column_mask_file>masks/bitYesNo.xml</c_column_mask_file>
+	</column>
+	<column name="TBSP_REBALANCER_MODE">
+		<c_sql_name>TBSP_REBALANCER_MODE</c_sql_name>
+		<c_title>Rebalance Mode</c_title>
+		<c_presentation/>
+		<c_drill>y</c_drill>
+   	   	<c_column_mask>
+				<value_mask value="NO_REBAL"><mask></mask></value_mask>
+	   	</c_column_mask>	
+	</column>
+	<column name="TBSP_USING_AUTO_STORAGE">
+		<c_sql_name>TBSP_USING_AUTO_STORAGE</c_sql_name>
+		<c_title>Using Auto Storage</c_title>
+		<c_presentation/>
+		<c_drill>n</c_drill>
+		<c_column_mask_file>masks/bitYesNo.xml</c_column_mask_file>
+	</column>
+	<column name="TBSP_AUTO_RESIZE_ENABLED">
+		<c_sql_name>TBSP_AUTO_RESIZE_ENABLED</c_sql_name>
+		<c_title>Auto Resize</c_title>
+		<c_presentation/>
+		<c_drill>n</c_drill>
+		<c_column_mask_file>masks/bitYesNo.xml</c_column_mask_file>
+	</column>
+	<column name="DIRECT_READS">
+		<c_sql_name>DIRECT_READS</c_sql_name>
+		<c_title>Direct Reads</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="DIRECT_READ_REQS">
+		<c_sql_name>DIRECT_READ_REQS</c_sql_name>
+		<c_title>Direct Read Requests</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="DIRECT_WRITES">
+		<c_sql_name>DIRECT_WRITES</c_sql_name>
+		<c_title>Direct Writes</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="DIRECT_WRITE_REQS">
+		<c_sql_name>DIRECT_WRITE_REQS</c_sql_name>
+		<c_title>Direct Write Requests</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="POOL_DATA_L_READS">
+		<c_sql_name>POOL_DATA_L_READS</c_sql_name>
+		<c_title>Pool Data Logical Reads</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="POOL_TEMP_DATA_L_READS">
+		<c_sql_name>POOL_TEMP_DATA_L_READS</c_sql_name>
+		<c_title>Pool Temp. Data Logical Reads</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="POOL_XDA_L_READS">
+		<c_sql_name>POOL_XDA_L_READS</c_sql_name>
+		<c_title>Pool XDA Logical Reads</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="POOL_TEMP_XDA_L_READS">
+		<c_sql_name>POOL_TEMP_XDA_L_READS</c_sql_name>
+		<c_title>Pool Temp. XDA Logical Reads</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="POOL_INDEX_L_READS">
+		<c_sql_name>POOL_INDEX_L_READS</c_sql_name>
+		<c_title>Pool Index Logical Reads</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="POOL_TEMP_INDEX_L_READS">
+		<c_sql_name>POOL_TEMP_INDEX_L_READS</c_sql_name>
+		<c_title>Pool Temp. Index Logical Reads</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="POOL_DATA_P_READS">
+		<c_sql_name>POOL_DATA_P_READS</c_sql_name>
+		<c_title>Pool Data Physical Reads</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="POOL_TEMP_DATA_P_READS">
+		<c_sql_name>POOL_TEMP_DATA_P_READS</c_sql_name>
+		<c_title>Pool Temp. Data Physical Reads</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="POOL_XDA_P_READS">
+		<c_sql_name>POOL_XDA_P_READS</c_sql_name>
+		<c_title>Pool XDA Physical Reads</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="POOL_TEMP_XDA_P_READS">
+		<c_sql_name>POOL_TEMP_XDA_P_READS</c_sql_name>
+		<c_title>Pool Temp. XDA Physical Reads</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="POOL_INDEX_P_READS">
+		<c_sql_name>POOL_INDEX_P_READS</c_sql_name>
+		<c_title>Pool Index Physical Reads</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="POOL_TEMP_INDEX_P_READS">
+		<c_sql_name>POOL_TEMP_INDEX_P_READS</c_sql_name>
+		<c_title>Pool temp. Index Physical Reads</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="POOL_DATA_WRITES">
+		<c_sql_name>POOL_DATA_WRITES</c_sql_name>
+		<c_title>Pool Data Writes</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="POOL_XDA_WRITES">
+		<c_sql_name>POOL_XDA_WRITES</c_sql_name>
+		<c_title>Pool XDA Writes</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="POOL_INDEX_WRITES">
+		<c_sql_name>POOL_INDEX_WRITES</c_sql_name>
+		<c_title>Pool Index Writes</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="DIRECT_READ_TIME">
+		<c_sql_name>DIRECT_READ_TIME</c_sql_name>
+		<c_title>Direct Read Time</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="DIRECT_WRITE_TIME">
+		<c_sql_name>DIRECT_WRITE_TIME</c_sql_name>
+		<c_title>Direct Write Time</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="POOL_READ_TIME">
+		<c_sql_name>POOL_READ_TIME</c_sql_name>
+		<c_title>pool Read Time</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="POOL_WRITE_TIME">
+		<c_sql_name>POOL_WRITE_TIME</c_sql_name>
+		<c_title>Pool Write Time</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="POOL_ASYNC_DATA_READS">
+		<c_sql_name>POOL_ASYNC_DATA_READS</c_sql_name>
+		<c_title>Pool ASync Data Reads</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="POOL_ASYNC_DATA_READ_REQS">
+		<c_sql_name>POOL_ASYNC_DATA_READ_REQS</c_sql_name>
+		<c_title>Pool ASync Data Read Requests</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="POOL_ASYNC_DATA_WRITES">
+		<c_sql_name>POOL_ASYNC_DATA_WRITES</c_sql_name>
+		<c_title>Pool ASync Data Writes</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="POOL_ASYNC_INDEX_READS">
+		<c_sql_name>POOL_ASYNC_INDEX_READS</c_sql_name>
+		<c_title>Pool ASync Index Reads</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="POOL_ASYNC_INDEX_READ_REQS">
+		<c_sql_name>POOL_ASYNC_INDEX_READ_REQS</c_sql_name>
+		<c_title>Pool ASync Index Read Requests</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="POOL_ASYNC_INDEX_WRITES">
+		<c_sql_name>POOL_ASYNC_INDEX_WRITES</c_sql_name>
+		<c_title>Pool ASync Index Writes</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="POOL_ASYNC_XDA_READS">
+		<c_sql_name>POOL_ASYNC_XDA_READS</c_sql_name>
+		<c_title>Pool ASync XDA Reads</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="POOL_ASYNC_XDA_READ_REQS">
+		<c_sql_name>POOL_ASYNC_XDA_READ_REQS</c_sql_name>
+		<c_title>Pool ASync XDA Read Requests</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="POOL_ASYNC_XDA_WRITES">
+		<c_sql_name>POOL_ASYNC_XDA_WRITES</c_sql_name>
+		<c_title>Pool ASync XDA Writes</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="VECTORED_IOS">
+		<c_sql_name>VECTORED_IOS</c_sql_name>
+		<c_title>Vectored IOs</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="PAGES_FROM_VECTORED_IOS">
+		<c_sql_name>PAGES_FROM_VECTORED_IOS</c_sql_name>
+		<c_title>Pages From Vectored IOs</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="BLOCK_IOS">
+		<c_sql_name>BLOCK_IOS</c_sql_name>
+		<c_title>Block IOs</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="PAGES_FROM_BLOCK_IOS">
+		<c_sql_name>PAGES_FROM_BLOCK_IOS</c_sql_name>
+		<c_title>Pages From Block IOs</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="UNREAD_PREFETCH_PAGES">
+		<c_sql_name>UNREAD_PREFETCH_PAGES</c_sql_name>
+		<c_title>Undread Prefetch Pages</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="FILES_CLOSED">
+		<c_sql_name>FILES_CLOSED</c_sql_name>
+		<c_title>Files Closed</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="TBSP_STATE">
+		<c_sql_name>TBSP_STATE</c_sql_name>
+		<c_title>State</c_title>
+		<c_presentation/>
+		<c_drill>y</c_drill>
+		<column_mask_file>masks/tablespaceState.xml</column_mask_file>
+	</column>
+	<column name="TBSP_USED_PAGES">
+		<c_sql_name>TBSP_USED_PAGES</c_sql_name>
+		<c_title>Pages Used</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="TBSP_FREE_PAGES">
+		<c_sql_name>TBSP_FREE_PAGES</c_sql_name>
+		<c_title>Pages Free</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="TBSP_USABLE_PAGES">
+		<c_sql_name>TBSP_USABLE_PAGES</c_sql_name>
+		<c_title>Pages Usable</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="TBSP_TOTAL_PAGES">
+		<c_sql_name>TBSP_TOTAL_PAGES</c_sql_name>
+		<c_title>Total Pages</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="TBSP_PENDING_FREE_PAGES">
+		<c_sql_name>TBSP_PENDING_FREE_PAGES</c_sql_name>
+		<c_title>Pages Free Pending</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="TBSP_PAGE_TOP">
+		<c_sql_name>TBSP_PAGE_TOP</c_sql_name>
+		<c_title>Page Top</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="TBSP_MAX_PAGE_TOP">
+		<c_sql_name>TBSP_MAX_PAGE_TOP</c_sql_name>
+		<c_title>Page Top Max.</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="RECLAIMABLE_SPACE_ENABLED">
+		<c_sql_name>RECLAIMABLE_SPACE_ENABLED</c_sql_name>
+		<c_title>Reclaimable Space Enabled</c_title>
+		<c_presentation/>
+		<c_drill>n</c_drill>
+		<c_column_mask_file>masks/bitYesNo.xml</c_column_mask_file>
+	</column>
+	<column name="AUTO_STORAGE_HYBRID">
+		<c_sql_name>AUTO_STORAGE_HYBRID</c_sql_name>
+		<c_title>Auto Storage Hybrid</c_title>
+		<c_presentation/>
+		<c_drill>n</c_drill>
+		<c_column_mask_file>masks/bitYesNo.xml</c_column_mask_file>
+	</column>
+	<column name="TBSP_PATHS_DROPPED">
+		<c_sql_name>TBSP_PATHS_DROPPED</c_sql_name>
+		<c_title>Paths Dropped</c_title>
+		<c_presentation/>
+		<c_drill>n</c_drill>
+		<c_column_mask_file>masks/bitYesNo.xml</c_column_mask_file>
+	</column>
+	<column name="ADDITIONAL_DETAILS">
+		<c_sql_name>'ADDITIONAL_DETAILS reserved for future use'</c_sql_name>
+		<c_title>Additional Details</c_title>
+		<c_presentation>l</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+</table>

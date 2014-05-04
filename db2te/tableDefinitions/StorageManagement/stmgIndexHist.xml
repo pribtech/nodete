@@ -1,0 +1,199 @@
+<!--
+  Author: Peter Prib
+  
+  Copyright Independent Systems Integrators Pty Ltd 2008 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+<table name="stmgIndexHist">
+	<sql_name>stmgIndexHist</sql_name>
+	<singular_name>Storage Index History</singular_name>
+	<plural_name>Storage Indices History</plural_name>
+	<description />
+	<rows_per_page>50</rows_per_page>
+	<inlinequery>
+<![CDATA[
+	select s.*,obj_name ,obj_schema,ts_name
+	from SYSTOOLS.STMG_INDEX s
+	join systools.stmg_object o
+		on o.obj_id=s.obj_id
+		and o.obj_type=5
+		and o.stmg_timestamp=s.stmg_timestamp
+]]></inlinequery>
+	<order_by_index name="obj_schema" direction="A"/>
+	<order_by_index name="obj_name" direction="A"/>
+	<order_by_index name="ts_name" direction="A"/>
+	<order_by_index name="stmg_timestamp" direction="D"/>
+	<display_columns>
+		<col type="column" name="stmg_timestamp" />
+		<col type="column" name="obj_schema" />
+		<col type="column" name="obj_name" />
+		<col type="column" name="ts_name" />
+		<col type="column" name="tb_schema" />
+		<col type="column" name="tb_name" />
+		<col type="column" name="estimated_size" />
+		<col type="column" name="nleaf" />
+		<col type="column" name="nlevels" />
+		<col type="column" name="firstkeycard" />
+		<col type="column" name="first2keycard" />
+		<col type="column" name="first3keycard" />
+		<col type="column" name="first4keycard" />
+		<col type="column" name="fullkeycard" />
+		<col type="column" name="clusterratio" />
+		<col type="column" name="clusterfactor" />
+		<col type="column" name="sequential_pages" />
+		<col type="column" name="density" />
+	</display_columns>
+	<column name="stmg_timestamp">
+		<c_sql_name>STMG_TIMESTAMP</c_sql_name>
+		<c_title>Timestamp</c_title>
+		<c_presentation>s</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="obj_schema">
+		<c_sql_name>OBJ_SCHEMA</c_sql_name>
+		<c_title>Schema</c_title>
+		<c_presentation>s</c_presentation>
+		<c_drill>y</c_drill>
+        <c_pkey>p</c_pkey>
+	</column>
+	<column name="obj_name">
+		<c_sql_name>OBJ_NAME</c_sql_name>
+		<c_title>Name</c_title>
+		<c_presentation>s</c_presentation>
+		<c_drill>y</c_drill>
+        <c_pkey>p</c_pkey>
+	</column>
+	<column name="ts_name">
+		<c_sql_name>TS_NAME</c_sql_name>
+		<c_title>Tablespace</c_title>
+		<c_presentation>s</c_presentation>
+		<c_drill>y</c_drill>
+        <c_pkey>p</c_pkey>
+	</column>
+	<column name="obj_id">
+		<c_sql_name>OBJ_ID</c_sql_name>
+		<c_title>Object Id.</c_title>
+		<c_presentation>s</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="complete_timestamp">
+		<c_sql_name>COMPLETE_TIMESTAMP</c_sql_name>
+		<c_title>Ccomplete Timestamp</c_title>
+		<c_presentation>s</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="dbpg_name">
+		<c_sql_name>DBPG_NAME</c_sql_name>
+		<c_title>DB Partition Group</c_title>
+		<c_presentation>s</c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="tb_schema">
+		<c_sql_name>TB_SCHEMA</c_sql_name>
+		<c_title>Table Schema</c_title>
+		<c_presentation>s</c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="tb_name">
+		<c_sql_name>TB_NAME</c_sql_name>
+		<c_title>Table Name</c_title>
+		<c_presentation>s</c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="colcount">
+		<c_sql_name>COLCOUNT</c_sql_name>
+		<c_title>Column Count</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="estimated_size">
+		<c_sql_name>ESTIMATED_SIZE</c_sql_name>
+		<c_title>Estimated Size</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="nleaf">
+		<c_sql_name>NLEAF</c_sql_name>
+		<c_title>No. Leafs</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="nlevels">
+		<c_sql_name>NLEVELS</c_sql_name>
+		<c_title>No. Levels</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="firstkeycard">
+		<c_sql_name>FIRSTKEYCARD</c_sql_name>
+		<c_title>First Key Cardinality</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="first2keycard">
+		<c_sql_name>FIRST2KEYCARD</c_sql_name>
+		<c_title>First 2 Key Cardinality</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="first3keycard">
+		<c_sql_name>FIRST3KEYCARD</c_sql_name>
+		<c_title>First 3 Key Cardinality</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="first4keycard">
+		<c_sql_name>FIRST4KEYCARD</c_sql_name>
+		<c_title>First 4 Key Cardinality</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="fullkeycard">
+		<c_sql_name>FULLKEYCARD</c_sql_name>
+		<c_title>Full Key Cardinality</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="clusterratio">
+		<c_sql_name>CLUSTERRATIO</c_sql_name>
+		<c_title>Cluster Ratio</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="clusterfactor">
+		<c_sql_name>CLUSTERFACTOR</c_sql_name>
+		<c_title>Cluster Factor</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="sequential_pages">
+		<c_sql_name>SEQUENTIAL_PAGES</c_sql_name>
+		<c_title>Sequential Pages</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="density">
+		<c_sql_name>DENSITY</c_sql_name>
+		<c_title>Density</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="remarks">
+		<c_sql_name>REMARKS</c_sql_name>
+		<c_title>Remarks</c_title>
+		<c_presentation>s</c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+</table>

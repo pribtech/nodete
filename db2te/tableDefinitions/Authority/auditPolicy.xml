@@ -1,0 +1,121 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2013 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+<table name="auditPolicy">
+	<sqlName>SYSIBM.SYSAUDITPOLICIES</sqlName>
+	<singularName>Audit Policy</singularName>
+	<pluralName>Audit Policies</pluralName>
+	<description/>
+	<disableEdit/>
+	<displayColumns>
+		<col type="column" name="auditpolicyname"/>
+		<col type="column" name="auditpolicyid"/>
+		<col type="column" name="create_time"/>
+		<col type="column" name="alter_time"/>
+		<col type="column" name="auditstatus"/>
+		<col type="column" name="contextstatus"/>
+		<col type="column" name="validatestatus"/>
+		<col type="column" name="checkingstatus"/>
+		<col type="column" name="secmaintstatus"/>
+		<col type="column" name="objmaintstatus"/>
+		<col type="column" name="sysadminstatus"/>
+		<col type="column" name="executestatus"/>
+		<col type="column" name="executewithdata"/>
+		<col type="column" name="errortype"/>
+	</displayColumns>
+	<column name="auditpolicyname">
+		<sqlName>AUDITPOLICYNAME</sqlName>
+		<title>Name</title>
+		<type dbType="VARCHAR">s</type>
+		<drillEnable/>
+	</column>
+	<column name="auditpolicyid">
+		<sqlName>AUDITPOLICYID</sqlName>
+		<title>Id</title>
+		<type dbType="INTEGER">n</type>
+	</column>
+	<column name="create_time">
+		<sqlName>CREATE_TIME</sqlName>
+		<title>Created</title>
+		<type dbType="TIMESTAMP">n</type>
+	</column>
+	<column name="alter_time">
+		<sqlName>ALTER_TIME</sqlName>
+		<title>Altered</title>
+		<type dbType="TIMESTAMP">n</type>
+	</column>
+	<column name="auditstatus">
+		<sqlName>AUDITSTATUS</sqlName>
+		<title>Audit</title>
+		<type dbType="CHARACTER">s</type>
+		<drillEnable/>
+	</column>
+	<column name="contextstatus">
+		<sqlName>CONTEXTSTATUS</sqlName>
+		<title>Context</title>
+		<type dbType="CHARACTER">s</type>
+		<drillEnable/>
+	</column>
+	<column name="validatestatus">
+		<sqlName>VALIDATESTATUS</sqlName>
+		<title>Validate</title>
+		<type dbType="CHARACTER">s</type>
+		<drillEnable/>
+	</column>
+	<column name="checkingstatus">
+		<sqlName>CHECKINGSTATUS</sqlName>
+		<title>Checking</title>
+		<type dbType="CHARACTER">s</type>
+		<drillEnable/>
+	</column>
+	<column name="secmaintstatus">
+		<sqlName>SECMAINTSTATUS</sqlName>
+		<title>Sec. Maint.</title>
+		<type dbType="CHARACTER">s</type>
+		<drillEnable/>
+	</column>
+	<column name="objmaintstatus">
+		<sqlName>OBJMAINTSTATUS</sqlName>
+		<title>Object Maint.</title>
+		<type dbType="CHARACTER">s</type>
+		<drillEnable/>
+	</column>
+	<column name="sysadminstatus">
+		<sqlName>SYSADMINSTATUS</sqlName>
+		<title>Sysadmin</title>
+		<type dbType="CHARACTER">s</type>
+		<drillEnable/>
+	</column>
+	<column name="executestatus">
+		<sqlName>EXECUTESTATUS</sqlName>
+		<title>Execute Status</title>
+		<type dbType="CHARACTER">s</type>
+		<drillEnable/>
+	</column>
+	<column name="executewithdata">
+		<sqlName>EXECUTEWITHDATA</sqlName>
+		<title>Execute With Data</title>
+		<type dbType="CHARACTER">s</type>
+		<drillEnable/>
+	</column>
+	<column name="errortype">
+		<sqlName>ERRORTYPE</sqlName>
+		<title>Error Type</title>
+		<type dbType="CHARACTER">s</type>
+		<drillEnable/>
+	</column>
+</table>

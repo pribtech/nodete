@@ -1,0 +1,249 @@
+<!--
+  Author: Peter Prib
+  Copyright Independent Systems Integrators Pty Ltd 2008 All rights reserved.
+  
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+<table name="monIndex">
+	<sql_name>monIndex</sql_name>
+	<singular_name>Monitored Index</singular_name>
+	<plural_name>Monitored Indices</plural_name>
+	<inlinequery>
+<![CDATA[
+SELECT current timestamp as sample_ts,t.*,S.INDSCHEMA,S.INDNAME
+FROM TABLE(MON_GET_INDEX('','', -2)) as T
+    ,SYSCAT.INDEXES AS S 
+WHERE T.TABSCHEMA = S.TABSCHEMA AND 
+      T.TABNAME = S.TABNAME AND 
+      T.IID = S.IID 
+]]>
+	</inlinequery>
+	<messages><SQL0551N>Security issue. Please install "Monitoring Switches/Security" in Tools -> Installed Components</SQL0551N></messages>
+	<description>
+	You can use this view to 
+	&lt;a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.admin.mon.doc/doc/c0001138.html?noframes=true');"&gt;monitor&lt;/a&gt;
+	index activity.
+	The view retrieves information using a 	
+  &lt;a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.sql.rtn.doc/doc/c0053963.html?noframes=true');"&gt;monitor table function&lt;/a&gt;
+  introduced in DB2 9.7.
+  Each row displays metrics for a single index returned by the
+	&lt;a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.sql.rtn.doc/doc/r0055026.html?noframes=true');"&gt;MON_GET_INDEX&lt;/a&gt;		
+	table function.
+	This view is not available for databases prior to DB2 9.7.
+	</description>	
+	<order_by_index name="INDEX_SCANS" direction="D"/>
+	<display_columns>
+		<col type="column" name="INDSCHEMA"/>
+		<col type="reference" name="indexDetails"/>
+		<col type="column" name="INDNAME"/>
+		<col type="column" name="MEMBER"/>
+		<col type="column" name="DATA_PARTITION_ID"/>
+		<col type="column" name="NLEAF"/>
+		<col type="column" name="NLEVELS"/>
+		<col type="column" name="INDEX_SCANS"/>
+		<col type="column" name="INDEX_ONLY_SCANS"/>
+		<col type="column" name="KEY_UPDATES"/>
+		<col type="column" name="INCLUDE_COL_UPDATES"/>
+		<col type="column" name="PSEUDO_DELETES"/>
+		<col type="column" name="DEL_KEYS_CLEANED"/>
+		<col type="column" name="ROOT_NODE_SPLITS"/>
+		<col type="column" name="INT_NODE_SPLITS"/>
+		<col type="column" name="BOUNDARY_LEAF_NODE_SPLITS"/>
+		<col type="column" name="NONBOUNDARY_LEAF_NODE_SPLITS"/>
+		<col type="column" name="PAGE_ALLOCATIONS"/>
+		<col type="column" name="PSEUDO_EMPTY_PAGES"/>
+		<col type="column" name="EMPTY_PAGES_REUSED"/>
+		<col type="column" name="EMPTY_PAGES_DELETED"/>
+		<col type="column" name="PAGES_MERGED"/>
+	</display_columns>
+	<reference name="indexDetails">
+		<reftype>table</reftype>
+		<refvalue>indexcolumnsuse</refvalue>
+		<icon>images/fw_bold.gif</icon>
+		<ref foreign_column_name="indschema">
+			<local_column_name>INDSCHEMA</local_column_name>
+		</ref>
+		<ref foreign_column_name="indname">
+			<local_column_name>INDNAME</local_column_name>
+		</ref>
+	</reference>
+	<column name="SAMPLE_TS">
+		<c_sql_name>SAMPLE_TS</c_sql_name>
+		<c_title>Timestamp</c_title>
+		<c_presentation/>
+		<c_pkey>p</c_pkey>
+	</column>
+	<column name="INDSCHEMA">
+		<c_sql_name>INDSCHEMA</c_sql_name>
+		<c_title>Schema</c_title>
+		<c_presentation/>
+		<c_drill>y</c_drill>
+		<c_prefill>
+			<table>schema</table>
+			<column>SCHEMANAME</column>
+		</c_prefill>
+	</column>
+	<column name="INDNAME">
+		<c_sql_name>INDNAME</c_sql_name>
+		<c_title>Name</c_title>
+		<c_presentation/>
+		<c_drill>y</c_drill>
+	</column>
+	
+	<column name="TABSCHEMA">
+		<c_sql_name>TABSCHEMA</c_sql_name>
+		<c_title>Table Schema</c_title>
+		<c_presentation/>
+		<c_drill>y</c_drill>
+		<c_pkey>p</c_pkey>
+		<c_prefill>
+			<table>schema</table>
+			<column>SCHEMANAME</column>
+		</c_prefill>
+	</column>
+	<column name="TABNAME">
+		<c_sql_name>TABNAME</c_sql_name>
+		<c_title>Table Name</c_title>
+		<c_presentation/>
+		<c_drill>y</c_drill>
+		<c_pkey>p</c_pkey>
+	</column>
+	<column name="IID">
+		<c_sql_name>IID</c_sql_name>
+		<c_title>Index Id.</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+		<c_pkey>p</c_pkey>
+	</column>
+	<column name="MEMBER">
+		<c_sql_name>MEMBER</c_sql_name>
+		<c_title>Member</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="DATA_PARTITION_ID">
+		<c_sql_name>DATA_PARTITION_ID</c_sql_name>
+		<c_title>Data Partition Id.</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="NLEAF">
+		<c_sql_name>NLEAF</c_sql_name>
+		<c_title>No. Leaf</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="NLEVELS">
+		<c_sql_name>NLEVELS</c_sql_name>
+		<c_title>No. Levels</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="INDEX_SCANS" accumulation="y">
+		<c_sql_name>INDEX_SCANS</c_sql_name>
+		<c_title>Index Scans</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="INDEX_ONLY_SCANS" accumulation="y">
+		<c_sql_name>INDEX_ONLY_SCANS</c_sql_name>
+		<c_title>Index Only Scans</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="KEY_UPDATES" accumulation="y">
+		<c_sql_name>KEY_UPDATES</c_sql_name>
+		<c_title>Key Updates</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="INCLUDE_COL_UPDATES" accumulation="y">
+		<c_sql_name>INCLUDE_COL_UPDATES</c_sql_name>
+		<c_title>Include Column Updates</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="PSEUDO_DELETES" accumulation="y">
+		<c_sql_name>PSEUDO_DELETES</c_sql_name>
+		<c_title>Pseudo Deletes</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="DEL_KEYS_CLEANED" accumulation="y">
+		<c_sql_name>DEL_KEYS_CLEANED</c_sql_name>
+		<c_title>Deleted Keys Cleaned</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="ROOT_NODE_SPLITS" accumulation="y">
+		<c_sql_name>ROOT_NODE_SPLITS</c_sql_name>
+		<c_title>Node Splits Root</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="INT_NODE_SPLITS" accumulation="y">
+		<c_sql_name>INT_NODE_SPLITS</c_sql_name>
+		<c_title>Node Splits Intermediate</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="BOUNDARY_LEAF_NODE_SPLITS" accumulation="y">
+		<c_sql_name>BOUNDARY_LEAF_NODE_SPLITS</c_sql_name>
+		<c_title>Node Splits Boundary Leaf</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="NONBOUNDARY_LEAF_NODE_SPLITS" accumulation="y">
+		<c_sql_name>NONBOUNDARY_LEAF_NODE_SPLITS</c_sql_name>
+		<c_title>Node Splits Non-Boundary Leaf</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="PAGE_ALLOCATIONS" accumulation="y">
+		<c_sql_name>PAGE_ALLOCATIONS</c_sql_name>
+		<c_title>Page Allocations</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="PSEUDO_EMPTY_PAGES" accumulation="y">
+		<c_sql_name>PSEUDO_EMPTY_PAGES</c_sql_name>
+		<c_title>Empty Pages Psuedo</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="EMPTY_PAGES_REUSED" accumulation="y">
+		<c_sql_name>EMPTY_PAGES_REUSED</c_sql_name>
+		<c_title>Empty Pages Reused</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="EMPTY_PAGES_DELETED" accumulation="y">
+		<c_sql_name>EMPTY_PAGES_DELETED</c_sql_name>
+		<c_title>Empty Pages Deleted</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="PAGES_MERGED" accumulation="y">
+		<c_sql_name>PAGES_MERGED</c_sql_name>
+		<c_title>Pages Merged</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="ADDITIONAL_DETAILS">
+		<c_sql_name>'ADDITIONAL_DETAILS reserved for future use'</c_sql_name>
+		<c_title>Additional Details</c_title>
+		<c_presentation>l</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+</table>

@@ -1,0 +1,230 @@
+
+	<!--
+		Copyright IBM Corp. 2007 All rights reserved. Licensed under the
+		Apache License, Version 2.0 (the "License"); you may not use this file
+		except in compliance with the License. You may obtain a copy of the
+		License at http://www.apache.org/licenses/LICENSE-2.0 Unless required
+		by applicable law or agreed to in writing, software distributed under
+		the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+		CONDITIONS OF ANY KIND, either express or implied. See the License for
+		the specific language governing permissions and limitations under the
+		License.
+	-->
+<table name="topbufferpool">
+	<sql_name>TOP_BP_VIEW</sql_name>
+	<singular_name>Buffer Pool Detail</singular_name>
+	<plural_name>Buffer Pools Details</plural_name>
+	<queryfile>predefined/BufferPool.SQL</queryfile>
+	<inlinequery>
+		SELECT
+		t.*,
+		t2.bp_cur_buffsz
+		FROM
+		TABLE(SNAP_GET_BP('', -2)) AS T
+		,table(SNAP_GET_BP_PART('', -2)) AS T2
+		WHERE
+		t.bp_name = t2.bp_name
+	</inlinequery>
+	<description>Each row represents a
+		&lt;a
+		onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.admin.dbobj.doc/doc/t0011076.html?noframes=true');"&gt;buffer
+		pool&lt;/a&gt;.
+		This table is based on the &lt;a
+		onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.admin.dbobj.doc/doc/r0021988.html?noframes=true');"&gt;SNAP_GET_BP&lt;/a&gt;
+		table function.
+		This table is based on the &lt;a
+		onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.admin.dbobj.doc/doc/r0021980.html?noframes=true');"&gt;SNAP_GET_BP_PART&lt;/a&gt;
+		table function.		
+	</description>
+	<history depth="10" time="snapshot_timestamp"/>
+	<display_columns>
+		<col type="column" name="bp_name" />
+		<col type="reference" name="tableActivity" />
+		<col type="column" name="bp_cur_buffsz" />
+		<col type="column" name="direct_reads" />
+		<col type="column" name="direct_writes" />
+		<col type="column" name="pool_async_data_reads" />
+		<col type="column" name="pool_async_data_writes" />
+		<col type="column" name="pool_async_index_reads" />
+		<col type="column" name="pool_async_index_writes" />
+		<col type="column" name="pool_data_l_reads" />
+		<col type="column" name="pool_data_p_reads" />
+		<col type="column" name="pool_data_writes" />
+		<col type="column" name="pool_index_l_reads" />
+		<col type="column" name="pool_index_p_reads" />
+		<col type="column" name="pool_index_writes" />
+		<col type="column" name="pool_no_victim_buffer" />
+		<col type="column" name="pool_temp_data_l_reads" />
+		<col type="column" name="pool_temp_data_p_reads" />
+		<col type="column" name="pool_temp_index_l_reads" />
+		<col type="column" name="pool_temp_index_p_reads" />
+		<col type="column" name="unread_prefetch_pages" />
+		<col type="column" name="vectored_ios" />
+		<col type="column" name="files_closed" />
+	</display_columns>
+
+	<reference name="tableActivity">
+		<c_title>Table Activity</c_title>
+		<reftype>table</reftype>
+		<refvalue>Performance/toptable</refvalue>
+		<icon>images/icon-tbs.gif</icon>
+		<ref foreign_column_name="BPNAME">
+			<local_column_name>bp_name</local_column_name>
+		</ref>
+	</reference>
+
+	<column name="bp_name">
+		<c_sql_name>BP_NAME</c_sql_name>
+		<c_title>Name</c_title>
+		<c_presentation>s</c_presentation>
+		<c_pkey>p</c_pkey>
+		<c_drill>n</c_drill>
+		<c_reference name="bufferpool">
+			<title>Bufferpool</title>
+			<reftype>displayRow</reftype>
+			<refvalue>bufferpool</refvalue>
+			<icon>images/icon-buffer.gif</icon>
+			<ref foreign_column_name="bpname">
+				<local_column_name>bp_name</local_column_name>
+			</ref>
+		</c_reference>
+	</column>
+	<column name="db_name">
+		<c_sql_name>DB_NAME</c_sql_name>
+		<c_title>Database</c_title>
+		<c_presentation>s</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="bp_cur_buffsz">
+		<c_sql_name>BP_CUR_BUFFSZ</c_sql_name>
+		<c_title>Size (Pages)</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="direct_reads" accumulation="y" minVersion="9.7">
+		<c_sql_name>DIRECT_READS</c_sql_name>
+		<c_title>Direct Reads</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="direct_writes" accumulation="y" minVersion="9.7">
+		<c_sql_name>DIRECT_WRITES</c_sql_name>
+		<c_title>Direct Writes</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="files_closed" accumulation="y">
+		<c_sql_name>FILES_CLOSED</c_sql_name>
+		<c_title>Files Closed</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="pool_async_data_reads" accumulation="y">
+		<c_sql_name>POOL_ASYNC_DATA_READS</c_sql_name>
+		<c_title>Async Data Reads</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="pool_async_data_writes" accumulation="y">
+		<c_sql_name>POOL_ASYNC_DATA_WRITES</c_sql_name>
+		<c_title>Async Data Writes</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="pool_async_index_reads" accumulation="y">
+		<c_sql_name>POOL_ASYNC_INDEX_READS</c_sql_name>
+		<c_title>Async Index Reads</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="pool_async_index_writes" accumulation="y">
+		<c_sql_name>POOL_ASYNC_INDEX_WRITES</c_sql_name>
+		<c_title>Async Index Writes</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="pool_data_l_reads" accumulation="y">
+		<c_sql_name>POOL_DATA_L_READS</c_sql_name>
+		<c_title>Data Logical Reads</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="pool_data_p_reads" accumulation="y">
+		<c_sql_name>POOL_DATA_P_READS</c_sql_name>
+		<c_title>Data Physical Reads</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="pool_data_writes" accumulation="y">
+		<c_sql_name>POOL_DATA_WRITES</c_sql_name>
+		<c_title>Data Writes</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="pool_index_l_reads" accumulation="y">
+		<c_sql_name>POOL_INDEX_L_READS</c_sql_name>
+		<c_title>Index Logical Reads</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="pool_index_p_reads" accumulation="y">
+		<c_sql_name>POOL_INDEX_P_READS</c_sql_name>
+		<c_title>Index Physical Reads</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="pool_index_writes" accumulation="y">
+		<c_sql_name>POOL_INDEX_WRITES</c_sql_name>
+		<c_title>Index Writes</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="pool_no_victim_buffer" accumulation="y">
+		<c_sql_name>POOL_NO_VICTIM_BUFFER</c_sql_name>
+		<c_title>No Victim Buffer</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="pool_temp_data_l_reads" accumulation="y">
+		<c_sql_name>POOL_TEMP_DATA_L_READS</c_sql_name>
+		<c_title>Temp Data Logical Reads</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="pool_temp_data_p_reads" accumulation="y">
+		<c_sql_name>POOL_TEMP_DATA_P_READS</c_sql_name>
+		<c_title>Temp Data Physical Reads</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="pool_temp_index_l_reads" accumulation="y">
+		<c_sql_name>POOL_TEMP_INDEX_L_READS</c_sql_name>
+		<c_title>Temp Index Logical Reads</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="pool_temp_index_p_reads" accumulation="y">
+		<c_sql_name>POOL_TEMP_INDEX_P_READS</c_sql_name>
+		<c_title>Temp Index Physical Reads</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="unread_prefetch_pages" accumulation="y">
+		<c_sql_name>UNREAD_PREFETCH_PAGES</c_sql_name>
+		<c_title>Unread Prefetch Pages</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="vectored_ios" accumulation="y">
+		<c_sql_name>VECTORED_IOS</c_sql_name>
+		<c_title>Vectored IOs</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="snapshot_timestamp">
+		<c_sql_name>SNAPSHOT_TIMESTAMP</c_sql_name>
+		<c_title>Timestamp</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+</table>

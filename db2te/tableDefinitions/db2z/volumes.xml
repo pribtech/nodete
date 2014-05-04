@@ -1,0 +1,59 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2011 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+
+<table name="volumes">
+	<sql_name>SYSCAT.VOLUMES</sql_name>
+	<singular_name>Volume</singular_name>
+	<plural_name>Volumes</plural_name>
+	<description></description>
+	<order_by_index name="SGNAME" direction="A"/>
+	<display_columns>
+		<col type="column" name="SGNAME"/>
+		<col type="column" name="DEFINER"/>
+		<col type="column" name="VOLID"/>
+	</display_columns>
+	<column name="SGNAME">
+		<c_sql_name>SGNAME</c_sql_name>
+		<title>sgname</title>
+		<type>s</type>
+		<reference name="stogroup">
+			<c_title>Stogroup</c_title>
+			<reftype>displayRow</reftype>
+			<refvalue>db2z/stogroup</refvalue>
+			<icon>images/icon-link-calendar.gif</icon>
+			<ref foreign_column_name="GROUPNAME">
+				<local_column_name>SGNAME</local_column_name>
+			</ref>
+		</reference>
+	</column>
+	<column name="DEFINER">
+		<c_sql_name>DEFINER</c_sql_name>
+		<title>Definer</title>
+		<type>s</type>
+	</column>
+	<column name="VOLID">
+		<c_sql_name>VOLID</c_sql_name>
+		<title>Volume Id</title>
+		<type>s</type>
+	</column>
+	<column name="IBMREQD">
+		<c_sql_name>IBMREQD</c_sql_name>
+		<title>ibmreqd</title>
+		<type>s</type>
+	</column>
+</table>

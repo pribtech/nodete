@@ -1,0 +1,190 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2010 All rights reserved.
+  Copyright IBM Corp. 2007 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<table name="histSnapDynSqlSummary91">
+	<sql_name>histSnapDynSqlSummary91</sql_name>
+	<singular_name>Dynamic Statement</singular_name>
+	<plural_name>Dynamic Statements</plural_name>
+	<messages><SQL0204N>Not installed. Please install "DB2TE Dynamic Cache Sampling" in Tools-> Installed Components</SQL0204N></messages>
+	<inlinequery>
+<![CDATA[
+SELECT 
+	sample_ts,
+   	database, 
+   	avg(TOTAL_EXEC_TIME/nullif(NUM_EXECUTIONS,0)) as elapse_avg,
+   	stddev(TOTAL_EXEC_TIME/nullif(NUM_EXECUTIONS,0)) as elapse_stddev,
+    sum(NUM_EXECUTIONS) as NUM_EXECUTIONS, 
+	sum(TOTAL_EXEC_TIME) TOTAL_EXEC_TIME,
+	sum(TOTAL_SYS_TIME) + sum(TOTAL_USR_TIME) as TOTAL_CPU_TIME,
+	sum(POOL_DATA_L_READS)
+	+ sum(POOL_DATA_P_READS)
+	+ sum(POOL_TEMP_DATA_L_READS)
+	+ sum(POOL_TEMP_DATA_P_READS)
+	+ sum(POOL_INDEX_L_READS)
+	+ sum(POOL_INDEX_P_READS)
+	+ sum(POOL_TEMP_INDEX_L_READS)
+	+ sum(POOL_TEMP_INDEX_P_READS)
+		as row_activity
+FROM "s#db2mc"."HIST_SNAP_GET_DYN_SQL_DELTA" 
+,(select case when upper(startTs) = 'CURRENT' then current timestamp else timestamp(startTs) end as startTS 
+	,duration
+	from (values(cast('?' as varchar(26)),cast(? as int))) as timePeriod(startTs,duration)
+ ) period
+where sample_ts between period.startTS - period.duration hours and period.startTS
+group by 
+	sample_ts,
+   	database 
+]]>
+	</inlinequery>
+	<parameters>
+		<parm name="start">
+			<title>Start</title>
+			<value>current</value>
+			<type>timestamp</type>
+		</parm>
+		<parm name="Period">
+			<title>Period (hours)</title>
+			<value>3</value>
+			<type>n</type>
+		</parm>
+	</parameters>
+	<description>This returns the top &lt;a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.admin.dbobj.doc/doc/c0021364.html?noframes=true');"&gt;dynamic SQL or XQuery&lt;/a&gt;		
+		&lt;a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.admin.dbobj.doc/doc/r0011049.html?noframes=true');"&gt;statement&lt;/a&gt;.
+		sortable by number of executions, average execution time, number of sorts, or sorts per statement. 
+		These are the queries that should get focus to ensure they are well tuned.
+		This list is based on the &lt;a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.admin.dbobj.doc/doc/r0022005.html?noframes=true');"&gt;SYSIBMADM.SNAPDYN_SQL&lt;/a&gt; administrative view.
+	</description>		
+	<order_by_index name="sample_ts" direction="D"/>
+	<order_by_index name="database" direction="A"/>
+	<rowStyle interfaceColumn='elapse95'>
+		<option gt='1' style='ERROR'/>
+		<option gt='0.01' style='WARNING'/>
+	</rowStyle>	
+	<display_columns>
+		<col type="column" name="sample_ts" break="column"/>
+		<col type="reference" name="contents"/>
+		<col type="column" name="database"/>
+		<col type="reference" name="contentsDB"/>
+<!--
+		<col type="reference" name="contentDBSimilar"/>
+-->
+		<col type="column" name="numexec"/>
+		<col type="column" name="elapseAvg"/>
+		<col type="column" name="elapse95"/>
+		<col type="column" name="exectime"/>
+		<col type="column" name="cpuAvg"/>
+		<col type="column" name="totalCpuTime"/>
+		<col type="column" name="rowActivity"/>
+	</display_columns>
+	<reference name="contents">
+		<c_title>SQL All</c_title>
+		<reftype>table</reftype>
+		<refvalue>Monitor/HistSnapDynSql91</refvalue>
+		<icon>images/icon-link-calendar.gif</icon>
+		<ref foreign_column_name="sample_ts">
+			<local_column_name>sample_ts</local_column_name>
+		</ref>
+	</reference>
+	<reference name="contentsDB">
+		<c_title>SQL DB</c_title>
+		<reftype>table</reftype>
+		<refvalue>Monitor/histSnapDynSql91</refvalue>
+		<icon>images/icon-link-calendar.gif</icon>
+		<ref foreign_column_name="sample_ts">
+			<local_column_name>sample_ts</local_column_name>
+		</ref>
+		<ref foreign_column_name="database">
+			<local_column_name>database</local_column_name>
+		</ref>
+	</reference>
+<!--
+	<reference name="contentDBSimilar">
+		<c_title>SQL DB Similar</c_title>
+		<reftype>table</reftype>
+		<refvalue>Monitor/histSnapSqlSimilar91</refvalue>
+		<icon>images/icon-link-calendar.gif</icon>
+		<ref foreign_column_name="sample_ts">
+			<local_column_name>sample_ts</local_column_name>
+		</ref>
+		<ref foreign_column_name="database">
+			<local_column_name>database</local_column_name>
+		</ref>
+	</reference>
+-->
+	<column name="sample_ts">
+		<c_sql_name>sample_ts</c_sql_name>
+		<c_title>Sample Timestamp</c_title>
+		<c_presentation>s</c_presentation>
+		<c_sort>n</c_sort>
+		<c_drill>n</c_drill>						
+	</column>
+	<column name="database">
+		<c_sql_name>DATABASE</c_sql_name>
+		<c_title>Database</c_title>
+		<c_presentation>s</c_presentation>			
+		<c_drill>y</c_drill>
+	</column>
+	<column name="elapseAvg">
+		<c_sql_name>elapse_avg</c_sql_name>
+		<c_title>Elapse Avg.</c_title>
+		<c_presentation>n</c_presentation>			
+		<c_drill>n</c_drill>
+	</column>
+	<column name="elapseStddev">
+		<c_sql_name>elapse_stddev</c_sql_name>
+		<c_title>Elapse StdDev</c_title>
+		<c_presentation>n</c_presentation>			
+		<c_drill>n</c_drill>
+	</column>
+	<column name="elapse95">
+		<c_sql_name>cast(elapse_avg+2*elapse_stddev as decimal(13,6))</c_sql_name>
+		<c_title>Elapse 95%</c_title>
+		<c_presentation>n</c_presentation>			
+		<c_drill>n</c_drill>
+	</column>
+	<column name="cpuAvg">
+		<c_sql_name>TOTAL_CPU_TIME/nullif(NUM_EXECUTIONS,0)</c_sql_name>
+		<c_title>Avg. CPU</c_title>
+		<c_presentation>n</c_presentation>			
+		<c_drill>n</c_drill>
+	</column>
+	<column name="numexec">
+		<c_sql_name>NUM_EXECUTIONS</c_sql_name>
+		<c_title>Executions</c_title>
+		<c_presentation>n</c_presentation>			
+		<c_drill>n</c_drill>
+	</column>
+	<column name="exectime">
+		<c_sql_name>TOTAL_EXEC_TIME</c_sql_name>
+		<c_title>Total Elapse(s)</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>									
+	</column>
+	<column name="totalCpuTime">
+		<c_sql_name>TOTAL_CPU_TIME</c_sql_name>
+		<c_title>CPU</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>									
+	</column>
+	<column name="rowActivity">
+		<c_sql_name>ROW_ACTIVITY</c_sql_name>
+		<c_title>Row Activity</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>									
+	</column>
+</table>

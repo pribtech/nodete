@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	Copyright IBM Corp. 2007 All rights reserved.
+    updated peter prib, Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2009-2012 All rights reserved.
+
+	Licensed under the Apache License, Version 2.0 (the "License");
+	you may not use this file except in compliance with the License.
+	You may obtain a copy of the License at
+	
+	http://www.apache.org/licenses/LICENSE-2.0
+	
+	Unless required by applicable law or agreed to in writing, software
+	distributed under the License is distributed on an "AS IS" BASIS,
+	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	See the License for the specific language governing permissions and
+	limitations under the License.
+-->
+<table name="federatedObjects">
+	<sql_name>FEDERATED_OBJECTS</sql_name>
+	<singular_name>Federated Object</singular_name>
+	<plural_name>Federated Objects</plural_name>
+	<inlinequery>
+		<![CDATA[
+		SELECT to1.tabschema, to1.tabname, t.card, w.wrapname AS Wrapper
+		       ,s.SERVERNAME, s.SERVERTYPE, s.SERVERVERSION
+		       ,VARCHAR(to2.setting) AS remote_schema, VARCHAR(to3.setting) AS remote_table
+		from syscat.wrappers w
+		inner join syscat.servers s      
+		  ON w.wrapname = s.wrapname
+		left join syscat.taboptions to1 
+		   ON s.SERVERNAME = VARCHAR(to1.setting) 
+		  AND to1.option = 'SERVER'
+		left join syscat.taboptions to2 
+		   ON to1.tabschema = to2.tabschema
+		  AND to1.tabname = to2.tabname 
+		  AND to2.option = 'REMOTE_SCHEMA'
+		left join syscat.taboptions to3 
+		   ON to1.tabschema = to3.tabschema
+		  AND to1.tabname = to3.tabname 
+		  AND to3.option = 'REMOTE_TABLE'
+		inner join syscat.tables t
+		   ON to1.tabschema = t.tabschema 
+		  AND to1.tabname = t.tabname
+		]]>
+	</inlinequery>
+	<description>A listing of all of the federated objects within the &lt;a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v9/index.jsp?topic=/com.ibm.websphere.ii.db2udb.federation.overview.doc/prod_overview/cfpint03.html');"&gt;database&lt;/a&gt;.</description>
+	<output>
+		<type name="DDL" destination="adhoc" title="Create/Drop" generator="XSL/compareFederatedObject.xsl"/>
+		<type name="NNSTATS" destination="adhoc" title="runstats/nnstats" generator="XSL/federatedObjectNNSTATS.xsl"/>
+	</output>
+	<order_by_index name="tabschema" direction="A"/>
+	<order_by_index name="tabname" direction="A"/>
+	
+	<display_columns>
+		<col type="reference" name="details"/>
+		<col type="reference" name="contents"/>
+		<col type="action" name="xmlgen"/>
+		<col type="action" name="NNStats"/>
+		<col type="column" name="TABSCHEMA"/>
+		<col type="column" name="TABNAME"/>
+		<col type="column" name="CARD"/>
+		<col type="column" name="WRAPPER"/>
+		<col type="column" name="SERVERNAME"/>
+		<col type="column" name="SERVERTYPE"/>
+		<col type="column" name="SERVERVERSION"/>
+		<col type="column" name="REMOTE_SCHEMA"/>
+		<col type="column" name="REMOTE_TABLE"/>
+		<col type="reference" name="auth"/>
+	</display_columns>
+   	<action name="grant">
+		<title>Grant</title>
+    	<actionScript>
+    		<task>
+		    	<assignSharedConstant name="nickname" type="fixed">
+					<value>"?TABSCHEMA?"."?TABNAME?"</value>
+				</assignSharedConstant>
+		    	<assignSharedConstant name="command" type="raw">
+					<value>SQL/Grant/grantTable</value>
+				</assignSharedConstant>
+		   		<callGlobalAction name="commandExecution"/>
+	   		</task>
+    	</actionScript>
+    </action>
+    <action name="db2look">
+		<title>Generate DDL</title>
+    		<actionScript>
+    		<task>
+    			<lock/>
+    				<action name="getSession" type="serverAction" >
+					<parameterList>
+						<parameter name="action" type="raw">
+							<value>getSessionVariable</value>
+						</parameter>
+						<parameter name="name[database]" type="fixed">
+							<value>Connections.USE_DATABASE_CONNECTION.database</value>
+						</parameter>
+					</parameterList>
+				</action>
+			    <assignSharedConstant name="database-name" type="returnObject">
+					<value>getSession.returnValue.database</value>
+				</assignSharedConstant>
+			    	<assignSharedConstant name="schema-name" type="blockValue">
+					<value>TABSCHEMA</value>
+				</assignSharedConstant>
+				<assignSharedConstant name="table-name" type="blockValue">
+					<value>TABNAME</value>
+				</assignSharedConstant>
+		   		<assignSharedConstant name="command" type="raw">
+					<value>System/db2look.table</value>
+				</assignSharedConstant>
+	   			<callGlobalAction name="systemCommandExecution"/>				
+    			<unlock/>
+	   		</task>
+    	</actionScript>
+    </action>
+  	<action name="NNStats">
+		<title>Update Stats</title>
+    	<actionScript>    
+		<task>
+			<action name="executeNNStats" type="serverAction" >
+				<parameterList>
+					<parameter name="action" type="fixed">
+						<value>executeSQL</value>
+					</parameter>
+					<parameter name="SQL" type="fixed">
+						<value>CALL SYSPROC.NNSTAT('?SERVERNAME?','?TABSCHEMA?','?TABNAME?',NULL,NULL,0,NULL,?!name=errors?)</value>
+					</parameter>
+					<parameter name="parameter[SERVERNAME]" type="blockValue">
+						<value>SERVERNAME</value>
+					</parameter>
+					<parameter name="parameter[TABSCHEMA]" type="blockValue">
+						<value>TABSCHEMA</value>
+					</parameter>
+					<parameter name="parameter[TABNAME]" type="blockValue">
+						<value>TABNAME</value>
+					</parameter>
+				</parameterList>
+			</action>
+			<if condition="true" compareOn="executeNNStats.returnCode" compareOnType="returnObject">
+				<task>
+					<alert>Successfully collected statistics on server ?SERVERNAME? for nickname ?TABSCHEMA?.?TABNAME?</alert>
+					<panelReload/>
+					<exit/>
+				</task>
+			</if>
+			<assignSharedConstant name="ERROR_MESSAGE" type="returnObject">
+				<value>executeNNStats.returnMessage</value>
+			</assignSharedConstant>
+			<alert>Failed collecting statistics on server ?SERVERNAME? for nickname ?TABSCHEMA?.?TABNAME? error: ?ERROR_MESSAGE?</alert>
+		</task>    
+    	</actionScript>
+    </action>
+ 	<action name="dropNickname">
+		<title>Drop</title>
+		<icon>images/trash.gif</icon>   
+    	<actionScript>
+    		<task>
+		    	<assignSharedConstant name="objectType" type="fixed">
+					<value>nickname</value>
+				</assignSharedConstant>
+				<assignSharedConstant name="objectName" type="fixed">
+					<value>"?TABSCHEMA?"."?TABNAME?" </value>
+				</assignSharedConstant>
+		   		<callGlobalAction name="dropSQLObject"/>
+	   		</task>
+    	</actionScript>
+    </action>
+	<reference name="details">
+		<title>Columns</title>
+		<reftype>table</reftype>
+		<refvalue>Federation/federatedObjectsDetail</refvalue>
+		<icon>images/fw_bold.gif</icon>
+		<ref foreign_column_name="TABSCHEMA">
+			<local_column_name>TABSCHEMA</local_column_name>
+		</ref>
+		<ref foreign_column_name="TABNAME">
+			<local_column_name>TABNAME</local_column_name>
+		</ref>
+	</reference>
+	<reference name="indexCols">
+		<title>Index Columns</title>
+		<reftype>table</reftype>
+		<refvalue>indexcolumnsuse</refvalue>
+		<icon>images/icon-index.gif</icon>
+		<ref foreign_column_name="tabschema">
+			<local_column_name>TABSCHEMA</local_column_name>
+		</ref>
+		<ref foreign_column_name="tabname">
+			<local_column_name>TABNAME</local_column_name>
+		</ref>
+	</reference>
+	<reference name="key" DBMS="DB2">
+		<title>Keys</title>
+		<reftype>table</reftype>
+		<refvalue>key</refvalue>
+		<icon>images/icon-column.gif</icon>
+		<ref foreign_column_name="tabschema">
+			<local_column_name>TABSCHEMA</local_column_name>
+		</ref>
+		<ref foreign_column_name="tabname">
+			<local_column_name>TABNAME</local_column_name>
+		</ref>
+	</reference>
+	<reference name="contents">
+		<title>Contents</title>
+		<reftype>table</reftype>
+		<refvalue></refvalue>
+		<icon>images/icon-link-calendar.gif</icon>
+		<ref foreign_column_name="schema">
+			<local_column_name>TABSCHEMA</local_column_name>
+		</ref>
+		<ref foreign_column_name="table">
+			<local_column_name>TABNAME</local_column_name>
+		</ref>
+	</reference>
+	
+	<action name="xmlgen">
+		<title>XML</title>
+		<icon>images/icon-xml.gif</icon>
+		<actionScript name="helloworld" type="block">
+			<followOnAction condition="">
+				<task>	
+					<assignLocalParameter name="TABLENAME" type="blockValue">
+						<value>TABNAME</value>
+					</assignLocalParameter>
+					<assignLocalParameter name="SCHEMANAME" type="blockValue">
+						<value>TABSCHEMA</value>
+					</assignLocalParameter>
+					<loadPage>
+						<pageWindow target="_blank" windowStage="?CALLING_STAGE?">
+							<panel name="main" PrimaryContainer="true">
+								<URL>
+									<![CDATA[
+http://?DB2MC_SERVER?/?ACTION_PROCESSOR??action=xmlgen&schemanameparm=?SCHEMANAME?&tablenameparm=?TABLENAME?&USE_CONNECTION=?ACTIVE_DATABASE_CONNECTION?
+]]>
+								</URL>				
+							</panel>
+						</pageWindow>
+					</loadPage>
+				</task>
+			</followOnAction>
+		</actionScript>
+	</action>
+	<column name="TABSCHEMA">
+		<sqlName>TABSCHEMA</sqlName>
+		<title>TABSCHEMA</title>
+		<enableDrill/>
+		<primaryKey/>
+		<c_prefill>y</c_prefill>
+	</column>
+	
+	<column name="TABNAME">
+		<sqlName>TABNAME</sqlName>
+		<title>TABNAME</title>
+		<enableDrill/>
+		<primaryKey/>
+	</column>
+	<column name="CARD">
+		<sqlName>CARD</sqlName>
+		<title>CARD</title>
+		<type>n</type>
+	</column>
+	<column name="WRAPPER">
+		<sqlName>WRAPPER</sqlName>
+		<title>WRAPPER</title>
+		<enableDrill/>
+	</column>
+	
+	<column name="SERVERNAME">
+		<sqlName>SERVERNAME</sqlName>
+		<title>SERVERNAME</title>
+		<enableDrill/>
+	</column>
+	<column name="SERVERTYPE">
+		<sqlName>SERVERTYPE</sqlName>
+		<title>SERVERTYPE</title>
+		<enableDrill/>
+	</column>
+	<column name="SERVERVERSION">
+		<sqlName>SERVERVERSION</sqlName>
+		<title>SERVERVERSION</title>
+		<enableDrill/>
+	</column>
+	<column name="REMOTE_SCHEMA">
+		<sqlName>REMOTE_SCHEMA</sqlName>
+		<title>REMOTE_SCHEMA</title>
+		<enableDrill/>
+		<c_prefill>
+			<table>schema</table>
+			<column>SCHEMANAME</column>
+		</c_prefill>
+	</column>
+	<column name="REMOTE_TABLE">
+		<sqlName>REMOTE_TABLE</sqlName>
+		<title>REMOTE_TABLE</title>
+		<c_drill>y</c_drill>
+	</column>
+	<reference name="auth">
+		<title>Privileges</title>
+		<reftype>table</reftype>
+		<refvalue>Authority/tabauth</refvalue>
+		<icon>images/icon-privilege.gif</icon>
+		<ref foreign_column_name="tabschema">
+			<local_column_name>TABSCHEMA</local_column_name>
+		</ref>
+		<ref foreign_column_name="tabname">
+			<local_column_name>TABNAME</local_column_name>
+		</ref>
+	</reference>
+</table>

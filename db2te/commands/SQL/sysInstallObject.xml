@@ -1,0 +1,51 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2009 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<command name="sysInstallObject" title="sysInstallObject Procedure">
+<![CDATA[
+>>-SYSINSTALLOBJECTS--(--tool-name--,--action--,---------------->
+
+>--tablespace-name--,--schema-name--)--------------------------><
+]]>
+
+	<text>CALL SYSINSTALLOBJECTS(</text>
+	<select>
+		<option><text>'AM'</text><note>for creating activity monitor objects</note></option>
+		<option><text>'DB2AC'</text><note>for autonomous computing (health monitor)</note></option>
+		<option><text>'STMG_DBSIZE_INFO'</text><note>for storage management</note></option>
+		<option><text>'OPT_PROFILES'</text><note>for creating the optimization profile table</note></option>
+		<option><text>'POLICY'</text><note>for policy (tables and triggers)</note></option>
+		<option><text>'EXPLAIN'</text><note>for creating explain tables</note></option>
+	</select>
+	<text>,</text>
+	<select>
+		<option><text>'C'</text><note>Create objects</note></option>
+		<option><text>'D'</text><note>Drop objects</note></option>
+		<option><text>'V'</text><note>Verify objects</note></option>
+	</select>
+	<text>,</text>
+	<select>
+		<option default="true"><text>NULL</text></option>
+		<option><text spacepad='false'>'</text><clauseReference name="tablespace-name"/><text>'</text></option> 
+	</select>
+	<text>,</text>
+	<select>
+		<option default="true"><text>NULL</text></option>
+		<option><text spacepad='false'>'</text><clauseReference name="schema-name"/><text>'</text></option> 
+	</select>
+	<text>)</text>
+</command>

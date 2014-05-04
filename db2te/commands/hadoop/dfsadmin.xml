@@ -1,0 +1,82 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2013 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<command name="dfsadmin" title="dfsadmin">
+	<text>hadoop dfsadmin </text>
+	<select>
+		<option default="true">
+			<text>-report</text>
+		</option> 
+		<option>
+			<text>-safemode</text>
+			<select>
+				<option><text>enter</text></option>
+				<option><text>leave</text></option>
+				<option><text>get</text></option>
+				<option><text>wait</text></option>
+			</select>
+		</option> 
+		<option>
+			<text>-saveNamespace</text>
+		</option> 
+		<option>
+			<text>-refreshNodes</text>
+		</option> 
+		<option>
+			<text>-finalizeUpgrade</text>
+		</option> 
+		<option>
+			<text>-upgradeProgress</text>
+			<select>
+				<option><text>status</text></option>
+				<option><text>details</text></option>
+				<option><text>force</text></option>
+			</select>
+		</option> 
+		<option>
+			<text>-metasave</text><clauseReference name="file-name"/>
+		</option> 
+		<option>
+			<text>-refreshServiceAcl</text>
+		</option> 
+		<option>
+			<text>-refreshUserToGroupsMappings</text>
+		</option> 
+		<option>
+			<text>-refreshSuperUserGroupsConfiguration</text>
+		</option> 
+		<option>
+			<text>-setQuota</text><clauseReference name="quota"/><clauseReference name="path-name"/>
+		</option> 
+		<option>
+			<text>-clrQuota</text><clauseReference name="path-name"/>
+		</option> 
+		<option>
+			<text>-setSpaceQuota</text><clauseReference name="quota"/><clauseReference name="path-name"/>
+		</option> 
+		<option>
+			<text>-clrSpaceQuota</text><clauseReference name="path-name"/>
+		</option> 
+		<option>
+			<text>-setBalancerBandwidth</text><input size="8" name="bandwidth" title="bandwidth Bps"/>
+		</option> 
+	</select>
+
+	<clause name="quota">
+		<input size="8" name="quota" title="quota"/>
+	</clause>
+</command>

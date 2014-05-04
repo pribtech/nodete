@@ -1,0 +1,540 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2013 All rights reserved.
+  
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+<table name="routines">
+	<sqlName>information_schema.routines</sqlName>
+	<singularName>Routines</singularName>
+	<pluralName>Routines</pluralName>
+	<description/>
+	<disableEdit/>
+	<output>
+		<type name="DDL" destination="" title="" generator=""/>
+	</output>
+	<orderBy name="specificcatalog" direction="A"/>
+	<orderBy name="specificschema" direction="A"/>
+	<orderBy name="specificname" direction="A"/>
+	<displayColumns titleDepth="2">
+		<col type="column" name="specificcatalog"/>
+		<col type="column" name="specificschema"/>
+		<col type="column" name="specificname"/>
+		<col type="column" name="routinecatalog"/>
+		<col type="column" name="routineschema"/>
+		<col type="column" name="routinename"/>
+		<col type="column" name="routinetype"/>
+		<col type="column" name="modulecatalog"/>
+		<col type="column" name="moduleschema"/>
+		<col type="column" name="modulename"/>
+		<col type="column" name="udtcatalog"/>
+		<col type="column" name="udtschema"/>
+		<col type="column" name="udtname"/>
+		<col type="column" name="datatype"/>
+		<col type="column" name="charactermaximumlength"/>
+		<col type="column" name="characteroctetlength"/>
+		<col type="column" name="charactersetcatalog"/>
+		<col type="column" name="charactersetschema"/>
+		<col type="column" name="charactersetname"/>
+		<col type="column" name="collationcatalog"/>
+		<col type="column" name="collationschema"/>
+		<col type="column" name="collationname"/>
+		<col type="column" name="numericprecision"/>
+		<col type="column" name="numericprecisionradix"/>
+		<col type="column" name="numericscale"/>
+		<col type="column" name="datetimeprecision"/>
+		<col type="column" name="intervaltype"/>
+		<col type="column" name="intervalprecision"/>
+		<col type="column" name="typeudtcatalog"/>
+		<col type="column" name="typeudtschema"/>
+		<col type="column" name="typeudtname"/>
+		<col type="column" name="scopecatalog"/>
+		<col type="column" name="scopeschema"/>
+		<col type="column" name="scopename"/>
+		<col type="column" name="maximumcardinality"/>
+		<col type="column" name="dtdidentifier"/>
+		<col type="column" name="routinebody"/>
+		<col type="column" name="routinedefinition"/>
+		<col type="column" name="externalname"/>
+		<col type="column" name="externallanguage"/>
+		<col type="column" name="parameterstyle"/>
+		<col type="column" name="isdeterministic"/>
+		<col type="column" name="sqldataaccess"/>
+		<col type="column" name="isnullcall"/>
+		<col type="column" name="sqlpath"/>
+		<col type="column" name="schemalevelroutine"/>
+		<col type="column" name="maxdynamicresultsets"/>
+		<col type="column" name="isuserdefinedcast"/>
+		<col type="column" name="isimplicitlyinvocable"/>
+		<col type="column" name="securitytype"/>
+		<col type="column" name="tosqlspecificcatalog"/>
+		<col type="column" name="tosqlspecificschema"/>
+		<col type="column" name="tosqlspecificname"/>
+		<col type="column" name="aslocator"/>
+		<col type="column" name="created"/>
+		<col type="column" name="lastaltered"/>
+		<col type="column" name="newsavepointlevel"/>
+		<col type="column" name="isudtdependent"/>
+		<col type="column" name="resultcastfromdatatype"/>
+		<col type="column" name="resultcastaslocator"/>
+		<col type="column" name="resultcastcharmaxlength"/>
+		<col type="column" name="resultcastcharoctetlength"/>
+		<col type="column" name="resultcastcharsetcatalog"/>
+		<col type="column" name="resultcastcharsetschema"/>
+		<col type="column" name="resultcastcharactersetname"/>
+		<col type="column" name="resultcastcollationcatalog"/>
+		<col type="column" name="resultcastcollationschema"/>
+		<col type="column" name="resultcastcollationname"/>
+		<col type="column" name="resultcastnumericprecision"/>
+		<col type="column" name="resultcastnumericprecisionradix"/>
+		<col type="column" name="resultcastnumericscale"/>
+		<col type="column" name="resultcastdatetimeprecision"/>
+		<col type="column" name="resultcastintervaltype"/>
+		<col type="column" name="resultcastintervalprecision"/>
+		<col type="column" name="resultcasttypeudtcatalog"/>
+		<col type="column" name="resultcasttypeudtschema"/>
+		<col type="column" name="resultcasttypeudtname"/>
+		<col type="column" name="resultcastscopecatalog"/>
+		<col type="column" name="resultcastscopeschema"/>
+		<col type="column" name="resultcastscopename"/>
+		<col type="column" name="resultcastmaximumcardinality"/>
+		<col type="column" name="resultcastdtdidentifier"/>
+	</displayColumns>
+	<column name="specificcatalog">
+		<sqlName>specific_catalog</sqlName>
+		<title>Specific Catalog</title>
+		<type>s</type>
+	</column>
+	<column name="specificschema">
+		<sqlName>specific_schema</sqlName>
+		<title>Specific Schema</title>
+		<type>s</type>
+	</column>
+	<column name="specificname">
+		<sqlName>specific_name</sqlName>
+		<title>Specific Name</title>
+		<type>s</type>
+	</column>
+	<column name="routinecatalog">
+		<sqlName>routine_catalog</sqlName>
+		<title>Routine Catalog</title>
+		<type>s</type>
+	</column>
+	<column name="routineschema">
+		<sqlName>routine_schema</sqlName>
+		<title>Routine Schema</title>
+		<type>s</type>
+	</column>
+	<column name="routinename">
+		<sqlName>routine_name</sqlName>
+		<title>Routine Name</title>
+		<type>s</type>
+	</column>
+	<column name="routinetype">
+		<sqlName>routine_type</sqlName>
+		<title>Routine Type</title>
+		<type>s</type>
+	</column>
+	<column name="modulecatalog">
+		<sqlName>module_catalog</sqlName>
+		<title>Module Catalog</title>
+		<type>s</type>
+	</column>
+	<column name="moduleschema">
+		<sqlName>module_schema</sqlName>
+		<title>Module Schema</title>
+		<type>s</type>
+	</column>
+	<column name="modulename">
+		<sqlName>module_name</sqlName>
+		<title>Module Name</title>
+		<type>s</type>
+	</column>
+	<column name="udtcatalog">
+		<sqlName>udt_catalog</sqlName>
+		<title>Udt Catalog</title>
+		<type>s</type>
+	</column>
+	<column name="udtschema">
+		<sqlName>udt_schema</sqlName>
+		<title>Udt Schema</title>
+		<type>s</type>
+	</column>
+	<column name="udtname">
+		<sqlName>udt_name</sqlName>
+		<title>UDT Name</title>
+		<type>s</type>
+	</column>
+	<column name="datatype">
+		<sqlName>data_type</sqlName>
+		<title>Data Type</title>
+		<type>s</type>
+	</column>
+	<column name="charactermaximumlength">
+		<sqlName>character_maximum_length</sqlName>
+		<title>Char Max Length</title>
+		<type>n</type>
+	</column>
+	<column name="characteroctetlength">
+		<sqlName>character_octet_length</sqlName>
+		<title>Char Octet Length</title>
+		<type>n</type>
+	</column>
+	<column name="charactersetcatalog">
+		<sqlName>character_set_catalog</sqlName>
+		<title>Char Set Catalog</title>
+		<type>s</type>
+	</column>
+	<column name="charactersetschema">
+		<sqlName>character_set_schema</sqlName>
+		<title>Char Set Schema</title>
+		<type>s</type>
+	</column>
+	<column name="charactersetname">
+		<sqlName>character_set_name</sqlName>
+		<title>Char Set Name</title>
+		<type>s</type>
+	</column>
+	<column name="collationcatalog">
+		<sqlName>collation_catalog</sqlName>
+		<title>Collation Catalog</title>
+		<type>s</type>
+	</column>
+	<column name="collationschema">
+		<sqlName>collation_schema</sqlName>
+		<title>Collation Schema</title>
+		<type>s</type>
+	</column>
+	<column name="collationname">
+		<sqlName>collation_name</sqlName>
+		<title>Collation Name</title>
+		<type>s</type>
+	</column>
+	<column name="numericprecision">
+		<sqlName>numeric_precision</sqlName>
+		<title>Numeric Precision</title>
+		<type>n</type>
+	</column>
+	<column name="numericprecisionradix">
+		<sqlName>numeric_precision_radix</sqlName>
+		<title>Numeric Precision Radix</title>
+		<type>n</type>
+	</column>
+	<column name="numericscale">
+		<sqlName>numeric_scale</sqlName>
+		<title>Numeric Scale</title>
+		<type>n</type>
+	</column>
+	<column name="datetimeprecision">
+		<sqlName>datetime_precision</sqlName>
+		<title>Datetime Precision</title>
+		<type>n</type>
+	</column>
+	<column name="intervaltype">
+		<sqlName>interval_type</sqlName>
+		<title>Interval Type</title>
+		<type>s</type>
+	</column>
+	<column name="intervalprecision">
+		<sqlName>interval_precision</sqlName>
+		<title>Interval Precision</title>
+		<type>n</type>
+	</column>
+	<column name="typeudtcatalog">
+		<sqlName>type_udt_catalog</sqlName>
+		<title>Type UDT Catalog</title>
+		<type>s</type>
+	</column>
+	<column name="typeudtschema">
+		<sqlName>type_udt_schema</sqlName>
+		<title>Type UDT Schema</title>
+		<type>s</type>
+	</column>
+	<column name="typeudtname">
+		<sqlName>type_udt_name</sqlName>
+		<title>Type UDT Name</title>
+		<type>s</type>
+	</column>
+	<column name="scopecatalog">
+		<sqlName>scope_catalog</sqlName>
+		<title>Scope Catalog</title>
+		<type>s</type>
+	</column>
+	<column name="scopeschema">
+		<sqlName>scope_schema</sqlName>
+		<title>Scope Schema</title>
+		<type>s</type>
+	</column>
+	<column name="scopename">
+		<sqlName>scope_name</sqlName>
+		<title>Scope Name</title>
+		<type>s</type>
+	</column>
+	<column name="maximumcardinality">
+		<sqlName>maximum_cardinality</sqlName>
+		<title>Max Cardinality</title>
+		<type>n</type>
+	</column>
+	<column name="dtdidentifier">
+		<sqlName>dtd_identifier</sqlName>
+		<title>Dtd Identifier</title>
+		<type>s</type>
+	</column>
+	<column name="routinebody">
+		<sqlName>routine_body</sqlName>
+		<title>Routine Body</title>
+		<type>s</type>
+	</column>
+	<column name="routinedefinition">
+		<sqlName>routine_definition</sqlName>
+		<title>Routine Definition</title>
+		<type>s</type>
+	</column>
+	<column name="externalname">
+		<sqlName>external_name</sqlName>
+		<title>External Name</title>
+		<type>s</type>
+	</column>
+	<column name="externallanguage">
+		<sqlName>external_language</sqlName>
+		<title>External Language</title>
+		<type>s</type>
+	</column>
+	<column name="parameterstyle">
+		<sqlName>parameter_style</sqlName>
+		<title>Parameter Style</title>
+		<type>s</type>
+	</column>
+	<column name="isdeterministic">
+		<sqlName>is_deterministic</sqlName>
+		<title>Deterministic</title>
+		<type>s</type>
+	</column>
+	<column name="sqldataaccess">
+		<sqlName>sql_data_access</sqlName>
+		<title>Sql Data Access</title>
+		<type>s</type>
+	</column>
+	<column name="isnullcall">
+		<sqlName>is_null_call</sqlName>
+		<title>Null Call</title>
+		<type>s</type>
+	</column>
+	<column name="sqlpath">
+		<sqlName>sql_path</sqlName>
+		<title>SQL Path</title>
+		<type>s</type>
+	</column>
+	<column name="schemalevelroutine">
+		<sqlName>schema_level_routine</sqlName>
+		<title>Schema Level Routine</title>
+		<type>s</type>
+	</column>
+	<column name="maxdynamicresultsets">
+		<sqlName>max_dynamic_result_sets</sqlName>
+		<title>Max Dynamic Result Sets</title>
+		<type>n</type>
+	</column>
+	<column name="isuserdefinedcast">
+		<sqlName>is_user_defined_cast</sqlName>
+		<title>User Defined Cast</title>
+		<type>s</type>
+	</column>
+	<column name="isimplicitlyinvocable">
+		<sqlName>is_implicitly_invocable</sqlName>
+		<title>Implicitly Invocable</title>
+		<type>s</type>
+	</column>
+	<column name="securitytype">
+		<sqlName>security_type</sqlName>
+		<title>Security Type</title>
+		<type>s</type>
+	</column>
+	<column name="tosqlspecificcatalog">
+		<sqlName>to_sql_specific_catalog</sqlName>
+		<title>To Sql Specific Catalog</title>
+		<type>s</type>
+	</column>
+	<column name="tosqlspecificschema">
+		<sqlName>to_sql_specific_schema</sqlName>
+		<title>To Sql Specific Schema</title>
+		<type>s</type>
+	</column>
+	<column name="tosqlspecificname">
+		<sqlName>to_sql_specific_name</sqlName>
+		<title>To Sql Specific Name</title>
+		<type>s</type>
+	</column>
+	<column name="aslocator">
+		<sqlName>as_locator</sqlName>
+		<title>As Locator</title>
+		<type>s</type>
+	</column>
+	<column name="created">
+		<sqlName>created</sqlName>
+		<title>Created</title>
+		<type>d</type>
+	</column>
+	<column name="lastaltered">
+		<sqlName>last_altered</sqlName>
+		<title>Last Altered</title>
+		<type>d</type>
+	</column>
+	<column name="newsavepointlevel">
+		<sqlName>new_savepoint_level</sqlName>
+		<title>New Savepoint Level</title>
+		<type>s</type>
+	</column>
+	<column name="isudtdependent">
+		<sqlName>is_udt_dependent</sqlName>
+		<title>UDT Dependent</title>
+		<type>s</type>
+	</column>
+	<column name="resultcastfromdatatype">
+		<sqlName>result_cast_from_data_type</sqlName>
+		<title>Result Cast From Data Type</title>
+		<type>s</type>
+	</column>
+	<column name="resultcastaslocator">
+		<sqlName>result_cast_as_locator</sqlName>
+		<title>Result Cast As Locator</title>
+		<type>s</type>
+	</column>
+	<column name="resultcastcharmaxlength">
+		<sqlName>result_cast_char_max_length</sqlName>
+		<title>Result Cast Char Max Length</title>
+		<type>n</type>
+	</column>
+	<column name="resultcastcharoctetlength">
+		<sqlName>result_cast_char_octet_length</sqlName>
+		<title>Result Cast Char Octet Length</title>
+		<type>n</type>
+	</column>
+	<column name="resultcastcharsetcatalog">
+		<sqlName>result_cast_char_set_catalog</sqlName>
+		<title>Result Cast Char Set Catalog</title>
+		<type>s</type>
+	</column>
+	<column name="resultcastcharsetschema">
+		<sqlName>result_cast_char_set_schema</sqlName>
+		<title>Result Cast Char Set Schema</title>
+		<type>s</type>
+	</column>
+	<column name="resultcastcharactersetname">
+		<sqlName>result_cast_character_set_name</sqlName>
+		<title>Result Cast Character Set Name</title>
+		<type>s</type>
+	</column>
+	<column name="resultcastcollationcatalog">
+		<sqlName>result_cast_collation_catalog</sqlName>
+		<title>Result Cast Collation Catalog</title>
+		<type>s</type>
+	</column>
+	<column name="resultcastcollationschema">
+		<sqlName>result_cast_collation_schema</sqlName>
+		<title>Result Cast Collation Schema</title>
+		<type>s</type>
+	</column>
+	<column name="resultcastcollationname">
+		<sqlName>result_cast_collation_name</sqlName>
+		<title>Result Cast Collation Name</title>
+		<type>s</type>
+	</column>
+	<column name="resultcastnumericprecision">
+		<sqlName>result_cast_numeric_precision</sqlName>
+		<title>Result Cast Numeric Precision</title>
+		<type>n</type>
+	</column>
+	<column name="resultcastnumericprecisionradix">
+		<sqlName>result_cast_numeric_precision_radix</sqlName>
+		<title>Result Cast Numeric Precision Radix</title>
+		<type>n</type>
+	</column>
+	<column name="resultcastnumericscale">
+		<sqlName>result_cast_numeric_scale</sqlName>
+		<title>Result Cast Numeric Scale</title>
+		<type>n</type>
+	</column>
+	<column name="resultcastdatetimeprecision">
+		<sqlName>result_cast_datetime_precision</sqlName>
+		<title>Result Cast Datetime Precision</title>
+		<type>n</type>
+	</column>
+	<column name="resultcastintervaltype">
+		<sqlName>result_cast_interval_type</sqlName>
+		<title>Result Cast Interval Type</title>
+		<type>s</type>
+	</column>
+	<column name="resultcastintervalprecision">
+		<sqlName>result_cast_interval_precision</sqlName>
+		<title>Result Cast Interval Precision</title>
+		<type>n</type>
+	</column>
+	<column name="resultcasttypeudtcatalog">
+		<sqlName>result_cast_type_udt_catalog</sqlName>
+		<title>Result Cast Type UDT Catalog</title>
+		<type>s</type>
+	</column>
+	<column name="resultcasttypeudtschema">
+		<sqlName>result_cast_type_udt_schema</sqlName>
+		<title>Result Cast Type UDT Schema</title>
+		<type>s</type>
+	</column>
+	<column name="resultcasttypeudtname">
+		<sqlName>result_cast_type_udt_name</sqlName>
+		<title>Result Cast Type UDT Name</title>
+		<type>s</type>
+	</column>
+	<column name="resultcastscopecatalog">
+		<sqlName>result_cast_scope_catalog</sqlName>
+		<title>Result Cast Scope Catalog</title>
+		<type>s</type>
+	</column>
+	<column name="resultcastscopeschema">
+		<sqlName>result_cast_scope_schema</sqlName>
+		<title>Result Cast Scope Schema</title>
+		<type>s</type>
+	</column>
+	<column name="resultcastscopename">
+		<sqlName>result_cast_scope_name</sqlName>
+		<title>Result Cast Scope Name</title>
+		<type>s</type>
+	</column>
+	<column name="resultcastmaximumcardinality">
+		<sqlName>result_cast_maximum_cardinality</sqlName>
+		<title>Result Cast Maximum Cardinality</title>
+		<type>n</type>
+	</column>
+	<column name="resultcastdtdidentifier">
+		<sqlName>result_cast_dtd_identifier</sqlName>
+		<title>Result Cast DTD Identifier</title>
+		<type>s</type>
+	</column>
+	<reference name="privileges">
+		<title>Privileges</title>
+		<reftype>table</reftype>
+		<refvalue>postgreSQL/routinePrivileges</refvalue>
+		<icon>images/icon-column.gif</icon>
+		<displayColumnsSet>Specific Routine</displayColumnsSet>
+		<ref foreign_column_name="specificcatalog">
+			<local_column_name>specificcatalog</local_column_name>
+		</ref>
+		<ref foreign_column_name="specificschema">
+			<local_column_name>specificschema</local_column_name>
+		</ref>
+		<ref foreign_column_name="specificname">
+			<local_column_name>specificname</local_column_name>
+		</ref>
+	</reference>
+</table>

@@ -1,0 +1,78 @@
+<!--
+  Peter Prib, Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2012 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<table name="pgaTargetAdvice">
+	<sqlName>V$PGA_TARGET_ADVICE</sqlName>
+	<singularName>PGA Target Advice</singularName>
+	<pluralName>PGA Target Advice</pluralName>
+	<description>Query from ad hoc</description>
+	<orderBy name="PGA_TARGET_FOR_ESTIMATE" direction="A"/>
+	<displayColumns>
+		<col type="column" name="PGA_TARGET_FOR_ESTIMATE"/>
+		<col type="column" name="PGA_TARGET_FACTOR"/>
+		<col type="column" name="ADVICE_STATUS"/>
+		<col type="column" name="BYTES_PROCESSED"/>
+		<col type="column" name="ESTD_TIME"/>
+		<col type="column" name="ESTD_EXTRA_BYTES_RW"/>
+		<col type="column" name="ESTD_PGA_CACHE_HIT_PERCENTAGE"/>
+		<col type="column" name="ESTD_OVERALLOC_COUNT"/>
+	</displayColumns>
+	<column name="PGA_TARGET_FOR_ESTIMATE">
+		<sqlName>PGA_TARGET_FOR_ESTIMATE</sqlName>
+		<title>PGA Target For Estimate</title>
+		<type>n</type>
+		<formatNumber toAbbreviated="4"/>
+	</column>
+	<column name="PGA_TARGET_FACTOR">
+		<sqlName>PGA_TARGET_FACTOR</sqlName>
+		<title>PGA Target Factor</title>
+		<type>n</type>
+	</column>
+	<column name="ADVICE_STATUS">
+		<sqlName>ADVICE_STATUS</sqlName>
+		<title>Advice Status</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="BYTES_PROCESSED">
+		<sqlName>BYTES_PROCESSED</sqlName>
+		<title>Bytes Processed</title>
+		<type>n</type>
+		<formatNumber toAbbreviated="4"/> 
+	</column>
+	<column name="ESTD_TIME">
+		<sqlName>ESTD_TIME</sqlName>
+		<title>Time</title>
+		<type>n</type>
+		<formatNumber toAbbreviated="4"/> 
+	</column>
+	<column name="ESTD_EXTRA_BYTES_RW">
+		<sqlName>ESTD_EXTRA_BYTES_RW</sqlName>
+		<title>Est. Extra Bytes RW</title>
+		<type>n</type>
+		<formatNumber toAbbreviated="4"/> 
+	</column>
+	<column name="ESTD_PGA_CACHE_HIT_PERCENTAGE">
+		<sqlName>ESTD_PGA_CACHE_HIT_PERCENTAGE</sqlName>
+		<title>Est. PGA Cache Hit %</title>
+		<type>n</type>
+	</column>
+	<column name="ESTD_OVERALLOC_COUNT">
+		<sqlName>ESTD_OVERALLOC_COUNT</sqlName>
+		<title>Est. Over Alloc. Count</title>
+		<type>n</type>
+		<formatNumber toAbbreviated="4"/> 
+	</column>
+</table>

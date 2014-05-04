@@ -1,0 +1,84 @@
+<!--
+  Copyright IBM Corp. 2007 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<table name="SYSCAT.WORKCLASSSETS">
+    <sql_name>SYSCAT.WORKCLASSSETS</sql_name>
+    <singular_name>Work Class Set</singular_name>
+    <plural_name>Work Class Sets</plural_name>
+    <description>
+    Each row represents a 
+    &lt;a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.admin.wlm.doc/doc/c0051960.html?noframes=true');"&gt;work class set&lt;/a&gt;.
+	A work class is a method of categorizing individual database activities based on attributes of the database activity. Work classes are grouped into work class sets, which can be shared by different work action sets.
+   	This list is generated from the &lt;a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.sql.ref.doc/doc/r0050581.html?noframes=true');"&gt;SYSCAT.WORKCLASSSETS&lt;/a&gt; catalog view.
+    </description>
+	<disableEdit/>
+	<output>
+		<type name="DDL" destination="" title="" generator=""/>
+	</output>
+    <display_columns>
+        <col type="column" name="workclasssetid"/>
+
+        <col type="column" name="workclasssetname"/>
+
+        <col type="reference" name="classes"/>
+
+        <col type="column" name="alter_time"/>
+
+        <col type="column" name="create_time"/>
+
+        <col type="column" name="remarks"/>
+        
+    </display_columns>
+	<disable_edit/>
+	<reference name="classes">
+		<c_title>Classes</c_title>
+		<reftype>table</reftype>
+		<refvalue>WLM/workclasses</refvalue>
+		<icon>images/icon-link-calendar.gif</icon>
+		<ref foreign_column_name="workclasssetid">
+			<local_column_name>workclasssetid</local_column_name>
+		</ref>
+	</reference>            
+    <column name="alter_time">
+        <c_sql_name>ALTER_TIME</c_sql_name>
+        <c_title>Alter</c_title>
+        <c_presentation>n</c_presentation>
+        <c_sort>n</c_sort>
+    </column>
+    <column name="create_time">
+        <c_sql_name>CREATE_TIME</c_sql_name>
+        <c_title>Create</c_title>
+        <c_presentation>n</c_presentation>
+        <c_sort>n</c_sort>
+    </column>
+    <column name="remarks">
+        <c_sql_name>REMARKS</c_sql_name>
+        <c_title>Remarks</c_title>
+        <c_presentation>s</c_presentation>
+        <c_sort>y</c_sort>
+    </column>
+    <column name="workclasssetid">
+        <c_sql_name>WORKCLASSSETID</c_sql_name>
+        <c_title>ID</c_title>
+        <c_presentation>n</c_presentation>
+        <c_sort>n</c_sort>
+    </column>
+    <column name="workclasssetname">
+        <c_sql_name>WORKCLASSSETNAME</c_sql_name>
+        <c_title>Name</c_title>
+        <c_presentation>s</c_presentation>
+        <c_sort>y</c_sort>
+    </column>
+</table>

@@ -1,0 +1,81 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2013 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+<table name="authInfo">
+	<sqlName>authInfo</sqlName>
+	<singularName>Authentication Info</singularName>
+	<pluralName>Authentication Info</pluralName>
+	<inlinequery>
+<![CDATA[
+MQCMD_INQUIRE_AUTH_INFO ?
+]]>
+	</inlinequery>
+	<parameters>
+		<parm name="MQCA_AUTH_INFO_NAME">
+			<title>Auth Info Mask</title>
+			<value>*</value>
+		</parm>
+	</parameters>
+	<displayColumns>
+		<col type="column" name="MQCA_AUTH_INFO_NAME"/>
+		<col type="column" name="MQIA_AUTH_INFO_TYPE"/>
+		<col type="column" name="MQCA_AUTH_INFO_OCSP_URL"/>
+		<col type="column" name="MQCA_AUTH_INFO_DESC"/>
+		<col type="column" name="MQCA_ALTERATION_DATE"/>
+		<col type="column" name="MQCA_ALTERATION_TIME"/>
+		<col type="column" name="MQCA_AUTH_INFO_CONN_NAME"/>
+		<col type="column" name="MQCA_LDAP_USER_NAME"/>
+		<col type="column" name="MQCA_LDAP_PASSWORD"/>
+	</displayColumns>
+	<column name="MQCA_AUTH_INFO_NAME">
+		<sqlName>MQCA_AUTH_INFO_NAME</sqlName>
+		<title>Name</title>
+	</column>
+	<column name="MQIA_AUTH_INFO_TYPE">
+		<sqlName>MQIA_AUTH_INFO_TYPE</sqlName>
+		<title>Type</title>
+		<type>n</type>
+	</column>
+	<column name="MQCA_AUTH_INFO_OCSP_URL">
+		<sqlName>MQCA_AUTH_INFO_OCSP_URL</sqlName>
+		<title>OCSP URL</title>
+	</column>
+	<column name="MQCA_AUTH_INFO_DESC">
+		<sqlName>MQCA_AUTH_INFO_DESC</sqlName>
+		<title>Description</title>
+	</column>
+	<column name="MQCA_ALTERATION_DATE">
+		<sqlName>MQCA_ALTERATION_DATE</sqlName>
+		<title>Alteration Date</title>
+	</column>
+	<column name="MQCA_ALTERATION_TIME">
+		<sqlName>MQCA_ALTERATION_TIME</sqlName>
+		<title>Alteration Time</title>
+	</column>
+	<column name="MQCA_AUTH_INFO_CONN_NAME">
+		<sqlName>MQCA_AUTH_INFO_CONN_NAME</sqlName>
+		<title>Auth Info Conn Name</title>
+	</column>
+	<column name="MQCA_LDAP_USER_NAME">
+		<sqlName>MQCA_LDAP_USER_NAME</sqlName>
+		<title>LDAP User Name</title>
+	</column>
+	<column name="MQCA_LDAP_PASSWORD">
+		<sqlName>MQCA_LDAP_PASSWORD</sqlName>
+		<title>LDAP Password</title>
+	</column>
+</table>

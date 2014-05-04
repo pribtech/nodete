@@ -1,0 +1,105 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2013 All rights reserved.
+  
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+<!-- XML table definition was generated from the table: information_schema.routine_privileges -->
+
+
+<table name="routinePrivileges">
+	<sqlName>information_schema.routine_privileges</sqlName>
+	<singularName>Routine Privilege</singularName>
+	<pluralName>Routine Privileges</pluralName>
+	<description/>
+	<disableEdit/>
+	<output>
+		<type name="DDL" destination="" title="" generator=""/>
+	</output>
+	<orderBy name="specificcatalog" direction="A"/>
+	<orderBy name="specificschema" direction="A"/>
+	<orderBy name="specificname" direction="A"/>
+	<orderBy name="grantee" direction="A"/>
+	<displayColumns>
+		<col type="column" name="specificcatalog"/>
+		<col type="column" name="specificschema"/>
+		<col type="column" name="specificname"/>
+		<col type="column" name="grantee"/>
+		<col type="column" name="routinecatalog"/>
+		<col type="column" name="routineschema"/>
+		<col type="column" name="routinename"/>
+		<col type="column" name="privilegetype"/>
+		<col type="column" name="isgrantable"/>
+		<col type="column" name="grantor"/>
+	</displayColumns>
+	<displayColumns  name="Specific Routine">
+		<col type="column" name="grantee"/>
+		<col type="column" name="routinecatalog"/>
+		<col type="column" name="routineschema"/>
+		<col type="column" name="routinename"/>
+		<col type="column" name="privilegetype"/>
+		<col type="column" name="isgrantable"/>
+		<col type="column" name="grantor"/>
+	</displayColumns>
+	<column name="grantor">
+		<sqlName>grantor</sqlName>
+		<title>Grantor</title>
+		<type>s</type>
+	</column>
+	<column name="grantee">
+		<sqlName>grantee</sqlName>
+		<title>Grantee</title>
+		<type>s</type>
+	</column>
+	<column name="specificcatalog">
+		<sqlName>specific_catalog</sqlName>
+		<title>Specific Catalog</title>
+		<type>s</type>
+	</column>
+	<column name="specificschema">
+		<sqlName>specific_schema</sqlName>
+		<title>Specific Schema</title>
+		<type>s</type>
+	</column>
+	<column name="specificname">
+		<sqlName>specific_name</sqlName>
+		<title>Specific Name</title>
+		<type>s</type>
+	</column>
+	<column name="routinecatalog">
+		<sqlName>routine_catalog</sqlName>
+		<title>Routine Catalog</title>
+		<type>s</type>
+	</column>
+	<column name="routineschema">
+		<sqlName>routine_schema</sqlName>
+		<title>Routine Schema</title>
+		<type>s</type>
+	</column>
+	<column name="routinename">
+		<sqlName>routine_name</sqlName>
+		<title>Routine Name</title>
+		<type>s</type>
+	</column>
+	<column name="privilegetype">
+		<sqlName>privilege_type</sqlName>
+		<title>Privilege Type</title>
+		<type>s</type>
+	</column>
+	<column name="isgrantable">
+		<sqlName>is_grantable</sqlName>
+		<title>Grantable</title>
+		<type>s</type>
+	</column>
+</table>

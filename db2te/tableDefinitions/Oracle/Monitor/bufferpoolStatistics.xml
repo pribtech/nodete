@@ -1,0 +1,151 @@
+<!--
+  Peter Prib, Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2012 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<table name="bufferpoolStatistics">
+	<sqlName>V$BUFFER_POOL_STATISTICS</sqlName>
+	<singularName>Bufferpool Statistics</singularName>
+	<pluralName>Bufferpool Statistics</pluralName>
+	<description></description>
+	<orderBy name="NAME" direction="A"/> 
+	<disable_edit/>
+	<output>
+		<type name="DDL" destination="" title="" generator=""/>
+	</output>
+	<displayColumns>
+		<col type="column" name="ID"/>
+		<col type="column" name="NAME"/>
+		<col type="column" name="BLOCK_SIZE"/>
+		<col type="column" name="SET_MSIZE"/>
+		<col type="column" name="CNUM_REPL"/>
+		<col type="column" name="CNUM_WRITE"/>
+		<col type="column" name="CNUM_SET"/>
+		<col type="column" name="BUF_GOT"/>
+		<col type="column" name="SUM_WRITE"/>
+		<col type="column" name="SUM_SCAN"/>
+		<col type="column" name="FREE_BUFFER_WAIT"/>
+		<col type="column" name="WRITE_COMPLETE_WAIT"/>
+		<col type="column" name="BUFFER_BUSY_WAIT"/>
+		<col type="column" name="FREE_BUFFER_INSPECTED"/>
+		<col type="column" name="DIRTY_BUFFERS_INSPECTED"/>
+		<col type="column" name="DB_BLOCK_CHANGE"/>
+		<col type="column" name="DB_BLOCK_GETS"/>
+		<col type="column" name="CONSISTENT_GETS"/>
+		<col type="column" name="PHYSICAL_READS"/>
+		<col type="column" name="PHYSICAL_WRITES"/>
+	</displayColumns>
+	<column name="ID">
+		<sqlName>ID</sqlName>
+		<title>Id</title>
+		<type>n</type>
+		<primaryKey/>
+	</column>
+	<column name="NAME">
+		<sqlName>NAME</sqlName>
+		<title>Name</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="BLOCK_SIZE">
+		<sqlName>BLOCK_SIZE</sqlName>
+		<title>Block Size</title>
+		<type>n</type>
+	</column>
+	<column name="SET_MSIZE">
+		<sqlName>SET_MSIZE</sqlName>
+		<title>Set M Size</title>
+		<type>n</type>
+	</column>
+	<column name="CNUM_REPL">
+		<sqlName>CNUM_REPL</sqlName>
+		<title>C No. Repl</title>
+		<type>n</type>
+	</column>
+	<column name="CNUM_WRITE">
+		<sqlName>CNUM_WRITE</sqlName>
+		<title>C No. Write</title>
+		<type>n</type>
+	</column>
+	<column name="CNUM_SET">
+		<sqlName>CNUM_SET</sqlName>
+		<title>C No. Set</title>
+		<type>n</type>
+	</column>
+	<column name="BUF_GOT">
+		<sqlName>BUF_GOT</sqlName>
+		<title>Buffer Got</title>
+		<type>n</type>
+	</column>
+	<column name="SUM_WRITE">
+		<sqlName>SUM_WRITE</sqlName>
+		<title>Sum Write</title>
+		<type>n</type>
+	</column>
+	<column name="SUM_SCAN">
+		<sqlName>SUM_SCAN</sqlName>
+		<title>Sum Scan</title>
+		<type>n</type>
+	</column>
+	<column name="FREE_BUFFER_WAIT">
+		<sqlName>FREE_BUFFER_WAIT</sqlName>
+		<title>Free Buffer Wait</title>
+		<type>n</type>
+	</column>
+	<column name="WRITE_COMPLETE_WAIT">
+		<sqlName>WRITE_COMPLETE_WAIT</sqlName>
+		<title>Write Complete Wait</title>
+		<type>n</type>
+	</column>
+	<column name="BUFFER_BUSY_WAIT">
+		<sqlName>BUFFER_BUSY_WAIT</sqlName>
+		<title>Buffer Busy Wait</title>
+		<type>n</type>
+	</column>
+	<column name="FREE_BUFFER_INSPECTED">
+		<sqlName>FREE_BUFFER_INSPECTED</sqlName>
+		<title>Free Buffer Inspected</title>
+		<type>n</type>
+	</column>
+	<column name="DIRTY_BUFFERS_INSPECTED">
+		<sqlName>DIRTY_BUFFERS_INSPECTED</sqlName>
+		<title>Dirty Buffers Inspected</title>
+		<type>n</type>
+	</column>
+	<column name="DB_BLOCK_CHANGE">
+		<sqlName>DB_BLOCK_CHANGE</sqlName>
+		<title>Db Block Change</title>
+		<type>n</type>
+	</column>
+	<column name="DB_BLOCK_GETS">
+		<sqlName>DB_BLOCK_GETS</sqlName>
+		<title>Db Block Gets</title>
+		<type>n</type>
+	</column>
+	<column name="CONSISTENT_GETS">
+		<sqlName>CONSISTENT_GETS</sqlName>
+		<title>Consistent Gets</title>
+		<type>n</type>
+	</column>
+	<column name="PHYSICAL_READS">
+		<sqlName>PHYSICAL_READS</sqlName>
+		<title>Physical Reads</title>
+		<type>n</type>
+	</column>
+	<column name="PHYSICAL_WRITES">
+		<sqlName>PHYSICAL_WRITES</sqlName>
+		<title>Physical Writes</title>
+		<type>n</type>
+	</column>
+
+</table>

@@ -1,0 +1,71 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2010) 2010 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<command name="ADMIN_REVALIDATE_DB_OBJECTS" title="ADMIN_REVALIDATE_DB_OBJECTS">
+<![CDATA[
+>>-ADMIN_REVALIDATE_DB_OBJECTS--(--object_type--,--object_schema--,-->
+
+>--object_name--)----------------------------------------------><
+
+]]>
+	<text>CALL SYSPROC.ADMIN_REVALIDATE_DB_OBJECTS (</text>
+	<br/>
+	<select>
+		<option><text>NULL , NULL , NULL</text></option>
+		<option>
+			<clauseReference name="object_type"/>
+			<text>,</text>
+			<select>
+				<option><text>NULL , NULL</text></option>
+				<option>
+					<text spacepad="false">'</text>
+					<input size="128" title="schema"/> 
+					<text spacepad="false">'</text>
+					<text>,</text>
+					<select>
+						<option><text>NULL</text></option>
+						<option>
+							<text spacepad="false">'</text>
+							<input size="128" title="object name"/> 
+							<text spacepad="false">'</text>
+						</option>
+					</select>
+				</option>
+			</select>
+		</option>
+	</select>
+	<text>)</text>
+
+	<clause name="object_type">
+		<text spacepad="false">'</text>
+			<input spacepad="false" type="list">
+			<option>FUNCTION</option>
+			<option>GLOBAL VARIABLE</option>
+			<option>METHOD</option>
+			<option>MODULE</option>
+			<option>PROCEDURE</option>
+			<option>SPECIFIC</option>
+			<option>TABLE</option>
+			<option>TRIGGER</option>
+			<option>TYPE</option>
+			<option>VIEW</option>
+		</input>
+		<text spacepad="false">'</text>
+	</clause>
+
+</command>
+        

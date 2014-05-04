@@ -1,0 +1,46 @@
+<table name="SYSPROC.ADMIN_TASK_UPDATE">
+    <sql_name>SYSPROC.ADMIN_TASK_UPDATE</sql_name>
+    <singular_name>SYSPROC.ADMIN_TASK_UPDATE</singular_name>
+    <plural_name>SYSPROC.ADMIN_TASK_UPDATE</plural_name>
+    <function>SYSPROC.ADMIN_TASK_UPDATE</function>
+    <description/>
+    <parameters>
+        <parm name="NAME" ordinal="1" mode="IN" disabled="true">
+            <title>NAME</title>
+            <type>VARCHAR</type>
+        </parm>
+        <parm name="BEGIN_DATE" ordinal="2" mode="IN">
+            <title>First run date</title>
+            <type>TIMESTAMP</type>
+        </parm>
+        <parm name="BEGIN_TIME" ordinal="2" mode="IN">
+            <title>First run time</title>
+            <type>TIMESTAMP</type>
+        </parm>
+        <parm name="END_DATE" ordinal="3" mode="IN">
+            <title>Last run date</title>
+            <type>TIMESTAMP</type>
+        </parm>
+        <parm name="END_TIME" ordinal="3" mode="IN">
+            <title>Last run time</title>
+            <type>TIMESTAMP</type>
+        </parm>
+        <parm name="MAX_INVOCATIONS" ordinal="4" mode="IN">
+            <title>Maximum runs allowed</title>
+            <type>INTEGER</type>
+        </parm>
+        <parm name="SCHEDULE" ordinal="5" mode="IN">
+            <title>Cron schedule</title>
+            <type>VARCHAR</type>
+        </parm>
+        <parm name="OPTIONS" ordinal="9" mode="IN" visible="false" disabled="true">
+            <title>Option</title>
+            <type>INT</type>
+	        <value>NULL</value>
+        </parm>
+        <parm name="REMARKS" ordinal="7" mode="IN">
+            <title>Comments</title>
+            <type>VARCHAR</type>
+        </parm>
+    </parameters>
+</table>

@@ -1,0 +1,268 @@
+<!--
+  Copyright IBM Corp. 2007 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<table name="db2auth_groups" useConnectWithTag="meta">
+        <sql_name>DB2AUTH.GROUPS</sql_name>
+		<singular_name>Groups</singular_name>
+		<plural_name>Groups</plural_name>
+		<description>A table listing all groups for the current instance.  This is the table, DB2AUTH.GROUPS.
+		</description>
+		<edit>y</edit>
+		<new>y</new>	
+		<rows_per_page>50</rows_per_page>
+		<order_by_index name="groupid" direction="A"/>
+		<display_columns>
+		    <col type="action" name="delete_groupid"/>
+		    <col type="reference" name="authidlink"></col>   
+			<col type="column" name="groupid"/>
+		</display_columns>	
+		<disable_edit/>
+		
+		<menu type="leaf">
+            <description>
+                ADD GROUP
+            </description>
+            <actionScript name="getNameForNewGroup" type="form">
+                <parameterList>
+                    <parameter name="action" type="raw">
+                        <value>getHeadlessTableForm</value>
+                    </parameter>
+                    <parameter name="table" type="raw">
+                        <value>Db2auth/addGroup</value>
+                    </parameter>
+                </parameterList>
+                <followOnAction condition="true">
+                    <task>
+                        <action name="addGroup" type="serverAction">
+                            <parameterList>
+                                <parameter name="action" type="raw">
+                                    <value>executeSQL</value>
+                                </parameter>
+                                <parameter name="SQL" type="fixed">
+                                    <value>
+                                        <![CDATA[
+                                            CALL DB2AUTH.ADD_GROUP(
+                                                                   '?GROUP_NAME?',
+                                                                   ?!name=sqlstate_out&type=DB2_PARAM_OUT?, 
+                                                                   ?!name=sqlreason_out&dataType=int&type=DB2_PARAM_OUT?, 
+                                                                   ?!name=message_out&type=DB2_PARAM_OUT?)
+                                        ]]>
+                                    </value>
+                                </parameter>
+                            </parameterList>
+                            <followOnAction condition="false">
+                                <task>
+                                    <assignLocalParameter name="ERROR_MSG" type="returnObject">
+                                        <value>addGroup.returnValue.STMTMSG</value>
+                                    </assignLocalParameter>
+                                    <alert>An error has occurred: ?ERROR_MSG?</alert>
+                                    <gotoAction name="getNameForNewGroup"/>
+                                    <return/>
+                                </task>
+                            </followOnAction>
+                            <followOnAction condition="true">
+                                <task>
+                                    <assignLocalParameter name="MSG_OUT" type="returnObject">
+                                        <value>addGroup.returnValue.parameters.message_out</value>
+                                        <check>
+                                            <onMatch condition="Security processing failed: Invalid group name">
+                                                <task>
+                                                    <alert>An error has occurred: ?MSG_OUT?</alert>
+                                                    <gotoAction name="getNameForNewGroup"/>
+                                                </task>
+                                            </onMatch>
+                                            <onMatch condition="Security processing failed: Group already exists">
+                                                <task>
+                                                    <alert>An error has occurred: ?MSG_OUT?</alert>
+                                                    <gotoAction name="getNameForNewGroup"/>
+                                                </task>
+                                            </onMatch>
+                                            <onMatch condition="">
+                                                <task>
+                                                    <panelReload/>
+                                                </task>
+                                            </onMatch>
+                                        </check>
+                                    </assignLocalParameter>
+                                </task>
+                            </followOnAction>
+                        </action>                           
+                    </task>
+                </followOnAction>
+            </actionScript>
+        </menu>
+ 
+	    <menu type="leaf">
+	        <description>
+	            DELETE GROUP
+	        </description>
+	        <actionScript name="getNameForOldGroup" type="form">
+                <parameterList>
+                    <parameter name="action" type="raw">
+                        <value>getHeadlessTableForm</value>
+                    </parameter>
+                    <parameter name="table" type="raw">
+                        <value>Db2auth/delGroup</value>
+                    </parameter>
+                </parameterList>
+                <followOnAction condition="true">
+                    <task>
+                        <action name="confirmDelGroup" type="confirm">
+                            <message>Really delete group: ?GROUP_NAME??</message>
+                                <if condition="true">
+                    <task>
+                        <action name="delGroup" type="serverAction">
+                            <parameterList>
+                                <parameter name="action" type="raw">
+                                    <value>executeSQL</value>
+                                </parameter>
+                                <parameter name="SQL" type="fixed">
+                                    <value>
+                                        <![CDATA[
+                                            CALL DB2AUTH.DEL_GROUP(
+                                                                   '?GROUP_NAME?',
+                                                                   ?!name=sqlstate_out&type=DB2_PARAM_OUT?, 
+                                                                   ?!name=sqlreason_out&dataType=int&type=DB2_PARAM_OUT?, 
+                                                                   ?!name=message_out&type=DB2_PARAM_OUT?)
+                                        ]]>
+                                    </value>
+                                </parameter>
+                            </parameterList>
+                            <followOnAction condition="false">
+                                <task>
+                                    <assignLocalParameter name="ERROR_MSG" type="returnObject">
+                                        <value>delGroup.returnValue.STMTMSG</value>
+                                    </assignLocalParameter>
+                                    <alert>An error has occurred: ?ERROR_MSG?</alert>
+                                    <gotoAction name="getNameForOldGroup"/>
+                                    <return/>
+                                </task>
+                            </followOnAction>
+                            <followOnAction condition="true">
+                                <task>
+                                    <assignLocalParameter name="MSG_OUT" type="returnObject">
+                                        <value>delGroup.returnValue.parameters.message_out</value>
+                                        <check>
+                                            <onMatch condition="Security processing failed: Group does not exist">
+                                                <task>
+                                                    <alert>An error has occurred: ?MSG_OUT?</alert>
+                                                    <gotoAction name="getNameForOldGroup"/>
+                                                </task>
+                                            </onMatch>
+                                            <onMatch condition="">
+                                                <task>
+                                                    <panelReload/>
+                                                </task>
+                                            </onMatch>
+                                        </check>
+                                    </assignLocalParameter>
+                                </task>
+                            </followOnAction>
+                        </action>                           
+                    </task>
+                    </if>
+                    </action>
+                    </task>
+                </followOnAction>
+            </actionScript>
+	    </menu>
+
+       <action name="delete_groupid">
+        <c_title>Remove</c_title>
+        <icon>images/trash.gif</icon>   
+        <actionScript name="getGroupToDelete" type="blank">
+            <followOnAction condition="true">
+                <task>
+                    <assignSharedConstant name="GROUPID" type="blockValue">
+                        <value>groupid</value>
+                    </assignSharedConstant>
+                    <action name="confirmDeleteGroup" type="confirm">
+                        <message>
+                            Confirm deletion of group: ?GROUPID??
+                        </message>
+                        <followOnAction condition="true">
+                            <task>
+                                <action name="delGroup" type="serverAction">
+                                    <parameterList>
+                                        <parameter name="action" type="raw">
+                                            <value>executeSQL</value>
+                                        </parameter>
+                                        <parameter name="parameter[GROUP_NAME]" type="blockValue">
+                                            <value>groupid</value>
+                                        </parameter>
+                                        <parameter name="SQL" type="raw">
+                                            <value>
+                                                <![CDATA[
+                                                    CALL DB2AUTH.DEL_USER(
+                                                                   '?GROUP_NAME?',
+                                                                   ?!name=sqlstate_out&type=DB2_PARAM_OUT?, 
+                                                                   ?!name=sqlreason_out&dataType=int&type=DB2_PARAM_OUT?, 
+                                                                   ?!name=message_out&type=DB2_PARAM_OUT?)
+                                                ]]>
+                                            </value>
+                                        </parameter>
+                                    </parameterList>
+                                    <followOnAction condition="false">
+                                <task>
+                                    <assignLocalParameter name="ERROR_MSG" type="returnObject">
+                                        <value>delGroup.returnValue.STMTMSG</value>
+                                    </assignLocalParameter>
+                                    <alert>An error has occurred: ?ERROR_MSG?</alert>
+                                    <return/>
+                                </task>
+                            </followOnAction>
+                            <followOnAction condition="true">
+                                <task>
+                                    <assignLocalParameter name="MSG_OUT" type="returnObject">
+                                        <value>delGroup.returnValue.parameters.message_out</value>
+                                        <check>
+                                            <onMatch condition="Security processing failed: Group does not exist">
+                                                <task>
+                                                    <alert>An error has occurred: ?MSG_OUT?</alert>
+                                                </task>
+                                            </onMatch>
+                                            <onMatch condition="">
+                                                <task>
+                                                    <panelReload/>
+                                                </task>
+                                            </onMatch>
+                                        </check>
+                                    </assignLocalParameter>
+                                </task>
+                            </followOnAction>
+                                </action>
+                            </task>
+                        </followOnAction>
+                    </action>
+                </task>
+            </followOnAction>
+        </actionScript>
+    </action>
+
+	<reference name="authidlink">
+        <title>Auths</title>
+        <reftype>table</reftype>
+        <refvalue>Authority/authids</refvalue>
+        <icon>images/icon-user.gif</icon>                       
+        <ref foreign_column_name="authid">
+            <local_column_name>groupid</local_column_name>
+        </ref>
+    </reference>
+    
+        <column name="groupid">
+            <c_sql_name>GROUPID</c_sql_name>
+            <c_title>GROUPID</c_title>
+        </column>   
+	</table>

@@ -1,0 +1,141 @@
+<!--
+  Peter Prib, Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2012 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<table name="persistentQueues">
+	<sqlName>V$PERSISTENT_QUEUES</sqlName>
+	<singularName>Persistent Queue</singularName>
+	<pluralName>Persistent Queues</pluralName>
+	<description></description>
+	<orderBy name="QUEUE_SCHEMA" direction="A"/>
+	<orderBy name="QUEUE_NAME" direction="A"/>
+	<displayColumns>
+		<col type="column" name="QUEUE_SCHEMA"/>
+		<col type="column" name="QUEUE_NAME"/>
+		<col type="column" name="FIRST_ACTIVITY_TIME"/>
+		<col type="column" name="ENQUEUED_MSGS"/>
+		<col type="column" name="DEQUEUED_MSGS"/>
+		<col type="column" name="BROWSED_MSGS"/>
+		<col type="column" name="ELAPSED_ENQUEUE_TIME"/>
+		<col type="column" name="ELAPSED_DEQUEUE_TIME"/>
+		<col type="column" name="ELAPSED_TRANSFORMATION_TIME"/>
+		<col type="column" name="ELAPSED_RULE_EVALUATION_TIME"/>
+		<col type="column" name="ENQUEUED_EXPIRY_MSGS"/>
+		<col type="column" name="ENQUEUED_DELAY_MSGS"/>
+		<col type="column" name="MSGS_MADE_EXPIRED"/>
+		<col type="column" name="MSGS_MADE_READY"/>
+		<col type="column" name="LAST_ENQUEUE_TIME"/>
+		<col type="column" name="LAST_DEQUEUE_TIME"/>
+		<col type="column" name="LAST_TM_EXPIRY_TIME"/>
+		<col type="column" name="LAST_TM_READY_TIME"/>
+	</displayColumns>
+	<column name="QUEUE_ID">
+		<sqlName>QUEUE_ID</sqlName>
+		<title>QID</title>
+		<type>n</type>
+	</column>
+	<column name="QUEUE_SCHEMA">
+		<sqlName>QUEUE_SCHEMA</sqlName>
+		<title>Schema</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="QUEUE_NAME">
+		<sqlName>QUEUE_NAME</sqlName>
+		<title>Queue</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="FIRST_ACTIVITY_TIME">
+		<sqlName>FIRST_ACTIVITY_TIME</sqlName>
+		<title>First Activity Time</title>
+		<type>n</type>
+	</column>
+	<column name="ENQUEUED_MSGS">
+		<sqlName>ENQUEUED_MSGS</sqlName>
+		<title>Enqueued Msgs</title>
+		<type>n</type>
+	</column>
+	<column name="DEQUEUED_MSGS">
+		<sqlName>DEQUEUED_MSGS</sqlName>
+		<title>Dequeued Msgs</title>
+		<type>n</type>
+	</column>
+	<column name="BROWSED_MSGS">
+		<sqlName>BROWSED_MSGS</sqlName>
+		<title>Browsed Msgs</title>
+		<type>n</type>
+	</column>
+	<column name="ELAPSED_ENQUEUE_TIME">
+		<sqlName>ELAPSED_ENQUEUE_TIME</sqlName>
+		<title>Elapsed Enqueue Time</title>
+		<type>n</type>
+	</column>
+	<column name="ELAPSED_DEQUEUE_TIME">
+		<sqlName>ELAPSED_DEQUEUE_TIME</sqlName>
+		<title>Elapsed Dequeue Time</title>
+		<type>n</type>
+	</column>
+	<column name="ELAPSED_TRANSFORMATION_TIME">
+		<sqlName>ELAPSED_TRANSFORMATION_TIME</sqlName>
+		<title>Elapsed Transformation Time</title>
+		<type>n</type>
+	</column>
+	<column name="ELAPSED_RULE_EVALUATION_TIME">
+		<sqlName>ELAPSED_RULE_EVALUATION_TIME</sqlName>
+		<title>Elapsed Rule Evaluation Time</title>
+		<type>n</type>
+	</column>
+	<column name="ENQUEUED_EXPIRY_MSGS">
+		<sqlName>ENQUEUED_EXPIRY_MSGS</sqlName>
+		<title>Enqueued Expiry Msgs</title>
+		<type>n</type>
+	</column>
+	<column name="ENQUEUED_DELAY_MSGS">
+		<sqlName>ENQUEUED_DELAY_MSGS</sqlName>
+		<title>Enqueued Delay Msgs</title>
+		<type>n</type>
+	</column>
+	<column name="MSGS_MADE_EXPIRED">
+		<sqlName>MSGS_MADE_EXPIRED</sqlName>
+		<title>Msgs Made Expired</title>
+		<type>n</type>
+	</column>
+	<column name="MSGS_MADE_READY">
+		<sqlName>MSGS_MADE_READY</sqlName>
+		<title>Msgs Made Ready</title>
+		<type>n</type>
+	</column>
+	<column name="LAST_ENQUEUE_TIME">
+		<sqlName>LAST_ENQUEUE_TIME</sqlName>
+		<title>Last Enqueue Time</title>
+		<type>n</type>
+	</column>
+	<column name="LAST_DEQUEUE_TIME">
+		<sqlName>LAST_DEQUEUE_TIME</sqlName>
+		<title>Last Dequeue Time</title>
+		<type>n</type>
+	</column>
+	<column name="LAST_TM_EXPIRY_TIME">
+		<sqlName>LAST_TM_EXPIRY_TIME</sqlName>
+		<title>Last Tm Expiry Time</title>
+		<type>n</type>
+	</column>
+	<column name="LAST_TM_READY_TIME">
+		<sqlName>LAST_TM_READY_TIME</sqlName>
+		<title>Last Tm Ready Time</title>
+		<type>n</type>
+	</column>
+</table>

@@ -1,0 +1,80 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2009 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<command name="explain" title="Explain">
+<![CDATA[
+>>-EXPLAIN--+-PLAN SELECTION-+--+--------------------+---------->
+            +-ALL------------+  '-+-FOR--+--SNAPSHOT-'   
+            |      (1)       |    '-WITH-'               
+            '-PLAN-----------'                           
+]]>
+	<text>EXPLAIN</text>
+	<select>
+		<option default="true"><text>PLAN SELECTION</text></option> 
+		<option><text>ALL</text></option> 
+		<option><text>PLAN</text></option> 
+	</select>
+	<select>
+		<option default="true"><note>explain tables</note></option> 
+		<option>
+			<select>
+				<option default="true"><text>FOR</text></option> 
+				<option><text>WITH</text></option>
+			</select>
+			<text>SNAPSHOT</text>
+		</option> 
+	</select>
+	<br/>
+<![CDATA[
+>--+-----------------+--+------------------------+-------------->
+   '-WITH REOPT ONCE-'  '-SET QUERYNO = -integer-'   
+]]>
+	<select>
+		<option default="true"><note>no reopt</note></option> 
+		<option><text>WITH REOPT ONCE</text></option> 
+	</select>
+	<select>
+		<option default="true"><note>queryno 1</note></option> 
+		<option><text>SET QUERYNO =</text><input type="int" size="5"/></option> 
+	</select>
+	<br/>
+<![CDATA[
+>--+---------------------------------+-------------------------->
+   '-SET QUERYTAG = -string-constant-'   
+]]>
+	<select>
+		<option default="true"><note>querytage spaces</note></option> 
+		<option><text>SET QUERYTAG =</text><input size="32"/></option> 
+	</select>
+	<br/>
+<![CDATA[
+>--FOR--+-explainable-sql-statement--------------+-------------><
+        '-XQUERY--'explainable-xquery-statement'-'   
+]]>
+	<text>FOR</text>
+	<select>
+		<option default="true">
+			<input size="32000" name="query-statement" title="sql statement" />
+		</option> 
+		<option>
+			<text spacepad="false">XQUERY '</text>
+			<input spacepad="false" size="32000" name="query-statement" title="xquery statement"/>
+			<text>'</text>
+		</option> 
+	</select>
+	<br/>
+</command>

@@ -1,0 +1,170 @@
+<!--
+  Author: Peter Prib
+  
+  Copyright Independent Systems Integrators Pty Ltd 2008 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+<table name="healthAlertCFG">
+	<sql_name>healthAlertCFG</sql_name>
+	<singular_name>Health Alert</singular_name>
+	<plural_name>Health Alerts</plural_name>
+	<function>HEALTH_GET_ALERT_CFG</function>
+	<parameters>
+		<parm name="OBJECTTYPE" type="fixed">
+			<title>Type</title>
+			<value>DBM</value>
+			<type>s</type>
+		</parm>
+		<parm name="CFG_LEVEL" type="fixed">
+			<title>Level</title>
+			<value>D</value>
+			<type>s</type>
+		</parm>
+		<parm name="DBNAME" type="fixed">
+			<title>Database</title>
+			<value></value>
+			<type>s</type>
+		</parm>
+		<parm name="OBJECTNAME" type="fixed">
+			<title>Object Name</title>
+			<value></value>
+			<type>s</type>
+		</parm>
+	</parameters>
+	<description></description>
+	<rows_per_page>50</rows_per_page>
+	<order_by_index/>
+		<display_columns>
+		<col type="column" name="SHORT_DESCRIPTION"/>
+		<col type="column" name="OBJECTTYPE"/>
+		<col type="column" name="CFG_LEVEL"/>
+		<col type="column" name="DBNAME"/>
+		<col type="column" name="OBJECTNAME"/>
+		<col type="column" name="IS_DEFAULT"/>
+		<col type="column" name="WARNING_THRESHOLD"/>
+		<col type="column" name="ALARM_THRESHOLD"/>
+		<col type="column" name="SENSITIVITY"/>
+		<col type="column" name="EVALUATE"/>
+		<col type="column" name="ACTION_ENABLED"/>
+	</display_columns>
+	<column name="SHORT_DESCRIPTION">
+		<c_sql_name>
+		(select SHORT_DESCRIPTION 
+		from table(HEALTH_GET_IND_DEFINITION(cast(null as VARCHAR(33) ))) i
+        where i.id=healthAlertCFG.id)
+		</c_sql_name>
+		<c_title>Indicator</c_title>
+		<c_presentation/>
+		<c_drill>n</c_drill>
+		<c_reference name="container">
+			<reftype>displayRow</reftype>
+			<refvalue>Health/healthIndicator</refvalue>
+			<icon>images/sout.gif</icon>
+			<ref foreign_column_name="ID">
+				<local_column_name>ID</local_column_name>
+			</ref>
+		</c_reference>
+	</column> 
+	<column name="OBJECTTYPE">
+		<c_sql_name>OBJECTTYPE</c_sql_name>
+		<c_title>Type</c_title>
+		<c_presentation/>
+		<c_drill>y</c_drill>
+		<c_column_mask>
+			<value_mask value="DBM"><mask>database manager</mask></value_mask>
+			<value_mask value="DB"><mask>database</mask></value_mask>
+			<value_mask value="TS"><mask>tablespace</mask></value_mask>
+			<value_mask value="TSC"><mask>container</mask></value_mask>
+		</c_column_mask>
+	</column>
+	<column name="CFG_LEVEL">
+		<c_sql_name>CFG_LEVEL</c_sql_name>
+		<c_title>Level</c_title>
+		<c_presentation/>
+		<c_drill>y</c_drill>
+		<c_column_mask>
+			<value_mask value="D"><mask>Default</mask></value_mask>
+			<value_mask value="G"><mask>Global</mask></value_mask>
+			<value_mask value="O"><mask>Global</mask></value_mask>
+		</c_column_mask>
+	</column>
+	<column name="DBNAME">
+		<c_sql_name>DBNAME</c_sql_name>
+		<c_title>Database</c_title>
+		<c_presentation/>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="OBJECTNAME">
+		<c_sql_name>OBJECTNAME</c_sql_name>
+		<c_title>Object Name</c_title>
+		<c_presentation/>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="ID">
+		<c_sql_name>ID</c_sql_name>
+		<c_title>Indicator Id.</c_title>
+		<c_presentation/>
+		<c_drill>n</c_drill>
+		<c_pkey>p</c_pkey>
+	</column>
+	<column name="IS_DEFAULT">
+		<c_sql_name>IS_DEFAULT</c_sql_name>
+		<c_title>Default</c_title>
+		<c_presentation/>
+		<c_drill>n</c_drill>
+		<c_column_mask>
+			<value_mask value="0"><mask></mask></value_mask>
+			<value_mask value="1"><mask>yes</mask></value_mask>
+		</c_column_mask>
+	</column>
+	<column name="WARNING_THRESHOLD">
+		<c_sql_name>WARNING_THRESHOLD</c_sql_name>
+		<c_title>Warning Threshhold</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="ALARM_THRESHOLD">
+		<c_sql_name>ALARM_THRESHOLD</c_sql_name>
+		<c_title>Alarm Threshold</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="SENSITIVITY">
+		<c_sql_name>SENSITIVITY</c_sql_name>
+		<c_title>Sensitivity Minutes</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="EVALUATE">
+		<c_sql_name>EVALUATE</c_sql_name>
+		<c_title>Evaluate</c_title>
+		<c_presentation/>
+		<c_drill>n</c_drill>
+		<c_column_mask>
+			<value_mask value="0"><mask></mask></value_mask>
+			<value_mask value="1"><mask>Yes</mask></value_mask>
+		</c_column_mask>
+	</column>
+	<column name="ACTION_ENABLED">
+		<c_sql_name>ACTION_ENABLED</c_sql_name>
+		<c_title>Action</c_title>
+		<c_presentation/>
+		<c_drill>n</c_drill>
+		<c_column_mask>
+			<value_mask value="0"><mask></mask></value_mask>
+			<value_mask value="1"><mask>Enabled</mask></value_mask>
+		</c_column_mask>
+	</column>
+</table>

@@ -1,0 +1,91 @@
+<!--
+  Updated by Author: Peter Kohlmann
+  Copyright IBM Canada Ltd 2008 All rights reserved.
+
+  Updated by Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2010 All rights reserved.
+
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+ -->
+<table name="monWorkload">
+	<sql_name>monTest</sql_name>
+	<singular_name>Long Running UOWs</singular_name>
+	<plural_name>Long Running UOWs</plural_name>
+	<messages><SQL0440N>Available DB2 version 9.7 and above</SQL0440N></messages>
+	<inlinequery>
+<![CDATA[
+SELECT APPL_NAME, APPLICATION_HANDLE, UOW_ID, WORKLOAD_OCCURRENCE_STATE, TOTAL_CPU_TIME
+	FROM TABLE(MON_GET_UNIT_OF_WORK(cast(NULL as bigint),-2)) AS T  , SYSIBMADM.APPLICATIONS 
+	WHERE APPLICATION_HANDLE=AGENT_ID
+	ORDER BY TOTAL_CPU_TIME DESC FETCH FIRST 10 ROWS ONLY
+	
+]]>
+	</inlinequery>
+	<messages><SQL0551N>Security issue. Please install "Monitoring Switches/Security" in Tools -> Installed Components</SQL0551N></messages>
+	<description></description>
+	<order_by_index/>
+	<display_columns>
+		<col type="column" name="APPLICATION_HANDLE"/>
+		<col type="column" name="UOW_ID"/>
+		<col type="column" name="WORKLOAD_OCCURRENCE_STATE"/>
+		<col type="column" name="TOTAL_CPU_TIME"/>
+		<col type="dynamiccolumn" name="CPUUsageRate"/>
+	</display_columns>
+	<column name="APPL_NAME">
+		<c_sql_name>APPL_NAME</c_sql_name>
+		<c_title>Application</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>		
+		<c_column_mask_file>masks/skipNulls.xml</c_column_mask_file>
+		<c_reference name="instance">
+			<reftype>table</reftype>
+			<refvalue>Monitor/SummaryViews/monSVLongQueries</refvalue>
+			<icon>images/sout.gif</icon>
+			<ref foreign_column_name="AGENT_ID">
+				<local_column_name>APPLICATION_HANDLE</local_column_name>
+			</ref>
+		</c_reference>
+	</column>
+	<column name="APPLICATION_HANDLE">
+		<c_sql_name>application_handle</c_sql_name>
+		<c_title>Agent</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+		<c_pkey>p</c_pkey>
+	</column>
+	<column name="TOTAL_CPU_TIME">
+		<c_sql_name>TOTAL_CPU_TIME</c_sql_name>
+		<c_title>Total CPU time</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+		<c_column_mask_file>masks/skipNulls.xml</c_column_mask_file>
+	</column>
+	<dynamicColumn name="CPUUsageRate" type="DELTA" column="total_cpu_time" title="CPU Rate"/>
+	<column name="UOW_ID">
+		<c_sql_name>UOW_ID</c_sql_name>
+		<c_title>UOW ID</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>		
+		<c_column_mask_file>masks/skipNulls.xml</c_column_mask_file>
+	</column>
+	<column name="WORKLOAD_OCCURRENCE_STATE">
+		<c_sql_name>WORKLOAD_OCCURRENCE_STATE</c_sql_name>
+		<c_title>State</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>		
+		<c_column_mask_file>masks/skipNulls.xml</c_column_mask_file>
+	</column>
+
+
+</table>

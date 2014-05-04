@@ -1,0 +1,203 @@
+<!--
+  Peter Prib, Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2012 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<table name="mgwSchedule">
+	<sqlName>SYS.MGW$_SCHEDULES</sqlName>
+	<singularName>MGW Schedules</singularName>
+	<pluralName>MGW Schedules</pluralName>
+	<description></description>
+	<disable_edit/>
+	<orderBy name="SCHEDULE_ID" direction="A"/>
+	<displayColumns>
+		<col type="column" name="SCHEDULE_ID"/>
+		<col type="column" name="STATE"/>
+		<col type="column" name="PROP_TYPE"/>
+		<col type="column" name="SOURCE"/>
+		<col type="column" name="DESTINATION"/>
+		<col type="column" name="START_TIME"/>
+		<col type="column" name="DURATION"/>
+		<col type="column" name="NEXT_TIME"/>
+		<col type="column" name="LATENCY"/>
+		<col type="column" name="FLAGS"/>
+		<col type="column" name="LINK_NAME"/>
+	</displayColumns>
+	<action name="enable">
+		<title>Enable</title>
+		<icon>images/trash.gif</icon>   
+    	<actionScript>
+    		<task>
+				<assignSharedConstant name="sql" type="fixed">
+					<value>
+<![CDATA[
+BEGIN
+  dbms_mgwadm.enable_propagation_schedule('?SCHEDULE_ID?');
+END;
+]]>
+					</value>
+				</assignSharedConstant>
+		   		<callGlobalAction name="sqlExecution"/>
+	   		</task>
+    	</actionScript>
+    </action>
+	<action name="disable">
+		<title>Disable</title>
+		<icon>images/trash.gif</icon>   
+    	<actionScript>
+    		<task>
+				<assignSharedConstant name="sql" type="fixed">
+					<value>
+<![CDATA[
+BEGIN
+  dbms_mgwadm.disable_propagation_schedule('?SCHEDULE_ID?');
+END;
+]]>
+					</value>
+				</assignSharedConstant>
+		   		<callGlobalAction name="sqlExecution"/>
+	   		</task>
+    	</actionScript>
+    </action>
+	<action name="Drop">
+		<title>Drop</title>
+		<icon>images/trash.gif</icon>   
+    	<actionScript>
+    		<task>
+				<assignSharedConstant name="sql" type="fixed">
+					<value>
+<![CDATA[
+begin
+  dbms_mgwadm.unschedule_propagation('?SCHEDULE_ID?');
+end;
+]]>
+					</value>
+				</assignSharedConstant>
+		   		<callGlobalAction name="sqlExecution"/>
+	   		</task>
+    	</actionScript>
+    </action>
+
+	<action name="putTest">
+		<title>Send Test</title>
+		<icon>images/trash.gif</icon>   
+    	<actionScript>
+    		<task>
+				<assignSharedConstant name="sql" type="fixed">
+					<value>
+<![CDATA[
+declare
+  enqueue_options dbms_aq.enqueue_options_t;
+  message_properties dbms_aq.message_properties_t;
+  msgid RAW(16);
+  header sys.mgw_name_value_array_t;
+BEGIN
+  header := sys.mgw_name_value_array_t(
+      sys.mgw_name_value_t.construct_integer('MGW_MQ_characterSet', '1208')
+      ,sys.mgw_name_value_t.construct_integer('MGW_MQ_priority', '7')
+    ) ;
+  dbms_aq.enqueue(queue_name => '?localQueue?'
+               ,enqueue_options => enqueue_options
+               ,message_properties => message_properties
+               ,payload => 
+			sys.mgw_basic_msg_t(header
+                               , sys.mgw_text_value_t('Test message produced:'||to_char(sysdate,'YYYY-MM-DD HH24:MI:SS'), NULL)
+                               , NULL)
+               ,msgid => msgid
+        );
+  commit;
+END enqueue;
+]]>
+					</value>
+				</assignSharedConstant>
+		   		<callGlobalAction name="sqlExecution"/>
+	   		</task>
+    	</actionScript>
+    </action>
+	<column name="localQueue">
+		<sqlName>CASE WHEN INSTR(SOURCE, '@', 1) = 0 THEN SOURCE ELSE DESTINATION END</sqlName>
+		<title>Local Queue</title>
+		<type>s</type>
+	</column>
+	<column name="GUID">
+		<sqlName>GUID</sqlName>
+		<title>Guid</title>
+		<type>n</type>
+	</column>
+	<column name="SCHEDULE_ID">
+		<sqlName>SCHEDULE_ID</sqlName>
+		<title>Schedule Id</title>
+		<type>s</type>
+		<primaryKey/>
+	</column>
+	<column name="PROP_TYPE">
+		<sqlName>PROP_TYPE</sqlName>
+		<title>Prop Type</title>
+		<type>n</type>
+		<columnMask>
+			<value_mask value="1"><mask>Outbound</mask></value_mask>
+			<value_mask value="2"><mask>Inbound</mask></value_mask>
+		</columnMask>
+	</column>
+	<column name="SOURCE">
+		<sqlName>SOURCE</sqlName>
+		<title>Source</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="DESTINATION">
+		<sqlName>DESTINATION</sqlName>
+		<title>Destination</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="START_TIME">
+		<sqlName>START_TIME</sqlName>
+		<title>Start Time</title>
+		<type>n</type>
+		<drillEnable/>
+	</column>
+	<column name="DURATION">
+		<sqlName>DURATION</sqlName>
+		<title>Duration</title>
+		<type>n</type>
+	</column>
+	<column name="NEXT_TIME">
+		<sqlName>NEXT_TIME</sqlName>
+		<title>Next Time</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="LATENCY">
+		<sqlName>LATENCY</sqlName>
+		<title>Latency</title>
+		<type>n</type>
+	</column>
+	<column name="STATE">
+		<sqlName>STATE</sqlName>
+		<title>State</title>
+		<type>n</type>
+	</column>
+	<column name="FLAGS">
+		<sqlName>FLAGS</sqlName>
+		<title>Flags</title>
+		<type>n</type>
+	</column>
+	<column name="LINK_NAME">
+		<sqlName>LINK_NAME</sqlName>
+		<title>Link Name</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+</table>

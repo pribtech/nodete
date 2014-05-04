@@ -1,0 +1,93 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2011 All rights reserved.
+  
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+
+<table name="sequence">
+	<sql_name>SYS.SYSSEQUENCES</sql_name>
+	<singular_name>Sequence</singular_name>
+	<plural_name>Sequences</plural_name>
+	<description/>
+	<order_by_index name="SCHEMANAME" direction="A"/>
+	<order_by_index name="SEQUENCENAME" direction="A"/>
+	<display_columns>
+		<col type="column" name="SCHEMANAME"/>
+		<col type="column" name="SEQUENCENAME"/>
+		<col type="column" name="SEQUENCEDATATYPE"/>
+		<col type="column" name="CURRENTVALUE"/>
+		<col type="column" name="STARTVALUE"/>
+		<col type="column" name="MINIMUMVALUE"/>
+		<col type="column" name="MAXIMUMVALUE"/>
+		<col type="column" name="INCREMENT"/>
+		<col type="column" name="CYCLEOPTION"/>
+	</display_columns>
+	<column name="SEQUENCEID">
+		<sql_name>SEQUENCEID</sql_name>
+		<title>Sequence Id.</title>
+		<type/>
+		<primarKey/>
+	</column>
+	<column name="SEQUENCENAME">
+		<sql_name>SEQUENCENAME</sql_name>
+		<title>Sequence</title>
+		<type/>
+	</column>
+	<column name="SCHEMANAME">
+		<sql_name>(SELECT s.SCHEMANAME from sys.SYSSCHEMAS s where s.SCHEMAID=SYSSEQUENCES.SCHEMAID)</sql_name>
+		<title>Schema</title>
+		<type>s</type>
+	</column>
+	<column name="SCHEMAID">
+		<sql_name>SCHEMAID</sql_name>
+		<title>Schema Id</title>
+		<type/>
+	</column>
+	<column name="SEQUENCEDATATYPE">
+		<sql_name>SEQUENCEDATATYPE</sql_name>
+		<title>Data Type</title>
+		<type/>
+	</column>
+	<column name="CURRENTVALUE">
+		<sql_name>CURRENTVALUE</sql_name>
+		<title>Current Value</title>
+		<type/>
+	</column>
+	<column name="STARTVALUE">
+		<sql_name>STARTVALUE</sql_name>
+		<title>Start Value</title>
+		<type/>
+	</column>
+	<column name="MINIMUMVALUE">
+		<sql_name>MINIMUMVALUE</sql_name>
+		<title>Min. Value</title>
+		<type/>
+	</column>
+	<column name="MAXIMUMVALUE">
+		<sql_name>MAXIMUMVALUE</sql_name>
+		<title>Max Value</title>
+		<type/>
+	</column>
+	<column name="INCREMENT">
+		<sql_name>INCREMENT</sql_name>
+		<title>Increment</title>
+		<type/>
+	</column>
+	<column name="CYCLEOPTION">
+		<sql_name>CYCLEOPTION</sql_name>
+		<title>Cycle Option</title>
+		<type/>
+	</column>
+</table>

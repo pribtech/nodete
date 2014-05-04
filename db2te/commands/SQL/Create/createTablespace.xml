@@ -1,0 +1,400 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2009 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<command name="createTablespace" title="Create Tablespace">
+<![CDATA[
+>>-CREATE--+-----------------------+---------------------------->
+           +-LARGE-----------------+   
+           +-REGULAR---------------+   
+           | .-SYSTEM-.            |   
+           '-+--------+--TEMPORARY-'   
+             '-USER---'                
+]]>
+	<text>CREATE</text>
+	<select>
+		<option default="true"><note>REGULAR</note></option> 
+		<option><text>LARGE</text></option> 
+		<option><text>REGULAR</text></option> 
+		<option>
+			<select>
+				<option><text>SYSTEM</text></option> 
+				<option default="true"><note>SYSTEM</note></option> 
+				<option><text>USER</text></option> 
+			</select>
+			<text>TEMPORARY</text>
+		</option> 
+	</select>
+<![CDATA[
+>--TABLESPACE--tablespace-name---------------------------------->
+]]>
+	<br/>
+	<text>TABLESPACE</text><clauseReference name="tablespace-name"/>
+<![CDATA[
+>--+-----------------------------------------------------------+-->
+   |     .-DATABASE PARTITION GROUP-.                          |   
+   '-IN--+--------------------------+--db-partition-group-name-'   
+]]>
+	<br/>
+	<select>
+		<option default="true"></option> 
+		<option>
+			<text>IN</text>
+			<select>
+				<option><text>DATABASE PARTITION GROUP</text></option> 
+				<option default="true"></option> 
+			</select>
+			<clauseReference name="db-partition-group-name"/> 
+		</option>
+	</select>
+<![CDATA[
+>--+--------------------------+--------------------------------->
+   '-PAGESIZE--integer--+---+-'   
+                        '-K-'     
+]]>
+	<br/>
+	<select>
+		<option default="true"><note>PAGESIZE 4k</note></option> 
+		<option>
+			<text>PAGESIZE</text>
+			<input type="int" size="8"/>
+			<select>
+				<option default="true"></option> 
+				<option><text>K</text></option> 
+			</select>
+		</option>
+	</select>
+<![CDATA[
+
+   .-MANAGED BY--AUTOMATIC STORAGE--| size-attributes |---------------------.   
+>--+------------------------------------------------------------------------+-->
+   '-MANAGED BY--+-SYSTEM--| system-containers |--------------------------+-'   
+                 '-DATABASE--| database-containers |--| size-attributes |-'     
+]]>
+	<br/>
+	<select>
+		<option>
+			<text>MANAGED BY AUTOMATIC STORAGE</text>
+			<clauseReference name="size-attributes"/> 
+		</option>
+		<option default="true"><note>MANAGED BY AUTOMATIC STORAGE</note></option> 
+		<option>
+			<text>MANAGED BY</text>
+			<select>
+				<option default="true">
+					<text>SYSTEM</text>
+					<clauseReference name="system-containers"/> 
+				</option> 
+				<option>
+					<text>DATABASE</text>
+					<clauseReference name="database-containers"/> 
+					<clauseReference name="size-attributes"/> 
+				</option> 
+			</select>
+		</option>
+	</select>
+<![CDATA[
+>--+---------------------------------+-------------------------->
+   '-EXTENTSIZE--+-number-of-pages-+-'   
+                 '-integer--+-K-+--'     
+                            '-M-'        
+]]>
+	<br/>
+	<select>
+		<option default="true"></option> 
+		<option>
+			<text>EXTENTSIZE</text>
+			<select>
+				<option default="true"><clauseReference name="number-of-pages"/></option> 
+				<option>
+					<input type="int" size="8"/>
+					<select>
+						<option default="true"></option> 
+						<option><text>K</text></option> 
+					</select>
+				</option>
+			</select>
+		</option>
+	</select>
+<![CDATA[
+>--+-----------------------------------+------------------------>
+   '-PREFETCHSIZE--+-AUTOMATIC-------+-'   
+                   +-number-of-pages-+     
+                   '-integer--+-K-+--'     
+                              +-M-+        
+                              '-G-'        
+]]>
+	<br/>
+	<select>
+		<option default="true"></option> 
+		<option>
+			<text>PREFETCHSIZE</text>
+			<select>
+				<option default="true"><text>AUTOMATIC</text></option> 
+				<option><clauseReference name="number-of-pages"/></option> 
+				<option>
+					<input type="int" size="8"/>
+					<select>
+						<option default="true"><text>K</text></option> 
+						<option><text>K</text></option> 
+						<option><text>M</text></option> 
+						<option><text>G</text></option> 
+					</select>
+				</option>
+			</select>
+		</option>
+	</select>
+<![CDATA[
+>--+-----------------------------+------------------------------>
+   '-BUFFERPOOL--bufferpool-name-'   
+]]>
+	<br/>
+	<select>
+		<option default="true"></option> 
+		<option>
+			<text>BUFFERPOOL</text>
+			<clauseReference name="bufferpool-name"/>
+		</option>
+	</select>
+<![CDATA[
+>--+----------------------------------+------------------------->
+   '-OVERHEAD--number-of-milliseconds-'   
+]]>
+	<br/>
+	<select>
+		<option default="true"></option> 
+		<option>
+			<text>OVERHEAD</text>
+			<clauseReference name="number-of-milliseconds"/>
+		</option>
+	</select>
+<![CDATA[
+>--+------------------------+----------------------------------->
+   +-NO FILE SYSTEM CACHING-+   
+   '-FILE SYSTEM CACHING----'   
+]]>
+	<br/>
+	<select>
+		<option default="true"></option> 
+		<option><text>NO FILE SYSTEM CACHING</text></option>
+		<option><text>FILE SYSTEM CACHING</text></option>
+	</select>
+<![CDATA[
+>--+--------------------------------------+--------------------->
+   '-TRANSFERRATE--number-of-milliseconds-'   
+]]>
+	<br/>
+	<select>
+		<option default="true"></option> 
+		<option>
+			<text>TRANSFERRATE</text>
+			<clauseReference name="number-of-milliseconds"/>
+		</option>
+	</select>
+<![CDATA[
+>--+---------------------------------+-------------------------><
+   '-DROPPED TABLE RECOVERY--+-ON--+-'   
+                             '-OFF-'     
+]]>
+	<br/>
+	<select>
+		<option default="true"></option> 
+		<option>
+			<text>DROPPED TABLE RECOVERY</text>
+			<select>
+				<option default="true"><text>ON</text></option> 
+				<option><text>OFF</text></option>
+			</select>
+		</option>
+	</select>
+
+
+	<clause name="size-attributes" title="size attributes">
+<![CDATA[
+|--+---------------------+--+-----------------------------+----->
+   '-AUTORESIZE--+-NO--+-'  '-INITIALSIZE--integer--+-K-+-'   
+                 '-YES-'                            +-M-+     
+                                                    '-G-'     
+]]>
+		<select>
+			<option default="true"><note>AUTORESIZE/INITIALSIZE</note></option> 
+			<option>
+				<text>AUTORESIZE</text>
+				<select>
+					<option default="true"><text>NO</text></option> 
+					<option><text>YES</text></option>
+				</select>
+				<text>INITIALSIZE</text>
+				<input type="int" size="8"/>
+				<select>
+					<option default="true"><text>K</text></option> 
+					<option><text>M</text></option>
+					<option><text>G</text></option>
+				</select>
+			</option>
+		</select>
+<![CDATA[
+>--+------------------------------------+----------------------->
+   '-INCREASESIZE--integer--+-PERCENT-+-'   
+                            '-+-K-+---'     
+                              +-M-+         
+                              '-G-'         
+]]>
+		<br/>
+		<select>
+			<option default="true"><note>INCREASESIZE</note></option> 
+			<option>
+				<text>INCREASESIZE</text>
+				<input type="int" size="8"/>
+				<select>
+					<option default="true"><text>PERCENT</text></option> 
+					<option>
+						<select>
+							<option default="true"><text>K</text></option> 
+							<option><text>M</text></option>
+							<option><text>G</text></option>
+						</select>
+					</option>
+				</select>
+			</option>
+		</select>
+<![CDATA[
+>--+-----------------------------+------------------------------|
+   '-MAXSIZE--+-integer--+-K-+-+-'   
+              |          +-M-+ |     
+              |          '-G-' |     
+              '-NONE-----------'     
+]]>
+		<br/>
+		<select>
+			<option default="true"><note>MAXSIZE</note></option> 
+			<option>
+				<text>MAXSIZE</text>
+				<input type="int" size="8"/>
+				<select>
+					<option default="true">
+						<select>
+							<option default="true"><text>K</text></option> 
+							<option><text>M</text></option>
+							<option><text>G</text></option>
+						</select>
+					</option>
+					<option><text>NONE</text></option> 
+				</select>
+			</option>
+		</select>
+	</clause>
+
+	<clause name="system-containers" title="system containers">
+<![CDATA[
+
+   .----------------------------------------------------------------------.   
+   |           .-,------------------.                                     |   
+   V           V                    |                                     |   
+|----USING--(----'container-string'-+--)--+-----------------------------+-+--|
+                                          '-| on-db-partitions-clause |-'     
+]]>
+		<repeatable>
+			<text>USING (</text>
+			<repeatable separator=",">
+				<clauseReference name="container-string"/>
+			</repeatable>
+			<text>)</text>
+			<select>
+				<option default="true"></option>
+				<option><clauseReference name="on-db-partitions-clause"/></option>
+			</select>
+		</repeatable>
+	</clause>
+
+	<clause name="database-containers" title="database containers">
+<![CDATA[
+   .--------------------------------------------------------------.   
+   V                                                              |   
+|----USING--| container-clause |--+-----------------------------+-+--|
+                                  '-| on-db-partitions-clause |-'     
+]]>
+		<repeatable separator=" ">
+			<text>USING </text>
+			<clauseReference name="container-clause"/>
+			<select>
+				<option default="true"></option>
+				<option><clauseReference name="on-db-partitions-clause"/></option>
+			</select>
+		</repeatable>
+	</clause>
+
+	<clause name="container-clause" title="container clause">
+<![CDATA[
+      .-,---------------------------------------------------.      
+      V                                                     |      
+|--(----+-FILE---+--'container-string'--+-number-of-pages-+-+--)--|
+        '-DEVICE-'                      '-integer--+-K-+--'        
+                                                   +-M-+           
+                                                   '-G-'           
+]]>
+		<text>(</text>
+		<repeatable>
+			<select>
+				<option default="true"><text>FILE</text></option>
+				<option><text>DEVICE</text></option>
+			</select>
+			<clauseReference name="container-string"/>
+			<select>
+				<option default="true"><clauseReference name="number-of-pages"/></option> 
+				<option>
+					<input type="int" size="8"/>
+					<select>
+						<option default="true"><text>K</text></option> 
+						<option><text>K</text></option> 
+						<option><text>M</text></option> 
+						<option><text>G</text></option> 
+					</select>
+				</option>
+			</select>
+		</repeatable>
+		<text>)</text>
+	</clause>
+
+	<clause name="on-db-partitions-clause" title="on db partitions clause">
+<![CDATA[
+|--ON--+-DBPARTITIONNUM--+-------------------------------------->
+       '-DBPARTITIONNUMS-'   
+]]>
+		<text>ON</text>
+		<select>
+			<option default="true"><text>DBPARTITIONNUM</text></option> 
+			<option><text>DBPARTITIONNUMS</text></option> 
+		</select>
+<![CDATA[
+      .-,--------------------------------------------------.      
+      V                                                    |      
+>--(----db-partition-number1--+--------------------------+-+--)--|
+                              '-TO--db-partition-number2-' 
+]]>
+		<text>(</text>
+		<repeatable>
+			<clauseReference name="db-partition-number"/>
+			<select>
+				<option default="true"></option> 
+				<option><text>TO</text><clauseReference name="db-partition-number"/></option> 
+			</select>
+		</repeatable>
+		<text>)</text>
+	</clause>
+
+</command>
+        

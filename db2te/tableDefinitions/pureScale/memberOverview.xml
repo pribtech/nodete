@@ -1,0 +1,235 @@
+<table name="memOve">
+	<sql_name>memOve</sql_name>
+	<singular_name>Member overview</singular_name>
+	<plural_name>Cluster member overview</plural_name>
+	<commonTableExpressions>
+		<inline>
+<![CDATA[
+	members (ID) as (
+		VALUES(-2) 
+			UNION ALL
+		SELECT
+				ID 
+			FROM
+				SYSIBMADM.DB2_MEMBER
+	)
+		]]></inline>
+	</commonTableExpressions>
+	<inlinequery>
+<![CDATA[
+SELECT
+		Case when ID >= 0 then 'Member: ' || ID else 'Cluster' end ID,
+		transactions, 
+		COMMIT_SQL_STMTS, 
+		ROLLBACK_SQL_STMTS, 
+		DYNAMIC_SQL_STMTS,
+		STATIC_SQL_STMTS, 
+		FAILED_SQL_STMTS, 
+		SELECT_SQL_STMTS, 
+		UID_SQL_STMTS, 
+		DDL_SQL_STMTS, 
+		ROWS_DELETED, 
+		ROWS_INSERTED, 
+		ROWS_UPDATED, 
+		ROWS_SELECTED, 
+		ROWS_READ, 
+		TOTAL_SORTS
+	FROM
+		TABLE(
+			SELECT 
+					ID
+				FROM
+					members
+		) a, 
+		TABLE(
+			SELECT 
+					UID_SQL_STMTS + SELECT_SQL_STMTS as transactions, 
+					COMMIT_SQL_STMTS, 
+					ROLLBACK_SQL_STMTS, 
+					DYNAMIC_SQL_STMTS,
+					STATIC_SQL_STMTS, 
+					FAILED_SQL_STMTS, 
+					SELECT_SQL_STMTS, 
+					UID_SQL_STMTS, 
+					DDL_SQL_STMTS, 
+					ROWS_DELETED, 
+					ROWS_INSERTED, 
+					ROWS_UPDATED, 
+					ROWS_SELECTED, 
+					ROWS_READ, 
+					TOTAL_SORTS
+				FROM 
+					TABLE(
+						SNAP_GET_DB_V97('', a.id)
+					)
+		)
+]]>
+	</inlinequery>
+	<rows_per_page>50</rows_per_page>
+	<display_columns>
+		<col type="column" name="ID"/>
+		<col type="dynamicColumnSimple" name="data_transactions"/>
+		<col type="dynamicColumnSimple" name="data_COMMIT_SQL_STMTS"/>
+		<col type="dynamicColumnSimple" name="data_ROLLBACK_SQL_STMTS"/>
+		<col type="dynamicColumnSimple" name="data_DYNAMIC_SQL_STMTS"/>
+		<col type="dynamicColumnSimple" name="data_STATIC_SQL_STMTS"/>
+		<col type="dynamicColumnSimple" name="data_FAILED_SQL_STMTS"/>
+		<col type="dynamicColumnSimple" name="data_SELECT_SQL_STMTS"/>
+		<col type="dynamicColumnSimple" name="data_UID_SQL_STMTS"/>
+		<col type="dynamicColumnSimple" name="data_DDL_SQL_STMTS"/>
+		<col type="dynamicColumnSimple" name="data_ROWS_DELETED"/>
+		<col type="dynamicColumnSimple" name="data_ROWS_INSERTED"/>
+		<col type="dynamicColumnSimple" name="data_ROWS_UPDATED"/>
+		<col type="dynamicColumnSimple" name="data_ROWS_SELECTED"/>
+		<col type="dynamicColumnSimple" name="data_ROWS_READ"/>
+		<col type="dynamicColumnSimple" name="data_TOTAL_SORTS"/>
+	</display_columns>
+	<history depth="40" time="SAMPLE_TS"/>
+	<charts>
+		<chart name="detail" historyInclude="true">
+			<type>line</type><title>Statistics</title>
+			<axis>
+				<x><column name="SAMPLE_TS"/></x>
+				<y>
+					<column name="transactions"/>
+					<column name="ROWS_READ"/>
+				</y>
+			</axis>
+		</chart>
+	</charts>
+	<column name="SAMPLE_TS">
+		<sql_name>current timestamp</sql_name>
+		<title>Time</title>
+	</column>
+	<column name="ID">
+		<sql_name>ID</sql_name>
+		<title>Member</title>
+		<type>n</type>
+		<primaryKey/>
+		<c_drill>s</c_drill>
+	</column>
+	<column name="transactions" accumulation="y">
+		<sql_name>transactions</sql_name>
+		<title>Transactions</title>
+		<type>n</type>
+	</column>
+	<dynamicColumnSimple name="data_transactions" type="DELTA_NORMALIZED" column="transactions" title="Transactions (/sec)">
+		<formatNumber toFixedVal="2"/> 
+	</dynamicColumnSimple>
+	<column name="COMMIT_SQL_STMTS" accumulation="y">
+		<sql_name>COMMIT_SQL_STMTS</sql_name>
+		<title>Commited</title>
+		<type>n</type>
+	</column>
+	<dynamicColumnSimple name="data_COMMIT_SQL_STMTS" type="DELTA_NORMALIZED" column="COMMIT_SQL_STMTS" title="Commited (/sec)">
+			<formatNumber toFixedVal="2"/> 
+	</dynamicColumnSimple>
+	<column name="ROLLBACK_SQL_STMTS" accumulation="y">
+		<sql_name>ROLLBACK_SQL_STMTS</sql_name>
+		<title>Rollback</title>
+		<type>n</type>
+	</column>
+	<dynamicColumnSimple name="data_ROLLBACK_SQL_STMTS" type="DELTA_NORMALIZED" column="ROLLBACK_SQL_STMTS" title="Rollback (/sec)">
+			<formatNumber toFixedVal="2"/> 
+	</dynamicColumnSimple>
+	<column name="DYNAMIC_SQL_STMTS" accumulation="y">
+		<sql_name>DYNAMIC_SQL_STMTS</sql_name>
+		<title>Dynamic</title>
+		<type>n</type>
+	</column>
+	<dynamicColumnSimple name="data_DYNAMIC_SQL_STMTS" type="DELTA_NORMALIZED" column="DYNAMIC_SQL_STMTS" title="Dynamic (/sec)">
+		<formatNumber toFixedVal="2"/> 
+	</dynamicColumnSimple>
+	<column name="STATIC_SQL_STMTS" accumulation="y">
+		<sql_name>STATIC_SQL_STMTS</sql_name>
+		<title>Static</title>
+		<type>n</type>
+	</column>
+	<dynamicColumnSimple name="data_STATIC_SQL_STMTS" type="DELTA_NORMALIZED" column="STATIC_SQL_STMTS" title="Static (/sec)">
+		<formatNumber toFixedVal="2"/> 
+	</dynamicColumnSimple>
+	<column name="FAILED_SQL_STMTS" accumulation="y">
+		<sql_name>FAILED_SQL_STMTS</sql_name>
+		<title>Failed statements</title>
+		<type>n</type>
+	</column>
+	<dynamicColumnSimple name="data_FAILED_SQL_STMTS" type="DELTA_NORMALIZED" column="FAILED_SQL_STMTS" title="Failed statements (/sec)">
+			<formatNumber toFixedVal="2"/> 
+	</dynamicColumnSimple>
+	<column name="SELECT_SQL_STMTS" accumulation="y">
+		<sql_name>SELECT_SQL_STMTS</sql_name>
+		<title>Select SQL</title>
+		<type>n</type>
+	</column>
+	<dynamicColumnSimple name="data_SELECT_SQL_STMTS" type="DELTA_NORMALIZED" column="SELECT_SQL_STMTS" title="Select SQL (/sec)">
+		<formatNumber toFixedVal="2"/> 
+	</dynamicColumnSimple>
+	<column name="UID_SQL_STMTS" accumulation="y">
+		<sql_name>UID_SQL_STMTS</sql_name>
+		<title>Updat, Insert &amp; Delete</title>
+		<type>n</type>
+		<c_drill>n</c_drill>
+	</column>
+	<dynamicColumnSimple name="data_UID_SQL_STMTS" type="DELTA_NORMALIZED" column="UID_SQL_STMTS" title="Updat, Insert &amp; Delete (/sec)">
+		<formatNumber toFixedVal="2"/> 
+	</dynamicColumnSimple>
+	<column name="DDL_SQL_STMTS" accumulation="y">
+		<sql_name>DDL_SQL_STMTS</sql_name>
+		<title>Data Definition Language</title>
+		<type>n</type>
+	</column>
+	<dynamicColumnSimple name="data_DDL_SQL_STMTS" type="DELTA_NORMALIZED" column="DDL_SQL_STMTS" title="Data Definition Language (/sec)">
+		<formatNumber toFixedVal="2"/> 
+	</dynamicColumnSimple>
+	<column name="ROWS_DELETED" accumulation="y">
+		<sql_name>ROWS_DELETED</sql_name>
+		<title>Rows deleted</title>
+		<type>n</type>
+		<c_drill>n</c_drill>
+	</column>
+	<dynamicColumnSimple name="data_ROWS_DELETED" type="DELTA_NORMALIZED" column="ROWS_DELETED" title="Rows deleted (/sec)">
+		<formatNumber toFixedVal="2"/> 
+	</dynamicColumnSimple>
+	<column name="ROWS_INSERTED" accumulation="y">
+		<sql_name>ROWS_INSERTED</sql_name>
+		<title>Rows inserted</title>
+		<type>n</type>
+		<c_drill>n</c_drill>
+	</column>
+	<dynamicColumnSimple name="data_ROWS_INSERTED" type="DELTA_NORMALIZED" column="ROWS_INSERTED" title="Rows inserted (/sec)">
+		<formatNumber toFixedVal="2"/> 
+	</dynamicColumnSimple>
+	<column name="ROWS_UPDATED" accumulation="y">
+		<sql_name>ROWS_UPDATED</sql_name>
+		<title>Rows updated</title>
+		<type>n</type>
+	</column>
+	<dynamicColumnSimple name="data_ROWS_UPDATED" type="DELTA_NORMALIZED" column="ROWS_UPDATED" title="Rows updated (/sec)">
+		<formatNumber toFixedVal="2"/> 
+	</dynamicColumnSimple>
+	<column name="ROWS_SELECTED" accumulation="y">
+		<sql_name>ROWS_SELECTED</sql_name>
+		<title>Rows selected</title>
+		<type>n</type>
+	</column>
+	<dynamicColumnSimple name="data_ROWS_SELECTED" type="DELTA_NORMALIZED" column="ROWS_SELECTED" title="Rows selected (/sec)">
+		<formatNumber toFixedVal="2"/> 
+	</dynamicColumnSimple>
+	<column name="ROWS_READ" accumulation="y">
+		<sql_name>ROWS_READ</sql_name>
+		<title>Rows read</title>
+		<type>n</type>
+		<c_drill>n</c_drill>
+	</column>
+	<dynamicColumnSimple name="data_ROWS_READ" type="DELTA_NORMALIZED" column="ROWS_READ" title="Rows read (/sec)">
+		<formatNumber toFixedVal="2"/> 
+	</dynamicColumnSimple>
+	<column name="TOTAL_SORTS" accumulation="y">
+		<sql_name>TOTAL_SORTS</sql_name>
+		<title>Rotal sorts</title>
+		<type>n</type>
+	</column>
+	<dynamicColumnSimple name="data_TOTAL_SORTS" type="DELTA_NORMALIZED" column="TOTAL_SORTS" title="Rotal sorts (/sec)">
+		<formatNumber toFixedVal="2"/>
+	</dynamicColumnSimple>
+</table>

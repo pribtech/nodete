@@ -1,0 +1,222 @@
+<!--
+  Author: Peter Prib
+  
+  Copyright Independent Systems Integrators Pty Ltd 2008 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+<table name="stmgTableHist">
+	<sql_name>stmgTableHist</sql_name>
+	<singular_name>Storage Table History</singular_name>
+	<plural_name>Storage Tables History</plural_name>
+	<description />
+	<rows_per_page>50</rows_per_page>
+	<inlinequery>
+<![CDATA[
+	select s.*,obj_name,obj_schema,ts_name
+	from SYSTOOLS.STMG_TABLE s
+	join systools.stmg_object o
+		on o.obj_id=s.obj_id
+		and o.obj_type=4
+		and o.stmg_timestamp=s.stmg_timestamp
+]]></inlinequery>
+	<order_by_index name="obj_schema" direction="A"/>
+	<order_by_index name="obj_name" direction="A"/>
+	<order_by_index name="ts_name" direction="A"/>
+	<order_by_index name="stmg_timestamp" direction="D"/>
+	<display_columns>
+		<col type="column" name="stmg_timestamp" />
+		<col type="column" name="obj_schema" />
+		<col type="column" name="obj_name" />
+		<col type="column" name="ts_name" />
+		<col type="column" name="total_row_count" />
+		<col type="column" name="avg_row_count" />
+		<col type="column" name="target_level" />
+		<col type="column" name="data_skew" />
+		<col type="column" name="avg_row_length" />
+		<col type="column" name="estimated_size" />
+		<col type="column" name="npages" />
+		<col type="column" name="fpages" />
+		<col type="column" name="overflow" />
+	</display_columns>
+
+	<graph>
+		<title>Table Page</title>
+		<type>line</type>
+		<style>
+			<legend>
+				 <display>right</display>
+ 			</legend>
+ 			<animationEnabled>false</animationEnabled>
+ 		</style>
+		<yTitleLeft>Pages</yTitleLeft>
+		<sortData>true</sortData>
+	</graph>
+
+	<column name="stmg_timestamp">
+		<c_sql_name>STMG_TIMESTAMP</c_sql_name>
+		<c_title>Timestamp</c_title>
+		<c_presentation>s</c_presentation>
+		<c_drill>n</c_drill>
+		<c_graph>
+			<g_x_categories>y</g_x_categories>
+		</c_graph>
+	</column>
+	<column name="obj_schema">
+		<c_sql_name>OBJ_SCHEMA</c_sql_name>
+		<c_title>Schema</c_title>
+		<c_presentation>s</c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="obj_name">
+		<c_sql_name>OBJ_NAME</c_sql_name>
+		<c_title>Table Name</c_title>
+		<c_presentation>s</c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="ts_name">
+		<c_sql_name>TS_NAME</c_sql_name>
+		<c_title>Tablespace</c_title>
+		<c_presentation>s</c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="obj_id">
+		<c_sql_name>OBJ_ID</c_sql_name>
+		<c_title>Object Id.</c_title>
+		<c_presentation>s</c_presentation>
+		<c_drill>n</c_drill>
+        <c_pkey>p</c_pkey>
+	</column>
+	<column name="complete_timestamp">
+		<c_sql_name>COMPLETE_TIMESTAMP</c_sql_name>
+		<c_title>Complete Timestamp</c_title>
+		<c_presentation>s</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="dbpg_name">
+		<c_sql_name>DBPG_NAME</c_sql_name>
+		<c_title>DB Partition Group</c_title>
+		<c_presentation>s</c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="total_row_count">
+		<c_sql_name>TOTAL_ROW_COUNT</c_sql_name>
+		<c_title>Total Rows</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="avg_row_count">
+		<c_sql_name>AVG_ROW_COUNT</c_sql_name>
+		<c_title>Average Rows</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="target_level">
+		<c_sql_name>TARGET_LEVEL</c_sql_name>
+		<c_title>Target Level</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="data_skew">
+		<c_sql_name>DATA_SKEW</c_sql_name>
+		<c_title>Data Skew</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="avg_row_length">
+		<c_sql_name>AVG_ROW_LENGTH</c_sql_name>
+		<c_title>Average Row Length</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="colcount">
+		<c_sql_name>COLCOUNT</c_sql_name>
+		<c_title>Column Count</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="estimated_size">
+		<c_sql_name>ESTIMATED_SIZE</c_sql_name>
+		<c_title>Estimated Size</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="npages">
+		<c_sql_name>NPAGES</c_sql_name>
+		<c_title>Pages Used</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+		<c_graph>
+			<g_description>Used</g_description>
+			<g_type>line</g_type>
+			<style>
+				<color>0xFF0000</color>
+				<size>2</size>
+				<lineSize>1</lineSize>
+			</style>
+		</c_graph>
+		
+	</column>
+	<column name="fpages">
+		<c_sql_name>FPAGES</c_sql_name>
+		<c_title>Pages Allocated</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+		<c_graph>
+			<g_description>Allocated</g_description>
+			<g_type>line</g_type>
+			<style>
+				<color>0#0000FF</color>
+				<size>2</size>
+				<lineSize>1</lineSize>
+			</style>
+		</c_graph>
+	</column>
+	<column name="overflow">
+		<c_sql_name>OVERFLOW</c_sql_name>
+		<c_title>Overflow</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="main_tbspace">
+		<c_sql_name>MAIN_TBSPACE</c_sql_name>
+		<c_title>Main Tablespace</c_title>
+		<c_presentation>s</c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="index_tbspace">
+		<c_sql_name>INDEX_TBSPACE</c_sql_name>
+		<c_title>Index Space</c_title>
+		<c_presentation>s</c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="long_tbspace">
+		<c_sql_name>LONG_TBSPACE</c_sql_name>
+		<c_title>Long Space</c_title>
+		<c_presentation>s</c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="remarks">
+		<c_sql_name>REMARKS</c_sql_name>
+		<c_title>Remarks</c_title>
+		<c_presentation>s</c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="table_partitioned">
+		<c_sql_name>TABLE_PARTITIONED</c_sql_name>
+		<c_title>Table Partitioned</c_title>
+		<c_presentation>s</c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+</table>

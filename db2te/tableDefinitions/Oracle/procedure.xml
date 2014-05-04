@@ -1,0 +1,119 @@
+<!--
+  Peter Prib, Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2012 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<table name="procedure">
+	<sql_name>SYS.ALL_PROCEDURES</sql_name>
+	<singular_name>Procedure</singular_name>
+	<plural_name>Procedures</plural_name>
+	<description></description>
+	<order_by_index name="OWNER" direction="A"/>
+	<order_by_index name="PROCEDURE_NAME" direction="A"/>
+	<display_columns>
+		<col type="column" name="OWNER"/>
+		<col type="column" name="PROCEDURE_NAME"/>
+		<col type="column" name="OBJECT_NAME"/>
+		<col type="column" name="OBJECT_ID"/>
+		<col type="column" name="SUBPROGRAM_ID"/>
+		<col type="column" name="OVERLOAD"/>
+		<col type="column" name="OBJECT_TYPE"/>
+		<col type="column" name="AGGREGATE"/>
+		<col type="column" name="PIPELINED"/>
+		<col type="column" name="IMPLTYPEOWNER"/>
+		<col type="column" name="IMPLTYPENAME"/>
+		<col type="column" name="PARALLEL"/>
+		<col type="column" name="INTERFACE"/>
+		<col type="column" name="DETERMINISTIC"/>
+		<col type="column" name="AUTHID"/>
+	</display_columns>
+	<column name="OWNER">
+		<sql_name>OWNER</sql_name>
+		<title>Owner</title>
+		<type>s</type>
+		<primaryKey/>
+		<prefillEnable/>
+	</column>
+	<column name="OBJECT_NAME">
+		<sql_name>OBJECT_NAME</sql_name>
+		<title>Object Name</title>
+		<type>s</type>
+	</column>
+	<column name="PROCEDURE_NAME">
+		<sql_name>PROCEDURE_NAME</sql_name>
+		<title>Name</title>
+		<type>s</type>
+		<primaryKey/>
+	</column>
+	<column name="OBJECT_ID">
+		<sql_name>OBJECT_ID</sql_name>
+		<title>Object Id</title>
+		<type>n</type>
+	</column>
+	<column name="SUBPROGRAM_ID">
+		<sql_name>SUBPROGRAM_ID</sql_name>
+		<title>Sub Program Id</title>
+		<type>n</type>
+	</column>
+	<column name="OVERLOAD">
+		<sql_name>OVERLOAD</sql_name>
+		<title>Overload</title>
+		<type>s</type>
+		<drill_enable/>
+	</column>
+	<column name="OBJECT_TYPE">
+		<sql_name>OBJECT_TYPE</sql_name>
+		<title>Object Type</title>
+		<type>s</type>
+	</column>
+	<column name="AGGREGATE">
+		<sql_name>AGGREGATE</sql_name>
+		<title>Aggregate</title>
+		<type>s</type>
+	</column>
+	<column name="PIPELINED">
+		<sql_name>PIPELINED</sql_name>
+		<title>Pipelined</title>
+		<type>s</type>
+	</column>
+	<column name="IMPLTYPEOWNER">
+		<sql_name>IMPLTYPEOWNER</sql_name>
+		<title>Impl. Type Owner</title>
+		<type>s</type>
+	</column>
+	<column name="IMPLTYPENAME">
+		<sql_name>IMPLTYPENAME</sql_name>
+		<title>Impl. Type</title>
+		<type>s</type>
+	</column>
+	<column name="PARALLEL">
+		<sql_name>PARALLEL</sql_name>
+		<title>Parallel</title>
+		<type>s</type>
+	</column>
+	<column name="INTERFACE">
+		<sql_name>INTERFACE</sql_name>
+		<title>Interface</title>
+		<type>s</type>
+	</column>
+	<column name="DETERMINISTIC">
+		<sql_name>DETERMINISTIC</sql_name>
+		<title>Deterministic</title>
+		<type>s</type>
+	</column>
+	<column name="AUTHID">
+		<sql_name>AUTHID</sql_name>
+		<title>Auth Id</title>
+		<type>s</type>
+	</column>
+</table>

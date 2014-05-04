@@ -1,0 +1,209 @@
+<!--
+  Copyright IBM Corp. 2007 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<table name="mysql_partition">
+	<sql_name>INFORMATION_SCHEMA.PARTITIONS</sql_name>
+	<singular_name>Partition</singular_name>
+	<plural_name>Partitions</plural_name>
+	<description/>
+	<disable_edit/>
+	<order_by_index name="TABLE_CATALOG" direction="A"/>
+	<order_by_index name="TABLE_SCHEMA" direction="A"/>
+	<order_by_index name="TABLE_NAME" direction="A"/>
+	<order_by_index name="PARTITION_NAME" direction="A"/>
+	<order_by_index name="SUBPARTITION_NAME" direction="A"/>
+	<display_columns>
+		<col type="column" name="TABLE_CATALOG"/>
+		<col type="column" name="TABLE_SCHEMA"/>
+		<col type="column" name="TABLE_NAME"/>
+		<col type="column" name="PARTITION_NAME"/>
+		<col type="column" name="SUBPARTITION_NAME"/>
+		<col type="column" name="PARTITION_ORDINAL_POSITION"/>
+		<col type="column" name="SUBPARTITION_ORDINAL_POSITION"/>
+		<col type="column" name="PARTITION_METHOD"/>
+		<col type="column" name="SUBPARTITION_METHOD"/>
+		<col type="column" name="PARTITION_EXPRESSION"/>
+		<col type="column" name="SUBPARTITION_EXPRESSION"/>
+		<col type="column" name="PARTITION_DESCRIPTION"/>
+		<col type="column" name="TABLE_ROWS"/>
+		<col type="column" name="AVG_ROW_LENGTH"/>
+		<col type="column" name="DATA_LENGTH"/>
+		<col type="column" name="MAX_DATA_LENGTH"/>
+		<col type="column" name="INDEX_LENGTH"/>
+		<col type="column" name="DATA_FREE"/>
+		<col type="column" name="CREATE_TIME"/>
+		<col type="column" name="UPDATE_TIME"/>
+		<col type="column" name="CHECK_TIME"/>
+		<col type="column" name="CHECKSUM"/>
+		<col type="column" name="PARTITION_COMMENT"/>
+		<col type="column" name="NODEGROUP"/>
+		<col type="column" name="TABLESPACE_NAME"/>
+	</display_columns>
+	<column name="TABLE_CATALOG">
+		<c_sql_name>TABLE_CATALOG</c_sql_name>
+		<c_title>Catalog</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>y</c_drill>
+		<c_pkey>p</c_pkey>
+	</column>
+	<column name="TABLE_SCHEMA">
+		<c_sql_name>TABLE_SCHEMA</c_sql_name>
+		<c_title>Schema</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>y</c_drill>
+		<c_pkey>p</c_pkey>
+	</column>
+	<column name="TABLE_NAME">
+		<c_sql_name>TABLE_NAME</c_sql_name>
+		<c_title>Table</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>y</c_drill>
+		<c_pkey>p</c_pkey>
+	</column>
+	<column name="PARTITION_NAME">
+		<c_sql_name>PARTITION_NAME</c_sql_name>
+		<c_title>Partition</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>y</c_drill>
+		<c_pkey>p</c_pkey>
+	</column>
+	<column name="SUBPARTITION_NAME">
+		<c_sql_name>SUBPARTITION_NAME</c_sql_name>
+		<c_title>Sub Partition</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>y</c_drill>
+		<c_pkey>p</c_pkey>
+	</column>
+	<column name="PARTITION_ORDINAL_POSITION">
+		<c_sql_name>PARTITION_ORDINAL_POSITION</c_sql_name>
+		<c_title>Position</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="SUBPARTITION_ORDINAL_POSITION">
+		<c_sql_name>SUBPARTITION_ORDINAL_POSITION</c_sql_name>
+		<c_title>Sub Position</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="PARTITION_METHOD">
+		<c_sql_name>PARTITION_METHOD</c_sql_name>
+		<c_title>Method</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="SUBPARTITION_METHOD">
+		<c_sql_name>SUBPARTITION_METHOD</c_sql_name>
+		<c_title>Sub Method</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="PARTITION_EXPRESSION">
+		<c_sql_name>PARTITION_EXPRESSION</c_sql_name>
+		<c_title>Expression</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="SUBPARTITION_EXPRESSION">
+		<c_sql_name>SUBPARTITION_EXPRESSION</c_sql_name>
+		<c_title>Sub Expression</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="PARTITION_DESCRIPTION">
+		<c_sql_name>PARTITION_DESCRIPTION</c_sql_name>
+		<c_title>Description</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="TABLE_ROWS">
+		<c_sql_name>TABLE_ROWS</c_sql_name>
+		<c_title>Rows</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="AVG_ROW_LENGTH">
+		<c_sql_name>AVG_ROW_LENGTH</c_sql_name>
+		<c_title>Avg. Row Length</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="DATA_LENGTH">
+		<c_sql_name>DATA_LENGTH</c_sql_name>
+		<c_title>Data Length</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="MAX_DATA_LENGTH">
+		<c_sql_name>MAX_DATA_LENGTH</c_sql_name>
+		<c_title>Max Data Length</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="INDEX_LENGTH">
+		<c_sql_name>INDEX_LENGTH</c_sql_name>
+		<c_title>Index Length</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="DATA_FREE">
+		<c_sql_name>DATA_FREE</c_sql_name>
+		<c_title>Data Free</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="CREATE_TIME">
+		<c_sql_name>CREATE_TIME</c_sql_name>
+		<c_title>Created</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="UPDATE_TIME">
+		<c_sql_name>UPDATE_TIME</c_sql_name>
+		<c_title>Updated</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="CHECK_TIME">
+		<c_sql_name>CHECK_TIME</c_sql_name>
+		<c_title>Checked</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="CHECKSUM">
+		<c_sql_name>CHECKSUM</c_sql_name>
+		<c_title>Checksum</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="PARTITION_COMMENT">
+		<c_sql_name>PARTITION_COMMENT</c_sql_name>
+		<c_title>Comment</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="NODEGROUP">
+		<c_sql_name>NODEGROUP</c_sql_name>
+		<c_title>Node Group</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="TABLESPACE_NAME">
+		<c_sql_name>TABLESPACE_NAME</c_sql_name>
+		<c_title>Tablespace</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+</table>

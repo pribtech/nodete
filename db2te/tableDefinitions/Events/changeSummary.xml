@@ -1,0 +1,194 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2013 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+<table name="eventMonitorChangeSummary">
+	<sqlName>EVENT_MONITOR_CHANGE_SUMMARY</sqlName>
+	<singularName>Change Summary</singularName>
+	<pluralName>Change Summary</pluralName>
+	<inlinequery>SELECT	* FROM "?"."?"</inlinequery>
+	<parameters>
+		<parm name="tabschema">
+			<title>tabschema</title>
+			<value>s#db2mc</value>
+			<type>n</type>
+		</parm>
+		<parm name="tabname">
+			<title>tabname</title>
+			<value>EVENT_MONITOR_CHANGE_CHANGESUMMARY</value>
+			<type>n</type>
+		</parm>
+	</parameters>
+	<orderBy name="event_timestamp" direction="D"/>
+	<messages><SQL0204N>Not installed. Please install the base events in Evets -> Create Base Events</SQL0204N></messages>
+	<description/>
+	<disableEdit/>
+	<displayColumns>
+		<col type="column" name="event_timestamp"/>
+		<col type="column" name="event_type"/>
+		<col type="column" name="event_id"/>
+		<col type="column" name="partition_key"/>
+		<col type="column" name="appl_id"/>
+		<col type="column" name="appl_name"/>
+		<col type="column" name="application_handle"/>
+		<col type="column" name="backup_timestamp"/>
+		<col type="column" name="client_acctng"/>
+		<col type="column" name="client_applname"/>
+		<col type="column" name="client_hostname"/>
+		<col type="column" name="client_pid"/>
+		<col type="column" name="client_platform"/>
+		<col type="column" name="client_port_number"/>
+		<col type="column" name="client_protocol"/>
+		<col type="column" name="client_userid"/>
+		<col type="column" name="client_wrkstnname"/>
+		<col type="column" name="coord_member"/>
+		<col type="column" name="member"/>
+		<col type="column" name="session_authid"/>
+		<col type="column" name="system_authid"/>
+		<col type="column" name="utility_invocation_id"/>
+		<col type="column" name="utility_type"/>
+	</displayColumns>
+	<column name="partition_key">
+		<sqlName>PARTITION_KEY</sqlName>
+		<title>Partition Key</title>
+		<type dbType="INTEGER">n</type>
+	</column>
+	<column name="appl_id">
+		<sqlName>APPL_ID</sqlName>
+		<title>Appl Id</title>
+		<type dbType="VARCHAR">s</type>
+		<drillEnable/>
+	</column>
+	<column name="appl_name">
+		<sqlName>APPL_NAME</sqlName>
+		<title>Appl Name</title>
+		<type dbType="VARCHAR">s</type>
+		<drillEnable/>
+	</column>
+	<column name="application_handle">
+		<sqlName>APPLICATION_HANDLE</sqlName>
+		<title>Application Handle</title>
+		<type dbType="BIGINT">n</type>
+	</column>
+	<column name="backup_timestamp">
+		<sqlName>BACKUP_TIMESTAMP</sqlName>
+		<title>Backup Timestamp</title>
+		<type dbType="VARCHAR">s</type>
+		<drillEnable/>
+	</column>
+	<column name="client_acctng">
+		<sqlName>CLIENT_ACCTNG</sqlName>
+		<title>Client Acctng</title>
+		<type dbType="VARCHAR">s</type>
+		<drillEnable/>
+	</column>
+	<column name="client_applname">
+		<sqlName>CLIENT_APPLNAME</sqlName>
+		<title>Client Applname</title>
+		<type dbType="VARCHAR">s</type>
+		<drillEnable/>
+	</column>
+	<column name="client_hostname">
+		<sqlName>CLIENT_HOSTNAME</sqlName>
+		<title>Client Hostname</title>
+		<type dbType="VARCHAR">s</type>
+		<drillEnable/>
+	</column>
+	<column name="client_pid">
+		<sqlName>CLIENT_PID</sqlName>
+		<title>Client Pid</title>
+		<type dbType="BIGINT">n</type>
+	</column>
+	<column name="client_platform">
+		<sqlName>CLIENT_PLATFORM</sqlName>
+		<title>Client Platform</title>
+		<type dbType="VARCHAR">s</type>
+		<drillEnable/>
+	</column>
+	<column name="client_port_number">
+		<sqlName>CLIENT_PORT_NUMBER</sqlName>
+		<title>Client Port Number</title>
+		<type dbType="INTEGER">n</type>
+	</column>
+	<column name="client_protocol">
+		<sqlName>CLIENT_PROTOCOL</sqlName>
+		<title>Client Protocol</title>
+		<type dbType="VARCHAR">s</type>
+		<drillEnable/>
+	</column>
+	<column name="client_userid">
+		<sqlName>CLIENT_USERID</sqlName>
+		<title>Client Userid</title>
+		<type dbType="VARCHAR">s</type>
+		<drillEnable/>
+	</column>
+	<column name="client_wrkstnname">
+		<sqlName>CLIENT_WRKSTNNAME</sqlName>
+		<title>Client Wrkstnname</title>
+		<type dbType="VARCHAR">s</type>
+		<drillEnable/>
+	</column>
+	<column name="coord_member">
+		<sqlName>COORD_MEMBER</sqlName>
+		<title>Coord Member</title>
+		<type dbType="SMALLINT">n</type>
+	</column>
+	<column name="event_id">
+		<sqlName>EVENT_ID</sqlName>
+		<title>Event Id</title>
+		<type dbType="BIGINT">n</type>
+	</column>
+	<column name="event_timestamp">
+		<sqlName>EVENT_TIMESTAMP</sqlName>
+		<title>Event Timestamp</title>
+		<type dbType="TIMESTAMP">n</type>
+	</column>
+	<column name="event_type">
+		<sqlName>EVENT_TYPE</sqlName>
+		<title>Event Type</title>
+		<type dbType="VARCHAR">s</type>
+		<drillEnable/>
+	</column>
+	<column name="member">
+		<sqlName>MEMBER</sqlName>
+		<title>Member</title>
+		<type dbType="SMALLINT">n</type>
+	</column>
+	<column name="session_authid">
+		<sqlName>SESSION_AUTHID</sqlName>
+		<title>Session Authid</title>
+		<type dbType="VARCHAR">s</type>
+		<drillEnable/>
+	</column>
+	<column name="system_authid">
+		<sqlName>SYSTEM_AUTHID</sqlName>
+		<title>System Authid</title>
+		<type dbType="VARCHAR">s</type>
+		<drillEnable/>
+	</column>
+	<column name="utility_invocation_id">
+		<sqlName>UTILITY_INVOCATION_ID</sqlName>
+		<title>Utility Invocation Id</title>
+		<type dbType="VARCHAR">s</type>
+		<drillEnable/>
+	</column>
+	<column name="utility_type">
+		<sqlName>UTILITY_TYPE</sqlName>
+		<title>Utility Type</title>
+		<type dbType="VARCHAR">s</type>
+		<drillEnable/>
+	</column>
+</table>

@@ -1,0 +1,130 @@
+<!--
+  Copyright IBM Corp. 2007 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<table name="SYSIBMADM.ENV_FEATURE_INFO">
+    <sql_name>SYSIBMADM.ENV_FEATURE_INFO</sql_name>
+    <singular_name>Product Feature</singular_name>
+    <plural_name>Product Features</plural_name>
+    <description>Each row is a 
+	&lt;a onclick="OpenURLInFloatingWindow('http://www-306.ibm.com/software/data/db2/9/editions_features.html?noframes=true');"&gt;DB2 Feature&lt;/a&gt;.
+	For some features additional detail is available by selecting the link to the left of the feature name. 
+	It displays details of use of the feature. For example, it will list all the tables with pureXML columns.
+	This list is generated from the &lt;a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.sql.rtn.doc/doc/r0052409.html?noframes=true');"&gt;SYSIBMADM.ENV_FEATURE_INFO&lt;/a&gt; administration view.	
+    </description>
+	<messages>
+		<SQL_NO_DATA>No license file found, This mode only valid for db2 Express-C</SQL_NO_DATA>
+	</messages>
+	<display_columns>
+        <col type="column" name="feature_name"/>
+
+        <col type="column" name="feature_use_status"/>
+
+        <col type="column" name="license_installed"/>
+
+    </display_columns>
+	<disable_edit/>
+    <column name="feature_fullname">
+        <c_sql_name>FEATURE_FULLNAME</c_sql_name>
+        <c_title>Feature</c_title>
+        <c_presentation>s</c_presentation>
+        <c_sort>y</c_sort>
+    </column>
+    <column name="feature_name">
+        <c_sql_name>FEATURE_NAME</c_sql_name>
+        <c_title>Feature</c_title>
+        <c_presentation>s</c_presentation>
+        <c_sort>y</c_sort>
+   		<c_column_mask>
+			<value_mask value="DPF">
+				<mask>DB2 Database Partitioning Feature</mask>
+			</value_mask>
+			<value_mask value="POESE">
+				<mask>DB2 Performance Optimization Feature</mask>
+				<reference name="perfopt"><reftype>table</reftype><refvalue>License/perfopt</refvalue></reference>
+			</value_mask>
+			<value_mask value="SO">
+				<mask>DB2 Storage Optimization Feature</mask>
+				<reference name="storopt"><reftype>table</reftype><refvalue>License/comptables</refvalue></reference>
+			</value_mask>
+			<value_mask value="AAC">
+				<mask>DB2 Advanced Access Control Feature</mask>
+				<reference name="lbac"><reftype>table</reftype><refvalue>License/lbactables</refvalue></reference>
+			</value_mask>
+			<value_mask value="GEO">
+				<mask>DB2 Geodetic Data Management Feature</mask>
+			</value_mask>
+			<value_mask value="XMLESE">
+				<mask>DB2 pureXML Feature for Enterprise</mask>
+				<reference name="purexml"><reftype>table</reftype><refvalue>License/purexml</refvalue></reference>
+			</value_mask>
+			<value_mask value="XMLWSE">
+				<mask>DB2 pureXML Feature for Workgroup</mask>
+				<reference name="purexml"><reftype>table</reftype><refvalue>License/purexml</refvalue></reference>
+			</value_mask>
+			<value_mask value="XMLEXP">
+				<mask>DB2 pureXML Feature for Express</mask>
+				<reference name="purexml"><reftype>table</reftype><refvalue>License/purexml</refvalue></reference>
+			</value_mask>
+			<value_mask value="HFESE">
+				<mask>IBM Homogeneous Federation Feature for DB2 Enterprise</mask>
+				<reference name="nickname"><reftype>table</reftype><refvalue>License/nicknames</refvalue></reference>
+			</value_mask>
+			<value_mask value="HFWSE">
+				<mask>IBM Homogeneous Federation Feature for DB2 Workgroup</mask>
+				<reference name="nickname"><reftype>table</reftype><refvalue>License/nicknames</refvalue></reference>
+			</value_mask>
+			<value_mask value="HFEXP">
+				<mask>IBM Homogeneous Federation Feature for DB2 Express</mask>
+				<reference name="nickname"><reftype>table</reftype><refvalue>License/nicknames</refvalue></reference>
+			</value_mask>
+			<value_mask value="HRESE">
+				<mask>IBM Homogeneous Replication Feature for DB2 Enterprise</mask>
+			</value_mask>
+			<value_mask value="QOWSE">
+				<mask>DB2 Query Optimization Feature</mask>
+				<reference name="qof"><reftype>table</reftype><refvalue>License/queryOptimization</refvalue></reference>
+			</value_mask>
+			<value_mask value="HAEXP">
+				<mask>High Availability Feature</mask>
+			</value_mask>
+		</c_column_mask>           
+    </column>
+    <column name="feature_use_status">
+        <c_sql_name>FEATURE_USE_STATUS</c_sql_name>
+        <c_title>Status</c_title>
+        <c_presentation>s</c_presentation>
+        <c_sort>y</c_sort>
+   		<c_column_mask>
+			<value_mask value="NOT_USED"><mask>Not used</mask></value_mask>
+			<value_mask value="IN_VIOLATION"><mask>In violation</mask></value_mask>
+		</c_column_mask>
+    </column>
+    <column name="license_installed">
+        <c_sql_name>LICENSE_INSTALLED</c_sql_name>
+        <c_title>License</c_title>
+        <c_presentation>s</c_presentation>
+        <c_sort>y</c_sort>
+   		<c_column_mask>
+			<value_mask value="N"><mask>Not registered</mask></value_mask>
+			<value_mask value="Y"><mask>Registered</mask></value_mask>
+		</c_column_mask>
+    </column>
+    <column name="product_name">
+        <c_sql_name>PRODUCT_NAME</c_sql_name>
+        <c_title>Product</c_title>
+        <c_presentation>s</c_presentation>
+        <c_sort>y</c_sort>
+    </column>
+</table>

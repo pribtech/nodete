@@ -1,0 +1,83 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2011 All rights reserved.
+  
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+
+<table name="statement">
+	<sql_name>SYS.SYSSTATEMENTS</sql_name>
+	<singular_name>Statement</singular_name>
+	<plural_name>Statements</plural_name>
+	<display_columns>
+		<col type="column" name="SCHEMANAME"/>
+		<col type="column" name="STMTNAME"/>
+		<col type="column" name="TYPE"/>
+		<col type="column" name="VALID"/>
+		<col type="column" name="TEXT"/>
+		<col type="column" name="LASTCOMPILED"/>
+		<col type="column" name="COMPILATIONSCHEMAID"/>
+		<col type="column" name="USINGTEXT"/>
+	</display_columns>
+	<column name="SCHEMANAME">
+		<sql_name>(SELECT s.SCHEMANAME from sys.SYSSCHEMAS s where s.SCHEMAID=sysstatements.SCHEMAID)</sql_name>
+		<title>Schema</title>
+		<type>s</type>
+	</column>
+	<column name="STMTID">
+		<sql_name>STMTID</sql_name>
+		<title>Id</title>
+		<type/>
+	</column>
+	<column name="STMTNAME">
+		<sql_name>STMTNAME</sql_name>
+		<title>Name</title>
+		<type/>
+	</column>
+	<column name="SCHEMAID">
+		<sql_name>SCHEMAID</sql_name>
+		<title>Schema Id</title>
+		<type/>
+	</column>
+	<column name="TYPE">
+		<sql_name>TYPE</sql_name>
+		<title>Type</title>
+		<type/>
+	</column>
+	<column name="VALID">
+		<sql_name>VALID</sql_name>
+		<title>Valid</title>
+		<type/>
+	</column>
+	<column name="TEXT">
+		<sql_name>TEXT</sql_name>
+		<title>Text</title>
+		<type/>
+	</column>
+	<column name="LASTCOMPILED">
+		<sql_name>LASTCOMPILED</sql_name>
+		<title>Last Compiled</title>
+		<type/>
+	</column>
+	<column name="COMPILATIONSCHEMAID">
+		<sql_name>COMPILATIONSCHEMAID</sql_name>
+		<title>Compilation Schema</title>
+		<type/>
+	</column>
+	<column name="USINGTEXT">
+		<sql_name>USINGTEXT</sql_name>
+		<title>Using Text</title>
+		<type/>
+	</column>
+</table>

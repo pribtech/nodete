@@ -1,0 +1,235 @@
+<!--
+  Copyright IBM Corp. 2007 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<table name="SYSCAT.NICKNAMES">
+    <sql_name>SYSCAT.NICKNAMES</sql_name>
+    <singular_name>Nickname</singular_name>
+    <plural_name>Nicknames</plural_name>
+		<description>Each row represents a 
+		&lt;a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v9/topic/com.ibm.websphere.ii.db2udb.nav.doc/navcontainers/iiypnavc_working_w_nn.html?noframes=true');"&gt;nickname&lt;/a&gt;,
+		in the database. 
+		This list is generated from the &lt;a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.sql.ref.doc/doc/r0021734.html?noframes=true');"&gt;SYSCAT.NICKNAMES&lt;/a&gt; catalog view.
+		</description>
+    <rows_per_page>50</rows_per_page>
+    <display_columns>
+        <col type="column" name="tableid"/>
+        <col type="column" name="tabname"/>
+        <col type="column" name="tabschema"/>
+        <col type="column" name="tbspaceid"/>
+        <col type="column" name="owner"/>
+        <col type="column" name="ownertype"/>
+        <col type="column" name="access_mode"/>
+        <col type="column" name="cachingallowed"/>
+        <col type="column" name="card"/>
+        <col type="column" name="checkcount"/>
+        <col type="column" name="children"/>
+        <col type="column" name="codepage"/>
+        <col type="column" name="colcount"/>
+        <col type="column" name="const_checked"/>
+        <col type="column" name="datacapture"/>
+        <col type="column" name="definer"/>
+        <col type="column" name="fpages"/>
+        <col type="column" name="keyindexid"/>
+        <col type="column" name="keyunique"/>
+        <col type="column" name="npages"/>
+        <col type="column" name="overflow"/>
+        <col type="column" name="parents"/>
+        <col type="column" name="partition_mode"/>
+        <col type="column" name="remote_schema"/>
+        <col type="column" name="remote_table"/>
+        <col type="column" name="remote_type"/>
+        <col type="column" name="selfrefs"/>
+        <col type="column" name="servername"/>
+        <col type="column" name="statistics_profile"/>
+        <col type="column" name="stats_time"/>
+        <col type="column" name="status"/>
+        <col type="column" name="remarks"/>        
+        <col type="column" name="create_time"/>        
+
+    </display_columns>
+	<disable_edit/>
+    <column name="access_mode">
+        <c_sql_name>ACCESS_MODE</c_sql_name>
+        <c_title>Access Mode</c_title>
+        <c_presentation>s</c_presentation>
+    </column>
+    <column name="cachingallowed">
+        <c_sql_name>CACHINGALLOWED</c_sql_name>
+        <c_title>Change Allowed</c_title>
+        <c_presentation>s</c_presentation>
+    </column>
+    <column name="card">
+        <c_sql_name>CARD</c_sql_name>
+        <c_title>Cardinality</c_title>
+        <c_presentation>n</c_presentation>
+    </column>
+    <column name="checkcount">
+        <c_sql_name>CHECKCOUNT</c_sql_name>
+        <c_title>Check count</c_title>
+        <c_presentation>n</c_presentation>
+    </column>
+    <column name="children">
+        <c_sql_name>CHILDREN</c_sql_name>
+        <c_title>Children</c_title>
+        <c_presentation>n</c_presentation>
+    </column>
+    <column name="codepage">
+        <c_sql_name>CODEPAGE</c_sql_name>
+        <c_title>Code Page</c_title>
+        <c_presentation>n</c_presentation>
+    </column>
+    <column name="colcount">
+        <c_sql_name>COLCOUNT</c_sql_name>
+        <c_title>Column Count</c_title>
+        <c_presentation>n</c_presentation>
+    </column>
+    <column name="const_checked">
+        <c_sql_name>CONST_CHECKED</c_sql_name>
+        <c_title>Const Checked</c_title>
+        <c_presentation>s</c_presentation>
+    </column>
+    <column name="create_time">
+        <c_sql_name>CREATE_TIME</c_sql_name>
+        <c_title>Created</c_title>
+        <c_presentation>n</c_presentation>
+    </column>
+    <column name="datacapture">
+        <c_sql_name>DATACAPTURE</c_sql_name>
+        <c_title>Data Capture</c_title>
+        <c_presentation>s</c_presentation>
+    </column>
+    <column name="definer">
+        <c_sql_name>DEFINER</c_sql_name>
+        <c_title>Definer</c_title>
+        <c_presentation>s</c_presentation>
+    </column>
+    <column name="fpages">
+        <c_sql_name>FPAGES</c_sql_name>
+        <c_title>FPages</c_title>
+        <c_presentation>n</c_presentation>
+    </column>
+    <column name="keyindexid">
+        <c_sql_name>KEYINDEXID</c_sql_name>
+        <c_title>Key Index ID</c_title>
+        <c_presentation>n</c_presentation>
+    </column>
+    <column name="keyunique">
+        <c_sql_name>KEYUNIQUE</c_sql_name>
+        <c_title>Key Unique</c_title>
+        <c_presentation>n</c_presentation>
+    </column>
+    <column name="npages">
+        <c_sql_name>NPAGES</c_sql_name>
+        <c_title>N Pages</c_title>
+        <c_presentation>n</c_presentation>
+    </column>
+    <column name="overflow">
+        <c_sql_name>OVERFLOW</c_sql_name>
+        <c_title>Over Flow</c_title>
+        <c_presentation>n</c_presentation>
+    </column>
+    <column name="owner">
+        <c_sql_name>OWNER</c_sql_name>
+        <c_title>Owner</c_title>
+        <c_presentation>s</c_presentation>
+    </column>
+    <column name="ownertype">
+        <c_sql_name>OWNERTYPE</c_sql_name>
+        <c_title>Owner Type</c_title>
+        <c_presentation>s</c_presentation>
+    </column>
+    <column name="parents">
+        <c_sql_name>PARENTS</c_sql_name>
+        <c_title>Parents</c_title>
+        <c_presentation>n</c_presentation>
+    </column>
+    <column name="partition_mode">
+        <c_sql_name>PARTITION_MODE</c_sql_name>
+        <c_title>Partition Mode</c_title>
+        <c_presentation>s</c_presentation>
+    </column>
+    <column name="remarks">
+        <c_sql_name>REMARKS</c_sql_name>
+        <c_title>Remarks</c_title>
+        <c_presentation>s</c_presentation>
+        <c_sort>n</c_sort>
+    </column>
+    <column name="remote_schema">
+        <c_sql_name>REMOTE_SCHEMA</c_sql_name>
+        <c_title>Remote Schema</c_title>
+        <c_presentation>s</c_presentation>
+        <c_sort>y</c_sort>
+    </column>
+    <column name="remote_table">
+        <c_sql_name>REMOTE_TABLE</c_sql_name>
+        <c_title>Remote Table</c_title>
+        <c_presentation>s</c_presentation>
+        <c_sort>y</c_sort>
+    </column>
+    <column name="remote_type">
+        <c_sql_name>REMOTE_TYPE</c_sql_name>
+        <c_title>Remote Type</c_title>
+        <c_presentation>s</c_presentation>
+        <c_sort>y</c_sort>
+    </column>
+    <column name="selfrefs">
+        <c_sql_name>SELFREFS</c_sql_name>
+        <c_title>Self References</c_title>
+        <c_presentation>n</c_presentation>
+    </column>
+    <column name="servername">
+        <c_sql_name>SERVERNAME</c_sql_name>
+        <c_title>Server Name</c_title>
+        <c_presentation>s</c_presentation>
+        <c_sort>y</c_sort>
+    </column>
+    <column name="statistics_profile">
+        <c_sql_name>STATISTICS_PROFILE</c_sql_name>
+        <c_title>Stats Profile</c_title>
+        <c_presentation>l</c_presentation>
+    </column>
+    <column name="stats_time">
+        <c_sql_name>STATS_TIME</c_sql_name>
+        <c_title>Stats Time</c_title>
+        <c_presentation>n</c_presentation>
+    </column>
+    <column name="status">
+        <c_sql_name>STATUS</c_sql_name>
+        <c_title>Status</c_title>
+        <c_presentation>s</c_presentation>
+        <c_sort>y</c_sort>
+    </column>
+    <column name="tableid">
+        <c_sql_name>TABLEID</c_sql_name>
+        <c_title>Table ID</c_title>
+        <c_presentation>n</c_presentation>
+    </column>
+    <column name="tabname">
+        <c_sql_name>TABNAME</c_sql_name>
+        <c_title>Table Name</c_title>
+        <c_presentation>s</c_presentation>
+    </column>
+    <column name="tabschema">
+        <c_sql_name>TABSCHEMA</c_sql_name>
+        <c_title>Table Schema</c_title>
+        <c_presentation>s</c_presentation>
+        <c_sort>y</c_sort>
+    </column>
+    <column name="tbspaceid">
+        <c_sql_name>TBSPACEID</c_sql_name>
+        <c_title>Table Space ID</c_title>
+        <c_presentation>n</c_presentation>
+    </column>
+</table>

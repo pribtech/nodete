@@ -1,0 +1,327 @@
+<!--
+  Copyright IBM Corp. 2007 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<table name="scagents">
+	<sql_name>SC_AGENTS</sql_name>
+	<function>WLM_GET_SERVICE_CLASS_AGENTS</function>
+	<html_name>scagents</html_name>
+	<singular_name>Service Class Agents</singular_name>
+	<plural_name>Service Class Agents</plural_name>	
+	<description>
+	This list is generated from the &lt;a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.sql.rtn.doc/doc/r0052915.html?noframes=true');"&gt;WLM_GET_SERVICE_CLASS_AGENTS&lt;/a&gt; table function.
+	</description>		
+	<disableEdit/>
+	<output>
+		<type name="DDL" destination="" title="" generator=""/>
+	</output>
+	<order_by_index name="servsubclassnm" direction="A"/>
+	<parameters>
+		<parm name="SERVICE_SUPERCLASS_NAME">
+			<title>Super Class Name</title>
+			<value></value>
+			<type>s</type>
+		</parm>
+		<parm name="servsubclassnm">
+			<title>Subclass Name</title>
+			<value></value>
+			<type>s</type>
+		</parm>
+		<parm name="APPLICATION_HANDLE">
+			<title>Application Handle</title>
+			<value>NULL</value>
+			<type>n</type>
+		</parm>
+		<parm name="dbpartition">
+			<title>Partition Number</title>
+			<value>-2</value>
+			<type>n</type>
+		</parm>
+	</parameters>
+	<displayColumns>
+		<col type="column" name="servsubclassnm"/>	
+		<col type="column" name="dbpart"/>
+		<col type="column" name="uowid"/>
+		<col type="column" name="activityid"/>
+		<col type="column" name="apphandle"/>
+		<col type="reference" name="wldetail"/>													
+		<col type="action" name="cancel"/>
+		<col type="column" name="SERVICE_SUBCLASS_NAME"/>
+		<col type="column" name="ENTITY"/>
+		<col type="column" name="WORKLOAD_NAME"/>
+		<col type="column" name="WORKLOAD_OCCURRENCE_ID"/>
+		<col type="column" name="PARENT_UOW_ID"/>
+		<col type="column" name="PARENT_ACTIVITY_ID"/>
+		<col type="column" name="AGENT_TID"/>
+		<col type="column" name="AGENT_TYPE"/>
+		<col type="column" name="SMP_COORDINATOR"/>
+		<col type="column" name="AGENT_SUBTYPE"/>
+		<col type="column" name="AGENT_STATE"/>
+		<col type="column" name="EVENT_TYPE"/>
+		<col type="column" name="EVENT_OBJECT"/>
+		<col type="column" name="EVENT_STATE"/>
+		<col type="column" name="REQUEST_ID"/>
+		<col type="column" name="REQUEST_TYPE"/>
+		<col type="column" name="NESTING_LEVEL"/>
+		<col type="column" name="INVOCATION_ID"/>
+		<col type="column" name="ROUTINE_ID"/>
+	</displayColumns>
+	<reference name="wldetail">
+		<title>Details</title>		
+		<reftype>table</reftype>
+		<refvalue>WLM/wldetail</refvalue>
+		<ref foreign_column_name="apphandle">
+			<local_column_name>apphandle</local_column_name>	
+		</ref>
+		<ref foreign_column_name="uowid">
+			<local_column_name>uowid</local_column_name>	
+		</ref>
+		<ref foreign_column_name="activityid">
+			<local_column_name>activityid</local_column_name>	
+		</ref>	
+	</reference>
+	<action name="cancel">
+		<title>Cancel</title>
+		<icon>images/cancel.gif</icon>	
+		<actionScript name="cancel" type="confirm">
+			<message>
+				Cancel Activity:
+				Application: ?APPHANDLE?, Unit of Work: ?UOWID?, Activity: ?ACTIVITYID?.
+				This will cancel the specific activity but will not disconnect the application.
+			</message>
+			<parameterList>
+				<parameter name="APPHANDLE" type="blockValue">
+					<value>apphandle</value>
+				</parameter>
+				<parameter name="UOWID" type="blockValue">
+					<value>uowid</value>
+				</parameter>
+				<parameter name="ACTIVITYID" type="blockValue">
+					<value>activityid</value>
+				</parameter>
+			</parameterList>
+			<followOnAction condition="true">
+				<task>
+						<action name="forceApplication" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="fixed">
+									<value>executeSQL</value>
+								</parameter>
+								<parameter name="SQL" type="fixed">
+									<value>CALL SYSPROC.WLM_CANCEL_ACTIVITY( ?APPHANDLE?, ?UOWID?, ?ACTIVITYID? )</value>
+								</parameter>
+								<parameter name="parameter[APPHANDLE]" type="blockValue">
+									<value>apphandle</value>
+								</parameter>
+								<parameter name="parameter[UOWID]" type="blockValue">
+									<value>uowid</value>
+								</parameter>
+								<parameter name="parameter[ACTIVITYID]" type="blockValue">
+									<value>activityid</value>
+								</parameter>
+							</parameterList>
+							<followOnAction condition="true" negCondition="true">
+								<task>
+									<action name="raiseError" type="alert">
+										<message>
+									Cancel Activity Failed:
+									Application: ?APPHANDLE?, Unit of Work: ?UOWID?, Activity: ?ACTIVITYID?. Could not cancel activity.
+									
+									?ERROR_MESSAGE?
+									</message>
+										<parameterList>
+											<parameter name="ERROR_MESSAGE" type="returnValue">
+												<value>forceApplication</value>
+											</parameter>
+											<parameter name="APPHANDLE" type="blockValue">
+												<value>apphandle</value>
+											</parameter>
+											<parameter name="UOWID" type="blockValue">
+												<value>uowid</value>
+											</parameter>
+											<parameter name="ACTIVITYID" type="blockValue">
+												<value>activityid</value>
+											</parameter>
+										</parameterList>
+									</action>
+								</task>
+							</followOnAction>
+							<followOnAction condition="true">
+									<task>
+									<action name="raiseError" type="alert">
+										<message>
+											Cancel Activity Succeded:
+											Application: ?APPHANDLE?, Unit of Work: ?UOWID?, Activity: ?ACTIVITYID?.
+											Cancel Successful.
+										</message>
+										<parameterList>
+											<parameter name="APPHANDLE" type="blockValue">
+												<value>apphandle</value>
+											</parameter>
+											<parameter name="UOWID" type="blockValue">
+												<value>uowid</value>
+											</parameter>
+											<parameter name="ACTIVITYID" type="blockValue">
+												<value>activityid</value>
+											</parameter>
+										</parameterList>
+									</action>
+								</task>
+								<task>
+									<panelReload/>
+								</task>
+							</followOnAction>
+						</action>
+				</task>
+			</followOnAction>
+		</actionScript>
+	</action>
+	<column name="servsubclassnm">
+		<sqlName>SERVICE_SUBCLASS_NAME</sqlName>
+		<title>Service Subclass Name</title>
+		<primaryKey/>
+		<type>s</type>
+	</column>
+	<column name="dbpart">
+		<sqlName>DBPARTITIONNUM</sqlName>
+		<title>DB Part</title>
+		<primaryKey/>
+		<type>s</type>
+	</column>
+	<column name="apphandle">
+		<sqlName>APPLICATION_HANDLE</sqlName>
+		<title>Appl. Handle</title>
+		<primaryKey/>
+		<type>s</type>
+	</column>
+	<column name="uowid">
+		<sqlName>UOW_ID</sqlName>
+		<title>UOW</title>
+		<primaryKey/>
+		<type>s</type>
+	</column>
+	<column name="activityid">
+		<sqlName>ACTIVITY_ID</sqlName>
+		<title>Activity</title>
+		<primaryKey/>
+		<type>s</type>
+	</column>	
+	<column name="SERVICE_SUBCLASS_NAME">
+		<sqlName>SERVICE_SUBCLASS_NAME</sqlName>
+		<title>Service Subclass</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="ENTITY">
+		<sqlName>ENTITY</sqlName>
+		<title>Entity</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="WORKLOAD_NAME">
+		<sqlName>WORKLOAD_NAME</sqlName>
+		<title>Workload</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="WORKLOAD_OCCURRENCE_ID">
+		<sqlName>WORKLOAD_OCCURRENCE_ID</sqlName>
+		<title>Workload Occurrence Id</title>
+		<type>n</type>
+	</column>
+	<column name="PARENT_UOW_ID">
+		<sqlName>PARENT_UOW_ID</sqlName>
+		<title>Parent UOW</title>
+		<type>n</type>
+	</column>
+	<column name="PARENT_ACTIVITY_ID">
+		<sqlName>PARENT_ACTIVITY_ID</sqlName>
+		<title>Parent Activity</title>
+		<type>n</type>
+	</column>
+	<column name="AGENT_TID">
+		<sqlName>AGENT_TID</sqlName>
+		<title>Agent TID</title>
+		<type>n</type>
+	</column>
+	<column name="AGENT_TYPE">
+		<sqlName>AGENT_TYPE</sqlName>
+		<title>Agent Type</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="SMP_COORDINATOR">
+		<sqlName>SMP_COORDINATOR</sqlName>
+		<title>SMP Coordinator</title>
+		<type>n</type>
+	</column>
+	<column name="AGENT_SUBTYPE">
+		<sqlName>AGENT_SUBTYPE</sqlName>
+		<title>Agent Subtype</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="AGENT_STATE">
+		<sqlName>AGENT_STATE</sqlName>
+		<title>Agent State</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="EVENT_TYPE">
+		<sqlName>EVENT_TYPE</sqlName>
+		<title>Event Type</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="EVENT_OBJECT">
+		<sqlName>EVENT_OBJECT</sqlName>
+		<title>Event Object</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="EVENT_STATE">
+		<sqlName>EVENT_STATE</sqlName>
+		<title>Event State</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="REQUEST_ID">
+		<sqlName>REQUEST_ID</sqlName>
+		<title>Request</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="REQUEST_TYPE">
+		<sqlName>REQUEST_TYPE</sqlName>
+		<title>Request Type</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="NESTING_LEVEL">
+		<sqlName>NESTING_LEVEL</sqlName>
+		<title>Nesting Level</title>
+		<type>n</type>
+	</column>
+	<column name="INVOCATION_ID">
+		<sqlName>INVOCATION_ID</sqlName>
+		<title>Invocation</title>
+		<type>n</type>
+	</column>
+	<column name="ROUTINE_ID">
+		<sqlName>ROUTINE_ID</sqlName>
+		<title>Routine</title>
+		<type>n</type>
+	</column>
+</table>
+	

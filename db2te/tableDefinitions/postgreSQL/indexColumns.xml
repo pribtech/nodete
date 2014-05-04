@@ -1,0 +1,76 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2013 All rights reserved.
+  
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+<table name="indexColumns">
+	<sqlName>indexColumns</sqlName>
+	<singularName>Index Column</singularName>
+	<pluralName>Index Column</pluralName>
+	<inlinequery>
+<![CDATA[
+select 
+    t.relname as table_name
+   ,i.relname as index_name
+   ,ix.sequence
+   ,pg_get_indexdef(ix.indexrelid, sequence+1, true) as column_name
+from pg_class t
+join (
+    select sequence,ixk.*
+    from pg_index ixk
+        ,generate_subscripts(ixk.indkey, 1) as sequence
+)ix
+ on t.oid = ix.indrelid
+join pg_class i on i.oid = ix.indexrelid
+where t.relkind = 'r'
+]]>
+	</inlinequery>
+	<description></description>
+	<disableEdit/>
+	<output>
+		<type name="DDL" destination="" title="" generator=""/>
+	</output>
+	<orderBy name="table_name" direction="A"/>
+	<orderBy name="index_name" direction="A"/>
+	<orderBy name="sequence" direction="A"/>
+	<displayColumns>
+		<col type="column" name="table_name" break="yes"/>
+		<col type="column" name="index_name" break="yes"/>
+		<col type="column" name="sequence"/>
+		<col type="column" name="column_name"/>
+	</displayColumns>
+	<displayColumns name="Specific Table">
+		<col type="column" name="index_name" break="yes"/>
+		<col type="column" name="sequence"/>
+		<col type="column" name="column_name"/>
+	</displayColumns>
+	<column name="table_name">
+		<sqlName>table_name</sqlName>
+		<title>Table Name</title>
+	</column>
+	<column name="index_name">
+		<sqlName>index_name</sqlName>
+		<title>Index Name</title>
+	</column>
+	<column name="sequence">
+		<sqlName>sequence</sqlName>
+		<title>Sequence</title>
+		<type>n</type>
+	</column>
+	<column name="column_name">
+		<sqlName>column_name</sqlName>
+		<title>Column</title>
+	</column>
+</table>

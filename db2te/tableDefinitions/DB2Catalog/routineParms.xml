@@ -1,0 +1,216 @@
+<!-- XML table definition was generated from the table: SYSCAT.ROUTINEPARMS --> 
+ 
+ 
+<table name="SYSCAT.ROUTINEPARMS"> 
+	<sql_name>SYSCAT.ROUTINEPARMS</sql_name> 
+	<singular_name>SYSCAT.ROUTINEPARMS</singular_name> 
+	<plural_name>SYSCAT.ROUTINEPARMS</plural_name> 
+	<description/> 
+	<rows_per_page>50</rows_per_page> 
+	<order_by_index/> 
+	<display_columns> 
+		<col type="column" name="routineschema"/> 
+		<col type="column" name="routinemodulename"/> 
+		<col type="column" name="routinename"/> 
+		<col type="column" name="routinemoduleid"/> 
+		<col type="column" name="specificname"/> 
+		<col type="column" name="parmname"/> 
+		<col type="column" name="rowtype"/> 
+		<col type="column" name="ordinal"/> 
+		<col type="column" name="typeschema"/> 
+		<col type="column" name="typemodulename"/> 
+		<col type="column" name="typename"/> 
+		<col type="column" name="locator"/> 
+		<col type="column" name="length"/> 
+		<col type="column" name="scale"/> 
+		<col type="column" name="codepage"/> 
+		<col type="column" name="collationschema"/> 
+		<col type="column" name="collationname"/> 
+		<col type="column" name="cast_funcschema"/> 
+		<col type="column" name="cast_funcspecific"/> 
+		<col type="column" name="target_typeschema"/> 
+		<col type="column" name="target_typemodulename"/> 
+		<col type="column" name="target_typename"/> 
+		<col type="column" name="scope_tabschema"/> 
+		<col type="column" name="scope_tabname"/> 
+		<col type="column" name="transformgrpname"/> 
+		<col type="column" name="default"/> 
+		<col type="column" name="remarks"/> 
+	</display_columns> 
+	<disable_edit/>
+	<column name="routineschema"> 
+		<c_sql_name>ROUTINESCHEMA</c_sql_name> 
+		<c_title>ROUTINESCHEMA</c_title> 
+		<c_presentation>s</c_presentation> 
+		<c_drill>y</c_drill> 
+		<c_prefill>Y</c_prefill>
+	</column> 
+	<column name="routinemodulename"> 
+		<c_sql_name>ROUTINEMODULENAME</c_sql_name> 
+		<c_title>ROUTINEMODULENAME</c_title> 
+		<c_presentation>s</c_presentation> 
+		<c_drill>y</c_drill> 
+	</column> 
+	<column name="routinename"> 
+		<c_sql_name>ROUTINENAME</c_sql_name> 
+		<c_title>ROUTINENAME</c_title> 
+		<c_presentation>s</c_presentation> 
+		<c_drill>y</c_drill> 
+	</column> 
+	<column name="routinemoduleid"> 
+		<c_sql_name>ROUTINEMODULEID</c_sql_name> 
+		<c_title>ROUTINEMODULEID</c_title> 
+		<c_presentation>n</c_presentation> 
+		<c_drill>n</c_drill> 
+	</column> 
+	<column name="specificname"> 
+		<c_sql_name>SPECIFICNAME</c_sql_name> 
+		<c_title>SPECIFICNAME</c_title> 
+		<c_presentation>s</c_presentation> 
+		<c_drill>y</c_drill> 
+	</column> 
+	<column name="parmname"> 
+		<c_sql_name>PARMNAME</c_sql_name> 
+		<c_title>PARMNAME</c_title> 
+		<c_presentation>s</c_presentation> 
+		<c_drill>y</c_drill> 
+	</column> 
+	<column name="rowtype"> 
+		<c_sql_name>ROWTYPE</c_sql_name> 
+		<c_title>ROWTYPE</c_title> 
+		<c_presentation>s</c_presentation> 
+		<c_drill>y</c_drill> 
+	</column> 
+	<column name="ordinal"> 
+		<c_sql_name>ORDINAL</c_sql_name> 
+		<c_title>ORDINAL</c_title> 
+		<c_presentation>n</c_presentation> 
+		<c_drill>n</c_drill> 
+	</column> 
+	<column name="typeschema"> 
+		<c_sql_name>TYPESCHEMA</c_sql_name> 
+		<c_title>TYPESCHEMA</c_title> 
+		<c_presentation>s</c_presentation> 
+		<c_drill>y</c_drill> 
+		<c_prefill>
+			<table>schema</table>
+			<column>SCHEMANAME</column>
+		</c_prefill>
+	</column> 
+	<column name="typemodulename"> 
+		<c_sql_name>TYPEMODULENAME</c_sql_name> 
+		<c_title>TYPEMODULENAME</c_title> 
+		<c_presentation>s</c_presentation> 
+		<c_drill>y</c_drill> 
+	</column> 
+	<column name="typename"> 
+		<c_sql_name>TYPENAME</c_sql_name> 
+		<c_title>TYPENAME</c_title> 
+		<c_presentation>s</c_presentation> 
+		<c_drill>y</c_drill> 
+	</column> 
+	<column name="locator"> 
+		<c_sql_name>LOCATOR</c_sql_name> 
+		<c_title>LOCATOR</c_title> 
+		<c_presentation>s</c_presentation> 
+		<c_drill>y</c_drill> 
+	</column> 
+	<column name="length"> 
+		<c_sql_name>LENGTH</c_sql_name> 
+		<c_title>LENGTH</c_title> 
+		<c_presentation>n</c_presentation> 
+		<c_drill>n</c_drill> 
+	</column> 
+	<column name="scale"> 
+		<c_sql_name>SCALE</c_sql_name> 
+		<c_title>SCALE</c_title> 
+		<c_presentation>n</c_presentation> 
+		<c_drill>n</c_drill> 
+	</column> 
+	<column name="codepage"> 
+		<c_sql_name>CODEPAGE</c_sql_name> 
+		<c_title>CODEPAGE</c_title> 
+		<c_presentation>n</c_presentation> 
+		<c_drill>n</c_drill> 
+	</column> 
+	<column name="collationschema"> 
+		<c_sql_name>COLLATIONSCHEMA</c_sql_name> 
+		<c_title>COLLATIONSCHEMA</c_title> 
+		<c_presentation>s</c_presentation> 
+		<c_drill>y</c_drill> 
+	</column> 
+	<column name="collationname"> 
+		<c_sql_name>COLLATIONNAME</c_sql_name> 
+		<c_title>COLLATIONNAME</c_title> 
+		<c_presentation>s</c_presentation> 
+		<c_drill>y</c_drill> 
+	</column> 
+	<column name="cast_funcschema"> 
+		<c_sql_name>CAST_FUNCSCHEMA</c_sql_name> 
+		<c_title>CAST_FUNCSCHEMA</c_title> 
+		<c_presentation>s</c_presentation> 
+		<c_drill>y</c_drill> 
+		<c_prefill>
+			<table>schema</table>
+			<column>SCHEMANAME</column>
+		</c_prefill>
+	</column> 
+	<column name="cast_funcspecific"> 
+		<c_sql_name>CAST_FUNCSPECIFIC</c_sql_name> 
+		<c_title>CAST_FUNCSPECIFIC</c_title> 
+		<c_presentation>s</c_presentation> 
+		<c_drill>y</c_drill> 
+	</column> 
+	<column name="target_typeschema"> 
+		<c_sql_name>TARGET_TYPESCHEMA</c_sql_name> 
+		<c_title>TARGET_TYPESCHEMA</c_title> 
+		<c_presentation>s</c_presentation> 
+		<c_drill>y</c_drill> 
+		<c_prefill>
+			<table>schema</table>
+			<column>SCHEMANAME</column>
+		</c_prefill>
+	</column> 
+	<column name="target_typemodulename"> 
+		<c_sql_name>TARGET_TYPEMODULENAME</c_sql_name> 
+		<c_title>TARGET_TYPEMODULENAME</c_title> 
+		<c_presentation>s</c_presentation> 
+		<c_drill>y</c_drill> 
+	</column> 
+	<column name="target_typename"> 
+		<c_sql_name>TARGET_TYPENAME</c_sql_name> 
+		<c_title>TARGET_TYPENAME</c_title> 
+		<c_presentation>s</c_presentation> 
+		<c_drill>y</c_drill> 
+	</column> 
+	<column name="scope_tabschema"> 
+		<c_sql_name>SCOPE_TABSCHEMA</c_sql_name> 
+		<c_title>SCOPE_TABSCHEMA</c_title> 
+		<c_presentation>s</c_presentation> 
+		<c_drill>y</c_drill> 
+	</column> 
+	<column name="scope_tabname"> 
+		<c_sql_name>SCOPE_TABNAME</c_sql_name> 
+		<c_title>SCOPE_TABNAME</c_title> 
+		<c_presentation>s</c_presentation> 
+		<c_drill>y</c_drill> 
+	</column> 
+	<column name="transformgrpname"> 
+		<c_sql_name>TRANSFORMGRPNAME</c_sql_name> 
+		<c_title>TRANSFORMGRPNAME</c_title> 
+		<c_presentation>s</c_presentation> 
+		<c_drill>y</c_drill> 
+	</column> 
+	<column name="default"> 
+		<c_sql_name>DEFAULT</c_sql_name> 
+		<c_title>DEFAULT</c_title> 
+		<c_presentation>l</c_presentation> 
+		<c_drill>n</c_drill> 
+	</column> 
+	<column name="remarks"> 
+		<c_sql_name>REMARKS</c_sql_name> 
+		<c_title>REMARKS</c_title> 
+		<c_presentation>s</c_presentation> 
+		<c_drill>y</c_drill> 
+	</column> 
+</table>

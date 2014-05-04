@@ -1,0 +1,139 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2009 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+
+<table name="lockingEvents">
+	<sql_name>lockingEvents</sql_name>
+	<singular_name>Lock</singular_name>
+	<plural_name>Locks</plural_name>
+	<inlinequery>SELECT	* FROM "?"."?"</inlinequery>
+	<parameters>
+		<parm name="tabschema">
+			<title>tabschema</title>
+			<value>no schema</value>
+			<type>n</type>
+		</parm>
+		<parm name="tabname">
+			<title>tabname</title>
+			<value>no table</value>
+			<type>n</type>
+		</parm>
+	</parameters>
+	<description>Locking Events</description>
+	<rows_per_page>50</rows_per_page>
+	<order_by_index name="EVENT_TIMESTAMP" direction="D"/>
+	<display_columns>
+		<col type="column" name="EVENT_TIMESTAMP"/>
+		<col type="column" name="EVENT_ID"/>
+		<col type="column" name="EVENT_TYPE"/>
+		<col type="column" name="PARTITION_KEY"/>
+		<col type="column" name="APPL_ID"/>
+		<col type="column" name="APPL_NAME"/>
+		<col type="column" name="EVENT_CORRELATION_ID"/>
+		<col type="column" name="EVENT_DATA"/>
+		<col type="column" name="MEMBER"/>
+		<col type="column" name="RECORD_SEQ_NUM"/>
+		<col type="column" name="RECORD_TYPE"/>
+		<col type="column" name="SERVICE_SUBCLASS_NAME"/>
+		<col type="column" name="SERVICE_SUPERCLASS_NAME"/>
+		<col type="column" name="WORKLOAD_NAME"/>
+	</display_columns>
+	<column name="PARTITION_KEY" minVersion="9.7">
+		<c_sql_name>PARTITION_KEY</c_sql_name>
+		<c_title>Partition</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="APPL_ID">
+		<c_sql_name>APPL_ID</c_sql_name>
+		<c_title>Appl. Id.</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="APPL_NAME">
+		<c_sql_name>APPL_NAME</c_sql_name>
+		<c_title>Application</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="EVENT_CORRELATION_ID">
+		<c_sql_name>EVENT_CORRELATION_ID</c_sql_name>
+		<c_title>Correlation Id.</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="EVENT_DATA">
+		<c_sql_name>EVENT_DATA</c_sql_name>
+		<c_title>Data</c_title>
+		<c_presentation>y</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="EVENT_ID">
+		<c_sql_name>EVENT_ID</c_sql_name>
+		<c_title>Event Id.</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="EVENT_TIMESTAMP">
+		<c_sql_name>EVENT_TIMESTAMP</c_sql_name>
+		<c_title>Timestamp</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="EVENT_TYPE">
+		<c_sql_name>EVENT_TYPE</c_sql_name>
+		<c_title>Event Type</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="MEMBER">
+		<c_sql_name>MEMBER</c_sql_name>
+		<c_title>Member</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="RECORD_SEQ_NUM">
+		<c_sql_name>RECORD_SEQ_NUM</c_sql_name>
+		<c_title>Record Seq.</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="RECORD_TYPE">
+		<c_sql_name>RECORD_TYPE</c_sql_name>
+		<c_title>Record Type</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="SERVICE_SUBCLASS_NAME">
+		<c_sql_name>SERVICE_SUBCLASS_NAME</c_sql_name>
+		<c_title>Service SubClass</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="SERVICE_SUPERCLASS_NAME">
+		<c_sql_name>SERVICE_SUPERCLASS_NAME</c_sql_name>
+		<c_title>Service SuperClass</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="WORKLOAD_NAME">
+		<c_sql_name>WORKLOAD_NAME</c_sql_name>
+		<c_title>Workload</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+</table>

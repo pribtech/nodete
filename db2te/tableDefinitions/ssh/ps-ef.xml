@@ -1,0 +1,94 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2013 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+<table name="ps-ef">
+	<sqlName>ps-ef</sqlName>
+	<singularName>Process</singularName>
+	<pluralName>Processes</pluralName>
+	<inlinequery>
+<![CDATA[
+ps -ef --cols 512 --no-headers 
+]]>
+	</inlinequery>
+	<filters>
+		<column operator="is empty" name="Line" />
+	</filters>
+	<description></description>
+	<output>
+		<type name="DDL" destination="" title="" generator=""/>
+	</output>
+	<displayColumns titleDepth="2">
+		<col type="column" name="UID"/>
+		<col type="column" name="PID"/>
+		<col type="column" name="PPID"/>
+		<col type="column" name="C"/>
+		<col type="column" name="STIME"/>
+		<col type="column" name="TTY"/>
+		<col type="column" name="TIME"/>
+		<col type="column" name="COMMAND"/>
+		<col type="column" name="Line"/>
+	</displayColumns>
+	<column name="UID">
+		<generated>substring,Line,0,7</generated>
+		<title>UID</title>
+		<sortDisable/>
+	</column>
+	<column name="PID">
+		<generated>substring,Line,9,14</generated>
+		<title>PID</title>
+		<sortDisable/>
+		<type>n</type>
+	</column>
+	<column name="PPID">
+		<generated>substring,Line,16,20</generated>
+		<title>PPID</title>
+		<sortDisable/>
+		<type>n</type>
+	</column>
+	<column name="C">
+		<generated>substring,Line,22,23</generated>
+		<title>C</title>
+		<sortDisable/>
+	</column>
+	<column name="STIME">
+		<generated>substring,Line,24,29</generated>
+		<title>Start Time</title>
+		<sortDisable/>
+	</column>
+	<column name="TTY">
+		<generated>substring,Line,30,34</generated>
+		<title>TTY</title>
+		<sortDisable/>
+	</column>
+	<column name="TIME">
+		<generated>substring,Line,36,47</generated>
+		<title>Time</title>
+		<sortDisable/>
+	</column>
+	<column name="COMMAND">
+		<generated>substr,Line,48</generated>
+		<title>Command</title>
+		<sortDisable/>
+		<type>l</type>
+	</column>
+     <column name="Line">
+		<sqlName>Line</sqlName>
+		<title>Line</title>
+		<sortDisable/>
+		<type>l</type>
+	</column>
+</table>

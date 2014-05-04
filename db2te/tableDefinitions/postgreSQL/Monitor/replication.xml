@@ -1,0 +1,117 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2013 All rights reserved.
+  
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+<table name="statsReplication">
+	<sqlName>pg_stat_replication</sqlName>
+	<singularName>Stats Replication</singularName>
+	<pluralName>Stats replication</pluralName>
+	<description>Query from ad hoc</description>
+	<!-- <orderBy name="acolumn" direction="A"/> -->
+	<disableEdit/>
+	<output>
+		<type name="DDL" destination="" title="" generator=""/>
+	</output>
+	<displayColumns>
+		<col type="column" name="pid"/>
+		<col type="column" name="usesysid"/>
+		<col type="column" name="usename"/>
+		<col type="column" name="application_name"/>
+		<col type="column" name="client_addr"/>
+		<col type="column" name="client_hostname"/>
+		<col type="column" name="client_port"/>
+		<col type="column" name="backend_start"/>
+		<col type="column" name="state"/>
+		<col type="column" name="sent_location"/>
+		<col type="column" name="write_location"/>
+		<col type="column" name="flush_location"/>
+		<col type="column" name="replay_location"/>
+		<col type="column" name="sync_priority"/>
+		<col type="column" name="sync_state"/>
+	</displayColumns>
+	<history depth="10" time="SAMPLE_TS"/>
+	<column name="SAMPLE_TS">
+		<generated>timestamp</generated>
+		<title>Time</title>
+		<type>s</type>
+	</column>
+	<column name="pid">
+		<sqlName>pid</sqlName>
+		<title>Pid</title>
+		<type>n</type>
+		<primaryKey/>
+	</column>
+	<column name="usesysid">
+		<sqlName>usesysid</sqlName>
+		<title>Usesysid</title>
+		<type>n</type>
+	</column>
+	<column name="usename">
+		<sqlName>usename</sqlName>
+		<title>Use</title>
+	</column>
+	<column name="application_name">
+		<sqlName>application_name</sqlName>
+		<title>Application</title>
+	</column>
+	<column name="client_addr">
+		<sqlName>client_addr</sqlName>
+		<title>Client Addr</title>
+	</column>
+	<column name="client_hostname">
+		<sqlName>client_hostname</sqlName>
+		<title>Client Hostname</title>
+	</column>
+	<column name="client_port">
+		<sqlName>client_port</sqlName>
+		<title>Client Port</title>
+		<type>n</type>
+	</column>
+	<column name="backend_start">
+		<sqlName>backend_start</sqlName>
+		<title>Backend Start</title>
+		<type>n</type>
+	</column>
+	<column name="state">
+		<sqlName>state</sqlName>
+		<title>State</title>
+	</column>
+	<column name="sent_location">
+		<sqlName>sent_location</sqlName>
+		<title>Sent Location</title>
+	</column>
+	<column name="write_location">
+		<sqlName>write_location</sqlName>
+		<title>Write Location</title>
+	</column>
+	<column name="flush_location">
+		<sqlName>flush_location</sqlName>
+		<title>Flush Location</title>
+	</column>
+	<column name="replay_location">
+		<sqlName>replay_location</sqlName>
+		<title>Replay Location</title>
+	</column>
+	<column name="sync_priority">
+		<sqlName>sync_priority</sqlName>
+		<title>Sync Priority</title>
+		<type>n</type>
+	</column>
+	<column name="sync_state">
+		<sqlName>sync_state</sqlName>
+		<title>Sync State</title>
+	</column>
+</table>

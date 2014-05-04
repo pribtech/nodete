@@ -1,0 +1,112 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2009 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+
+<table name="context">
+	<sql_name>"SYSCAT"."CONTEXTS"</sql_name>
+	<singular_name>Context</singular_name>
+	<plural_name>Contexts</plural_name>
+	<description/>
+	<menu type="leaf">
+		<description>New</description>
+    	<actionScript>
+    		<task>
+		    	<assignSharedConstant name="command" type="raw">
+					<value>SQL/Create/createTrustedContext</value>
+				</assignSharedConstant>
+		   		<callGlobalAction name="commandExecution"/>
+	   		</task>
+    	</actionScript>
+    </menu>
+	<disableEdit/>
+	<output>
+		<type name="DDL" destination="" title="" generator=""/>
+	</output>
+	<display_columns>
+		<col type="column" name="contextname"/>
+		<col type="column" name="enabled"/>
+		<col type="column" name="contextid"/>
+		<col type="column" name="systemauthid"/>
+		<col type="column" name="defaultcontextrole"/>
+		<col type="column" name="auditpolicyid"/>
+		<col type="column" name="auditpolicyname"/>
+		<col type="column" name="create_time"/>
+		<col type="column" name="alter_time"/>
+		<col type="column" name="remarks"/>
+	</display_columns>
+	<column name="contextname">
+		<c_sql_name>"CONTEXTNAME"</c_sql_name>
+		<c_title>Name</c_title>
+		<c_presentation>s</c_presentation>
+		<c_drill>y</c_drill>
+		<c_pkey>p</c_pkey>			
+	</column>
+	<column name="contextid">
+		<c_sql_name>"CONTEXTID"</c_sql_name>
+		<c_title>Id.</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="systemauthid">
+		<c_sql_name>"SYSTEMAUTHID"</c_sql_name>
+		<c_title>System Auth Id.</c_title>
+		<c_presentation>s</c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="defaultcontextrole">
+		<c_sql_name>"DEFAULTCONTEXTROLE"</c_sql_name>
+		<c_title>Default Role</c_title>
+		<c_presentation>s</c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="enabled">
+		<c_sql_name>"ENABLED"</c_sql_name>
+		<c_title>Enabled</c_title>
+		<c_presentation>s</c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="auditpolicyid">
+		<c_sql_name>"AUDITPOLICYID"</c_sql_name>
+		<c_title>Audit Policy Id.</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="auditpolicyname">
+		<c_sql_name>"AUDITPOLICYNAME"</c_sql_name>
+		<c_title>Audit Policy Name</c_title>
+		<c_presentation>s</c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="create_time">
+		<c_sql_name>"CREATE_TIME"</c_sql_name>
+		<c_title>Created</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="alter_time">
+		<c_sql_name>"ALTER_TIME"</c_sql_name>
+		<c_title>Altered</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="remarks">
+		<c_sql_name>"REMARKS"</c_sql_name>
+		<c_title>REMARKS</c_title>
+		<c_presentation>s</c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+</table>

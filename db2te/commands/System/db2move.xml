@@ -1,0 +1,210 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2009 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<command name="db2advis" title="db2 Advisor">
+<![CDATA[
+                            .----------------------------.   
+                            V                            |   
+>>-db2move--dbname--action----+------------------------+-+-----><
+                              +- -tc--table-definers---+     
+                              +- -tn--table-names------+     
+                              +- -sn--schema-names-----+     
+                              +- -ts--tablespace-names-+     
+                              +- -tf--filename---------+     
+                              +- -io--import-option----+     
+                              +- -lo--load-option------+     
+                              +- -co--copy-option------+     
+                              +- -l--lobpaths----------+     
+                              +- -u--userid------------+     
+                              +- -p--password----------+     
+                              '- -aw-------------------'     
+
+]]>
+	<text>db2move</text><clauseReference name="database-name"/>
+	<input type="list">
+		<option help="EXPORT">EXPORT</option>
+		<option help="IMPORT">IMPORT</option>
+		<option help="LOAD">LOAD</option>
+		<option help="COPY">COPY</option>
+	</input>
+	<repeatable>
+	<select>
+			<option default="true"></option> 
+			<option><text>-tc</text><input size="60" type="text" title="table definers" help="table-definers"/></option>  
+			<option><text>-tn</text><input size="60" type="text" title="table names" help="table-names"/></option> 
+			<option><text>-sn</text><input size="60" type="text" title="schema names" help="schema-names"/></option> 
+			<option><text>-ts</text><input size="60" type="text" title="tablespace names" help="tablespace-names"/></option> 
+			<option help="filename"><text>-tf</text><clauseReference name="file-name"/></option> 
+			<option><text>-io</text><input size="60" type="text" title="import option" help="import-option"/></option> 
+			<option><text>-lo</text><input size="60" type="text" title="load option" help="load-option"/></option> 
+			<option><text>-co</text><input size="60" type="text" title="copy option" help="copy-option"/></option> 
+	     	<option><text>-l</text><input size="60" type="text" title="lobpaths" help="lobpaths"/></option> 
+			<option><text>-u</text><clauseReference name="username"/></option> 
+			<option><text>-p</text><clauseReference name="password"/></option> 
+			<option help="-aw"><text>-aw</text></option> 
+		</select>
+	</repeatable>
+	
+	<help name='EXPORT'>
+		<![CDATA[
+        Exports all tables that meet the filtering criteria in options. If no options are specified, exports all the tables. Internal staging information is stored in the db2move.lst file.
+		]]>
+	</help>
+	<help name='IMPORT'>
+		<![CDATA[
+        Imports all tables listed in the internal staging file db2move.lst. Use the -io option for IMPORT specific actions.
+		]]>
+	</help>
+	<help name='LOAD'>
+		<![CDATA[
+        Loads all tables listed in the internal staging file db2move.lst. Use the -lo option for LOAD specific actions.
+		]]>
+	</help>
+	<help name='COPY'>
+		<![CDATA[
+        Duplicates a schema(s) into a target database. Use the -sn option to specify one or more schemas. See the -co option for COPY specific options. Use the -tn or -tf option to filter tables in LOAD_ONLY mode. It is required that a table space named SYSTOOLSPACE be used when either the ADMIN_COPY_SCHEMA() stored procedure is used, or when the db2move utility is used with the -COPY option.
+		]]>
+	</help>
+	<help name='table-definers'>
+		<![CDATA[
+    The default is all definers.
+	<p/>
+    This is an EXPORT action only. If specified, only those tables created by the definers listed with this option are exported. If not specified, the default is to use all definers. When specifying multiple definers, they must be separated by commas; no blanks are allowed between definer IDs. This option can be used with the -tn table-names option to select the tables for export.
+	<p/>
+    An asterisk (*) can be used as a wildcard character that can be placed anywhere in the string.
+		]]>
+	</help>
+	<help name='table-names'>
+		<![CDATA[
+    The default is all user tables.
+	<p/>
+    This is an EXPORT or COPY action only.
+	<p/>
+    If specified with the EXPORT action, only those tables whose names match those in the specified string are exported. If not specified, the default is to use all user tables. When specifying multiple table names, they must be separated by commas; no blanks are allowed between table names. Table names should be listed unqualified and the -sn option should be used to filter schemas.
+	<p/>
+    For export, an asterisk (*) can be used as a wildcard character that can be placed anywhere in the string.
+	<p/>
+    If specified with the COPY action, the -co "MODE" LOAD_ONLY copy-option must also be specified, and only those tables specified will be repopulated on the target database. The table names should be listed with their schema qualifier in the format "schema"."table".
+		]]>
+	</help>
+	<help name='schema-names'>
+		<![CDATA[
+    The default for EXPORT is all schemas (not for COPY).
+	<p/>
+    If specified, only those tables whose schema names match will be exported or copied. If multiple schema names are specified, they must be separated by commas; no blanks are allowed between schema names. Schema names of less than 8 characters are padded to 8 characters in length.
+	<p/>
+    In the case of export: If the asterisk wildcard character (*) is used in the schema names, it will be changed to a percent sign (%) and the table name (with percent sign) will be used in the LIKE predicate of the WHERE clause. If not specified, the default is to use all schemas. If used with the -tn or -tc option, db2move will only act on those tables whose schemas match the specified schema names and whose definers match the specified definers. A schema name fred has to be specified -sn fr*d* instead of -sn fr*d when using an asterisk.
+		]]>
+	</help>
+	<help name='tablespace-names'>
+		<![CDATA[
+    The default is all table spaces.
+	<p/>
+    This is an EXPORT action only. If this option is specified, only those tables that reside in the specified table space will be exported. If the asterisk wildcard character (*) is used in the table space name, it will be changed to a percent sign (%) and the table name (with percent sign) will be used in the LIKE predicate in the WHERE clause. If the -ts option is not specified, the default is to use all table spaces. If multiple table space names are specified, they must be separated by commas; no blanks are allowed between table space names. Table space names less than 8 characters are padded to 8 characters in length. For example, a table space name mytb has to be specified -ts my*b* instead of -sn my*b when using the asterisk.
+		]]>
+	</help>
+	<help name='filename'>
+		<![CDATA[
+    If specified with EXPORT action, only those tables whose names match exactly those in the specified file are exported. If not specified, the default is to use all user tables. The tables should be listed one per line, and each table should be fully qualified. Wildcard characters are not allowed in the strings. Here is an example of the contents of a file:
+	<p/>
+       "SCHEMA1"."TABLE NAME1"
+       "SCHEMA NAME77"."TABLE155"
+	<p/>
+    If specified with the COPY action, the -co "MODE" LOAD_ONLY copy-option must also be specified, and only those tables specified in the file will be repopulated on the target database. The table names should be listed with their schema qualifier in the format "schema"."table".
+		]]>
+	</help>
+	<help name='import-option'>
+		<![CDATA[
+    The default is REPLACE_CREATE. See "IMPORT command options CREATE and REPLACE_CREATE are deprecated" for limitations of import create function.
+	<p/>
+    Valid options are: INSERT, INSERT_UPDATE, REPLACE, CREATE, and REPLACE_CREATE.
+		]]>
+	</help>
+	<help name='load-option'>
+		<![CDATA[
+    The default is INSERT.
+	<p/>
+    Valid options are: INSERT and REPLACE.
+		]]>
+	</help>
+	<help name='copy-option'>
+		<![CDATA[
+    When the db2move action is COPY, the following -co follow-on options will be available:
+	<p/>
+    “TARGET_DB db name [USER userid USING password]”
+        Allows the user to specify the name of the target database and the user/password. (The source database user/password can be specified using the existing -p and -u options). The USER/USING clause is optional. If USER specifies a userid, then the password must either be supplied following the USING clause, or if it's not specified, then db2move will prompt for the password information. The reason for prompting is for security reasons discussed below. TARGET_DB is a mandatory option for the COPY action. The TARGET_DB cannot be the same as the source database. The ADMIN_COPY_SCHEMA procedure can be used for copying schemas within the same database. The COPY action requires inputting at least one schema (-sn) or one table (-tn or -tf).
+	<p/>
+        Running multiple db2move commands to copy schemas from one database to another will result in deadlocks. Only one db2move command should be issued at a time. Changes to tables in the source schema during copy processing may mean that the data in the target schema is not identical following a copy.
+    “MODE”
+	<p/>
+        DDL_AND_LOAD
+            Creates all supported objects from the source schema, and populates the tables with the source table data. This is the default option.
+	<p/>
+        DDL_ONLY
+            Creates all supported objects from the source schema, but does not repopulate the tables.
+	<p/>
+        LOAD_ONLY
+            Loads all specified tables from the source database to the target database. The tables must already exist on the target. The LOAD_ONLY mode requires inputting at least one table using the -tn or -tf option. 
+	<p/>
+        This is an optional option that is only used with the COPY action.
+	<p/>
+    “SCHEMA_MAP”
+        Allows user to rename schema when copying to target. Provides a list of the source-target schema mapping, separated by commas, surrounded by brackets. e.g schema_map ((s1, t1), (s2, t2)). This would mean objects from schema s1 will be copied to schema t1 on the target; objects from schema s2 will be copied to schema t2 on the target. The default, and recommended, target schema name is the source schema name. The reason for this is db2move will not attempt to modify the schema for any qualified objects within object bodies. Therefore, using a different target schema name may lead to problems if there are qualified objects within the object body.
+	<p/>
+        For example:
+        create view FOO.v1 as ‘select c1 from FOO.t1'
+	<p/>
+        In this case, copy of schema FOO to BAR, v1 will be regenerated as:
+        create view BAR.v1 as ‘select c1 from FOO.t1'
+	<p/>
+        This will either fail since schema FOO does not exist on the target database, or have an unexpected result due to FOO being different than BAR. Maintaining the same schema name as the source will avoid these issues. If there are cross dependencies between schemas, all inter-dependant schemas must be copied or there may be errors copying the objects with the cross dependencies.
+	<p/>
+        For example:
+        create view FOO.v1 as ‘select c1 from BAR.t1'
+	<p/>
+        In this case, the copy of v1 will either fail if BAR is not copied as well, or have an unexpected result if BAR on the target is different than BAR from the source. db2move will not attempt to detect cross schema dependencies.
+	<p/>
+        This is an optional option that is only used with the COPY action.
+	<p/>
+    “NONRECOVERABLE”
+        This option allows the user to override the default behavior of the load to be done with COPY-NO. With the default behavior, the user will be forced to take backups of each table space that was loaded into. When specifying this NONRECOVERABLE keyword, the user will not be forced to take backups of the table spaces immediately. It is, however, highly recommended that the backups be taken as soon as possible to ensure the newly created tables will be properly recoverable. This is an optional option available to the COPY action.
+	<p/>
+    “OWNER”
+        Allows the user to change the owner of each new object created in the target schema after a successful COPY. The default owner of the target objects will be the connect user; if this option is specified, ownership will be transferred to the new owner. This is an optional option available to the COPY action.
+	<p/>
+    “TABLESPACE_MAP”
+        The user may specify table space name mappings to be used instead of the table spaces from the source system during a copy. This will be an array of table space mappings surrounded by brackets. For example, tablespace_map ((TS1, TS2),(TS3, TS4)). This would mean that all objects from table space TS1 will be copied into table space TS2 on the target database and objects from table space TS3 will be copied into table space TS4 on the target. In the case of ((T1, T2),(T2, T3)), all objects found in T1 on the source database will be recreated in T2 on the target database and any objects found in T2 on the source database will be recreated in T3 on the target database. The default is to use the same table space name as from the source, in which case, the input mapping for this table space is not necessary. If the specified table space does not exist, the copy of the objects using that table space will fail and be logged in the error file.
+	<p/>
+        The user also has the option of using the SYS_ANY keyword to indicate that the target table space should be chosen using the default table space selection algorithm. In this case, db2move will be able to choose any available table space to be used as the target. The SYS_ANY keyword can be used for all table spaces, example: tablespace_map SYS_ANY. In addition, the user can specify specific mappings for some table spaces, and the default table space selection algorithm for the remaining. For example, tablespace_map ((TS1, TS2),(TS3, TS4), SYS_ANY). This indicates that table space TS1 is mapped to TS2, TS3 is mapped to TS4, but the remaining table spaces will be using a default table space target. The SYS_ANY keyword is being used since it's not possible to have a table space starting with "SYS".
+	<p/>
+        This is an optional option available to the COPY action.
+		]]>
+	</help>
+	<help name='lobpaths'>
+		<![CDATA[
+    For IMPORT and EXPORT, if this option is specified, it will be also used for XML paths. The default is the current directory.
+	<p/>
+    This option specifies the absolute path names where LOB or XML files are created (as part of EXPORT) or searched for (as part of IMPORT or LOAD). When specifying multiple paths, each must be separated by commas; no blanks are allowed between paths. If multiple paths are specified, EXPORT will use them in round-robin fashion. It will write one LOB document to the first path, one to the second path, and so on up to the last, then back to the first path. The same is true for XML documents. If files are not found in the first path (during IMPORT or LOAD), the second path will be used, and so on.
+		]]>
+	</help>
+	<help name='-aw'>
+		<![CDATA[
+    Allow Warnings. When -aw is not specified, tables that experience warnings during export are not included in the db2move.lst file (although that table's .ixf file and .msg file are still generated). In some scenarios (such as data truncation) the user might want to allow such tables to be included in the db2move.lst file. Specifying this option allows tables which receive warnings during export to be included in the .lst file.
+		]]>
+	</help>
+</command>
+	

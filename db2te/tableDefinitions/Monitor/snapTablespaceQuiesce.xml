@@ -1,0 +1,81 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2011 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+
+<table name="snapTablespaceQuiesce">
+	<sql_name>snapTablespaceQuiesce</sql_name>
+	<singular_name>Tablespace Quiesce</singular_name>
+	<plural_name>Tablespace Quiesces</plural_name>
+	<inlinequery>
+<![CDATA[
+SELECT *
+   FROM TABLE( SYSPROC.SNAP_GET_TBSP_QUIESCER( '', 0)) AS T
+]]>
+	</inlinequery>
+	<messages><SQL0551N>Security issue. Please install "Monitoring Switches/Security" in Tools -> Installed Components</SQL0551N></messages>
+	<display_columns>
+		<col type="column" name="SNAPSHOT_TIMESTAMP"/>
+		<col type="column" name="TBSP_NAME"/>
+		<col type="column" name="QUIESCER_TS_ID"/>
+		<col type="column" name="QUIESCER_OBJ_ID"/>
+		<col type="column" name="QUIESCER_AUTH_ID"/>
+		<col type="column" name="QUIESCER_AGENT_ID"/>
+		<col type="column" name="QUIESCER_STATE"/>
+		<col type="column" name="DBPARTITIONNUM"/>
+	</display_columns>
+	<column name="SNAPSHOT_TIMESTAMP">
+		<sql_name>SNAPSHOT_TIMESTAMP</sql_name>
+		<title>Timestamp</title>
+		<type>n</type>
+	</column>
+	<column name="TBSP_NAME">
+		<sql_name>TBSP_NAME</sql_name>
+		<title>Name</title>
+		<type>s</type>
+	</column>
+	<column name="QUIESCER_TS_ID">
+		<sql_name>QUIESCER_TS_ID</sql_name>
+		<title>Tablespace Id.</title>
+		<type>n</type>
+	</column>
+	<column name="QUIESCER_OBJ_ID">
+		<sql_name>QUIESCER_OBJ_ID</sql_name>
+		<title>Object Id.</title>
+		<type>n</type>
+	</column>
+	<column name="QUIESCER_AUTH_ID">
+		<sql_name>QUIESCER_AUTH_ID</sql_name>
+		<title>Auth. Id.</title>
+		<type>s</type>
+	</column>
+	<column name="QUIESCER_AGENT_ID">
+		<sql_name>QUIESCER_AGENT_ID</sql_name>
+		<title>Agent</title>
+		<type>n</type>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="QUIESCER_STATE">
+		<sql_name>QUIESCER_STATE</sql_name>
+		<title>State</title>
+		<type>s</type>
+	</column>
+	<column name="DBPARTITIONNUM">
+		<sql_name>DBPARTITIONNUM</sql_name>
+		<title>Partition</title>
+		<type>n</type>
+	</column>
+</table>

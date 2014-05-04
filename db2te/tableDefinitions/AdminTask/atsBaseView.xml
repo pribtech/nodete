@@ -1,0 +1,741 @@
+<table name="ATSOverview">
+
+	<sql_name>ATSOverview</sql_name>
+	<singular_name>Administration Task</singular_name>
+	<plural_name>Administration Tasks</plural_name>
+	<inlinequery>
+		<![CDATA[
+	SELECT
+			adminTaskList.TASKID,
+			adminTaskStatus.STATUS,
+			adminTaskList.NAME,
+			adminTaskList.OWNER,
+			adminTaskList.PROCEDURE_SCHEMA,
+			adminTaskList.PROCEDURE_NAME,
+			adminTaskList.PROCEDURE_INPUT,
+			adminTaskStatus.RC,
+			adminTaskStatus.INVOCATION,
+			adminTaskList.SCHEDULE,
+			DATE(adminTaskStatus.BEGIN_TIME) as RUN_DATE,
+			TIME(adminTaskStatus.BEGIN_TIME) as RUN_TIME,
+			DATE(adminTaskStatus.END_TIME) as RUN_END_DATE,
+			TIME(adminTaskStatus.END_TIME) as RUN_END_TIME
+	FROM
+		SYSTOOLS.ADMIN_TASK_LIST as adminTaskList left 
+		JOIN (
+			SYSTOOLS.ADMIN_TASK_STATUS as adminTaskStatus inner 
+			JOIN TABLE(SELECT
+								TASKID,
+								MAX(BEGIN_TIME) as BEGIN_TIME
+						FROM SYSTOOLS.ADMIN_TASK_STATUS
+							GROUP BY
+								TASKID
+						) as adminStatusLastRun 
+			   on adminStatusLastRun.BEGIN_TIME = adminTaskStatus.BEGIN_TIME 
+			  and adminStatusLastRun.TASKID     = adminTaskStatus.TASKID
+			) 
+		  on adminTaskList.TASKID = adminTaskStatus.TASKID
+		]]>
+	</inlinequery>
+	<description>
+		This view provides an overview of all administrative tasks scheduled within this database
+	</description>
+	<detail>n</detail>
+	<messages><SQL0204N>ATS Not installed.</SQL0204N></messages>
+	<output>
+		<type name="DDL" destination="" title="" generator=""/>
+	</output>	<order_by_index></order_by_index>
+	<display_columns>
+		<col type="action" name="DELETETASK"/>
+		<col type="action" name="EDIT"/>
+		<col type="action" name="RunTASK"/>
+		<col type="column" name="TASKID"/>
+		<col type="column" name="STATUS"/>
+		<col type="column" name="NAME"/>
+		<col type="column" name="OWNER"/>
+		<col type="column" name="PROCEDURE_SCHEMA"/>
+		<col type="column" name="PROCEDURE_NAME"/>
+		<col type="column" name="RC"/>
+		<col type="column" name="INVOCATION"/>
+		<col type="column" name="RUN_DATE"/>
+		<col type="column" name="RUN_TIME"/>
+		<col type="column" name="RUN_END_DATE"/>
+		<col type="column" name="RUN_END_TIME"/>
+	</display_columns>
+
+	<menu type="leaf">
+		<description>
+			New Scheduled Task
+		</description>
+		<actionScript name="getNewValuesForTask" type="form">
+			<parameterList>
+				<parameter name="action" type="raw">
+					<value>getHeadlessTableForm</value>
+				</parameter>
+				<parameter name="table" type="raw">
+					<value>AdminTask/atsTaskAdd</value>
+				</parameter>
+			</parameterList>
+			<followOnAction condition="true">
+				<task>
+					<assignSharedConstant name="MAX_INVOCATIONS_TO_SUBMIT" type="constant">
+						<value>MAX_INVOCATIONS</value>
+						<check>
+							<onNonMatch condition="isNumber">
+								<task>
+									<alert>Maximum runs allowed must be an integer or blank</alert>
+									<gotoAction name="getNewValuesForTask"/>
+									<return/>
+								</task>
+							</onNonMatch>
+							<onMatch condition="isEmpty">
+								<task>
+									<assignSharedConstant name="MAX_INVOCATIONS_TO_SUBMIT" type="fixed">
+										<value>null</value>
+									</assignSharedConstant>
+								</task>
+							</onMatch>
+						</check>
+					</assignSharedConstant>
+					<assignSharedConstant name="BEGIN_DATETIME" type="fixed">
+						<value>?BEGIN_DATE? ?BEGIN_TIME?</value>
+						<check>
+							<onMatch condition="isEmpty">
+								<task>
+									<assignSharedConstant name="BEGIN_DATETIME" type="fixed">
+										<value>null</value>
+									</assignSharedConstant>
+								</task>
+							</onMatch>
+							<onMatch condition="isDateFormatYYYYMMDD">
+								<task>
+									<assignSharedConstant name="BEGIN_DATETIME" type="fixed">
+										<value>TIMESTAMP_FORMAT('?BEGIN_DATE?', 'YYYY-MM-DD')</value>
+									</assignSharedConstant>
+								</task>
+							</onMatch>
+							<onMatch condition="isTimeFormatHH24MISS">
+								<task>
+									<assignSharedConstant name="BEGIN_DATETIME" type="fixed">
+										<value>TIMESTAMP_FORMAT('?BEGIN_TIME?', 'HH24:MI:SS')</value>
+									</assignSharedConstant>
+								</task>
+							</onMatch>
+							<onMatch condition="isTimestampFormatYYYYMMDDHH24MISS">
+								<task>
+									<assignSharedConstant name="BEGIN_DATETIME" type="fixed">
+										<value>TIMESTAMP_FORMAT('?BEGIN_DATETIME?', 'YYYY-MM-DD HH24:MI:SS')</value>
+									</assignSharedConstant>
+								</task>
+							</onMatch>
+							<onNonMatch condition="(^TIMESTAMP_FORMAT)|(^null$)">
+								<task>
+									<alert>Begin date or time represented in an invalid format. Please use YYYY-MM-DD for the date and HH24:MI:SS for the time.</alert>
+									<gotoAction name="getNewValuesForTask"/>
+									<return/>
+								</task>
+							</onNonMatch>
+						</check>
+					</assignSharedConstant>
+					<assignSharedConstant name="END_DATETIME" type="fixed">
+						<value>?END_DATE? ?END_TIME?</value>
+						<check>
+							<onMatch condition="isEmpty">
+								<task>
+									<assignSharedConstant name="END_DATETIME" type="fixed">
+										<value>null</value>
+									</assignSharedConstant>
+								</task>
+							</onMatch>
+							<onMatch condition="isDateFormatYYYYMMDD">
+								<task>
+									<assignSharedConstant name="END_DATETIME" type="fixed">
+										<value>TIMESTAMP_FORMAT('?END_DATE?', 'YYYY-MM-DD')</value>
+									</assignSharedConstant>
+								</task>
+							</onMatch>
+							<onMatch condition="isTimeFormatHH24MISS">
+								<task>
+									<assignSharedConstant name="END_DATETIME" type="fixed">
+										<value>TIMESTAMP_FORMAT('?END_TIME?', 'HH24:MI:SS')</value>
+									</assignSharedConstant>
+								</task>
+							</onMatch>
+							<onMatch condition="isTimestampFormatYYYYMMDDHH24MISS">
+								<task>
+									<assignSharedConstant name="END_DATETIME" type="fixed">
+										<value>TIMESTAMP_FORMAT('?END_DATETIME?', 'YYYY-MM-DD HH24:MI:SS')</value>
+									</assignSharedConstant>
+								</task>
+							</onMatch>
+							<onNonMatch condition="(^TIMESTAMP_FORMAT)|(^null$)">
+								<task>
+									<alert>End date or time represented in an invalid format. Please use YYYY-MM-DD for the date and HH24:MI:SS for the time.</alert>
+									<gotoAction name="getNewValuesForTask"/>
+									<return/>
+								</task>
+							</onNonMatch>
+						</check>
+					</assignSharedConstant>
+					<assignSharedConstant name="SCHEDULE_SUBMIT" type="constant">
+						<value>SCHEDULE</value>
+						<check>
+							<onMatch condition="isEmpty">
+								<task>
+									<assignSharedConstant name="SCHEDULE_SUBMIT" type="raw">
+										<value>null</value>
+									</assignSharedConstant>
+								</task>
+							</onMatch>
+							<onNonMatch condition="isEmpty">
+								<task>
+									<assignSharedConstant name="SCHEDULE_SUBMIT" type="fixed">
+										<value>'?SCHEDULE_SUBMIT?'</value>
+									</assignSharedConstant>
+								</task>
+							</onNonMatch>
+						</check>
+					</assignSharedConstant>
+					<action name="editTask" type="serverAction">
+						<parameterList>
+							<parameter name="action" type="raw">
+								<value>executeSQL</value>
+							</parameter>
+							<parameter name="SQL" type="fixed">
+								<value>
+									<![CDATA[
+										CALL SYSPROC.ADMIN_TASK_ADD(
+																		'?NAME?', 
+																		?BEGIN_DATETIME?, 
+																		?END_DATETIME?, 
+																		?MAX_INVOCATIONS_TO_SUBMIT?, 
+																		?SCHEDULE_SUBMIT?, 
+																		'?PROCEDURE_SCHEMA?', 
+																		'?PROCEDURE_NAME?', 
+																		'?PROCEDURE_INPUT?', 
+																		null, 
+																		'?REMARKS?'
+																	)
+									]]>
+								</value>
+							</parameter>
+						</parameterList>
+						<followOnAction condition="false">
+							<task>
+								<assignSharedConstant name="ERROR_MSG" type="returnObject">
+									<value>editTask.returnValue.STMTMSG</value>
+									<check>
+										<onMatch condition="The data type, length or value of argument .2.">
+											<task>
+												<assignSharedConstant name="ERROR_MSG" type="raw">
+													<value>There is a problem with your begin datetime. Likely the begin datetime is in the past. If you would like to start the process immediately, clear the begin time and date fields. </value>
+												</assignSharedConstant>
+											</task>
+										</onMatch>
+										<onMatch condition="The data type, length or value of argument .3.">
+											<task>
+												<assignSharedConstant name="ERROR_MSG" type="raw">
+													<value>There is a problem with your end datetime. Likely the end datetime is older then the begin datetime. </value>
+												</assignSharedConstant>
+											</task>
+										</onMatch>
+									</check>
+								</assignSharedConstant>
+								<gotoAction name="getNewValuesForTask"/>
+								<return/>
+							</task>
+						</followOnAction>
+						<followOnAction condition="true">
+							<task>
+								<panelReload/>
+							</task>
+						</followOnAction>
+					</action>			          		
+				</task>
+			</followOnAction>
+		</actionScript>
+	</menu>
+
+	<action name="EDIT">
+		<title>Edit</title>
+		<icon>images/edit.gif</icon>  
+		<actionScript name="getTaskDetails" type="serverAction">
+			<parameterList>
+				<parameter name="action" type="raw">
+					<value>executeSQL</value>
+				</parameter>
+				<parameter name="SQL" type="raw">
+					<value>
+						<![CDATA[
+							SELECT
+									NAME, 
+									DATE(BEGIN_TIME) as BEGIN_DATE, 
+									TIME(BEGIN_TIME) as BEGIN_TIME, 
+									DATE(END_TIME) as END_DATE, 
+									TIME(END_TIME) as END_TIME, 
+									MAX_INVOCATIONS, SCHEDULE, 
+									REMARKS 
+								FROM 
+									SYSTOOLS.ADMIN_TASK_LIST 
+								WHERE 
+									TASKID = ?TASKID?
+						]]>
+					</value>
+				</parameter>
+				<parameter name="parameter[TASKID]" type="blockValue">
+					<value>TASKID</value>
+				</parameter>
+			</parameterList>
+			<followOnAction condition="false">
+				<task>
+					<assignSharedConstant name="ERROR_MSG" type="returnObject">
+						<value>getTaskDetails.returnValue.STMTMSG</value>
+					</assignSharedConstant>
+					<alert>Unable to retrieve row details. An error has occurred: ?ERROR_MSG?</alert>
+				</task>
+			</followOnAction>
+			<followOnAction condition="true">
+				<task>
+					<assignSharedConstant name="NAME" type="returnObject">
+						<value>getTaskDetails.returnValue.resultSet.0.data.0.0</value>
+					</assignSharedConstant>
+					<assignSharedConstant name="BEGIN_DATE" type="returnObject">
+						<value>getTaskDetails.returnValue.resultSet.0.data.0.1</value>
+					</assignSharedConstant>
+					<assignSharedConstant name="BEGIN_TIME" type="returnObject">
+						<value>getTaskDetails.returnValue.resultSet.0.data.0.2</value>
+					</assignSharedConstant>
+					<assignSharedConstant name="END_DATE" type="returnObject">
+						<value>getTaskDetails.returnValue.resultSet.0.data.0.3</value>
+					</assignSharedConstant>
+					<assignSharedConstant name="END_TIME" type="returnObject">
+						<value>getTaskDetails.returnValue.resultSet.0.data.0.4</value>
+					</assignSharedConstant>
+					<assignSharedConstant name="MAX_INVOCATIONS" type="returnObject">
+						<value>getTaskDetails.returnValue.resultSet.0.data.0.5</value>
+					</assignSharedConstant>
+					<assignSharedConstant name="SCHEDULE" type="returnObject">
+						<value>getTaskDetails.returnValue.resultSet.0.data.0.6</value>
+					</assignSharedConstant>
+					<assignSharedConstant name="REMARKS" type="returnObject">
+						<value>getTaskDetails.returnValue.resultSet.0.data.0.7</value>
+					</assignSharedConstant>
+					<action name="getNewValuesForTask" type="form">
+						<parameterList>
+							<parameter name="action" type="raw">
+								<value>getHeadlessTableForm</value>
+							</parameter>
+							<parameter name="table" type="raw">
+								<value>AdminTask/atsTaskEdit</value>
+							</parameter>
+						</parameterList>
+						<followOnAction condition="true">
+							<task>
+								<assignSharedConstant name="MAX_INVOCATIONS_TO_SUBMIT" type="constant">
+									<value>MAX_INVOCATIONS</value>
+									<check>
+										<onNonMatch conditionCompareType="isNumber">
+											<task>
+												<alert>Maximum runs allowed must be an integer or blank</alert>
+												<gotoAction name="getNewValuesForTask"/>
+												<return/>
+											</task>
+										</onNonMatch>
+										<onMatch conditionCompareType="isEmpty">
+											<task>
+												<assignSharedConstant name="MAX_INVOCATIONS_TO_SUBMIT" type="fixed">
+													<value>null</value>
+												</assignSharedConstant>
+											</task>
+										</onMatch>
+									</check>
+								</assignSharedConstant>
+								<assignSharedConstant name="BEGIN_DATETIME" type="fixed">
+									<value>?BEGIN_DATE? ?BEGIN_TIME?</value>
+									<check>
+										<onMatch conditionCompareType="isEmpty">
+											<task>
+												<assignSharedConstant name="BEGIN_DATETIME" type="fixed">
+													<value>null</value>
+												</assignSharedConstant>
+											</task>
+										</onMatch>
+										<onMatch conditionCompareType="isDateFormatYYYYMMDD">
+											<task>
+												<assignSharedConstant name="BEGIN_DATETIME" type="fixed">
+													<value>TIMESTAMP_FORMAT('?BEGIN_DATE?', 'YYYY-MM-DD')</value>
+												</assignSharedConstant>
+											</task>
+										</onMatch>
+										<onMatch conditionCompareType="isTimeFormatHH24MISS">
+											<task>
+												<assignSharedConstant name="BEGIN_DATETIME" type="fixed">
+													<value>TIMESTAMP_FORMAT('?BEGIN_TIME?', 'HH24:MI:SS')</value>
+												</assignSharedConstant>
+											</task>
+										</onMatch>
+										<onMatch conditionCompareType="isTimestampFormatYYYYMMDDHH24MISS">
+											<task>
+												<assignSharedConstant name="BEGIN_DATETIME" type="fixed">
+													<value>TIMESTAMP_FORMAT('?BEGIN_DATETIME?', 'YYYY-MM-DD HH24:MI:SS')</value>
+												</assignSharedConstant>
+											</task>
+										</onMatch>
+										<onNonMatch condition="(^TIMESTAMP_FORMAT|^null$)">
+											<task>
+												<alert>Begin date or time represented in an invalid format. Please use YYYY-MM-DD for the date and HH24:MI:SS for the time.</alert>
+												<gotoAction name="getNewValuesForTask"/>
+												<return/>
+											</task>
+										</onNonMatch>
+									</check>
+								</assignSharedConstant>
+								<assignSharedConstant name="END_DATETIME" type="fixed">
+									<value>?END_DATE? ?END_TIME?</value>
+									<check>
+										<onMatch conditionCompareType="isEmpty">
+											<task>
+												<assignSharedConstant name="END_DATETIME" type="fixed">
+													<value>null</value>
+												</assignSharedConstant>
+											</task>
+										</onMatch>
+										<onMatch conditionCompareType="isDateFormatYYYYMMDD">
+											<task>
+												<assignSharedConstant name="END_DATETIME" type="fixed">
+													<value>TIMESTAMP_FORMAT('?END_DATE?', 'YYYY-MM-DD')</value>
+												</assignSharedConstant>
+											</task>
+										</onMatch>
+										<onMatch conditionCompareType="isTimeFormatHH24MISS">
+											<task>
+												<assignSharedConstant name="END_DATETIME" type="fixed">
+													<value>TIMESTAMP_FORMAT('?END_TIME?', 'HH24:MI:SS')</value>
+												</assignSharedConstant>
+											</task>
+										</onMatch>
+										<onMatch conditionCompareType="isTimestampFormatYYYYMMDDHH24MISS">
+											<task>
+												<assignSharedConstant name="END_DATETIME" type="fixed">
+													<value>TIMESTAMP_FORMAT('?END_DATETIME?', 'YYYY-MM-DD HH24:MI:SS')</value>
+												</assignSharedConstant>
+											</task>
+										</onMatch>
+										<onNonMatch condition="(^TIMESTAMP_FORMAT|^null$)">
+											<task>
+												<alert>End date or time represented in an invalid format. Please use YYYY-MM-DD for the date and HH24:MI:SS for the time.</alert>
+												<gotoAction name="getNewValuesForTask"/>
+												<return/>
+											</task>
+										</onNonMatch>
+									</check>
+								</assignSharedConstant>
+								<assignSharedConstant name="SCHEDULE_SUBMIT" type="constant">
+									<value>SCHEDULE</value>
+									<check>
+										<onMatch conditionCompareType="isEmpty">
+											<task>
+												<assignSharedConstant name="SCHEDULE_SUBMIT" type="raw">
+													<value>null</value>
+												</assignSharedConstant>
+											</task>
+										</onMatch>
+										<onNonMatch conditionCompareType="isEmpty">
+											<task>
+												<assignSharedConstant name="SCHEDULE_SUBMIT" type="fixed">
+													<value>'?SCHEDULE_SUBMIT?'</value>
+												</assignSharedConstant>
+											</task>
+										</onNonMatch>
+									</check>
+								</assignSharedConstant>
+								<action name="editTask" type="serverAction">
+									<parameterList>
+										<parameter name="action" type="raw">
+											<value>executeSQL</value>
+										</parameter>
+										<parameter name="SQL" type="fixed">
+											<value>
+												<![CDATA[
+													CALL SYSPROC.ADMIN_TASK_UPDATE(
+																					'?NAME?', 
+																					?BEGIN_DATETIME?, 
+																					?END_DATETIME?, 
+																					?MAX_INVOCATIONS_TO_SUBMIT?, 
+																					?SCHEDULE_SUBMIT?, 
+																					null, 
+																					'?REMARKS?'
+																				)
+												]]>
+											</value>
+										</parameter>
+										<parameter name="parameter[NAME]" type="blockValue">
+											<value>NAME</value>
+										</parameter>
+										<parameter name="parameter[BEGIN_DATETIME]" type="blockValue">
+											<value>BEGIN_DATETIME</value>
+										</parameter>
+										<parameter name="parameter[END_DATETIME]" type="blockValue">
+											<value>END_DATETIME</value>
+										</parameter>
+										<parameter name="parameter[MAX_INVOCATIONS_TO_SUBMIT]" type="blockValue">
+											<value>MAX_INVOCATIONS_TO_SUBMIT</value>
+										</parameter>
+										<parameter name="parameter[SCHEDULE_SUBMIT]" type="blockValue">
+											<value>SCHEDULE_SUBMIT</value>
+										</parameter>
+										<parameter name="parameter[REMARKS]" type="blockValue">
+											<value>REMARKS</value>
+										</parameter>
+									</parameterList>
+									<followOnAction condition="false">
+										<task>
+											<setLocal name="ERROR_MSG" type="returnObject">
+												<value>editTask.returnValue.STMTMSG</value>
+												<check>
+													<onMatch condition="The data type, length or value of (the )?argument (for the parameter in position )?.2.">
+														<task>
+															<setLocal name="ERROR_MSG" type="raw">
+																<value>There is a problem with your begin datetime. Likely the begin datetime is in the past. If you would like to start the process immediately, clear the begin time and date fields. </value>
+															</setLocal>
+														</task>
+													</onMatch>
+													<onMatch condition="The data type, length or value of (the )?argument (for the parameter in position )?.3.">
+														<task>
+															<setLocal name="ERROR_MSG" type="raw">
+																<value>There is a problem with your end datetime. Likely the end datetime is older then the begin datetime. </value>
+															</setLocal>
+														</task>
+													</onMatch>
+												</check>
+											</setLocal>
+											<alert>An error has occurred: ?ERROR_MSG?</alert>
+											<gotoAction name="getNewValuesForTask"/>
+											<return/>
+										</task>
+									</followOnAction>
+									<followOnAction condition="true">
+										<task>
+											<panelReload/>
+										</task>
+									</followOnAction>
+								</action>			          		
+							</task>
+						</followOnAction>
+					</action>
+				</task>
+			</followOnAction>
+		</actionScript>
+	</action>
+
+	<action name="RunTASK">
+		<title>Run</title>
+		<actionScript name="genAdHoc" type="blank">
+			<task>
+				<assignSharedConstant name="statement" type="fixed">
+					<value>call "?PROCEDURE_SCHEMA?"."?PROCEDURE_NAME?"(?PROCEDURE_INPUT_value?)</value>
+				</assignSharedConstant>
+				<loadPage>
+					<pageWindow target="adhocWindow">
+						<panel name="main" PrimaryContainer="true">
+							<link type="action" target="adhoc" window="_self" connectionRequired="y">
+								<parameterList>
+									<parameter name="action">ADHOC</parameter>
+									<parameter name="LoadSQLData" type="fixed">?statement?</parameter>
+								</parameterList>
+							</link>
+						</panel>
+					</pageWindow>
+				</loadPage>
+				<exit/>
+			</task>
+		</actionScript>
+	</action>
+
+	<action name="DELETETASK">
+		<title>Remove</title>
+		<icon>images/trash.gif</icon>   
+		<actionScript name="getTaskName" type="blank">
+			<followOnAction condition="true">
+				<task>
+					<assignSharedConstant name="NAME" type="blockValue">
+						<value>NAME</value>
+					</assignSharedConstant>
+					<action name="confirmDelete" type="confirm">
+						<message>
+							Confirm deletion of administration task: ?NAME?
+						</message>
+						<followOnAction condition="true">
+							<task>
+								<action name="dropTask" type="serverAction">
+									<parameterList>
+										<parameter name="action" type="raw">
+											<value>executeSQL</value>
+										</parameter>
+										<parameter name="SQL" type="raw">
+											<value>
+												<![CDATA[
+													CALL SYSPROC.ADMIN_TASK_REMOVE( 
+																						'?TASKNAME?', 
+																						NULL
+																					)
+												]]>
+											</value>
+										</parameter>
+										<parameter name="parameter[TASKNAME]" type="blockValue">
+											<value>NAME</value>
+										</parameter>
+									</parameterList>
+									<followOnAction condition="false">
+										<task>
+											<assignSharedConstant name="ERROR_MSG" type="returnObject">
+												<value>dropTask.returnValue.STMTMSG</value>
+											</assignSharedConstant>
+											<alert>An error has occurred: ?ERROR_MSG?</alert>
+											<panelReload/>
+										</task>
+									</followOnAction>
+									<followOnAction condition="true">
+										<task>
+											<panelReload/>
+										</task>
+									</followOnAction>
+								</action>
+							</task>
+						</followOnAction>
+					</action>
+				</task>
+			</followOnAction>
+		</actionScript>
+	</action>
+	 
+	<detailAction>
+		<actionScript name="loaddetails" type="blank">
+			<task>
+				<assignLocalParameter name="TASKID" type="blockValue">
+					<value>TASKID</value>
+				</assignLocalParameter>
+				<loadPage>
+					<linkList>
+						<link type="action" target="adminTaskDetail" window="_self" connectionRequired="y">
+							<parameterList>
+								<parameter name="table">AdminTask/adminTaskView</parameter>
+								<parameter name="action">display</parameter>
+								<parameter name="taskid">?TASKID?</parameter>
+							</parameterList>
+						</link>
+						<link type="action" target="adminStatusDetail" window="_self" connectionRequired="y">
+							<parameterList>
+								<parameter name="table">AdminTask/adminStatusView</parameter>
+								<parameter name="action">list_table</parameter>
+								<parameter name="taskid">?TASKID?</parameter>
+							</parameterList>
+						</link>
+					</linkList>
+				</loadPage>
+			</task>
+		</actionScript>
+	</detailAction>
+
+	<column name="TASKID">
+		<sqlName>TASKID</sqlName>
+		<title>Task ID</title>
+		<type>n</type>
+		<c_sort>y</c_sort>
+		<c_drill>n</c_drill>
+	</column>
+
+	<column name="STATUS">
+		<sqlName>STATUS</sqlName>
+		<title>Task status</title>
+		<type>n</type>
+		<c_sort>y</c_sort>
+		<drillEnable/>
+	</column>
+
+	<column name="NAME">
+		<sqlName>NAME</sqlName>
+		<title>Task name</title>
+		<type>s</type>
+		<c_sort>y</c_sort>
+		<drillEnable/>
+	</column>
+
+	<column name="OWNER">
+		<sqlName>OWNER</sqlName>
+		<title>Owner</title>
+		<type>s</type>
+		<c_sort>y</c_sort>
+		<drillEnable/>
+	</column>
+
+	<column name="PROCEDURE_SCHEMA">
+		<sqlName>PROCEDURE_SCHEMA</sqlName>
+		<title>Stored procedure schema</title>
+		<type>s</type>
+		<c_sort>y</c_sort>
+		<drillEnable/>
+	</column>
+
+	<column name="PROCEDURE_NAME">
+		<sqlName>PROCEDURE_NAME</sqlName>
+		<title>Stored procedure name</title>
+		<type>s</type>
+		<c_sort>y</c_sort>
+		<drillEnable/>
+	</column>
+	<column name="PROCEDURE_INPUT">
+		<sqlName>PROCEDURE_INPUT</sqlName>
+		<title>Stored procedure Input</title>
+		<type>s</type>
+	</column>
+	<column name="PROCEDURE_INPUT_value">
+		<sqlName>case when upper(cast( substr(ltrim(PROCEDURE_INPUT),1,7) as varchar(7))) = 'VALUES(' then substr(rtrim(ltrim(PROCEDURE_INPUT)),8,-8+length(rtrim(ltrim(PROCEDURE_INPUT)))) when PROCEDURE_INPUT is null then '' when ltrim(PROCEDURE_INPUT) = '' then '' else '*** error *** : '||PROCEDURE_INPUT end</sqlName>
+		<title>Stored procedure Input</title>
+		<type>s</type>
+	</column>
+	<column name="RC">
+		<sqlName>RC</sqlName>
+		<title>Last return code</title>
+		<type>n</type>
+		<c_sort>y</c_sort>
+	</column>
+	<column name="INVOCATION">
+		<sqlName>INVOCATION</sqlName>
+		<title>Total times run</title>
+		<type>n</type>
+		<c_sort>y</c_sort>
+	</column>
+	<column name="SCHEDULE">
+		<sqlName>SCHEDULE</sqlName>
+		<title>Schedule</title>
+		<type>s</type>
+		<c_sort>y</c_sort>
+	</column>
+	<column name="RUN_DATE">
+		<sqlName>RUN_DATE</sqlName>
+		<title>Last run date</title>
+		<type>date</type>
+		<c_sort>y</c_sort>
+		<drillEnable/>
+	</column>
+	<column name="RUN_TIME">
+		<sqlName>RUN_TIME</sqlName>
+		<title>Last run time</title>
+		<type>n</type>
+		<c_sort>y</c_sort>
+	</column>
+	<column name="RUN_END_DATE">
+		<sqlName>RUN_END_DATE</sqlName>
+		<title>End date</title>
+		<type>n</type>
+		<c_sort>y</c_sort>
+		<drillEnable/>
+	</column>
+	<column name="RUN_END_TIME">
+		<sqlName>RUN_END_TIME</sqlName>
+		<title>End time</title>
+		<type>n</type>
+		<c_sort>y</c_sort>
+	</column>
+</table>

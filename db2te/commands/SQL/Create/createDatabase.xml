@@ -1,0 +1,417 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2010 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<command name="createDatabase" title="Create Database">
+<![CDATA[
+>>-CREATE--+-DATABASE-+----------------------------------------->
+           '-DB-------'   
+
+>----database-name--+-----------------------------+------------><
+                    +-AT DBPARTITIONNUM-----------+     
+                    '-| Create Database options |-'     
+]]>
+	<text>CREATE</text>
+	<select>
+		<option default="true"><text>DATABASE</text></option> 
+		<option><text>DB</text></option> 
+	</select>
+	<clauseReference name="database-name"/>
+	<select>
+		<option default="true"></option> 
+		<option><text>AT DBPARTITIONNUM</text></option> 
+		<option><clauseReference name="Create Database options"/></option> 
+	</select>
+
+	<clause name="Create Database options" title="Create Database options">
+<![CDATA[
+   .-AUTOMATIC STORAGE--YES-.   
+|--+------------------------+----------------------------------->
+   '-AUTOMATIC STORAGE--NO--'   
+]]>
+		<select>
+			<option><text>AUTOMATIC STORAGE YES</text></option> 
+			<option default="true"></option> 
+			<option><text>AUTOMATIC STORAGE NO</text></option> 
+		</select>
+<![CDATA[
+>--+---------------------------------------------+-------------->
+   |     .-,---------.                           |   
+   |     V           |                           |   
+   '-ON----+-path--+-+--+----------------------+-'   
+           '-drive-'    '-DBPATH ON--+-path--+-'     
+                                     '-drive-'       
+]]>
+		<br/>
+		<select>
+			<option default="true"></option> 
+			<option>
+				<text>ON</text>
+				<repeatable separator=",">
+					<select>
+						<option default="true"><clauseReference name="path-name"/></option>
+						<option><input type="text" size="18"/></option>
+					</select>
+				</repeatable>
+				<select>
+					<option default="true"></option>
+					<option>
+					<select>
+						<option default="true"><clauseReference name="path-name"/></option>
+						<option><input type="text" size="18"/></option>
+					</select>
+					</option>
+				</select>
+			</option> 
+		</select>
+<![CDATA[
+>--+-----------------------+------------------------------------>
+   '-ALIAS--database-alias-'   
+]]>
+		<br/>
+		<select>
+			<option default="true"></option> 
+			<option>
+				<text>ALIAS</text><clauseReference name="database-name"/>
+			</option>
+		</select>
+<![CDATA[
+>--+----------------------------------------------+------------->
+   '-USING CODESET--codeset--TERRITORY--territory-'   
+]]>
+		<br/>
+		<select>
+			<option default="true"></option> 
+			<option>
+				<text>USING CODESET</text><input type="text" size="4"/>
+				<text>TERRITORY</text><input type="text" size="2"/>
+			</option>
+		</select>
+<![CDATA[
+>--+-----------------------------------------------+------------>
+   |                .-SYSTEM---------------------. |   
+   '-COLLATE USING--+-COMPATIBILITY--------------+-'   
+                    +-IDENTITY-------------------+     
+                    +-IDENTITY_16BIT-------------+     
+                    +-UCA400_NO------------------+     
+                    +-UCA400_LSK-----------------+     
+                    +-UCA400_LTH-----------------+     
+                    +-language-aware-collation---+     
+                    +-locale-sensitive-collation-+     
+                    '-NLSCHAR--------------------'     
+]]>
+		<br/>
+		<select>
+			<option default="true"></option> 
+			<option>
+				<text>COLLATE USING</text>
+				<select>
+					<option><text>SYSTEM</text></option> 
+					<option default="true"><text>COMPATIBILITY</text></option> 
+					<option><text>IDENTITY</text></option> 
+					<option><text>IDENTITY_16BIT</text></option> 
+					<option><text>UCA400_NO</text></option>      
+					<option><text>UCA400_LSK</text></option>      
+					<option><text>UCA400_LTH</text></option>      
+					<option><input type="int" size="32" title="language aware collation"/></option>     
+					<option><input type="int" size="32" title="locale sensitive collation"/></option>   
+					<option><text>NLSCHAR</text></option>     
+				</select>
+			</option>
+		</select>
+<![CDATA[
+   .-PAGESIZE--4096-----------.                         
+>--+--------------------------+--+------------------+----------->
+   '-PAGESIZE--integer--+---+-'  '-NUMSEGS--numsegs-'   
+                        '-K-'                           
+]]>
+		<br/>
+		<select>
+			<option><text>PAGESIZE 4096</text></option> 
+			<option default="true"></option> 
+			<option>
+				<text>PAGESIZE</text>
+				<input type="int" size="2"/>
+				<select>
+					<option default="true"><text>K</text></option> 
+					<option><text>K</text></option> 
+				</select>
+			</option>
+		</select>
+		<select>
+			<option default="true"></option> 
+			<option>
+				<text>NUMSEGS</text><input type="int" size="4"/>
+			</option>
+		</select>
+<![CDATA[
+>--+-------------------------------+--+-------------+----------->
+   '-DFT_EXTENT_SZ--dft_extentsize-'  '-RESTRICTIVE-'   
+]]>
+		<br/>
+		<select>
+			<option default="true"></option> 
+			<option>
+				<text>DFT_EXTENT_SZ</text><input type="int" size="4"/>
+			</option>
+		</select>
+		<select>
+			<option default="true"></option> 
+			<option><text>RESTRICTIVE</text></option>
+		</select>
+<![CDATA[
+>--+---------------------------------------+-------------------->
+   '-CATALOG TABLESPACE--| tblspace-defn |-'   
+]]>
+		<br/>
+		<select>
+			<option default="true"></option> 
+			<option>
+				<text>CATALOG TABLESPACE</text><clauseReference name="tblspace-defn"/>
+			</option>
+		</select>
+<![CDATA[
+>--+------------------------------------+----------------------->
+   '-USER TABLESPACE--| tblspace-defn |-'   
+]]>
+		<br/>
+		<select>
+			<option default="true"></option> 
+			<option>
+				<text>USER TABLESPACE</text><clauseReference name="tblspace-defn"/>
+			</option>
+		</select>
+<![CDATA[
+>--+-----------------------------------------+------------------>
+   '-TEMPORARY TABLESPACE--| tblspace-defn |-'   
+]]>
+		<br/>
+		<select>
+			<option default="true"></option> 
+			<option>
+				<text>TEMPORARY TABLESPACE</text><clauseReference name="tblspace-defn"/>
+			</option>
+		</select>
+<![CDATA[
+>--+------------------------+----------------------------------->
+   '-WITH--"comment-string"-'   
+]]>
+		<br/>
+		<select>
+			<option default="true"></option> 
+			<option>
+				<text>WITH</text><text spacepad="false">"</text><input size="64" spacepad="false"/><text>"</text>
+			</option>
+		</select>
+<![CDATA[
+>--+---------------------------------------------------------------------------------+--|
+   |                                                                  .-DB ONLY----. |   
+   '-AUTOCONFIGURE--+---------------------------------------+--APPLY--+-DB AND DBM-+-'   
+                    |        .----------------------------. |         '-NONE-------'     
+                    |        V                            | |                            
+                    '-USING----input-keyword--param-value-+-'                            
+]]>
+		<br/>
+		<select>
+			<option default="true"></option> 
+			<option>
+				<text>AUTOCONFIGURE</text>
+				<select>
+					<option default="true"></option>
+					<option>
+						<text>USING</text>
+						<repeatable separator=" ">
+							<input size="18" spacepad="false"/>
+						</repeatable>
+					</option>
+				</select>
+				<text>APPLY</text>
+				<select>
+					<option><text>DB ONLY</text></option>
+					<option default="true"><text>DB AND DBM</text></option>
+					<option><text>NONE</text></option>
+				</select>
+			</option>
+		</select>
+
+	</clause>
+
+	<clause name="tblspace-defn" title="Tablespace Definition">
+<![CDATA[
+|--MANAGED BY--------------------------------------------------->
+]]>
+<![CDATA[
+                      .-,----------------------.                                       
+                      V                        |                                       
+>--+-SYSTEM USING--(----'--container-string--'-+--)--------------------------------+-->
+   |                    .-,---------------------------------------------------.    |   
+   |                    V                                                     |    |   
+   +-DATABASE USING--(----+-FILE---+--'--container-string--'--number-of-pages-+--)-+   
+   |                      '-DEVICE-'                                               |   
+   '-AUTOMATIC STORAGE-------------------------------------------------------------'   
+]]>
+		<select>
+			<option default="true">
+				<text>SYSTEM USING (</text>
+				<repeatable separator=",">
+					<clauseReference name="container-string"/>
+				</repeatable>
+				<text>)</text>
+			</option>
+			<option>
+				<text>DATABASE (</text>
+				<repeatable>
+					<select>
+						<option default="true"><text>FILE</text></option>
+						<option><text>DEVICE</text></option>
+					</select>
+					<clauseReference name="container-string"/>
+					<select>
+						<option default="true"><clauseReference name="number-of-pages"/></option> 
+					</select>
+				</repeatable>
+				<text>)</text>
+			</option>
+			<option><text>AUTOMATIC STORAGE</text></option>
+		</select>
+<![CDATA[
+>--+-----------------------------+------------------------------>
+   '-EXTENTSIZE--number-of-pages-'   
+]]>
+		<br statement='false'/>
+		<select>
+			<option default="true"></option> 
+			<option>
+				<text>EXTENTSIZE</text>
+				<clauseReference name="number-of-pages"/>
+			</option>
+		</select>
+<![CDATA[
+>--+-------------------------------+---------------------------->
+   '-PREFETCHSIZE--number-of-pages-'   
+]]>
+		<br statement='false'/>
+		<select>
+			<option default="true"></option> 
+			<option>
+				<text>PREFETCHSIZE</text>
+				<clauseReference name="number-of-pages"/>
+			</option>
+		</select>
+<![CDATA[
+>--+----------------------------------+------------------------->
+   '-OVERHEAD--number-of-milliseconds-'   
+]]>
+		<br statement='false'/>
+		<select>
+			<option default="true"><note></note></option> 
+			<option>
+				<text>OVERHEAD</text>
+				<clauseReference name="number-of-milliseconds"/>
+			</option>
+		</select>
+<![CDATA[
+>--+--------------------------------------+--------------------->
+   '-TRANSFERRATE--number-of-milliseconds-'   
+]]>
+		<br statement='false'/>
+		<select>
+			<option default="true"><note></note></option> 
+			<option>
+				<text>TRANSFERRATE</text>
+				<clauseReference name="number-of-milliseconds"/>
+			</option>
+		</select>
+<![CDATA[
+   .-NO FILE SYSTEM CACHING-.                            
+>--+------------------------+--+---------------------+---------->
+   '-FILE SYSTEM CACHING----'  '-AUTORESIZE--+-NO--+-'   
+                                             '-YES-'     
+]]>
+		<br statement='false'/>
+		<select>
+			<option default="true"></option> 
+			<option><text>NO FILE SYSTEM CACHING</text></option>
+			<option><text>FILE SYSTEM CACHING</text></option>
+		</select>
+<![CDATA[
+>--+-----------------------------+------------------------------>
+   '-INITIALSIZE--integer--+-K-+-'   
+                           +-M-+     
+                           '-G-'     
+]]>
+		<br statement='false'/>
+		<select>
+			<option default="true"></option> 
+			<option>
+				<text>INITIALSIZE</text>
+				<input type="int" size="8"/>
+				<select>
+					<option default="true"><text>K</text></option> 
+					<option><text>M</text></option>
+					<option><text>G</text></option>
+				</select>
+			</option>
+		</select>
+<![CDATA[
+>--+------------------------------------+----------------------->
+   '-INCREASESIZE--integer--+-PERCENT-+-'   
+                            '-+-K-+---'     
+                              +-M-+         
+                              '-G-'         
+]]>
+		<br statement='false'/>
+		<select>
+			<option default="true"></option> 
+			<option>
+				<text>INCREASESIZE</text>
+				<input type="int" size="8"/>
+				<select>
+					<option default="true"><text>PERCENT</text></option> 
+					<option><text>K</text></option>
+					<option><text>M</text></option>
+					<option><text>G</text></option>
+				</select>
+			</option>
+		</select>
+<![CDATA[
+>--+-----------------------------+------------------------------|
+   '-MAXSIZE--+-NONE-----------+-'   
+              '-integer--+-K-+-'     
+                         +-M-+       
+                         '-G-'       
+]]>
+		<br statement='false'/>
+		<select>
+			<option default="true"></option> 
+			<option>
+				<text>MAXSIZE</text>
+				<select>
+					<option default="true"><text>NONE</text></option> 
+					<option>
+						<input type="int" size="8"/>
+						<select>
+							<option default="true"><text>K</text></option> 
+							<option><text>M</text></option>
+							<option><text>G</text></option>
+						</select>
+					</option>
+				</select>
+			</option>
+		</select>
+	</clause>
+
+</command>

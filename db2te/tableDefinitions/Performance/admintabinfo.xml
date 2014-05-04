@@ -1,0 +1,387 @@
+<table name="SYSIBMADM.ADMINTABINFO">
+		<inlinequery>
+		SELECT a.*,t.COMPRESSION,t.PCTROWSCOMPRESSED,t.PCTPAGESSAVED,t.STATISTICS_PROFILE
+		FROM SYSIBMADM.ADMINTABINFO a
+		JOIN SYSCAT.TABLES t
+		on(a.TABSCHEMA,a.TABNAME)=(t.TABSCHEMA,t.TABNAME)
+		</inlinequery>
+    <sql_name>TABLESIZE</sql_name>
+    <singular_name>Table Size</singular_name>
+    <plural_name>Table Size</plural_name>
+		<description>Each row contained detailed size information for a
+		&lt;a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.admin.dbobj.doc/doc/c0004098.html?noframes=true');"&gt;table&lt;/a&gt; 
+		in the database. 
+		This information is generated from the 
+		&lt;a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.sql.rtn.doc/doc/r0052897.html?noframes=true');"&gt;SYSIBMADM.ADMINTABINFO&lt;/a&gt; administration view.
+		</description>
+    <rows_per_page>50</rows_per_page>
+	<order_by_index name="total_object_p_size" direction="D"/>
+	<output>
+		<type name="DDL" destination="" title="" generator=""/>
+		<type name="RUNSTATS" destination="adhoc" title="runstats" generator="XSL/tableRunstats.xsl">
+			<parameterList>
+				<parameter name="options" type="raw"><value>use profile</value></parameter>
+			</parameterList>
+		</type>
+		<type name="REORGONLINE" destination="adhoc" title="Re-0rg Online" generator="XSL/tableReorgOnline.xsl"/>
+		<type name="REORGOFFLINE" destination="adhoc" title="Re-0rg Offline" generator="XSL/tableReorgOffline.xsl"/>
+	</output>
+    <display_columns>
+		<col type="reference" name="tab"/>        
+        <col type="column" name="tabschema"/>
+        <col type="column" name="tabname"/>        
+        <col type="column" name="tabtype"/>
+		<col type="column" name="compression"/>			
+		<col type="column" name="pctrowscompressed"/>
+		<col type="column" name="pctpagessaved"/>
+        <col type="column" name="total_object_p_size"/>        
+        <col type="column" name="data_object_p_size"/>
+        <col type="column" name="index_object_p_size"/>
+        <col type="column" name="lob_object_p_size"/>
+        <col type="column" name="long_object_p_size"/>
+        <col type="column" name="xml_object_p_size"/>
+        <col type="column" name="dictionary_size"/>        
+    </display_columns>
+	<action name="reorg">
+		<title>Reorg</title>
+    	<actionScript>
+    		<task>
+		    	<assignSharedConstant name="table-name" type="fixed">
+					<value>"?tabschema?"."?tabname?"</value>
+				</assignSharedConstant>
+		    	<assignSharedConstant name="command" type="raw">
+					<value>SQL/adminCmdReorg</value>
+				</assignSharedConstant>
+		   		<callGlobalAction name="commandExecution"/>
+	   		</task>
+    	</actionScript>
+    </action>
+	<action name="runstats">
+		<title>Runstats</title>
+    	<actionScript>
+    		<task>
+		    	<assignSharedConstant name="schema" type="fixed">
+					<value>"?tabschema?"</value>
+				</assignSharedConstant>
+		    	<assignSharedConstant name="name" type="fixed">
+					<value>"?tabname?"</value>
+				</assignSharedConstant>
+		    	<assignSharedConstant name="command" type="raw">
+					<value>SQL/adminCmdRunstats</value>
+				</assignSharedConstant>
+		   		<callGlobalAction name="commandExecution"/>
+	   		</task>
+    	</actionScript>
+    </action>
+	<reference name="tab">
+		<title>Table Details</title>
+		<reftype>displayRow</reftype>
+		<refvalue>tableOnlyCat</refvalue>
+		<icon>images/icon-link-calendar.gif</icon>
+		<ref foreign_column_name="tabschema">
+			<local_column_name>tabschema</local_column_name>
+		</ref>
+		<ref foreign_column_name="tabname">
+			<local_column_name>tabname</local_column_name>
+		</ref>
+	</reference>       
+ 	<reference name="compestimate">
+		<title>Estimate Compression</title>
+		<reftype>displayRow</reftype>
+		<refvalue>Performance/compressionestimate</refvalue>
+		<icon>images/icon-dictionary.gif</icon>
+		<ref foreign_column_name="tabschema">
+			<local_column_name>tabschema</local_column_name>
+		</ref>
+		<ref foreign_column_name="tabname">
+			<local_column_name>tabname</local_column_name>
+		</ref>
+	</reference>  		
+    <column name="tabname">
+        <sql_name>TABNAME</sql_name>
+        <title>Name</title>
+        <type>s</type>
+		<drillEnable/>
+		<primaryKey/>			
+    </column>
+    <column name="tabschema">
+        <sql_name>TABSCHEMA</sql_name>
+        <title>Schema</title>
+        <type>s</type>
+		<prefill>
+			<table>schema</table>
+			<column>SCHEMANAME</column>
+		</prefill>
+		<drillEnable/>
+		<primaryKey/>			
+    </column>
+    <column name="tabtype">
+        <sql_name>TABTYPE</sql_name>
+        <title>Table Type</title>
+        <type>s</type>
+		<drillEnable/>
+   		<column_mask_file>masks/tableTypeMasks.xml</column_mask_file>					        
+    </column>    
+    <column name="total_object_p_size">
+        <sql_name>(data_object_p_size + index_object_p_size + long_object_p_size + lob_object_p_size + xml_object_p_size)*1024</sql_name>
+        <title>Total</title>
+        <type>n</type>
+		<formatNumber toAbbreviated="4"/>
+    </column>
+    <column name="data_object_p_size">
+        <sql_name>data_object_p_size*1024</sql_name>
+        <title>Data</title>
+        <type>n</type>
+		<formatNumber toAbbreviated="4"/>
+    </column>
+    <column name="dictionary_size">
+        <sql_name>DECIMAL((DICTIONARY_SIZE / 1024.0),10,2)</sql_name>
+        <title>Dictionary (KB)</title>
+        <type>n</type>
+    </column>
+    <column name="index_object_p_size">
+        <sql_name>INDEX_OBJECT_P_SIZE * 1024</sql_name>
+        <title>Index</title>
+        <type>n</type>
+		<formatNumber toAbbreviated="4"/>
+     </column>
+    <column name="lob_object_p_size">
+        <sql_name>LOB_OBJECT_P_SIZE * 1024</sql_name>
+        <title>Large Object</title>
+        <type>n</type>
+    </column>
+    <column name="long_object_p_size">
+        <sql_name>LONG_OBJECT_P_SIZE * 1024</sql_name>
+        <title>Long Object</title>
+        <type>n</type>
+		<formatNumber toAbbreviated="4"/>
+    </column>
+    <column name="xml_object_p_size">
+        <sql_name>XML_OBJECT_P_SIZE *  1024</sql_name>
+        <title>XML</title>
+        <type>n</type>
+		<formatNumber toAbbreviated="4"/>
+    </column>
+	<column name="pctrowscompressed">
+		<sql_name>PCTROWSCOMPRESSED</sql_name>
+		<title>Rows Compressed</title>
+		<type>bg</type>		
+		<graphattributes flipColor="y"/>				
+			<column_mask>
+				<value_mask value="-1"><mask>No stats</mask></value_mask>
+			</column_mask>    			
+	</column>	
+	<column name="pctpagessaved">
+		<sql_name>PCTPAGESSAVED</sql_name>
+		<title>Pages Saved</title>
+		<type>bg</type>			
+		<graphattributes flipColor="y"/>							
+			<column_mask>
+				<value_mask value="-1"><mask>No stats</mask></value_mask>
+			</column_mask>    			
+	</column>	
+	<column name="compression">
+		<sql_name>COMPRESSION</sql_name>
+		<title>Compression</title>
+		<type>s</type>			
+			<column_mask>
+				<value_mask value="N"><mask></mask></value_mask>
+				<value_mask value="B"><mask>Row and Value</mask></value_mask>
+				<value_mask value="R"><mask>Row</mask></value_mask>
+				<value_mask value="V"><mask>Value</mask></value_mask>
+			</column_mask>    			
+		<c_prefill>y</c_prefill>													
+	</column>
+	<column name="statisticsProfile">
+		<sql_name>STATISTICS_PROFILE</sql_name>
+		<title>Statistics Profile</title>
+		<type>l</type>
+	</column>
+	
+
+	<column name="DBPARTITIONNUM">
+		<sqlName>DBPARTITIONNUM</sqlName>
+		<title>Dbpartitionnum</title>
+		<type>n</type>
+	</column>
+	<column name="DATA_PARTITION_ID">
+		<sqlName>DATA_PARTITION_ID</sqlName>
+		<title>Data Partition Id</title>
+		<type>n</type>
+	</column>
+	<column name="AVAILABLE">
+		<sqlName>AVAILABLE</sqlName>
+		<title>Available</title>
+		<type>s</type>
+	</column>
+	<column name="DATA_OBJECT_L_SIZE">
+		<sqlName>DATA_OBJECT_L_SIZE</sqlName>
+		<title>Data Object L Size</title>
+		<type>n</type>
+	</column>
+	<column name="INDEX_OBJECT_L_SIZE">
+		<sqlName>INDEX_OBJECT_L_SIZE</sqlName>
+		<title>Index Object L Size</title>
+		<type>n</type>
+	</column>
+	<column name="LONG_OBJECT_L_SIZE">
+		<sqlName>LONG_OBJECT_L_SIZE</sqlName>
+		<title>Long Object L Size</title>
+		<type>n</type>
+	</column>
+	<column name="LOB_OBJECT_L_SIZE">
+		<sqlName>LOB_OBJECT_L_SIZE</sqlName>
+		<title>Lob Object L Size</title>
+		<type>n</type>
+	</column>
+	<column name="XML_OBJECT_L_SIZE">
+		<sqlName>XML_OBJECT_L_SIZE</sqlName>
+		<title>Xml Object L Size</title>
+		<type>n</type>
+	</column>
+	<column name="INDEX_TYPE">
+		<sqlName>INDEX_TYPE</sqlName>
+		<title>Index Type</title>
+		<type>n</type>
+	</column>
+	<column name="REORG_PENDING">
+		<sqlName>REORG_PENDING</sqlName>
+		<title>Reorg Pending</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="INPLACE_REORG_STATUS">
+		<sqlName>INPLACE_REORG_STATUS</sqlName>
+		<title>Inplace Reorg Status</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="LOAD_STATUS">
+		<sqlName>LOAD_STATUS</sqlName>
+		<title>Load Status</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="READ_ACCESS_ONLY">
+		<sqlName>READ_ACCESS_ONLY</sqlName>
+		<title>Read Access Only</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="NO_LOAD_RESTART">
+		<sqlName>NO_LOAD_RESTART</sqlName>
+		<title>No Load Restart</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="NUM_REORG_REC_ALTERS">
+		<sqlName>NUM_REORG_REC_ALTERS</sqlName>
+		<title>Num Reorg Rec Alters</title>
+	</column>
+	<column name="INDEXES_REQUIRE_REBUILD">
+		<sqlName>INDEXES_REQUIRE_REBUILD</sqlName>
+		<title>Indexes Require Rebuild</title>
+		<type>s</type>
+	</column>
+	<column name="LARGE_RIDS">
+		<sqlName>LARGE_RIDS</sqlName>
+		<title>Large Rids</title>
+		<type>s</type>
+	</column>
+	<column name="LARGE_SLOTS">
+		<sqlName>LARGE_SLOTS</sqlName>
+		<title>Large Slots</title>
+		<type>s</type>
+	</column>
+	<column name="DICTIONARY_SIZE">
+		<sqlName>DICTIONARY_SIZE</sqlName>
+		<title>Dictionary Size</title>
+		<type>n</type>
+	</column>
+	<column name="BLOCKS_PENDING_CLEANUP">
+		<sqlName>BLOCKS_PENDING_CLEANUP</sqlName>
+		<title>Blocks Pending Cleanup</title>
+		<type>n</type>
+	</column>
+	<column name="STATSTYPE">
+		<sqlName>STATSTYPE</sqlName>
+		<title>Statstype</title>
+		<type>s</type>
+	</column>
+
+	<action name="setCompress">
+		<title>Compress</title>
+		<icon>images/switch.gif</icon>	
+		<actionScript name="askSetCompress" type="prompt">
+			<message>alter table "?TABSCHEMA?"."?TABNAME?" compress</message>
+			<parameterList>
+				<parameter name="TABSCHEMA" type="blockValue">
+					<value>tabschema</value>
+				</parameter>
+				<parameter name="TABNAME" type="blockValue">
+					<value>tabname</value>
+				</parameter>
+				<parameter name="PROMPT_DEFAULT" type="blockValue">
+					<value>compression</value>
+					<check>
+						<onMatch condition="Y">
+							<task>
+								<assignLocalParameter name="PROMPT_DEFAULT" type="raw">
+									<value>no</value>
+								</assignLocalParameter>
+							</task>
+						</onMatch>
+						<onMatch condition="N">
+							<task>
+							<assignLocalParameter name="PROMPT_DEFAULT" type="raw">
+								<value>yes</value>
+								</assignLocalParameter>
+							</task>
+						</onMatch>
+					</check>							
+				</parameter>
+			</parameterList>
+			<followOnAction condition="true">
+				<task>
+					<action name="executeCompress" type="serverAction">
+						<parameterList>
+							<parameter name="action" type="fixed">
+								<value>executeSQL</value>
+							</parameter>
+							<parameter name="SQL" type="fixed">
+								<value>alter table "?TABSCHEMA?"."?TABNAME?" compress ?VALUE?</value>
+							</parameter>
+							<parameter name="parameter[VALUE]" type="returnObject">
+								<value>askSetCompress.returnValue</value>
+							</parameter>
+							<parameter name="parameter[TABSCHEMA]" type="blockValue">
+								<value>tabschema</value>
+							</parameter>
+							<parameter name="parameter[TABNAME]" type="blockValue">
+								<value>tabname</value>
+							</parameter>
+						</parameterList>
+						<followOnAction condition="true" negCondition="true">
+							<task>
+								<action name="raiseError" type="alert">
+									<message>Set compression failed: ?ERROR_MESSAGE?</message>
+									<parameterList>
+										<parameter name="ERROR_MESSAGE" type="returnObject">
+											<value>executeCompress.returnValue.STMTMSG</value>
+										</parameter>
+									</parameterList>
+								</action>
+							</task>
+						</followOnAction>
+						<followOnAction condition="true">
+							<task>
+								<windowReload/>
+							</task>
+						</followOnAction>
+					</action>
+				</task>
+			</followOnAction>
+		</actionScript>
+	</action>
+	
+</table>

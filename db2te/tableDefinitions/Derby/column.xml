@@ -1,0 +1,97 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2011 All rights reserved.
+  
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+
+<table name="column">
+	<sql_name>SYS.SYSCOLUMNS</sql_name>
+	<singular_name>Column</singular_name>
+	<plural_name>Columns</plural_name>
+	<description/>
+	<order_by_index name="COLUMNNAME" direction="A"/>
+	<order_by_index name="REFERENCEID" direction="A"/>
+	<display_columns>
+		<col type="column" name="SCHEMANAME"/>
+		<col type="column" name="TABLENAME"/>
+		<col type="column" name="COLUMNNAME"/>
+		<col type="column" name="COLUMNNUMBER"/>
+		<col type="column" name="AUTOINCREMENTVALUE"/>
+		<col type="column" name="AUTOINCREMENTSTART"/>
+		<col type="column" name="AUTOINCREMENTINC"/>
+	</display_columns>
+	<display_columns name="table">
+		<col type="column" name="COLUMNNUMBER"/>
+		<col type="column" name="COLUMNNAME"/>
+		<col type="column" name="AUTOINCREMENTVALUE"/>
+		<col type="column" name="AUTOINCREMENTSTART"/>
+		<col type="column" name="AUTOINCREMENTINC"/>
+	</display_columns>
+	<column name="REFERENCEID">
+		<sql_name>REFERENCEID</sql_name>
+		<title>Ref Id</title>
+		<type>s</type>
+	</column>
+	<column name="SCHEMANAME">
+		<sql_name>(SELECT s.SCHEMANAME from sys.SYSSCHEMAS s join sys.SYSTABLES t on s.SCHEMAID=t.SCHEMAID where t.TABLEID=SYSCOLUMNS.REFERENCEID)</sql_name>
+		<title>Schema</title>
+		<type>s</type>
+	</column>
+	<column name="TABLENAME">
+		<sql_name>(SELECT s.TABLENAME from sys.SYSTABLES s where s.TABLEID=SYSCOLUMNS.REFERENCEID)</sql_name>
+		<title>Table</title>
+		<type>s</type>
+	</column>
+	<column name="COLUMNNAME">
+		<sql_name>COLUMNNAME</sql_name>
+		<title>Name</title>
+		<type>s</type>
+	</column>
+	<column name="COLUMNNUMBER">
+		<sql_name>COLUMNNUMBER</sql_name>
+		<title>No.</title>
+		<type>s</type>
+	</column>
+	<column name="COLUMNDATATYPE">
+		<sql_name>COLUMNDATATYPE</sql_name>
+		<title>Data Type</title>
+		<type>s</type>
+	</column>
+	<column name="COLUMNDEFAULT">
+		<sql_name>COLUMNDEFAULT</sql_name>
+		<title>Default</title>
+		<type>s</type>
+	</column>
+	<column name="COLUMNDEFAULTID">
+		<sql_name>COLUMNDEFAULTID</sql_name>
+		<title>Default Id</title>
+		<type>s</type>
+	</column>
+	<column name="AUTOINCREMENTVALUE">
+		<sql_name>AUTOINCREMENTVALUE</sql_name>
+		<title>Auto Increment Valeu</title>
+		<type>n</type>
+	</column>
+	<column name="AUTOINCREMENTSTART">
+		<sql_name>AUTOINCREMENTSTART</sql_name>
+		<title>Auto Increment Start</title>
+		<type>n</type>
+	</column>
+	<column name="AUTOINCREMENTINC">
+		<sql_name>AUTOINCREMENTINC</sql_name>
+		<title>Auto Increment Inc.</title>
+		<type>n</type>
+	</column>
+</table>

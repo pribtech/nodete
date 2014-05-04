@@ -1,0 +1,307 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2011 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+<table name="ASN.IBMSNAP_SUBS_SET">
+	<sql_name>ASN.IBMSNAP_SUBS_SET</sql_name>
+	<singular_name>Subscription Set</singular_name>
+	<plural_name>Subscription Sets</plural_name>
+	<description/>
+	<messages><SQL0204N>Apply replication not installed or its schema is not the default ASN</SQL0204N></messages>
+	<disable_edit/>
+	<order_by_index name="apply_qual" direction="A"/>   
+	<order_by_index name="set_name" direction="A"/>   
+	<order_by_index name="whos_on_first" direction="A"/>
+	<rowStyle interfaceColumn='status'>
+		<option eq='-1' style='background-color:#ff7e7e;'/>
+		<option eq='0' style='background-color:#a7ffa7;'/>
+		<option eq='1' style='background-color:#fffe82;'/>
+		<option eq='2' style='background-color:#fffe82;'/>
+		<option eq='16' style='background-color:#ff7e7e;'/>
+		<option eq='18' style='background-color:#ff7e7e;'/>
+	</rowStyle>
+	<display_columns>
+		<col type="column" name="apply_qual"/>
+		<col type="column" name="set_name"/>
+		<col type="column" name="whos_on_first"/>
+		<col type="reference" name="members"/>
+		<col type="reference" name="trail"/>
+		<col type="column" name="activate"/>
+		<col type="column" name="status"/>
+		<col type="column" name="lastrun"/>
+		<col type="column" name="lastsuccess"/>
+		<col type="column" name="set_type"/>
+		<col type="column" name="source_server"/>
+		<col type="column" name="source_alias"/>
+		<col type="column" name="target_server"/>
+		<col type="column" name="target_alias"/>
+		<col type="column" name="refresh_type"/>
+		<col type="column" name="sleep_minutes"/>
+		<col type="column" name="event_name"/>
+		<col type="column" name="synchpoint"/>
+		<col type="column" name="synchtime"/>
+		<col type="column" name="capture_schema"/>
+		<col type="column" name="tgt_capture_schema"/>
+		<col type="column" name="federated_src_srvr"/>
+		<col type="column" name="federated_tgt_srvr"/>
+		<col type="column" name="jrn_lib"/>
+		<col type="column" name="jrn_name"/>
+		<col type="column" name="option_flags"/>
+		<col type="column" name="commit_count"/>
+		<col type="column" name="max_synch_minutes"/>
+		<col type="column" name="aux_stmts"/>
+		<col type="column" name="arch_level"/>
+	</display_columns>
+	<column name="apply_qual">
+		<c_sql_name>APPLY_QUAL</c_sql_name>
+		<c_title>Qualifier</c_title>
+		<c_presentation>s</c_presentation>
+		<c_pkey>p</c_pkey>	
+	</column>
+	<column name="set_name">
+		<c_sql_name>SET_NAME</c_sql_name>
+		<c_title>Set Name</c_title>
+		<c_presentation>s</c_presentation>
+		<c_pkey>p</c_pkey>	
+	</column>
+	<column name="set_type">
+		<c_sql_name>SET_TYPE</c_sql_name>
+		<c_title>Type</c_title>
+		<c_presentation>s</c_presentation>
+   		<c_column_mask>
+			<value_mask value="R"><mask>Read only</mask></value_mask>
+			<value_mask value="U"><mask>Update anywhere</mask></value_mask>
+   		</c_column_mask>	
+	</column>
+	<column name="whos_on_first">
+		<c_sql_name>WHOS_ON_FIRST</c_sql_name>
+		<c_title>Who's On First</c_title>
+		<c_presentation>s</c_presentation>
+		<c_pkey>p</c_pkey>	
+   		<c_column_mask>
+			<value_mask value="F"><mask>First</mask></value_mask>
+			<value_mask value="S"><mask>Second</mask></value_mask>
+   		</c_column_mask>	
+	</column>
+	<column name="activate">
+		<c_sql_name>ACTIVATE</c_sql_name>
+		<c_title>Activate</c_title>
+		<c_presentation>n</c_presentation>
+   		<c_column_mask>
+			<value_mask value="0"><mask>Deactivated</mask></value_mask>
+			<value_mask value="1"><mask>Active</mask></value_mask>
+			<value_mask value="2"><mask>Waiting Once Only</mask></value_mask>
+   		</c_column_mask>
+	</column>
+	<column name="source_server">
+		<c_sql_name>SOURCE_SERVER</c_sql_name>
+		<c_title>Source Server</c_title>
+		<c_presentation>s</c_presentation>
+	</column>
+	<column name="source_alias">
+		<c_sql_name>SOURCE_ALIAS</c_sql_name>
+		<c_title>Source Alias</c_title>
+		<c_presentation>s</c_presentation>
+	</column>
+	<column name="target_server">
+		<c_sql_name>TARGET_SERVER</c_sql_name>
+		<c_title>Target Server</c_title>
+		<c_presentation>s</c_presentation>
+	</column>
+	<column name="target_alias">
+		<c_sql_name>TARGET_ALIAS</c_sql_name>
+		<c_title>Target Alias</c_title>
+		<c_presentation>s</c_presentation>
+	</column>
+	<column name="status">
+		<c_sql_name>STATUS</c_sql_name>
+		<c_title>Status</c_title>
+		<c_presentation>n</c_presentation>
+   		<c_column_mask>
+			<value_mask value="-1"><mask>Failed</mask></value_mask>
+			<value_mask value="0"><mask>OK</mask></value_mask>
+			<value_mask value="1"><mask>Processing</mask></value_mask>
+			<value_mask value="2"><mask>Processing - Multi cycle</mask></value_mask>
+			<value_mask value="16"><mask>Errors</mask></value_mask>
+			<value_mask value="18"><mask>Errors - Multi cycle</mask></value_mask>
+   		</c_column_mask>
+	</column>
+	<column name="lastrun">
+		<c_sql_name>LASTRUN</c_sql_name>
+		<c_title>Lastrun</c_title>
+		<c_presentation>n</c_presentation>
+	</column>
+	<column name="refresh_type">
+		<c_sql_name>REFRESH_TYPE</c_sql_name>
+		<c_title>Refresh Type</c_title>
+		<c_presentation>s</c_presentation>
+   		<c_column_mask>
+			<value_mask value="R"><mask>Time</mask></value_mask>
+			<value_mask value="E"><mask>Event</mask></value_mask>
+			<value_mask value="B"><mask>Time + Event</mask></value_mask>
+   		</c_column_mask>
+	</column>
+	<column name="sleep_minutes">
+		<c_sql_name>SLEEP_MINUTES</c_sql_name>
+		<c_title>Sleep Minutes</c_title>
+		<c_presentation>n</c_presentation>
+	</column>
+	<column name="event_name">
+		<c_sql_name>EVENT_NAME</c_sql_name>
+		<c_title>Event Name</c_title>
+		<c_presentation>s</c_presentation>
+	</column>
+	<column name="lastsuccess">
+		<c_sql_name>LASTSUCCESS</c_sql_name>
+		<c_title>Lastsuccess</c_title>
+		<c_presentation>n</c_presentation>
+	</column>
+	<column name="synchpoint">
+		<c_sql_name>SYNCHPOINT</c_sql_name>
+		<c_title>Synchpoint</c_title>
+		<c_presentation>s</c_presentation>
+	</column>
+	<column name="synchtime">
+		<c_sql_name>SYNCHTIME</c_sql_name>
+		<c_title>Synchtime</c_title>
+		<c_presentation>n</c_presentation>
+	</column>
+	<column name="capture_schema">
+		<c_sql_name>CAPTURE_SCHEMA</c_sql_name>
+		<c_title>Capture Schema</c_title>
+		<c_presentation>s</c_presentation>
+	</column>
+	<column name="tgt_capture_schema">
+		<c_sql_name>TGT_CAPTURE_SCHEMA</c_sql_name>
+		<c_title>Tgt Capture Schema</c_title>
+		<c_presentation>s</c_presentation>
+	</column>
+	<column name="federated_src_srvr">
+		<c_sql_name>FEDERATED_SRC_SRVR</c_sql_name>
+		<c_title>Federated Src Srvr</c_title>
+		<c_presentation>s</c_presentation>
+	</column>
+	<column name="federated_tgt_srvr">
+		<c_sql_name>FEDERATED_TGT_SRVR</c_sql_name>
+		<c_title>Federated Tgt Srvr</c_title>
+		<c_presentation>s</c_presentation>
+	</column>
+	<column name="jrn_lib">
+		<c_sql_name>JRN_LIB</c_sql_name>
+		<c_title>Jrn Lib</c_title>
+		<c_presentation>s</c_presentation>
+	</column>
+	<column name="jrn_name">
+		<c_sql_name>JRN_NAME</c_sql_name>
+		<c_title>Jrn Name</c_title>
+		<c_presentation>s</c_presentation>
+	</column>
+	<column name="option_flags">
+		<c_sql_name>OPTION_FLAGS</c_sql_name>
+		<c_title>Option Flags</c_title>
+		<c_presentation>s</c_presentation>
+	</column>
+	<column name="commit_count">
+		<c_sql_name>COMMIT_COUNT</c_sql_name>
+		<c_title>Commit Count</c_title>
+		<c_presentation>n</c_presentation>
+	</column>
+	<column name="max_synch_minutes">
+		<c_sql_name>MAX_SYNCH_MINUTES</c_sql_name>
+		<c_title>Max Synch Minutes</c_title>
+		<c_presentation>n</c_presentation>
+	</column>
+	<column name="aux_stmts">
+		<c_sql_name>AUX_STMTS</c_sql_name>
+		<c_title>Aux. Stmts</c_title>
+		<c_presentation>n</c_presentation>
+	</column>
+	<column name="arch_level">
+		<c_sql_name>ARCH_LEVEL</c_sql_name>
+		<c_title>Arch. Level</c_title>
+		<c_presentation>s</c_presentation>
+	</column>
+	<reference name="members">
+		<c_title>Members</c_title>
+		<reftype>table</reftype>
+		<refvalue>Replication/subscriptionMember</refvalue>
+		<icon>images/icon-link-calendar.gif</icon>
+		<ref foreign_column_name="apply_qual">
+			<local_column_name>apply_qual</local_column_name>
+		</ref>
+		<ref foreign_column_name="set_name">
+			<local_column_name>set_name</local_column_name>
+		</ref>
+	</reference>
+	<reference name="trail">
+		<c_title>Trail</c_title>
+		<reftype>table</reftype>
+		<refvalue>Replication/applyTrail</refvalue>
+		<icon>images/icon-link-calendar.gif</icon>
+		<ref foreign_column_name="apply_qual">
+			<local_column_name>apply_qual</local_column_name>
+		</ref>
+		<ref foreign_column_name="set_name">
+			<local_column_name>set_name</local_column_name>
+		</ref>
+	</reference>
+	<action name="fullRefresh">
+		<c_title>Full Refresh</c_title>
+		<icon>images/trash.gif</icon>   
+    	<actionScript>
+    		<task>
+				<assignLocalParameter name="apply_qual" type="blockValue">
+					<value>apply_qual</value>
+				</assignLocalParameter>
+				<assignLocalParameter name="whos_on_first" type="blockValue">
+					<value>whos_on_first</value>
+				</assignLocalParameter>
+				<assignLocalParameter name="whos_on_first" type="blockValue">
+					<value>whos_on_first</value>
+				</assignLocalParameter>
+				<loadPage>
+					<pageWindow target="_final">
+						<panel name="Tutorial" PrimaryContainer="true">
+							<link connectionRequired="y" target="_self" type="action" window="_self">
+								<parameterList>
+									<parameter name="action">tutorial</parameter>
+									<parameter name="tutorialName">SQLReplicationFullRefresh</parameter>
+									<parameter name="script" type="fixed"><![CDATA[
+										<tutorial name="asnSqlReplicationFullRefresh">
+										    <pageList>
+    	 										<page name="ASN SQL Replication Full Refresh" type="general">
+            									<contentText>Run script to install SQL Replication capture control server</contentText>
+            									<SQLText>
+UPDATE ASN.IBMSNAP_SUBS_SET SET ACTIVATE=0 WHERE SET_NAME='?set_name?' AND APPLY_QUAL='?apply_qual?' AND WHOS_ON_FIRST='?whos_on_first?';
+UPDATE ASN.IBMSNAP_SUBS_SET SET LASTSUCCESS=NULL, SYNCHPOINT=NULL, SYNCHTIME=NULL WHERE APPLY_QUAL='?apply_qual?' AND SET_NAME='?set_name?' AND WHOS_ON_FIRST='?whos_on_first?';
+UPDATE ASN.IBMSNAP_SUBS_SET SET ACTIVATE=1 WHERE SET_NAME='?set_name?' AND APPLY_QUAL='?apply_qual?' AND WHOS_ON_FIRST='?whos_on_first?';
+
+												</SQLText>
+            									<SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar=";"
+													cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+        										</page>
+    										</pageList>
+										</tutorial>									
+									]]></parameter>
+								</parameterList>
+							</link>
+						</panel>
+					</pageWindow>
+				</loadPage>
+	   		</task>
+    	</actionScript>
+    </action>
+</table>

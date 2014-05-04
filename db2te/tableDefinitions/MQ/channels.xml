@@ -1,0 +1,483 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2013 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+<table name="channels">
+	<sqlName>channels</sqlName>
+	<singularName>Channel</singularName>
+	<pluralName>Channels</pluralName>
+	<inlinequery>
+<![CDATA[
+MQCMD_INQUIRE_CHANNEL  ?
+]]>
+	</inlinequery>
+	<parameters>
+		<parm name="MQCACH_CHANNEL_NAME">
+			<title>Channel Mask</title>
+			<value>*</value>
+			<type>s</type>
+		</parm>
+	</parameters>
+	<description></description>
+	<displayColumns>
+		<col type="column" name="MQCACH_CHANNEL_NAME"/>
+		<col type="column" name="MQIACH_CHANNEL_TYPE"/>
+		<col type="column" name="MQCA_ALTERATION_DATE"/>
+		<col type="column" name="MQCA_ALTERATION_TIME"/>
+		<col type="column" name="MQIACH_HDR_COMPRESSION"/>
+		<col type="column" name="MQIACH_MSG_COMPRESSION"/>
+		<col type="column" name="MQCACH_DESC"/>
+		<col type="column" name="MQIACH_DISC_INTERVAL"/>
+		<col type="column" name="MQIACH_HB_INTERVAL"/>
+		<col type="column" name="MQIACH_KEEP_ALIVE_INTERVAL"/>
+		<col type="column" name="MQIACH_MAX_INSTANCES"/>
+		<col type="column" name="MQIACH_MAX_INSTS_PER_CLIENT"/>
+		<col type="column" name="MQIACH_MAX_MSG_LENGTH"/>
+		<col type="column" name="MQCACH_MCA_USER_ID"/>
+		<col type="column" name="MQIA_MONITORING_CHANNEL"/>
+		<col type="column" name="MQCACH_RCV_EXIT_USER_DATA"/>
+		<col type="column" name="MQCACH_RCV_EXIT_NAME"/>
+		<col type="column" name="MQCACH_SEC_EXIT_USER_DATA"/>
+		<col type="column" name="MQCACH_SEC_EXIT_NAME"/>
+		<col type="column" name="MQCACH_SEND_EXIT_USER_DATA"/>
+		<col type="column" name="MQCACH_SEND_EXIT_NAME"/>
+		<col type="column" name="MQIACH_SHARING_CONVERSATIONS"/>
+		<col type="column" name="MQIACH_SSL_CLIENT_AUTH"/>
+		<col type="column" name="MQCACH_SSL_CIPHER_SPEC"/>
+		<col type="column" name="MQCACH_SSL_PEER_NAME"/>
+		<col type="column" name="MQIACH_XMIT_PROTOCOL_TYPE"/>
+		<col type="column" name="MQIACH_BATCH_SIZE"/>
+		<col type="column" name="MQCACH_MR_EXIT_USER_DATA"/>
+		<col type="column" name="MQCACH_MR_EXIT_NAME"/>
+		<col type="column" name="MQIACH_MR_COUNT"/>
+		<col type="column" name="MQIACH_MR_INTERVAL"/>
+		<col type="column" name="MQCACH_MSG_EXIT_USER_DATA"/>
+		<col type="column" name="MQCACH_MSG_EXIT_NAME"/>
+		<col type="column" name="MQIACH_NPM_SPEED"/>
+		<col type="column" name="MQIACH_PUT_AUTHORITY"/>
+		<col type="column" name="MQIACH_RESET_REQUESTED"/>
+		<col type="column" name="MQIACH_SEQUENCE_NUMBER_WRAP"/>
+		<col type="column" name="MQIA_STATISTICS_CHANNEL"/>
+		<col type="column" name="MQIA_USE_DEAD_LETTER_Q"/>
+		<col type="column" name="MQIACH_BATCH_HB"/>
+		<col type="column" name="MQIACH_BATCH_INTERVAL"/>
+		<col type="column" name="MQIACH_BATCH_DATA_LIMIT"/>
+		<col type="column" name="MQCA_CLUSTER_NAMELIST"/>
+		<col type="column" name="MQCA_CLUSTER_NAME"/>
+		<col type="column" name="MQIACH_CLWL_CHANNEL_PRIORITY"/>
+		<col type="column" name="MQIACH_CLWL_CHANNEL_RANK"/>
+		<col type="column" name="MQIACH_CLWL_CHANNEL_WEIGHT"/>
+		<col type="column" name="MQCACH_CONNECTION_NAME"/>
+		<col type="column" name="MQIACH_DATA_CONVERSION"/>
+		<col type="column" name="MQCACH_LOCAL_ADDRESS"/>
+		<col type="column" name="MQIACH_LONG_RETRY"/>
+		<col type="column" name="MQIACH_LONG_TIMER"/>
+		<col type="column" name="MQCACH_MCA_NAME"/>
+		<col type="column" name="MQIACH_MCA_TYPE"/>
+		<col type="column" name="MQCACH_MODE_NAME"/>
+		<col type="column" name="MQIACH_NETWORK_PRIORITY"/>
+		<col type="column" name="MQIA_PROPERTY_CONTROL"/>
+		<col type="column" name="MQIACH_SHORT_RETRY"/>
+		<col type="column" name="MQIACH_SHORT_TIMER"/>
+		<col type="column" name="MQCACH_TP_NAME"/>
+		<col type="column" name="MQCACH_PASSWORD"/>
+		<col type="column" name="MQCACH_USER_ID"/>
+		<col type="column" name="MQCACH_XMIT_Q_NAME"/>
+		<col type="column" name="MQIACH_CONNECTION_AFFINITY"/>
+		<col type="column" name="MQIACH_CLIENT_CHANNEL_WEIGHT"/>
+		<col type="column" name="MQIACH_DEF_RECONNECT"/>
+		<col type="column" name="MQCA_Q_MGR_NAME"/>
+	</displayColumns>
+	<column name="MQCACH_CHANNEL_NAME">
+		<sqlName>MQCACH_CHANNEL_NAME</sqlName>
+		<title>Name</title>
+	</column>
+	<column name="MQIACH_CHANNEL_TYPE">
+		<sqlName>MQIACH_CHANNEL_TYPE</sqlName>
+		<title>Type</title>
+		<type>n</type>
+	</column>
+	<column name="MQCA_ALTERATION_DATE">
+		<sqlName>MQCA_ALTERATION_DATE</sqlName>
+		<title>Alteration Date</title>
+	</column>
+	<column name="MQCA_ALTERATION_TIME">
+		<sqlName>MQCA_ALTERATION_TIME</sqlName>
+		<title>Alteration Time</title>
+	</column>
+	<column name="MQIACH_HDR_COMPRESSION">
+		<sqlName>MQIACH_HDR_COMPRESSION</sqlName>
+		<title>Hdr Compression</title>
+	</column>
+	<column name="MQIACH_MSG_COMPRESSION">
+		<sqlName>MQIACH_MSG_COMPRESSION</sqlName>
+		<title>Msg Compression</title>
+	</column>
+	<column name="MQCACH_DESC">
+		<sqlName>MQCACH_DESC</sqlName>
+		<title>Description</title>
+	</column>
+	<column name="MQIACH_DISC_INTERVAL">
+		<sqlName>MQIACH_DISC_INTERVAL</sqlName>
+		<title>Disc Interval</title>
+		<type>n</type>
+	</column>
+	<column name="MQIACH_HB_INTERVAL">
+		<sqlName>MQIACH_HB_INTERVAL</sqlName>
+		<title>HB Interval</title>
+		<type>n</type>
+	</column>
+	<column name="MQIACH_KEEP_ALIVE_INTERVAL">
+		<sqlName>MQIACH_KEEP_ALIVE_INTERVAL</sqlName>
+		<title>Keep Alive Interval</title>
+		<type>n</type>
+	</column>
+	<column name="MQIACH_MAX_INSTANCES">
+		<sqlName>MQIACH_MAX_INSTANCES</sqlName>
+		<title>Max Instances</title>
+		<type>n</type>
+	</column>
+	<column name="MQIACH_MAX_INSTS_PER_CLIENT">
+		<sqlName>MQIACH_MAX_INSTS_PER_CLIENT</sqlName>
+		<title>Max Insts Per Client</title>
+		<type>n</type>
+	</column>
+	<column name="MQIACH_MAX_MSG_LENGTH">
+		<sqlName>MQIACH_MAX_MSG_LENGTH</sqlName>
+		<title>Max Msg Length</title>
+		<type>n</type>
+	</column>
+	<column name="MQCACH_MCA_USER_ID">
+		<sqlName>MQCACH_MCA_USER_ID</sqlName>
+		<title>Mca User Id</title>
+		<type>n</type>
+	</column>
+	<column name="MQIA_MONITORING_CHANNEL">
+		<sqlName>MQIA_MONITORING_CHANNEL</sqlName>
+		<title>Monitoring Channel</title>
+	</column>
+	<column name="MQCACH_RCV_EXIT_USER_DATA">
+		<sqlName>MQCACH_RCV_EXIT_USER_DATA</sqlName>
+		<title>Rcv Exit User Data</title>
+	</column>
+	<column name="MQCACH_RCV_EXIT_NAME">
+		<sqlName>MQCACH_RCV_EXIT_NAME</sqlName>
+		<title>Rcv Exit Name</title>
+	</column>
+	<column name="MQCACH_SEC_EXIT_USER_DATA">
+		<sqlName>MQCACH_SEC_EXIT_USER_DATA</sqlName>
+		<title>Sec Exit User Data</title>
+	</column>
+	<column name="MQCACH_SEC_EXIT_NAME">
+		<sqlName>MQCACH_SEC_EXIT_NAME</sqlName>
+		<title>Sec Exit Name</title>
+	</column>
+	<column name="MQCACH_SEND_EXIT_USER_DATA">
+		<sqlName>MQCACH_SEND_EXIT_USER_DATA</sqlName>
+		<title>Send Exit User Data</title>
+	</column>
+	<column name="MQCACH_SEND_EXIT_NAME">
+		<sqlName>MQCACH_SEND_EXIT_NAME</sqlName>
+		<title>Send Exit Name</title>
+	</column>
+	<column name="MQIACH_SHARING_CONVERSATIONS">
+		<sqlName>MQIACH_SHARING_CONVERSATIONS</sqlName>
+		<title>Sharing Conversations</title>
+	</column>
+	<column name="MQIACH_SSL_CLIENT_AUTH">
+		<sqlName>MQIACH_SSL_CLIENT_AUTH</sqlName>
+		<title>Ssl Client Auth</title>
+	</column>
+	<column name="MQCACH_SSL_CIPHER_SPEC">
+		<sqlName>MQCACH_SSL_CIPHER_SPEC</sqlName>
+		<title>Ssl Cipher Spec</title>
+		<type>n</type>
+	</column>
+	<column name="MQCACH_SSL_PEER_NAME">
+		<sqlName>MQCACH_SSL_PEER_NAME</sqlName>
+		<title>Ssl Peer Name</title>
+	</column>
+	<column name="MQIACH_XMIT_PROTOCOL_TYPE">
+		<sqlName>MQIACH_XMIT_PROTOCOL_TYPE</sqlName>
+		<title>Xmit Protocol Type</title>
+	</column>
+	<column name="MQIACH_BATCH_SIZE">
+		<sqlName>MQIACH_BATCH_SIZE</sqlName>
+		<title>Batch Size</title>
+		<type>n</type>
+	</column>
+	<column name="MQCACH_MR_EXIT_USER_DATA">
+		<sqlName>MQCACH_MR_EXIT_USER_DATA</sqlName>
+		<title>Mr Exit User Data</title>
+	</column>
+	<column name="MQCACH_MR_EXIT_NAME">
+		<sqlName>MQCACH_MR_EXIT_NAME</sqlName>
+		<title>Mr Exit Name</title>
+	</column>
+	<column name="MQIACH_MR_COUNT">
+		<sqlName>MQIACH_MR_COUNT</sqlName>
+		<title>Mr Count</title>
+		<type>n</type>
+	</column>
+	<column name="MQIACH_MR_INTERVAL">
+		<sqlName>MQIACH_MR_INTERVAL</sqlName>
+		<title>MR Interval</title>
+		<type>n</type>
+	</column>
+	<column name="MQCACH_MSG_EXIT_USER_DATA">
+		<sqlName>MQCACH_MSG_EXIT_USER_DATA</sqlName>
+		<title>Msg Exit User Data</title>
+	</column>
+	<column name="MQCACH_MSG_EXIT_NAME">
+		<sqlName>MQCACH_MSG_EXIT_NAME</sqlName>
+		<title>Msg Exit Name</title>
+	</column>
+	<column name="MQIACH_NPM_SPEED">
+		<sqlName>MQIACH_NPM_SPEED</sqlName>
+		<title>Npm Speed</title>
+		<type>n</type>
+	</column>
+	<column name="MQIACH_PUT_AUTHORITY">
+		<sqlName>MQIACH_PUT_AUTHORITY</sqlName>
+		<title>Put Authority</title>
+		<type>n</type>
+	</column>
+	<column name="MQIACH_RESET_REQUESTED">
+		<sqlName>MQIACH_RESET_REQUESTED</sqlName>
+		<title>Reset Requested</title>
+		<type>n</type>
+	</column>
+	<column name="MQIACH_SEQUENCE_NUMBER_WRAP">
+		<sqlName>MQIACH_SEQUENCE_NUMBER_WRAP</sqlName>
+		<title>Sequence Number Wrap</title>
+		<type>n</type>
+	</column>
+	<column name="MQIA_STATISTICS_CHANNEL">
+		<sqlName>MQIA_STATISTICS_CHANNEL</sqlName>
+		<title>Statistics Channel</title>
+	</column>
+	<column name="MQIA_USE_DEAD_LETTER_Q">
+		<sqlName>MQIA_USE_DEAD_LETTER_Q</sqlName>
+		<title>Use Dead Letter Q</title>
+	</column>
+	<column name="MQIACH_BATCH_HB">
+		<sqlName>MQIACH_BATCH_HB</sqlName>
+		<title>Batch Hb</title>
+		<type>n</type>
+	</column>
+	<column name="MQIACH_BATCH_INTERVAL">
+		<sqlName>MQIACH_BATCH_INTERVAL</sqlName>
+		<title>Batch Interval</title>
+		<type>n</type>
+	</column>
+	<column name="MQIACH_BATCH_DATA_LIMIT">
+		<sqlName>MQIACH_BATCH_DATA_LIMIT</sqlName>
+		<title>Batch Data Limit</title>
+		<type>n</type>
+	</column>
+	<column name="MQCA_CLUSTER_NAMELIST">
+		<sqlName>MQCA_CLUSTER_NAMELIST</sqlName>
+		<title>Cluster Namelist</title>
+	</column>
+	<column name="MQCA_CLUSTER_NAME">
+		<sqlName>MQCA_CLUSTER_NAME</sqlName>
+		<title>Cluster Name</title>
+		<type>n</type>
+	</column>
+	<column name="MQIACH_CLWL_CHANNEL_PRIORITY">
+		<sqlName>MQIACH_CLWL_CHANNEL_PRIORITY</sqlName>
+		<title>Clwl Channel Priority</title>
+		<type>n</type>
+	</column>
+	<column name="MQIACH_CLWL_CHANNEL_RANK">
+		<sqlName>MQIACH_CLWL_CHANNEL_RANK</sqlName>
+		<title>Clwl Channel Rank</title>
+		<type>n</type>
+	</column>
+	<column name="MQIACH_CLWL_CHANNEL_WEIGHT">
+		<sqlName>MQIACH_CLWL_CHANNEL_WEIGHT</sqlName>
+		<title>Clwl Channel Weight</title>
+		<type>n</type>
+	</column>
+	<column name="MQCACH_CONNECTION_NAME">
+		<sqlName>MQCACH_CONNECTION_NAME</sqlName>
+		<title>Connection Name</title>
+	</column>
+	<column name="MQIACH_DATA_CONVERSION">
+		<sqlName>MQIACH_DATA_CONVERSION</sqlName>
+		<title>Data Conversion</title>
+		<type>n</type>
+	</column>
+	<column name="MQCACH_LOCAL_ADDRESS">
+		<sqlName>MQCACH_LOCAL_ADDRESS</sqlName>
+		<title>Local Address</title>
+		<type>n</type>
+	</column>
+	<column name="MQIACH_LONG_RETRY">
+		<sqlName>MQIACH_LONG_RETRY</sqlName>
+		<title>Long Retry</title>
+		<type>n</type>
+	</column>
+	<column name="MQIACH_LONG_TIMER">
+		<sqlName>MQIACH_LONG_TIMER</sqlName>
+		<title>Long Timer</title>
+		<type>n</type>
+	</column>
+	<column name="MQCACH_MCA_NAME">
+		<sqlName>MQCACH_MCA_NAME</sqlName>
+		<title>MCA Name</title>
+	</column>
+	<column name="MQIACH_MCA_TYPE">
+		<sqlName>MQIACH_MCA_TYPE</sqlName>
+		<title>Mca Type</title>
+		<type>n</type>
+	</column>
+	<column name="MQCACH_MODE_NAME">
+		<sqlName>MQCACH_MODE_NAME</sqlName>
+		<title>Mode Name</title>
+	</column>
+	<column name="MQIACH_NETWORK_PRIORITY">
+		<sqlName>MQIACH_NETWORK_PRIORITY</sqlName>
+		<title>Network Priority</title>
+		<type>n</type>
+	</column>
+	<column name="MQIA_PROPERTY_CONTROL">
+		<sqlName>MQIA_PROPERTY_CONTROL</sqlName>
+		<title>Property Control</title>
+	</column>
+	<column name="MQIACH_SHORT_RETRY">
+		<sqlName>MQIACH_SHORT_RETRY</sqlName>
+		<title>Short Retry</title>
+		<type>n</type>
+	</column>
+	<column name="MQIACH_SHORT_TIMER">
+		<sqlName>MQIACH_SHORT_TIMER</sqlName>
+		<title>Short Timer</title>
+		<type>n</type>
+	</column>
+	<column name="MQCACH_TP_NAME">
+		<sqlName>MQCACH_TP_NAME</sqlName>
+		<title>Tp Name</title>
+	</column>
+	<column name="MQCACH_PASSWORD">
+		<sqlName>MQCACH_PASSWORD</sqlName>
+		<title>Password</title>
+	</column>
+	<column name="MQCACH_USER_ID">
+		<sqlName>MQCACH_USER_ID</sqlName>
+		<title>User Id</title>
+	</column>
+	<column name="MQCACH_XMIT_Q_NAME">
+		<sqlName>MQCACH_XMIT_Q_NAME</sqlName>
+		<title>Xmit Q Name</title>
+	</column>
+	<column name="MQIACH_CONNECTION_AFFINITY">
+		<sqlName>MQIACH_CONNECTION_AFFINITY</sqlName>
+		<title>Connection Affinity</title>
+	</column>
+	<column name="MQIACH_CLIENT_CHANNEL_WEIGHT">
+		<sqlName>MQIACH_CLIENT_CHANNEL_WEIGHT</sqlName>
+		<title>Client Channel Weight</title>
+	</column>
+	<column name="MQIACH_DEF_RECONNECT">
+		<sqlName>MQIACH_DEF_RECONNECT</sqlName>
+		<title>Def Reconnect</title>
+	</column>
+	<column name="MQCA_Q_MGR_NAME">
+		<sqlName>MQCA_Q_MGR_NAME</sqlName>
+		<title>Q Mgr Name</title>
+	</column>
+	<action name="Reset">
+		<title>Reset</title>
+		<icon>images/trash.gif</icon>   
+    	<actionScript>
+    		<task>
+				<assignSharedConstant name="sql" type="fixed">
+					<value>
+<![CDATA[
+MQCMD_RESET_CHANNEL ?!name=MQCACH_CHANNEL_NAME&value=?MQCACH_CHANNEL_NAME??
+]]>
+					</value>
+				</assignSharedConstant>
+		   		<callGlobalAction name="sqlExecution"/>
+	   		</task>
+    	</actionScript>
+    </action>
+	<action name="ResolveCommit">
+		<title>Resolve Commit</title>
+		<icon>images/trash.gif</icon>   
+    	<actionScript>
+    		<task>
+				<assignSharedConstant name="sql" type="fixed">
+					<value>
+<![CDATA[
+MQCMD_RESOLVE_CHANNEL ?!name=MQCACH_CHANNEL_NAME&value=?MQCACH_CHANNEL_NAME???!name=MQIACH_IN_DOUBT&type=constant,value=MQIDO_COMMIT?
+]]>
+					</value>
+				</assignSharedConstant>
+		   		<callGlobalAction name="sqlExecution"/>
+	   		</task>
+    	</actionScript>
+    </action>
+	<action name="ResolveBackout">
+		<title>Resolve Backout</title>
+		<icon>images/trash.gif</icon>   
+    	<actionScript>
+    		<task>
+				<assignSharedConstant name="sql" type="fixed">
+					<value>
+<![CDATA[
+MQCMD_RESOLVE_CHANNEL ?!name=MQCACH_CHANNEL_NAME&value=?MQCACH_CHANNEL_NAME???!name=MQIACH_IN_DOUBT&type=constant,value=MQIDO_BACKOUT?
+]]>
+					</value>
+				</assignSharedConstant>
+		   		<callGlobalAction name="sqlExecution"/>
+	   		</task>
+    	</actionScript>
+    </action>
+	<action name="start">
+		<title>Start</title>
+		<icon>images/trash.gif</icon>   
+    	<actionScript>
+    		<task>
+				<assignSharedConstant name="sql" type="fixed">
+					<value>
+<![CDATA[
+MQCMD_START_CHANNEL ?!name=MQCACH_CHANNEL_NAME&value=?MQCACH_CHANNEL_NAME???
+]]>
+					</value>
+				</assignSharedConstant>
+		   		<callGlobalAction name="sqlExecution"/>
+	   		</task>
+    	</actionScript>
+    </action>
+	<action name="stop">
+		<title>Stop</title>
+		<icon>images/trash.gif</icon>   
+    	<actionScript>
+    		<task>
+				<assignSharedConstant name="sql" type="fixed">
+					<value>
+<![CDATA[
+MQCMD_STOP_CHANNEL ?!name=MQCACH_CHANNEL_NAME&value=?MQCACH_CHANNEL_NAME???
+]]>
+					</value>
+				</assignSharedConstant>
+		   		<callGlobalAction name="sqlExecution"/>
+	   		</task>
+    	</actionScript>
+    </action>
+</table>

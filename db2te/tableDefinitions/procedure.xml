@@ -1,0 +1,366 @@
+<!--
+  Copyright IBM Corp. 2007 All rights reserved.
+  
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<!-- Updated Peter Prib, Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2012 All rights reserved. -->
+
+<table name="Procedure">
+	<sql_name>SYSCAT.PROCEDURES</sql_name>
+	<singular_name>Procedure</singular_name>
+	<plural_name>Procedures</plural_name>
+	<edit>n</edit>
+		<description>Each row represents a
+	    &lt;a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v9/topic/com.ibm.db2.udb.apdv.sql.doc/doc/c0023316.html?noframes=true');"&gt;procedure&lt;/a&gt;.		
+		Procedures can encapsulate logic and SQL statement and can serve as sub-routine extensions to client applications, routines, triggers, and dynamic compound statements.	    
+		This list is generated from the &lt;a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.sql.ref.doc/doc/r0001045.html?noframes=true');"&gt;SYSCAT.ROUTINES&lt;/a&gt; catalog view.
+		</description>	
+	<rows_per_page>200</rows_per_page>
+	<disableEdit/>
+	<output>
+		<type name="REBIND" destination="adhoc" title="Rebind" generator="XSL/compareTableUpdates.xsl">
+			<parameterList>
+				<parameter name="type" type="raw"><value>rebind</value></parameter>
+			</parameterList>
+		</type>
+	</output>
+	<order_by_index name="procschema" direction="A"/>
+	<order_by_index name="procname" direction="A"/>
+	<display_columns>
+		<col type="action" name="xmlgen"/>
+		<col type="column" name="procschema"/>	
+		<col type="column" name="procname"/>
+		<col type="column" name="procedure_id"/>		
+		<col type="column" name="specificname"/>
+		<col type="column" name="definer"/>
+		<col type="column" name="fenced"/>
+		<col type="reference" name="param"/>
+		<col type="column" name="parm_count"/>
+		<col type="column" name="parm_signature"/>
+		<col type="column" name="parm_style"/>
+		<col type="reference" name="auth"/>		
+		<col type="column" name="remarks"/>
+		<col type="column" name="result_sets"/>
+	</display_columns>
+	<reference name="dynSQL" DBMS="DB2">
+		<title>Possible SQL</title>
+		<reftype>table</reftype>
+		<refvalue>Performance/snapdynsql</refvalue>
+		<icon>images/icon-link-calendar.gif</icon>								
+		<ref foreign_column_name="stmttext">
+			<comparetype>locateAnyCase</comparetype>
+			<local_column_name>procname</local_column_name>
+		</ref>
+	</reference>
+	 <action name="rebindv95" maxVersion='9.5'>
+		<title>Rebind</title>
+    	<actionScript>
+    		<task>
+    			<lock/>
+				<assignSharedConstant name="routine-name" type="fixed">
+					<value>"?procschema?"."?procname?"</value>
+				</assignSharedConstant>
+		   		<assignSharedConstant name="TYPE" type="raw">
+					<value>SP</value>
+				</assignSharedConstant>
+		   		<assignSharedConstant name="command" type="raw">
+					<value>SystemDefinedRoutines/REBIND_ROUTINE_PACKAGE.v95</value>
+				</assignSharedConstant>
+	   			<callGlobalAction name="systemCommandExecution"/>				
+    			<unlock/>
+	   		</task>
+    	</actionScript>
+    </action>	
+    <action name="rebind" minVersion='9.7'>
+		<title>Rebind</title>
+    	<actionScript>
+    		<task>
+    			<lock/>
+		    	<assignSharedConstant name="schema-name" type="blockValue">
+					<value>procschema</value>
+				</assignSharedConstant>
+				<assignSharedConstant name="name" type="blockValue">
+					<value>procname</value>
+				</assignSharedConstant>
+				<assignSharedConstant name="routine-name" type="fixed">
+					<value>"?procschema?"."?procname?"</value>
+				</assignSharedConstant>
+		   		<assignSharedConstant name="TYPE" type="raw">
+					<value>SP</value>
+				</assignSharedConstant>
+		   		<assignSharedConstant name="command" type="raw">
+					<value>SystemDefinedRoutines/REBIND_ROUTINE_PACKAGE</value>
+				</assignSharedConstant>
+	   			<callGlobalAction name="systemCommandExecution"/>				
+    			<unlock/>
+	   		</task>
+    	</actionScript>
+    </action>	
+	<action name="dropTable">
+		<title>Drop</title>
+		<icon>images/trash.gif</icon>   
+    	<actionScript>
+    		<task>
+		    	<assignSharedConstant name="objectType" type="raw">
+					<value>PROCEDURE</value>
+				</assignSharedConstant>
+				<assignSharedConstant name="objectName" type="fixed">
+					<value>"?procschema?"."?procname?" </value>
+				</assignSharedConstant>
+		   		<callGlobalAction name="dropSQLObject"/>
+	   		</task>
+    	</actionScript>
+    </action>
+	<action name="xmlgen">
+		<title>XML</title>
+		<icon>images/icon-xml.gif</icon>
+		<actionScript name="helloworld" type="block">
+			<followOnAction condition="">
+				<task>	
+					<assignLocalParameter name="PROCNAME" type="blockValue">
+						<value>procname</value>
+					</assignLocalParameter>
+					<assignLocalParameter name="SCHEMANAME" type="blockValue">
+						<value>procschema</value>
+					</assignLocalParameter>
+					<loadPage>
+						<pageWindow target="_blank" windowStage="?CALLING_STAGE?">
+							<panel name="main" PrimaryContainer="true">
+								<URL>
+<![CDATA[
+http://?DB2MC_SERVER?/?ACTION_PROCESSOR??action=procXMLGen&schemanameparm=?SCHEMANAME?&procnameparm=?PROCNAME?&USE_CONNECTION=?ACTIVE_DATABASE_CONNECTION?
+]]>
+									</URL>				
+							</panel>
+						</pageWindow>
+					</loadPage>
+				</task>
+			</followOnAction>
+		</actionScript>
+	</action>
+	<reference name="auth">
+		<title>Privilege</title>
+		<reftype>table</reftype>
+		<refvalue>Authority/routineauth</refvalue>
+		<icon>images/icon-privilege.gif</icon>
+		<ref foreign_column_name="specificname">
+			<local_column_name>specificname</local_column_name>
+		</ref>
+	</reference>
+	<reference name="param">
+		<title>Parameters</title>
+		<reftype>table</reftype>
+		<refvalue>SYSCAT.PROCPARMS</refvalue>
+		<icon>images/icon-column.gif</icon>
+		<ref foreign_column_name="specificname">
+			<local_column_name>specificname</local_column_name>
+		</ref>
+		<ref foreign_column_name="procschema">
+			<local_column_name>procschema</local_column_name>
+		</ref>
+	</reference>
+	<reference name="routineDep">
+		<title>Dependencies</title>
+		<reftype>table</reftype>
+		<refvalue>DB2Catalog/routineDep</refvalue>
+		<icon>images/icon-column.gif</icon>
+		<ref foreign_column_name="ROUTINENAME">
+			<local_column_name>specificname</local_column_name>
+		</ref>
+		<ref foreign_column_name="PROCSCHEMA">
+			<local_column_name>procschema</local_column_name>
+		</ref>
+	</reference>
+	<reference name="statements">
+		<title>Statements</title>
+		<reftype>table</reftype>
+		<refvalue>staticStatements</refvalue>
+		<icon>images/icon-column.gif</icon>
+		<ref foreign_column_name="plname">
+			<local_column_name>plname</local_column_name>
+		</ref>
+		<ref foreign_column_name="plcreator">
+			<local_column_name>procschema</local_column_name>
+		</ref>
+	</reference>
+   <column name="class" DBMS="DB2">
+        <sql_name>CLASS</sql_name>
+        <title>Class</title>
+        <type>s</type>
+        <c_sort>y</c_sort>
+    </column>
+    <column name="contains_sql">
+        <sql_name>CONTAINS_SQL</sql_name>
+        <title>Contains SQL</title>
+        <type>s</type>
+        <c_sort>y</c_sort>
+    </column>
+    <column name="create_time">
+        <sql_name>CREATE_TIME</sql_name>
+        <title>Created</title>
+        <type>n</type>
+        <c_sort>n</c_sort>
+    </column>
+    <column name="dbinfo">
+        <sql_name>DBINFO</sql_name>
+        <title>Database Information</title>
+        <type>s</type>
+        <c_sort>y</c_sort>
+    </column>
+    <column name="definer">
+        <sql_name>DEFINER</sql_name>
+        <title>Definer</title>
+        <type>s</type>
+        <c_sort>y</c_sort>
+		<c_prefill>y</c_prefill>                                
+    </column>
+    <column name="deterministic">
+        <sql_name>DETERMINISTIC</sql_name>
+        <title>Deterministic</title>
+        <type>s</type>
+        <c_sort>y</c_sort>
+    </column>
+    <column name="fenced">
+        <sql_name>FENCED</sql_name>
+        <title>Fenced</title>
+        <type>s</type>
+        <c_sort>y</c_sort>
+		<c_prefill>y</c_prefill>                                
+    </column>
+    <column name="implementation">
+        <sql_name>IMPLEMENTATION</sql_name>
+        <title>Implementation</title>
+        <type>s</type>
+        <c_sort>y</c_sort>
+    </column>
+    <column name="jar_id">
+        <sql_name>JAR_ID</sql_name>
+        <title>JAR ID</title>
+        <type>s</type>
+        <c_sort>y</c_sort>
+    </column>
+    <column name="language">
+        <sql_name>LANGUAGE</sql_name>
+        <title>Language</title>
+        <type>s</type>
+        <c_sort>y</c_sort>
+		<c_prefill>y</c_prefill>                        
+    </column>
+    <column name="nullcall">
+        <sql_name>NULLCALL</sql_name>
+        <title>NULL Call</title>
+        <type>s</type>
+        <c_sort>y</c_sort>
+    </column>
+    <column name="origin">
+        <sql_name>ORIGIN</sql_name>
+        <title>Origin</title>
+        <type>s</type>
+        <c_sort>y</c_sort>
+    </column>
+    <column name="parm_count">
+        <sql_name>PARM_COUNT</sql_name>
+        <title>Parameter Count</title>
+        <type>n</type>
+        <c_sort>y</c_sort>
+    </column>
+    <column name="parm_signature">
+        <sql_name>PARM_SIGNATURE</sql_name>
+        <title>Parameter Signature</title>
+        <type>s</type>
+        <c_sort>y</c_sort>
+    </column>
+    <column name="parm_style">
+        <sql_name>PARM_STYLE</sql_name>
+        <title>Parameter Style</title>
+        <type>s</type>
+        <c_sort>y</c_sort>
+    </column>
+    <column name="procedure_id">
+        <sql_name>PROCEDURE_ID</sql_name>
+        <c_pkey>p</c_pkey>
+        <title>Procedure ID</title>
+				<c_drill>n</c_drill>
+				<c_pkey>p</c_pkey>
+        <type>n</type>
+        <c_sort>y</c_sort>
+    </column>
+    <column name="procname">
+        <sql_name>PROCNAME</sql_name>
+        <title>Procedure Name</title>
+        <c_pkey>p</c_pkey>
+        <type>s</type>
+        <c_sort>y</c_sort>
+    </column>
+    <column name="procschema">
+        <sql_name>PROCSCHEMA</sql_name>
+        <title>Procedure Schema</title>
+        <c_pkey>p</c_pkey>
+        <type>s</type>
+        <c_sort>y</c_sort>
+		<c_prefill>
+			<table>schema</table>
+			<column>SCHEMANAME</column>
+		</c_prefill>                        
+    </column>
+    <column name="program_type">
+        <sql_name>PROGRAM_TYPE</sql_name>
+        <title>Program Time</title>
+        <type>s</type>
+        <c_sort>y</c_sort>
+        <c_prefill>y</c_prefill>        
+    </column>
+    <column name="remarks">
+        <sql_name>REMARKS</sql_name>
+        <title>Remarks</title>
+        <type>l</type>
+        <c_sort>y</c_sort>
+    </column>
+    <column name="result_sets">
+        <sql_name>RESULT_SETS</sql_name>
+        <title>Result Sets</title>
+		<c_drill>n</c_drill>
+        <type>n</type>
+        <c_sort>y</c_sort>
+    </column>
+    <column name="specificname">
+        <sql_name>SPECIFICNAME</sql_name>
+        <title>Specific Name</title>
+        <type>s</type>
+        <c_sort>y</c_sort>
+    </column>
+    <column name="plname">
+        <sql_name>(SELECT BNAME FROM SYSCAT.ROUTINEDEP AS D WHERE D.BTYPE='K' and D.ROUTINESCHEMA=PROCEDURES.procschema and D.SPECIFICNAME=PROCEDURES.specificname)</sql_name>
+        <title>Plan Name</title>
+        <type>s</type>
+    </column>
+    <column name="text">
+        <sql_name>TEXT</sql_name>
+        <title>Test</title>
+        <type>l</type>
+        <c_sort>n</c_sort>
+    </column>
+    <column name="text_body_offset">
+        <sql_name>TEXT_BODY_OFFSET</sql_name>
+        <title>Test Body Offset</title>
+        <type>n</type>
+        <c_sort>n</c_sort>
+    </column>
+    <column name="valid">
+        <sql_name>VALID</sql_name>
+        <title>Valid</title>
+        <type>s</type>
+        <c_sort>y</c_sort>
+        <c_prefill>y</c_prefill>
+    </column>
+</table>

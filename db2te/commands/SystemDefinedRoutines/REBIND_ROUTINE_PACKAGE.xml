@@ -1,0 +1,83 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2009 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<command name="REBIND_ROUTINE_PACKAGE" title="REBIND_ROUTINE_PACKAGE">
+<![CDATA[
+>>>-REBIND_ROUTINE_PACKAGE--(--type--,--------------------------->
+
+>--routine-name-string--,--options--)--------------------------><
+
+Method 2:
+
+Read syntax diagramSkip visual syntax diagram
+>>-REBIND_ROUTINE_PACKAGE--(--type--,--------------------------->
+
+>--schema--,--module--,--name--,--options--)-------------------><
+
+
+]]>
+	<text>CALL REBIND_ROUTINE_PACKAGE (</text>
+	<br/>
+	
+	<select>
+		<option>
+			<clauseReference name="type"/>
+			<text spacepad="false"> , '</text>
+			<input size="32" title="routine name" name="routine-name"/> 
+			<text spacepad="false">' , '</text>
+			<input size="32" title="options"/> 
+			<text spacepad="false">'</text>
+		</option>
+		<option>
+			<clauseReference name="type"/>
+			<text spacepad="false"> , '</text>
+			<input size="32" title="schema"  name="schema-name"/> 
+			<text spacepad="false">' , '</text>
+			<input size="32" title="module" name="module"/> 
+			<text spacepad="false">' , '</text>
+			<input size="32" title="name" name="name"/> 
+			<text spacepad="false">' , '</text>
+			<input size="32" title="options"/> 
+			<text spacepad="false">'</text>
+		</option>
+	</select>
+	<text>)</text>
+
+	<clause name="type">
+			<text spacepad="false">'</text>
+			<input spacepad="false" type="list" help="type" name="type">
+				<option>SP</option>
+				<option>F</option>
+				<option>SF</option>
+				<option>T</option>
+			</input>
+			<text spacepad="false">'</text>
+	</clause>
+	<help name='type'>
+		<![CDATA[
+			<table>
+				<tr><td>'P' </td><td>for a procedure</td></tr>
+				<tr><td>'SP'</td><td>for the specific name of a procedure</td></tr>
+				<tr><td>'F' </td><td>for a compiled function</td></tr>
+				<tr><td>'SF'</td><td>for a specific name of a compiled function</td></tr>
+				<tr><td>'T' </td><td>for a compiled trigger</td></tr>
+			</table>
+		]]>
+	</help>
+
+</command>
+        

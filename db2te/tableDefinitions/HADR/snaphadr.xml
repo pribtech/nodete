@@ -1,0 +1,158 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2009-2013 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+
+<table name="snaphadr">
+	<sqlName>SYSIBMADM.SNAPHADR</sqlName>
+	<singularName>HADR</singularName>
+	<pluralName>HADR</pluralName>
+	<description>Snaphot of HADR Status</description>
+	<displayColumns>
+		<col type="column" name="SNAPSHOT_TIMESTAMP"/>
+		<col type="column" name="DB_NAME"/>
+		<col type="column" name="HADR_ROLE"/>
+		<col type="column" name="HADR_STATE"/>
+		<col type="column" name="HADR_LOG_GAP"/>
+		<col type="column" name="HADR_SYNCMODE"/>
+		<col type="column" name="HADR_CONNECT_STATUS"/>
+		<col type="column" name="HADR_CONNECT_TIME"/>
+		<col type="column" name="HADR_HEARTBEAT"/>
+		<col type="column" name="HADR_LOCAL_HOST"/>
+		<col type="column" name="HADR_LOCAL_SERVICE"/>
+		<col type="column" name="HADR_REMOTE_HOST"/>
+		<col type="column" name="HADR_REMOTE_SERVICE"/>
+		<col type="column" name="HADR_REMOTE_INSTANCE"/>
+		<col type="column" name="HADR_TIMEOUT"/>
+		<col type="column" name="HADR_PRIMARY_LOG_FILE"/>
+		<col type="column" name="HADR_PRIMARY_LOG_PAGE"/>
+		<col type="column" name="HADR_PRIMARY_LOG_LSN"/>
+		<col type="column" name="HADR_STANDBY_LOG_FILE"/>
+		<col type="column" name="HADR_STANDBY_LOG_PAGE"/>
+		<col type="column" name="HADR_STANDBY_LOG_LSN"/>
+		<col type="column" name="DBPARTITIONNUM"/>
+		<col type="column" name="HADR_LOG_GAP"/>
+		<col type="column" name="MEMBER"/>
+	</displayColumns>
+	<disableEdit/>
+	<column name="SNAPSHOT_TIMESTAMP">
+		<sqlName>SNAPSHOT_TIMESTAMP</sqlName>
+		<title>Time</title>
+	</column>
+	<column name="DB_NAME">
+		<sqlName>DB_NAME</sqlName>
+		<title>Database</title>
+	</column>
+	<column name="HADR_ROLE">
+		<sqlName>HADR_ROLE</sqlName>
+		<title>Role</title>
+		<column_mask_file>masks/HADRRole.xml</column_mask_file>
+	</column>
+	<column name="HADR_STATE">
+		<sqlName>HADR_STATE</sqlName>
+		<title>State</title>
+		<type>html</type>
+		<column_mask_file>masks/HADRState.xml</column_mask_file>
+	</column>
+	<column name="HADR_SYNCMODE">
+		<sqlName>HADR_SYNCMODE</sqlName>
+		<title>Sync Mode</title>
+		<column_mask_file>masks/HADRSyncMode.xml</column_mask_file>
+	</column>
+	<column name="HADR_CONNECT_STATUS">
+		<sqlName>HADR_CONNECT_STATUS</sqlName>
+		<title>Connect Status</title>
+		<type>html</type>
+		<column_mask_file>masks/HADRConnectStatus.xml</column_mask_file>
+	</column>
+	<column name="HADR_CONNECT_TIME">
+		<sqlName>HADR_CONNECT_TIME</sqlName>
+		<title>Connect Time</title>
+	</column>
+	<column name="HADR_HEARTBEAT">
+		<sqlName>HADR_HEARTBEAT</sqlName>
+		<title>Heart Beat</title>
+		<type>n</type>
+	</column>
+	<column name="HADR_LOCAL_HOST">
+		<sqlName>HADR_LOCAL_HOST</sqlName>
+		<title>Local Host</title>
+	</column>
+	<column name="HADR_LOCAL_SERVICE">
+		<sqlName>HADR_LOCAL_SERVICE</sqlName>
+		<title>Local Service</title>
+	</column>
+	<column name="HADR_REMOTE_HOST">
+		<sqlName>HADR_REMOTE_HOST</sqlName>
+		<title>Remote Host</title>
+	</column>
+	<column name="HADR_REMOTE_SERVICE">
+		<sqlName>HADR_REMOTE_SERVICE</sqlName>
+		<title>Remote Service</title>
+	</column>
+	<column name="HADR_REMOTE_INSTANCE">
+		<sqlName>HADR_REMOTE_INSTANCE</sqlName>
+		<title>Remote Instance</title>
+	</column>
+	<column name="HADR_TIMEOUT">
+		<sqlName>HADR_TIMEOUT</sqlName>
+		<title>Timeout</title>
+		<type>n</type>
+	</column>
+	<column name="HADR_PRIMARY_LOG_FILE">
+		<sqlName>HADR_PRIMARY_LOG_FILE</sqlName>
+		<title>Primary Log File</title>
+	</column>
+	<column name="HADR_PRIMARY_LOG_PAGE">
+		<sqlName>HADR_PRIMARY_LOG_PAGE</sqlName>
+		<title>Primary Log Page</title>
+		<type>n</type>
+	</column>
+	<column name="HADR_PRIMARY_LOG_LSN">
+		<sqlName>HADR_PRIMARY_LOG_LSN</sqlName>
+		<title>Primary Log LSN</title>
+		<type>n</type>
+	</column>
+	<column name="HADR_STANDBY_LOG_FILE">
+		<sqlName>HADR_STANDBY_LOG_FILE</sqlName>
+		<title>Standby Log File</title>
+	</column>
+	<column name="HADR_STANDBY_LOG_PAGE">
+		<sqlName>HADR_STANDBY_LOG_PAGE</sqlName>
+		<title>Standby Log Page</title>
+		<type>n</type>
+	</column>
+	<column name="HADR_STANDBY_LOG_LSN">
+		<sqlName>HADR_STANDBY_LOG_LSN</sqlName>
+		<title>Standby Log LSN</title>
+		<type>n</type>
+	</column>
+	<column name="HADR_LOG_GAP">
+		<sqlName>HADR_LOG_GAP</sqlName>
+		<title>Log Gap</title>
+		<type>n</type>
+	</column>
+	<column name="DBPARTITIONNUM">
+		<sqlName>DBPARTITIONNUM</sqlName>
+		<title>Partition</title>
+		<type>n</type>
+	</column>
+	<column name="MEMBER" minVersion="10.5">
+		<sqlName>MEMBER</sqlName>
+		<title>Member</title>
+		<type>n</type>
+	</column>
+</table>

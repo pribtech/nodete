@@ -1,0 +1,183 @@
+<!--
+  Copyright IBM Corp. 2007 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<table name="scdetail">
+	<sql_name>SERVICE_SUBCLASS_STATS</sql_name>
+	<function>WLM_GET_SERVICE_SUBCLASS_STATS</function>
+	<singular_name>Service Subclass Statistics</singular_name>
+	<plural_name>Service Subclass Statistics</plural_name>	
+	<description>
+This list is generated from the &lt;a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.sql.rtn.doc/doc/r0052917.html?noframes=true');"&gt;WLM_GET_SERVICE_SUBCLASS_STATS&lt;/a&gt; table function.
+	</description>		
+	<disableEdit/>
+	<output>
+		<type name="DDL" destination="" title="" generator=""/>
+	</output>
+	<parameters>
+		<parm name="SERVICE_SUPERCLASS_NAME">
+			<title>Super Class</title>
+			<value></value>
+			<type>s</type>
+			</parm>
+		<parm name="servsubclassnm">
+			<title>Subclass</title>
+			<value></value>
+			<type>s</type>
+		</parm>
+		<parm name="dbpartition">
+			<title>Partition Number</title>
+			<value>-2</value>
+			<type>n</type>
+		</parm>
+	</parameters>
+	<order_by_index name="SERVICE_SUBCLASS_NAME" direction="A"/>
+	<displayColumns>
+		<col type="column" name="SERVICE_SUPERCLASS_NAME"/>
+		<col type="column" name="SERVICE_SUBCLASS_NAME"/>
+		<col type="reference" name="scstatsdet"/>	
+		<col type="column" name="DBPARTITIONNUM"/>
+		<col type="column" name="LAST_RESET"/>
+		<col type="column" name="COORD_ACT_COMPLETED_TOTAL"/>
+		<col type="column" name="COORD_ACT_ABORTED_TOTAL"/>
+		<col type="column" name="COORD_ACT_REJECTED_TOTAL"/>
+		<col type="column" name="CONCURRENT_ACT_TOP"/>
+		<col type="column" name="COORD_ACT_LIFETIME_TOP"/>
+		<col type="column" name="COORD_ACT_LIFETIME_AVG"/>
+		<col type="column" name="COORD_ACT_LIFETIME_STDDEV"/>
+		<col type="column" name="COORD_ACT_EXEC_TIME_AVG"/>
+		<col type="column" name="COORD_ACT_EXEC_TIME_STDDEV"/>
+		<col type="column" name="COORD_ACT_QUEUE_TIME_AVG"/>
+		<col type="column" name="COORD_ACT_QUEUE_TIME_STDDEV"/>
+		<col type="column" name="NUM_REQUESTS_ACTIVE"/>
+		<col type="column" name="NUM_REQUESTS_TOTAL"/>
+		<col type="column" name="REQUEST_EXEC_TIME_AVG"/>
+		<col type="column" name="REQUEST_EXEC_TIME_STDDEV"/>
+		<col type="column" name="REQUEST_EXEC_TIME_TOTAL"/>
+	</displayColumns>
+	<reference name="scstatsdet">
+		<title>Details</title>		
+		<reftype>table</reftype>
+		<refvalue>Monitor/monServiceSubclass</refvalue>
+		<ref foreign_column_name="SERVICE_SUBCLASS_NAME">
+			<local_column_name>SERVICE_SUBCLASS_NAME</local_column_name>	
+		</ref>			
+	</reference>
+	<column name="SERVICE_SUPERCLASS_NAME">
+		<sqlName>SERVICE_SUPERCLASS_NAME</sqlName>
+		<title>Service Superclass Name</title>
+		<primaryKey/>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="SERVICE_SUBCLASS_NAME">
+		<sqlName>SERVICE_SUBCLASS_NAME</sqlName>
+		<title>Service Subclass Name</title>
+		<primaryKey/>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="DBPARTITIONNUM">
+		<sqlName>DBPARTITIONNUM</sqlName>
+		<title>DB Part</title>
+		<primaryKey/>
+		<type>n</type>
+	</column>
+	<column name="LAST_RESET">
+		<sqlName>LAST_RESET</sqlName>
+		<title>Last Reset</title>
+		<type>n</type>
+	</column>
+	<column name="COORD_ACT_COMPLETED_TOTAL">
+		<sqlName>COORD_ACT_COMPLETED_TOTAL</sqlName>
+		<title>Coord Act Completed Total</title>
+		<type>n</type>
+	</column>
+	<column name="COORD_ACT_ABORTED_TOTAL">
+		<sqlName>COORD_ACT_ABORTED_TOTAL</sqlName>
+		<title>Coord Act Aborted Total</title>
+		<type>n</type>
+	</column>
+	<column name="COORD_ACT_REJECTED_TOTAL">
+		<sqlName>COORD_ACT_REJECTED_TOTAL</sqlName>
+		<title>Coord Act Rejected Total</title>
+		<type>n</type>
+	</column>
+	<column name="CONCURRENT_ACT_TOP">
+		<sqlName>CONCURRENT_ACT_TOP</sqlName>
+		<title>Concurrent Act Top</title>
+		<type>n</type>
+	</column>
+	<column name="COORD_ACT_LIFETIME_TOP">
+		<sqlName>COORD_ACT_LIFETIME_TOP</sqlName>
+		<title>Coord Act Lifetime Top</title>
+		<type>n</type>
+	</column>
+	<column name="COORD_ACT_LIFETIME_AVG">
+		<sqlName>COORD_ACT_LIFETIME_AVG</sqlName>
+		<title>Coord Act Lifetime Avg</title>
+		<type>n</type>
+	</column>
+	<column name="COORD_ACT_LIFETIME_STDDEV">
+		<sqlName>COORD_ACT_LIFETIME_STDDEV</sqlName>
+		<title>Coord Act Lifetime Stddev</title>
+		<type>n</type>
+	</column>
+	<column name="COORD_ACT_EXEC_TIME_AVG">
+		<sqlName>COORD_ACT_EXEC_TIME_AVG</sqlName>
+		<title>Coord Act Exec Time Avg</title>
+		<type>n</type>
+	</column>
+	<column name="COORD_ACT_EXEC_TIME_STDDEV">
+		<sqlName>COORD_ACT_EXEC_TIME_STDDEV</sqlName>
+		<title>Coord Act Exec Time Stddev</title>
+		<type>n</type>
+	</column>
+	<column name="COORD_ACT_QUEUE_TIME_AVG">
+		<sqlName>COORD_ACT_QUEUE_TIME_AVG</sqlName>
+		<title>Coord Act Queue Time Avg</title>
+		<type>n</type>
+	</column>
+	<column name="COORD_ACT_QUEUE_TIME_STDDEV">
+		<sqlName>COORD_ACT_QUEUE_TIME_STDDEV</sqlName>
+		<title>Coord Act Queue Time Stddev</title>
+		<type>n</type>
+	</column>
+	<column name="NUM_REQUESTS_ACTIVE">
+		<sqlName>NUM_REQUESTS_ACTIVE</sqlName>
+		<title>Num Requests Active</title>
+		<type>n</type>
+	</column>
+	<column name="NUM_REQUESTS_TOTAL">
+		<sqlName>NUM_REQUESTS_TOTAL</sqlName>
+		<title>Num Requests Total</title>
+		<type>n</type>
+	</column>
+	<column name="REQUEST_EXEC_TIME_AVG">
+		<sqlName>REQUEST_EXEC_TIME_AVG</sqlName>
+		<title>Request Exec Time Avg</title>
+		<type>n</type>
+	</column>
+	<column name="REQUEST_EXEC_TIME_STDDEV">
+		<sqlName>REQUEST_EXEC_TIME_STDDEV</sqlName>
+		<title>Request Exec Time Stddev</title>
+		<type>n</type>
+	</column>
+	<column name="REQUEST_EXEC_TIME_TOTAL">
+		<sqlName>REQUEST_EXEC_TIME_TOTAL</sqlName>
+		<title>Request Exec Time Total</title>
+		<type>n</type>
+	</column>
+</table>
+	

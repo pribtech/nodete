@@ -1,0 +1,75 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2009 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<command name="listHistory" title="list history">
+<![CDATA[
+>>-LIST HISTORY--+-------------------+-------------------------->
+                 +-BACKUP------------+   
+                 +-ROLLFORWARD-------+   
+                 +-DROPPED TABLE-----+   
+                 +-LOAD--------------+   
+                 +-CREATE TABLESPACE-+   
+                 +-ALTER TABLESPACE--+   
+                 +-RENAME TABLESPACE-+   
+                 +-REORG-------------+   
+                 '-ARCHIVE LOG-------'   
+
+>--+-ALL--------------------------------+----------------------->
+   +-SINCE--timestamp-------------------+   
+   '-CONTAINING--+-schema.object_name-+-'   
+                 '-object_name--------'     
+
+>--FOR--+----------+--database-alias---------------------------><
+        +-DATABASE-+                   
+        '-DB-------'                   
+
+]]>
+	<text>LIST HISTORY</text>
+	<select>
+		<option default="true"><note>all</note></option> 
+		<option><text>BACKUP</text></option> 
+		<option><text>ROLLFORWARD</text></option> 
+		<option><text>DROPPED TABLE</text></option> 
+		<option><text>LOAD</text></option> 
+		<option><text>CREATE TABLESPACE</text></option> 
+		<option><text>ALTER TABLESPACE</text></option> 
+		<option><text>RENAME TABLESPACE</text></option> 
+		<option><text>REORG</text></option> 
+		<option><text>ARCHIVE LOG</text></option> 
+	</select>
+	<br statement='false'/>
+	<select>
+		<option default="true"><text>ALL</text></option> 
+		<option><text>SINCE</text><input size="22" title="timestamp"/></option> 
+		<option>
+			<text>CONTAINING</text>
+			<select>
+				<option default="true"><input size="32" title="schema.object_name"/></option> 
+				<option><input size="32" title="object_name"/></option> 
+			</select>
+		</option> 
+	</select>
+
+	<text>FOR</text>
+	<select>
+		<option default="true"><note>DATABASE</note></option> 
+		<option><text>DB</text></option> 
+		<option><text>DATABASE</text></option> 
+	</select>
+	<clauseReference name="database-name"/>
+</command>
+        

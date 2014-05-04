@@ -1,0 +1,162 @@
+<!--
+  Peter Prib, Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2012 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<table name="sqlWorkAreaActive">
+	<sqlName>V$SQL_WORKAREA_ACTIVE</sqlName>
+	<singularName>SQL Work Area Active</singularName>
+	<pluralName>SQL Work Area Active</pluralName>
+	<inlinequery>
+	<description></description>
+	<output>
+		<type name="DDL" destination="" title="" generator=""/>
+	</output>
+   	<disable_edit/>	<orderBy name="SQL_ID" direction="A"/>
+	<displayColumns>
+		<col type="column" name="SQL_ID"/>
+		<col type="column" name="SQL_EXEC_START"/>
+		<col type="column" name="SQL_EXEC_ID"/>
+		<col type="column" name="WORKAREA_ADDRESS"/>
+		<col type="column" name="OPERATION_TYPE"/>
+		<col type="column" name="OPERATION_ID"/>
+		<col type="column" name="POLICY"/>
+		<col type="column" name="SID"/>
+		<col type="column" name="QCINST_ID"/>
+		<col type="column" name="QCSID"/>
+		<col type="column" name="ACTIVE_TIME"/>
+		<col type="column" name="WORK_AREA_SIZE"/>
+		<col type="column" name="EXPECTED_SIZE"/>
+		<col type="column" name="ACTUAL_MEM_USED"/>
+		<col type="column" name="MAX_MEM_USED"/>
+		<col type="column" name="NUMBER_PASSES"/>
+		<col type="column" name="TEMPSEG_SIZE"/>
+		<col type="column" name="TABLESPACE"/>
+		<col type="column" name="SEGRFNO#"/>
+		<col type="column" name="SEGBLK#"/>
+	</displayColumns>
+	<column name="SQL_HASH_VALUE">
+		<sqlName>SQL_HASH_VALUE</sqlName>
+		<title>Sql Hash Value</title>
+		<type>n</type>
+	</column>
+	<column name="SQL_ID">
+		<sqlName>SQL_ID</sqlName>
+		<title>SQL Id</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="SQL_EXEC_START">
+		<sqlName>SQL_EXEC_START</sqlName>
+		<title>Sql Exec Start</title>
+		<type>n</type>
+		<drillEnable/>
+	</column>
+	<column name="SQL_EXEC_ID">
+		<sqlName>SQL_EXEC_ID</sqlName>
+		<title>SSQL Exec Id</title>
+		<type>n</type>
+	</column>
+	<column name="WORKAREA_ADDRESS">
+		<sqlName>WORKAREA_ADDRESS</sqlName>
+		<title>Workarea Address</title>
+		<type>n</type>
+	</column>
+	<column name="OPERATION_TYPE">
+		<sqlName>OPERATION_TYPE</sqlName>
+		<title>Operation Type</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="OPERATION_ID">
+		<sqlName>OPERATION_ID</sqlName>
+		<title>Operation Id</title>
+		<type>n</type>
+	</column>
+	<column name="POLICY">
+		<sqlName>POLICY</sqlName>
+		<title>Policy</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="SID">
+		<sqlName>SID</sqlName>
+		<title>SID</title>
+		<type>n</type>
+	</column>
+	<column name="QCINST_ID">
+		<sqlName>QCINST_ID</sqlName>
+		<title>QCINST Id.</title>
+		<type>n</type>
+	</column>
+	<column name="QCSID">
+		<sqlName>QCSID</sqlName>
+		<title>Qcsid</title>
+		<type>n</type>
+	</column>
+	<column name="ACTIVE_TIME">
+		<sqlName>ACTIVE_TIME</sqlName>
+		<title>Active Time</title>
+		<type>n</type>
+	</column>
+	<column name="WORK_AREA_SIZE">
+		<sqlName>WORK_AREA_SIZE</sqlName>
+		<title>Work Area Size</title>
+		<type>n</type>
+		<formatNumber toAbbreviated="4"/> 
+	</column>
+	<column name="EXPECTED_SIZE">
+		<sqlName>EXPECTED_SIZE</sqlName>
+		<title>Expected Size</title>
+		<type>n</type>
+		<formatNumber toAbbreviated="4"/> 
+	</column>
+	<column name="ACTUAL_MEM_USED">
+		<sqlName>ACTUAL_MEM_USED</sqlName>
+		<title>Actual Memory Used</title>
+		<type>n</type>
+		<formatNumber toAbbreviated="4"/> 
+	</column>
+	<column name="MAX_MEM_USED">
+		<sqlName>MAX_MEM_USED</sqlName>
+		<title>Max Memory Used</title>
+		<type>n</type>
+		<formatNumber toAbbreviated="4"/> 
+	</column>
+	<column name="NUMBER_PASSES">
+		<sqlName>NUMBER_PASSES</sqlName>
+		<title>No. Passes</title>
+		<type>n</type>
+	</column>
+	<column name="TEMPSEG_SIZE">
+		<sqlName>TEMPSEG_SIZE</sqlName>
+		<title>Temp Seg. Size</title>
+		<type>n</type>
+	</column>
+	<column name="TABLESPACE">
+		<sqlName>TABLESPACE</sqlName>
+		<title>Tablespace</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="SEGRFNO#">
+		<sqlName>SEGRFNO#</sqlName>
+		<title>Seg. Ref. No.</title>
+		<type>n</type>
+	</column>
+	<column name="SEGBLK#">
+		<sqlName>SEGBLK#</sqlName>
+		<title>Seg. block No.</title>
+		<type>n</type>
+	</column>
+</table>

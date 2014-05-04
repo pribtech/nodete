@@ -1,0 +1,233 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2009-2011 All rights reserved.
+  
+  Updated by Author: Peter Kohlmann
+  Copyright IBM Canada Ltd 2008 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+ -->
+<table name="monWorkload">
+	<sql_name>monTest</sql_name>
+	<singular_name>Workload Metrics</singular_name>
+	<plural_name>Workload Metrics</plural_name>
+	<messages><SQL0440N>Available DB2 version 9.7 and above</SQL0440N></messages>
+	<inlinequery>
+<![CDATA[
+SELECT * FROM TABLE(MON_GET_SERVICE_SUBCLASS('','',-2)) AS t
+]]>
+	</inlinequery>
+	<messages><SQL0551N>Security issue. Please install "Monitoring Switches/Security" in Tools -> Installed Components</SQL0551N></messages>
+	<description>This pane give the details of time spent in database</description>
+	<order_by_index/>
+	<history depth="10" time="SAMPLE_TS"/>
+	<display_columns>
+		<col type="column" name="SERVICE_SUPERCLASS_NAME"/>
+		<col type="column" name="TOTAL_APP_RQST_TIME"/>
+		<col type="column" name="TOTAL_RQST_TIME"/>
+		<col type="column" name="TOTAL_WAIT_TIME"/>
+		<col type="column" name="AGENT_WAIT_TIME"/>
+		<col type="column" name="POOL_READ_TIME"/>
+		<col type="column" name="POOL_WRITE_TIME"/>
+		<col type="column" name="CLIENT_IDLE_WAIT_TIME"/>
+		<col type="column" name="DIRECT_READ_TIME"/>
+		<col type="column" name="DIRECT_WRITE_TIME"/>
+		<col type="column" name="FCM_RECV_WAIT_TIME"/>
+		<col type="column" name="FCM_SEND_WAIT_TIME"/>
+		<col type="column" name="IPC_RECV_WAIT_TIME"/>
+		<col type="column" name="IPC_SEND_WAIT_TIME"/>
+		<col type="column" name="LOCK_WAIT_TIME"/>
+		<col type="column" name="LOG_BUFFER_WAIT_TIME"/>
+		<col type="column" name="LOG_DISK_WAIT_TIME"/>
+		<col type="column" name="TCPIP_RECV_WAIT_TIME"/>
+		<col type="column" name="TCPIP_SEND_WAIT_TIME"/>
+		<col type="column" name="WLM_QUEUE_TIME_TOTAL"/>
+		<col type="column" name="TOTAL_SECTION_SORT_TIME"/>
+		<col type="column" name="TOTAL_SECTION_SORT_PROC_TIME"/>
+	</display_columns>
+	<display_columns name="delta">
+		<col type="column" name="SERVICE_SUPERCLASS_NAME"/>
+		<col type="column" name="TOTAL_APP_RQST_TIME" transform="delta"/>
+		<col type="column" name="TOTAL_RQST_TIME" transform="delta"/>
+		<col type="column" name="TOTAL_WAIT_TIME" transform="delta"/>
+		<col type="column" name="AGENT_WAIT_TIME" transform="delta"/>
+		<col type="column" name="POOL_READ_TIME" transform="delta"/>
+		<col type="column" name="POOL_WRITE_TIME" transform="delta"/>
+		<col type="column" name="CLIENT_IDLE_WAIT_TIME" transform="delta"/>
+		<col type="column" name="DIRECT_READ_TIME" transform="delta"/>
+		<col type="column" name="DIRECT_WRITE_TIME" transform="delta"/>
+		<col type="column" name="FCM_RECV_WAIT_TIME" transform="delta"/>
+		<col type="column" name="FCM_SEND_WAIT_TIME" transform="delta"/>
+		<col type="column" name="IPC_RECV_WAIT_TIME" transform="delta"/>
+		<col type="column" name="IPC_SEND_WAIT_TIME" transform="delta"/>
+		<col type="column" name="LOCK_WAIT_TIME" transform="delta"/>
+		<col type="column" name="LOG_BUFFER_WAIT_TIME" transform="delta"/>
+		<col type="column" name="LOG_DISK_WAIT_TIME" transform="delta"/>
+		<col type="column" name="TCPIP_RECV_WAIT_TIME" transform="delta"/>
+		<col type="column" name="TCPIP_SEND_WAIT_TIME" transform="delta"/>
+		<col type="column" name="WLM_QUEUE_TIME_TOTAL" transform="delta"/>
+		<col type="column" name="TOTAL_SECTION_SORT_TIME" transform="delta"/>
+		<col type="column" name="TOTAL_SECTION_SORT_PROC_TIME" transform="delta"/>
+	</display_columns>
+	<column name="SAMPLE_TS">
+		<generated>timestamp</generated>
+		<title>Time</title>
+		<type>s</type>
+	</column>
+	<column name="SERVICE_SUPERCLASS_NAME">
+		<sql_name>SERVICE_SUPERCLASS_NAME</sql_name>
+		<title>Service Class</title>
+		<type>n</type>
+		<primaryKey/>
+	</column>
+	<column name="AGENT_WAIT_TIME" accumulation="y">
+		<sql_name>AGENT_WAIT_TIME</sql_name>
+		<title>Agent Wait</title>
+		<type>n</type>
+		<primaryKey/>
+	</column>
+	<column name="POOL_READ_TIME" accumulation="y">
+		<sql_name>POOL_READ_TIME</sql_name>
+		<title>Pool Read</title>
+		<type>n</type>
+		<reference name="instance">
+			<reftype>table</reftype>
+			<refvalue>Monitor/monWorkLoad</refvalue>
+			<icon>images/sout.gif</icon>
+			<ref foreign_column_name="WORKLOAD_ID">
+				<local_column_name>WORKLOAD_ID</local_column_name>
+			</ref>
+		</reference>
+		<column_mask_file>masks/skipNulls.xml</column_mask_file>
+	</column>
+	<column name="POOL_WRITE_TIME" accumulation="y">
+		<sql_name>POOL_WRITE_TIME</sql_name>
+		<title>Pool Write</title>
+		<type>n</type>
+		<column_mask_file>masks/skipNulls.xml</column_mask_file>
+	</column>
+	<column name="CLIENT_IDLE_WAIT_TIME" accumulation="y">
+		<sql_name>CLIENT_IDLE_WAIT_TIME</sql_name>
+		<title>Client Idle Wait</title>
+		<type>n</type>
+		<column_mask_file>masks/skipNulls.xml</column_mask_file>
+	</column>
+	<column name="DIRECT_READ_TIME" accumulation="y">
+		<sql_name>DIRECT_READ_TIME</sql_name>
+		<title>Direct Read</title>
+		<type>n</type>
+		<column_mask_file>masks/skipNulls.xml</column_mask_file>
+	</column>
+	<column name="LOCK_WAIT_TIME" accumulation="y">
+		<sql_name>LOCK_WAIT_TIME</sql_name>
+		<title>Lock Wait</title>
+		<type>n</type>
+		<column_mask_file>masks/skipNulls.xml</column_mask_file>
+	</column>
+	<column name="DIRECT_WRITE_TIME" accumulation="y">
+		<sql_name>DIRECT_WRITE_TIME</sql_name>
+		<title>Direct Write</title>
+		<type>n</type>
+		<column_mask_file>masks/skipNulls.xml</column_mask_file>
+	</column>
+	<column name="TOTAL_WAIT_TIME" accumulation="y">
+		<sql_name>TOTAL_WAIT_TIME</sql_name>
+		<title>Total Wait</title>
+		<type>n</type>
+		<column_mask_file>masks/skipNulls.xml</column_mask_file>
+	</column>
+	<column name="FCM_RECV_WAIT_TIME" accumulation="y">
+		<sql_name>FCM_RECV_WAIT_TIME</sql_name>
+		<title>FCM Receive Wait</title>
+		<type>n</type>
+		<column_mask_file>masks/skipNulls.xml</column_mask_file>
+	</column>
+	<column name="FCM_SEND_WAIT_TIME" accumulation="y">
+		<sql_name>FCM_SEND_WAIT_TIME</sql_name>
+		<title>FCM Send Wait</title>
+		<type>n</type>
+		<column_mask_file>masks/skipNulls.xml</column_mask_file>
+	</column>
+	<column name="IPC_RECV_WAIT_TIME" accumulation="y">
+		<sql_name>IPC_RECV_WAIT_TIME</sql_name>
+		<title>IPC Receive Wait</title>
+		<type>n</type>
+		<column_mask_file>masks/skipNulls.xml</column_mask_file>
+	</column>
+	<column name="IPC_SEND_WAIT_TIME" accumulation="y">
+		<sql_name>IPC_SEND_WAIT_TIME</sql_name>
+		<title>IPC Send Wait</title>
+		<type>n</type>
+	</column>
+	<column name="LOG_BUFFER_WAIT_TIME" accumulation="y">
+		<sql_name>LOG_BUFFER_WAIT_TIME</sql_name>
+		<title>Log Buffer Wait</title>
+		<type>n</type>
+		<column_mask_file>masks/skipNulls.xml</column_mask_file>
+	</column>
+	<column name="LOG_DISK_WAIT_TIME" accumulation="y">
+		<sql_name>LOG_DISK_WAIT_TIME</sql_name>
+		<title>Log Disk Wait</title>
+		<type>n</type>
+		<column_mask_file>masks/skipNulls.xml</column_mask_file>
+	</column>
+	<column name="TCPIP_RECV_WAIT_TIME" accumulation="y">
+		<sql_name>TCPIP_RECV_WAIT_TIME</sql_name>
+		<title>TCP/IP Receive Wait</title>
+		<type>n</type>
+		<column_mask_file>masks/skipNulls.xml</column_mask_file>
+	</column>
+	<column name="TCPIP_SEND_WAIT_TIME" accumulation="y">
+		<sql_name>TCPIP_SEND_WAIT_TIME</sql_name>
+		<title>TCP/IP Send Wait</title>
+		<type>n</type>
+		<column_mask_file>masks/skipNulls.xml</column_mask_file>
+	</column>
+	<column name="TOTAL_APP_RQST_TIME" accumulation="y">
+		<sql_name>TOTAL_APP_RQST_TIME</sql_name>
+		<title>Total Appl. Request</title>
+		<type>n</type>
+		<column_mask_file>masks/skipNulls.xml</column_mask_file>
+	</column>
+	<column name="TOTAL_RQST_TIME" accumulation="y">
+		<sql_name>TOTAL_RQST_TIME</sql_name>
+		<title>Total Request</title>
+		<type>n</type>
+		<column_mask_file>masks/skipNulls.xml</column_mask_file>
+	</column>
+	<column name="WLM_QUEUE_TIME_TOTAL" accumulation="y">
+		<sql_name>WLM_QUEUE_TIME_TOTAL</sql_name>
+		<title>WLM Queue Total</title>
+		<type>n</type>
+		<column_mask_file>masks/skipNulls.xml</column_mask_file>
+	</column>
+	<column name="TOTAL_WAIT_TIME" accumulation="y">
+		<sql_name>TOTAL_WAIT_TIME</sql_name>
+		<title>Total Wait</title>
+		<type>n</type>
+		<column_mask_file>masks/skipNulls.xml</column_mask_file>
+	</column>
+	<column name="TOTAL_SECTION_SORT_TIME" accumulation="y">
+		<sql_name>TOTAL_SECTION_SORT_TIME</sql_name>
+		<title>Total Section Sort</title>
+		<type>n</type>
+		<column_mask_file>masks/skipNulls.xml</column_mask_file>
+	</column>
+	<column name="TOTAL_SECTION_SORT_PROC_TIME" accumulation="y">
+		<sql_name>TOTAL_SECTION_SORT_PROC_TIME</sql_name>
+		<title>Total Section Sort Proc.</title>
+		<type>n</type>
+		<column_mask_file>masks/skipNulls.xml</column_mask_file>
+	</column>
+</table>
+ 	  	 

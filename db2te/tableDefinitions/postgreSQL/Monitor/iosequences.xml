@@ -1,0 +1,67 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2013 All rights reserved.
+  
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+<table name="statsIOSequences">
+	<sqlName>pg_statio_all_sequences</sqlName>
+	<singularName>Stats IO Sequences</singularName>
+	<pluralName>Stats IO Sequences</pluralName>
+	<description>
+	For each sequence object in the current database, the sequence OID, schema and sequence name, numbers of disk blocks read and buffer hits in that sequence.
+	</description>
+	<orderBy name="blks_read" direction="D"/>
+	<disableEdit/>
+	<output>
+		<type name="DDL" destination="" title="" generator=""/>
+	</output>
+	<displayColumns>
+		<col type="column" name="relid"/>
+		<col type="column" name="schemaname"/>
+		<col type="column" name="relname"/>
+		<col type="column" name="blks_read"/>
+		<col type="column" name="blks_hit"/>
+	</displayColumns>
+	<history depth="10" time="SAMPLE_TS"/>
+	<column name="SAMPLE_TS">
+		<generated>timestamp</generated>
+		<title>Time</title>
+		<type>s</type>
+	</column>
+	<column name="relid">
+		<sqlName>relid</sqlName>
+		<title>Relid</title>
+		<type>n</type>
+		<primaryKey/>
+	</column>
+	<column name="schemaname">
+		<sqlName>schemaname</sqlName>
+		<title>Schema</title>
+	</column>
+	<column name="relname">
+		<sqlName>relname</sqlName>
+		<title>Relname</title>
+	</column>
+	<column name="blks_read" accumulation="y">
+		<sqlName>blks_read</sqlName>
+		<title>Reads</title>
+		<type>n</type>
+	</column>
+	<column name="blks_hit" accumulation="y">
+		<sqlName>blks_hit</sqlName>
+		<title>Hits</title>
+		<type>n</type>
+	</column>
+</table>

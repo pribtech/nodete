@@ -1,0 +1,114 @@
+<table name="SYSCAT.PACKAGEAUTH">
+    <sql_name>SYSCAT.PACKAGEAUTH</sql_name>
+    <singular_name>Package Privilege</singular_name>
+    <plural_name>Package Privileges</plural_name>
+     <description>
+    	Each line is a package
+		&lt;a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.admin.sec.doc/doc/c0005478.html?noframes=true');"&gt;privilege&lt;/a&gt;
+		granted to a user, group or role.		
+		This list is generated from the &lt;a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.sql.ref.doc/doc/r0001051.html?noframes=true');"&gt;SYSCAT.PACKAGEAUTH&lt;/a&gt; view.
+    </description>
+    <rows_per_page>50</rows_per_page>
+    <order_by_index></order_by_index>
+    <display_columns>
+        <col type="column" name="pkgschema"></col>
+        <col type="column" name="pkgname"></col>
+   	    <col type="reference" name="granteelink"/>
+		<col type="column" name="grantee"/>
+		<col type="column" name="granteetype"/>
+		<col type="reference" name="grantorlink"/>			
+		<col type="column" name="grantor"/>
+		<!--<col type="column" name="grantortype"/>-->
+		<col type="column" name="controlauth"></col>
+        <col type="column" name="bindauth"></col>
+        <col type="column" name="executeauth"></col>
+    </display_columns>
+	<disable_edit/>
+		<order_by_index name="pkgschema" direction="A"/>    
+		<order_by_index name="pkgname" direction="A"/>    
+		<reference name="granteelink">
+			<title>Grantee</title>
+			<reftype>displayRow</reftype>
+			<refvalue>Authority/authids</refvalue>
+			<icon>images/icon-user.gif</icon>						
+			<ref foreign_column_name="authid">
+				<local_column_name>grantee</local_column_name>
+			</ref>
+		</reference>			
+		<reference name="grantorlink">
+			<title>Grantor</title>
+			<reftype>displayRow</reftype>
+			<refvalue>Authority/authids</refvalue>
+			<icon>images/icon-user.gif</icon>						
+			<ref foreign_column_name="authid">
+				<local_column_name>grantor</local_column_name>
+			</ref>
+		</reference>			
+    <column name="grantor">
+        <c_sql_name>GRANTOR</c_sql_name>
+        <c_title>Grantor</c_title>
+        <c_presentation>s</c_presentation>
+        <c_drill>y</c_drill>
+    </column>
+    <!--<column name="grantortype">
+        <c_sql_name>GRANTORTYPE</c_sql_name>
+        <c_title>Type</c_title>
+        <c_presentation>s</c_presentation>
+        <c_drill>y</c_drill>
+	   	  <c_column_mask>
+				  <value_mask value="S"><mask>System</mask></value_mask>
+				  <value_mask value="U"><mask>User</mask></value_mask>
+	   	  </c_column_mask>						                
+    </column>-->
+    <column name="grantee">
+        <c_sql_name>GRANTEE</c_sql_name>
+        <c_title>Grantee</c_title>
+        <c_presentation>s</c_presentation>
+        <c_drill>y</c_drill>
+    </column>
+    <column name="granteetype">
+        <c_sql_name>GRANTEETYPE</c_sql_name>
+        <c_title>Type</c_title>
+        <c_presentation>s</c_presentation>
+        <c_drill>y</c_drill>
+	   	  <c_column_mask>
+				  <value_mask value="G"><mask>Group</mask></value_mask>
+				  <value_mask value="R"><mask>Role</mask></value_mask>
+				  <value_mask value="U"><mask>User</mask></value_mask>
+	   	  </c_column_mask>						                
+    </column>
+    <column name="pkgschema">
+        <c_sql_name>PKGSCHEMA</c_sql_name>
+        <c_title>Schema</c_title>
+        <c_presentation>s</c_presentation>
+        <c_drill>y</c_drill>
+		<c_prefill>
+			<table>schema</table>
+			<column>SCHEMANAME</column>
+		</c_prefill>                        
+    </column>
+    <column name="pkgname">
+        <c_sql_name>PKGNAME</c_sql_name>
+        <c_title>Package</c_title>
+        <c_presentation>s</c_presentation>
+        <c_drill>y</c_drill>
+    </column>
+    <column name="controlauth">
+        <c_sql_name>CONTROLAUTH</c_sql_name>
+        <c_title>Control</c_title>
+        <c_presentation>s</c_presentation>
+        <c_drill>y</c_drill>
+    </column>
+    <column name="bindauth">
+        <c_sql_name>BINDAUTH</c_sql_name>
+        <c_title>Bind</c_title>
+        <c_presentation>s</c_presentation>
+        <c_drill>y</c_drill>
+    </column>
+    <column name="executeauth">
+        <c_sql_name>EXECUTEAUTH</c_sql_name>
+        <c_title>Execute</c_title>
+        <c_presentation>s</c_presentation>
+        <c_drill>y</c_drill>
+    </column>
+</table>

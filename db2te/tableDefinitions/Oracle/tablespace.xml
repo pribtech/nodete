@@ -1,0 +1,203 @@
+<!--
+  Peter Prib, Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2011 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<table name="tabpespace">
+	<sql_name>ts$</sql_name>
+	<singular_name>Tablespace</singular_name>
+	<plural_name>Tablespaces</plural_name>
+	<description></description>
+	<order_by_index></order_by_index>
+	<display_columns>
+		<col type="column" name="TS#"/>
+		<col type="column" name="NAME"/>
+		<col type="reference" name="tables"/>
+		<col type="column" name="OWNER#"/>
+		<col type="column" name="ONLINE$"/>
+		<col type="column" name="CONTENTS$"/>
+		<col type="column" name="UNDOFILE#"/>
+		<col type="column" name="UNDOBLOCK#"/>
+		<col type="column" name="BLOCKSIZE"/>
+		<col type="column" name="INC#"/>
+		<col type="column" name="SCNWRP"/>
+		<col type="column" name="SCNBAS"/>
+		<col type="column" name="DFLMINEXT"/>
+		<col type="column" name="DFLMAXEXT"/>
+		<col type="column" name="DFLINIT"/>
+		<col type="column" name="DFLINCR"/>
+		<col type="column" name="DFLMINLEN"/>
+		<col type="column" name="DFLEXTPCT"/>
+		<col type="column" name="DFLOGGING"/>
+		<col type="column" name="AFFSTRENGTH"/>
+		<col type="column" name="BITMAPPED"/>
+		<col type="column" name="PLUGGED"/>
+		<col type="column" name="DIRECTALLOWED"/>
+		<col type="column" name="FLAGS"/>
+		<col type="column" name="PITRSCNWRP"/>
+		<col type="column" name="PITRSCNBAS"/>
+		<col type="column" name="OWNERINSTANCE"/>
+		<col type="column" name="BACKUPOWNER"/>
+		<col type="column" name="GROUPNAME"/>
+	</display_columns>
+	<reference name="tables">
+		<title>Tables</title>
+		<reftype>table</reftype>
+		<refvalue>Oracle/table</refvalue>
+		<icon>images/icon-column.gif</icon>
+		<ref foreign_column_name="TABLESPACE_NAME">
+			<local_column_name>NAME</local_column_name>
+		</ref>
+	</reference>
+	<column name="TS#">
+		<sql_name>TS#</sql_name>
+		<title>TS No.</title>
+		<type>n</type>
+	</column>
+	<column name="NAME">
+		<sql_name>NAME</sql_name>
+		<title>Name</title>
+		<type>s</type>
+		<primaryKey/>
+	</column>
+	<column name="OWNER#">
+		<sql_name>OWNER#</sql_name>
+		<title>Owner No.</title>
+		<type>n</type>
+	</column>
+	<column name="ONLINE$">
+		<sql_name>ONLINE$</sql_name>
+		<title>Online$</title>
+		<type>n</type>
+	</column>
+	<column name="CONTENTS$">
+		<sql_name>CONTENTS$</sql_name>
+		<title>Contents$</title>
+		<type>n</type>
+	</column>
+	<column name="UNDOFILE#">
+		<sql_name>UNDOFILE#</sql_name>
+		<title>Undo File No.</title>
+		<type>n</type>
+	</column>
+	<column name="UNDOBLOCK#">
+		<sql_name>UNDOBLOCK#</sql_name>
+		<title>Undo Block No.</title>
+		<type>n</type>
+	</column>
+	<column name="BLOCKSIZE">
+		<sql_name>BLOCKSIZE</sql_name>
+		<title>Blocksize</title>
+		<type>n</type>
+	</column>
+	<column name="INC#">
+		<sql_name>INC#</sql_name>
+		<title>INC No.</title>
+		<type>n</type>
+	</column>
+	<column name="SCNWRP">
+		<sql_name>SCNWRP</sql_name>
+		<title>SCNWRP</title>
+		<type>n</type>
+	</column>
+	<column name="SCNBAS">
+		<sql_name>SCNBAS</sql_name>
+		<title>SCNBAS</title>
+		<type>n</type>
+	</column>
+	<column name="DFLMINEXT">
+		<sql_name>DFLMINEXT</sql_name>
+		<title>DFLMINEXT</title>
+		<type>n</type>
+	</column>
+	<column name="DFLMAXEXT">
+		<sql_name>DFLMAXEXT</sql_name>
+		<title>DFLMAXEXT</title>
+		<type>n</type>
+	</column>
+	<column name="DFLINIT">
+		<sql_name>DFLINIT</sql_name>
+		<title>DFLINIT</title>
+		<type>n</type>
+	</column>
+	<column name="DFLINCR">
+		<sql_name>DFLINCR</sql_name>
+		<title>DFLINCR</title>
+		<type>n</type>
+	</column>
+	<column name="DFLMINLEN">
+		<sql_name>DFLMINLEN</sql_name>
+		<title>DFLMINLEN</title>
+		<type>n</type>
+	</column>
+	<column name="DFLEXTPCT">
+		<sql_name>DFLEXTPCT</sql_name>
+		<title>DFLEXT %</title>
+		<type>n</type>
+	</column>
+	<column name="DFLOGGING">
+		<sql_name>DFLOGGING</sql_name>
+		<title>DF Logging</title>
+		<type>n</type>
+	</column>
+	<column name="AFFSTRENGTH">
+		<sql_name>AFFSTRENGTH</sql_name>
+		<title>Affstrength</title>
+		<type>n</type>
+	</column>
+	<column name="BITMAPPED">
+		<sql_name>BITMAPPED</sql_name>
+		<title>Bit Mapped</title>
+		<type>n</type>
+	</column>
+	<column name="PLUGGED">
+		<sql_name>PLUGGED</sql_name>
+		<title>Plugged</title>
+		<type>n</type>
+	</column>
+	<column name="DIRECTALLOWED">
+		<sql_name>DIRECTALLOWED</sql_name>
+		<title>Direct Allowed</title>
+		<type>n</type>
+	</column>
+	<column name="FLAGS">
+		<sql_name>FLAGS</sql_name>
+		<title>Flags</title>
+		<type>n</type>
+	</column>
+	<column name="PITRSCNWRP">
+		<sql_name>PITRSCNWRP</sql_name>
+		<title>PITRSCNWRP</title>
+		<type>n</type>
+	</column>
+	<column name="PITRSCNBAS">
+		<sql_name>PITRSCNBAS</sql_name>
+		<title>PITRSCNBAS</title>
+		<type>n</type>
+	</column>
+	<column name="OWNERINSTANCE">
+		<sql_name>OWNERINSTANCE</sql_name>
+		<title>Owner Instance</title>
+		<type>s</type>
+	</column>
+	<column name="BACKUPOWNER">
+		<sql_name>BACKUPOWNER</sql_name>
+		<title>Backup Owner</title>
+		<type>s</type>
+	</column>
+	<column name="GROUPNAME">
+		<sql_name>GROUPNAME</sql_name>
+		<title>Group Name</title>
+		<type>s</type>
+	</column>
+</table>

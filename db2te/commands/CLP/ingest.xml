@@ -1,0 +1,985 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2014 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<command name="ingest" title="Ingest">
+<![CDATA[
+>>-INGEST--+------+--| from-clause |--| format-clause |--------->
+           '-DATA-'                                       
+
+>--| options |--| SQL-statement |------------------------------><
+
+]]>
+	<text>INGEST</text>
+	<select>
+		<option default="true"></option>
+		<option><text>DATA</text></option>
+	</select>
+	<clauseReference name="from-clause"/>
+	<clauseReference name="format-clause"/>
+	<clauseReference name="options"/>
+	<clauseReference name="SQL-statement"/>
+
+	<clause name="from-clause" title="From Clause">
+<![CDATA[
+                 .-,---------.     
+                 V           |     
+|--FROM--+-FILE----file-name-+-+--------------------------------|
+         |       .-,---------. |   
+         |       V           | |   
+         '-PIPE----pipe-name-+-'   
+]]>
+		<text>FROM</text>
+		<select>
+			<option default="true"><text>FILE</text><repeatable><clauseReference name="file-name"/></repeatable></option>
+			<option><text>PIPE</text><repeatable><clauseReference name="pipe-name"/></repeatable></option>
+		</select>
+	</clause>	
+	<clause name="format-clause" title="Format Clause">
+<![CDATA[
+|--FORMAT--| format-definition |--------------------------------|
+]]>
+		<text>FORMAT</text>
+		<clauseReference name="format-definition"/>
+	</clause>	
+	<clause name="options" title="Options">
+<![CDATA[
+|--+----------------------------+--+---------------------+------>
+   '-| error-handling options |-'  '-MESSAGES--file-name-'   
+
+>--+------------------------------------+-----------------------|
+   |          .-NEW--+--------+-------. |   
+   |          |      '-job-ID-'       | |   
+   '-RESTART--+-OFF-------------------+-'   
+              '-+-CONTINUE--+--job-ID-'     
+                '-TERMINATE-'               
+
+]]>
+		<select>
+			<option default="true"></option>
+			<option><clauseReference name="error-handling-options"/></option>
+		</select>
+		<select>
+			<option default="true"></option>
+			<option><text>MESSAGES</text><clauseReference name="file-name"/></option>
+		</select>
+		<select>
+			<option default="true"></option>
+			<option>
+				<text>RESTART</text>
+				<select>
+					<option>
+						<text>NEW</text>
+						<select>
+							<option default="true"></option>
+							<option><clauseReference name="job-id"/></option>
+						</select>
+					</option>
+					<option default="true">OFF</option>
+					<option>
+						<select>
+							<option default="true"><text>CONTINUE</text></option>
+							<option><text>TERMINATE</text></option>
+						</select>
+						<clauseReference name="job-id"/>
+					</option>
+				</select>
+			</option>
+		</select>
+	</clause>	
+	<clause name="error-handling-options" title="Error Handling Options">
+<![CDATA[
+|--+-------------------------+---------------------------------->
+   '-+-DUMPFILE-+--file-name-'   
+     '-BADFILE--'                
+
+>--+-----------------------------+--+-----------------+---------|
+   '-EXCEPTION TABLE--table-name-'  '-WARNINGCOUNT--n-'   
+]]>
+		<select>
+			<option default="true"></option>
+			<option>
+				<select>
+					<option default="true"><text>DUMPFILE</text></option>
+					<option><text>BADFILE</text></option>
+				</select>				
+				<clauseReference name="file-name"/>
+			</option>
+		</select>
+		<select>
+			<option default="true"></option>
+			<option><text>EXCEPTION TABLE</text><clauseReference name="table-name"/></option>
+		</select>
+		<select>
+			<option default="true"></option>
+			<option><text>WARNINGCOUNT</text><input type="int" size="8"/></option>
+		</select>
+	</clause>	
+	<clause name="SQL-statement" title="SQL Statement">
+<![CDATA[
+|--+-| DELETE-statement |--+------------------------------------|
+   +-| INSERT-statement |--+   
+   +-| MERGE-statement |---+   
+   +-| REPLACE-statement |-+   
+   '-| UPDATE-statement |--'   
+]]>
+		<select>
+			<option default="true"><clauseReference name="DELETE-statement"/></option>
+			<option><clauseReference name="INSERT-statement"/></option>
+			<option><clauseReference name="MERGE-statement"/></option>
+			<option><clauseReference name="REPLACE-statement"/></option>
+			<option><clauseReference name="UPDATE-statement"/></option>
+		</select>
+	</clause>	
+	<clause name="format-definition" title="format-definition">
+<![CDATA[
+|--+-DELIMITED--+----------+-----------+------------------------>
+   |            '-BY--char-'           |   
+   '-POSITIONAL--+-------------------+-'   
+                 '-RECORDLEN--length-'     
+
+>--+-------------------------+---------------------------------->
+   '-INPUT CODEPAGE -integer-'   
+
+>--+-----------------------------+--+----------------+----------|
+   '-+-IMPLICITLYHIDDENINCLUDE-+-'  '-| field-list |-'   
+     '-IMPLICITLYHIDDENMISSING-'                         
+]]>
+		<select>
+			<option default="true">
+				<text>DELIMITED</text>
+				<select>
+					<option default="true"></option>
+					<option><text>BY</text><input type="text" size="1"/></option>
+				</select>
+			</option>
+			<option>
+				<text>POSITIONAL</text>
+				<select>
+					<option default="true"></option>
+					<option><text>RECORDLEN</text><input type="int" size="3"/></option>
+				</select>
+			</option>
+		</select>
+		<select>
+			<option default="true"></option>
+			<option><text>INPUT CODEPAGE</text><input type="int" size="6"/></option>
+		</select>
+		<select>
+			<option default="true"></option>
+			<option><text>IMPLICITLYHIDDENINCLUDE</text></option>
+			<option><text>IMPLICITLYHIDDENMISSING</text></option>
+		</select>
+		<select>
+			<option default="true"></option>
+			<option><clauseReference name="field-list"/></option>
+		</select>
+	</clause>	
+	<clause name="field-list" title="Field List">
+<![CDATA[
+      .-,--------------------.      
+      V                      |      
+|--(----| field-definition |-+--)-------------------------------|
+]]>
+		<text>(</text>
+			<repeatable><clauseReference name="field-definition"/></repeatable>
+		<text>)</text>
+	</clause>	
+	<clause name="field-definition" title="Field Definition">
+<![CDATA[
+|--$field-name--+-----------------------------------+----------->
+                '-POSITION--(--start--+--------+--)-'   
+                                      '-:--end-'        
+
+>--| field-type |--+----------------------------------------+---|
+                   '-DEFAULTIF--+----------------+--=--char-'   
+                                '-(--position--)-'              
+]]>
+		<text spacepad="false">$</text><clauseReference name="field-name"/>
+		<select>
+			<option default="true"></option>
+			<option>
+				<text>POSITION(</text><input type="int" size="3" title="start"/>
+					<select>
+						<option default="true"></option>
+						<option><text>:</text><input type="int" size="3" title="end"/></option>
+					</select>
+				<text>)</text>
+			</option>
+		</select>
+	</clause>	
+	<clause name="field-type" title="Field Type">
+<![CDATA[
+|--+-+-CHARACTER-+--+--------------+--+--------------+--+--------+--+------------------------------+-----------+--|
+   | '-CHAR------'  '-(--length--)-'  '-FOR BIT DATA-'  +-NOTRIM-+  '-OPTIONALLY ENCLOSED BY--char-'           |   
+   |                                                    +-LTRIM--+                                             |   
+   |                                                    +-RTRIM--+                                             |   
+   |                                                    '-TRIM---'                                             |   
+   +-+-DECIMAL-+--+-----------------------------------+--+---------------------------------------------------+-+   
+   | '-DEC-----'  |    .-5,0---------------------.    |  +-PACKED--------------------------------------------+ |   
+   |              |    V                         |    |  +-ZONED---------------------------------------------+ |   
+   |              '-(----precision--+----------+-+--)-'  '-EXTERNAL--+--------------+--+-------------------+-' |   
+   |                                '-,--scale-'                     '-(--length--)-'  '-RADIX POINT--char-'   |   
+   +-+-INTEGER--+--+---------------------------------------------------+---------------------------------------+   
+   | +-INT------+  +-+-BIG----+--ENDIAN--------------------------------+                                       |   
+   | +-SMALLINT-+  | '-LITTLE-'                                        |                                       |   
+   | '-BIGINT---'  '-EXTERNAL--+--------------+--+-------------------+-'                                       |   
+   |                           '-(--length--)-'  '-RADIX POINT--char-'                                         |   
+   |           .-(34)-.                                                                                        |   
+   +-DECFLOAT--+------+--+---------------------------------------------------+---------------------------------+   
+   |           '-(16)-'  +-+-BIG----+--ENDIAN--------------------------------+                                 |   
+   |                     | '-LITTLE-'                                        |                                 |   
+   |                     '-EXTERNAL--+--------------+--+-------------------+-'                                 |   
+   |                                 '-(--length--)-'  '-RADIX POINT--char-'                                   |   
+   |          .-(53)----------.                                                                                |   
+   +-+-FLOAT--+---------------+-+--+---------------------------------------------------+-----------------------+   
+   | |        '-(--integer--)-' |  +-+-BIG----+--ENDIAN--------------------------------+                       |   
+   | +-REAL---------------------+  | '-LITTLE-'                                        |                       |   
+   | |         .-PRECISION-.    |  '-EXTERNAL--+--------------+--+-------------------+-'                       |   
+   | '-DOUBLE--+-----------+----'              '-(--length--)-'  '-RADIX POINT--char-'                         |   
+   +-DATE--+--------+--+------------------------------+--------------------------------------------------------+   
+   |       '-string-'  '-OPTIONALLY ENCLOSED BY--char-'                                                        |   
+   +-TIME--+--------+--+------------------------------+--------------------------------------------------------+   
+   |       '-string-'  '-OPTIONALLY ENCLOSED BY--char-'                                                        |   
+   +-TIMESTAMP--+------------+--+--------+--+------------------------------+-----------------------------------+   
+   |            '-(--prec--)-'  '-string-'  '-OPTIONALLY ENCLOSED BY--char-'                                   |   
+   '-DB2SECURITYLABEL--+--------------+--+--------+------------------------------------------------------------'   
+                       '-(--length--)-'  +-NAME---+                                                                
+                                         '-STRING-'                                                                
+]]>
+		<select>
+			<option default="true"></option>
+			<option>
+				<select>
+					<option default="true"><text>CHARACTER</text></option>
+					<option><text>CHAR</text></option>
+				</select>
+				<select>
+					<option default="true"></option>
+					<option><text>(</text><input type="int" size="4" title="length"/><text>)</text></option>
+				</select>
+				<select>
+					<option default="true"></option>
+					<option><text>FOR BIT DATA</text></option>
+				</select>
+				<select>
+					<option default="true"></option>
+					<option><text>NOTRIM</text></option>
+					<option><text>LTRIM</text></option>
+					<option><text>RTRIM</text></option>
+					<option><text>TRIM</text></option>
+				</select>
+				<select>
+					<option default="true"></option>
+					<option><text>OPTIONALLY ENCLOSED BY</text><input type="text" size="1" title="char"/></option>
+				</select>
+			</option>
+			<option>
+				<select>
+					<option default="true"><text>DECIMAL</text></option>
+					<option><text>DEC</text></option>
+				</select>
+				<select>
+					<option default="true"></option>
+					<option>
+						<text>(</text>
+							<select>
+								<option><text>5,0</text></option>
+								<option default="true">
+									<text><input type="int" size="4" title="precision"/></text>
+									<select>
+										<option default="true"></option>
+										<option><text>,</text><input type="int" size="4" title="scale"/></option>
+									</select>
+								</option>
+							</select>
+						<text>)</text>
+					</option>
+				</select>
+				<select>
+					<option default="true"></option>
+					<option><text>PACKED</text></option>
+					<option><text>ZONED</text></option>
+					<option>
+						<text>EXTERNAL</text>
+						<select>
+							<option default="true"></option>
+							<option><text>(</text><input type="int" size="4" title="length"/><text>)</text></option>
+						</select>
+						<select>
+							<option default="true"></option>
+							<option><text>RADIX POINT</text><input type="text" size="1" title="char"/></option>
+						</select>
+					</option>
+				</select>
+			</option>
+			<option>
+				<select>
+					<option default="true"><text>FLOAT</text></option>
+					<option><text>INT</text></option>
+					<option><text>SMALLINT</text></option>
+					<option><text>BIGINT</text></option>
+				</select>
+				<select>
+					<option default="true"></option>
+					<option>
+						<select>
+							<option default="true"><text>BIG</text></option>
+							<option><text>LITTLE</text></option>
+						</select>
+						<text>ENDIAN</text>
+					</option>
+					<option>
+						<text>EXTERNAL</text>
+						<select>
+							<option default="true"></option>
+							<option><text>(</text><input type="int" size="4" title="length"/><text>)</text></option>
+						</select>
+						<select>
+							<option default="true"></option>
+							<option><text>RADIX POINT</text><input type="text" size="1" title="char"/></option>
+						</select>
+					</option>
+				</select>
+			</option>
+			<option>
+				<text>DECFLOAT</text>
+				<select>
+					<option><text>(34)</text></option>
+					<option default="true"></option>
+					<option><text>(16)</text></option>
+				</select>
+				<select>
+					<option default="true"></option>
+					<option>
+						<select>
+							<option default="true"><text>BIG</text></option>
+							<option><text>LITTLE</text></option>
+						</select>
+						<text>ENDIAN</text>
+					</option>
+					<option>
+						<text>EXTERNAL</text>
+						<select>
+							<option default="true"></option>
+							<option><text>(</text><input type="int" size="4" title="length"/><text>)</text></option>
+						</select>
+						<select>
+							<option default="true"></option>
+							<option><text>RADIX POINT</text><input type="text" size="1" title="char"/></option>
+						</select>
+					</option>
+				</select>
+			</option>
+			<option>
+				<select>
+					<option default="true">
+						<text>FLOAT</text>
+						<select>
+							<option><text>(53)</text></option>
+							<option default="true"></option>
+							<option><text>(</text><input type="int" size="4" title="length"/><text>)</text></option>
+						</select>
+					</option>
+					<option>
+						<text>REAL</text>
+					</option>
+					<option>
+						<text>DOUBLE</text>
+						<select>
+							<option><text>PRECISION</text></option>
+							<option default="true"></option>
+						</select>
+					</option>
+				</select>
+				<select>
+					<option default="true"></option>
+					<option>
+						<select>
+							<option default="true"><text>BIG</text></option>
+							<option><text>LITTLE</text></option>
+						</select>
+						<text>ENDIAN</text>
+					</option>
+					<option>
+						<text>EXTERNAL</text>
+						<select>
+							<option default="true"></option>
+							<option><text>(</text><input type="int" size="4" title="length"/><text>)</text></option>
+						</select>
+						<select>
+							<option default="true"></option>
+							<option><text>RADIX POINT</text><input type="text" size="1" title="char"/></option>
+						</select>
+					</option>
+				</select>
+			</option>
+			<option>
+				<text>DATE</text>
+				<select>
+					<option default="true"></option>
+					<option><input type="text" size="30" title="string"/></option>
+				</select>
+				<select>
+					<option default="true"></option>
+					<option><text>OPTIONALLY ENCLOSED BY</text><input type="text" size="1" title="char"/></option>
+				</select>
+			</option>
+			<option>
+				<text>TIME</text>
+				<select>
+					<option default="true"></option>
+					<option><input type="text" size="30" title="string"/></option>
+				</select>
+				<select>
+					<option default="true"></option>
+					<option><text>OPTIONALLY ENCLOSED BY</text><input type="text" size="1" title="char"/></option>
+				</select>
+			</option>
+			<option>
+				<text>TIMESTAMP</text>
+				<select>
+					<option default="true"></option>
+					<option><text>(</text><input type="int" size="4" title="precision"/><text>)</text></option>
+				</select>
+				<input type="text" size="30" title="string"/>
+				<select>
+					<option default="true"></option>
+					<option><text>OPTIONALLY ENCLOSED BY</text><input type="text" size="1" title="char"/></option>
+				</select>
+			</option>
+			<option>
+				<text>DB2SECURITYLABEL</text>
+				<select>
+					<option default="true"></option>
+					<option><text>(</text><input type="int" size="4" title="length"/><text>)</text></option>
+				</select>
+				<select>
+					<option default="true"></option>
+					<option><text>NAME</text></option>
+					<option><text>STRING</text></option>
+				</select>
+			</option>
+		</select>
+	</clause>	
+	<clause name="DELETE-statement" title="DELETE Statement">
+<![CDATA[
+|--DELETE--FROM--+-table-name-+--+-------------------+---------->
+                 +-view-name--+  '-| period-clause |-'   
+                 '-nickname---'                          
+
+>--WHERE--| search-condition |--+--------------+----------------|
+                                '-WITH--+-RR-+-'   
+                                        +-RS-+     
+                                        +-CS-+     
+                                        '-UR-'     
+]]>
+		<text>DELETE FROM</text>
+		<select>
+			<option default="true"><clauseReference name="table-name"/></option>
+			<option><clauseReference name="view-name"/></option>
+			<option><clauseReference name="nickname"/></option>
+		</select>
+		<select>
+			<option default="true"></option>
+			<option><clauseReference name="period-clause"/></option>
+		</select>
+		<text>WHERE</text><clauseReference name="search-condition"/>
+		<select>
+			<option default="true"></option>
+			<option>
+				<text>WITH</text>
+				<select>
+					<option default="true"><text>RR</text></option>
+					<option><text>RS</text></option>
+					<option><text>CS</text></option>
+					<option><text>UR</text></option>
+				</select>
+			</option>
+		</select>
+	</clause>	
+	<clause name="period-clause" title="Period Clause">
+<![CDATA[
+|--FOR PORTION OF BUSINESS_TIME FROM--value1--TO--value2--------|
+]]>
+		<text>FOR PORTION OF BUSINESS_TIME FROM</text><input type="text" size="12"/><text>TO</text><input type="text" size="12"/>
+	</clause>	
+	<clause name="INSERT-statement" title="INSERT Statement">
+<![CDATA[
+|--INSERT--INTO--+-table-name-+--+-----------------------+------>
+                 +-view-name--+  |    .-,-----------.    |   
+                 '-nickname---'  |    V             |    |   
+                                 '-(----column-name-+--)-'   
+
+              .-,--------------.      
+              V                |      
+>--VALUES--(----+-expression-+-+--)-----------------------------|
+                +-NULL-------+        
+                '-DEFAULT----'        
+]]>
+		<text>INSERT INTO</text>
+		<select>
+			<option default="true"><clauseReference name="table-name"/></option>
+			<option><clauseReference name="view-name"/></option>
+			<option><clauseReference name="nickname"/></option>
+		</select>
+		<select>
+			<option default="true"></option>
+			<option><text>(<text><repeatable><clauseReference name="column-name"/></repeatable></text>)</text></option>
+		</select>
+		<text>VALUES (</text>
+			<repeatable>
+				<select>
+					<option default="true"><clauseReference name="expression"/></option>
+					<option><text>NULL</text></option>
+					<option><text>DEFAULT</text></option>
+				</select>
+			</repeatable>
+		<text>)</text>
+	</clause>	
+	<clause name="MERGE-statement" title="MERGE Statement">
+<![CDATA[
+|--MERGE INTO--+-table-name-+--ON--search-condition------------->
+               '-view-name--'                         
+
+   .----------------------------------------------------------------.   
+   V                                                                |   
+>----WHEN--| matching-condition |--THEN--| modification-operation |-+-->
+
+   .-ELSE IGNORE-.                     
+>--+-------------+--+--------------+----------------------------|
+                    '-WITH--+-RR-+-'   
+                            +-RS-+     
+                            +-CS-+     
+                            '-UR-'     
+]]>
+		<text>MERGE INTO</text>
+		<select>
+			<option default="true"><clauseReference name="table-name"/></option>
+			<option><clauseReference name="view-name"/></option>
+		</select>
+		<text>ON</text><clauseReference name="search-condition"/>
+		<repeatable>
+			<text>WHEN</text><clauseReference name="matching-condition"/>
+			<text>THEN</text><clauseReference name="modification-operation"/>
+		</repeatable>
+		<select>
+			<option><text>ELSE IGNORE</text></option>
+			<option default="true"></option>
+		</select>
+		<select>
+			<option default="true"></option>
+			<option>
+				<text>WITH</text>
+				<select>
+					<option default="true"><text>RR</text></option>
+					<option><text>RS</text></option>
+					<option><text>CS</text></option>
+					<option><text>UR</text></option>
+				</select>
+			</option>
+		</select>
+	</clause>	
+	<clause name="matching-condition" title="matching-condition">
+<![CDATA[
+|--+-----+--MATCHED--+-----------------------+------------------|
+   '-NOT-'           '-AND--search-condition-'   
+]]>
+		<select>
+			<option default="true"></option>
+			<option><text>NOT</text></option>
+		</select>
+		<text>MATCHED</text>
+		<select>
+			<option default="true"></option>
+			<option><text>AND</text><clauseReference name="search-condition"/></option>
+		</select>
+	</clause>	
+	<clause name="modification-operation" title="modification-operation">
+<![CDATA[
+|--+-UPDATE--+-------------------+--SET--| assignment-clause |-+--|
+   |         '-| period-clause |-'                             |   
+   +-DELETE--+-------------------+-----------------------------+   
+   |         '-| period-clause |-'                             |   
+   '-| insert-operation |--------------------------------------'   
+]]>
+		<select>
+			<option default="true">
+				<text>UPDATE</text>
+				<select>
+					<option default="true"></option>
+					<option><clauseReference name="period-clause"/></option>
+				</select>
+				<text>SET</text><clauseReference name="assignment-clause"/>
+			</option>
+			<option>
+				<text>DELETE</text>
+				<select>
+					<option default="true"></option>
+					<option><clauseReference name="period-clause"/></option>
+				</select>
+			</option>
+			<option><clauseReference name="insert-operation"/></option>
+		</select>
+	</clause>	
+	<clause name="assignment-clause" title="assignment-clause">
+<![CDATA[
+   .-,--------------------------------------------------------.   
+   V                                                          |   
+|----+-column-name-- = --+-expression-+---------------------+-+--|
+     |                   +-DEFAULT----+                     |     
+     |                   '-NULL-------'                     |     
+     |    .-,-----------.             .-,--------------.    |     
+     |    V             |             V                |    |     
+     '-(----column-name-+--)-- = --(----+-expression-+-+--)-'     
+                                        +-DEFAULT----+            
+                                        '-NULL-------'            
+]]>
+		<repeatable>
+			<select>
+				<option default="true">
+					<clauseReference name="column-name"/>
+					<text>=</text>
+					<select>
+						<option default="true"><clauseReference name="expression"/></option>
+						<option><text>NULL</text></option>
+						<option><text>DEFAULT</text></option>
+					</select>
+				</option>
+				<option>
+					<text>(</text><repeatable><clauseReference name="column-name"/></repeatable><text>)</text>
+					<text>=</text>
+					<text>(</text>
+						<repeatable>
+							<select>
+								<option default="true"><clauseReference name="expression"/></option>
+								<option><text>NULL</text></option>
+								<option><text>DEFAULT</text></option>
+							</select>
+						</repeatable>
+					<text>)</text>
+				</option>
+			</select>
+		</repeatable>
+	</clause>	
+	<clause name="insert-operation" title="insert-operation">
+<![CDATA[
+|--INSERT--+-----------------------+---------------------------->
+           |    .-,-----------.    |   
+           |    V             |    |   
+           '-(----column-name-+--)-'   
+
+                .-,--------------.        
+                V                |        
+>--VALUES----(----+-expression-+-+--)---------------------------|
+                  +-DEFAULT----+          
+                  '-NULL-------'          
+]]>
+		<text>INSERT</text>
+		<select>
+			<option default="true"></option>
+			<option>
+				<text>(</text><repeatable><clauseReference name="column-name"/></repeatable><text>)</text>
+			</option>
+		</select>
+		<text>VALUES (</text>
+			<repeatable>
+				<select>
+					<option default="true"><clauseReference name="expression"/></option>
+					<option><text>NULL</text></option>
+					<option><text>DEFAULT</text></option>
+				</select>
+			</repeatable>
+		<text>)</text>
+	</clause>	
+	<clause name="REPLACE-statement" title="REPLACE-statement">
+<![CDATA[
+|--REPLACE--INTO--+-table-name-+--+-----------------------+----->
+                  +-view-name--+  |    .-,-----------.    |   
+                  '-nickname---'  |    V             |    |   
+                                  '-(----column-name-+--)-'   
+
+              .-,--------------.      
+              V                |      
+>--VALUES--(----+-expression-+-+--)-----------------------------|
+                +-NULL-------+        
+                '-DEFAULT----'        
+]]>
+		<text>REPLACE INTO</text>
+		<select>
+			<option default="true"><clauseReference name="table-name"/></option>
+			<option><clauseReference name="view-name"/></option>
+			<option><clauseReference name="nickname"/></option>
+		</select>
+		<select>
+			<option default="true"></option>
+			<option>
+				<text>(</text><repeatable><clauseReference name="column-name"/></repeatable><text>)</text>
+			</option>
+		</select>
+		<text>VALUES (</text>
+			<repeatable>
+				<select>
+					<option default="true"><clauseReference name="expression"/></option>
+					<option><text>NULL</text></option>
+					<option><text>DEFAULT</text></option>
+				</select>
+			</repeatable>
+		<text>)</text>
+	</clause>	
+	<clause name="UPDATE-statement" title="UPDATE-statement">
+<![CDATA[
+|--UPDATE--+-table-name-+--+-------------------+---------------->
+           +-view-name--+  '-| period-clause |-'   
+           '-nickname---'                          
+
+>--SET--| assignment-clause |----------------------------------->
+
+>--+-----------------------------+--+--------------+------------|
+   '-WHERE--| search-condition |-'  '-WITH--+-RR-+-'   
+                                            +-RS-+     
+                                            +-CS-+     
+                                            '-UR-'     
+]]>
+		<text>UPDATE</text>
+		<select>
+			<option default="true"><clauseReference name="table-name"/></option>
+			<option><clauseReference name="view-name"/></option>
+			<option><clauseReference name="nickname"/></option>
+		</select>
+		<text>SET</text><clauseReference name="assignment-clause"/>	
+		<text>WHERE</text><clauseReference name="search-condition"/>
+		<select>
+			<option default="true"></option>
+			<option>
+				<text>WITH</text>
+				<select>
+					<option default="true"><text>RR</text></option>
+					<option><text>RS</text></option>
+					<option><text>CS</text></option>
+					<option><text>UR</text></option>
+				</select>
+			</option>
+		</select>
+	</clause>
+	<clause name="expression" title="expression">
+<![CDATA[
+     .-operator-----------------------------.     
+     V                                      |     
+|------+-----+--+-| function-invocation |-+-+-------------------|
+       +- + -+  +-| (expression) |--------+       
+       '- - -'  +-constant----------------+       
+                +-column-name-------------+       
+                +-$field-name-------------+       
+                +-| case-expression |-----+       
+                '-| cast-specification |--'       
+]]>
+		<repeatable separator="">
+			<select>
+				<option default="true"></option>
+				<option><text>+</text></option>
+				<option><text>-</text></option>
+			</select>
+			<select>
+				<option default="true"><clauseReference name="function-invocation"/></option>
+				<option><text>(</text><clauseReference name="expression"/><text>)</text></option>
+				<option><clauseReference name="constant"/></option>
+				<option><text spacepad="false">$</text><clauseReference name="field-name"/></option>
+				<option><clauseReference name="case-expression"/></option>
+				<option><clauseReference name="cast-specification"/></option>
+			</select>
+			<select>
+				<option default="true"></option>
+				<option><clauseReference name="operator"/><text>)</text></option>
+			</select>
+		</repeatable>
+	</clause>	
+	<clause name="operator" title="operator">
+<![CDATA[
+|--+-CONCAT-+---------------------------------------------------|
+   +- / ----+   
+   +- * ----+   
+   +- + ----+   
+   '- - ----'   
+]]>
+		<select>
+			<option default="true"><text>CONCAT</text></option>
+			<option><text>/</text></option>
+			<option><text>*</text></option>
+			<option><text>+</text></option>
+			<option><text>-</text></option>
+		</select>
+	</clause>	
+	<clause name="function-invocation" title="function-invocation">
+<![CDATA[
+                     .-,----------------.      
+                     V                  |      
+|--function-name--(----+--------------+-+--)--------------------|
+                       '-| argument |-'        
+]]>
+		<clauseReference name="function-name"/>
+		<text>(</text><repeatable><clauseReference name="argument"/></repeatable><text>)</text>
+	</clause>	
+	<clause name="argument" title="argument">
+<![CDATA[
+|--+-expression-----+-------------------------------------------|
+   +-row-expression-+   
+   '-DEFAULT--------'   
+]]>
+		<select>
+			<option default="true"><clauseReference name="expression"/></option>
+			<option><clauseReference name="row-expression"/></option>
+			<option><text>DEFAULT</text></option>
+		</select>
+	</clause>	
+	<clause name="case-expression" title="case-expression">
+<![CDATA[
+|--CASE--+-searched-when-clause-+------------------------------->
+         '-simple-when-clause---'   
+
+   .-ELSE NULL---------------.        
+>--+-------------------------+--END-----------------------------|
+   '-ELSE--result-expression-'        
+]]>
+		<text>CASE</text>
+		<select>
+			<option default="true"><clauseReference name="searched-when-clause"/></option>
+			<option><clauseReference name="simple-when-clause"/></option>
+		</select>
+		<select>
+			<option><text>ELSE NULL</text></option>
+			<option default="true"></option>
+			<option><text>ELSE</text><clauseReference name="expression"/></option>
+		</select>
+		<text>END</text>
+	</clause>	
+	<clause name="searched-when-clause" title="searched-when-clause">
+<![CDATA[
+   .-----------------------------------------------------.   
+   V                                                     |   
+|----WHEN--search-condition--THEN--+-result-expression-+-+------|
+                                   '-NULL--------------'     
+]]>
+		<repeatable separator="">
+			<text>WHEN</text><clauseReference name="search-condition"/><text>THEN</text>
+			<select>
+				<option default="true"><clauseReference name="expression"/></option>
+				<option><text>NULL</text></option>
+			</select>
+		</repeatable>
+	</clause>	
+	<clause name="simple-when-clause" title="simple-when-clause">
+<![CDATA[
+               .-----------------------------------------------.   
+               V                                               |   
+|--expression----WHEN--expression--THEN--+-result-expression-+-+--|
+                                         '-NULL--------------'     
+]]>
+		<clauseReference name="expression"/>
+		<repeatable separator="">
+			<text>WHEN</text><clauseReference name="expression"/><text>THEN</text>
+			<select>
+				<option default="true"><clauseReference name="expression"/></option>
+				<option><text>NULL</text></option>
+			</select>
+		</repeatable>
+	</clause>	
+	<clause name="cast-specification" title="Cast Specification">
+<![CDATA[
+|--CAST--(--+-expression-+--AS--| data-type |--)----------------|
+            '-NULL-------'                         
+]]>
+		<text>Cast (</text>
+		<select>
+			<option default="true"><clauseReference name="expression"/></option>
+			<option><text>NULL</text></option>
+		</select>
+		<clauseReference name="expression"/>
+		<text>AS</text><clauseReference name="data-type"/>
+		<text>)</text>
+	</clause>	
+	<clause name="search-condition" title="Search- Condition">
+<![CDATA[
+|--+-----+----| predicate |------------------------------------->
+   '-NOT-'                      
+
+   .-----------------------------------------.   
+   V                                         |   
+>----+-------------------------------------+-+------------------|
+     '-+-AND-+--+-----+----| predicate |---'     
+       '-OR--'  '-NOT-'                          
+]]>
+		<select>
+			<option default="true"></option>
+			<option><text>NOT</text></option>
+		</select>
+		<clauseReference name="predicate"/>
+		<repeatable>
+			<select>
+				<option default="true"></option>
+				<option>
+					<select>
+						<option default="true"><text>AND</text></option>
+						<option><text>OR</text></option>
+					</select>
+					<select>
+						<option default="true"></option>
+						<option><text>NOT</text></option>
+					</select>
+					<clauseReference name="predicate"/>
+				</option>
+			</select>
+		</repeatable>
+	</clause>	
+	<clause name="predicate" title="Predicate">
+<![CDATA[
+|--+-| basic-predicate |-+--------------------------------------|
+   '-| NULL-predicate |--'   
+]]>
+		<select>
+			<option default="true"><clauseReference name="basic-predicate"/></option>
+			<option><clauseReference name="NULL-predicate"/></option>
+		</select>
+	</clause>	
+
+	<clause name="basic-predicate" title="Basic Predicate">
+<![CDATA[
+|--expression--+-=--+--| expression |---------------------------|
+               +-<>-+                   
+               +-<--+                   
+               +->--+                   
+               +-<=-+                   
+               '->=-'                   
+]]>
+		<clauseReference name="expression"/>
+		<select>
+			<option default="true"><text>=</text></option>
+			<option><text>&lt;&gt;</text></option>
+			<option><text>&gt;</text></option>
+			<option><text>&lt;</text></option>
+			<option><text>&gt;=</text></option>
+			<option><text>&lt;=</text></option>
+		</select>
+		<clauseReference name="expression"/>
+	</clause>	
+	<clause name="NULL-predicate" title="NULL Predicate">
+<![CDATA[
+|--| expression |--IS--+-----+--NULL----------------------------|
+]]>
+		<clauseReference name="expression"/><text>IS NULL</text>
+	</clause>	
+</command>
+        

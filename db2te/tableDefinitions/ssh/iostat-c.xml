@@ -1,0 +1,126 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2013 All rights reserved.
+  
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+<table name="iostat-c">
+	<sqlName>iostat-c</sqlName>
+	<singularName>System CPU</singularName>
+	<pluralName>System CPU</pluralName>
+	<inlinequery>
+<![CDATA[
+iostat -c
+]]>
+	</inlinequery>
+	<description>
+<![CDATA[
+<pre>
+       %user
+              Show  the percentage of CPU utilization that occurred while exe-
+              cuting at the user level (application).
+       %nice
+              Show the percentage of CPU utilization that occurred while  exe-
+              cuting at the user level with nice priority.
+       %system
+              Show  the percentage of CPU utilization that occurred while exe-
+              cuting at the system level (kernel). Note  that  this  does  not
+              include the time spent servicing interrupts or softirqs.
+       %iowait
+              Show  the percentage of time that the CPU or CPUs were idle dur-
+              ing which the system had an outstanding disk I/O request.
+       %idle
+              Show the percentage of time that the CPU or CPUs were  idle  and
+              the system did not have an outstanding disk I/O request.
+</pre>
+]]>
+	</description>
+<!-- 
+Linux 2.6.32-358.23.2.el6.x86_64 (webtest2.technocrat.com.au) 	11/11/2013 	_x86_64_	(1 CPU)
+
+
+avg-cpu:  %user   %nice %system %iowait  %steal   %idle
+
+           0.89    0.02    0.54    1.13    0.01   97.41
+ -->
+	<filters>
+		<row operator="first" value="3"/>
+		<column name="Line" operator="is empty"/>
+	</filters>
+	<output>
+		<type name="DDL" destination="" title="" generator=""/>
+	</output>
+	<displayColumns>
+		<col type="column" name="user"/>
+		<col type="column" name="nice"/>
+		<col type="column" name="system"/>
+		<col type="column" name="iowait"/>
+		<col type="column" name="steal"/>
+		<col type="column" name="idle"/>
+	</displayColumns>
+	<history depth="30" time="SAMPLE_TS"/>
+	<column name="SAMPLE_TS">
+		<generated>timestamp</generated>
+		<title>Time</title>
+		<type>s</type>
+	</column>
+	<column name="connection">
+		<generated>connection</generated>
+		<title>Connection</title>
+		<type>s</type>
+		<primaryKey/>
+	</column>
+	<column name="Line">
+		<sqlName>Line</sqlName>
+		<title>Line</title>
+		<type>c</type>
+	</column>
+	<column name="user">
+		<sortDisable/>
+		<title>User %</title>
+		<generated>word,Line,1</generated>
+		<type>bg</type>
+	</column>
+	<column name="nice">
+		<sortDisable/>
+		<title>Nice %</title>
+		<generated>word,Line,1</generated>
+		<type>bg</type>
+	</column>
+	<column name="system">
+		<sortDisable/>
+		<title>System %</title>
+		<generated>word,Line,3</generated>
+		<type>bg</type>
+	</column>
+	<column name="iowait">
+		<sortDisable/>
+		<title>IO Wait %</title>
+		<generated>word,Line,4</generated>
+		<type>bg</type>
+	</column>
+	<column name="steal">
+		<sortDisable/>
+		<title>Steal %</title>
+		<generated>word,Line,5</generated>
+		<type>bg</type>
+	</column>
+	<column name="idle">
+		<sortDisable/>
+		<title>Idle %</title>
+		<generated>word,Line,6</generated>
+		<type>bg</type>
+		<graphattributes flipColor="y"/>
+	</column>
+</table>

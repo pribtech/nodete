@@ -1,0 +1,395 @@
+<!--
+  Author: Peter Prib
+  
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2013 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+<table name="SYSCAT.EVENTMONITORS">
+	<sqlName>SYSCAT.EVENTMONITORS</sqlName>
+	<singular_name>Event Monitor</singular_name>
+	<plural_name>Event Monitors</plural_name>
+	<description />
+    <menu type="leaf">
+		<description>New Activities</description>
+		<actionScript>
+  			<task>
+	   			<assignSharedConstant name="command" type="raw">
+					<value>SQL/Create/createEventMonitorActivities</value>
+				</assignSharedConstant>
+	   			<callGlobalAction name="commandExecution"/>
+			</task>
+		</actionScript>
+    </menu>
+    <menu type="leaf">
+		<description>New Locking</description>
+		<actionScript>
+  			<task>
+	   			<assignSharedConstant name="command" type="raw">
+					<value>SQL/Create/createEventMonitorLocking</value>
+				</assignSharedConstant>
+	   			<callGlobalAction name="commandExecution"/>
+			</task>
+		</actionScript>
+    </menu>
+    <menu type="leaf">
+		<description>New Statistics</description>
+		<actionScript>
+  			<task>
+	   			<assignSharedConstant name="command" type="raw">
+					<value>SQL/Create/createEventMonitorStatistics</value>
+				</assignSharedConstant>
+	   			<callGlobalAction name="commandExecution"/>
+			</task>
+		</actionScript>
+    </menu>
+    <menu type="leaf">
+		<description>New Threshold Violations</description>
+		<actionScript>
+  			<task>
+	   			<assignSharedConstant name="command" type="raw">
+					<value>SQL/Create/createEventMonitorThresholdViolations</value>
+				</assignSharedConstant>
+	   			<callGlobalAction name="commandExecution"/>
+			</task>
+		</actionScript>
+    </menu>
+    <menu type="leaf">
+		<description>New UOW</description>
+		<actionScript>
+  			<task>
+	   			<assignSharedConstant name="command" type="raw">
+					<value>SQL/Create/createEventMonitorUOW</value>
+				</assignSharedConstant>
+	   			<callGlobalAction name="commandExecution"/>
+			</task>
+		</actionScript>
+    </menu>
+    <menu type="leaf">
+		<description>New Other</description>
+		<actionScript>
+  			<task>
+	   			<assignSharedConstant name="command" type="raw">
+					<value>SQL/Create/createEventMonitor</value>
+				</assignSharedConstant>
+	   			<callGlobalAction name="commandExecution"/>
+			</task>
+		</actionScript>
+    </menu>
+	<orderBy/>
+	<displayColumns>
+		<col type="column" name="evmonname" />
+		<col type="reference" name="tables" />
+		<col type="action" name="flushBuffer" />
+		<col type="action" name="switchState" />
+		<col type="column" name="state" />
+		<col type="column" name="target_type" />
+		<col type="column" name="target" />
+		<col type="column" name="maxfiles" />
+		<col type="column" name="maxfilesize" />
+		<col type="column" name="buffersize" />
+		<col type="column" name="io_mode" />
+		<col type="column" name="write_mode" />
+		<col type="column" name="autostart" />
+		<col type="column" name="dbpartitionnum" />
+		<col type="column" name="monscope" />
+		<col type="column" name="evmon_activates" />
+		<col type="column" name="nodenum" />
+	</displayColumns>
+	<disableEdit/>
+	<action name="switchState">
+		<title>Switch State</title>
+		<icon>images/switch.gif</icon>
+		<actionScript name="disenable" type="serverAction">
+			<parameterList>
+				<parameter name="action" type="fixed">
+					<value>executeSQL</value>
+				</parameter>
+				<parameter name="SQL" type="fixed">
+					<value>SET EVENT MONITOR "?evmonname?" STATE = ?newstate?</value>
+				</parameter>
+				<parameter name="parameter[evmonname]" type="blockValue">
+					<value>evmonname</value>
+				</parameter>
+				<parameter name="parameter[mystate]" type="blockValue">
+					<value>state</value>
+					<check>
+						<if condition="1">
+							<task>
+								<assignLocalParameter name="parameter[newstate]" type="raw">
+									<value>0</value>
+								</assignLocalParameter>
+							</task>
+						</if>
+						<if condition="0">
+							<task>
+								<assignLocalParameter name="parameter[newstate]" type="raw">
+									<value>1</value>
+								</assignLocalParameter>
+							</task>
+						</if>
+					</check>
+				</parameter>
+			</parameterList>
+			<followOnAction condition="true" negCondition="true">
+				<task>
+					<assignSharedConstant name="ERROR_MESSAGE" type="returnObject">
+							<value>disenable.returnValue.STMTMSG</value>
+					</assignSharedConstant>
+					<action name="raiseError" type="alert">
+						<message>
+
+							Error: ?mystate? event ?evmonname? failed.
+				
+							Message: ?ERROR_MESSAGE?
+													
+						</message>
+						<parameterList>
+							<parameter name="evmonname" type="blockValue">
+								<value>evmonname</value>
+							</parameter>
+							<parameter name="mystate" type="blockValue">
+								<value>state</value>
+								<check>
+									<onMatch condition="1">
+										<task>
+											<assignLocalParameter name="mystate" type="raw">
+												<value>Inactivate</value>
+											</assignLocalParameter>
+										</task>
+									</onMatch>
+									<onMatch condition="0">
+										<task>
+											<assignLocalParameter name="mystate" type="raw">
+												<value>Activate</value>
+											</assignLocalParameter>
+										</task>
+									</onMatch>
+								</check>
+							</parameter>
+						</parameterList>
+					</action>
+				</task>
+			</followOnAction>
+			<followOnAction condition="true">
+				<task>
+					<panelReload />
+				</task>
+			</followOnAction>
+		</actionScript>
+	</action>
+	<action name="flushBuffer">
+		<title>Flush Buffer</title>
+		<icon>images/sout.gif</icon>
+    	<actionScript>
+    		<task>
+		    	<assignSharedConstant name="event-monitor-name" type="fixed">
+					<value>?evmonname?</value>
+				</assignSharedConstant>
+		    	<assignSharedConstant name="command" type="raw">
+					<value>flushEventMonitor</value>
+				</assignSharedConstant>
+		   		<callGlobalAction name="commandExecution"/>
+	   		</task>
+    	</actionScript>
+    </action>
+    <action name="db2evmon">
+		<title>db2evmon</title>
+    	<actionScript>
+    		<task>
+    			<lock/>
+    			<action name="getSession" type="serverAction" >
+					<parameterList>
+						<parameter name="action" type="raw">
+							<value>getSessionVariable</value>
+						</parameter>
+						<parameter name="name[database]" type="fixed">
+							<value>Connections.USE_DATABASE_CONNECTION.database</value>
+						</parameter>
+					</parameterList>
+				</action>
+			    <assignSharedConstant name="database-name" type="returnObject">
+					<value>getSession.returnValue.database</value>
+				</assignSharedConstant>
+			    	<assignSharedConstant name="event-monitor-name" type="blockValue">
+					<value>evmonname</value>
+				</assignSharedConstant>
+		   		<assignSharedConstant name="command" type="raw">
+					<value>System/db2evmon</value>
+				</assignSharedConstant>
+	   			<callGlobalAction name="systemCommandExecution"/>				
+    			<unlock/>
+	   		</task>
+    	</actionScript>
+    </action>
+    
+    <reference name="Tables">
+		<title>Tables</title>
+		<reftype>table</reftype>
+		<refvalue>Events/eventTable</refvalue>
+		<icon>images/icon-link-calendar.gif</icon>
+		<ref foreign_column_name="evmonname">
+			<local_column_name>evmonname</local_column_name>
+		</ref>
+	</reference>
+	<action name="dropEvent">
+		<title>Drop</title>
+		<icon>images/trash.gif</icon>   
+    	<actionScript>
+    		<task>
+		    	<assignSharedConstant name="objectType" type="fixed">
+					<value>EVENT MONITOR</value>
+				</assignSharedConstant>
+				<assignSharedConstant name="objectName" type="fixed">
+					<value>"?evmonname?" </value>
+				</assignSharedConstant>
+		   		<callGlobalAction name="dropSQLObject"/>
+	   		</task>
+    	</actionScript>
+    </action>
+	<column name="state">
+		<sqlName>EVENT_MON_STATE(EVMONNAME)</sqlName>
+		<title>State</title>
+		<type>s</type>
+		<enableDrill/>
+		<columnMask>
+			<value_mask value="1"><mask>Active</mask></value_mask>
+			<value_mask value="0"><mask>Inactive</mask></value_mask>
+		</columnMask>
+	</column>
+	<column name="evmonname">
+		<sqlName>EVMONNAME</sqlName>
+		<title>Event Monitor Name</title>
+		<type>s</type>
+		<enableDrill/>
+		<primaryKey/>
+	</column>
+	<column name="owner">
+		<sqlName>OWNER</sqlName>
+		<title>Owner</title>
+		<type>s</type>
+		<enableDrill/>
+	</column>
+	<column name="ownertype" minVersion="9.7">
+		<sqlName>OWNERTYPE</sqlName>
+		<title>Owner Type</title>
+		<type>s</type>
+		<enableDrill/>
+		<columnMask>
+			<value_mask value="S"><mask>System</mask></value_mask>
+			<value_mask value="U"><mask>User</mask></value_mask>
+		</columnMask>
+	</column>
+	<column name="target_type">
+		<sqlName>TARGET_TYPE</sqlName>
+		<title>Target Type</title>
+		<type>s</type>
+		<enableDrill/>
+		<columnMask>
+			<value_mask value="F"><mask>File</mask></value_mask>
+			<value_mask value="P"><mask>Pipe</mask></value_mask>
+			<value_mask value="T"><mask>Table</mask></value_mask>
+			<value_mask value="U"><mask>Unformatted</mask></value_mask>
+		</columnMask>
+	</column>
+	<column name="target">
+		<sqlName>TARGET</sqlName>
+		<title>Target</title>
+		<type>s</type>
+		<enableDrill/>
+	</column>
+	<column name="maxfiles">
+		<sqlName>MAXFILES</sqlName>
+		<title>Max Files</title>
+		<type>n</type>
+	</column>
+	<column name="maxfilesize">
+		<sqlName>MAXFILESIZE</sqlName>
+		<title>Max File Size</title>
+		<type>n</type>
+	</column>
+	<column name="buffersize">
+		<sqlName>BUFFERSIZE</sqlName>
+		<title>Buffer Size</title>
+		<type>n</type>
+	</column>
+	<column name="io_mode">
+		<sqlName>IO_MODE</sqlName>
+		<title>IO Mode</title>
+		<type>s</type>
+		<enableDrill/>
+		<columnMask>
+			<value_mask value="B"><mask>Blocked</mask></value_mask>
+			<value_mask value="N"><mask>Not blocked</mask></value_mask>
+		</columnMask>
+	</column>
+	<column name="write_mode">
+		<sqlName>WRITE_MODE</sqlName>
+		<title>Write Mode</title>
+		<type>s</type>
+		<c_drill>y</c_drill>
+		<columnMask>
+			<value_mask value="A"><mask>Append</mask></value_mask>
+			<value_mask value="R"><mask>Replace</mask></value_mask>
+		</columnMask>
+	</column>
+	<column name="autostart">
+		<sqlName>AUTOSTART</sqlName>
+		<title>Auto Start</title>
+		<type>s</type>
+		<enableDrill/>
+		<columnMask>
+			<value_mask value="N"><mask>No</mask></value_mask>
+			<value_mask value="Y"><mask>Yes</mask></value_mask>
+		</columnMask>
+	</column>
+	<column name="dbpartitionnum">
+		<sqlName>DBPARTITIONNUM</sqlName>
+		<title>DB Partition</title>
+		<type>n</type>
+	</column>
+	<column name="monscope">
+		<sqlName>MONSCOPE</sqlName>
+		<title>Scope</title>
+		<type>s</type>
+		<enableDrill/>
+		<columnMask>
+			<value_mask value="G"><mask>Global</mask></value_mask>
+			<value_mask value="L"><mask>Local</mask></value_mask>
+			<value_mask value="T"><mask>DB Partition where tablespace exists</mask></value_mask>
+		</columnMask>
+	</column>
+	<column name="evmon_activates">
+		<sqlName>EVMON_ACTIVATES</sqlName>
+		<title>Activations</title>
+		<type>n</type>
+	</column>
+	<column name="nodenum">
+		<sqlName>NODENUM</sqlName>
+		<title>Node No.</title>
+		<type>n</type>
+	</column>
+	<column name="definer">
+		<sqlName>DEFINER</sqlName>
+		<title>Definer</title>
+		<type>s</type>
+		<enableDrill/>
+	</column>
+	<column name="remarks">
+		<sqlName>REMARKS</sqlName>
+		<title>Remarks</title>
+		<type>s</type>
+		<enableDrill/>
+	</column>
+</table>

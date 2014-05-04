@@ -1,0 +1,37 @@
+<table name="authsummary">
+    <sql_name>AUTH_SUMMARY</sql_name>
+    <queryfile>predefined/Authority.SQL</queryfile>
+    <singular_name>Authority</singular_name>
+    <plural_name>Authorities</plural_name>
+    <description>This report returns a list of the authorities that are held by an authorization ID.
+		This list is generated from the &lt;a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.sql.rtn.doc/doc/r0052898.html?noframes=true');"&gt;SYSPROC.AUTH_LIST_AUTHORITIES_FOR_AUTHID&lt;/a&gt; table function.    
+    </description>
+    <rows_per_page>50</rows_per_page>
+    <order_by_index></order_by_index>
+	<parameters>
+		<parm name="authid">
+		<title>Authorization ID</title>
+			<value>CURRENT USER</value>
+			<type>m</type>
+		</parm>
+	</parameters>    	
+    <display_columns>
+        <col type="column" name="authority"></col>
+        <col type="column" name="authdesc"></col>        
+    </display_columns>
+    <column name="authority">
+        <c_sql_name>AUTHORITY</c_sql_name>
+        <c_title>Authority</c_title>
+        <c_pkey>p</c_pkey>
+        <c_presentation>s</c_presentation>
+		<c_mask_display_order>lv</c_mask_display_order>
+		<c_column_mask_file>masks/authoritiesMask.xml</c_column_mask_file>                
+    </column>
+    <column name="authdesc">
+        <c_sql_name>AUTHORITY</c_sql_name>
+        <c_title>Description</c_title>
+        <c_presentation>s</c_presentation>
+		<c_mask_display_order>m</c_mask_display_order>
+		<c_column_mask_file>masks/authoritiesMask.xml</c_column_mask_file>                
+    </column>
+</table>

@@ -1,0 +1,165 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2009 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<command name="createSequence" title="Create Sequence">
+<![CDATA[
+>>-CREATE SEQUENCE--sequence-name--●--+-------------------+----->
+                                      '-AS--| data-type |-'   
+]]>
+	<text>CREATE SEQUENCE</text>
+	<clauseReference name="sequence-name"/>
+	<select>
+		<option default="true"></option> 
+		<option><text>AS</text><clauseReference name="data-type"/></option> 
+	</select>
+	<br/>
+<![CDATA[
+>--●--+------------------------------+--●----------------------->
+      '-START WITH--numeric-constant-'      
+]]>
+	<select>
+		<option default="true"></option> 
+		<option><text>START WITH</text><clauseReference name="numeric-constant"/></option> 
+	</select>
+	<br/>
+<![CDATA[
+   .-INCREMENT BY 1-----------------.      
+>--+--------------------------------+--●------------------------>
+   '-INCREMENT BY--numeric-constant-'      
+]]>
+	<select>
+		<option><text>INCREMENT BY 1</text></option> 
+		<option default="true"></option> 
+		<option><text>INCREMENT BY</text><clauseReference name="numeric-constant"/></option> 
+	</select>
+	<br/>
+<![CDATA[
+   .-NO MINVALUE----------------.      
+>--+----------------------------+--●---------------------------->
+   '-MINVALUE--numeric-constant-'      
+]]>
+	<select>
+		<option><text>NO MINVALUE</text></option> 
+		<option default="true"></option> 
+		<option><text>MINVALUE</text><clauseReference name="numeric-constant"/></option> 
+	</select>
+	<br/>
+<![CDATA[
+   .-NO MAXVALUE----------------.     .-NO CYCLE-.      
+>--+----------------------------+--●--+----------+--●----------->
+   '-MAXVALUE--numeric-constant-'     '-CYCLE----'      
+]]>
+	<select>
+		<option><text>NO MAXVALUE</text></option> 
+		<option default="true"></option> 
+		<option><text>MAXVALUE</text><clauseReference name="numeric-constant"/></option> 
+	</select>
+	<select>
+		<option><text>NO CYCLE</text></option> 
+		<option default="true"></option> 
+		<option><text>CYCLE</text></option> 
+	</select>
+	<br/>
+<![CDATA[
+   .-CACHE 20----------------.     .-NO ORDER-.      
+>--+-------------------------+--●--+----------+--●-------------><
+   +-CACHE--integer-constant-+     '-ORDER----'      
+   '-NO CACHE----------------'                       
+]]>
+	<select>
+		<option><text>CACHE 20</text></option> 
+		<option default="true"></option> 
+		<option><text>CACHE</text><clauseReference name="numeric-constant"/></option> 
+		<option><text>NO CACHE</text></option> 
+	</select>
+	<select>
+		<option><text>NO ORDER</text></option> 
+		<option default="true"></option> 
+		<option><text>ORDER</text></option> 
+	</select>
+ 
+<![CDATA[
+|--+-| built-in-type |--+---------------------------------------|
+   '-distinct-type-name-'   
+]]>
+	<clause name="data-type" title="data type">
+		<select>
+			<option default="true"><clauseReference name="built-in-type"/></option> 
+			<option><clauseReference name="distinct-type-name"/></option> 
+		</select>
+	</clause>
+	
+<![CDATA[
+|--+-+-SMALLINT----+------------------------------+-------------|
+   | +-+-INTEGER-+-+                              |   
+   | | '-INT-----' |                              |   
+   | '-BIGINT------'                              |   
+   |                  .-(5,0)-------------------. |   
+   '-+-+-DECIMAL-+-+--+-------------------------+-'   
+     | '-DEC-----' |  |          .-,0-------.   |     
+     '-+-NUMERIC-+-'  '-(integer-+----------+-)-'     
+       '-NUM-----'               '-,integer-'         
+]]>
+	<clause name="built-in-type" title="built in type">
+		<select>
+			<option default="true">
+				<select>
+					<option default="true"><text>SMALLINT</text></option>
+					<option>
+						<select>
+							<option default="true"><text>INTEGER</text></option>
+							<option><text>INT</text></option>
+						</select>
+					</option>
+					<option><text>BIGINT</text></option>
+				</select>
+			</option> 
+			<option>
+				<select>
+					<option default="true">
+						<select>
+							<option default="true"><text>DECIMAL</text></option>
+							<option><text>DEC</text></option>
+						</select>
+					</option>
+					<option>
+						<select>
+							<option default="true"><text>NUMERIC</text></option>
+							<option><text>NUM</text></option>
+						</select>
+					</option>
+					<option><text>BIGINT</text></option>
+				</select>
+				<select>
+					<option><text>(5,0)</text></option>
+					<option default="true"><note>(5,0)</note></option>
+					<option>
+						<text>(</text>
+						<clauseReference name="integer-constant"/>
+						<select>
+							<option><text>,0</text></option>
+							<option default="true"><note>,0</note></option>
+							<option><text>,</text><clauseReference name="integer-constant"/></option>
+						</select>
+						<text>)</text>
+					</option>
+				</select>
+			</option> 
+		</select>
+	</clause>
+</command>
+        

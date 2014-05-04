@@ -1,0 +1,79 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2010 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+	<table name="Columns">
+		<sql_name>Columns</sql_name>
+		<singular_name>Column</singular_name>
+		<plural_name>Columns</plural_name>
+		<description></description>
+	<inlinequery>
+<![CDATA[
+SELECT distinct COLNAME, count(*) as usageCount, count(distinct TYPENAME) as typeCount , count(distinct LENGTH) as sizeCount 
+from SYSCAT.COLUMNS
+group by colname
+]]>
+	</inlinequery>
+		<rows_per_page>200</rows_per_page>
+		<order_by_index name="colname" direction="A"/>
+		<display_columns>
+			<col type="column" name="colname"/>
+			<col type="reference" name="References"/>
+			<col type="column" name="usageCount"/>
+			<col type="column" name="typeCount"/>
+			<col type="column" name="sizeCount"/>
+		</display_columns>
+		<disableEdit/>
+		<output>
+			<type name="DDL" destination="" title="" generator=""/>
+		</output>
+		<reference name="dynSQL" DBMS="DB2">
+			<title>Possible SQL</title>
+			<reftype>table</reftype>
+			<refvalue>Performance/snapdynsql</refvalue>
+			<icon>images/icon-link-calendar.gif</icon>								
+			<ref foreign_column_name="stmttext">
+				<comparetype>locateAnyCase</comparetype>
+				<local_column_name>COLNAME</local_column_name>
+			</ref>
+		</reference>
+		<reference name="References">
+			<title>References</title>
+			<reftype>table</reftype>
+			<refvalue>colcat</refvalue>
+			<icon>images/icon-column.gif</icon>
+			<ref foreign_column_name="colname">
+				<local_column_name>colname</local_column_name>
+			</ref>
+		</reference>
+		<column name="colname">
+			<sql_name>COLNAME</sql_name>
+			<title>Name</title>
+			<primaryKey/>			
+		</column>
+		<column name="usageCount">
+			<sql_name>usageCount</sql_name>
+			<title>Usage Count</title>
+		</column>
+		<column name="typeCount">
+			<sql_name>typeCount</sql_name>
+			<title>Type Count</title>
+		</column>
+		<column name="sizeCount">
+			<sql_name>sizeCount</sql_name>
+			<title>Size Count</title>
+		</column>
+	</table>

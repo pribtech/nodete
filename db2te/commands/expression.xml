@@ -1,0 +1,414 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2009 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<clause name="expression" title="expression">
+<![CDATA[
+   .-operator-------------------------------------.   
+   V                                              |   
+|----+-----+--+-function-invocation-------------+-+-------------|
+     +- + -+  +-(expression)--------------------+     
+     '- - -'  +-constant------------------------+     
+              +-column-name---------------------+     
+              +-variable------------------------+     
+              +-special-register----------------+     
+              |                     (1)         |     
+              +-(scalar-fullselect)-------------+     
+              |                  (2)            |     
+              +-labeled-duration----------------+     
+              |                 (3)             |     
+              +-case-expression-----------------+     
+              |                    (4)          |     
+              +-cast-specification--------------+     
+              |                       (5)       |     
+              +-xmlcast-specification-----------+     
+              |                             (6) |     
+              +-array-element-specification-----+     
+              |                       (7)       |     
+              +-dereference-operation-----------+     
+              |                   (8)           |     
+              +-method-invocation---------------+     
+              |                    (9)          |     
+              +-OLAP-specification--------------+     
+              |                       (10)      |     
+              +-row-change-expression-----------+     
+              |                    (11)         |     
+              +-sequence-reference--------------+     
+              |                   (12)          |     
+              '-subtype-treatment---------------'     
+]]>
+	<clauseReference name="operand"/>
+	<select>
+		<option default="true"><note>+</note></option>
+		<option>
+			<repeatable>
+				<clauseReference name="operator"/>
+				<clauseReference name="operand"/>
+			</repeatable>
+		</option>
+	</select>
+	
+	<clause name="operand"  title="operand">
+		<select>
+			<option default="true"><note>+</note></option>
+			<option><text>+</text></option>
+			<option><text>-</text></option>
+		</select>	
+		<select>
+			<option><clauseReference name="function-invocation"/></option>
+			<option><text>(</text><clauseReference name="expression"/><text>)</text></option>    
+			<option><clauseReference name="constant"/></option>    
+			<option><clauseReference name="column-name"/></option>    
+			<option><clauseReference name="variable"/></option>   
+			<option><clauseReference name="special-register"/></option>   
+			<option><text>(</text><clauseReference name="scalar-fullselect"/><text>)</text></option>   
+			<option><clauseReference name="labeled-duration"/></option>   
+			<option><clauseReference name="case-expression"/></option>   
+			<option><clauseReference name="cast-specification"/></option>   
+			<option><clauseReference name="xmlcast-specification"/></option> 
+			<option><clauseReference name="array-element-specification"/></option>    
+			<option><clauseReference name="dereference-operation"/></option>     
+			<option><clauseReference name="method-invocation"/></option>     
+			<option><clauseReference name="OLAP-specification"/></option>     
+			<option><clauseReference name="row-change-expression"/></option>     
+			<option><clauseReference name="sequence-reference"/></option>		
+			<option><clauseReference name="subtype-treatment"/></option>		
+		</select>	
+	</clause>
+	
+	<clause name="operator" title="operator">
+<![CDATA[
+            (13)     
+|--+-CONCAT------+----------------------------------------------|
+   +- / ---------+   
+   +- * ---------+   
+   +- + ---------+   
+   '- - ---------'   
+]]>
+		<select>
+			<option><text>CONCAT</text></option>
+			<option><text>||</text></option>
+			<option><text>/</text></option>
+			<option><text>*</text></option>
+			<option><text>+</text></option>
+			<option><text>-</text></option>
+		</select>
+	</clause>
+
+	<clause name="labeled-duration" title="labeled duration">
+<![CDATA[
+|--+-function--------+--+-YEAR---------+------------------------|
+   +-(expression)----+  +-YEARS--------+   
+   +-constant--------+  +-MONTH--------+   
+   +-column-name-----+  +-MONTHS-------+   
+   +-global-variable-+  +-DAY----------+   
+   '-host-variable---'  +-DAYS---------+   
+                        +-HOUR---------+   
+                        +-HOURS--------+   
+                        +-MINUTE-------+   
+                        +-MINUTES------+   
+                        +-SECOND-------+   
+                        +-SECONDS------+   
+                        +-MICROSECOND--+   
+                        '-MICROSECONDS-'   
+]]>
+		<select>
+			<option><clauseReference name="sequence-reference"/></option>
+			<option><clauseReference name="function"/></option>
+			<option><text>(</text><clauseReference name="expression"/><text>)</text></option>   
+			<option><clauseReference name="constant"/></option>   
+			<option><clauseReference name="column-name"/></option>   
+			<option><clauseReference name="global-variable"/></option>  
+			<option><clauseReference name="host-variable"/></option> 
+		</select>
+		<select>
+			<option default="true"><text>YEAR</text></option>
+			<option><text>YEARS</text></option>
+			<option><text>MONTH</text></option>   
+			<option><text>MONTHS</text></option>
+			<option><text>DAY</text></option>
+			<option><text>DAYS</text></option>
+			<option><text>HOUR</text></option>
+			<option><text>HOURS</text></option>
+			<option><text>MINUTE</text></option>
+			<option><text>MINUTES</text></option>
+			<option><text>SECOND</text></option>
+			<option><text>SECONDS</text></option>
+			<option><text>MICROSECOND</text></option>
+			<option><text>MICROSECONDS</text></option>
+		</select>
+	</clause>
+ 
+	<clause name="case-expression" title="case expression">
+<![CDATA[
+|--CASE--+-searched-when-clause-+------------------------------->
+         '-simple-when-clause---'   
+
+   .-ELSE NULL---------------.        
+>--+-------------------------+--END-----------------------------|
+   '-ELSE--result-expression-'        
+]]>
+		<text>CASE</text>
+		<select>
+			<option default="true"><clauseReference name="searched-when-clause"/></option>
+			<option><clauseReference name="simple-when-clause"/></option>   
+		</select>
+		<br/>
+		<select>
+			<option><text>ELSE NULL</text></option>
+			<option default="true"><note>else null</note></option>
+			<option><text>ELSE</text><clauseReference name="result-expression"/></option>   
+		</select>
+		<text>END</text>
+	</clause>
+
+	<clause name="searched-when-clause" title="searched when clause">
+<![CDATA[
+   .-----------------------------------------------------.   
+   V                                                     |   
+|----WHEN--search-condition--THEN--+-result-expression-+-+------|
+                                   '-NULL--------------'     
+]]>
+		<repeatable>
+			<text>WHEN</text>
+			<clauseReference name="search-condition"/>
+			<text>THEN</text>
+			<select>
+				<option default="true"><clauseReference name="result-expression"/></option>
+				<option><text>NULL</text></option>
+			</select>
+		</repeatable>
+	</clause>
+
+	<clause name="simple-when-clause" title="simple when clause">
+<![CDATA[
+               .-----------------------------------------------.   
+               V                                               |   
+|--expression----WHEN--expression--THEN--+-result-expression-+-+--|
+                                         '-NULL--------------'     
+]]>
+		<clauseReference name="expression"/>
+		<repeatable>
+			<text>WHEN</text>
+			<clauseReference name="expression"/>
+			<text>THEN</text>
+			<select>
+				<option default="true"><clauseReference name="result-expression"/></option>
+				<option><text>NULL</text></option>
+			</select>
+		</repeatable>
+	</clause>
+
+	<clause name="cast-specification" title="cast specification">
+<![CDATA[
+|--CAST--(--+-expression-------+--AS--| data-type |------------->
+            +-NULL-------------+                      
+            '-parameter-marker-'                      
+
+>--+---------------------------------+--)-----------------------|
+   |       (1)                       |      
+   '-SCOPE------+-typed-table-name-+-'      
+                '-typed-view-name--'        
+]]>
+		<text>CAST (</text>
+		<select>
+			<option default="true"><clauseReference name="expression"/></option>
+			<option><text>NULL</text></option>
+			<option><clauseReference name="parameter-marker"/></option>
+		</select>
+		<text>AS</text>
+		<clauseReference name="data-type"/>
+		<select>
+			<option default="true"><note></note></option>
+			<option>
+				<text>SCOPE</text>
+				<select>
+					<option default="true"><clauseReference name="typed-table-name"/></option>
+					<option><clauseReference name="typed-view-name"/></option>
+				</select>
+			</option>
+			<option><clauseReference name="parameter-marker"/></option>
+		</select>
+	</clause>
+	
+	<clause name="xmlcast-specification" title="xmlcast specification">
+<![CDATA[
+|--XMLCAST--(--+-expression-------+--AS--data-type--)-----------|
+               +-NULL-------------+                     
+               '-parameter-marker-'   
+]]>
+		<text>XMLCAST (</text>
+		<select> 
+			<option default="true"><clauseReference name="expression"/></option>
+			<option><text>NULL</text></option>
+			<option><clauseReference name="parameter-marker"/></option>
+		</select>
+		<text>AS </text>
+		<clauseReference name="data-type"/>
+		<text>)</text>
+	</clause>
+
+	<clause name="array-element-specification" title="array element specification">
+<![CDATA[
+|--+-array-variable------------------------------+-------------->
+   '-CAST--(--parameter-marker--AS--data-type--)-'   
+
+>--[--expression--]---------------------------------------------|
+]]>
+		<select> 
+			<option default="true"><clauseReference name="array-variable"/></option>
+			<option><text>CAST (</text><clauseReference name="parameter-marker"/><text>AS</text><clauseReference name="data-type"/><text>)</text></option>
+		</select>
+		<br/>
+		<text>[</text><clauseReference name="expression"/><text>]</text>
+	</clause>
+  
+	<clause name="dereference-operation" title="dereference operation">
+<![CDATA[
+|--scoped-ref-expression-- -> --name1--------------------------->
+
+>--+--------------------------+---------------------------------|
+   '-(--+----------------+--)-'   
+        | .-,----------. |        
+        | V            | |        
+        '---expression-+-'  
+]]>
+		<clauseReference name="scoped-ref-expression"/><text>-></text><input size="18"/>
+		<text>(</text>
+		<select> 
+			<option default="true"><text></text></option>
+			<option>
+				<repeatable>
+					<clauseReference name="expression"/>
+				</repeatable>
+				<text>)</text>
+			</option>
+		</select>
+		<br/>
+		<text>[</text><clauseReference name="expression"/><text>]</text>
+	</clause>
+
+	<clause name="method-invocation" title="method invocation">
+<![CDATA[
+|--subject-expression..method-name--+--------------------------+--|
+                                    '-(--+----------------+--)-'   
+                                         | .-,----------. |        
+                                         | V            | |        
+                                         '---expression-+-'        
+
+
+]]>
+		<clauseReference name="subject-expression..method-name"/>
+		<select> 
+			<option default="true"><text></text></option>
+			<option>
+				<text>(</text>
+				<select> 
+					<option default="true"><text></text></option>
+					<option>
+						<repeatable>
+							<clauseReference name="expression"/>
+						</repeatable>
+						<text>)</text>
+					</option>
+				</select>
+			</option>
+		</select>
+	</clause>
+
+	<clause name="row-change-expression" title="row change expression">
+<![CDATA[
+|--ROW CHANGE--+-TOKEN-----+--FOR--table-designator-------------|
+               '-TIMESTAMP-'                          
+]]>
+		<text>ROW CHANGE</text>
+		<select> 
+			<option default="true"><text>TOKEN</text></option>
+			<option><text>TIMESTAMP</text></option>
+		</select>
+		<text>FOR</text>
+		<clauseReference name="table-designator"/>
+	</clause>
+
+	<clause name="sequence-reference" title="sequence reference">
+<![CDATA[
+sequence-reference
+
+|--+-| nextval-expression |-+-----------------------------------|
+   '-| prevval-expression |-'   
+]]>
+		<select> 
+			<option default="true"><clauseReference name="nextval-expression"/></option>
+			<option><clauseReference name="prevval-expression"/></option>
+		</select>
+	</clause>
+
+	<clause name="nextval-expression" title="nextval expression">
+<![CDATA[
+|--NEXT VALUE FOR--sequence-name--------------------------------|
+]]>
+		<text>NEXT VALUE FOR</text><clauseReference name="sequence-name"/>
+	</clause>
+
+ 	<clause name="prevval-expression" title="prevval expression">
+<![CDATA[
+|--PREVIOUS VALUE FOR--sequence-name----------------------------|
+]]>
+		<text>PREVIOUS VALUE FOR</text><clauseReference name="sequence-name"/>
+	</clause>
+
+	<clause name="subtype-treatment" title="subtype treatment">
+<![CDATA[
+|--TREAT--(--expression--AS--data-type--)-----------------------|
+]]>
+		<text>TREAT (</text><clauseReference name="expression"/><text>AS </text><clauseReference name="data-type"/><text>)</text>
+	</clause>
+
+	<clause name="global-variable">
+		<text>global-variable ***to be done</text>
+	</clause>
+	<clause name="host-variable">
+		<text>host-variable ***to be done</text>
+	</clause>
+	<clause name="function-invocation" >
+		<text>function-invocation ***to be done</text>
+	</clause>
+	<clause name="function" >
+		<text>function ***to be done</text>
+	</clause>
+	<clause name="variable">
+		<text>variable ***to be done</text>
+	</clause>
+	<clause name="special-register">
+		<text>special-register ***to be done</text>
+	</clause>
+	<clause name="scalar-fullselect">
+		<text>scalar-fullselect ***to be done</text>
+	</clause>
+	<clause name="subject-expression..method-name">
+		<text>subject-expression..method-name ***to be done</text>
+	</clause>
+	<clause name="result-expression">
+		<text>result-expression ***to be done</text>
+	</clause>
+	<clause name="array-variable">
+		<text>array-variable ***to be done</text>
+	</clause>
+	<clause name="scoped-ref-expression">
+		<text>scoped-ref-expression ***to be done</text>
+	</clause>
+
+</clause>	

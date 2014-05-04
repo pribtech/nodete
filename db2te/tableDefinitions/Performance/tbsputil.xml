@@ -1,0 +1,326 @@
+<!--
+  Copyright IBM Corp. 2007 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<table name="tbsputil">
+	<sqlName>UTILIZATION</sqlName>
+	<html_name>tbsputil</html_name>
+	<queryfile>predefined/TableSpaceUtil.SQL</queryfile>	
+	<singular_name>Tablespace Utilization</singular_name>
+	<plural_name>Tablespaces Utilization</plural_name>
+	<description>Each row represents a
+		&lt;a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.admin.dbobj.doc/doc/c0021378.html?noframes=true');"&gt;table space&lt;/a&gt;.
+		This table is based on the &lt;a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.admin.dbobj.doc/doc/r0022022.html?noframes=true');"&gt;SYSIBMADM.TBSP_UTILIZATION&lt;/a&gt; administrative view.
+	</description>		
+	<output>
+		<type name="DDL" destination="" title="" generator=""/>
+		<type name="REBALANCE" destination="adhoc" title="Rebalance" generator="XSL/tablespaceRebalance.xsl"/>
+		<type name="DHLWM" destination="adhoc" class="SHELL" title="High Watermark Object" generator="XSL/compareDart.xsl">
+			<parameterList>
+				<parameter name="options" type="raw"><value>highLevelWaterMark</value></parameter>
+			</parameterList>
+		</type>
+	</output>
+	<order_by_index name="tbsp_free_size_kb" direction="D"/>
+	<display_columns>
+		<col type="column" name="tbsp_name"/>
+		<col type="column" name="tbsp_id"/>		
+		<col type="column" name="tbsp_state"/>
+		<col type="column" name="tbsp_utilization_percent"/>
+		<col type="reference" name="tabref"/>
+		<col type="reference" name="indref"/>
+		<col type="reference" name="longref"/>
+		<col type="reference" name="containers"/>
+		<col type="column" name="tbsp_type"/>
+		<col type="column" name="tbsp_content_type"/>
+		<col type="column" name="tbsp_page_size"/>
+		<col type="column" name="tbsp_prefetch_size"/>
+		<col type="column" name="tbsp_extent_size"/>
+		<col type="column" name="tbsp_total_size_kb"/>
+		<col type="column" name="tbsp_free_size_kb"/>
+		<col type="column" name="tbsp_usable_size_kb"/>
+		<col type="column" name="tbsp_used_size_kb_bar"/>
+		<col type="column" name="tbsp_used_size_kb"/>
+		<col type="column" name="tbsp_using_auto_storage"/>
+		<col type="column" name="tbsp_auto_resize_enabled"/>
+		<col type="column" name="tbsp_increase_size"/>
+		<col type="column" name="tbsp_increase_size_percent"/>
+		<col type="column" name="tbsp_last_resize_time"/>
+		<col type="column" name="tbsp_last_resize_failed"/>
+		<col type="column" name="tbsp_max_size"/>
+		<col type="column" name="tbsp_num_containers"/>
+		<col type="column" name="snapshot_timestamp"/>
+		<col type="column" name="tbsp_create_time"/>
+		<col type="column" name="remarks"/>
+	</display_columns>
+	<reference name="containers">
+		<title>Containers</title>
+		<reftype>table</reftype>
+		<refvalue>container</refvalue>
+		<ref foreign_column_name="tbsp_id">
+			<local_column_name>tbsp_id</local_column_name>
+		</ref>
+	</reference> 
+	<reference name="tabref">
+		<title>Tables</title>
+		<reftype>table</reftype>
+		<refvalue>tablecat</refvalue>
+		<icon>images/icon-link-calendar.gif</icon>
+		<ref foreign_column_name="tbspaceid">
+			<local_column_name>tbsp_id</local_column_name>
+		</ref>
+	</reference>
+	<reference name="indref">
+		<title>Indexes</title>
+		<reftype>table</reftype>
+		<refvalue>indexcat</refvalue>
+		<icon>images/icon-index.gif</icon>
+		<ref foreign_column_name="tbspaceid">
+			<local_column_name>tbsp_id</local_column_name>
+		</ref>
+	</reference>
+	<reference name="longref">
+		<title>Long</title>
+		<reftype>table</reftype>
+		<refvalue>tablecat</refvalue>
+		<icon>images/icon-link-calendar.gif</icon>
+		<ref foreign_column_name="long_tbspace">
+			<local_column_name>tbsp_name</local_column_name>
+		</ref>
+	</reference>
+	<reference name="tableActivity">
+		<title>Table Activity</title>
+		<reftype>table</reftype>
+		<refvalue>Performance/toptable</refvalue>
+		<icon>images/icon-link-calendar.gif</icon>
+		<ref foreign_column_name="tbsp_id">
+			<local_column_name>tbsp_id</local_column_name>
+		</ref>
+	</reference> 
+<!-- added peter prib, Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2009 All rights reserved. -->
+	<action name="dropTableSpace">
+		<title>Drop</title>
+		<icon>images/trash.gif</icon>   
+    	<actionScript>
+    		<task>
+		    	<assignSharedConstant name="objectType" type="raw">
+					<value>TABLESPACE</value>
+				</assignSharedConstant>
+				<assignSharedConstant name="objectName" type="fixed">
+					<value>?tbsp_name?</value>
+				</assignSharedConstant>
+		   		<callGlobalAction name="dropSQLObject"/>
+	   		</task>
+    	</actionScript>
+    </action>
+	<action name="renameTableSpace">
+		<title>Rename</title>
+    	<actionScript>
+    		<task>
+		    	<assignSharedConstant name="tablespace-name" type="fixed">
+					<value>?tbsp_name?</value>
+				</assignSharedConstant>
+		    	<assignSharedConstant name="command" type="raw">
+					<value>SQL/renameTableSpace</value>
+				</assignSharedConstant>
+		   		<callGlobalAction name="commandExecution"/>
+	   		</task>
+    	</actionScript>
+    </action>
+	<action name="alterTableSpace">
+		<title>Alter</title>
+    	<actionScript>
+    		<task>
+		    	<assignSharedConstant name="tablespace-name" type="fixed">
+					<value>?tbsp_name?</value>
+				</assignSharedConstant>
+		    	<assignSharedConstant name="command" type="raw">
+					<value>SQL/Alter/alterTablespace</value>
+				</assignSharedConstant>
+		   		<callGlobalAction name="commandExecution"/>
+	   		</task>
+    	</actionScript>
+    </action>
+<!-- added end -->  	
+	<column name="tbsp_id">
+		<sqlName>TBSP_ID</sqlName>
+		<title>ID</title>
+		<type>n</type>
+	</column>
+	<column name="tbsp_name">
+		<sqlName>TBSP_NAME</sqlName>
+		<title>Tablespace Name</title>
+		<type>s</type>
+		<drillEnable/>
+		<primaryKey/>
+	</column>
+	<column name="tbsp_state">
+		<sqlName>TBSP_STATE</sqlName>
+		<title>State</title>
+		<type>s</type>
+		<drill_enable/>
+		<column_mask_file>masks/tablespaceState.xml</column_mask_file>
+	</column>
+	<column name="tbsp_utilization_percent">
+		<sqlName>TBSP_UTILIZATION_PERCENT</sqlName>
+		<title>% Utilization</title>
+		<type>bg</type>
+	</column>
+	<column name="tbsp_type">
+		<sqlName>TBSP_TYPE</sqlName>
+		<title>Type</title>
+		<prefill_enable/>		
+		<type>s</type>
+	</column>
+	<column name="tbsp_content_type">
+		<sqlName>TBSP_CONTENT_TYPE</sqlName>
+		<title>Content</title>
+		<prefill_enable/>		
+		<type>s</type>
+		<drill_enable/>
+   		<column_mask>
+			<value_mask value="ANY"><mask>Regular</mask></value_mask>
+			<value_mask value="LARGE"><mask>Large</mask></value_mask>				
+			<value_mask value="USRTEMP"><mask>User Temporary</mask></value_mask>
+			<value_mask value="SYSTEMP"><mask>System Temporary</mask></value_mask>
+   		</column_mask>				
+	</column>
+	<column name="tbsp_page_size">
+		<sqlName>TBSP_PAGE_SIZE</sqlName>
+		<title>Page (KB)</title>
+		<prefill_enable/>		
+		<type>n</type>
+	</column>
+	<column name="tbsp_prefetch_size">
+		<sqlName>TBSP_PREFETCH_SIZE</sqlName>
+		<title>Prefetch (KB)</title>
+		<prefill_enable/>		
+		<type>n</type>
+	</column>
+	<column name="tbsp_extent_size">
+		<sqlName>TBSP_EXTENT_SIZE</sqlName>
+		<title>Extent (KB)</title>
+		<type>n</type>
+	</column>
+	<column name="tbsp_total_size_kb">
+		<sqlName>TBSP_TOTAL_SIZE_KB * 1024</sqlName>
+		<title>Total</title>
+		<type>n</type>
+		<formatNumber toAbbreviated="4"/> 
+	</column>
+	<column name="tbsp_free_size_kb">
+		<sqlName>TBSP_FREE_SIZE_KB * 1024</sqlName>
+		<title>Free</title>
+		<type>n</type>
+		<formatNumber toAbbreviated="4"/> 
+	</column>
+	<column name="tbsp_usable_size_kb">
+		<sqlName>TBSP_USABLE_SIZE_KB * 1024</sqlName>
+		<title>Usable</title>
+		<type>n</type>
+		<formatNumber toAbbreviated="4"/> 
+	</column>
+	<column name="tbsp_used_size_kb">
+		<sqlName>TBSP_USED_SIZE_KB * 1024</sqlName>
+		<title>Used</title>
+		<type>n</type>
+		<formatNumber toAbbreviated="4"/> 
+	</column>
+	<column name="tbsp_used_size_kb_bar">
+		<sqlName>TBSP_USED_SIZE_KB</sqlName>
+		<title>Used % Total</title>
+		<type>bg</type>    
+		<graphattributes flipColor="n">					
+			<inlinequery><![CDATA[select sum(TBSP_USED_SIZE_KB) FROM SYSIBMADM.TBSP_UTILIZATION]]></inlinequery>
+		</graphattributes>
+	</column>
+
+	<column name="tbsp_using_auto_storage">
+		<sqlName>TBSP_USING_AUTO_STORAGE</sqlName>
+		<title>Auto Storage</title>
+		<prefill_enable/>		
+		<type>n</type>
+		<column_mask>
+			<value_mask value="1"><mask>Enabled</mask></value_mask>
+			<value_mask value="0"><mask>Disabled</mask></value_mask>				
+		</column_mask>			
+	</column>
+	<column name="tbsp_auto_resize_enabled">
+		<sqlName>TBSP_AUTO_RESIZE_ENABLED</sqlName>
+		<title>Auto Resize</title>
+		<c_prefill>y</c_prefill>		
+		<type>n</type>
+	   	<column_mask>
+			<value_mask value="1"><mask>Enabled</mask></value_mask>
+			<value_mask value="0"><mask>Disabled</mask></value_mask>				
+	   	</column_mask>			
+	</column>
+	<column name="tbsp_increase_size">
+		<sqlName>TBSP_INCREASE_SIZE</sqlName>
+		<title>Increase Size</title>
+		<type>n</type>
+	   	<column_mask>
+			<value_mask value="-1"><mask>Automatic</mask></value_mask>
+	   	</column_mask>			
+		<formatNumber separator=","/> 
+	</column>
+	<column name="tbsp_increase_size_percent">
+		<sqlName>TBSP_INCREASE_SIZE_PERCENT</sqlName>
+		<title>Increase %</title>
+		<type>n</type>
+	</column>
+	<column name="tbsp_last_resize_time">
+		<sqlName>TBSP_LAST_RESIZE_TIME</sqlName>
+		<title>Last Resize</title>
+		<type>n</type>
+	</column>
+	<column name="tbsp_last_resize_failed">
+		<sqlName>TBSP_LAST_RESIZE_FAILED</sqlName>
+		<title>Last Resize</title>
+		<type>n</type>
+	   	<column_mask>
+			<value_mask value="1"><mask>Failed</mask></value_mask>
+			<value_mask value="0"><mask>Succeeded</mask></value_mask>				
+	   	</column_mask>			
+	</column>
+	<column name="tbsp_max_size">
+		<sqlName>TBSP_MAX_SIZE</sqlName>
+		<title>Max Size</title>
+		<type>n</type>
+	   	<column_mask>
+			<value_mask value="-1"><mask>Unlimited</mask></value_mask>
+	   	</column_mask>			
+		<formatNumber separator=","/> 
+	</column>
+	<column name="tbsp_num_containers">
+		<sqlName>TBSP_NUM_CONTAINERS</sqlName>
+		<title>Number Containers</title>
+		<type>n</type>
+	</column>
+	<column name="snapshot_timestamp">
+		<sqlName>SNAPSHOT_TIMESTAMP</sqlName>
+		<title>Snapshot</title>
+		<type>n</type>
+	</column>
+	<column name="tbsp_create_time">
+		<sqlName>TBSP_CREATE_TIME</sqlName>
+		<title>Creation</title>
+		<type>n</type>
+	</column>
+	<column name="remarks">
+		<sqlName>REMARKS</sqlName>
+		<title>Remarks</title>
+		<type>s</type>
+	</column>
+</table>

@@ -1,0 +1,59 @@
+<table name="databaseConflicts">
+	<sqlName>pg_stat_database_conflicts</sqlName>
+	<singularName>Database Conflicts</singularName>
+	<pluralName>Database Conflicts</pluralName>
+	<description></description>
+	<orderBy name="confl_lock" direction="D"/>
+	<disableEdit/>
+	<output>
+		<type name="DDL" destination="" title="" generator=""/>
+	</output>
+	<displayColumns>
+		<col type="column" name="datname"/>
+		<col type="column" name="confl_tablespace"/>
+		<col type="column" name="confl_lock"/>
+		<col type="column" name="confl_snapshot"/>
+		<col type="column" name="confl_bufferpin"/>
+		<col type="column" name="confl_deadlock"/>
+	</displayColumns>
+	<history depth="10" time="SAMPLE_TS"/>
+	<column name="SAMPLE_TS">
+		<generated>timestamp</generated>
+		<title>Time</title>
+		<type>s</type>
+	</column>
+	<column name="datid">
+		<sqlName>datid</sqlName>
+		<title>Datid</title>
+		<type>n</type>
+		<primaryKey/>
+	</column>
+	<column name="datname">
+		<sqlName>datname</sqlName>
+		<title>Name</title>
+	</column>
+	<column name="confl_tablespace">
+		<sqlName>confl_tablespace</sqlName>
+		<title>Tablespace</title>
+		<type>n</type>
+	</column>
+	<column name="confl_lock" accumulation="y">
+		<sqlName>confl_lock</sqlName>
+		<title>Locks</title>
+		<type>n</type>
+	</column>
+	<column name="confl_snapshot">
+		<sqlName>confl_snapshot</sqlName>
+		<title>Snapshot</title>
+	</column>
+	<column name="confl_bufferpin">
+		<sqlName>confl_bufferpin</sqlName>
+		<title>Buffer Pin</title>
+		<type>n</type>
+	</column>
+	<column name="confl_deadlock" accumulation="y">
+		<sqlName>confl_deadlock</sqlName>
+		<title>Deadlocks</title>
+		<type>n</type>
+	</column>
+</table>

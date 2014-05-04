@@ -1,0 +1,848 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2009-2012 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+
+<table name="histDB">
+	<sql_name>histDB</sql_name>
+	<singular_name>History DB rates</singular_name>
+	<plural_name>History DB rates</plural_name>
+	<messages><SQL0204N>Not installed. Please install "DB2TE add monitoring tables V95" in Tools-> Installed Components</SQL0204N></messages>
+	<inlinequery>
+<![CDATA[
+select * 
+from "s#db2mc".HIST_SNAPDB_DELTA
+,(select case when upper(startTs) = 'CURRENT' then current timestamp else timestamp(startTs) end as startTS 
+	,duration
+	from (values(cast('?' as varchar(26)),cast(? as int))) as timePeriod(startTs,duration)
+ ) period
+where SNAPSHOT_TIMESTAMP between period.startTS - period.duration hours and period.startTS
+]]>
+	</inlinequery>
+	<parameters>
+		<parm name="start">
+			<title>Start</title>
+			<value>current</value>
+			<type>timestamp</type>
+		</parm>
+		<parm name="Period">
+			<title>Period (hours)</title>
+			<value>3</value>
+			<type>n</type>
+		</parm>
+	</parameters>
+	<description>History of snapdb converted into deltas and rates per second</description>
+	<order_by_index name="SNAPSHOT_TIMESTAMP" direction="D"/>
+	<display_columns>
+		<col type="column" name="SNAPSHOT_TIMESTAMP"/>
+		<col type="column" name="DB_NAME"/>
+		<col type="column" name="PERIOD"/>
+		<col type="column" name="CONNECTIONS_TOP"/>
+		<col type="column" name="TOTAL_CONS"/>
+		<col type="column" name="TOTAL_SEC_CONS"/>
+		<col type="column" name="APPLS_CUR_CONS"/>
+		<col type="column" name="APPLS_IN_DB2"/>
+		<col type="column" name="NUM_ASSOC_AGENTS"/>
+		<col type="column" name="AGENTS_TOP"/>
+		<col type="column" name="COORD_AGENTS_TOP"/>
+		<col type="column" name="LOCKS_HELD"/>
+		<col type="column" name="LOCK_WAITS"/>
+		<col type="column" name="LOCK_WAIT_TIME"/>
+		<col type="column" name="LOCK_LIST_IN_USE"/>
+		<col type="column" name="DEADLOCKS"/>
+		<col type="column" name="LOCK_ESCALS"/>
+		<col type="column" name="X_LOCK_ESCALS"/>
+		<col type="column" name="LOCKS_WAITING"/>
+		<col type="column" name="LOCK_TIMEOUTS"/>
+		<col type="column" name="NUM_INDOUBT_TRANS"/>
+		<col type="column" name="SORT_HEAP_ALLOCATED"/>
+		<col type="column" name="SORT_SHRHEAP_ALLOCATED"/>
+		<col type="column" name="SORT_SHRHEAP_TOP"/>
+		<col type="column" name="POST_SHRTHRESHOLD_SORTS"/>
+		<col type="column" name="TOTAL_SORTS"/>
+		<col type="column" name="TOTAL_SORT_TIME"/>
+		<col type="column" name="SORT_OVERFLOWS"/>
+		<col type="column" name="ACTIVE_SORTS"/>
+		<col type="column" name="POOL_DATA_L_READS"/>
+		<col type="column" name="POOL_DATA_P_READS"/>
+		<col type="column" name="POOL_TEMP_DATA_L_READS"/>
+		<col type="column" name="POOL_TEMP_DATA_P_READS"/>
+		<col type="column" name="POOL_ASYNC_DATA_READS"/>
+		<col type="column" name="POOL_DATA_WRITES"/>
+		<col type="column" name="POOL_ASYNC_DATA_WRITES"/>
+		<col type="column" name="POOL_INDEX_L_READS"/>
+		<col type="column" name="POOL_INDEX_P_READS"/>
+		<col type="column" name="POOL_TEMP_INDEX_L_READS"/>
+		<col type="column" name="POOL_TEMP_INDEX_P_READS"/>
+		<col type="column" name="POOL_ASYNC_INDEX_READS"/>
+		<col type="column" name="POOL_INDEX_WRITES"/>
+		<col type="column" name="POOL_ASYNC_INDEX_WRITES"/>
+		<col type="column" name="POOL_XDA_P_READS"/>
+		<col type="column" name="POOL_XDA_L_READS"/>
+		<col type="column" name="POOL_XDA_WRITES"/>
+		<col type="column" name="POOL_ASYNC_XDA_READS"/>
+		<col type="column" name="POOL_ASYNC_XDA_WRITES"/>
+		<col type="column" name="POOL_TEMP_XDA_P_READS"/>
+		<col type="column" name="POOL_TEMP_XDA_L_READS"/>
+		<col type="column" name="POOL_READ_TIME"/>
+		<col type="column" name="POOL_WRITE_TIME"/>
+		<col type="column" name="POOL_ASYNC_READ_TIME"/>
+		<col type="column" name="POOL_ASYNC_WRITE_TIME"/>
+		<col type="column" name="POOL_ASYNC_DATA_READ_REQS"/>
+		<col type="column" name="POOL_ASYNC_INDEX_READ_REQS"/>
+		<col type="column" name="POOL_ASYNC_XDA_READ_REQS"/>
+		<col type="column" name="POOL_NO_VICTIM_BUFFER"/>
+		<col type="column" name="POOL_LSN_GAP_CLNS"/>
+		<col type="column" name="POOL_DRTY_PG_STEAL_CLNS"/>
+		<col type="column" name="POOL_DRTY_PG_THRSH_CLNS"/>
+		<col type="column" name="PREFETCH_WAIT_TIME"/>
+		<col type="column" name="UNREAD_PREFETCH_PAGES"/>
+		<col type="column" name="DIRECT_READS"/>
+		<col type="column" name="DIRECT_WRITES"/>
+		<col type="column" name="DIRECT_READ_REQS"/>
+		<col type="column" name="DIRECT_WRITE_REQS"/>
+		<col type="column" name="DIRECT_READ_TIME"/>
+		<col type="column" name="DIRECT_WRITE_TIME"/>
+		<col type="column" name="FILES_CLOSED"/>
+		<col type="column" name="ELAPSED_EXEC_TIME"/>
+		<col type="column" name="COMMIT_SQL_STMTS"/>
+		<col type="column" name="ROLLBACK_SQL_STMTS"/>
+		<col type="column" name="DYNAMIC_SQL_STMTS"/>
+		<col type="column" name="STATIC_SQL_STMTS"/>
+		<col type="column" name="FAILED_SQL_STMTS"/>
+		<col type="column" name="SELECT_SQL_STMTS"/>
+		<col type="column" name="UID_SQL_STMTS"/>
+		<col type="column" name="DDL_SQL_STMTS"/>
+		<col type="column" name="INT_AUTO_REBINDS"/>
+		<col type="column" name="INT_ROWS_DELETED"/>
+		<col type="column" name="INT_ROWS_INSERTED"/>
+		<col type="column" name="INT_ROWS_UPDATED"/>
+		<col type="column" name="INT_COMMITS"/>
+		<col type="column" name="INT_ROLLBACKS"/>
+		<col type="column" name="INT_DEADLOCK_ROLLBACKS"/>
+		<col type="column" name="ROWS_DELETED"/>
+		<col type="column" name="ROWS_INSERTED"/>
+		<col type="column" name="ROWS_UPDATED"/>
+		<col type="column" name="ROWS_SELECTED"/>
+		<col type="column" name="ROWS_READ"/>
+		<col type="column" name="BINDS_PRECOMPILES"/>
+		<col type="column" name="TOTAL_LOG_AVAILABLE"/>
+		<col type="column" name="TOTAL_LOG_USED"/>
+		<col type="column" name="SEC_LOG_USED_TOP"/>
+		<col type="column" name="TOT_LOG_USED_TOP"/>
+		<col type="column" name="SEC_LOGS_ALLOCATED"/>
+		<col type="column" name="LOG_READS"/>
+		<col type="column" name="LOG_READ_TIME"/>
+		<col type="column" name="LOG_WRITES"/>
+		<col type="column" name="LOG_WRITE_TIME"/>
+		<col type="column" name="NUM_LOG_WRITE_IO"/>
+		<col type="column" name="NUM_LOG_READ_IO"/>
+		<col type="column" name="NUM_LOG_PART_PAGE_IO"/>
+		<col type="column" name="NUM_LOG_BUFFER_FULL"/>
+		<col type="column" name="NUM_LOG_DATA_FOUND_IN_BUFFER"/>
+		<col type="column" name="PKG_CACHE_LOOKUPS"/>
+		<col type="column" name="PKG_CACHE_INSERTS"/>
+		<col type="column" name="PKG_CACHE_NUM_OVERFLOWS"/>
+		<col type="column" name="PKG_CACHE_SIZE_TOP"/>
+		<col type="column" name="APPL_SECTION_LOOKUPS"/>
+		<col type="column" name="APPL_SECTION_INSERTS"/>
+		<col type="column" name="CAT_CACHE_LOOKUPS"/>
+		<col type="column" name="CAT_CACHE_INSERTS"/>
+		<col type="column" name="CAT_CACHE_OVERFLOWS"/>
+		<col type="column" name="CAT_CACHE_SIZE_TOP"/>
+		<col type="column" name="PRIV_WORKSPACE_SIZE_TOP"/>
+		<col type="column" name="PRIV_WORKSPACE_NUM_OVERFLOWS"/>
+		<col type="column" name="PRIV_WORKSPACE_SECTION_INSERTS"/>
+		<col type="column" name="PRIV_WORKSPACE_SECTION_LOOKUPS"/>
+		<col type="column" name="SHR_WORKSPACE_SIZE_TOP"/>
+		<col type="column" name="SHR_WORKSPACE_NUM_OVERFLOWS"/>
+		<col type="column" name="SHR_WORKSPACE_SECTION_INSERTS"/>
+		<col type="column" name="SHR_WORKSPACE_SECTION_LOOKUPS"/>
+		<col type="column" name="TOTAL_HASH_JOINS"/>
+		<col type="column" name="TOTAL_HASH_LOOPS"/>
+		<col type="column" name="HASH_JOIN_OVERFLOWS"/>
+		<col type="column" name="HASH_JOIN_SMALL_OVERFLOWS"/>
+		<col type="column" name="POST_SHRTHRESHOLD_HASH_JOINS"/>
+		<col type="column" name="ACTIVE_HASH_JOINS"/>
+		<col type="column" name="NUM_DB_STORAGE_PATHS"/>
+		<col type="column" name="DBPARTITIONNUM"/>
+		<col type="column" name="TOTAL_OLAP_FUNCS"/>
+		<col type="column" name="OLAP_FUNC_OVERFLOWS"/>
+		<col type="column" name="ACTIVE_OLAP_FUNCS"/>
+		<col type="column" name="STATS_CACHE_SIZE"/>
+		<col type="column" name="STATS_FABRICATIONS"/>
+		<col type="column" name="SYNC_RUNSTATS"/>
+		<col type="column" name="ASYNC_RUNSTATS"/>
+		<col type="column" name="STATS_FABRICATE_TIME"/>
+		<col type="column" name="SYNC_RUNSTATS_TIME"/>
+		<col type="column" name="NUM_THRESHOLD_VIOLATIONS"/>
+	</display_columns>
+	<graph>
+		<title>History DB rates per sec.</title>
+		<type>line</type>
+ 		<style>
+ 			<legend>
+ 			 	<display>right</display>
+ 			</legend>
+ 			<animationEnabled>false</animationEnabled>
+ 		</style>
+	</graph>
+	<charts>
+		<chart name="detail" historyInclude="true">
+			<highlight>first</highlight>
+			<type>line</type>
+			<title>Database History</title>
+			<grouping>DB_NAME</grouping>
+			<axis>
+				<x><column name="SNAPSHOT_TIMESTAMP"/></x>
+				<y scaling="EXPONENTIAL">
+					<column name="POST_SHRTHRESHOLD_SORTS"/>
+					<column name="TOTAL_CONS"/>
+					<column name="LOCK_WAITS"/>
+					<column name="DEADLOCKS"/>
+					<column name="LOCK_ESCALS"/>
+					<column name="SORT_OVERFLOWS"/>
+					<column name="TOTAL_LOG_USED"/>
+					<column name="SYNC_RUNSTATS"/>
+					<column name="LOCK_WAIT_TIME"/>
+				</y>
+			</axis>
+		</chart>
+	</charts>
+	<column name="SNAPSHOT_TIMESTAMP" dimension="timestamp">
+		<sqlName>SNAPSHOT_TIMESTAMP</sqlName>
+		<title>Time</title>
+		<c_graph>
+			<g_x_categories>y</g_x_categories>
+			<label>Time</label>
+		</c_graph>		
+	</column>
+	<column name="DB_NAME">
+		<sqlName>DB_NAME</sqlName>
+		<title>Database</title>
+		<c_graph>
+			<g_x_categories>y</g_x_categories>
+			<label>Database</label>
+		</c_graph>
+		<primaryKey/>	
+	</column>
+	<column name="PERIOD" measure="amount">
+		<sqlName>PERIOD</sqlName>
+		<title>Period</title>
+	</column>
+	<column name="CONNECTIONS_TOP">
+		<sqlName>CONNECTIONS_TOP</sqlName>
+		<title>Connections Top</title>
+	</column>
+	<column name="TOTAL_CONS" measure="amount">
+		<sqlName>TOTAL_CONS</sqlName>
+		<title>Total Connections</title>
+	</column>
+	<column name="TOTAL_SEC_CONS" measure="amount">
+		<sqlName>TOTAL_SEC_CONS</sqlName>
+		<title>Total Sec. Cons.</title>
+	</column>
+	<column name="APPLS_CUR_CONS">
+		<sqlName>APPLS_CUR_CONS</sqlName>
+		<title>Appli. Cur. Cons.</title>
+	</column>
+	<column name="APPLS_IN_DB2">
+		<sqlName>APPLS_IN_DB2</sqlName>
+		<title>Appl.s_in DB2</title>
+	</column>
+	<column name="NUM_ASSOC_AGENTS">
+		<sqlName>NUM_ASSOC_AGENTS</sqlName>
+		<title>No. Assoc. Agents</title>
+	</column>
+	<column name="AGENTS_TOP">
+		<sqlName>AGENTS_TOP</sqlName>
+		<title>Agents Top</title>
+	</column>
+	<column name="COORD_AGENTS_TOP">
+		<sqlName>COORD_AGENTS_TOP</sqlName>
+		<title>Coord. Agents Top</title>
+	</column>
+	<column name="LOCKS_HELD">
+		<sqlName>LOCKS_HELD</sqlName>
+		<title>Locks Held</title>
+		<c_graph>
+			<g_description>Locks Held</g_description>
+			<datastyle>
+				<graph_type>line</graph_type>
+					<color>0x000044</color>
+					<size>2</size>
+					<lineSize>1</lineSize>
+				</datastyle>
+		</c_graph>
+	</column>
+	<column name="LOCK_WAITS" measure="amount">
+		<sqlName>LOCK_WAITS</sqlName>
+		<title>Lock Waits</title>
+		<c_graph>
+			<g_description>Locks Waits</g_description>
+			<datastyle>
+				<graph_type>line</graph_type>
+					<color>0x000088</color>
+					<size>2</size>
+					<lineSize>1</lineSize>
+				</datastyle>
+		</c_graph>
+	</column>
+	<column name="LOCK_WAIT_TIME" measure="amount">
+		<sqlName>LOCK_WAIT_TIME</sqlName>
+		<title>Lock Wait Time</title>
+		<c_graph>
+			<g_description>Lock Wait Time</g_description>
+			<datastyle>
+				<graph_type>line</graph_type>
+					<color>0x0000AA</color>
+					<size>2</size>
+					<lineSize>1</lineSize>
+				</datastyle>
+		</c_graph>
+	</column>
+	<column name="LOCK_LIST_IN_USE">
+		<sqlName>LOCK_LIST_IN_USE</sqlName>
+		<title>Lock List In Use</title>
+	</column>
+	<column name="DEADLOCKS" measure="amount">
+		<sqlName>DEADLOCKS</sqlName>
+		<title>Deadlocks</title>
+		<c_graph>
+			<g_description>Deadlocks</g_description>
+			<datastyle>
+				<graph_type>line</graph_type>
+					<color>0x0000FF</color>
+					<size>2</size>
+					<lineSize>1</lineSize>
+				</datastyle>
+		</c_graph>
+	</column>
+	<column name="LOCK_ESCALS" measure="amount">
+		<sqlName>LOCK_ESCALS</sqlName>
+		<title>Lock Escalations</title>
+	</column>
+	<column name="X_LOCK_ESCALS" measure="amount">
+		<sqlName>X_LOCK_ESCALS</sqlName>
+		<title>X Lock Escals</title>
+	</column>
+	<column name="LOCKS_WAITING">
+		<sqlName>LOCKS_WAITING</sqlName>
+		<title>Lock Waiting</title>
+	</column>
+	<column name="LOCK_TIMEOUTS" measure="amount">
+		<sqlName>LOCK_TIMEOUTS</sqlName>
+		<title>Lock Timeouts</title>
+	</column>
+	<column name="NUM_INDOUBT_TRANS">
+		<sqlName>NUM_INDOUBT_TRANS</sqlName>
+		<title>No. Indoubt Trans</title>
+	</column>
+	<column name="SORT_HEAP_ALLOCATED">
+		<sqlName>SORT_HEAP_ALLOCATED</sqlName>
+		<title>Sort Heap Allocated</title>
+	</column>
+	<column name="SORT_SHRHEAP_ALLOCATED">
+		<sqlName>SORT_SHRHEAP_ALLOCATED</sqlName>
+		<title>Sort Share Heap Allocated</title>
+	</column>
+	<column name="SORT_SHRHEAP_TOP">
+		<sqlName>SORT_SHRHEAP_TOP</sqlName>
+		<title>Sort Share Heap Top</title>
+	</column>
+	<column name="POST_SHRTHRESHOLD_SORTS" measure="amount" minVersion="9.7">
+		<sqlName>POST_SHRTHRESHOLD_SORTS</sqlName>
+		<title>Post Share Threshold Sorts</title>
+	</column>
+	<column name="TOTAL_SORTS" measure="amount">
+		<sqlName>TOTAL_SORTS</sqlName>
+		<title>Total Sorts</title>
+	</column>
+	<column name="TOTAL_SORT_TIME" measure="amount">
+		<sqlName>TOTAL_SORT_TIME</sqlName>
+		<title>Total Sort Time</title>
+	</column>
+	<column name="SORT_OVERFLOWS" measure="amount">
+		<sqlName>SORT_OVERFLOWS</sqlName>
+		<title>Sort Overflows</title>
+		<c_graph>
+			<g_description>Sort Overflows</g_description>
+			<datastyle>
+				<graph_type>line</graph_type>
+					<color>0x004400</color>
+					<size>2</size>
+					<lineSize>1</lineSize>
+				</datastyle>
+		</c_graph>
+	</column>
+	<column name="ACTIVE_SORTS">
+		<sqlName>ACTIVE_SORTS</sqlName>
+		<title>Active Sorts</title>
+	</column>
+	<column name="POOL_DATA_L_READS" measure="amount">
+		<sqlName>POOL_DATA_L_READS</sqlName>
+		<title>Pool Data Logical Reads</title>
+	</column>
+	<column name="POOL_DATA_P_READS" measure="amount">
+		<sqlName>POOL_DATA_P_READS</sqlName>
+		<title>Pool Data Physical Reads</title>
+	</column>
+	<column name="POOL_TEMP_DATA_L_READS" measure="amount">
+		<sqlName>POOL_TEMP_DATA_L_READS</sqlName>
+		<title>Pool Temp. Data Logical Reads</title>
+	</column>
+	<column name="POOL_TEMP_DATA_P_READS" measure="amount">
+		<sqlName>POOL_TEMP_DATA_P_READS</sqlName>
+		<title>Pool Temp Data Physical Reads</title>
+	</column>
+	<column name="POOL_ASYNC_DATA_READS" measure="amount">
+		<sqlName>POOL_ASYNC_DATA_READS</sqlName>
+		<title>Pool Async Data Reads</title>
+	</column>
+	<column name="POOL_DATA_WRITES" measure="amount">
+		<sqlName>POOL_DATA_WRITES</sqlName>
+		<title>Pool Data Writes</title>
+	</column>
+	<column name="POOL_ASYNC_DATA_WRITES" measure="amount">
+		<sqlName>POOL_ASYNC_DATA_WRITES</sqlName>
+		<title>Pool Async Data Writes</title>
+	</column>
+	<column name="POOL_INDEX_L_READS" measure="amount">
+		<sqlName>POOL_INDEX_L_READS</sqlName>
+		<title>Pool Index Logical Reads</title>
+	</column>
+	<column name="POOL_INDEX_P_READS" measure="amount">
+		<sqlName>POOL_INDEX_P_READS</sqlName>
+		<title>Pool Index Physical Reads</title>
+	</column>
+	<column name="POOL_TEMP_INDEX_L_READS" measure="amount">
+		<sqlName>POOL_TEMP_INDEX_L_READS</sqlName>
+		<title>Pool Temp Index Logical Reads</title>
+	</column>
+	<column name="POOL_TEMP_INDEX_P_READS" measure="amount">
+		<sqlName>POOL_TEMP_INDEX_P_READS</sqlName>
+		<title>Pool Temp Index Physgical Reads</title>
+	</column>
+	<column name="POOL_ASYNC_INDEX_READS" measure="amount">
+		<sqlName>POOL_ASYNC_INDEX_READS</sqlName>
+		<title>Pool Async Index Reads</title>
+	</column>
+	<column name="POOL_INDEX_WRITES" measure="amount">
+		<sqlName>POOL_INDEX_WRITES</sqlName>
+		<title>Poll Index Writes</title>
+	</column>
+	<column name="POOL_ASYNC_INDEX_WRITES" measure="amount">
+		<sqlName>POOL_ASYNC_INDEX_WRITES</sqlName>
+		<title>Pool Async Index Writes</title>
+	</column>
+	<column name="POOL_XDA_P_READS" measure="amount" minVersion="9.7">
+		<sqlName>POOL_XDA_P_READS</sqlName>
+		<title>Pool XDA Physical Reads</title>
+	</column>
+	<column name="POOL_XDA_L_READS" measure="amount" minVersion="9.7">
+		<sqlName>POOL_XDA_L_READS</sqlName>
+		<title>Pool XDA Logical Reads</title>
+	</column>
+	<column name="POOL_XDA_WRITES" measure="amount" minVersion="9.7">
+		<sqlName>POOL_XDA_WRITES</sqlName>
+		<title>Pool XDA Writes</title>
+	</column>
+	<column name="POOL_ASYNC_XDA_READS" measure="amount" minVersion="9.7">
+		<sqlName>POOL_ASYNC_XDA_READS</sqlName>
+		<title>Pool Async XDA Reads</title>
+	</column>
+	<column name="POOL_ASYNC_XDA_WRITES" measure="amount" minVersion="9.7">
+		<sqlName>POOL_ASYNC_XDA_WRITES</sqlName>
+		<title>Pool Async XDA Writes</title>
+	</column>
+	<column name="POOL_TEMP_XDA_P_READS" measure="amount" minVersion="9.7">
+		<sqlName>POOL_TEMP_XDA_P_READS</sqlName>
+		<title>Pool Temp XDA Physical Reads</title>
+	</column>
+	<column name="POOL_TEMP_XDA_L_READS" measure="amount" minVersion="9.7">
+		<sqlName>POOL_TEMP_XDA_L_READS</sqlName>
+		<title>Pool Temp XDA Logical Reads</title>
+	</column>
+	<column name="POOL_READ_TIME" measure="amount" minVersion="9.7">
+		<sqlName>POOL_READ_TIME</sqlName>
+		<title>Pool Read Time</title>
+	</column>
+	<column name="POOL_WRITE_TIME" measure="amount">
+		<sqlName>POOL_WRITE_TIME</sqlName>
+		<title>Pool Write Time</title>
+	</column>
+	<column name="POOL_ASYNC_READ_TIME" measure="amount">
+		<sqlName>POOL_ASYNC_READ_TIME</sqlName>
+		<title>Pool Async Read Time</title>
+	</column>
+	<column name="POOL_ASYNC_WRITE_TIME" measure="amount">
+		<sqlName>POOL_ASYNC_WRITE_TIME</sqlName>
+		<title>Pool Async Write Time</title>
+	</column>
+	<column name="POOL_ASYNC_DATA_READ_REQS" measure="amount">
+		<sqlName>POOL_ASYNC_DATA_READ_REQS</sqlName>
+		<title>Pool Async Data Read Requests</title>
+	</column>
+	<column name="POOL_ASYNC_INDEX_READ_REQS" measure="amount">
+		<sqlName>POOL_ASYNC_INDEX_READ_REQS</sqlName>
+		<title>Pool Async Index Read Requests</title>
+	</column>
+	<column name="POOL_ASYNC_XDA_READ_REQS" measure="amount" minVersion="9.7">
+		<sqlName>POOL_ASYNC_XDA_READ_REQS</sqlName>
+		<title>Pool Async XDA Read Requests</title>
+	</column>
+	<column name="POOL_NO_VICTIM_BUFFER" measure="amount">
+		<sqlName>POOL_NO_VICTIM_BUFFER</sqlName>
+		<title>Pool No. Victim Buffer</title>
+	</column>
+	<column name="POOL_LSN_GAP_CLNS" measure="amount">
+		<sqlName>POOL_LSN_GAP_CLNS</sqlName>
+		<title>Poll LSN Gap Clns</title>
+	</column>
+	<column name="POOL_DRTY_PG_STEAL_CLNS" measure="amount">
+		<sqlName>POOL_DRTY_PG_STEAL_CLNS</sqlName>
+		<title>Pool Dirty Page Steal Clns</title>
+	</column>
+	<column name="POOL_DRTY_PG_THRSH_CLNS" measure="amount">
+		<sqlName>POOL_DRTY_PG_THRSH_CLNS</sqlName>
+		<title>Pool Dirty Page Thrsh Clns</title>
+	</column>
+	<column name="PREFETCH_WAIT_TIME" measure="amount">
+		<sqlName>PREFETCH_WAIT_TIME</sqlName>
+		<title>Prefect Wait Time</title>
+	</column>
+	<column name="UNREAD_PREFETCH_PAGES" measure="amount">
+		<sqlName>UNREAD_PREFETCH_PAGES</sqlName>
+		<title>Unread Prefetch Pages</title>
+	</column>
+	<column name="DIRECT_READS" measure="amount">
+		<sqlName>DIRECT_READS</sqlName>
+		<title>Direct Reads</title>
+	</column>
+	<column name="DIRECT_WRITES" measure="amount">
+		<sqlName>DIRECT_WRITES</sqlName>
+		<title>Direct Writes</title>
+	</column>
+	<column name="DIRECT_READ_REQS" measure="amount">
+		<sqlName>DIRECT_READ_REQS</sqlName>
+		<title>Direct Read Requests</title>
+	</column>
+	<column name="DIRECT_WRITE_REQS" measure="amount">
+		<sqlName>DIRECT_WRITE_REQS</sqlName>
+		<title>Direct Write Requests</title>
+	</column>
+	<column name="DIRECT_READ_TIME" measure="amount">
+		<sqlName>DIRECT_READ_TIME</sqlName>
+		<title>Direct Read Time</title>
+	</column>
+	<column name="DIRECT_WRITE_TIME" measure="amount">
+		<sqlName>DIRECT_WRITE_TIME</sqlName>
+		<title>Direct Write Time</title>
+	</column>
+	<column name="FILES_CLOSED" measure="amount">
+		<sqlName>FILES_CLOSED</sqlName>
+		<title>Files Closed</title>
+	</column>
+	<column name="ELAPSED_EXEC_TIME" measure="amount">
+		<sqlName>ELAPSED_EXEC_TIME</sqlName>
+		<title>Elapsed Exec Time</title>
+	</column>
+	<column name="COMMIT_SQL_STMTS" measure="amount">
+		<sqlName>COMMIT_SQL_STMTS</sqlName>
+		<title>Commits SQL Stmts</title>
+	</column>
+	<column name="ROLLBACK_SQL_STMTS" measure="amount">
+		<sqlName>ROLLBACK_SQL_STMTS</sqlName>
+		<title>Rollback SQL Stmts</title>
+	</column>
+	<column name="DYNAMIC_SQL_STMTS" measure="amount">
+		<sqlName>DYNAMIC_SQL_STMTS</sqlName>
+		<title>Dynamic SQL Stmts</title>
+	</column>
+	<column name="STATIC_SQL_STMTS" measure="amount">
+		<sqlName>STATIC_SQL_STMTS</sqlName>
+		<title>Static SQL Stmts</title>
+	</column>
+	<column name="FAILED_SQL_STMTS" measure="amount">
+		<sqlName>FAILED_SQL_STMTS</sqlName>
+		<title>Failed SQL Stmts</title>
+	</column>
+	<column name="SELECT_SQL_STMTS" measure="amount">
+		<sqlName>SELECT_SQL_STMTS</sqlName>
+		<title>Selects</title>
+	</column>
+	<column name="UID_SQL_STMTS" measure="amount">
+		<sqlName>UID_SQL_STMTS</sqlName>
+		<title>UID SQL Stmts</title>
+	</column>
+	<column name="DDL_SQL_STMTS" measure="amount">
+		<sqlName>DDL_SQL_STMTS</sqlName>
+		<title>DDL Stmts</title>
+	</column>
+	<column name="INT_AUTO_REBINDS" measure="amount">
+		<sqlName>INT_AUTO_REBINDS</sqlName>
+		<title>Internal Auto Rebinds</title>
+	</column>
+	<column name="INT_ROWS_DELETED" measure="amount">
+		<sqlName>INT_ROWS_DELETED</sqlName>
+		<title>Internal Rows Deleted</title>
+	</column>
+	<column name="INT_ROWS_INSERTED" measure="amount">
+		<sqlName>INT_ROWS_INSERTED</sqlName>
+		<title>Internal Rows Inserted</title>
+	</column>
+	<column name="INT_ROWS_UPDATED" measure="amount">
+		<sqlName>INT_ROWS_UPDATED</sqlName>
+		<title>Internal Rows Updated</title>
+	</column>
+	<column name="INT_COMMITS" measure="amount">
+		<sqlName>INT_COMMITS</sqlName>
+		<title>Internal Commits</title>
+	</column>
+	<column name="INT_ROLLBACKS" measure="amount">
+		<sqlName>INT_ROLLBACKS</sqlName>
+		<title>Internal Rollbacks</title>
+	</column>
+	<column name="INT_DEADLOCK_ROLLBACKS" measure="amount">
+		<sqlName>INT_DEADLOCK_ROLLBACKS</sqlName>
+		<title>Internal Deadlock Rollbacks</title>
+	</column>
+	<column name="ROWS_DELETED" measure="amount">
+		<sqlName>ROWS_DELETED</sqlName>
+		<title>Rows Deleted</title>
+	</column>
+	<column name="ROWS_INSERTED" measure="amount">
+		<sqlName>ROWS_INSERTED</sqlName>
+		<title>Rows Inserted</title>
+	</column>
+	<column name="ROWS_UPDATED" measure="amount">
+		<sqlName>ROWS_UPDATED</sqlName>
+		<title>Rows Updated</title>
+	</column>
+	<column name="ROWS_SELECTED" measure="amount">
+		<sqlName>ROWS_SELECTED</sqlName>
+		<title>Rows Selected</title>
+	</column>
+	<column name="ROWS_READ" measure="amount">
+		<sqlName>ROWS_READ</sqlName>
+		<title>Rows Read</title>
+	</column>
+	<column name="BINDS_PRECOMPILES" measure="amount">
+		<sqlName>BINDS_PRECOMPILES</sqlName>
+		<title>Binds Precompiles</title>
+	</column>
+	<column name="TOTAL_LOG_AVAILABLE">
+		<sqlName>TOTAL_LOG_AVAILABLE/1000000</sqlName>
+		<title>Total Log Available (M)</title>
+	</column>
+	<column name="TOTAL_LOG_USED">
+		<sqlName>TOTAL_LOG_USED/1000000</sqlName>
+		<title>Total Log Used (M)</title>
+	</column>
+	<column name="SEC_LOG_USED_TOP">
+		<sqlName>SEC_LOG_USED_TOP</sqlName>
+		<title>Secondary Log Used Top</title>
+	</column>
+	<column name="TOT_LOG_USED_TOP">
+		<sqlName>TOT_LOG_USED_TOP</sqlName>
+		<title>Total Log Used Top</title>
+	</column>
+	<column name="SEC_LOGS_ALLOCATED">
+		<sqlName>SEC_LOGS_ALLOCATED</sqlName>
+		<title>Secondary Logs Allocated</title>
+	</column>
+	<column name="LOG_READS" measure="amount">
+		<sqlName>LOG_READS</sqlName>
+		<title>Log Reads</title>
+	</column>
+	<column name="LOG_READ_TIME" measure="amount">
+		<sqlName>LOG_READ_TIME</sqlName>
+		<title>Log Read Time</title>
+	</column>
+	<column name="LOG_WRITES" measure="amount">
+		<sqlName>LOG_WRITES</sqlName>
+		<title>Log Writes</title>
+	</column>
+	<column name="LOG_WRITE_TIME" measure="amount">
+		<sqlName>LOG_WRITE_TIME</sqlName>
+		<title>Log Write Time</title>
+	</column>
+	<column name="NUM_LOG_WRITE_IO" measure="amount">
+		<sqlName>NUM_LOG_WRITE_IO</sqlName>
+		<title>No. Log Write IO</title>
+	</column>
+	<column name="NUM_LOG_READ_IO" measure="amount">
+		<sqlName>NUM_LOG_READ_IO</sqlName>
+		<title>No. Log Read IO</title>
+	</column>
+	<column name="NUM_LOG_PART_PAGE_IO" measure="amount">
+		<sqlName>NUM_LOG_PART_PAGE_IO</sqlName>
+		<title>No. Log Part Page IO</title>
+	</column>
+	<column name="NUM_LOG_BUFFER_FULL" measure="amount">
+		<sqlName>NUM_LOG_BUFFER_FULL</sqlName>
+		<title>No. Log Buffer Full</title>
+	</column>
+	<column name="NUM_LOG_DATA_FOUND_IN_BUFFER" measure="amount">
+		<sqlName>NUM_LOG_DATA_FOUND_IN_BUFFER</sqlName>
+		<title>No. Log Data Found In Buffer</title>
+	</column>
+	<column name="PKG_CACHE_LOOKUPS" measure="amount">
+		<sqlName>PKG_CACHE_LOOKUPS</sqlName>
+		<title>Pkg Cache Lookups</title>
+	</column>
+	<column name="PKG_CACHE_INSERTS" measure="amount">
+		<sqlName>PKG_CACHE_INSERTS</sqlName>
+		<title>Pkg Cache Inserts</title>
+	</column>
+	<column name="PKG_CACHE_NUM_OVERFLOWS" measure="amount">
+		<sqlName>PKG_CACHE_NUM_OVERFLOWS</sqlName>
+		<title>Pkg Cache No. Overflows</title>
+	</column>
+	<column name="PKG_CACHE_SIZE_TOP">
+		<sqlName>PKG_CACHE_SIZE_TOP</sqlName>
+		<title>Pkg Cache Size Top</title>
+	</column>
+	<column name="APPL_SECTION_LOOKUPS" measure="amount">
+		<sqlName>APPL_SECTION_LOOKUPS</sqlName>
+		<title>Apl Section Lookups</title>
+	</column>
+	<column name="APPL_SECTION_INSERTS" measure="amount">
+		<sqlName>APPL_SECTION_INSERTS</sqlName>
+		<title>Appl Sections Inserts</title>
+	</column>
+	<column name="CAT_CACHE_LOOKUPS" measure="amount">
+		<sqlName>CAT_CACHE_LOOKUPS</sqlName>
+		<title>Cat. Cache Lookups</title>
+	</column>
+	<column name="CAT_CACHE_INSERTS" measure="amount">
+		<sqlName>CAT_CACHE_INSERTS</sqlName>
+		<title>Cat. Cache Inserts</title>
+	</column>
+	<column name="CAT_CACHE_OVERFLOWS" measure="amount">
+		<sqlName>CAT_CACHE_OVERFLOWS</sqlName>
+		<title>Cat. Cache Overflows</title>
+	</column>
+	<column name="CAT_CACHE_SIZE_TOP">
+		<sqlName>CAT_CACHE_SIZE_TOP</sqlName>
+		<title>Cat. Cache Size Top</title>
+	</column>
+	<column name="PRIV_WORKSPACE_SIZE_TOP">
+		<sqlName>PRIV_WORKSPACE_SIZE_TOP</sqlName>
+		<title>Private Work Size Top</title>
+	</column>
+	<column name="PRIV_WORKSPACE_NUM_OVERFLOWS" measure="amount">
+		<sqlName>PRIV_WORKSPACE_NUM_OVERFLOWS</sqlName>
+		<title>Private Work No. Overflows</title>
+	</column>
+	<column name="PRIV_WORKSPACE_SECTION_INSERTS" measure="amount">
+		<sqlName>PRIV_WORKSPACE_SECTION_INSERTS</sqlName>
+		<title>Private Work Section Inserts</title>
+	</column>
+	<column name="PRIV_WORKSPACE_SECTION_LOOKUPS" measure="amount">
+		<sqlName>PRIV_WORKSPACE_SECTION_LOOKUPS</sqlName>
+		<title>Private Work Section Lookups</title>
+	</column>
+	<column name="SHR_WORKSPACE_SIZE_TOP">
+		<sqlName>SHR_WORKSPACE_SIZE_TOP</sqlName>
+		<title>Share Work Size Top</title>
+	</column>
+	<column name="SHR_WORKSPACE_NUM_OVERFLOWS" measure="amount">
+		<sqlName>SHR_WORKSPACE_NUM_OVERFLOWS</sqlName>
+		<title>Share Work No. Overflows</title>
+	</column>
+	<column name="SHR_WORKSPACE_SECTION_INSERTS" measure="amount">
+		<sqlName>SHR_WORKSPACE_SECTION_INSERTS</sqlName>
+		<title>Share Work Section Inserts</title>
+	</column>
+	<column name="SHR_WORKSPACE_SECTION_LOOKUPS" measure="amount">
+		<sqlName>SHR_WORKSPACE_SECTION_LOOKUPS</sqlName>
+		<title>Share Work Section Lookups</title>
+	</column>
+	<column name="TOTAL_HASH_JOINS" measure="amount">
+		<sqlName>TOTAL_HASH_JOINS</sqlName>
+		<title>Total Hash Joins</title>
+	</column>
+	<column name="TOTAL_HASH_LOOPS" measure="amount">
+		<sqlName>TOTAL_HASH_LOOPS</sqlName>
+		<title>Total Hash Loops</title>
+	</column>
+	<column name="HASH_JOIN_OVERFLOWS" measure="amount">
+		<sqlName>HASH_JOIN_OVERFLOWS</sqlName>
+		<title>Hash Join Overflows</title>
+	</column>
+	<column name="HASH_JOIN_SMALL_OVERFLOWS" measure="amount">
+		<sqlName>HASH_JOIN_SMALL_OVERFLOWS</sqlName>
+		<title>Hash Join Small Overflows</title>
+	</column>
+	<column name="POST_SHRTHRESHOLD_HASH_JOINS" measure="amount" minVersion="9.7">
+		<sqlName>POST_SHRTHRESHOLD_HASH_JOINS</sqlName>
+		<title>Post Share Threshold Hash Joins</title>
+	</column>
+	<column name="ACTIVE_HASH_JOINS" measure="amount" minVersion="9.7">
+		<sqlName>ACTIVE_HASH_JOINS</sqlName>
+		<title>Active Hash Joins</title>
+	</column>
+	<column name="NUM_DB_STORAGE_PATHS">
+		<sqlName>NUM_DB_STORAGE_PATHS</sqlName>
+		<title>No. DB Storage Paths</title>
+	</column>
+	<column name="DBPARTITIONNUM">
+		<sqlName>DBPARTITIONNUM</sqlName>
+		<title>Partition</title>
+		<primaryKey/>
+	</column>
+	<column name="TOTAL_OLAP_FUNCS" measure="amount" minVersion="9.7">
+		<sqlName>TOTAL_OLAP_FUNCS</sqlName>
+		<title>Total OLAP Funcs.</title>
+	</column>
+	<column name="OLAP_FUNC_OVERFLOWS" measure="amount" minVersion="9.7">
+		<sqlName>OLAP_FUNC_OVERFLOWS</sqlName>
+		<title>OLAP funcs. Overflows</title>
+	</column>
+	<column name="ACTIVE_OLAP_FUNCS" measure="amount" minVersion="9.7">
+		<sqlName>ACTIVE_OLAP_FUNCS</sqlName>
+		<title>Aactive OLAP Funcs.</title>
+	</column>
+	<column name="STATS_CACHE_SIZE" minVersion="9.7">
+		<sqlName>STATS_CACHE_SIZE</sqlName>
+		<title>Stats Cache Size</title>
+	</column>
+	<column name="STATS_FABRICATIONS" measure="amount" minVersion="9.7">
+		<sqlName>STATS_FABRICATIONS</sqlName>
+		<title>Stats Fabrications</title>
+	</column>
+	<column name="SYNC_RUNSTATS" measure="amount" minVersion="9.7">
+		<sqlName>SYNC_RUNSTATS</sqlName>
+		<title>Sync Runstats</title>
+	</column>
+	<column name="ASYNC_RUNSTATS" measure="amount" minVersion="9.7">
+		<sqlName>ASYNC_RUNSTATS</sqlName>
+		<title>Async Runstats</title>
+	</column>
+	<column name="STATS_FABRICATE_TIME" measure="amount" minVersion="9.7">
+		<sqlName>STATS_FABRICATE_TIME</sqlName>
+		<title>Stats Fabricate Time</title>
+	</column>
+	<column name="SYNC_RUNSTATS_TIME" measure="amount" minVersion="9.7">
+		<sqlName>SYNC_RUNSTATS_TIME</sqlName>
+		<title>Sync Runstats Time</title>
+	</column>
+	<column name="NUM_THRESHOLD_VIOLATIONS" measure="amount" minVersion="9.7">
+		<sqlName>NUM_THRESHOLD_VIOLATIONS</sqlName>
+		<title>No. Threshold Violations</title>
+	</column>
+</table>

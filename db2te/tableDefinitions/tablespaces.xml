@@ -1,0 +1,271 @@
+<!--
+  Copyright IBM Corp. 2007 All rights reserved.
+  added peter prib, Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2009-2012 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<table name="tablespaces">
+    <sqlName>SYSCAT.TABLESPACES</sqlName>
+    <singularName>Table Space</singularName>
+    <pluralName>Table Spaces</pluralName>
+	<description>Each row represents a
+		&lt;a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.admin.dbobj.doc/doc/c0021378.html?noframes=true');"&gt;table space&lt;/a&gt;.
+		This table is based on the &lt;a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.sql.ref.doc/doc/r0001064.html?noframes=true');"&gt;SYSCAT.TABLESPACE&lt;/a&gt; catalog view.
+	</description>	
+	<disableEdit/>
+	<output>
+		<type name="DDL" destination="" title="" generator=""/>
+	</output>
+    <order_by_index></order_by_index>
+    <displayColumns>
+        <col type="column" name="tbspace"></col>
+        <col type="column" name="tbspaceid"></col>
+        <col type="reference" name="IO"></col>                        
+        <col type="column" name="tbspacetype"></col>
+        <col type="column" name="owner"></col>
+        <col type="column" name="datatype"></col>
+        <col type="column" name="extentsize"></col>
+        <col type="column" name="prefetchsize"></col>
+        <col type="column" name="overhead"></col>
+        <col type="column" name="transferrate"></col>
+        <col type="column" name="pagesize"></col>
+        <col type="reference" name="tables"></col> 
+        <col type="reference" name="tableActivity"></col> 
+        <col type="reference" name="containers"></col> 
+        <col type="column" name="dbpgname"></col>
+        <col type="reference" name="auth"></col>
+        <col type="column" name="bufferpoolid"></col>
+        <col type="column" name="drop_recovery"></col>
+        <col type="column" name="ngname"></col>
+        <col type="column" name="definer"></col>
+        <col type="column" name="remarks"></col>
+        <col type="column" name="create_time"></col>
+    </displayColumns>
+	<action name="toogleCaching">
+		<title>Toogle File Caching</title>
+		<icon>images/trash.gif</icon>   
+    	<actionScript>
+    		<task>
+				<assignSharedConstant name="sql" type="fixed">
+					<value>
+<![CDATA[
+ALTER TABLESPACE "?tbspace?" NO FILE SYSTEM CACHING
+]]>
+					</value>
+				</assignSharedConstant>
+		   		<callGlobalAction name="sqlExecution"/>
+	   		</task>
+    	</actionScript>
+    </action>
+	<action name="dropTableSpace">
+		<title>Drop</title>
+		<icon>images/trash.gif</icon>   
+    	<actionScript>
+    		<task>
+		    	<assignSharedConstant name="objectType" type="raw">
+					<value>TABLESPACE</value>
+				</assignSharedConstant>
+				<assignSharedConstant name="objectName" type="fixed">
+					<value>"?tbspace?"</value>
+				</assignSharedConstant>
+		   		<callGlobalAction name="dropSQLObject"/>
+	   		</task>
+    	</actionScript>
+    </action>
+	<action name="renameTableSpace">
+		<title>Rename</title>
+    	<actionScript>
+    		<task>
+		    	<assignSharedConstant name="tablespace-name" type="fixed">
+					<value>?tbspace?</value>
+				</assignSharedConstant>
+		    	<assignSharedConstant name="command" type="raw">
+					<value>SQL/renameTableSpace</value>
+				</assignSharedConstant>
+		   		<callGlobalAction name="commandExecution"/>
+	   		</task>
+    	</actionScript>
+    </action>
+	<action name="alterTableSpace">
+		<title>Alter</title>
+    	<actionScript>
+    		<task>
+		    	<assignSharedConstant name="tablespace-name" type="fixed">
+					<value>?tbspace?</value>
+				</assignSharedConstant>
+		    	<assignSharedConstant name="command" type="raw">
+					<value>SQL/Alter/alterTablespace</value>
+				</assignSharedConstant>
+		   		<callGlobalAction name="commandExecution"/>
+	   		</task>
+    	</actionScript>
+    </action>
+
+<!-- added end -->  
+   
+	<reference name="auth">
+		<title>Privilege</title>
+		<reftype>displayRow</reftype>
+		<refvalue>Authority/tbspauth</refvalue>
+		<icon>images/icon-privilege.gif</icon>
+		<ref foreignColumnName="tbspace">
+			<localColumnName>tbspace</localColumnName>
+		</ref>
+	</reference>	
+	<reference name="IO" DBMS="DB2">
+		<title>Performance</title>
+		<reftype>displayRow</reftype>
+		<refvalue>Performance/toptbsp</refvalue>
+		<ref foreignColumnName="tbspName">
+			<localColumnName>tbspace</localColumnName>
+		</ref>
+	</reference>
+	<reference name="tables">
+		<title>Tables</title>
+		<reftype>table</reftype>
+		<refvalue>tablecat</refvalue>
+		<icon>images/icon-link-calendar.gif</icon>
+		<ref foreignColumnName="tbspaceid">
+			<localColumnName>tbspaceid</localColumnName>
+		</ref>
+	</reference>
+	<reference name="tableActivity" DBMS="DB2">
+		<title>Table Activity</title>
+		<reftype>table</reftype>
+		<refvalue>Performance/toptable</refvalue>
+		<icon>images/icon-link-calendar.gif</icon>
+		<ref foreignColumnName="tbsp_id">
+			<localColumnName>tbspaceid</localColumnName>
+		</ref>
+	</reference> 
+	<reference name="containers" DBMS="DB2">
+		<title>Containers</title>
+		<reftype>table</reftype>
+		<refvalue>container</refvalue>
+		<ref foreignColumnName="TBSPName">
+			<localColumnName>tbspace</localColumnName>
+		</ref>
+	</reference> 
+    <column name="tbspace">
+        <sqlName>TBSPACE</sqlName>
+        <title>Name</title>
+        <type>s</type>
+        <drillEnable/>
+        <primaryKey/>
+    </column>
+    <column name="owner" DBMS="DB2">
+        <sqlName>OWNER</sqlName>
+        <title>Owner</title>
+        <type>s</type>
+        <drillEnable/>
+    </column>
+    <column name="create_time">
+        <sqlName>CREATE_TIME</sqlName>
+        <title>Creation Time</title>
+        <type>n</type>
+    </column>
+    <column name="tbspaceid">
+        <sqlName>TBSPACEID</sqlName>
+        <title>ID</title>
+        <type>n</type>
+    </column>
+    <column name="tbspacetype">
+        <sqlName>TBSPACETYPE</sqlName>
+        <title>Type</title>
+        <type>s</type>
+        <drillEnable/>
+        <columnMask_file>masks/tablespaceType.xml</columnMask_file>
+    </column>
+    <column name="datatype">
+        <sqlName>DATATYPE</sqlName>
+        <title>Data Type</title>
+        <type>s</type>
+        <columnMask_file>masks/tablespaceDataType.xml</columnMask_file>
+    </column>
+    <column name="extentsize">
+        <sqlName>EXTENTSIZE</sqlName>
+        <title>Extent Size</title>
+        <type>n</type>
+    </column>
+    <column name="prefetchsize">
+        <sqlName>PREFETCHSIZE</sqlName>
+        <title>Prefetch Size</title>
+        <type>n</type>
+   		<columnMask>
+			<valueMask value="-1"><mask>Automatic</mask></valueMask>
+   		</columnMask>
+    </column>
+    <column name="overhead">
+        <sqlName>OVERHEAD</sqlName>
+        <title>Overhead</title>
+        <type>n</type>
+    </column>
+    <column name="transferrate">
+        <sqlName>TRANSFERRATE</sqlName>
+        <title>Transfer Rate</title>
+        <type>n</type>
+    </column>
+    <column name="pagesize">
+        <sqlName>PAGESIZE</sqlName>
+        <title>Page Size</title>
+        <type>n</type>
+    </column>
+    <column name="dbpgname" DBMS="DB2">
+        <sqlName>DBPGNAME</sqlName>
+        <title>Group Name</title>
+        <type>s</type>
+        <drillEnable/>
+    </column>
+    <column name="bufferpoolid">
+        <sqlName>BUFFERPOOLID</sqlName>
+        <title>Buffer Pool ID</title>
+        <type>n</type>
+		<c_reference name="buffpool">
+			<title>Buffers</title>
+			<reftype>displayRow</reftype>
+			<refvalue>bufferpool</refvalue>
+			<icon>images/icon-buffer.gif</icon>								
+			<ref foreignColumnName="bufferpoolid">
+				<localColumnName>bufferpoolid</localColumnName>
+			</ref>
+		</c_reference>
+    </column>
+    <column name="drop_recovery" DBMS="DB2">
+        <sqlName>DROP_RECOVERY</sqlName>
+        <title>Drop Recovery</title>
+        <type>s</type>
+        <drillEnable/>
+   	   	<columnMask>
+			<valueMask value="Y"><mask>Recoverable</mask></valueMask>
+			<valueMask value="N"><mask>Not Recoverable</mask></valueMask>
+	   	</columnMask>					
+    </column>
+    <column name="ngname">
+        <sqlName>NGNAME</sqlName>
+        <title>NG Name</title>
+        <type>s</type>
+        <drillEnable/>
+    </column>
+    <column name="definer">
+        <sqlName>DEFINER</sqlName>
+        <title>Definer</title>
+        <type>s</type>
+        <c_drill>y</c_drill>
+    </column>
+    <column name="remarks">
+        <sqlName>REMARKS</sqlName>
+        <title>Remarks</title>
+        <type>s</type>
+        <drillEnable/>
+    </column>
+</table>
