@@ -49,6 +49,7 @@
 				try {
 					include_once(PHP_INCLUDE_BASE_DIRECTORY . $currentFile);
 				} catch (Exception $e){
+					error_log('Error loading DBConnection for "'.$currentFile.'" exception: '.$e->getMessage());
 					continue;
 				}
 				$className = substr($currentFile, 2, -4);

@@ -36,6 +36,7 @@ Java Bridge <?php if(JAVA_BRIDGE_ACTIVE) $v=java_get_version_info(); echo (JAVA_
 <p>
 PHP database driver check:<br/><br/>
 <?php
+try {
 	$fileInDir = scandir(PHP_INCLUDE_BASE_DIRECTORY, 0);
 	sort($fileInDir);
 
@@ -101,6 +102,9 @@ PHP database driver check:<br/><br/>
 			echo '</font><br/><br/>';		
 		}
 	}
+} catch (Exception $e){
+	error_log('Error loading DBConnections, exception: '.$e->getMessage());
+}
 ?>
 <p>
 Loaded PHP extensions:<br/><br/>
