@@ -1,0 +1,618 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" version="1.0">
+<!--*****************************************************************************************-->
+<!-- Licensed Materials - Property of IBM                                                    -->
+<!-- (C) Copyright International Business Machines Corporation 2009. All rights reserved.    -->
+<!-- U.S. Government Users Restricted Rights; Use, duplication or disclosure restricted by   -->
+<!-- GSA ADP Schedule Contract with IBM Corp.                                                -->
+<!--*****************************************************************************************-->
+<!--*****************************************************************************************-->
+<!-- Definition of the current optimization profile schema for V9.7.0.0                      -->
+<!--                                                                                         -->
+<!-- An optimization profile is composed of the following sections:                          -->
+<!--                                                                                         -->
+<!-- + A global optimization guidelines section (at most one) which defines optimization     -->
+<!-- guidelines affecting any statement for which the optimization profile is in effect.     -->
+<!--                                                                                         -->
+<!-- + Zero or more statement profile sections, each of which defines optimization           -->
+<!-- guidelines for a particular statement for which the optimization profile                -->
+<!-- is in effect.                                                                           -->
+<!--                                                                                         -->
+<!-- The VERSION attribute indicates the version of this optimization profile                -->
+<!-- schema.                                                                                 -->
+<!--*****************************************************************************************-->
+<xs:element name="OPTPROFILE">
+   <xs:complexType>
+      <xs:sequence>
+         <!-- Global optimization guidelines section. At most one can be specified. -->
+         <xs:element name="OPTGUIDELINES" type="globalOptimizationGuidelinesType" minOccurs="0"/>
+         <!-- Statement profile section. Zero or more can be specified -->
+         <xs:element name="STMTPROFILE" type="statementProfileType" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+      <!-- Version attribute is currently optional -->
+      <xs:attribute name="VERSION" use="optional"/>
+   </xs:complexType>
+</xs:element>
+
+<!--*****************************************************************************************-->
+<!-- Global optimization guidelines supported in this version:                               -->
+<!-- + MQTOptimizationChoices elements influence the MQTs considered by the optimizer.       -->
+<!-- + computationalPartitionGroupOptimizationsChoices elements can affect repartitioning    -->
+<!-- optimizations involving nicknames.                                                      -->
+<!-- + General requests affect the search space which defines the alternative query          -->
+<!-- transformations, access methods, join methods, join orders, and other optimizations,    -->
+<!-- considered by the compiler and optimizer.                                               -->
+<!-- + MQT enforcement requests specify semantically matchable MQTs whose usage in access    -->
+<!-- plans should be enforced regardless of cost estimates.                                  -->
+<!-- ****************************************************************************************-->
+<xs:complexType name="globalOptimizationGuidelinesType">
+   <xs:sequence>
+      <xs:group ref="MQTOptimizationChoices" />
+      <xs:group ref="computationalPartitionGroupOptimizationChoices" />
+      <xs:group ref="generalRequest"/>
+      <xs:group ref="mqtEnforcementRequest" />
+   </xs:sequence>
+</xs:complexType>
+<!-- ****************************************************************************************-->
+<!-- Elements for affecting materialized query table (MQT) optimization.                     -->
+<!--                                                                                         -->
+<!-- + MQTOPT - can be used to disable materialized query table (MQT) optimization.          -->
+<!-- If disabled, the optimizer will not consider MQTs to optimize the statement.            -->
+<!--                                                                                         -->
+<!-- + MQT - multiple of these can be specified. Each specifies an MQT that should be        -->
+<!-- considered for optimizing the statement. Only specified MQTs will be considered.        -->
+<!--                                                                                         -->
+<!--*****************************************************************************************-->
+<xs:group name="MQTOptimizationChoices">
+   <xs:choice>
+      <xs:element name="MQTOPT" minOccurs="0" maxOccurs="1">
+         <xs:complexType>
+            <xs:attribute name="OPTION" type="optionType" use="optional"/>
+         </xs:complexType>
+      </xs:element>
+      <xs:element name="MQT" minOccurs="0" maxOccurs="unbounded">
+         <xs:complexType>
+            <xs:attribute name="NAME" type="xs:string" use="required"/>
+         </xs:complexType>
+      </xs:element>
+   </xs:choice>
+</xs:group>
+<!-- ***************************************************************************************-->
+<!-- Elements for affecting computational partition group (CPG) optimization.               -->
+<!--                                                                                        -->
+<!-- + PARTOPT - can be used disable the computational partition group (CPG) optimization   -->
+<!-- which is used to dynamically redistributes inputs to join, aggregation,                -->
+<!-- and union operations when those inputs are results of remote queries.                  -->
+<!--                                                                                        -->
+<!-- + PART - Define the partition groups to be used in CPG optimizations.                  -->
+<!--                                                                                        -->
+<!-- ***************************************************************************************-->
+<xs:group name="computationalPartitionGroupOptimizationChoices">
+   <xs:choice>
+      <xs:element name="PARTOPT" minOccurs="0" maxOccurs="1">
+         <xs:complexType>
+            <xs:attribute name="OPTION" type="optionType" use="optional"/>
+      </xs:complexType>
+      </xs:element>
+      <xs:element name="PART" minOccurs="0" maxOccurs="1">
+         <xs:complexType>
+            <xs:attribute name="NAME" type="xs:string" use="required"/>
+         </xs:complexType>
+      </xs:element>
+   </xs:choice>
+</xs:group>
+<!-- ****************************************************************************************-->
+<!-- Definition of a statement profile.                                                      -->
+<!-- Comprised of a statement key and optimization guidelines.                               -->
+<!-- The statement key specifies semantic information used to identify the statement to      -->
+<!-- which optimization guidelines apply. The optional ID attribute provides the statement   -->
+<!-- profile with a name for use in EXPLAIN output.                                          -->
+<!-- ****************************************************************************************-->
+<xs:complexType name="statementProfileType">
+   <xs:sequence>
+      <!-- Statement key element -->
+      <xs:element name="STMTKEY" type="statementKeyType"/>
+      <xs:element name="OPTGUIDELINES" type="optGuidelinesType"/>
+   </xs:sequence>
+   <!-- ID attribute.Used in explain output to indicate the statement profile was used. -->
+   <xs:attribute name="ID" type="xs:string" use="optional"/>
+</xs:complexType>
+<!--****************************************************************************************-->
+<!-- Definition of the statement key. The statement key provides semantic information used  -->
+<!-- to identify the statement to which the optimization guidelines apply.                  -->
+<!-- The statement key is comprised of:                                                     -->
+<!-- + statement text (as written in the application)                                       -->
+<!-- + default schema (for resolving unqualified table names in the statement)              -->
+<!-- + function path (for resolving unqualified types and functions in the statement)       -->
+<!-- The statement text is provided as element data whereas the default schema and function -->
+<!-- path are provided via the SCHEMA and FUNCPATH elements, respectively.                  -->
+<!--****************************************************************************************-->
+<xs:complexType name="statementKeyType" mixed="true">
+   <xs:attribute name="SCHEMA" type="xs:string" use="optional"/>
+   <xs:attribute name="FUNCPATH" type="xs:string" use="optional"/>
+</xs:complexType>
+
+<!--****************************************************************************************-->
+<!--                                                                                        -->
+<!-- Optimization guideline elements can be chosen from general requests, rewrite           -->
+<!-- requests access requests, or join requests.                                            -->
+<!--                                                                                        -->
+<!-- General requests affect the search space which defines the alternative query           -->
+<!-- transformations, access methods, join methods, join orders, and other optimizations,   -->
+<!-- considered by the optimizer.                                                           -->
+<!--                                                                                        -->
+<!-- Rewrite requests affect the query transformations used in determining the optimized    -->
+<!-- statement.                                                                             -->
+<!--                                                                                        -->
+<!-- Access requests affect the access methods considered by the cost-based optimizer,      -->
+<!-- and join requests affect the join methods and join order used in the execution plan.   -->
+<!--                                                                                        -->
+<!-- MQT enforcement requests specify semantically matchable MQTs whose usage in access     -->
+<!-- plans should be enforced regardless of cost estimates.                                 -->
+<!--                                                                                        -->
+<!--****************************************************************************************-->
+<xs:element name="OPTGUIDELINES" type="optGuidelinesType"/>
+<xs:complexType name="optGuidelinesType">
+   <xs:sequence>
+      <xs:group ref="generalRequest" minOccurs="0" maxOccurs="1"/>
+      <xs:choice maxOccurs="unbounded">
+         <xs:group ref="rewriteRequest" />
+         <xs:group ref="accessRequest"/>
+         <xs:group ref="joinRequest"/>
+         <xs:group ref="mqtEnforcementRequest"/>
+      </xs:choice>
+   </xs:sequence>
+</xs:complexType>
+<!--************************************************************************************* -->
+<!-- Choices of general request elements.                                                 -->
+<!-- REOPT can be used to override the setting of the REOPT bind option.                  -->
+<!-- DPFXMLMOVEMENT can be used to affect the optimizer's plan when moving XML documents  -->
+<!-- between database partitions. The value can be NONE, REFERENCE or COMBINATION. The    -->
+<!-- default value is NONE.                                                               -->
+<!--************************************************************************************* -->
+<xs:group name="generalRequest">
+   <xs:sequence>
+      <xs:element name="REOPT" type="reoptType" minOccurs="0" maxOccurs="1"/>
+      <xs:element name="DEGREE" type="degreeType" minOccurs="0" maxOccurs="1"/>
+      <xs:element name="QRYOPT" type="qryoptType" minOccurs="0" maxOccurs="1"/>
+      <xs:element name="RTS" type="rtsType" minOccurs="0" maxOccurs="1"/>
+      <xs:element name="DPFXMLMOVEMENT" type="dpfXMLMovementType" minOccurs="0" maxOccurs="1"/>
+   </xs:sequence>
+</xs:group>
+<!--***********************************************************************************-->
+<!-- Choices of rewrite request elements.                                              -->
+<!--***********************************************************************************-->
+<xs:group name="rewriteRequest">
+   <xs:sequence>
+      <xs:element name="INLIST2JOIN" type="inListToJoinType" minOccurs="0"/>
+      <xs:element name="SUBQ2JOIN" type="subqueryToJoinType" minOccurs="0"/>
+      <xs:element name="NOTEX2AJ" type="notExistsToAntiJoinType" minOccurs="0"/>
+      <xs:element name="NOTIN2AJ" type="notInToAntiJoinType" minOccurs="0"/>
+   </xs:sequence>
+</xs:group>
+<!--************************************************************************************* -->
+<!-- Choices for access request elements.                                                 -->
+<!-- TBSCAN - table scan access request element                                           -->
+<!-- IXSCAN - index scan access request element                                           -->
+<!-- LPREFETCH - list prefetch access request element                                     -->
+<!-- IXAND - index ANDing access request element                                          -->
+<!-- IXOR - index ORing access request element                                            -->
+<!-- XISCAN - xml index access request element                                            -->
+<!-- XANDOR - XANDOR access request element                                               -->
+<!-- ACCESS - indicates the optimizer should choose the access method for the table       -->
+<!--************************************************************************************* -->
+<xs:group name="accessRequest">
+   <xs:choice>
+      <xs:element name="TBSCAN" type="tableScanType"/>
+      <xs:element name="IXSCAN" type="indexScanType"/>
+      <xs:element name="LPREFETCH" type="listPrefetchType"/>
+      <xs:element name="IXAND" type="indexAndingType"/>
+      <xs:element name="IXOR" type="indexOringType"/>
+      <xs:element name="XISCAN" type="indexScanType"/>
+      <xs:element name="XANDOR" type="XANDORType"/>
+      <xs:element name="ACCESS" type="anyAccessType"/>
+   </xs:choice>
+</xs:group>
+<!--************************************************************************************* -->
+<!-- Choices for join request elements.                                                   -->
+<!-- NLJOIN - nested-loops join request element                                           -->
+<!-- MSJOIN - sort-merge join request element                                             -->
+<!-- HSJOIN - hash join request element                                                   -->
+<!-- JOIN - indicates that the optimizer is to choose the join method.                    -->
+<!--************************************************************************************* -->
+<xs:group name="joinRequest">
+   <xs:choice>
+      <xs:element name="NLJOIN" type="nestedLoopJoinType"/>
+      <xs:element name="HSJOIN" type="hashJoinType"/>
+      <xs:element name="MSJOIN" type="mergeJoinType"/>
+      <xs:element name="JOIN" type="anyJoinType"/>
+   </xs:choice>
+</xs:group>
+<!--*************************************************************************************-->
+<!-- MQT enforcement request element.                                                    -->
+<!-- MQTENFORCE - This element can be used to specify semantically matchable MQTs whose  -->
+<!--   usage in access plans should be enforced regardless of Optimizer cost estimates.  -->
+<!--   MQTs can be specified either directly with the NAME attribute or generally using  -->
+<!--   the TYPE attribute.                                                               -->
+<!--   Only the first valid attribute found is used and all subsequent ones are ignored. -->
+<!--   Since this element can be specified multiple times, more than one MQT can be      -->
+<!--   enforced at a time.                                                               -->
+<!--   Note however, that if there is a conflict when matching two enforced MQTs to the  -->
+<!--   same data source (base-table or derived) an MQT will be picked based on existing  -->
+<!--   tie-breaking rules, i.e., either heuristic or cost-based.                         -->
+<!--   Finally, this request overrides any other MQT optimization options specified in   -->
+<!--   a profile, i.e., enforcement will take place even if MQTOPT is set to DISABLE or  -->
+<!--   if the specified MQT or MQTs do not exist in the eligibility list specified by    -->
+<!--   any MQT elements.                                                                 -->
+<!--*************************************************************************************-->
+<xs:group name="mqtEnforcementRequest">
+   <xs:sequence>
+      <xs:element name="MQTENFORCE" type="mqtEnforcementType" minOccurs="0" maxOccurs="unbounded"/>
+   </xs:sequence>
+</xs:group>
+<!--***************************************************************************************** -->
+<!-- REOPT general request element. Can override REOPT setting at the package, db,            -->
+<!-- dbm level.                                                                               -->
+<!--***************************************************************************************** -->
+<xs:complexType name="reoptType">
+   <xs:attribute name="VALUE" use="required">
+      <xs:simpleType>
+         <xs:restriction base="xs:string">
+            <xs:enumeration value="ONCE"/>
+            <xs:enumeration value="ALWAYS"/>
+         </xs:restriction>
+      </xs:simpleType>
+   </xs:attribute>
+</xs:complexType>
+<!--*******************************************************************************************-->
+<!-- RTS general request element to enable, disable or provide a time budget for               -->
+<!-- real-time statistics collection.                                                          -->
+<!-- OPTION attribute allows enabling or disabling real-time statistics.                       -->
+<!-- TIME attribute provides a time budget in milliseconds for real-time statistics collection.-->
+<!--*******************************************************************************************-->
+<xs:complexType name="rtsType">
+   <xs:attribute name="OPTION" type="optionType" use="optional" default="ENABLE"/>
+   <xs:attribute name="TIME" type="xs:nonNegativeInteger" use="optional"/>
+</xs:complexType>
+<!--******************************************************************************************-->
+<!-- Definition of an "IN list to join" rewrite request                                     -->
+<!-- OPTION attribute allows enabling or disabling the alternative.                           -->
+<!-- TABLE attribute allows request to target IN list predicates applied to a                 -->
+<!-- specific table reference. COLUMN attribute allows request to target a specific IN list   -->
+<!-- predicate.                                                                               -->
+<!--******************************************************************************************-->
+<xs:complexType name="inListToJoinType">
+   <xs:attribute name="OPTION" type="optionType" use="optional" default="ENABLE"/>
+   <xs:attribute name="TABLE" type="xs:string" use="optional"/>
+   <xs:attribute name="COLUMN" type="xs:string" use="optional"/>
+</xs:complexType>
+<!--******************************************************************************************-->
+<!-- Definition of a "subquery to join" rewrite request                                     -->
+<!-- The OPTION attribute allows enabling or disabling the alternative.                       -->
+<!--******************************************************************************************-->
+<xs:complexType name="subqueryToJoinType">
+   <xs:attribute name="OPTION" type="optionType" use="optional" default="ENABLE"/>
+</xs:complexType>
+<!--******************************************************************************************-->
+<!-- Definition of a "not exists to anti-join" rewrite request                              -->
+<!-- The OPTION attribute allows enabling or disabling the alternative.                       -->
+<!--******************************************************************************************-->
+<xs:complexType name="notExistsToAntiJoinType">
+   <xs:attribute name="OPTION" type="optionType" use="optional" default="ENABLE"/>
+</xs:complexType>
+<!--******************************************************************************************-->
+<!-- Definition of a "not IN to anti-join" rewrite request                                  -->
+<!-- The OPTION attribute allows enabling or disabling the alternative.                       -->
+<!--******************************************************************************************-->
+<xs:complexType name="notInToAntiJoinType">
+   <xs:attribute name="OPTION" type="optionType" use="optional" default="ENABLE"/>
+</xs:complexType>
+<!--******************************************************************************************-->
+<!-- Effectively the superclass from which all access request elements inherit.               -->
+<!-- This type currently defines TABLE and TABID attributes, which can be used to tie an      -->
+<!-- access request to a table reference in the query.                                        -->
+<!-- The TABLE attribute value is used to identify a table reference using identifiers        -->
+<!-- in the original SQL statement. The TABID attribute value is used to identify a table     -->
+<!-- referece using the unique correlation name provided via the                              -->
+<!-- optimized statement. If both the TABLE and TABID attributes are specified, the TABID     -->
+<!-- field is ignored. The FIRST attribute indicates that the access should be the first      -->
+<!-- access in the join sequence for the FROM clause.                                         -->
+<!-- The SHARING attribute indicates that the access should be visible to other concurrent    -->
+<!-- similar accesses that may therefore share bufferpool pages. The WRAPPING attribute       -->
+<!-- indicates that the access should be allowed to perform wrapping, thereby allowing it to  -->
+<!-- start in the middle for better sharing with other concurrent accesses. The THROTTLE      -->
+<!-- attribute indicates that the access should be allowed to be throttled if this may        -->
+<!-- benefit other concurrent accesses. The SHARESPEED attribute is used to indicate whether  -->
+<!-- the access should be considered fast or slow for better grouping of concurrent accesses. -->
+<!--***************************************************************************************** -->
+<xs:complexType name="accessType" abstract="true">
+   <xs:attribute name="TABLE" type="xs:string" use="optional"/>
+   <xs:attribute name="TABID" type="xs:string" use="optional"/>
+   <xs:attribute name="FIRST" type="xs:string" use="optional" fixed="TRUE"/>
+   <xs:attribute name="SHARING" type="optionType" use="optional" default="ENABLE"/>
+   <xs:attribute name="WRAPPING" type="optionType" use="optional" default="ENABLE"/>
+   <xs:attribute name="THROTTLE" type="optionType" use="optional" default="ENABLE"/>
+   <xs:attribute name="SHARESPEED" type="shareSpeed" use="optional"/>
+</xs:complexType>
+<!--**************************************************************************************-->
+<!-- Definition of an table scan access request method.                                   -->
+<!--**************************************************************************************-->
+<xs:complexType name="tableScanType">
+   <xs:complexContent>
+      <xs:extension base="accessType"/>
+   </xs:complexContent>
+</xs:complexType>
+<!-- *************************************************************************************-->
+<!-- Definition of an index scan access request element. The index name is optional.      -->
+<!--************************************************************************************* -->
+<xs:complexType name="indexScanType">
+   <xs:complexContent>
+      <xs:extension base="accessType">
+         <xs:attribute name="INDEX" type="xs:string" use="optional"/>
+      </xs:extension>
+   </xs:complexContent>
+</xs:complexType>
+<!--**************************************************************************************-->
+<!-- Definition of a list prefetch access request element. The index name is optional.    -->
+<!--************************************************************************************* -->
+<xs:complexType name="listPrefetchType">
+   <xs:complexContent>
+      <xs:extension base="accessType">
+         <xs:attribute name="INDEX" type="xs:string" use="optional"/>
+      </xs:extension>
+   </xs:complexContent>
+</xs:complexType>
+<!--**************************************************************************************-->
+<!-- Definition of an extended access element which will be used by IXAND and ACCESS      -->
+<!-- requests.                                                                            -->
+<!-- A single index scan be specified via the INDEX attribute. Multiple indexes           -->
+<!-- can be specified via INDEX elements. The index element specification supersedes the  -->
+<!-- attribute specification. If a single index is specified, the optimizer will use the  -->
+<!-- index as the first index of the index ANDing access method and will choose addi-     -->
+<!-- tional indexes using cost. If multiple indexes are specified the optimizer will      -->
+<!-- use exactly those indexes in the specified order. If no indexes are specified        -->
+<!-- via either the INDEX attribute or INDEX elements, then the optimizer will choose     -->
+<!-- all indexes based upon cost.                                                         -->
+<!-- Extension for XML support:                                                           -->
+<!-- TYPE: Optional attribute. The allowed value is XMLINDEX. When the type is not        -->
+<!-- specified, the optimizer makes a cost based decision.                                -->
+<!-- ALLINDEXES: Optional attribute. The allowed value is TRUE. The default               -->
+<!-- value is FALSE.                                                                      -->
+<!--************************************************************************************* -->
+<xs:complexType name="extendedAccessType">
+   <xs:complexContent>
+      <xs:extension base="accessType">
+         <xs:sequence minOccurs="0">
+            <xs:element name="INDEX" type="indexType" minOccurs="2" maxOccurs="unbounded"/>
+         </xs:sequence>
+         <xs:attribute name="INDEX" type="xs:string" use="optional"/>
+         <xs:attribute name="TYPE" type="xs:string" use="optional" fixed="XMLINDEX"/>
+         <xs:attribute name="ALLINDEXES" type="boolType" use="optional" fixed="TRUE"/>
+      </xs:extension>
+   </xs:complexContent>
+</xs:complexType>
+<!--**************************************************************************************-->
+<!-- Definition of an index ANDing access request element.                                -->
+<!-- Extension for XML support:                                                           -->
+<!--   All attributes and elements in extendedAccessType are included.                    -->
+<!--   Note that ALLINDEXES is a valid option only if TYPE is XMLINDEX.                   -->
+<!-- STARJOIN index ANDing: Specifying STARJOIN='TRUE' or one or more NLJOIN elements     -->
+<!-- identifies the index ANDing request as a star join index ANDing request. When that   -->
+<!-- is the case:                                                                         -->
+<!--   TYPE cannot be XMLINDEX (and therefore ALLINDEXES cannot be specified).            -->
+<!--   Neither the INDEX attribute nor INDEX elements can be specified.                   -->
+<!--   The TABLE or TABID attribute identifies the fact table.                            -->
+<!--   Zero or more semijoins can be specified using NLJOIN elements.                     -->
+<!--   If no semijoins are specified, the optimizer will choose them.                     -->
+<!--   If a single semijoin is specified, the optimizer will use it as the first semijoin -->
+<!--   and will choose the rest itself.                                                   -->
+<!--   If multiple semijoins are specified the optimizer will use exactly those semijoins -->
+<!--   in the specified order.                                                            -->
+<!--************************************************************************************* -->
+<xs:complexType name="indexAndingType">
+   <xs:complexContent>
+      <xs:extension base="extendedAccessType">
+         <xs:sequence minOccurs="0">
+            <xs:element name="NLJOIN" type="nestedLoopJoinType" minOccurs="1" maxOccurs="unbounded"/>
+         </xs:sequence>
+         <xs:attribute name="STARJOIN" type="boolType" use="optional"/>
+      </xs:extension>
+   </xs:complexContent>
+</xs:complexType>
+<!--**************************************************************************************-->
+<!-- Definition of an INDEX element method. Index set is optional. If specified,          -->
+<!-- at least 2 are required.                                                             -->
+<!--************************************************************************************* -->
+<xs:complexType name="indexType">
+   <xs:attribute name="IXNAME" type="xs:string" use="optional"/>
+</xs:complexType>
+<!--**************************************************************************************-->
+<!-- Definition of an XANDOR access request method.                                       -->
+<!--**************************************************************************************-->
+<xs:complexType name="XANDORType">
+   <xs:complexContent>
+      <xs:extension base="accessType"/>
+   </xs:complexContent>
+</xs:complexType>
+<!--**************************************************************************************-->
+<!-- Use for derived table access or other cases where the access method is not of        -->
+<!-- consequence.                                                                         -->
+<!-- Extension for XML support:                                                           -->
+<!-- All attributes and elements in extendedAccessType are included.                      -->
+<!-- Note that INDEX attribute/elements and ALLINDEXES are valid options only if TYPE     -->
+<!-- is XMLINDEX.                                                                         -->
+<!--**************************************************************************************-->
+<xs:complexType name="anyAccessType">
+   <xs:complexContent>
+      <xs:extension base="extendedAccessType"/>
+   </xs:complexContent>
+</xs:complexType>
+<!--**************************************************************************************-->
+<!-- Definition of an index ORing access                                                  -->
+<!-- Cannot specify more details (e.g indexes). Optimizer will choose the details based   -->
+<!-- upon cost.                                                                           -->
+<!--************************************************************************************* -->
+<xs:complexType name="indexOringType">
+   <xs:complexContent>
+      <xs:extension base="accessType"/>
+   </xs:complexContent>
+</xs:complexType>
+<!--**************************************************************************************-->
+<!-- Effectively the super class from which join request elements inherit.                -->
+<!-- This type currently defines join element inputs and also the FIRST attribute.        -->
+<!-- A join request must have exactly two nested sub-elements. The sub-elements can be    -->
+<!-- either an access request or another join request. The first sub-element represents   -->
+<!-- outer table of the join operation while the second element represents the inner      -->
+<!-- table. The FIRST attribute indicates that the join result should be the first join   -->
+<!-- relative to other tables in the same FROM clause.                                    -->
+<!--************************************************************************************* -->
+<xs:complexType name="joinType" abstract="true">
+   <xs:choice minOccurs="2" maxOccurs="2">
+      <xs:group ref="accessRequest"/>
+      <xs:group ref="joinRequest"/>
+   </xs:choice>
+   <xs:attribute name="FIRST" type="xs:string" use="optional" fixed="TRUE"/>
+</xs:complexType>
+<!--************************************************************************************* -->
+<!-- Definition of nested loop join access request. Subclass of joinType.                 -->
+<!-- Does not add any elements or attributes.                                             -->
+<!--************************************************************************************* -->
+<xs:complexType name="nestedLoopJoinType">
+   <xs:complexContent>
+      <xs:extension base="joinType"/>
+   </xs:complexContent>
+</xs:complexType>
+<!--**************************************************************************************-->
+<!-- Definition of merge join access request. Subclass of joinType.                       -->
+<!-- Does not add any elements or attributes.                                             -->
+<!--************************************************************************************* -->
+<xs:complexType name="mergeJoinType">
+   <xs:complexContent>
+      <xs:extension base="joinType"/>
+   </xs:complexContent>
+</xs:complexType>
+<!--************************************************************************************* -->
+<!-- Definition of hash join access request. Subclass of joinType.                        -->
+<!-- Does not add any elements or attributes.                                             -->
+<!--************************************************************************************* -->
+<xs:complexType name="hashJoinType">
+   <xs:complexContent>
+      <xs:extension base="joinType"/>
+   </xs:complexContent>
+</xs:complexType>
+<!--************************************************************************************* -->
+<!-- Any join is a subclass of binary join. Does not extend it in any way.                -->
+<!-- Does not add any elements or attributes.                                             -->
+<!--************************************************************************************* -->
+<xs:complexType name="anyJoinType">
+   <xs:complexContent>
+      <xs:extension base="joinType"/>
+   </xs:complexContent>
+</xs:complexType>
+<!--**************************************************************************************-->
+<!-- The MQTENFORCE element can be specified with one of two attributes:                  -->
+<!--   NAME: Specify the MQT name directly as a value to this attribute.                  -->
+<!--   TYPE: Specify the type of the MQTs that should be enforced with this attribute.    -->
+<!--   Note that only the value of the first valid attribute found will be used. All      -->
+<!--   subsequent attributes will be ignored.                                             -->
+<!--**************************************************************************************-->
+<xs:complexType name="mqtEnforcementType">
+   <xs:attribute name="NAME" type="xs:string"/>
+   <xs:attribute name="TYPE" type="mqtEnforcementTypeType"/>
+</xs:complexType>
+<!--******************************************************************************************-->
+<!-- Allowable values for the TYPE attribute of an MQTENFORCE element:                        -->
+<!--   NORMAL: Enforce usage of all semantically matchable MQTs, except replicated MQTs.      -->
+<!--   REPLICATED: Enforce usage of all semantically matchable replicated MQTs only.          -->
+<!--   ALL: Enforce usage of all semantically matchable MQTs.                                 -->
+<!--***************************************************************************************** -->
+<xs:simpleType name="mqtEnforcementTypeType">
+   <xs:restriction base="xs:string">
+      <xs:enumeration value="NORMAL"/>
+      <xs:enumeration value="REPLICATED"/>
+      <xs:enumeration value="ALL"/>
+   </xs:restriction>
+</xs:simpleType>
+<!--******************************************************************************************-->
+<!-- Allowable values for a boolean attribute.                                                -->
+<!--***************************************************************************************** -->
+<xs:simpleType name="boolType">
+   <xs:restriction base="xs:string">
+      <xs:enumeration value="TRUE"/>
+      <xs:enumeration value="FALSE"/>
+   </xs:restriction>
+</xs:simpleType>
+<!--******************************************************************************************-->
+<!-- Allowable values for an OPTION attribute.                                                -->
+<!--***************************************************************************************** -->
+<xs:simpleType name="optionType">
+   <xs:restriction base="xs:string">
+      <xs:enumeration value="ENABLE"/>
+      <xs:enumeration value="DISABLE"/>
+   </xs:restriction>
+</xs:simpleType>
+<!--******************************************************************************************-->
+<!-- Allowable values for a SHARESPEED attribute.                                             -->
+<!--***************************************************************************************** -->
+<xs:simpleType name="shareSpeed">
+   <xs:restriction base="xs:string">
+      <xs:enumeration value="FAST"/>
+      <xs:enumeration value="SLOW"/>
+   </xs:restriction>
+</xs:simpleType>
+<!--*****************************************************************************************-->
+<!-- Definition of the qryopt type: the only values allowed are 0, 1, 2, 3, 5, 7 and 9       -->
+<!--*****************************************************************************************-->
+<xs:complexType name="qryoptType">
+   <xs:attribute name="VALUE" use="required">
+      <xs:simpleType>
+         <xs:restriction base="xs:string">
+            <xs:enumeration value="0"/>
+            <xs:enumeration value="1"/>
+            <xs:enumeration value="2"/>
+            <xs:enumeration value="3"/>
+            <xs:enumeration value="5"/>
+            <xs:enumeration value="7"/>
+            <xs:enumeration value="9"/>
+         </xs:restriction>
+      </xs:simpleType>
+   </xs:attribute>
+</xs:complexType>
+<!--*****************************************************************************************-->
+<!-- Definition of the degree type: any number between 1 and 32767 or the strings ANY or -1  -->
+<!--**************************************************************************************** -->
+<xs:simpleType name="intStringType">
+   <xs:union>
+      <xs:simpleType>
+         <xs:restriction base="xs:integer">
+            <xs:minInclusive value="1"></xs:minInclusive>
+            <xs:maxInclusive value="32767"></xs:maxInclusive>
+         </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType>
+         <xs:restriction base="xs:string">
+            <xs:enumeration value="ANY"/>
+            <xs:enumeration value="-1"/>
+         </xs:restriction>
+      </xs:simpleType>
+   </xs:union>
+</xs:simpleType>
+
+<xs:complexType name="degreeType">
+        <xs:attribute name="VALUE" type="intStringType"></xs:attribute>
+</xs:complexType>
+<!--*****************************************************************************************-->
+<!-- Definition of DPF XML movement types                                                    -->
+<!--**************************************************************************************** -->
+<xs:complexType name="dpfXMLMovementType">
+    <xs:attribute name="VALUE" use="required">
+     <xs:simpleType>
+      <xs:restriction base="xs:string">
+        <xs:enumeration value="REFERENCE"/>
+        <xs:enumeration value="COMBINATION"/>
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:attribute>
+ </xs:complexType>
+
+</xs:schema>

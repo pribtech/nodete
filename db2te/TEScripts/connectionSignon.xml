@@ -1,0 +1,97 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2010 All rights reserved.
+  
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<action name="connectionSignon" type="blank" lockScreen="true">
+	<task>
+		<assignSharedConstant name="LOGIN_MESSAGE" type="raw">
+			<value>Please enter user/password</value>
+		</assignSharedConstant>
+		<assignSharedConstant name="LOGIN_PASSWORD" type="raw">
+			<value></value>
+		</assignSharedConstant>
+		<setActionReturn value="false"/>
+		<action name="signOn" type="blank" lockScreen="true">
+				<task>
+					<action name="signon" type="form">
+						<message><![CDATA[
+<table><tr><td>
+<h3>Connect</h3>
+<table>
+<tr id="_connectSession" ><td></td><td>Session</td></tr>
+<tr id="_connectURI" ><td>URI:</td><td style="width:25em;" >?LOGIN_URI?</td></tr>
+<tr><td>username:</td><td><input id="_connectUsername" type="text" style="width:25em;" name="LOGIN_USERNAME"  value="?LOGIN_USERNAME?"/></td></tr>
+<tr><td>password:</td><td><input id="_connectPassword" type="password" style="width:25em;" name="LOGIN_PASSWORD"  value="?LOGIN_PASSWORD?"/></td></tr>
+</table>
+<p/>
+<h3 style="color:red;">?LOGIN_MESSAGE?</h3>
+<script language="javascript">
+	if("?LOGIN_URI?"=="") {
+		$("_connectURI").style.display="none";
+	} else {
+		$("_connectSession").style.display="none";
+	}
+	if($("_connectUsername").value == "")
+		$("_connectUsername").focus()
+	else
+	    $("_connectPassword").focus()
+</script>
+</td></tr></table>
+						]]></message>
+						<parameterList>
+							<parameter name="LOGIN_MESSAGE" type="constant">
+								<value>LOGIN_MESSAGE</value>
+							</parameter>
+							<parameter name="LOGIN_USERNAME" type="constant">
+								<value>LOGIN_USERNAME</value>
+							</parameter>
+							<parameter name="LOGIN_PASSWORD" type="constant">
+								<value>LOGIN_PASSWORD</value>
+							</parameter>
+							<parameter name="LOGIN_URI" type="constant">
+								<value>LOGIN_URI</value>
+							</parameter>
+						</parameterList>
+						<if condition="true">
+							<task>
+								<action name="userAuthenticate" type="serverAction" >
+									<parameterList>
+										<parameter name="action" type="raw">
+											<value>userAuthenicate</value>
+										</parameter>
+										<parameter name="uri" type="FIXED">
+											<value>?LOGIN_USERNAME?/?LOGIN_PASSWORD?@?LOGIN_URI?</value>
+										</parameter>
+									</parameterList>
+									<if condition="true">
+										<exit/>
+									</if>
+									<if condition="false">
+										<task>
+											<assignSharedConstant name="LOGIN_MESSAGE" type="returnObject">
+												<value>userAuthenticate.returnValue</value>
+											</assignSharedConstant>
+											<gotoAction name="signOn"/>
+										</task>
+									</if>
+								</action>
+							</task>
+						</if>
+					</action>
+				</task>
+		</action>
+	</task>
+</action>

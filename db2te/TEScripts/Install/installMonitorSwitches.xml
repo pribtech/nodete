@@ -1,0 +1,290 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2010 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+
+<tutorial name="Install DB2 Monitoring" autoPlayTime="5">
+    <globalCodeHighlightOptions highlightCode = "true" />
+        	 <openAction name="getUser" type="form" >
+				<message>
+<![CDATA[
+<div>
+<h3>Set Grant Authority</h3>
+<table>
+	<tr>
+		<td nowrap="nowrap">User ID:</td>
+		<td><input id="USER" type="text" size="8" maxlength="8"  name="USER"  value="?ACTIVE_DATABASE_LOGIN_USERNAME?"/></td>
+	</tr>
+</table>
+</div>
+]]>
+				</message>
+				<parameterList>
+				</parameterList>
+				<if condition="true">
+					<task>
+						<setActionReturn value="true"/>    		
+					</task>
+				</if>
+				<ifNot condition="true">
+					<task>
+						<setActionReturn value="false"/>
+					</task>
+				</ifNot>   
+		    </openAction>
+    
+    <pageList>
+		<page name="Set Monitor Switches" type="general">
+            <contentText>
+<![CDATA[
+This sets the db2 monitoring switchs to ensure all monitoring features works for this application.
+]]>
+			</contentText>
+            <SQLText>
+<![CDATA[
+CALL SYSPROC.ADMIN_CMD ('update dbm cfg using dft_mon_bufpool ON')@
+CALL SYSPROC.ADMIN_CMD ('update dbm cfg using dft_mon_lock ON')@
+CALL SYSPROC.ADMIN_CMD ('update dbm cfg using dft_mon_sort ON')@
+CALL SYSPROC.ADMIN_CMD ('update dbm cfg using dft_mon_stmt ON')@
+CALL SYSPROC.ADMIN_CMD ('update dbm cfg using dft_mon_table ON')@
+CALL SYSPROC.ADMIN_CMD ('update dbm cfg using dft_mon_timestamp ON')@
+CALL SYSPROC.ADMIN_CMD ('update dbm cfg using dft_mon_uow ON')@
+begin atomic
+	IF exists(select 1 from SYSIBMADM.DBCFG where name='mon_act_metrics' and value='NONE') then 
+		CALL SYSPROC.ADMIN_CMD ('update db cfg using mon_act_metrics BASE immediate');
+	end if;
+	IF exists(select 1 from SYSIBMADM.DBCFG where name='mon_lw_thresh' and value='4294967295') then 
+		CALL SYSPROC.ADMIN_CMD ('update db cfg using mon_lw_thresh 5000000 immediate');
+	end if;
+	IF exists(select 1 from SYSIBMADM.DBCFG where name='mon_obj_metrics' and value='NONE') then 
+		CALL SYSPROC.ADMIN_CMD ('update db cfg using mon_obj_metrics BASE immediate');
+	end if;
+	IF exists(select 1 from SYSIBMADM.DBCFG where name='mon_req_metrics' and value='NONE') then 
+		CALL SYSPROC.ADMIN_CMD ('update db cfg using mon_req_metrics BASE immediate');
+	end if;
+end
+@
+]]>
+			</SQLText>
+            <SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar="@"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+		</page>
+		<page name="Grant Access to Objects" type="general">
+    	 	<exitAction/>
+            <contentText>
+<![CDATA[
+Grant access to object required to run monitoring reports
+]]>
+			</contentText>
+            <SQLText>
+<![CDATA[
+grant execute on function SYSPROC.MON_FORMAT_LOCK_NAME to user ?USER? , group db2te @
+grant execute on function SYSPROC.MON_FORMAT_XML_COMPONENT_TIMES_BY_ROW  to user ?USER? , group db2te @
+grant execute on function SYSPROC.MON_FORMAT_XML_METRICS_BY_ROW  to user ?USER? , group db2te @
+grant execute on function SYSPROC.MON_FORMAT_XML_TIMES_BY_ROW  to user ?USER? , group db2te @
+grant execute on function SYSPROC.MON_GET_ACTIVITY_DETAILS   to user ?USER? , group db2te @
+grant execute on function SYSPROC.MON_GET_APPLICATION_HANDLE  to user ?USER? , group db2te @
+grant execute on function SYSPROC.MON_GET_APPLICATION_ID  to user ?USER? , group db2te @
+grant execute on function SYSPROC.MON_GET_APPL_LOCKWAIT  to user ?USER? , group db2te @
+grant execute on function SYSPROC.MON_GET_AUTO_MAINT_QUEUE  to user ?USER? , group db2te @
+grant execute on function SYSPROC.MON_GET_AUTO_RUNSTATS_QUEUE  to user ?USER? , group db2te @
+grant execute on function SYSPROC.MON_GET_BUFFERPOOL  to user ?USER? , group db2te @
+grant execute on function SYSPROC.MON_GET_CF  to user ?USER? , group db2te @
+grant execute on function SYSPROC.MON_GET_CF_CMD  to user ?USER? , group db2te @
+grant execute on function SYSPROC.MON_GET_CF_WAIT_TIME  to user ?USER? , group db2te @
+grant execute on function SYSPROC.MON_GET_CONNECTION  to user ?USER? , group db2te @
+grant execute on function SYSPROC.MON_GET_CONNECTION_DETAILS  to user ?USER? , group db2te @
+grant execute on function SYSPROC.MON_GET_CONTAINER  to user ?USER? , group db2te @
+grant execute on function SYSPROC.MON_GET_EXTENDED_LATCH_WAIT  to user ?USER? , group db2te @
+grant execute on function SYSPROC.MON_GET_EXTENT_MOVEMENT_STATUS  to user ?USER? , group db2te @
+grant execute on function SYSPROC.MON_GET_FCM to user ?USER? , group db2te @
+grant execute on function SYSPROC.MON_GET_FCM_CONNECTION_LIST  to user ?USER? , group db2te @
+grant execute on function SYSPROC.MON_GET_GROUP_BUFFERPOOL  to user ?USER? , group db2te @
+grant execute on function SYSPROC.MON_GET_HADR  to user ?USER? , group db2te @
+grant execute on function SYSPROC.MON_GET_INDEX  to user ?USER? , group db2te @
+grant execute on function SYSPROC.MON_GET_INDEX_USAGE_LIST  to user ?USER? , group db2te @
+grant execute on function SYSPROC.MON_GET_LOCKS  to user ?USER? , group db2te @
+grant execute on function SYSPROC.MON_GET_MEMORY_POOL  to user ?USER? , group db2te @
+grant execute on function SYSPROC.MON_GET_MEMORY_SET  to user ?USER? , group db2te @
+grant execute on function SYSPROC.MON_GET_PAGE_ACCESS_INFO  to user ?USER? , group db2te @
+grant execute on function SYSPROC.MON_GET_PKG_CACHE_STMT  to user ?USER? , group db2te @
+grant execute on function SYSPROC.MON_GET_PKG_CACHE_STMT_DETAILS to user ?USER? , group db2te @ 
+grant execute on function SYSPROC.MON_GET_REBALANCE_STATUS  to user ?USER? , group db2te @
+grant execute on function SYSPROC.MON_GET_RTS_RQST  to user ?USER? , group db2te @
+grant execute on function SYSPROC.MON_GET_SERVERLIST to user ?USER? , group db2te @
+grant execute on function SYSPROC.MON_GET_SERVICE_SUBCLASS  to user ?USER? , group db2te @
+grant execute on function SYSPROC.MON_GET_SERVICE_SUBCLASS_DETAILS  to user ?USER? , group db2te @
+grant execute on function SYSPROC.MON_GET_TABLE  to user ?USER? , group db2te @
+grant execute on function SYSPROC.MON_GET_TABLESPACE  to user ?USER? , group db2te @
+grant execute on function SYSPROC.MON_GET_TABLE_USAGE_LIST  to user ?USER? , group db2te @
+grant execute on function SYSPROC.MON_GET_TRANSACTION_LOG  to user ?USER? , group db2te @
+grant execute on function SYSPROC.MON_GET_UNIT_OF_WORK  to user ?USER? , group db2te @
+grant execute on function SYSPROC.MON_GET_UNIT_OF_WORK_DETAILS  to user ?USER? , group db2te @
+grant execute on function SYSPROC.MON_GET_USAGE_LIST_STATUS  to user ?USER? , group db2te @
+grant execute on function SYSPROC.MON_GET_WORKLOAD  to user ?USER? , group db2te @
+grant execute on function SYSPROC.MON_GET_WORKLOAD_DETAILS  to user ?USER? , group db2te @
+grant execute on function SYSPROC.MON_SAMPLE_SERVICE_CLASS_METRICS  to user ?USER? , group db2te @
+grant execute on function SYSPROC.MON_SAMPLE_WORKLOAD_METRICS  to user ?USER? , group db2te @
+]]>
+			</SQLText>
+            <SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar="@"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+        </page>
+		<page name="Recycle Instance" type="general" autoPlay="pause">
+    	 	<exitAction/>
+            <contentText>
+<![CDATA[
+There instance must be recycled for these settings to take effect, that is, db2stop and db2start.
+This will cause outage so it has been left as a separate task to recyle.
+]]>
+			</contentText>
+            <SQLText>
+<![CDATA[
+]]>
+			</SQLText>
+            <SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar="@"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+        </page>
+		<page name="Uninstall" type="last" autoPlay="false">
+            <contentText>
+<![CDATA[
+Uninstall monitor switches and seurity access.
+]]>
+			</contentText>
+            <SQLText>
+<![CDATA[
+CALL SYSPROC.ADMIN_CMD ('update dbm cfg using dft_mon_bufpool OFF')@
+CALL SYSPROC.ADMIN_CMD ('update dbm cfg using dft_mon_lock OFF')@
+CALL SYSPROC.ADMIN_CMD ('update dbm cfg using dft_mon_sort OFF')@
+CALL SYSPROC.ADMIN_CMD ('update dbm cfg using dft_mon_stmt OFF')@
+CALL SYSPROC.ADMIN_CMD ('update dbm cfg using dft_mon_table OFF')@
+CALL SYSPROC.ADMIN_CMD ('update dbm cfg using dft_mon_timestamp OFF')@
+CALL SYSPROC.ADMIN_CMD ('update dbm cfg using dft_mon_uow OFF')@
+
+begin atomic
+	IF not exists(select 1 from SYSIBMADM.DBCFG where name='mon_act_metrics' and value='NONE') then 
+		CALL SYSPROC.ADMIN_CMD ('update db cfg using mon_act_metrics NONE immediate');
+	end if;
+	IF not exists(select 1 from SYSIBMADM.DBCFG where name='mon_obj_metrics' and value='NONE') then 
+		CALL SYSPROC.ADMIN_CMD ('update db cfg using mon_obj_metrics NONE immediate');
+	end if;
+	IF not exists(select 1 from SYSIBMADM.DBCFG where name='mon_req_metrics' and value='NONE') then 
+		CALL SYSPROC.ADMIN_CMD ('update db cfg using mon_req_metrics NONE immediate');
+	end if;
+end
+@
+revoke execute on function SYSPROC.MON_FORMAT_LOCK_NAME to user ?USER? , group db2te @
+revoke execute on function SYSPROC.MON_FORMAT_XML_COMPONENT_TIMES_BY_ROW  to user ?USER? , group db2te @
+revoke execute on function SYSPROC.MON_FORMAT_XML_METRICS_BY_ROW  to user ?USER? , group db2te @
+revoke execute on function SYSPROC.MON_FORMAT_XML_TIMES_BY_ROW  to user ?USER? , group db2te @
+revoke execute on function SYSPROC.MON_GET_ACTIVITY_DETAILS   to user ?USER? , group db2te @
+revoke execute on function SYSPROC.MON_GET_APPLICATION_HANDLE  to user ?USER? , group db2te @
+revoke execute on function SYSPROC.MON_GET_APPLICATION_ID  to user ?USER? , group db2te @
+revoke execute on function SYSPROC.MON_GET_APPL_LOCKWAIT  to user ?USER? , group db2te @
+revoke execute on function SYSPROC.MON_GET_AUTO_MAINT_QUEUE  to user ?USER? , group db2te @
+revoke execute on function SYSPROC.MON_GET_AUTO_RUNSTATS_QUEUE  to user ?USER? , group db2te @
+revoke execute on function SYSPROC.MON_GET_BUFFERPOOL  to user ?USER? , group db2te @
+revoke execute on function SYSPROC.MON_GET_CF  to user ?USER? , group db2te @
+revoke execute on function SYSPROC.MON_GET_CF_CMD  to user ?USER? , group db2te @
+revoke execute on function SYSPROC.MON_GET_CF_WAIT_TIME  to user ?USER? , group db2te @
+revoke execute on function SYSPROC.MON_GET_CONNECTION  to user ?USER? , group db2te @
+revoke execute on function SYSPROC.MON_GET_CONNECTION_DETAILS  to user ?USER? , group db2te @
+revoke execute on function SYSPROC.MON_GET_CONTAINER  to user ?USER? , group db2te @
+revoke execute on function SYSPROC.MON_GET_EXTENDED_LATCH_WAIT  to user ?USER? , group db2te @
+revoke execute on function SYSPROC.MON_GET_EXTENT_MOVEMENT_STATUS  to user ?USER? , group db2te @
+revoke execute on function SYSPROC.MON_GET_FCM  to user ?USER? , group db2te @
+revoke execute on function SYSPROC.MON_GET_FCM_CONNECTION_LIST  to user ?USER? , group db2te @
+revoke execute on function SYSPROC.MON_GET_GROUP_BUFFERPOOL  to user ?USER? , group db2te @
+revoke execute on function SYSPROC.MON_GET_HADR  to user ?USER? , group db2te @
+revoke execute on function SYSPROC.MON_GET_INDEX  to user ?USER? , group db2te @
+revoke execute on function SYSPROC.MON_GET_INDEX_USAGE_LIST  to user ?USER? , group db2te @
+revoke execute on function SYSPROC.MON_GET_LOCKS  to user ?USER? , group db2te @
+revoke execute on function SYSPROC.MON_GET_MEMORY_POOL  to user ?USER? , group db2te @
+revoke execute on function SYSPROC.MON_GET_MEMORY_SET  to user ?USER? , group db2te @
+revoke execute on function SYSPROC.MON_GET_PAGE_ACCESS_INFO  to user ?USER? , group db2te @
+revoke execute on function SYSPROC.MON_GET_PKG_CACHE_STMT  to user ?USER? , group db2te @
+revoke execute on function SYSPROC.MON_GET_PKG_CACHE_STMT_DETAILS to user ?USER? , group db2te @ 
+revoke execute on function SYSPROC.MON_GET_REBALANCE_STATUS  to user ?USER? , group db2te @
+revoke execute on function SYSPROC.MON_GET_RTS_RQST  to user ?USER? , group db2te @
+revoke execute on function SYSPROC.MON_GET_SERVERLIST to user ?USER? , group db2te @
+revoke execute on function SYSPROC.MON_GET_SERVICE_SUBCLASS  to user ?USER? , group db2te @
+revoke execute on function SYSPROC.MON_GET_SERVICE_SUBCLASS_DETAILS  to user ?USER? , group db2te @
+revoke execute on function SYSPROC.MON_GET_TABLE  to user ?USER? , group db2te @
+revoke execute on function SYSPROC.MON_GET_TABLESPACE  to user ?USER? , group db2te @
+revoke execute on function SYSPROC.MON_GET_TABLE_USAGE_LIST  to user ?USER? , group db2te @
+revoke execute on function SYSPROC.MON_GET_TRANSACTION_LOG  to user ?USER? , group db2te @
+revoke execute on function SYSPROC.MON_GET_UNIT_OF_WORK  to user ?USER? , group db2te @
+revoke execute on function SYSPROC.MON_GET_UNIT_OF_WORK_DETAILS  to user ?USER? , group db2te @
+revoke execute on function SYSPROC.MON_GET_USAGE_LIST_STATUS  to user ?USER? , group db2te @
+revoke execute on function SYSPROC.MON_GET_WORKLOAD  to user ?USER? , group db2te @
+revoke execute on function SYSPROC.MON_GET_WORKLOAD_DETAILS  to user ?USER? , group db2te @
+revoke execute on function SYSPROC.MON_SAMPLE_SERVICE_CLASS_METRICS  to user ?USER? , group db2te @
+revoke execute on function SYSPROC.MON_SAMPLE_WORKLOAD_METRICS  to user ?USER? , group db2te @
+revoke execute on function SYSPROC.MON_FORMAT_LOCK_NAME from user ?USER? , group db2te @
+revoke execute on function SYSPROC.MON_FORMAT_XML_COMPONENT_TIMES_BY_ROW  from user ?USER? , group db2te @
+revoke execute on function SYSPROC.MON_FORMAT_XML_METRICS_BY_ROW  from user ?USER? , group db2te @
+revoke execute on function SYSPROC.MON_FORMAT_XML_TIMES_BY_ROW  from user ?USER? , group db2te @
+revoke execute on function SYSPROC.MON_GET_ACTIVITY_DETAILS   from user ?USER? , group db2te @
+revoke execute on function SYSPROC.MON_GET_APPLICATION_HANDLE  from user ?USER? , group db2te @
+revoke execute on function SYSPROC.MON_GET_APPLICATION_ID  from user ?USER? , group db2te @
+revoke execute on function SYSPROC.MON_GET_APPL_LOCKWAIT  from user ?USER? , group db2te @
+revoke execute on function SYSPROC.MON_GET_AUTO_MAINT_QUEUE  from user ?USER? , group db2te @
+revoke execute on function SYSPROC.MON_GET_AUTO_RUNSTATS_QUEUE  from user ?USER? , group db2te @
+revoke execute on function SYSPROC.MON_GET_BUFFERPOOL  from user ?USER? , group db2te @
+revoke execute on function SYSPROC.MON_GET_CF  from user ?USER? , group db2te @
+revoke execute on function SYSPROC.MON_GET_CF_CMD  from user ?USER? , group db2te @
+revoke execute on function SYSPROC.MON_GET_CF_WAIT_TIME  from user ?USER? , group db2te @
+revoke execute on function SYSPROC.MON_GET_CONNECTION  from user ?USER? , group db2te @
+revoke execute on function SYSPROC.MON_GET_CONNECTION_DETAILS  from user ?USER? , group db2te @
+revoke execute on function SYSPROC.MON_GET_CONTAINER  from user ?USER? , group db2te @
+revoke execute on function SYSPROC.MON_GET_EXTENDED_LATCH_WAIT  from user ?USER? , group db2te @
+revoke execute on function SYSPROC.MON_GET_EXTENT_MOVEMENT_STATUS  from user ?USER? , group db2te @
+revoke execute on function SYSPROC.MON_GET_FCM , MON_GET_FCM  from user ?USER? , group db2te @
+revoke execute on function SYSPROC.MON_GET_FCM_CONNECTION_LIST  from user ?USER? , group db2te @
+revoke execute on function SYSPROC.MON_GET_GROUP_BUFFERPOOL  from user ?USER? , group db2te @
+revoke execute on function SYSPROC.MON_GET_HADR  from user ?USER? , group db2te @
+revoke execute on function SYSPROC.MON_GET_INDEX  from user ?USER? , group db2te @
+revoke execute on function SYSPROC.MON_GET_INDEX_USAGE_LIST  from user ?USER? , group db2te @
+revoke execute on function SYSPROC.MON_GET_LOCKS  from user ?USER? , group db2te @
+revoke execute on function SYSPROC.MON_GET_MEMORY_POOL  from user ?USER? , group db2te @
+revoke execute on function SYSPROC.MON_GET_MEMORY_SET  from user ?USER? , group db2te @
+revoke execute on function SYSPROC.MON_GET_PAGE_ACCESS_INFO  from user ?USER? , group db2te @
+revoke execute on function SYSPROC.MON_GET_PKG_CACHE_STMT  from user ?USER? , group db2te @
+revoke execute on function SYSPROC.MON_GET_PKG_CACHE_STMT_DETAILS from user ?USER? , group db2te @ 
+revoke execute on function SYSPROC.MON_GET_REBALANCE_STATUS  from user ?USER? , group db2te @
+revoke execute on function SYSPROC.MON_GET_RTS_RQST  from user ?USER? , group db2te @
+revoke execute on function SYSPROC.MON_GET_SERVERLIST from user ?USER? , group db2te @
+revoke execute on function SYSPROC.MON_GET_SERVICE_SUBCLASS  from user ?USER? , group db2te @
+revoke execute on function SYSPROC.MON_GET_SERVICE_SUBCLASS_DETAILS  from user ?USER? , group db2te @
+revoke execute on function SYSPROC.MON_GET_TABLE  from user ?USER? , group db2te @
+revoke execute on function SYSPROC.MON_GET_TABLESPACE  from user ?USER? , group db2te @
+revoke execute on function SYSPROC.MON_GET_TABLE_USAGE_LIST  from user ?USER? , group db2te @
+revoke execute on function SYSPROC.MON_GET_TRANSACTION_LOG  from user ?USER? , group db2te @
+revoke execute on function SYSPROC.MON_GET_UNIT_OF_WORK  from user ?USER? , group db2te @
+revoke execute on function SYSPROC.MON_GET_UNIT_OF_WORK_DETAILS  from user ?USER? , group db2te @
+revoke execute on function SYSPROC.MON_GET_USAGE_LIST_STATUS  from user ?USER? , group db2te @
+revoke execute on function SYSPROC.MON_GET_WORKLOAD  from user ?USER? , group db2te @
+revoke execute on function SYSPROC.MON_GET_WORKLOAD_DETAILS  from user ?USER? , group db2te @
+revoke execute on function SYSPROC.MON_SAMPLE_SERVICE_CLASS_METRICS  from user ?USER? , group db2te @
+revoke execute on function SYSPROC.MON_SAMPLE_WORKLOAD_METRICS  from user ?USER? , group db2te @
+
+]]> 
+            </SQLText>
+            <SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar="@"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+        </page>
+    </pageList>
+</tutorial>

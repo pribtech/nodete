@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2011 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+<tutorial name="Install ASN SQL Apply Control Server">
+    <closeAction />
+    <openAction />
+    <globalCodeHighlightOptions highlightCode = "true" />
+    <WMDConfig/>
+    <pageList>
+    	 <page name="Create ASN Apply Control Server" type="general">
+    	 	<entryAction/>
+    	 	<exitAction/>
+            <contentText>Run script to install SQL Replication Apply control server</contentText>
+            <SQLText><![CDATA[
+]]></SQLText>
+            <SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar=";"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+        </page>
+    	 <page name="Add Start ASN Capture Control Server" type="general">
+            <contentText><![CDATA[
+<p/>
+In the scripts below:
+<ul>
+<li>Change "db2inst1" to instance name</li>
+<li>Change "DATABASE" to database name</li>
+</ul>
+<p/>
+Create /home/db2inst1/asn 
+<p/>
+Create /home/db2inst1/asn/asn.DATABASE
+<p/>
+For Linux/Unix/AIX add following to crontab or add in rc.init :
+<p/><textarea>
+0,5,10,15,20,25,30,35,40,45,50,55 * * * * (. /home/db2inst1/.bashrc ; cd /home/db2inst1/asn ;export TMPDIR=/home/db2inst1/asn/asn.DATABASE ; asnapply CONTROL_SERVER=<database> APPLY_QUAL=APPLY) >> /home/db2inst1/asn/asncap.crontab.log 2>&1
+</textarea>
+]]></contentText>
+            <SQLText><![CDATA[
+CREATE  TABLESPACE TSASNAA
+ IN NODEGROUP IBMCATGROUP
+ MANAGED BY DATABASE
+ USING 
+(
+ FILE 'TSASNAA' 10M
+);
+
+CREATE TABLE ASN.IBMSNAP_SUBS_SET(
+APPLY_QUAL                      CHAR( 18) NOT NULL,
+SET_NAME                        CHAR( 18) NOT NULL,
+SET_TYPE                        CHAR(  1) NOT NULL,
+WHOS_ON_FIRST                   CHAR(  1) NOT NULL,
+ACTIVATE                        SMALLINT NOT NULL,
+SOURCE_SERVER                   CHAR( 18) NOT NULL,
+SOURCE_ALIAS                    CHAR(  8),
+TARGET_SERVER                   CHAR( 18) NOT NULL,
+TARGET_ALIAS                    CHAR(  8),
+STATUS                          SMALLINT NOT NULL,
+LASTRUN                         TIMESTAMP NOT NULL,
+REFRESH_TYPE                    CHAR( 1) NOT NULL,
+SLEEP_MINUTES                   INT,
+EVENT_NAME                      CHAR( 18),
+LASTSUCCESS                     TIMESTAMP,
+SYNCHPOINT                      CHAR( 10) FOR BIT DATA,
+SYNCHTIME                       TIMESTAMP,
+CAPTURE_SCHEMA                  VARCHAR( 30) NOT NULL,
+TGT_CAPTURE_SCHEMA              VARCHAR( 30),
+FEDERATED_SRC_SRVR              VARCHAR( 18),
+FEDERATED_TGT_SRVR              VARCHAR( 18),
+JRN_LIB                         CHAR( 10),
+JRN_NAME                        CHAR( 10),
+OPTION_FLAGS                    CHAR(  4) NOT NULL,
+COMMIT_COUNT                    SMALLINT,
+MAX_SYNCH_MINUTES               SMALLINT,
+AUX_STMTS                       SMALLINT NOT NULL,
+ARCH_LEVEL                      CHAR( 4) NOT NULL)
+IN TSASNAA;
+
+CREATE UNIQUE INDEX ASN.IBMSNAP_SUBS_SETX
+ON ASN.IBMSNAP_SUBS_SET(
+APPLY_QUAL                      ASC,
+SET_NAME                        ASC,
+WHOS_ON_FIRST                   ASC);
+
+ALTER TABLE ASN.IBMSNAP_SUBS_SET VOLATILE CARDINALITY;
+
+CREATE TABLE ASN.IBMSNAP_SUBS_MEMBR(
+APPLY_QUAL                      CHAR( 18) NOT NULL,
+SET_NAME                        CHAR( 18) NOT NULL,
+WHOS_ON_FIRST                   CHAR(  1) NOT NULL,
+SOURCE_OWNER                    VARCHAR( 30) NOT NULL,
+SOURCE_TABLE                    VARCHAR(128) NOT NULL,
+SOURCE_VIEW_QUAL                SMALLINT NOT NULL,
+TARGET_OWNER                    VARCHAR(30) NOT NULL,
+TARGET_TABLE                    VARCHAR(128) NOT NULL,
+TARGET_CONDENSED                CHAR(  1) NOT NULL,
+TARGET_COMPLETE                 CHAR(  1) NOT NULL,
+TARGET_STRUCTURE                SMALLINT NOT NULL,
+PREDICATES                      VARCHAR(1024),
+MEMBER_STATE                    CHAR(  1),
+TARGET_KEY_CHG                  CHAR(  1) NOT NULL,
+UOW_CD_PREDICATES               VARCHAR(1024),
+JOIN_UOW_CD                     CHAR(  1),
+LOADX_TYPE                      SMALLINT,
+LOADX_SRC_N_OWNER               VARCHAR( 30),
+LOADX_SRC_N_TABLE               VARCHAR(128))
+IN TSASNAA;
+
+CREATE UNIQUE INDEX ASN.IBMSNAP_SUBS_MEMBX
+ON ASN.IBMSNAP_SUBS_MEMBR(
+APPLY_QUAL                      ASC,
+SET_NAME                        ASC,
+WHOS_ON_FIRST                   ASC,
+SOURCE_OWNER                    ASC,
+SOURCE_TABLE                    ASC,
+SOURCE_VIEW_QUAL                ASC,
+TARGET_OWNER                    ASC,
+TARGET_TABLE                    ASC);
+
+ALTER TABLE ASN.IBMSNAP_SUBS_MEMBR VOLATILE CARDINALITY;
+
+CREATE TABLE ASN.IBMSNAP_SUBS_COLS(
+APPLY_QUAL                      CHAR( 18) NOT NULL,
+SET_NAME                        CHAR( 18) NOT NULL,
+WHOS_ON_FIRST                   CHAR(  1) NOT NULL,
+TARGET_OWNER                    VARCHAR(30) NOT NULL,
+TARGET_TABLE                    VARCHAR(128) NOT NULL,
+COL_TYPE                        CHAR(  1) NOT NULL,
+TARGET_NAME                     VARCHAR( 30) NOT NULL,
+IS_KEY                          CHAR(  1) NOT NULL,
+COLNO                           SMALLINT NOT NULL,
+EXPRESSION                      VARCHAR(254) NOT NULL)
+IN TSASNAA;
+
+CREATE UNIQUE INDEX ASN.IBMSNAP_SUBS_COLSX
+ON ASN.IBMSNAP_SUBS_COLS(
+APPLY_QUAL                      ASC,
+SET_NAME                        ASC,
+WHOS_ON_FIRST                   ASC,
+TARGET_OWNER                    ASC,
+TARGET_TABLE                    ASC,
+TARGET_NAME                     ASC);
+
+ALTER TABLE ASN.IBMSNAP_SUBS_COLS VOLATILE CARDINALITY;
+
+CREATE TABLE ASN.IBMSNAP_SUBS_STMTS(
+APPLY_QUAL                      CHAR( 18) NOT NULL,
+SET_NAME                        CHAR( 18) NOT NULL,
+WHOS_ON_FIRST                   CHAR(  1) NOT NULL,
+BEFORE_OR_AFTER                 CHAR(  1) NOT NULL,
+STMT_NUMBER                     SMALLINT NOT NULL,
+EI_OR_CALL                      CHAR(  1) NOT NULL,
+SQL_STMT                        VARCHAR(1024),
+ACCEPT_SQLSTATES                VARCHAR( 50))
+IN TSASNAA;
+
+CREATE UNIQUE INDEX ASN.IBMSNAP_SUBS_STMTX
+ON ASN.IBMSNAP_SUBS_STMTS(
+APPLY_QUAL                      ASC,
+SET_NAME                        ASC,
+WHOS_ON_FIRST                   ASC,
+BEFORE_OR_AFTER                 ASC,
+STMT_NUMBER                     ASC);
+
+ALTER TABLE ASN.IBMSNAP_SUBS_STMTS VOLATILE CARDINALITY;
+
+CREATE TABLE ASN.IBMSNAP_SUBS_EVENT(
+EVENT_NAME                      CHAR( 18) NOT NULL,
+EVENT_TIME                      TIMESTAMP NOT NULL,
+END_SYNCHPOINT                  CHAR( 10) FOR BIT DATA,
+END_OF_PERIOD                   TIMESTAMP)
+IN TSASNAA;
+
+CREATE UNIQUE INDEX ASN.IBMSNAP_SUBS_EVENX
+ON ASN.IBMSNAP_SUBS_EVENT(
+EVENT_NAME                      ASC,
+EVENT_TIME                      ASC);
+
+ALTER TABLE ASN.IBMSNAP_SUBS_EVENT VOLATILE CARDINALITY;
+
+CREATE TABLE ASN.IBMSNAP_APPLYTRAIL(
+APPLY_QUAL                      CHAR( 18) NOT NULL,
+SET_NAME                        CHAR( 18) NOT NULL,
+SET_TYPE                        CHAR(  1) NOT NULL,
+WHOS_ON_FIRST                   CHAR(  1) NOT NULL,
+ASNLOAD                         CHAR(  1),
+FULL_REFRESH                    CHAR(  1),
+EFFECTIVE_MEMBERS               INT,
+SET_INSERTED                    INT NOT NULL,
+SET_DELETED                     INT NOT NULL,
+SET_UPDATED                     INT NOT NULL,
+SET_REWORKED                    INT NOT NULL,
+SET_REJECTED_TRXS               INT NOT NULL,
+STATUS                          SMALLINT NOT NULL,
+LASTRUN                         TIMESTAMP NOT NULL,
+LASTSUCCESS                     TIMESTAMP,
+SYNCHPOINT                      CHAR( 10) FOR BIT DATA,
+SYNCHTIME                       TIMESTAMP,
+SOURCE_SERVER                   CHAR( 18) NOT NULL,
+SOURCE_ALIAS                    CHAR(  8),
+SOURCE_OWNER                    VARCHAR(30),
+SOURCE_TABLE                    VARCHAR(128),
+SOURCE_VIEW_QUAL                SMALLINT,
+TARGET_SERVER                   CHAR( 18) NOT NULL,
+TARGET_ALIAS                    CHAR(  8),
+TARGET_OWNER                    VARCHAR(30) NOT NULL,
+TARGET_TABLE                    VARCHAR(128) NOT NULL,
+CAPTURE_SCHEMA                  VARCHAR(30) NOT NULL,
+TGT_CAPTURE_SCHEMA              VARCHAR(30),
+FEDERATED_SRC_SRVR              VARCHAR( 18),
+FEDERATED_TGT_SRVR              VARCHAR( 18),
+JRN_LIB                         CHAR( 10),
+JRN_NAME                        CHAR( 10),
+COMMIT_COUNT                    SMALLINT,
+OPTION_FLAGS                    CHAR(  4) NOT NULL,
+EVENT_NAME                      CHAR( 18),
+ENDTIME                         TIMESTAMP NOT NULL WITH DEFAULT ,
+SOURCE_CONN_TIME                TIMESTAMP,
+SQLSTATE                        CHAR(  5),
+SQLCODE                         INT,
+SQLERRP                         CHAR(  8),
+SQLERRM                         VARCHAR( 70),
+APPERRM                         VARCHAR(760))
+IN TSASNAA;
+
+CREATE  INDEX ASN.IBMSNAP_APPLYTRAIX
+ON ASN.IBMSNAP_APPLYTRAIL(
+LASTRUN                         DESC,
+APPLY_QUAL                      ASC);
+
+ALTER TABLE ASN.IBMSNAP_APPLYTRAIL VOLATILE CARDINALITY;
+
+CREATE TABLE ASN.IBMSNAP_APPLYTRACE(
+APPLY_QUAL                      CHAR(18) NOT NULL,
+TRACE_TIME                      TIMESTAMP NOT NULL,
+OPERATION                       CHAR(  8) NOT NULL,
+DESCRIPTION                     VARCHAR(1024) NOT NULL)
+IN TSASNAA;
+
+CREATE  INDEX ASN.IBMSNAP_APPLYTRACX
+ON ASN.IBMSNAP_APPLYTRACE(
+APPLY_QUAL                      ASC,
+TRACE_TIME                      ASC);
+
+ALTER TABLE ASN.IBMSNAP_APPLYTRACE VOLATILE CARDINALITY;
+
+CREATE TABLE ASN.IBMSNAP_COMPENSATE(
+APPLY_QUAL                      CHAR( 18) NOT NULL,
+MEMBER                          SMALLINT NOT NULL,
+INTENTSEQ                       CHAR( 10) FOR BIT DATA NOT NULL,
+OPERATION                       CHAR(  1) NOT NULL)
+IN TSASNAA;
+
+CREATE UNIQUE INDEX ASN.IBMSNAP_COMPENSATX
+ON ASN.IBMSNAP_COMPENSATE(
+APPLY_QUAL                      ASC,
+MEMBER                          ASC);
+
+ALTER TABLE ASN.IBMSNAP_COMPENSATE VOLATILE CARDINALITY;
+
+CREATE TABLE ASN.IBMSNAP_APPENQ(
+APPLY_QUAL                      CHAR( 18))
+IN TSASNAA;
+
+CREATE UNIQUE INDEX ASN.IBMSNAP_APPENQX
+ON ASN.IBMSNAP_APPENQ(
+APPLY_QUAL                      ASC);
+
+ALTER TABLE ASN.IBMSNAP_APPENQ VOLATILE CARDINALITY;
+
+CREATE TABLE ASN.IBMSNAP_APPPARMS(
+APPLY_QUAL                      CHAR( 18) NOT NULL,
+APPLY_PATH                      VARCHAR(1040),
+COPYONCE                        CHAR(  1) WITH DEFAULT 'N',
+DELAY                           INT WITH DEFAULT 6,
+ERRWAIT                         INT WITH DEFAULT 300,
+INAMSG                          CHAR(  1) WITH DEFAULT 'Y',
+LOADXIT                         CHAR(  1) WITH DEFAULT 'N',
+LOGREUSE                        CHAR(  1) WITH DEFAULT 'N',
+LOGSTDOUT                       CHAR(  1) WITH DEFAULT 'N',
+NOTIFY                          CHAR(  1) WITH DEFAULT 'N',
+OPT4ONE                         CHAR(  1) WITH DEFAULT 'N',
+SLEEP                           CHAR(  1) WITH DEFAULT 'Y',
+SQLERRCONTINUE                  CHAR(  1) WITH DEFAULT 'N',
+SPILLFILE                       VARCHAR( 10) WITH DEFAULT 'DISK',
+TERM                            CHAR(  1) WITH DEFAULT 'Y',
+TRLREUSE                        CHAR(  1) WITH DEFAULT 'N')
+IN TSASNAA;
+
+CREATE UNIQUE INDEX ASN.IBMSNAP_APPPARMSX
+ON ASN.IBMSNAP_APPPARMS(
+APPLY_QUAL                      ASC);
+
+ALTER TABLE ASN.IBMSNAP_APPPARMS VOLATILE CARDINALITY;
+
+]]></SQLText>
+            <SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar=";"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+        </page>
+
+    </pageList>
+</tutorial>

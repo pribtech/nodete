@@ -1,0 +1,569 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2011-2012 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+<tutorial name="Install Dynamic Cache Sampling" autoPlayTime="5">
+    <closeAction />
+    <openAction />
+    <globalCodeHighlightOptions highlightCode="true" />
+    <WMDConfig/>
+    <pageList>
+    	 <page name="Create Tables" type="general">
+    	 	<entryAction/>
+    	 	<exitAction/>
+            <contentText>
+<![CDATA[
+Create the tables to hold the output from SNAP_GET_DYN_SQL_V95 adding a few more columns. Alter tablespace SYSTOOLSPACE if required.
+]]>
+			</contentText>
+            <SQLText>
+<![CDATA[
+create table "s#db2mc".hist_SNAP_GET_DYN_SQL
+	as (select
+		  	current timestamp as sample_ts,
+		  	cast(' ' as varchar(128)) as database,
+		  	cast(0 as double) as stmt_hash,
+			(double(TOTAL_EXEC_TIME) 		+ double(TOTAL_EXEC_TIME_MS)/1000000) 		as EXEC_TIME,
+			(double(TOTAL_USR_CPU_TIME) 	+ double(TOTAL_USR_CPU_TIME_MS)/1000000) 	as USR_CPU_TIME,
+			(double(TOTAL_SYS_CPU_TIME) 	+ double(TOTAL_SYS_CPU_TIME_MS)/1000000) 	as SYS_CPU_TIME,
+		  	cast(' ' as char(1)) as sql_type,
+	   	 	s.* 
+	 from TABLE(SNAP_GET_DYN_SQL_V95('',-1)) as s) with no data
+	in "SYSTOOLSPACE"
+;
+
+create index "s#db2mc".hist_SNAP_GET_DYN_SQL_s1
+	on "s#db2mc".hist_SNAP_GET_DYN_SQL (sample_ts desc,database,stmt_hash)
+	allow reverse scans
+;
+
+create table "s#db2mc".hist_SNAP_GET_DYN_SQL_DELTA like "s#db2mc".hist_SNAP_GET_DYN_SQL
+	in "SYSTOOLSPACE"
+;
+alter table "s#db2mc".hist_SNAP_GET_DYN_SQL_DELTA
+	add column stmt_hash_similar double
+;
+
+create index "s#db2mc".hist_SNAP_GET_DYN_SQL_DELTA_s1
+	on "s#db2mc".hist_SNAP_GET_DYN_SQL_DELTA (sample_ts desc,database,stmt_hash)
+	allow reverse scans
+;
+create index "s#db2mc".hist_SNAP_GET_DYN_SQL_DELTA_s2
+	on "s#db2mc".hist_SNAP_GET_DYN_SQL_DELTA (sample_ts desc,database,stmt_hash_similar)
+	allow reverse scans
+;
+]]>
+			</SQLText>
+            <SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar=";"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+        </page>
+        
+		<page name="Create hashing function" type="general">
+            <contentText>
+<![CDATA[
+To work out the delta there require a simple and fast way to test if two SQL statements are the same statement.  This step creates the function that 
+generates a hash value for an SQL statement.  Note, the algorithm doesn't stop all collisions by these are hopefully minimised and should rarely occur.
+]]>
+			</contentText>
+            <SQLText>
+<![CDATA[
+CREATE FUNCTION "s#db2mc".Hashstring(str clob(1M))
+RETURNS double
+SPECIFIC "s#db2mc".HashString
+DETERMINISTIC NO EXTERNAL ACTION CONTAINS SQL
+BEGIN ATOMIC
+	DECLARE hash double  DEFAULT 0;--
+	DECLARE pos INTEGER DEFAULT 1;--
+	DECLARE c char(1) DEFAULT ' ';--
+	WHILE pos <= LENGTH(str) DO
+		set c =SUBSTR(str, pos, 1);--
+		SET hash = hash + 67*pos  
+				* (CASE upper(c)
+					WHEN ' ' THEN 0
+					WHEN 'A' THEN 11
+					WHEN 'B' THEN 12
+					WHEN 'C' THEN 13
+					WHEN 'D' THEN 14
+					WHEN 'E' THEN 15
+					WHEN 'F' THEN 16
+					WHEN 'G' THEN 17
+					WHEN 'H' THEN 18
+					WHEN 'I' THEN 19
+					WHEN 'J' THEN 20
+					WHEN 'K' THEN 21
+					WHEN 'L' THEN 22
+					WHEN 'M' THEN 23
+					WHEN 'N' THEN 24
+					WHEN 'O' THEN 25
+					WHEN 'P' THEN 26
+					WHEN 'Q' THEN 27
+					WHEN 'R' THEN 28
+					WHEN 'S' THEN 29
+					WHEN 'T' THEN 30
+					WHEN 'U' THEN 31
+					WHEN 'V' THEN 32
+					WHEN 'W' THEN 33
+					WHEN 'X' THEN 34
+					WHEN 'Y' THEN 35
+					WHEN 'Z' THEN 36
+					WHEN 'a' THEN 41
+					WHEN 'b' THEN 42
+					WHEN 'c' THEN 43
+					WHEN 'd' THEN 44
+					WHEN 'e' THEN 45
+					WHEN 'f' THEN 46
+					WHEN 'g' THEN 47
+					WHEN 'h' THEN 48
+					WHEN 'i' THEN 49
+					WHEN 'j' THEN 50
+					WHEN 'k' THEN 51
+					WHEN 'l' THEN 52
+					WHEN 'm' THEN 53
+					WHEN 'n' THEN 54
+					WHEN 'o' THEN 55
+					WHEN 'p' THEN 56
+					WHEN 'q' THEN 57
+					WHEN 'r' THEN 58
+					WHEN 's' THEN 59
+					WHEN 't' THEN 60
+					WHEN 'u' THEN 61
+					WHEN 'v' THEN 62
+					WHEN 'w' THEN 63
+					WHEN 'x' THEN 64
+					WHEN 'y' THEN 65
+					WHEN 'z' THEN 66
+					WHEN '1' THEN 1
+					WHEN '2' THEN 2
+					WHEN '3' THEN 3
+					WHEN '4' THEN 4
+					WHEN '5' THEN 5
+					WHEN '6' THEN 6
+					WHEN '7' THEN 7
+					WHEN '8' THEN 8
+					WHEN '9' THEN 9
+					WHEN '0' THEN 10
+					WHEN '+' THEN 37
+					WHEN '-' THEN 38
+					WHEN '*' THEN 39
+					WHEN '/' THEN 40
+					WHEN ')' THEN 41
+					ELSE 0
+			END )
+			;--
+		SET pos = pos + 1;--
+	END WHILE;--
+	RETURN hash;--
+END
+]]>
+			</SQLText>
+            <SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar="@"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+		</page>
+		<page name="Create similar SQL function" type="general">
+            <contentText>
+<![CDATA[
+This function is used to determine if the SQL is similar.  May already be installed.
+]]>
+			</contentText>
+            <SQLText>
+<![CDATA[
+CREATE FUNCTION "s#db2mc".HashSqlSimilar(str clob(1M))
+RETURNS double
+SPECIFIC "s#db2mc".HashSqlSimilar
+DETERMINISTIC NO EXTERNAL ACTION CONTAINS SQL
+BEGIN ATOMIC
+	DECLARE hash double  DEFAULT 0;--
+	DECLARE c char(1) DEFAULT ' ';--
+	DECLARE amt double DEFAULT 1;--
+	DECLARE factor double DEFAULT 1;--
+	DECLARE pos INTEGER DEFAULT 1;--
+	DECLARE length_str INTEGER;--
+	set pos=1;--
+	set factor=1;--
+	set length_str = LENGTH(str);--
+	WHILE pos <= length_str DO
+		set c =SUBSTR(str, pos, 1);--
+		while pos < length_str and c = ' ' DO
+			set c =SUBSTR(str, pos, 1);--
+			SET pos = pos + 1;--
+		end while;--
+		if c = '''' then 
+			SET pos = pos + 1;--
+			set c =SUBSTR(str, pos, 1);--
+			while pos < length_str and c <> '''' DO
+				SET pos = pos + 1;--
+				set c =SUBSTR(str, pos, 1);--
+			end while;--
+		end if;--
+		if upper(c) between 'A' and 'Z' 
+		then 
+			set amt=0;
+			while pos < length_str and amt is not null do
+				SET amt = CASE upper(c)
+						WHEN 'A' THEN 11
+						WHEN 'B' THEN 12
+						WHEN 'C' THEN 13
+						WHEN 'D' THEN 14
+						WHEN 'E' THEN 15
+						WHEN 'F' THEN 16
+						WHEN 'G' THEN 17
+						WHEN 'H' THEN 18
+						WHEN 'I' THEN 19
+						WHEN 'J' THEN 20
+						WHEN 'K' THEN 21
+						WHEN 'L' THEN 22
+						WHEN 'M' THEN 23
+						WHEN 'N' THEN 24
+						WHEN 'O' THEN 25
+						WHEN 'P' THEN 26
+						WHEN 'Q' THEN 27
+						WHEN 'R' THEN 28
+						WHEN 'S' THEN 29
+						WHEN 'T' THEN 30
+						WHEN 'U' THEN 31
+						WHEN 'V' THEN 32
+						WHEN 'W' THEN 33
+						WHEN 'X' THEN 34
+						WHEN 'Y' THEN 35
+						WHEN 'Z' THEN 36
+						WHEN '1' THEN 1
+						WHEN '2' THEN 2
+						WHEN '3' THEN 3
+						WHEN '4' THEN 4
+						WHEN '5' THEN 5
+						WHEN '6' THEN 6
+						WHEN '7' THEN 7
+						WHEN '8' THEN 8
+						WHEN '9' THEN 9
+						WHEN '0' THEN 10
+					END;--
+				if amt is not null then 
+			 		SET factor = factor+101;--
+					SET hash = hash+factor*amt;-- 
+					SET pos = pos + 1;--
+					set c =SUBSTR(str, pos, 1);--
+				end if;--
+			end while;
+		end if;--
+		SET pos = pos + 1;--
+	END WHILE;--
+	RETURN hash;--
+END
+]]>
+			</SQLText>
+            <SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar="@"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+		</page>
+		<page name="Create stored procedure for dynamic SQL gathering" type="general">
+    	 	<entryAction/>
+    	 	<exitAction/>
+            <contentText>
+<![CDATA[
+Create the stored procedure that collect the dynamic cache detail and stores them into a holding table.  
+This table is then used to determine the deltas between the last two rows. 
+]]>
+			</contentText>
+            <SQLText>
+<![CDATA[
+CREATE PROCEDURE "s#db2mc"."gatherDynSQL" ()
+  SPECIFIC "s#db2mc.gatherDynSQL"
+  DYNAMIC RESULT SETS 0
+  LANGUAGE SQL
+  BEGIN
+--/******************************************************************************	
+--  Author: Peter Prib
+--  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2011 All rights reserved.
+--
+--  Licensed under the Apache License, Version 2.0 (the "License");
+--  you may not use this file except in compliance with the License.
+--  You may obtain a copy of the License at
+--
+--      http://www.apache.org/licenses/LICENSE-2.0
+--
+--  Unless required by applicable law or agreed to in writing, software
+--  distributed under the License is distributed on an "AS IS" BASIS,
+--  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+--  See the License for the specific language governing permissions and
+--  limitations under the License.
+--******************************************************************************/
+	DECLARE stmt varchar(32000);--
+	DECLARE sample_ts timestamp;--
+	DECLARE CONTINUE HANDLER FOR not found begin 
+	end;
+	set sample_ts = current timestamp;--
+	set stmt = '
+		insert into "s#db2mc".hist_SNAP_GET_DYN_SQL
+		(select
+		  	cast(? as timestamp) as sample_ts,
+		  	cast(? as varchar(128)) as database,
+		  	 "s#db2mc".Hashstring(stmt_text) as stmt_hash,
+			(double(TOTAL_EXEC_TIME) 		+ double(TOTAL_EXEC_TIME_MS)/1000000) 		as EXEC_TIME,
+			(double(TOTAL_USR_CPU_TIME) 	+ double(TOTAL_USR_CPU_TIME_MS)/1000000) 	as USR_CPU_TIME,
+			(double(TOTAL_SYS_CPU_TIME) 	+ double(TOTAL_SYS_CPU_TIME_MS)/1000000) 	as SYS_CPU_TIME,
+			case when locate(''s#db2mc'',stmt_text)>0 or locate(''IBMSNAP_'',stmt_text)>0 or locate(''CALL REORG'',stmt_text)>0 then ''H''
+				else '' '' end as sql_type,
+	   	 	s.* 
+		 from TABLE(SNAP_GET_DYN_SQL_V95(cast(? as varchar(128)),-1)) as s )
+		';
+		
+	prepare s1 from stmt;--
+	for db_list as
+		select db_name from table(SNAP_GET_DB(cast(null as varchar(128)),0)) as s
+	do
+		execute s1 using sample_ts, db_name, db_name ;--
+	end for;--
+	commit;--
+
+	set stmt = 'insert into "s#db2mc".hist_SNAP_GET_DYN_SQL_delta
+			(SAMPLE_TS
+			,DATABASE
+			,STMT_HASH
+			,STMT_HASH_SIMILAR
+			,EXEC_TIME
+			,USR_CPU_TIME
+			,SYS_CPU_TIME
+			,SQL_TYPE
+			,SNAPSHOT_TIMESTAMP
+			,NUM_EXECUTIONS
+			,NUM_COMPILATIONS
+			,PREP_TIME_WORST
+			,PREP_TIME_BEST
+			,INT_ROWS_DELETED
+			,INT_ROWS_INSERTED
+			,INT_ROWS_UPDATED
+			,ROWS_READ
+			,ROWS_WRITTEN
+			,STMT_SORTS
+			,SORT_OVERFLOWS
+			,TOTAL_SORT_TIME
+			,POOL_DATA_L_READS
+			,POOL_DATA_P_READS
+			,POOL_TEMP_DATA_L_READS
+			,POOL_TEMP_DATA_P_READS
+			,POOL_INDEX_L_READS
+			,POOL_INDEX_P_READS
+			,POOL_TEMP_INDEX_L_READS
+			,POOL_TEMP_INDEX_P_READS
+			,POOL_XDA_L_READS
+			,POOL_XDA_P_READS
+			,POOL_TEMP_XDA_L_READS
+			,POOL_TEMP_XDA_P_READS
+			,TOTAL_EXEC_TIME
+			,TOTAL_EXEC_TIME_MS
+			,TOTAL_USR_CPU_TIME
+			,TOTAL_USR_CPU_TIME_MS
+			,TOTAL_SYS_CPU_TIME
+			,TOTAL_SYS_CPU_TIME_MS
+			,STMT_TEXT
+			,DBPARTITIONNUM
+			,STATS_FABRICATE_TIME
+			,SYNC_RUNSTATS_TIME
+			)
+		select
+			 c.SAMPLE_TS
+			,c.DATABASE
+			,c.STMT_HASH
+			,"s#db2mc".HashSqlSimilar(c.STMT_TEXT) as stmt_hash_similar
+			,c.EXEC_TIME-coalesce(l.EXEC_TIME,0)
+			,c.USR_CPU_TIME-coalesce(l.USR_CPU_TIME,0)
+			,c.SYS_CPU_TIME-coalesce(l.SYS_CPU_TIME,0)
+			,c.SQL_TYPE
+			,c.SNAPSHOT_TIMESTAMP
+			,c.NUM_EXECUTIONS-coalesce(l.NUM_EXECUTIONS,0)
+			,c.NUM_COMPILATIONS-coalesce(l.NUM_COMPILATIONS,0)
+			,c.PREP_TIME_WORST
+			,c.PREP_TIME_BEST
+			,c.INT_ROWS_DELETED-coalesce(l.INT_ROWS_DELETED,0)
+			,c.INT_ROWS_INSERTED-coalesce(l.INT_ROWS_INSERTED,0)
+			,c.INT_ROWS_UPDATED-coalesce(l.INT_ROWS_UPDATED,0)
+			,c.ROWS_READ-coalesce(l.ROWS_READ,0)
+			,c.ROWS_WRITTEN-coalesce(l.ROWS_WRITTEN,0)
+			,c.STMT_SORTS-coalesce(l.STMT_SORTS,0)
+			,c.SORT_OVERFLOWS-coalesce(l.SORT_OVERFLOWS,0)
+			,c.TOTAL_SORT_TIME-coalesce(l.TOTAL_SORT_TIME,0)
+			,c.POOL_DATA_L_READS-coalesce(l.POOL_DATA_L_READS,0)
+			,c.POOL_DATA_P_READS-coalesce(l.POOL_DATA_P_READS,0)
+			,c.POOL_TEMP_DATA_L_READS-coalesce(l.POOL_TEMP_DATA_L_READS,0)
+			,c.POOL_TEMP_DATA_P_READS-coalesce(l.POOL_TEMP_DATA_P_READS,0)
+			,c.POOL_INDEX_L_READS-coalesce(l.POOL_INDEX_L_READS,0)
+			,c.POOL_INDEX_P_READS-coalesce(l.POOL_INDEX_P_READS,0)
+			,c.POOL_TEMP_INDEX_L_READS-coalesce(l.POOL_TEMP_INDEX_L_READS,0)
+			,c.POOL_TEMP_INDEX_P_READS-coalesce(l.POOL_TEMP_INDEX_P_READS,0)
+			,c.POOL_XDA_L_READS-coalesce(l.POOL_XDA_L_READS,0)
+			,c.POOL_XDA_P_READS-coalesce(l.POOL_XDA_P_READS,0)
+			,c.POOL_TEMP_XDA_L_READS-coalesce(l.POOL_TEMP_XDA_L_READS,0)
+			,c.POOL_TEMP_XDA_P_READS-coalesce(l.POOL_TEMP_XDA_P_READS,0)
+			,c.TOTAL_EXEC_TIME
+			,c.TOTAL_EXEC_TIME_MS
+			,c.TOTAL_USR_CPU_TIME
+			,c.TOTAL_USR_CPU_TIME_MS
+			,c.TOTAL_SYS_CPU_TIME
+			,c.TOTAL_SYS_CPU_TIME_MS
+			,c.STMT_TEXT
+			,c.DBPARTITIONNUM
+			,c.STATS_FABRICATE_TIME-coalesce(l.STATS_FABRICATE_TIME,0)
+			,c.SYNC_RUNSTATS_TIME-coalesce(l.SYNC_RUNSTATS_TIME,0)
+		from (values((select max(sample_ts) from "s#db2mc".hist_SNAP_GET_DYN_SQL)
+					,(select max(sample_ts) from "s#db2mc".hist_SNAP_GET_DYN_SQL where sample_ts < (select max(sample_ts) from "s#db2mc".hist_SNAP_GET_DYN_SQL))
+					)) as t(current_ts,last_ts)
+		join "s#db2mc".hist_SNAP_GET_DYN_SQL c
+		  on c.sample_ts=t.current_ts
+		left join "s#db2mc".hist_SNAP_GET_DYN_SQL l
+		   on (c.database,c.stmt_hash)=(l.database,l.stmt_hash)
+		   and l.sample_ts=t.last_ts
+		where l.NUM_EXECUTIONS is null or c.NUM_EXECUTIONS <> l.NUM_EXECUTIONS
+		   and c.NUM_EXECUTIONS > coalesce(l.NUM_EXECUTIONS,0)
+		';--
+	prepare s1 from stmt;--
+	execute s1;--
+end
+]]>
+			</SQLText>
+            <SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar="@"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+		</page>
+		<page name="Schedule dynamic SQL gathering" type="general">
+    	 	<entryAction/>
+    	 	<exitAction/>
+            <contentText>
+<![CDATA[
+Schedule stored procedure to gather dynamic SQL.  Default is to schedule every hourly on the half hour boundary. 
+]]>
+			</contentText>
+            <SQLText>
+<![CDATA[
+call ADMIN_TASK_ADD('db2mc Dynamic Cache Sampling'
+					,cast(NULL as TIMESTAMP)
+					,cast(NULL as TIMESTAMP)
+					,cast(NULL as INTEGER)
+					,'30 * * * *' 
+					,'s#db2mc'
+					,'gatherDynSQL'
+					,cast(null as CLOB(100))
+					,cast(null as VARCHAR(512))
+					,'')
+]]>
+			</SQLText>
+            <SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar=";"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+        </page>
+		<page name="Create Prune Stored Procedure" type="general">
+    	 	<entryAction/>
+    	 	<exitAction/>
+            <contentText>
+<![CDATA[
+Schedule stored procedure to prune data. 
+]]>
+			</contentText>
+            <SQLText>
+<![CDATA[
+CREATE PROCEDURE "s#db2mc"."pruneDynSQL" (
+	  in work_Tables_Retain_Days int
+	 ,in data_Retain_Days int 
+	 )
+  SPECIFIC "s#db2mc.pruneDynSQL"
+  DYNAMIC RESULT SETS 0
+  LANGUAGE SQL
+begin
+--/******************************************************************************	
+--  Author: Peter Prib
+--  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2011 All rights reserved.
+--
+--  Licensed under the Apache License, Version 2.0 (the "License");
+--  you may not use this file except in compliance with the License.
+--  You may obtain a copy of the License at
+--
+--      http://www.apache.org/licenses/LICENSE-2.0
+--
+--  Unless required by applicable law or agreed to in writing, software
+--  distributed under the License is distributed on an "AS IS" BASIS,
+--  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+--  See the License for the specific language governing permissions and
+--  limitations under the License.
+--******************************************************************************/
+	DECLARE noRowsUpdate char(2);
+	DECLARE stmt varchar(4000);
+	DECLARE CONTINUE HANDLER FOR not found begin 
+		set noRowsUpdate='Y';
+	end;
+
+-- deliberate use of dynamic SQL to avoid rebinding
+	
+	set stmt = 'delete from (select * from "s#db2mc".hist_SNAP_GET_DYN_SQL where  sample_ts < current timestamp - '||char(coalesce(work_Tables_Retain_Days,2))||' days fetch first 1000  rows only) a';
+	prepare s1 from stmt;
+	set noRowsUpdate='N';
+	while noRowsUpdate='Y' do
+		execute s1;
+		commit;
+	END WHILE;
+	set stmt = 'delete from (select * from "s#db2mc".hist_SNAP_GET_DYN_SQL_DELTA where  sample_ts < current timestamp - '||char(coalesce(data_Retain_Days,9999))||'  days fetch first 1000  rows only) a';
+	prepare s1 from stmt;
+	set noRowsUpdate='N';
+	while noRowsUpdate='Y' do
+		execute s1;
+		commit;
+	END WHILE;
+end
+]]>
+			</SQLText>
+            <SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar="@"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+        </page>
+		<page name="Schedule prune" type="general">
+    	 	<entryAction/>
+    	 	<exitAction/>
+            <contentText>
+<![CDATA[
+Schedule stored procedure to prune data. 
+]]>
+			</contentText>
+            <SQLText>
+<![CDATA[
+call ADMIN_TASK_ADD('db2mc History Prune for Dynamic SQL Sampling'
+					,cast(NULL as TIMESTAMP)
+					,cast(NULL as TIMESTAMP)
+					,cast(NULL as INTEGER)
+					,'10 6 * * *' 
+					,'s#db2mc'
+					,'pruneDynSQL'
+					,cast('values(2,365)' as CLOB(100))
+					,cast(null as VARCHAR(512))
+					,'')
+]]>
+			</SQLText>
+            <SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar=";"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+        </page>
+   	 <page name="Uninstall" type="last" autoPlay="false">
+            <contentText>Uninstall dynamic SQL sampling.</contentText>
+            <SQLText>
+<![CDATA[
+call ADMIN_TASK_REMOVE('db2mc History Prune for Dynamic SQL Sampling',NULL)@
+drop PROCEDURE "s#db2mc"."pruneDynSQL"@
+call ADMIN_TASK_REMOVE('db2mc Dynamic Cache Sampling',NULL)@
+drop PROCEDURE "s#db2mc"."gatherDynSQL"@
+drop function "s#db2mc".Hashstring@
+drop function "s#db2mc".HashSqlSimilar@
+drop table "s#db2mc".hist_SNAP_GET_DYN_SQL@
+drop table "s#db2mc".hist_SNAP_GET_DYN_SQL_DELTA@
+]]>
+            </SQLText>
+            <SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar="@"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+        </page>
+    </pageList>
+</tutorial>

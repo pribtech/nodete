@@ -1,0 +1,59 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2009 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+
+<actionScript name="installPolicy" type="form">
+	<message><![CDATA[
+<div style='width:500px'>
+<p>Create the objects required for Policy</p>
+<p>The task to create the tables may take a while.</p>
+</div>
+]]>
+    </message>
+    <parameterList>
+		<parameter name="buttonOK" type="raw">
+			<value>Install</value>
+		</parameter>
+	</parameterList>
+	<if condition="true">
+		<task>
+			<action name="install" type="serverAction">
+				<parameterList>
+					<parameter name="action" type="fixed">
+						<value>executeSQL</value>
+					</parameter>
+					<parameter name="SQL" type="fixed">
+						<value>CALL SYSPROC.SYSINSTALLOBJECTS('POLICY', 'C', CAST (null AS VARCHAR(128)),   CAST (null AS VARCHAR(128)));</value>
+					</parameter>
+				</parameterList>
+				<if condition="true" negCondition="true">
+					<task>
+						<assignSharedConstant name="ERROR_MESSAGE" type="returnObject">
+							<value>install.returnValue.STMTMSG</value>
+						</assignSharedConstant>
+						<alert>Failed to create Policy objects : ?ERROR_MESSAGE?</alert>
+					</task>
+				</if>
+				<if condition="true">
+					<task>
+						<alert>Policy objects created</alert>
+					</task>
+				</if>
+			</action>
+		</task>
+	</if>
+</actionScript>

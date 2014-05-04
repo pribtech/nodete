@@ -1,0 +1,854 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+                         targetNamespace="http://www.ibm.com/xmlns/prod/db2/autonomic/healthrec"
+                         xmlns="http://www.ibm.com/xmlns/prod/db2/autonomic/healthrec"
+                         elementFormDefault="qualified"  >
+
+
+<xs:annotation>
+   <xs:documentation>
+   
+      DB2 Health Recommendation Schema
+      
+      This schema describes the structure of health recommendation documents,
+      obtained by querying the DB2 health monitor for recommendations to 
+      resolve alerts on health indicators.
+   
+   </xs:documentation>
+</xs:annotation>
+
+<xs:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="xml.xsd" />
+
+
+<xs:annotation>
+   <xs:documentation>
+   
+      Every recommendation document begins with the global DB2_Health 
+      element. This element consists of one or more RecommendationSet
+      elements, where each RecommendationSet describes a specific
+      problem and a set of recommendations for how to resolve
+      that problem. 
+      
+      A DB2_Health element has 5 attributes:
+      
+      schemaVersion identifies the version number of the schema. The version
+      number corresponds to one of the schema version constants externalized
+      in db2ApiDf.h.
+      
+      xml:lang specifies the language of text in the document.
+      
+      timestamp identifies the time when the document was created. Recommendations
+      are generally time sensitive (e.g. a health indicator may leave an alert
+      state after a while). The timestamp is in Coordinated Universal Time (UTC).
+      
+      hostname is the fully qualified domain name of the host where the 
+      recommendation document was generated.
+      
+      instance is the DB2 instance where the recommendation document was
+      generated. The recommendations contained in the document are applicable
+      to this instance.
+      
+   </xs:documentation>
+</xs:annotation>
+
+<xs:element name="DB2_Health" type="DB2_HealthType" />
+
+<xs:complexType name="DB2_HealthType" >
+   <xs:sequence >
+      <xs:element name="RecommendationSet" type="RecommendationSetType" minOccurs="1" maxOccurs="unbounded" />
+   </xs:sequence > 
+   <xs:attribute name="schemaVersion" type="xs:integer" use="required" />
+   <xs:attribute ref="xml:lang" use="optional" default="en" />
+   <xs:attribute name="timestamp" type="xs:dateTime" use="required" />
+   <xs:attribute name="hostname" type="xs:string" use="required" />
+   <xs:attribute name="instance" type="xs:string" use="required" />   
+</xs:complexType >
+
+
+<xs:annotation>
+   <xs:documentation>
+   
+      Each RecommendationSet element is a logical grouping of a problem along
+      with the collection of recommendations being suggested by the
+      health monitor to resolve that problem.
+      
+   </xs:documentation>
+</xs:annotation>
+
+<xs:complexType name="RecommendationSetType" >
+   <xs:sequence >
+      <xs:element name="Problem" type="ProblemType"  />
+      <xs:element name="Recommendation" type="RecommendationType" minOccurs="1" maxOccurs="unbounded" />
+   </xs:sequence >
+</xs:complexType >
+
+
+<xs:annotation>
+   <xs:documentation>
+   
+   A Problem is specified as one or more health indicators that have entered an 
+   alert state on a DB2 object(s). Different health indicators that have the same
+   resolution (and indicate the same problem) may be collected into the same
+   problem element. Optional short and long description elements may be
+   present in a Problem element. The description elements contain a text
+   description summarizing the problem.
+      
+   </xs:documentation>
+</xs:annotation>
+
+<xs:complexType name="ProblemType" >
+   <xs:sequence >
+      <xs:element name="ShortDescription" type="xs:string" minOccurs="0" maxOccurs="1" />
+      <xs:element name="LongDescription" type="xs:string" minOccurs="0" maxOccurs="1" />
+      <xs:element name="HealthIndicator" type="HealthIndicatorType" minOccurs="1" maxOccurs="unbounded" />
+   </xs:sequence >
+</xs:complexType >
+
+
+<xs:annotation>
+   <xs:documentation>
+   
+      A HealthIndicator element describes a health indicator that has entered 
+      an alert state on a specific DB2 object. It identifies the DB2 object
+      (e.g. a database) and provides details about the alert.
+      
+      A HealtIndicator element has 6 attributes:
+      
+      hiShortName is the short name of the health indicator.
+      
+      hiIdentifier is the unique numeric health indicator identifier (constants
+      defined in db2ApiDf.h).
+      
+      hiAlertState is the current alert state for the health indicator (specifies
+      whether the health indicator is in warning, alarm, etc, state).
+      
+      hiValue is the current value of the health indicator.
+      
+      hiTimestamp provides the date and time when the health indicator was
+      evaluated. hiTimestamp is provided in Coordinated Universal Time (UTC)
+      
+      hiFormula is the formula that was used to evaluate the health indicator.
+      
+      Optionally, the HealthIndicator element may contain a HiAdditionalInfo
+      element (specifing a text description of other information relevant to 
+      the alert) and a set of collection data if the health indicator described
+      by the element is a collection health indicator.
+      
+   </xs:documentation>
+</xs:annotation>
+
+<xs:complexType name="HealthIndicatorType" >
+   <xs:sequence >
+      <xs:element name="HiAdditionalInfo" type="xs:string" minOccurs="0" maxOccurs="1" />
+      <xs:element name="HiCollection" type="HiCollectionType" minOccurs="0" maxOccurs="1" />
+      <xs:element name="DB2_Object" type="DB2_ObjectType" minOccurs="0" maxOccurs="1" />
+   </xs:sequence >
+   <xs:attribute name="hiShortName" type="xs:string" use="required" />
+   <xs:attribute name="hiIdentifier" type="xs:integer" use="required" />
+   <xs:attribute name="hiAlertState" type="HealthIndicatorAlertStateExtensionType" use="optional" />
+   <xs:attribute name="hiValue" type="xs:string" use="optional" />
+   <xs:attribute name="hiTimestamp" type="xs:dateTime" use="optional" />
+   <xs:attribute name="hiFormula" type="xs:string" use="optional" />
+</xs:complexType >
+
+
+<xs:annotation>
+   <xs:documentation>
+   
+      An HiCollection element is a grouping of all the objects in a 
+      collection for a collection based health indicator (e.g. for the
+      db.tb_reorg_req health indicator, the collection contains the set of
+      tables which require reorganization).
+      
+   </xs:documentation>
+</xs:annotation>
+
+<xs:complexType name="HiCollectionType" >
+   <xs:sequence>
+      <xs:element name="HiCollectionElement" type="HiCollectionElementType" minOccurs="1" maxOccurs="unbounded" />
+   </xs:sequence>
+</xs:complexType >
+
+<xs:annotation>
+   <xs:documentation>
+   
+      An HiCollectionElement element describes one object in a
+      health indicator collection (e.g. one table in the case of the
+      db.tb_reorg_req health indicator). 
+      
+      A HiCollectionElement element has 3 attributes:
+      
+      name is the name of the object in the collection.
+      
+      state provides the state of the object (indicates whether manual
+      intervention is required to resolve the problem for this object).
+      
+      timestamp specifies when this object was added to the collection. The
+      timestamp provided is in Coordinated Universal time (UTC).
+      
+      An HiCollectionElement element also contains a Detail element that
+      provides additional information about why this object was added to the 
+      collection.
+      
+   </xs:documentation>
+</xs:annotation>
+
+<xs:complexType name="HiCollectionElementType" >
+   <xs:sequence >
+      <xs:element name="Detail" type="xs:string" minOccurs="1" maxOccurs="1" />
+   </xs:sequence >
+   <xs:attribute name="name" type="xs:string" use="required" />
+   <xs:attribute name="state" type="HealthIndicatorCollectionStateType" use="required" />
+   <xs:attribute name="timestamp" type="xs:dateTime" use="required" />
+</xs:complexType >
+
+
+<xs:annotation>
+   <xs:documentation>
+   
+      HealthIndicatorAlertStateType is a simple type enumerating the
+      different states for a health indicator.
+      
+   </xs:documentation>
+</xs:annotation>
+
+<xs:simpleType name="HealthIndicatorAlertStateType" >
+   <xs:restriction base="xs:string"> 
+      <xs:enumeration value="unknown" />
+      <xs:enumeration value="normal" />
+      <xs:enumeration value="attention" />
+      <xs:enumeration value="warning" />
+      <xs:enumeration value="alarm" />
+   </xs:restriction >
+</xs:simpleType >
+
+
+<xs:annotation>
+   <xs:documentation>
+   
+      HealthIndicatorCollectionStateType is a simple type enumerating
+      the different states for an object which is part of a health
+      indicator collection. 
+      
+   </xs:documentation>
+</xs:annotation>
+
+<xs:simpleType name="HealthIndicatorCollectionStateType" >
+   <xs:restriction base="xs:string"> 
+      <xs:enumeration value="attention" />
+      <xs:enumeration value="automated" />
+      <xs:enumeration value="automation failed" />
+   </xs:restriction >
+</xs:simpleType >
+
+<xs:simpleType name="HealthIndicatorAlertStateExtensionType" >
+   <xs:union memberTypes="HealthIndicatorAlertStateType xs:string" />
+</xs:simpleType >
+
+
+<xs:annotation>
+   <xs:documentation>
+   
+      The DB2_Object element describes a fully qualified DB2 object. The 
+      object exists at the server identified by the hostname attribute in 
+      the root DB2_Health element. 
+      
+      A DB2_Object element has 4 attributes: 
+      
+      objectType specifies the type of DB2 object (e.g. tablespace,
+      database, etc).
+      
+      instance identifies the instance name where the object exists. If
+      instance is not specified, then the instance for the object is
+      the instance identified by the instance attribute in the root
+      DB2_Health element.
+      
+      database is the database name where the object exists (if the object
+      is defined at or below the database level). 
+      
+      objectName is the name of the object, if the object is defined
+      below the database level (e.g. if this is a tablespace or a 
+      container). Container names are prefixed with their respective
+      tablespace names.
+         
+   </xs:documentation>
+</xs:annotation>
+
+<xs:complexType name="DB2_ObjectType" >
+   <xs:attribute name="objectType" type="DB2_ObjectNamesExtensionType" use="required" />
+   <xs:attribute name="instance" type="xs:string" use="optional" />
+   <xs:attribute name="partition" type="xs:integer" use="optional" />
+   <xs:attribute name="database" type="xs:string" use="optional" />
+   <xs:attribute name="objectName" type="xs:string" use="optional" />
+</xs:complexType >
+
+<xs:annotation>
+   <xs:documentation>
+   
+      DB2_ObjectNamesType is a simple type enumerating the different
+      DB2 objects that can be described by a DB2_Object element
+      
+   </xs:documentation>
+</xs:annotation>
+
+<xs:simpleType name="DB2_ObjectNamesType" >
+   <xs:restriction base="xs:string" > 
+      <xs:enumeration value="table" />
+      <xs:enumeration value="index" />
+      <xs:enumeration value="tablespace" />
+      <xs:enumeration value="container" />
+      <xs:enumeration value="database" />
+      <xs:enumeration value="databaseManager" />
+   </xs:restriction >
+</xs:simpleType >
+
+<xs:simpleType name="DB2_ObjectNamesExtensionType" >
+   <xs:union memberTypes="DB2_ObjectNamesType xs:string" />
+</xs:simpleType >
+
+
+<xs:annotation>
+   <xs:documentation>
+   
+      A Recommendation element describes a single recommendation. A 
+      recommendation is a suggestion for how to resolve a particular problem,
+      identified in a Problem element. Each recommendation contains a 
+      short description (one line text description of recommendation), a
+      long description (more details), an optional formula (providing
+      information on how recommended values were computed), a set of
+      properties (describing the behavior of the recommendation) and 
+      one or more action alternatives. Each action alternative is a
+      suggestion for how to implement the recommendation (e.g. may contain
+      a script that can be executed). Different action alternatives describe
+      different ways that the recommendation can be followed. 
+      
+      A Recommendation element has 1 attribute: 
+      
+      rank is the rank of the recommendation relative to other recommendations
+      returned in the same RecommendationSet. The rank is an integer in 
+      the range of 1 to n where n is the total number of recommendations
+      returned in the set. The rank may not be specified if the health monitor
+      does not have enough information to determine a meaningful ranking.
+            
+   </xs:documentation>
+</xs:annotation>
+
+<xs:complexType name="RecommendationType" >
+   <xs:sequence > 
+      <xs:element name="Properties" type="RecommendationPropertiesType" minOccurs="0" maxOccurs="1" />
+      <xs:element name="ShortDescription" type="xs:string" />
+      <xs:element name="LongDescription" type="xs:string" />
+      <xs:element name="RecommendationFormula" type="xs:string" minOccurs="0" maxOccurs="1" />
+      <xs:element name="ActionAlternative" type="ActionAlternativeType" minOccurs="1" maxOccurs="unbounded" />
+   </xs:sequence >
+   <xs:attribute name="rank" type="xs:integer" use="optional" />
+</xs:complexType >
+
+
+<xs:annotation>
+   <xs:documentation>
+   
+      A Properties element is a collection of one or more properties, where each 
+      property describes some aspect of the behavior of the recommendation. 
+      Properties can be examined to determine if a recommendation is 
+      appropriate for the needs of a particular client.
+         
+   </xs:documentation>
+</xs:annotation>
+
+<xs:complexType name="RecommendationPropertiesType" >
+   <xs:sequence>
+      <xs:element name="Property" type="RecommendationPropertyType" minOccurs="1" maxOccurs="unbounded" />
+   </xs:sequence>
+</xs:complexType >
+
+
+<xs:annotation>
+   <xs:documentation>
+   
+      A Property element describes a single property of a recommendation.
+      The following properties may be identified: 
+      
+      investigation - recommendation will help the user to gain a better
+      understanding of the problem, which may lead to a resolution.
+      
+      resolution - recommendation will resolve the problem.
+      
+      instanceRestartRequired - in order to take the recommended action,
+      the DB2 instance must be restarted. 
+      
+      databaseReactivationRequired - in order to take the recommended
+      action, it will be necessary to deactivate and reactivate the
+      database to which the recommendation applies.
+      
+      databaseOffline - if the recommendation is taken, the database
+      to which the recommendation applies will be taken offline.
+      
+      automation - if the recommendation is taken, DB2 will manage
+      the problem automatically, without further user intervention.
+      
+      The Property element contains a single attribute: 
+      
+      name is the enumerated name of the property that applies to 
+      the recommendation.
+         
+   </xs:documentation>
+</xs:annotation>
+
+<xs:complexType name="RecommendationPropertyType" mixed="true" >
+   <xs:attribute name="type" type="RecommendationPropertyNamesExtensionType" use="required" />
+</xs:complexType>
+
+<xs:annotation>
+   <xs:documentation>
+   
+      RecommendationPropertyNamesType is a simple type enumerating the 
+      different recommendation properties.
+      
+   </xs:documentation>
+</xs:annotation>
+
+<xs:simpleType name="RecommendationPropertyNamesType"  >
+   <xs:restriction base="xs:string" >
+      <xs:enumeration value="investigation" />
+      <xs:enumeration value="resolution" />
+      <xs:enumeration value="instanceRestartRequired" />
+      <xs:enumeration value="databaseReactivationRequired" />
+      <xs:enumeration value="databaseOffline" />
+      <xs:enumeration value="automation" />
+   </xs:restriction >
+</xs:simpleType >
+
+<xs:simpleType name="RecommendationPropertyNamesExtensionType" >
+   <xs:union memberTypes="RecommendationPropertyNamesType xs:string" />
+</xs:simpleType >
+
+
+<xs:annotation>
+   <xs:documentation>
+   
+      An ActionAlternative element is a possible implementation for a 
+      recommendation. It provides the user with information for how they
+      can take the recommended action. In cases where a recommendation
+      presents the user with more then one ActionAlternative, the user
+      can choose the alternative that is best suited to their needs
+      (e.g. one alternative may suggest updating a config parm using a
+      DB2 tool, while another may suggest using a script to update the
+      config parm. If the user does not have access to the DB2 tools, they
+      may choose the second alternative, and run the script). 
+      
+      There are 3 types of action alternatives: 
+      
+      DB2_Scripts - a collection of one or more scripts to be 
+      executed.
+      
+      DB2_Tool - description of a tool that can be launched to resolve
+      the alert.
+      
+      Instructions - text description of actions the user can take to
+      resolve the alert.
+   
+   </xs:documentation>
+</xs:annotation>
+
+<xs:complexType name="ActionAlternativeType" >
+   <xs:choice >
+      <xs:element name="DB2_Scripts" type="DB2_ScriptsType"  />
+      <xs:element name="DB2_Tool" type="DB2_ToolType" />
+      <xs:element name="Instructions" type="xs:string" />
+   </xs:choice >
+</xs:complexType >
+
+
+<xs:annotation>
+   <xs:documentation>
+   
+      A DB2_Tool element describes a specific DB2 tool that can be launched
+      to resolve the problem. This element contains a ToolInformation 
+      element which describes the tool, a ToolContext element specifying
+      the context under which the tool should be launched (generally this is
+      an object against which the tool will work, e.g. use the tool against
+      the SAMPLE database) and a ToolUsage element that provides some
+      usage instructions for what to do with the tool once it is 
+      launched. 
+      
+      Note that a DB2_Tool element may describe either a specific 
+      stand-alone DB2 tool (e.g. Activity Monitor), or may describe some 
+      specific functionality in the Control Center (e.g. may describe
+      the Alter Table Space Notebook). 
+      
+   </xs:documentation>
+</xs:annotation>
+
+<xs:complexType name="DB2_ToolType" >
+   <xs:sequence >
+      <xs:element name="ToolInformation" type="ToolInformationType" />
+      <xs:element name="ToolContext" type="ToolContextType" minOccurs="0" maxOccurs="1" />
+      <xs:element name="ToolUsage" type="xs:string" minOccurs="0" maxOccurs="1" />  
+   </xs:sequence >
+</xs:complexType >
+
+
+<xs:annotation>
+   <xs:documentation>
+   
+      A ToolInformation element contains a collection of information about
+      a DB2 tool. This includes a generic description of the tool and what it
+      is used for, an optional script for launching the tool (if the tool
+      can be launched directly from the command line) and an optional
+      description for how to launch the tool. 
+      
+      A ToolInformation element has 3 attributes:
+      
+      toolId is a unique text identifier for the tool.
+      
+      name is the full name of the tool.
+      
+      interface specifies whether this is a command line tool or whether it
+      has a graphical interface.
+      
+   </xs:documentation>
+</xs:annotation>
+
+<xs:complexType name="ToolInformationType" >
+   <xs:sequence >
+      <xs:element name="Description" type="xs:string" minOccurs="0" maxOccurs="1" />
+      <xs:element name="LaunchScript" type="xs:string" minOccurs="0" maxOccurs="1" />
+      <xs:element name="LaunchInstructions" type="xs:string" minOccurs="0" maxOccurs="1" />
+   </xs:sequence >
+   <xs:attribute name="toolId" type="DB2_ToolsExtensionType" use="required" />
+   <xs:attribute name="name" type="xs:string" use="required" />
+   <xs:attribute name="interface" type="DB2_ToolInterfaceExtensionType" use="required" />
+</xs:complexType >
+
+
+<xs:annotation>
+   <xs:documentation>
+   
+      The ToolContext element specifies a context under which a tool
+      should be launched. The context generally identifies a DB2 object
+      against which the tool should be used. For certain tools
+      (the Design Advisor, Alter Table Space Notebook and the Config
+      Windows) additional context information is provided.
+         
+   </xs:documentation>
+</xs:annotation>
+
+<xs:complexType name="ToolContextType" >
+   <xs:sequence>
+      <xs:element name="ObjectContext" type="DB2_ObjectListType" />
+      <xs:choice minOccurs="0" maxOccurs="1" >
+         <xs:element name="DesignAdvisorContext" type="DesignAdvisorContextType"  />
+         <xs:element name="AlterTablespaceContext" type="AlterTablespaceContextType"  />
+         <xs:element name="ConfigContext" type="ConfigContextType" />
+      </xs:choice >   
+   </xs:sequence>
+</xs:complexType >
+
+
+<xs:annotation>
+   <xs:documentation>
+   
+      The ConfigContext element describes the context under which
+      a DB or DBM Configuration Window in the Control Center should
+      be used. The ConfigContext contains one or more ConfigurationParameter
+      elements, where each of these elements describes the a 
+      particular configuration parameter and the new value that is
+      being recommended for that parameter.
+      
+   </xs:documentation>
+</xs:annotation>
+
+<xs:complexType name="ConfigContextType" >
+   <xs:sequence >
+      <xs:element name="ConfigParameter" type="ScriptParameterType" minOccurs="1" maxOccurs="unbounded" /> 
+   </xs:sequence>
+</xs:complexType >
+
+
+<xs:annotation>
+   <xs:documentation>
+   
+      The DesignAdvisorContext element describes whether the Design Advisor
+      tool should be used to recommend indexes, MDC's, MQT's or partitions. 
+      
+      The DesignAdvisorContext element contains 4 boolean attributes identifying
+      which Design Advisor options should be considered.
+      
+   </xs:documentation>
+</xs:annotation>
+
+<xs:complexType name="DesignAdvisorContextType" > 
+   <xs:attribute name="indexes" type="xs:boolean" />
+   <xs:attribute name="MDC" type="xs:boolean" />
+   <xs:attribute name="MQT" type="xs:boolean" />
+   <xs:attribute name="partitions" type="xs:boolean" />
+</xs:complexType >
+
+
+<xs:annotation>
+   <xs:documentation>
+   
+      The AlterTablespaceContext element describes whether the Alter
+      Table Space Notebook should be used to add a new stripe set
+      to a tablespace, or to add a new container. 
+      
+      The AlterTableSpaceContext element contains 2 boolean attributes,
+      identifying which Alter Tablespace feature is being
+      recommended.
+      
+   </xs:documentation>
+</xs:annotation>
+
+<xs:complexType name="AlterTablespaceContextType" >
+   <xs:attribute name="addStripeSet" type="xs:boolean" />
+   <xs:attribute name="addContainer" type="xs:boolean" />
+</xs:complexType >
+
+
+<xs:annotation>
+   <xs:documentation>
+   
+      DB2_ToolsType is an enumeration of all the tools that are recommended
+      to resolve health alerts. Tools include both standalone GUI or command
+      line tools, and windows integrated into the Control Center.
+      
+   </xs:documentation>
+</xs:annotation>
+
+<xs:simpleType name="DB2_ToolsType" >
+   <xs:restriction base="xs:string" >
+      <xs:enumeration value="memoryVisualizer" />
+      <xs:enumeration value="designAdvisor" />
+      <xs:enumeration value="eventMonitor" />
+      <xs:enumeration value="alterTablespaceNotebook" />
+      <xs:enumeration value="indoubtTransactionManager" />
+      <xs:enumeration value="storageManagementWindow" />
+      <xs:enumeration value="dbConfigWindow" />
+      <xs:enumeration value="dbmConfigWindow" />
+      <xs:enumeration value="applicationsWindow" />
+      <xs:enumeration value="unquiesceDatabase" />
+      <xs:enumeration value="unquiesceInstance" />
+      <xs:enumeration value="startInstance" />
+      <xs:enumeration value="quiesceWindow" />
+      <xs:enumeration value="backupWizardTbsp" />
+      <xs:enumeration value="rollforwardTablespace" />
+      <xs:enumeration value="restoreWizard" />
+      <xs:enumeration value="dropTablespace" />
+      <xs:enumeration value="hadrManageWindow" />
+      <xs:enumeration value="utilityStatusManager" />
+      <xs:enumeration value="activityMonitor" />
+      <xs:enumeration value="backupWizard" />
+      <xs:enumeration value="configureMaintenanceWizard" />
+      <xs:enumeration value="addStorageWindow" />
+   </xs:restriction >
+</xs:simpleType >
+
+<xs:simpleType name="DB2_ToolsExtensionType" >
+   <xs:union memberTypes="DB2_ToolsType xs:string" />
+</xs:simpleType >
+
+
+<xs:annotation>
+   <xs:documentation>
+   
+      DB2_ToolInterfaceType is an enumeration of the different types of 
+      interfaces supported by the tools. Currently, there are both
+      graphical (GUI) and command line tools that are recommended.
+      
+   </xs:documentation>
+</xs:annotation>
+
+<xs:simpleType name="DB2_ToolInterfaceType" >
+   <xs:restriction base="xs:string" >
+      <xs:enumeration value="gui" />
+      <xs:enumeration value="commandLine" />
+   </xs:restriction >
+</xs:simpleType >
+
+<xs:simpleType name="DB2_ToolInterfaceExtensionType" >
+   <xs:union memberTypes="DB2_ToolInterfaceType xs:string" />
+</xs:simpleType >
+
+<xs:annotation>
+   <xs:documentation>
+   
+      The DB2_Scripts element is a collection of one or more
+      DB2_Script elements (i.e. a collection of one or more scripts).
+         
+   </xs:documentation>
+</xs:annotation>
+
+<xs:complexType name="DB2_ScriptsType" >
+   <xs:sequence >
+      <xs:element name="DB2_Script" type="DB2_ScriptType" minOccurs="1" maxOccurs="unbounded" /> 
+   </xs:sequence>
+</xs:complexType >
+
+
+<xs:annotation>
+   <xs:documentation>
+   
+      A DB2_Script element describes a single DB2 script. DB2 scripts are 
+      only valid (and must be executed) at the DB2 server instance identified
+      by the hostname and instance attributes in the DB2_Health root element.
+      All database and instance names contained in the script are the names 
+      the objects are known by at the server (i.e. no client aliases). 
+      
+      The DB2_Script element contains a script name, an execution context 
+      (which provides additional details about where the script should be 
+      executed), an object context (which identifies which DB2 objects will
+      be affected by the script) and a script body. The script body itself
+      may contain one or more ScriptParameter elements (these elements are 
+      used to identify those parts of a script which a client may be 
+      interested in modifying, and provide constraints for any modifications. 
+      e.g. in a script to update a configuration parameter, the recommended 
+      value may be wrapped in a ScriptParameter element). 
+      
+      The text which the DB2_Script element wraps is the DB2 script itself.
+      
+      A DB2_Script element has 2 attributes: 
+      
+      statementTermChar is the script statement termination character (i.e. 
+      the character used to delimit lines in the script)
+      
+      estRuntime is an optional estimated runtime for the script, if 
+      the runtime can be estimated by the health monitor. 
+      
+   </xs:documentation>
+</xs:annotation>
+
+<xs:complexType name="DB2_ScriptType" mixed="true" >
+   <xs:sequence >
+      <xs:element name="ScriptName" type="xs:string" minOccurs="1" maxOccurs="1" />
+      <xs:element name="ExecutionContext" type="ExecutionContextType" minOccurs="1" maxOccurs="1" />
+      <xs:element name="ObjectContext" type="DB2_ObjectListType" minOccurs="0" maxOccurs="1" />
+      <xs:element name="ScriptParameter" type="ScriptParameterType" minOccurs="0" maxOccurs="unbounded" />
+   </xs:sequence >
+   <xs:attribute name="statementTermChar" type="xs:string" use="required" />
+   <xs:attribute name="estRuntime" type="xs:duration" use="optional" />
+</xs:complexType >
+
+
+<xs:annotation>
+   <xs:documentation>
+
+      An ExecutionContext element specifies where the script should
+      be executed. It contains 3 attributes:
+      
+      hostname is the fully quailifed domain name of the host where
+      the script should be executed. If this hostname is not
+      specified, the hostname in the root DB2_Health element should
+      be used.
+      
+      instance is the instance under which the script should be
+      executed. If the instance is not specified, the instance
+      contained in the root DB2_Health element should be used.
+      
+      partition is the DB2 partition number where the script
+      should be executed (if the script is partition sensitive).
+      
+      
+   </xs:documentation>
+</xs:annotation>
+
+<xs:complexType name="ExecutionContextType" >
+   <xs:attribute name="hostname" type="xs:string" use="required" />
+   <xs:attribute name="instance" type="xs:string" use="required" />
+   <xs:attribute name="partition" type="xs:integer" use="optional" />
+</xs:complexType >
+
+
+<xs:annotation>
+   <xs:documentation>
+   
+      The DB2_ObjectList element is a collection of one or more DB2 
+      objects.
+      
+   </xs:documentation>
+</xs:annotation>
+
+<xs:complexType name="DB2_ObjectListType" >
+   <xs:sequence >
+      <xs:element name="DB2_Object" type="DB2_ObjectType" minOccurs="1" maxOccurs="unbounded" />
+   </xs:sequence >
+</xs:complexType >
+
+
+<xs:annotation>
+   <xs:documentation>
+   
+      A ScriptParameter element wraps a parameterized value in a DB2 script or
+      a recommended value in a configuration window tool context. It contains
+      an optional DB2 object (which identifies the particular DB2 object
+      to which the parameter applies. E.g. a database if the parameterized
+      value is a database configuration parameter), and an optional help text
+      element that describes the parameter.
+      
+      A ScriptParameter element has 8 attributes:
+      
+      parameterName is the descriptive name of the parameter, suitable for
+      display.
+      
+      datatype is the data type of the parameter (e.g. integer, string, etc).
+      
+      minValue is the minimum allowed value for the parameter. Only applies
+      to numeric parameters.
+      
+      maxValue is the maximum allowed value for the parameter. Only applies
+      to numeric parameters. 
+      
+      enumeratedValues is a comma delimitted list of the valid values
+      for this parameter. This attribute is only valid if the parameter
+      datatype is enumerated.
+   
+      currentValue is the current value of the parameter (if this parameter
+      already has a value set at the server).
+      
+      dataUnit is the unit of measure for the parameter (e.g. kilobytes).
+      
+      parameterToken is an optional token used to identifiy the parameter.
+      E.g. for configuration parameters, this would be the sting token
+      CLP uses to identify the parameter.
+      
+   </xs:documentation>
+</xs:annotation>
+
+<xs:complexType name="ScriptParameterType" mixed="true" >
+  <xs:sequence >
+     <xs:element name="HelpText" type="xs:string" minOccurs="0" maxOccurs="1" />
+     <xs:element name="DB2_Object" type="DB2_ObjectType" minOccurs="0" maxOccurs="1" />
+  </xs:sequence >
+  <xs:attribute name="parameterName" type="xs:string" use="required" />
+  <xs:attribute name="datatype" type="ParameterDatatypesExtensionType" use="required" />
+  <xs:attribute name="minValue" type="xs:string" use="optional" />
+  <xs:attribute name="maxValue" type="xs:string" use="optional" />
+  <xs:attribute name="enumeratedValues" type="xs:string" use="optional" />
+  <xs:attribute name="currentValue" type="xs:string" use="optional" />
+  <xs:attribute name="dataUnit" type="xs:string" use="optional" />
+  <xs:attribute name="parameterToken" type="xs:string" use="optional" />
+</xs:complexType >
+
+
+<xs:annotation>
+   <xs:documentation>
+   
+      ParameterDatatypes is a simple type used to enumerate the
+      different data types supported for parameters.
+      
+   </xs:documentation>
+</xs:annotation>
+
+<xs:simpleType name="ParameterDatatypesType" >
+   <xs:restriction base="xs:string" >
+      <xs:enumeration value="integer" />
+      <xs:enumeration value="float" />
+      <xs:enumeration value="string" />
+      <xs:enumeration value="enumerated" />
+   </xs:restriction > 
+</xs:simpleType >
+
+<xs:simpleType name="ParameterDatatypesExtensionType" >
+   <xs:union memberTypes="ParameterDatatypesType xs:string" />
+</xs:simpleType >
+
+</xs:schema >

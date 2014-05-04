@@ -1,0 +1,107 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2009 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+<actionScript name="uninstallDB2mcMonitors" type="form" lockScreen="true">
+<!-- 
+This action is used to drop the tables required for storage management
+-->
+	<message><![CDATA[
+<div style='width:500px'>
+<p>You are about to remove the db2mc monitors that provide history.
+</div>
+]]>
+    </message>
+    <parameterList>
+		<parameter name="buttonOK" type="raw">
+			<value>remove</value>
+		</parameter>
+	</parameterList>
+	<if condition="true">
+		<task>
+			<action name="removeDb2Monitors" type="serverAction">
+				<parameterList>
+					<parameter name="action" type="fixed">
+						<value>executeSQL</value>
+					</parameter>
+					<parameter name="commitPerSTMT" type="raw">
+						<value>true</value>
+					</parameter>
+					<parameter name="abortOnFailure" type="raw">
+						<value>false</value>
+					</parameter>
+					<parameter name="SQL[1]" type="fixed">
+						<value>drop PROCEDURE "s#db2mc"."pruneStatistics"</value>
+					</parameter>
+					<parameter name="SQL[2]" type="fixed">
+						<value>drop PROCEDURE "s#db2mc"."gatherStatistics"</value>
+					</parameter>
+					<parameter name="SQL[3]" type="fixed">
+						<value>drop table "s#db2mc".hist_LOG_UTILIZATION</value>
+					</parameter>
+					<parameter name="SQL[4]" type="fixed">
+						<value>drop table "s#db2mc".hist_snapbp_delta</value>
+					</parameter>
+					<parameter name="SQL[5]" type="fixed">
+						<value>drop table "s#db2mc".hist_snapbp</value>
+					</parameter>
+					<parameter name="SQL[6]" type="fixed">
+						<value>drop table "s#db2mc".hist_snapdbm_delta</value>
+					</parameter>
+					<parameter name="SQL[7]" type="fixed">
+						<value>drop table "s#db2mc".hist_snapdbm</value>
+					</parameter>
+					<parameter name="SQL[8]" type="fixed">
+						<value>drop table "s#db2mc".hist_snapdb_delta</value>
+					</parameter>
+					<parameter name="SQL[9]" type="fixed">
+						<value>drop table "s#db2mc".hist_snapdb</value>
+					</parameter>
+					<parameter name="SQL[10]" type="fixed">
+						<value>drop table "s#db2mc".hist_snapDBmem</value>
+					</parameter>
+					<parameter name="SQL[11]" type="fixed">
+						<value>drop table "s#db2mc".hist_snapHADR</value>
+					</parameter>
+				</parameterList>
+				<if condition="true" negCondition="true">
+					<task>
+						<assignSharedConstant name="STMTRun" type="returnObject">
+							<value>removeDb2Monitors.returnValue.STMTRun</value>
+						</assignSharedConstant>
+						<assignSharedConstant name="STMT" type="returnObject">
+							<value>removeDb2Monitors.returnValue.STMT</value>
+						</assignSharedConstant>
+						<assignSharedConstant name="STMTMSG" type="returnObject">
+							<value>removeDb2Monitors.returnValue.STMTMSG</value>
+						</assignSharedConstant>
+						<alert>Failure(s) in remove db2mc Monitors, statement ?STMTRun? 
+						
+						?STMTMSG?
+						
+						?STMT?
+						</alert>
+					</task>
+				</if>
+				<if condition="true">
+					<task>
+						<alert>db2mc Monitors removed</alert>
+					</task>
+				</if>
+			</action>
+		</task>
+	</if>
+</actionScript>

@@ -1,0 +1,77 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2013 All rights reserved.
+  
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<tutorial name="sudo" disableSetSchema="true">
+	<flowRestriction/>
+    <closeAction />
+    <openAction />
+    <globalCodeHighlightOptions highlightCode = "true" />
+    <WMDConfig/>
+  
+    <pageList>
+
+		<page name="Overview" type="intro">
+    	 	<entryAction/>
+    	 	<exitAction/>
+            <contentText>
+<![CDATA[
+<h1>Overview</h1>
+<p/>
+This tutorial descibes how to set up various aspects of sudo on a linux system
+<p/>
+You will need to have the ability to use root authority on the box  
+or get an appropriately authorised user to action.
+<p/>
+]]>
+			</contentText>
+        </page>
+    
+		<page name="sudo Without Password" type="general">
+    	 	<entryAction/>
+    	 	<exitAction/>
+            <contentText>
+<![CDATA[
+<h1>Using sudo Without Password Prompt</h1>
+<p/>
+This step descibes how to set up password less sudo.  
+This mode is used with the various tutorials to avoid password promption. 
+It is not recommended as a general principle for normal operation.
+<p/>
+You will need to have the ability to use root authority on the box  
+or get an appropriately authorised user to do the following.
+<p/>
+The broad steps are:
+<ul>
+<li>connect onto the box with root authority</li>
+<li>vi /etc/sudoers</li>
+<li> add line
+<p/>
+<textarea cols="50" rows="2">
+## added to allow 
+%superadm         ALL = (ALL) NOPASSWD: ALL
+</textarea>
+<p/>
+</li>
+<li>groupadd superadm</li>
+<li>usermod -a -G superadm toauser</li>
+</ul>
+]]>
+			</contentText>
+        </page>
+
+    </pageList>
+</tutorial>

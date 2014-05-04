@@ -1,0 +1,603 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="DB2SchemaAnnotation.xsl"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:db2-xdb="http://www.ibm.com/xmlns/prod/db2/xdb1"
+           xmlns="http://www.ibm.com/xmlns/prod/db2/mon"
+           targetNamespace="http://www.ibm.com/xmlns/prod/db2/mon"
+           elementFormDefault="qualified"  >
+
+<xs:include schemaLocation="http://www.ibm.com/xmlns/prod/db2/mon" />
+
+<xs:annotation>
+  <xs:documentation>
+   ------------------------------------------------------------------
+   DB2 Package Event Monitor XML Schema
+   ------------------------------------------------------------------
+
+   To view documentation regarding each attribute and element in this
+   schema file: open this XSD file in a web browser. If you copy the XSD
+   file to a different directory ensure that the XML stylesheet file
+   DB2SchemaAnnotation.xsl is also copied.
+  </xs:documentation>
+  <xs:appinfo>
+     <db2-xdb:table>
+       <db2-xdb:name>PKGCACHE_EVENT</db2-xdb:name>
+       <db2-xdb:rowSet>PKGCACHE_EVENT_SET</db2-xdb:rowSet>
+       <createStmt>
+       CREATE TABLE PKGCACHE_EVENT(
+         XMLID                      VARCHAR(1000) NOT NULL,
+         EVENT_ID                   BIGINT        NOT NULL,
+         EVENT_TYPE                 VARCHAR(128)  NOT NULL,
+         EVENT_TIMESTAMP            TIMESTAMP     NOT NULL,
+         MEMBER                     SMALLINT      NOT NULL,
+         SECTION_TYPE               CHAR(1),
+         INSERT_TIMESTAMP           TIMESTAMP,
+         EXECUTABLE_ID              VARCHAR(32) FOR BIT DATA,
+         PACKAGE_SCHEMA             VARCHAR(128),
+         PACKAGE_NAME               VARCHAR(128),
+         PACKAGE_VERSION_ID         VARCHAR(64),
+         SECTION_NUMBER             BIGINT,
+         EFFECTIVE_ISOLATION        CHAR(2),
+         NUM_EXECUTIONS             BIGINT,
+         NUM_EXEC_WITH_METRICS      BIGINT,
+         PREP_TIME                  BIGINT,
+         LAST_METRICS_UPDATE        TIMESTAMP,
+         NUM_COORD_EXEC             BIGINT,
+         NUM_COORD_EXEC_WITH_METRICS BIGINT,
+         STMT_TYPE_ID               VARCHAR(32),
+         QUERY_COST_ESTIMATE        BIGINT,
+         STMT_PKG_CACHE_ID          BIGINT,
+         STMT_TEXT                  CLOB(2M),
+         COMP_ENV_DESC              BLOB(10K),
+         METRICS                    BLOB(1M),
+         SECTION_ENV                BLOB(150M) )
+       </createStmt>
+       <createIndex>
+       CREATE INDEX PKGCACHE_EVENT_IND1 ON PKGCACHE_EVENT (XMLID)
+       </createIndex>
+     </db2-xdb:table>
+     <db2-xdb:table>
+       <db2-xdb:name>PKGCACHE_METRICS</db2-xdb:name>
+       <db2-xdb:rowSet>PKGCACHE_METRICS_SET</db2-xdb:rowSet>
+       <createStmt>
+       CREATE TABLE PKGCACHE_METRICS(
+         XMLID                             VARCHAR(1000) NOT NULL,
+         TOTAL_ACT_TIME                    BIGINT,
+         TOTAL_ACT_WAIT_TIME               BIGINT,
+         TOTAL_CPU_TIME                    BIGINT,
+         POOL_READ_TIME                    BIGINT,
+         POOL_WRITE_TIME                   BIGINT,
+         DIRECT_READ_TIME                  BIGINT,
+         DIRECT_WRITE_TIME                 BIGINT,
+         LOCK_WAIT_TIME                    BIGINT,
+         TOTAL_SECTION_SORT_TIME           BIGINT,
+         TOTAL_SECTION_SORT_PROC_TIME      BIGINT,
+         TOTAL_SECTION_SORTS               BIGINT,
+         LOCK_ESCALS                       BIGINT,
+         LOCK_WAITS                        BIGINT,
+         ROWS_MODIFIED                     BIGINT,
+         ROWS_READ                         BIGINT,
+         ROWS_RETURNED                     BIGINT,
+         DIRECT_READS                      BIGINT,
+         DIRECT_READ_REQS                  BIGINT,
+         DIRECT_WRITES                     BIGINT,
+         DIRECT_WRITE_REQS                 BIGINT,
+         POOL_DATA_L_READS                 BIGINT,
+         POOL_TEMP_DATA_L_READS            BIGINT,
+         POOL_XDA_L_READS                  BIGINT,
+         POOL_TEMP_XDA_L_READS             BIGINT,
+         POOL_INDEX_L_READS                BIGINT,
+         POOL_TEMP_INDEX_L_READS           BIGINT,
+         POOL_DATA_P_READS                 BIGINT,
+         POOL_TEMP_DATA_P_READS            BIGINT,
+         POOL_XDA_P_READS                  BIGINT,
+         POOL_TEMP_XDA_P_READS             BIGINT,
+         POOL_INDEX_P_READS                BIGINT,
+         POOL_TEMP_INDEX_P_READS           BIGINT,
+         POOL_DATA_WRITES                  BIGINT,
+         POOL_XDA_WRITES                   BIGINT,
+         POOL_INDEX_WRITES                 BIGINT,
+         TOTAL_SORTS                       BIGINT,
+         POST_THRESHOLD_SORTS              BIGINT,
+         POST_SHRTHRESHOLD_SORTS           BIGINT,
+         SORT_OVERFLOWS                    BIGINT,
+         WLM_QUEUE_TIME_TOTAL              BIGINT,
+         WLM_QUEUE_ASSIGNMENTS_TOTAL       BIGINT,
+         DEADLOCKS                         BIGINT,
+         FCM_RECV_VOLUME                   BIGINT,
+         FCM_RECVS_TOTAL                   BIGINT,
+         FCM_SEND_VOLUME                   BIGINT,
+         FCM_SENDS_TOTAL                   BIGINT,
+         FCM_RECV_WAIT_TIME                BIGINT,
+         FCM_SEND_WAIT_TIME                BIGINT,
+         LOCK_TIMEOUTS                     BIGINT,
+         LOG_BUFFER_WAIT_TIME              BIGINT,
+         NUM_LOG_BUFFER_FULL               BIGINT,
+         LOG_DISK_WAIT_TIME                BIGINT,
+         LOG_DISK_WAITS_TOTAL              BIGINT,
+         TOTAL_ROUTINE_TIME                BIGINT,
+         TOTAL_ROUTINE_INVOCATIONS         BIGINT,
+         COORD_STMT_EXEC_TIME              BIGINT,
+         STMT_EXEC_TIME                    BIGINT,
+         TOTAL_SECTION_TIME                BIGINT,
+         TOTAL_SECTION_PROC_TIME           BIGINT,
+         TOTAL_ROUTINE_NON_SECT_TIME       BIGINT,
+         TOTAL_ROUTINE_NON_SECT_PROC_TIME  BIGINT,
+         FCM_TQ_RECV_WAIT_TIME             BIGINT,
+         FCM_MESSAGE_RECV_WAIT_TIME        BIGINT,
+         FCM_TQ_SEND_WAIT_TIME             BIGINT,
+         FCM_MESSAGE_SEND_WAIT_TIME        BIGINT,
+         AUDIT_FILE_WRITE_WAIT_TIME        BIGINT,
+         AUDIT_FILE_WRITES_TOTAL           BIGINT,
+         AUDIT_SUBSYSTEM_WAIT_TIME         BIGINT,
+         AUDIT_SUBSYSTEM_WAITS_TOTAL       BIGINT,
+         DIAGLOG_WRITE_WAIT_TIME           BIGINT,
+         DIAGLOG_WRITES_TOTAL              BIGINT,
+         FCM_MESSAGE_SENDS_TOTAL           BIGINT,
+         FCM_MESSAGE_RECVS_TOTAL           BIGINT,
+         FCM_MESSAGE_SEND_VOLUME           BIGINT,
+         FCM_MESSAGE_RECV_VOLUME           BIGINT,
+         FCM_TQ_SENDS_TOTAL                BIGINT,
+         FCM_TQ_RECVS_TOTAL                BIGINT,
+         FCM_TQ_SEND_VOLUME                BIGINT,
+         FCM_TQ_RECV_VOLUME                BIGINT,
+         TQ_TOT_SEND_SPILLS                BIGINT,
+         AUDIT_EVENTS_TOTAL                BIGINT,
+         TOTAL_APP_SECTION_EXECUTIONS      BIGINT,
+         TOTAL_ROUTINE_USER_CODE_PROC_TIME BIGINT,
+         TOTAL_ROUTINE_USER_CODE_TIME      BIGINT,
+         THRESH_VIOLATIONS                 BIGINT,
+         NUM_LW_THRESH_EXCEEDED            BIGINT )
+       </createStmt>
+       <createIndex>
+       CREATE INDEX PKGCACHE_METRICS_IND1 ON PKGCACHE_METRICS (XMLID)
+       </createIndex>
+     </db2-xdb:table>
+  </xs:appinfo>
+</xs:annotation>
+
+
+<xs:element name = "db2_pkgcache_event"
+            type = "db2pkgcacheevent" >
+  <xs:annotation>
+    <xs:documentation>
+    The main schema that describes a package cache event
+    event in details.
+    </xs:documentation>
+  </xs:annotation>
+</xs:element>
+
+<xs:annotation>
+  <xs:documentation>
+   ------------------------------------------------------------------
+   db2pkgcacheevent
+   ------------------------------------------------------------------
+  </xs:documentation>
+</xs:annotation>
+<xs:complexType name="db2pkgcacheevent" >
+  <xs:annotation>
+    <xs:documentation>
+    This schema describes the structure of each package cache event captured
+    by the event monitor.
+    </xs:documentation>
+  </xs:annotation>
+
+  <xs:sequence>
+    <xs:element name      = "section_type"
+                type      = "db2_string_type_1"
+                minOccurs = "1"
+                maxOccurs = "1"
+                db2-xdb:rowSet = "pkgcache_event_set"
+                db2-xdb:column = "section_type" >
+       <xs:annotation>
+         <xs:documentation>
+         The type of SQL statement processed.
+         Possible values: D:Dynamic or S:Static.
+         See monitor element section_type for more details.
+         </xs:documentation>
+       </xs:annotation>
+    </xs:element>
+
+    <xs:element name      = "insert_timestamp"
+                type      = "xs:dateTime"
+                minOccurs = "1"
+                maxOccurs = "1"
+                db2-xdb:rowSet = "pkgcache_event_set"
+                db2-xdb:column = "insert_timestamp" >
+       <xs:annotation>
+         <xs:documentation>
+         The time when the variation or section was inserted into the cache.
+         See monitor element insert_timestamp for more details.
+         </xs:documentation>
+       </xs:annotation>
+    </xs:element>
+
+    <xs:element name      = "executable_id"
+                type      = "executable_id_type"
+                minOccurs = "1"
+                maxOccurs = "1"
+                db2-xdb:rowSet = "pkgcache_event_set"
+                db2-xdb:column = "executable_id" >
+       <xs:annotation>
+         <xs:documentation>
+         A binary token generated on the data server that uniquely identifies
+         the SQL statement section that was executed. See monitor element
+         executable_id for more details.
+         </xs:documentation>
+       </xs:annotation>
+    </xs:element>
+
+    <xs:element name      = "package_schema"
+                type      = "db_object_name_type"
+                minOccurs = "1"
+                maxOccurs = "1"
+                db2-xdb:rowSet = "pkgcache_event_set"
+                db2-xdb:column = "package_schema" >
+       <xs:annotation>
+         <xs:documentation>
+         The schema name of the package associated with an SQL statement.
+         See monitor element package_schema for more details.
+         </xs:documentation>
+       </xs:annotation>
+    </xs:element>
+
+    <xs:element name      = "package_name"
+                type      = "db_object_name_type"
+                minOccurs = "1"
+                maxOccurs = "1"
+                db2-xdb:rowSet = "pkgcache_event_set"
+                db2-xdb:column = "package_name" >
+       <xs:annotation>
+         <xs:documentation>
+         The name of the package that contains the SQL statement currently executing.
+         See monitor element package_name for more details.
+         </xs:documentation>
+       </xs:annotation>
+    </xs:element>
+
+    <xs:element name      = "package_version_id"
+                type      = "db2_string_type_64"
+                minOccurs = "1"
+                maxOccurs = "1"
+                db2-xdb:rowSet = "pkgcache_event_set"
+                db2-xdb:column = "package_version_id" >
+       <xs:annotation>
+         <xs:documentation>
+         The package version identifies the version identifier of the package that
+         contains the SQL statement currently executing.
+         See monitor element package_version_id for more details.
+         </xs:documentation>
+       </xs:annotation>
+    </xs:element>
+
+    <xs:element name      = "section_number"
+                type      = "xs:long"
+                minOccurs = "0"
+                maxOccurs = "1"
+                db2-xdb:rowSet = "pkgcache_event_set"
+                db2-xdb:column = "section_number" >
+       <xs:annotation>
+         <xs:documentation>
+         The internal section number in the package for the SQL statement
+         currently processing or most recently processed.
+         See monitor element section_number for more details.
+         </xs:documentation>
+       </xs:annotation>
+    </xs:element>
+
+    <xs:element name      = "effective_isolation"
+                minOccurs = "1"
+                maxOccurs = "1"
+                db2-xdb:rowSet = "pkgcache_event_set"
+                db2-xdb:column = "effective_isolation" >
+      <xs:annotation>
+        <xs:documentation>
+        The isolation value in effect for the SQL statement while it was being run.
+        See monitor element effective_isolation for more details.
+        </xs:documentation>
+      </xs:annotation>
+      <xs:complexType>
+        <xs:simpleContent>
+          <xs:extension base="db2_string_type_2">
+            <xs:attribute name = "id"
+                          type = "xs:long"
+                          use  = "optional" />
+          </xs:extension>
+        </xs:simpleContent>
+      </xs:complexType>
+
+    </xs:element>
+
+    <xs:element name      = "num_executions"
+                type      = "xs:long"
+                minOccurs = "1"
+                maxOccurs = "1"
+                db2-xdb:rowSet = "pkgcache_event_set"
+                db2-xdb:column = "num_executions" >
+       <xs:annotation>
+         <xs:documentation>
+         The number times the SQL statement has been executed. See monitor
+         element num_executions for more details.
+         </xs:documentation>
+       </xs:annotation>
+    </xs:element>
+
+    <xs:element name      = "num_exec_with_metrics"
+                type      = "xs:long"
+                minOccurs = "1"
+                maxOccurs = "1"
+                db2-xdb:rowSet = "pkgcache_event_set"
+                db2-xdb:column = "num_exec_with_metrics" >
+       <xs:annotation>
+         <xs:documentation>
+         The number times the SQL statement has been executed with the metrics.
+         collected. See monitor element num_exec_with_metrics for more details.
+         </xs:documentation>
+       </xs:annotation>
+    </xs:element>
+
+    <xs:element name      = "prep_time"
+                type      = "xs:long"
+                minOccurs = "1"
+                maxOccurs = "1"
+                db2-xdb:rowSet = "pkgcache_event_set"
+                db2-xdb:column = "prep_time" >
+       <xs:annotation>
+         <xs:documentation>
+         Time in milliseconds required to prepare an SQL statement if the
+         activity is an SQL statement. See monitor element prep_time for
+         more details.
+         </xs:documentation>
+       </xs:annotation>
+    </xs:element>
+
+    <xs:element name      = "last_metrics_update"
+                type      = "xs:dateTime"
+                minOccurs = "1"
+                maxOccurs = "1"
+                db2-xdb:rowSet = "pkgcache_event_set"
+                db2-xdb:column = "last_metrics_update" >
+       <xs:annotation>
+         <xs:documentation>
+         Timestamp reflecting the last time metrics were updated for this
+         cache entry. See monitor element last_metrics_update for more
+         details.
+         </xs:documentation>
+       </xs:annotation>
+    </xs:element>
+
+    <xs:element name      = "num_coord_exec"
+                type      = "xs:long"
+                minOccurs = "1"
+                maxOccurs = "1"
+                db2-xdb:rowSet = "pkgcache_event_set"
+                db2-xdb:column = "num_coord_exec" >
+       <xs:annotation>
+         <xs:documentation>
+         The number of times this section was executed by a coordinator agent.
+         See monitor element num_coord_exec for more details.
+         </xs:documentation>
+       </xs:annotation>
+    </xs:element>
+
+    <xs:element name      = "num_coord_exec_with_metrics"
+                type      = "xs:long"
+                minOccurs = "1"
+                maxOccurs = "1"
+                db2-xdb:rowSet = "pkgcache_event_set"
+                db2-xdb:column = "num_coord_exec_with_metrics" >
+       <xs:annotation>
+         <xs:documentation>
+         The number of times this section was executed by a coordinator agent
+         and monitoring metrics were being captured. See monitor element
+         num_coord_exec_with_metrics for more details.
+         </xs:documentation>
+       </xs:annotation>
+    </xs:element>
+
+    <xs:element name      = "stmt_type_id"
+                minOccurs = "1"
+                maxOccurs = "1"
+                db2-xdb:rowSet = "pkgcache_event_set"
+                db2-xdb:column = "stmt_type_id" >
+      <xs:annotation>
+        <xs:documentation>
+        Statement type identifier. See monitor element stmt_type_id for
+        more details.
+        </xs:documentation>
+      </xs:annotation>
+      <xs:complexType>
+        <xs:simpleContent>
+          <xs:extension base="db2_string_type_32">
+            <xs:attribute name = "id"
+                          type = "xs:long"
+                          use  = "optional" />
+          </xs:extension>
+        </xs:simpleContent>
+      </xs:complexType>
+    </xs:element>
+
+    <xs:element name      = "query_cost_estimate"
+                type      = "xs:long"
+                minOccurs = "1"
+                maxOccurs = "1"
+                db2-xdb:rowSet = "pkgcache_event_set"
+                db2-xdb:column = "query_cost_estimate" >
+       <xs:annotation>
+         <xs:documentation>
+         Estimated cost for a query, as determined by the SQL compiler. See
+         monitor element query_cost_estimate for more details.
+         </xs:documentation>
+       </xs:annotation>
+    </xs:element>
+
+    <xs:element name      = "stmt_pkg_cache_id"
+                type      = "xs:long"
+                minOccurs = "1"
+                maxOccurs = "1"
+                db2-xdb:rowSet = "pkgcache_event_set"
+                db2-xdb:column = "stmt_pkg_cache_id" >
+       <xs:annotation>
+         <xs:documentation>
+         This element shows the internal package cache identifier for a
+         dynamic SQL statement. See monitor element stmt_pkg_cache_id for
+         more details.
+         </xs:documentation>
+       </xs:annotation>
+    </xs:element>
+
+    <xs:element name      = "stmt_text"
+                type      = "db2_statement_text_type"
+                minOccurs = "1"
+                maxOccurs = "1"
+                db2-xdb:truncate = "true"
+                db2-xdb:rowSet = "pkgcache_event_set"
+                db2-xdb:column = "stmt_text" >
+       <xs:annotation>
+         <xs:documentation>
+         The text of the SQL statement. See monitor element stmt_text for more
+         details.
+         </xs:documentation>
+       </xs:annotation>
+    </xs:element>
+
+    <xs:element name      = "comp_env_desc"
+                type      = "comp_env_type"
+                minOccurs = "1"
+                maxOccurs = "1"
+                db2-xdb:rowSet = "pkgcache_event_set"
+                db2-xdb:column = "comp_env_desc" >
+       <xs:annotation>
+         <xs:documentation>
+         The element stores information about the compilation environment used
+         when compiling the SQL statement. See monitor element comp_env_desc
+         for more details.
+         </xs:documentation>
+       </xs:annotation>
+    </xs:element>
+
+    <xs:element name      = "section_env"
+                type      = "section_env_type"
+                minOccurs = "1"
+                maxOccurs = "1"
+                db2-xdb:rowSet = "pkgcache_event_set"
+                db2-xdb:column = "section_env" >
+       <xs:annotation>
+         <xs:documentation>
+         A BLOB that contains the section for an SQL statement. See monitor
+         element section_env for more details.
+         </xs:documentation>
+       </xs:annotation>
+    </xs:element>
+
+    <xs:element name      = "activity_metrics"
+                type      = "activity_level_metrics"
+                minOccurs = "1"
+                maxOccurs = "1"
+                db2-xdb:rowSet = "pkgcache_event_set"
+                db2-xdb:column = "metrics" >
+       <xs:annotation>
+         <xs:documentation>
+         The activity metrics for this cache entry.
+         </xs:documentation>
+       </xs:annotation>
+    </xs:element>
+
+    <xs:any minOccurs="0" maxOccurs="unbounded" processContents="skip" />
+
+  </xs:sequence>
+
+  <xs:attribute  name = "id"
+                 type = "xs:long"
+                 use  = "required" >
+     <xs:annotation>
+       <xs:documentation>
+       Integer representing the Event ID.
+       </xs:documentation>
+       <xs:appinfo>
+         <db2-xdb:rowSetMapping>
+            <db2-xdb:rowSet>pkgcache_event_set</db2-xdb:rowSet>
+            <db2-xdb:column>event_id</db2-xdb:column>
+         </db2-xdb:rowSetMapping>
+         <db2-xdb:rowSetMapping>
+            <db2-xdb:rowSet>pkgcache_event_set</db2-xdb:rowSet>
+            <db2-xdb:column>xmlid</db2-xdb:column>
+            <db2-xdb:expression>$DECOMP_DOCUMENTID</db2-xdb:expression>
+         </db2-xdb:rowSetMapping>
+         <db2-xdb:rowSetMapping>
+            <db2-xdb:rowSet>pkgcache_metrics_set</db2-xdb:rowSet>
+            <db2-xdb:column>xmlid</db2-xdb:column>
+            <db2-xdb:expression>$DECOMP_DOCUMENTID</db2-xdb:expression>
+         </db2-xdb:rowSetMapping>
+       </xs:appinfo>
+     </xs:annotation>
+  </xs:attribute>
+
+  <xs:attribute  name = "type"
+                 use  = "required" >
+     <xs:annotation>
+       <xs:documentation>
+       Type of event that has occurred.
+       </xs:documentation>
+       <xs:appinfo>
+         <db2-xdb:rowSetMapping>
+            <db2-xdb:rowSet>pkgcache_event_set</db2-xdb:rowSet>
+            <db2-xdb:column>event_type</db2-xdb:column>
+         </db2-xdb:rowSetMapping>
+       </xs:appinfo>
+     </xs:annotation>
+     <xs:simpleType>
+       <xs:restriction base="db2_string_type_32">
+         <xs:enumeration value="PKGCACHE_BASE"/>
+         <xs:enumeration value="PKGCACHE_DETAILED"/>
+       </xs:restriction>
+     </xs:simpleType>
+  </xs:attribute>
+
+  <xs:attribute name = "timestamp"
+                type = "xs:dateTime"
+                use  = "required">
+     <xs:annotation>
+       <xs:documentation>
+       Timestamp representing when the event occurred.
+       </xs:documentation>
+       <xs:appinfo>
+         <db2-xdb:rowSetMapping>
+            <db2-xdb:rowSet>pkgcache_event_set</db2-xdb:rowSet>
+            <db2-xdb:column>event_timestamp</db2-xdb:column>
+         </db2-xdb:rowSetMapping>
+       </xs:appinfo>
+     </xs:annotation>
+  </xs:attribute>
+
+  <xs:attribute name = "member"
+                type = "member_type"
+                use  = "required" >
+     <xs:annotation>
+       <xs:documentation>
+       Memeber where the event occurred.
+       </xs:documentation>
+       <xs:appinfo>
+         <db2-xdb:rowSetMapping>
+            <db2-xdb:rowSet>pkgcache_event_set</db2-xdb:rowSet>
+            <db2-xdb:column>member</db2-xdb:column>
+         </db2-xdb:rowSetMapping>
+       </xs:appinfo>
+     </xs:annotation>
+  </xs:attribute>
+
+  <xs:attribute name = "release"
+                type = "xs:long"
+                use  = "required" >
+     <xs:annotation>
+       <xs:documentation>
+       Represents the DB2 product level this event was captured on.
+       </xs:documentation>
+     </xs:annotation>
+  </xs:attribute>
+
+  <xs:anyAttribute processContents="skip" />
+</xs:complexType >
+
+</xs:schema >

@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:element name="link">
+        <xs:annotation>
+            <xs:documentation><![CDATA[
+                    . 
+                    ]]></xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="address" type="xs:string">
+                    <xs:annotation>
+                        <xs:documentation><![CDATA[
+                    . 
+                    ]]></xs:documentation>
+                    </xs:annotation></xs:element>
+                <xs:element name="parameterlist">
+                    <xs:annotation>
+                        <xs:documentation><![CDATA[
+                    . 
+                    ]]></xs:documentation>
+                    </xs:annotation>
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="parameter">
+                                <xs:annotation>
+                                    <xs:documentation><![CDATA[
+                    . 
+                    ]]></xs:documentation>
+                                </xs:annotation>
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element ref="link">
+                                            <xs:annotation>
+                                                <xs:documentation><![CDATA[
+                    . 
+                    ]]></xs:documentation>
+                                            </xs:annotation></xs:element>
+                                        <xs:element name="keyColumn">
+                                            <xs:annotation>
+                                                <xs:documentation><![CDATA[
+                    . 
+                    ]]></xs:documentation>
+                                            </xs:annotation>
+                                            <xs:complexType>
+                                                <xs:attribute name="defaultValue">
+                                                    <xs:annotation>
+                                                        <xs:documentation><![CDATA[
+                    . 
+                    ]]></xs:documentation>
+                                                    </xs:annotation></xs:attribute>
+                                            </xs:complexType>
+                                        </xs:element>
+                                    </xs:sequence>
+                                    <xs:attribute name="name" type="xs:string">
+                                        <xs:annotation>
+                                            <xs:documentation><![CDATA[
+                    . 
+                    ]]></xs:documentation>
+                                        </xs:annotation></xs:attribute>
+                                    <xs:attribute name="value" type="xs:string">
+                                        <xs:annotation>
+                                            <xs:documentation><![CDATA[
+                    . 
+                    ]]></xs:documentation>
+                                        </xs:annotation></xs:attribute>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="formList" maxOccurs="unbounded" minOccurs="0">
+                    <xs:annotation>
+                        <xs:documentation><![CDATA[
+                    . 
+                    ]]></xs:documentation>
+                    </xs:annotation>
+                    <xs:complexType>
+                        <xs:attribute name="name" type="xs:string">
+                            <xs:annotation>
+                                <xs:documentation><![CDATA[
+                    . 
+                    ]]></xs:documentation>
+                            </xs:annotation></xs:attribute>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+            <xs:attribute name="type">
+                <xs:annotation>
+                    <xs:documentation><![CDATA[
+                    . 
+                    ]]></xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:annotation>
+                            <xs:documentation><![CDATA[
+                    . 
+                    ]]></xs:documentation>
+                        </xs:annotation>
+                        <xs:enumeration value="action">
+                            <xs:annotation>
+                                <xs:documentation><![CDATA[
+                    . 
+                    ]]></xs:documentation>
+                            </xs:annotation></xs:enumeration>
+                        <xs:enumeration value="html">
+                            <xs:annotation>
+                                <xs:documentation><![CDATA[
+                    . 
+                    ]]></xs:documentation>
+                            </xs:annotation></xs:enumeration>
+                        <xs:enumeration value="other">
+                            <xs:annotation>
+                                <xs:documentation><![CDATA[
+                    . 
+                    ]]></xs:documentation>
+                            </xs:annotation></xs:enumeration>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:attribute>
+            <xs:attribute name="dataType" type="xs:string">
+                <xs:annotation>
+                    <xs:documentation><![CDATA[
+                    . 
+                    ]]></xs:documentation>
+                </xs:annotation></xs:attribute>
+            <xs:attribute name="target">
+                <xs:annotation>
+                    <xs:documentation><![CDATA[
+                    . 
+                    ]]></xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:enumeration value="_blank">
+                            <xs:annotation>
+                                <xs:documentation><![CDATA[
+                    . 
+                    ]]></xs:documentation>
+                            </xs:annotation></xs:enumeration>
+                        <xs:enumeration value="_active">
+                            <xs:annotation>
+                                <xs:documentation><![CDATA[
+                    . 
+                    ]]></xs:documentation>
+                            </xs:annotation></xs:enumeration>
+                        <xs:enumeration value="_self">
+                            <xs:annotation>
+                                <xs:documentation><![CDATA[
+                    . 
+                    ]]></xs:documentation>
+                            </xs:annotation></xs:enumeration>
+                        <xs:enumeration value="_top">
+                            <xs:annotation>
+                                <xs:documentation><![CDATA[
+                    . 
+                    ]]></xs:documentation>
+                            </xs:annotation></xs:enumeration>
+                        <xs:enumeration value="_parent">
+                            <xs:annotation>
+                                <xs:documentation><![CDATA[
+                    . 
+                    ]]></xs:documentation>
+                            </xs:annotation></xs:enumeration>
+                        <xs:pattern value="[a-zA-Z][a-zA-Z0-0]*"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:attribute>
+            <xs:attribute name="window"  use="optional">
+                <xs:annotation>
+                    <xs:documentation><![CDATA[
+                    . 
+                    ]]></xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:annotation>
+                            <xs:documentation><![CDATA[
+                    . 
+                    ]]></xs:documentation>
+                        </xs:annotation>
+                        <xs:enumeration value="_blank">
+                            <xs:annotation>
+                                <xs:documentation><![CDATA[
+                    . 
+                    ]]></xs:documentation>
+                            </xs:annotation></xs:enumeration>
+                        <xs:enumeration value="_active">
+                            <xs:annotation>
+                                <xs:documentation><![CDATA[
+                    . 
+                    ]]></xs:documentation>
+                            </xs:annotation></xs:enumeration>
+                        <xs:enumeration value="_self">
+                            <xs:annotation>
+                                <xs:documentation><![CDATA[
+                    . 
+                    ]]></xs:documentation>
+                            </xs:annotation></xs:enumeration>
+                        <xs:enumeration value="_parent">
+                            <xs:annotation>
+                                <xs:documentation><![CDATA[
+                    . 
+                    ]]></xs:documentation>
+                            </xs:annotation></xs:enumeration>
+                        <xs:pattern value="[a-zA-Z][a-zA-Z0-0]*"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:attribute>
+            <xs:attribute name="windowStage"  use="optional">
+                <xs:annotation>
+                    <xs:documentation><![CDATA[
+                    . 
+                    ]]></xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:enumeration value="_blank">
+                            <xs:annotation>
+                                <xs:documentation><![CDATA[
+                    . 
+                    ]]></xs:documentation>
+                            </xs:annotation></xs:enumeration>
+                        <xs:enumeration value="_active">
+                            <xs:annotation>
+                                <xs:documentation><![CDATA[
+                    . 
+                    ]]></xs:documentation>
+                            </xs:annotation></xs:enumeration>
+                        <xs:enumeration value="_self">
+                            <xs:annotation>
+                                <xs:documentation><![CDATA[
+                    . 
+                    ]]></xs:documentation>
+                            </xs:annotation></xs:enumeration>
+                        <xs:enumeration value="_parent">
+                            <xs:annotation>
+                                <xs:documentation><![CDATA[
+                    . 
+                    ]]></xs:documentation>
+                            </xs:annotation></xs:enumeration>
+                        <xs:pattern value="[a-zA-Z][a-zA-Z0-0]*"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:attribute>
+            <xs:attribute name="connectionRequired"  use="optional">
+                <xs:annotation>
+                    <xs:documentation><![CDATA[
+                    . 
+                    ]]></xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:annotation>
+                            <xs:documentation><![CDATA[
+                    . 
+                    ]]></xs:documentation>
+                        </xs:annotation>
+                        <xs:pattern value="[yYnN]"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:attribute>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

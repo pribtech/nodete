@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xc="parameter.xsd" xmlns:xa="task.xsd">
+    <xs:include schemaLocation="parameter.xsd"/>
+    <xs:include schemaLocation="task.xsd"/>
+         <xs:complexType name="action">
+            <xs:annotation>
+                <xs:documentation><![CDATA[
+An action is the base element for an client action's script. The action element acts similarly to a function. Local parameter are only accessible within the confines of the action and are not accessible to to action which are called or defined within a given action. 
+
+The main goal of an action is to perform an action. The type of action to be performed is defined in the attribute 'type'. The action also has a 'name' attribute which is used to call the given action and store the actions return data for retrieval by other actions.
+                    ]]></xs:documentation>
+            </xs:annotation>
+            <xs:sequence>
+                <xs:element name="message" type="xs:string">
+                    <xs:annotation>
+                        <xs:documentation><![CDATA[
+                            When used contains text or html to be displayed to the user necessary to complete a given action
+                    ]]></xs:documentation>
+                    </xs:annotation></xs:element>
+                <xs:element name="parameterList" minOccurs="0" maxOccurs="1">
+                    <xs:annotation>
+                        <xs:documentation><![CDATA[
+                    .     A list of local parameter used in this action
+                    ]]></xs:documentation>
+                    </xs:annotation>
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="parameter" type="parameter" minOccurs="1" maxOccurs="unbounded"/>
+                    </xs:sequence>  
+                </xs:complexType>
+            </xs:element>
+                <xs:element name="followOnAction" minOccurs="0" maxOccurs="unbounded">
+                    <xs:annotation>
+                        <xs:documentation><![CDATA[
+                    . A followOnAction is similar in concept to an if statement. After the main action's action has completed followOnActions are checked and if matched are executed in the order they appear in the action. By default only the 'condition' attribute is required and contains a Regular expression to match against the returnCode of the current action. If an action was successful it is expected that the returnCode will be set to the string 'true' (all lower case). On an error the returnCode is set to 'false' or some error code to indicate the error. 
+                    ]]></xs:documentation>
+                    </xs:annotation>
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="task" type="task" minOccurs="1" maxOccurs="unbounded"/>
+                    </xs:sequence>
+                    <xs:attribute name="condition" type="xs:string" use="required">
+                        <xs:annotation>
+                            <xs:documentation><![CDATA[
+                    . A regular expression to match to a give value. But default the condition is matched against the action's returnCode.
+                    ]]></xs:documentation>
+                        </xs:annotation>
+                    </xs:attribute>
+                    <xs:attribute name="conditionType" type="baseActionObjects">
+                        <xs:annotation>
+                            <xs:documentation>
+                                The attribute conditionType represents how to treat the data located in the condition attribute. See each of the option for more information. Unless otherwise set the conditionType is assumed to be 'raw'.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:attribute>
+                    <xs:attribute name="conditionCompairType">
+                        <xs:annotation>
+                            <xs:documentation>
+                                the method used when compairing the contidtion to the value, by default this is regex
+                            </xs:documentation>
+                        </xs:annotation>
+                        <xs:simpleType>
+                            <xs:restriction base="xs:string">
+                                <xs:enumeration value="regex"/>
+                                <xs:enumeration value="str"/>
+                                <xs:enumeration value="istr"/>
+                            </xs:restriction> 
+                        </xs:simpleType>
+                    </xs:attribute>
+                    <xs:attribute name="compareOnType"  use="required" type="baseActionObjects">
+                        <xs:annotation>
+                            <xs:documentation>
+                                The attribute compareOnType represents how to treat the data located in the compareOn attribute. See each of the option for more information. Unless otherwise set the compareOnType is assumed to be 'returnObject'.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:attribute>
+                    <xs:attribute name="compareOn" type="xs:string" use="required">
+                        <xs:annotation>
+                            <xs:documentation><![CDATA[
+                    . This 'compareOn' attribute is use in conjunction with the attribute 'compareOnType' to define the value used in the match.
+                    ]]></xs:documentation>
+                        </xs:annotation></xs:attribute>
+                    <xs:attribute name="negCondition" default="false" type="xs:boolean" use="optional">
+                        <xs:annotation>
+                            <xs:documentation><![CDATA[
+                    . Equivalent to a logical not. (Execute followOnAction on NOT match)
+                    ]]></xs:documentation>
+                        </xs:annotation></xs:attribute>
+                </xs:complexType>
+            </xs:element> 
+       
+            </xs:sequence>
+             <xs:attribute name="suppressAutomaticErrors" type="xs:string" use="optional">
+                 <xs:annotation>
+                     <xs:documentation><![CDATA[
+                    . Default value of 'false'. Automatic error include exception and or connection error. These are normally handled by the action processor and will cause the action to stop executing immediately if caught. By enabling suppressAutomaticErrors you are indicating that you wish your script to handle these exception.
+                    ]]></xs:documentation>
+                 </xs:annotation></xs:attribute>
+             <xs:attribute name="name" type="xs:string" use="optional">
+                 <xs:annotation>
+                     <xs:documentation><![CDATA[
+                    . The name of the action. This is used as an identifier to call the action also the return data from the action is stored and accessible under this name. This should be unique within the script.
+                    ]]></xs:documentation>
+                 </xs:annotation></xs:attribute>
+             <xs:attribute name="type" use="optional">
+                 <xs:annotation>
+                     <xs:documentation><![CDATA[
+                    . The action type define what will be done in this action and how the 'message' element and 'parameterList' element will be used. Action types are defined below. 
+                    ]]></xs:documentation>
+                 </xs:annotation>
+                 <xs:simpleType>
+                     <xs:restriction base="xs:string">
+                         <xs:enumeration value="serverAction">
+                             <xs:annotation>
+                                 <xs:documentation><![CDATA[
+serverAction – calls a server side action
+
+The 'message' element is unused.
+
+A JSON server side request will be made using the parameters set in the parameterList.
+
+parameter of the following names are recommended:
+
+'action' – specifies the server side action you wish to call
+
+'table' – specifies the table definition to load
+
+ReturnObject specified by the called JSON action
+                    ]]></xs:documentation>
+                             </xs:annotation>
+                         </xs:enumeration>
+                         <xs:enumeration value="alert">
+                             <xs:annotation>
+                                 <xs:documentation><![CDATA[
+alert – opens an alert dialog
+
+'message' element is used as the confirmation text, parameter are only used for substitution.
+
+ReturnCode: true on 'ok', false on any other close method
+
+ReturnValue: blank
+]]></xs:documentation>
+                             </xs:annotation>
+                         </xs:enumeration>
+                         <xs:enumeration value="dialog">
+                             <xs:annotation>
+                                 <xs:documentation><![CDATA[
+dialog – opens a model dialog where a data can be loaded for user input.
+
+If the 'message' element is set the value contained will be used to fill the form. Parameter substitution will occur on the text with in the 'message' element.
+
+If the parameters are not set an HTML server side request will be made using the parameters set in the parameterList.
+
+parameter of the following names are recommended:
+
+'action' – specifies the server side action you wish to call
+
+'table' – specifies the table definition to load
+
+'buttonA' – specifies the display value for buttonA – default 'Ok'
+
+'buttonB' – specifies the display value for buttonB – default 'Cancel'
+
+ReturnCode: true on 'buttonA', false on 'buttonB'
+
+ReturnValue: an array of any form inputs where they key is the name of the input and its value is the value of the input on click of the 'buttonA' button
+                    ]]></xs:documentation>
+                             </xs:annotation>
+                         </xs:enumeration>
+                         <xs:enumeration value="prompt">
+                             <xs:annotation>
+                                 <xs:documentation><![CDATA[
+prompt – opens a prompt dialog
+
+'message' element is used as the prompt text, parameter are used for substitution.
+
+'PROMPT_DEFAULT' – is used to set the default value which you are prompting for.
+
+ReturnCode: true on 'ok', false on 'cancle'
+
+ReturnValue: the value in the prompt dialog field
+                    ]]></xs:documentation>
+                             </xs:annotation>
+                         </xs:enumeration>
+                         <xs:enumeration value="confirm">
+                             <xs:annotation>
+                                 <xs:documentation><![CDATA[
+confirm – opens a confirm dialog
+
+'message' element is used as the confirmation text, parameter are only used for substitution.
+
+ReturnCode: true on 'ok', false on 'cancle'
+
+ReturnValue: blank
+                    ]]></xs:documentation>
+                             </xs:annotation>
+                         </xs:enumeration>
+                         <xs:enumeration value="form">
+                             <xs:annotation>
+                                 <xs:documentation><![CDATA[
+Form – opens a model dialog where a form can be loaded for user input.
+
+If the 'message' element is set the value contained will be used to fill the form. Parameter substitution will occur on the text with in the 'message' element.
+
+If the parameters are not set an HTML server side request will be made using the parameters set in the parameterList.
+
+parameter of the following names are recommended:
+
+'action' – specifies the server side action you wish to call
+
+'table' – specifies the table definition to load
+
+ReturnCode: true on 'ok', false on 'cancel'
+
+ReturnValue: an array where they key is the name of the input and its value is the value of the input on click of the 'ok' button
+                    ]]></xs:documentation>
+                             </xs:annotation>
+                         </xs:enumeration>
+                         <xs:enumeration value="fileDialog">
+                             <xs:annotation>
+                                 <xs:documentation><![CDATA[
+FileDialog – opens a file selector
+
+'message' element is unused
+
+parameter of the following names are used:
+'title' – Sets the title of the file dialog
+
+ReturnCode: true on 'ok', false on 'close'
+
+ReturnValue: the name of the file or directory selected
+                    ]]></xs:documentation>
+                             </xs:annotation>
+                         </xs:enumeration>
+                         <xs:enumeration value="blank">
+                             <xs:annotation>
+                                 <xs:documentation><![CDATA[
+Nothing will be done.
+
+ReturnCode will be set to true.
+
+The parameterList is processes.
+                    ]]></xs:documentation>
+                             </xs:annotation>
+                         </xs:enumeration>
+                     </xs:restriction>
+                 </xs:simpleType>
+             </xs:attribute>
+         </xs:complexType>
+    <xs:simpleType name="baseActionObjects">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="returnObject">
+                <xs:annotation>
+                    <xs:documentation><![CDATA[
+A returnObject allows you to retrieve the returned data from the current or previous action. Object an array navigation is done using “.” separators. This is limited by the fact you must know exactly what the return for a given action is.
+
+Example: 
+
+For the return object represented in JSON notation from an action named “getFavoriteColors”
+{
+	returnCode:true,
+	returnValue:[
+			{
+				name:Matthew,
+				favoriteColor:orange
+			},
+			{
+				name:Brian
+				favoriteColor: red
+			}
+		]
+}
+
+To retrieve the return code the value of the 'compareOn' attribute would be:
+“getFavoriteColors.returnCode”
+
+assigned value will be: “true”
+
+To retrieve the first name the value of the 'compareOn' attribute would be:
+“getFavoriteColors.returnValue.0.name”
+
+assigned value will be: “Matthew”
+
+To retrieve the favorite color of the second entire the value of the 'compareOn' attribute would be:
+“getFavoriteColors.returnValue.1.favoriteColor ”
+
+assigned value will be: “red”
+]]></xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="blockValue">
+                <xs:annotation>
+                    <xs:documentation><![CDATA[
+A blockValue represents a means to retrieve data from with in the block (namespace) that the action is running within. The value is retrieved from the element with the id “<Block>_<Value name>” where value name is the value of the 'compareOn' attribute and the namespace is passed in on call of the action. 
+This is most commonly seen in column actions located with in the table definition files. Where a block (namespace) is the current row that the action is executed on and a column value in that row can be accessed using the column ID as the value name.
+]]>                                </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="constant">
+                <xs:annotation>
+                    <xs:documentation>
+                        The data located in the 'compareOn' attribute corresponds to a global, shared or local parameter name.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="fixed">
+                <xs:annotation>
+                    <xs:documentation><![CDATA[
+                                        The data located in the 'compareOn' attribute will be assigned and all substitution markers with a corresponding global, shared or local parameter will be substituted. Substitution string are marked by “?<Parameter Name>?” (question mark, the parameter name, question mark).
+                                    ]]></xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="raw">
+                <xs:annotation>
+                    <xs:documentation>
+                        The data located in the 'compareOn' attribute will be assigned as is.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+        </xs:restriction>
+    </xs:simpleType>
+    
+</xs:schema>

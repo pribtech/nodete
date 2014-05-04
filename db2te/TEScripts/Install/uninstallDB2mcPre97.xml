@@ -1,0 +1,71 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2009 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+
+<actionScript name="uninstallDB2mcPre97" type="form">
+	<message><![CDATA[
+<div style='width:500px'>
+<p>Drop the objects required for db2mc added features such as visual explain prior to V97</p>
+<p>The task to drop the objects may take a while.</p>
+</div>
+]]>
+    </message>
+    <parameterList>
+		<parameter name="buttonOK" type="raw">
+			<value>Install</value>
+		</parameter>
+	</parameterList>
+	<if condition="true">
+		<task>
+			<action name="deleteOldDB2mc" type="serverAction">
+				<parameterList>
+					<parameter name="action" type="raw">
+						<value>executeSQL</value>
+					</parameter>
+					<parameter name="abortOnFailure" type="raw">
+						<value>false</value>
+					</parameter>
+					<parameter name="commitPerSTMT" type="raw">
+						<value>true</value>
+					</parameter>
+					<parameter name="SQL[0]" type="raw">
+						<value>drop function "s#db2mc".explainExpandNode</value>
+					</parameter>
+					<parameter name="SQL[1]" type="raw">
+						<value>drop function "s#db2mc".lockTreeNodes</value>
+					</parameter>
+					<parameter name="SQL[2]" type="raw">
+						<value>drop function "s#db2mc".tabAuthTree</value>
+					</parameter>
+					<parameter name="SQL[3]" type="raw">
+						<value>drop procedure "s#db2mc".explainExpandNodeP</value>
+					</parameter>
+					<parameter name="SQL[4]" type="raw">
+						<value>drop procedure "s#db2mc".lockTreeNodesP</value>
+					</parameter>
+					<parameter name="SQL[5]" type="raw">
+						<value>drop procedure "s#db2mc".tabAuthTreeP</value>
+					</parameter>
+					<parameter name="SQL[6]" type="raw">
+						<value>drop function "s#db2mc".HashSqlSimilar</value>
+					</parameter>
+				</parameterList>
+			</action>
+			<alert>Drop db2mc objects completed successfully</alert>
+		</task>
+	</if>
+</actionScript>

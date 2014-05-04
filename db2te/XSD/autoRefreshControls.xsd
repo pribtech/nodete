@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:element name="autoRefreshControls" >
+        <xs:annotation>
+            <xs:documentation><![CDATA[
+                    . 
+                    ]]></xs:documentation>
+        </xs:annotation>
+        <xs:complexType mixed="true">
+            <xs:attribute name="time"  use="optional">
+                <xs:annotation>
+                    <xs:documentation><![CDATA[
+                    . 
+                    ]]></xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:int"/>
+                </xs:simpleType>
+            </xs:attribute>
+            <xs:attribute name="timeVisible"  use="optional">
+                <xs:annotation>
+                    <xs:documentation><![CDATA[
+                    . 
+                    ]]></xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:pattern value="(true|false)"/>
+                    </xs:restriction>  
+                </xs:simpleType>
+            </xs:attribute>
+            <xs:attribute name="timeOptions"  use="optional">
+                <xs:annotation>
+                    <xs:documentation><![CDATA[
+                    . 
+                    ]]></xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:pattern value="\[[0-9]+([,][0-9]+)*\]"/>
+                    </xs:restriction>  
+                </xs:simpleType>
+            </xs:attribute>
+            <xs:attribute name="countdownVisible"  use="optional">
+                <xs:annotation>
+                    <xs:documentation><![CDATA[
+                    . 
+                    ]]></xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:pattern value="(true|false)"/>
+                    </xs:restriction>  
+                </xs:simpleType>
+            </xs:attribute>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

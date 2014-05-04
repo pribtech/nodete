@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:element name="stage">
+        <xs:complexType mixed="true">
+            <xs:annotation>
+                <xs:documentation><![CDATA[
+                    . 
+                    ]]></xs:documentation>
+            </xs:annotation>
+            <xs:attribute name="name"  use="required">
+                <xs:annotation>
+                    <xs:documentation><![CDATA[
+                    . 
+                    ]]></xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:pattern value="[a-zA-Z][a-zA-Z0-9]*"/>
+                    </xs:restriction>  
+                </xs:simpleType>
+            </xs:attribute>
+            <xs:attribute name="HasMenuBarContainer"  use="required">
+                <xs:annotation>
+                    <xs:documentation><![CDATA[
+                    . 
+                    ]]></xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:pattern value="(true)|(false)"/>
+                    </xs:restriction>  
+                </xs:simpleType>
+            </xs:attribute>
+            <xs:attribute name="top"  use="required">
+                <xs:annotation>
+                    <xs:documentation><![CDATA[
+                    . 
+                    ]]></xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:int"/>
+                </xs:simpleType>
+            </xs:attribute>
+            <xs:attribute name="bottom"  use="required">
+                <xs:annotation>
+                    <xs:documentation><![CDATA[
+                    . 
+                    ]]></xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:int"/>  
+                </xs:simpleType>
+            </xs:attribute>
+            <xs:attribute name="left"  use="required">
+                <xs:annotation>
+                    <xs:documentation><![CDATA[
+                    . 
+                    ]]></xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:int"/>  
+                </xs:simpleType>
+            </xs:attribute>
+            <xs:attribute name="right"  use="required">
+                <xs:annotation>
+                    <xs:documentation><![CDATA[
+                    . 
+                    ]]></xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:int"/>  
+                </xs:simpleType>
+            </xs:attribute>
+            <xs:attribute name="titleBarType"  use="required">
+                <xs:annotation>
+                    <xs:documentation><![CDATA[
+                    . 
+                    ]]></xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:enumeration value="NO_TITLE_BAR"/>
+                        <xs:enumeration value="WINDOW_CONTROLS_OUTSIDE_OF_TITLE"/>
+                        <xs:enumeration value="WINDOW_CONTROLS_INSIDE_OF_TITLE"/>
+                    </xs:restriction> 
+                </xs:simpleType>
+            </xs:attribute>
+            <xs:attribute name="windowOptionType"  use="required">
+                <xs:annotation>
+                    <xs:documentation><![CDATA[
+                    . 
+                    ]]></xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:pattern value="(NO_NAV_BAR)|(((NAV_BACK_BUTTON)|(NAV_FORWARD_BUTTON)|(NAV_RELOAD_BUTTON)|(NAV_ADDRESS_BAR)|(TAB_PERSISTENCE_FLAG))([|](NAV_BACK_BUTTON)|(NAV_FORWARD_BUTTON)|(NAV_RELOAD_BUTTON)|(NAV_ADDRESS_BAR)|(TAB_PERSISTENCE_FLAG))*)"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:attribute>
+            <xs:attribute name="windowControlTypes"  use="required">
+                <xs:annotation>
+                    <xs:documentation><![CDATA[
+                    . 
+                    ]]></xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:pattern value="(NO_TITLE_BAR_OPTIONS)|(((TITLE_BAR_QUESTION_MENU)|(TITLE_BAR_MINIMIZE_BUTTON)|(TITLE_BAR_HIDE_BUTTON)|(TITLE_BAR_CLOSE_BUTTON))([|](TITLE_BAR_QUESTION_MENU)|(TITLE_BAR_MINIMIZE_BUTTON)|(TITLE_BAR_HIDE_BUTTON)|(TITLE_BAR_CLOSE_BUTTON))*)"/>
+                    </xs:restriction> 
+                </xs:simpleType>
+            </xs:attribute>
+            <xs:attribute name="sizable"  use="required">
+                <xs:annotation>
+                    <xs:documentation><![CDATA[
+                    . 
+                    ]]></xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:enumeration value="WINDOW_IS_SIZABLE"/>
+                        <xs:enumeration value="WINDOW_IS_FIXED"/>
+                        <xs:enumeration value="WINDOW_IS_FULL"/>
+                    </xs:restriction>   
+                </xs:simpleType>
+            </xs:attribute>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

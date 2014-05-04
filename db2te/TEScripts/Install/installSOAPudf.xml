@@ -1,0 +1,122 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2012 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+
+<tutorial name="installSOAPudf" disableSetSchema="true">
+	<flowRestriction>forwardexploration</flowRestriction>
+    <closeAction />
+    <openAction />
+    <globalCodeHighlightOptions highlightCode = "true" />
+    <WMDConfig/>
+    <pageList>
+		<page name="SOAP UDF" type="general">
+    	 	<entryAction/>
+    	 	<exitAction/>
+            <contentText>
+<![CDATA[
+This installs the commponents to use the SOAP feature
+]]>
+			</contentText>
+            <SQLText>
+<![CDATA[
+]]>
+            </SQLText>
+            <SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar="@"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+        </page>
+		<page name="Install SOAP UDF" type="general">
+			<entryAction name="checkFordb2mcOscmd" type="serverAction">
+				<parameterList>
+					<parameter name="action" type="raw">
+						<value>checkForObjectWithCase</value>
+					</parameter>
+					<parameter name="objectType" type="raw">
+						<value>function</value>
+					</parameter>
+					<parameter name="object[schema]" type="raw">
+						<value><![CDATA[s#db2mc]]></value>
+					</parameter>
+					<parameter name="object[function]" type="raw">
+						<value>OSCMD</value>
+					</parameter>
+				</parameterList>
+				<followOnAction condition="0" compareOn="checkFordb2mcOscmd.returnValue">
+					<task>
+						<action name="alertTablesNotCreated" type="alert">
+							<message>prerequisite in installing tools-&gt;installed components-&gt;DB2TE added functions</message>
+						</action>
+						<setActionReturn value='false'/>
+					</task>
+				</followOnAction>
+			</entryAction>
+    	 	<exitAction/>
+            <contentText>
+<![CDATA[
+<p>Create the objects required for SOAP UDF</p>
+]]>
+			</contentText>
+            <SQLText>
+<![CDATA[
+select * from table("s#db2mc".oscmd('db2enable_soap_udf -n ?ACTIVE_DATABASE? -u ?ACTIVE_DATABASE_LOGIN_USERNAME? -p <password>'))a;
+]]>
+			</SQLText>
+            <SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar="@"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+        </page>
+		<page name="Test" type="general">
+            <contentText>
+<![CDATA[
+Test function.  Note needs access to the IP address.
+]]>
+			</contentText>
+            <SQLText>
+<![CDATA[
+VALUES substr(DB2XML.SOAPHTTPV ('http://64.124.140.30:9090/soap', '',
+   XML2CLOB(
+      XMLELEMENT(NAME "nrs:getQuote", 
+         XMLNAMESPACES('urn:xmethods-delayed-quotes' as "nrs", 
+                       'http://schemas.xmlsoap.org/soap/encoding/' AS "SOAP-ENV_encodingStyle"),
+			XMLELEMENT(NAME "symbol", 'IBM')))), 1, 200)
+@
+VALUES substr(DB2XML.SOAPHTTPV ('http://services.xmethods.net:80/soap', '', 
+    XML2CLOB( XMLELEMENT(NAME "ns:getRate", 
+                  XMLNAMESPACES('urn:xmethods-CurrencyExchange' as "ns"), 
+                XMLELEMENT(NAME "country1", 'united states'), 
+                XMLELEMENT(NAME "country2", 'korea')))), 1, 160); 
+@
+]]>
+            </SQLText>
+            <SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar="@"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+        </page>
+		<page name="Uninstall" type="last">
+            <contentText>
+<![CDATA[
+Uninstall objects.
+]]>
+			</contentText>
+            <SQLText>
+<![CDATA[
+select * from table("s#db2mc".oscmd('db2disable_soap_udf -n ? ?ACTIVE_DATABASE?'))a;
+]]>
+            </SQLText>
+            <SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar="@"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+        </page>
+
+    </pageList>
+</tutorial>

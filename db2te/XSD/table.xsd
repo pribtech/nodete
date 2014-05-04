@@ -1,0 +1,381 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+  <xs:element name="table">
+    <xs:complexType mixed="true">
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="action"/>
+        <xs:element ref="column"/>
+        <xs:element ref="inlinequery"/>
+        <xs:element ref="reference"/>
+        <xs:element ref="description"/>
+        <xs:element ref="display_columns"/>
+        <xs:element ref="edit"/>
+        <xs:element ref="function"/>
+        <xs:element ref="graph"/>
+        <xs:element ref="html_name"/>
+        <xs:element ref="order_by_index"/>
+        <xs:element ref="parameters"/>
+        <xs:element ref="plural_name"/>
+        <xs:element ref="queryfile"/>
+        <xs:element ref="rows_per_page"/>
+        <xs:element ref="singular_name"/>
+        <xs:element ref="sql_name"/>
+      </xs:choice>
+      <xs:attribute name="name" type="xs:NCName"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="description" type="xs:string"/>
+  <xs:element name="display_columns">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="col"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="col">
+    <xs:complexType>
+      <xs:attribute name="name" use="required" type="xs:NCName"/>
+      <xs:attribute name="type" use="required" type="xs:NCName"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="edit" type="xs:NCName"/>
+  <xs:element name="function" type="xs:string"/>
+  <xs:element name="graph">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="prefix"/>
+        <xs:element ref="title"/>
+        <xs:sequence minOccurs="0">
+          <xs:element ref="imageHeight"/>
+          <xs:element ref="imageWidth"/>
+        </xs:sequence>
+        <xs:element ref="sizeRatio"/>
+        <xs:element ref="xTitle"/>
+        <xs:element ref="xTitleDistFromAxis"/>
+        <xs:element ref="forceXBaseline"/>
+        <xs:element ref="xBaseline"/>
+        <xs:element ref="yTitleLeft"/>
+        <xs:element minOccurs="0" ref="legendWidth"/>
+        <xs:element ref="forceYBaseline"/>
+        <xs:element ref="yBaseline"/>
+        <xs:element ref="xNumOfTicks"/>
+        <xs:element ref="yNumOfTicks"/>
+        <xs:element ref="datasetType"/>
+        <xs:element ref="showGrid"/>
+        <xs:element ref="sortData"/>
+        <xs:element ref="enableMarkers"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="prefix" type="xs:NCName"/>
+  <xs:element name="imageHeight" type="xs:integer"/>
+  <xs:element name="imageWidth" type="xs:integer"/>
+  <xs:element name="sizeRatio" type="xs:decimal"/>
+  <xs:element name="xTitle" type="xs:string"/>
+  <xs:element name="xTitleDistFromAxis" type="xs:integer"/>
+  <xs:element name="forceXBaseline" type="xs:boolean"/>
+  <xs:element name="xBaseline">
+    <xs:complexType/>
+  </xs:element>
+  <xs:element name="yTitleLeft" type="xs:string"/>
+  <xs:element name="legendWidth" type="xs:integer"/>
+  <xs:element name="forceYBaseline" type="xs:boolean"/>
+  <xs:element name="yBaseline">
+    <xs:complexType/>
+  </xs:element>
+  <xs:element name="xNumOfTicks" type="xs:integer"/>
+  <xs:element name="yNumOfTicks" type="xs:integer"/>
+  <xs:element name="datasetType">
+    <xs:complexType/>
+  </xs:element>
+  <xs:element name="showGrid" type="xs:boolean"/>
+  <xs:element name="sortData" type="xs:boolean"/>
+  <xs:element name="enableMarkers" type="xs:boolean"/>
+  <xs:element name="html_name" type="xs:NCName"/>
+  <xs:element name="order_by_index">
+    <xs:complexType>
+      <xs:attribute name="direction" type="xs:NCName"/>
+      <xs:attribute name="name" type="xs:NCName"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="parameters">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="parm"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="parm">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="title"/>
+        <xs:element ref="value"/>
+        <xs:element ref="type"/>
+      </xs:sequence>
+      <xs:attribute name="name" use="required" type="xs:NCName"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="type" type="xs:NCName"/>
+  <xs:element name="plural_name" type="xs:string"/>
+  <xs:element name="queryfile" type="xs:string"/>
+  <xs:element name="rows_per_page" type="xs:integer"/>
+  <xs:element name="singular_name" type="xs:string"/>
+  <xs:element name="sql_name" type="xs:NCName"/>
+  <xs:element name="c_column_mask">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="value_mask"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="value_mask">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:choice maxOccurs="unbounded">
+          <xs:element ref="link"/>
+          <xs:element ref="mask"/>
+        </xs:choice>
+        <xs:element minOccurs="0" ref="reference"/>
+      </xs:sequence>
+      <xs:attribute name="value" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="mask" type="xs:string"/>
+  <xs:element name="reference">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" ref="c_title"/>
+        <xs:element minOccurs="0" ref="c_html"/>
+        <xs:choice maxOccurs="unbounded">
+          <xs:element ref="icon"/>
+          <xs:element ref="frame"/>
+          <xs:element ref="reftype"/>
+          <xs:element ref="refvalue"/>
+        </xs:choice>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="ref"/>
+        <xs:element minOccurs="0" ref="c_prefill"/>
+      </xs:sequence>
+      <xs:attribute name="name" use="required" type="xs:NCName"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="c_html">
+    <xs:complexType/>
+  </xs:element>
+  <xs:element name="frame" type="xs:NCName"/>
+  <xs:element name="reftype" type="xs:NCName"/>
+  <xs:element name="refvalue" type="xs:string"/>
+  <xs:element name="ref">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="local_column_name"/>
+      </xs:sequence>
+      <xs:attribute name="foreign_column_name" use="required" type="xs:NCName"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="local_column_name" type="xs:NCName"/>
+  <xs:element name="title" type="xs:string"/>
+  <xs:element name="inlinequery" type="xs:string"/>
+  <xs:element name="column">
+    <xs:complexType mixed="true">
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="c_column_mask"/>
+        <xs:element ref="c_prefill"/>
+        <xs:element ref="c_title"/>
+        <xs:element ref="c_column_mask_file"/>
+        <xs:element ref="c_drill"/>
+        <xs:element ref="c_graph"/>
+        <xs:element ref="c_hide_value_if_not_masked"/>
+        <xs:element ref="c_lookup"/>
+        <xs:element ref="c_mask_display_order"/>
+        <xs:element ref="c_pkey"/>
+        <xs:element ref="c_presentation"/>
+        <xs:element ref="c_search"/>
+        <xs:element ref="c_sort"/>
+        <xs:element ref="c_sql_name"/>
+        <xs:element ref="graphattributes"/>
+      </xs:choice>
+      <xs:attribute name="name" type="xs:NCName"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="c_column_mask_file" type="xs:NCName"/>
+  <xs:element name="c_drill" type="xs:NCName"/>
+  <xs:element name="c_graph">
+    <xs:complexType>
+      <xs:choice>
+        <xs:element ref="g_x_categories"/>
+        <xs:choice maxOccurs="unbounded">
+          <xs:element ref="g_color"/>
+          <xs:element ref="g_description"/>
+          <xs:element ref="g_marker"/>
+          <xs:element ref="g_type"/>
+          <xs:element ref="g_x_scale"/>
+          <xs:element ref="g_yAxisUsed"/>
+        </xs:choice>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="g_x_categories" type="xs:NCName"/>
+  <xs:element name="g_color" type="xs:string"/>
+  <xs:element name="g_description" type="xs:string"/>
+  <xs:element name="g_marker" type="xs:NCName"/>
+  <xs:element name="g_type" type="xs:NCName"/>
+  <xs:element name="g_x_scale" type="xs:NCName"/>
+  <xs:element name="g_yAxisUsed" type="xs:NCName"/>
+  <xs:element name="c_hide_value_if_not_masked" type="xs:NCName"/>
+  <xs:element name="c_lookup">
+    <xs:complexType>
+      <xs:attribute name="column" use="required" type="xs:NCName"/>
+      <xs:attribute name="table" use="required" type="xs:NCName"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="c_mask_display_order" type="xs:NCName"/>
+  <xs:element name="c_pkey" type="xs:string"/>
+  <xs:element name="c_presentation" type="xs:NCName"/>
+  <xs:element name="c_search" type="xs:NCName"/>
+  <xs:element name="c_sort" type="xs:NCName"/>
+  <xs:element name="c_sql_name" type="xs:NCName"/>
+  <xs:element name="graphattributes">
+    <xs:complexType>
+      <xs:sequence minOccurs="0">
+        <xs:element ref="inlinequery"/>
+        <xs:element ref="value"/>
+      </xs:sequence>
+      <xs:attribute name="flipColor" use="required" type="xs:NCName"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="action">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:sequence minOccurs="0">
+          <xs:element ref="c_title"/>
+          <xs:element ref="icon"/>
+          <xs:element ref="actionScript"/>
+        </xs:sequence>
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+          <xs:element ref="followOnAction"/>
+          <xs:element ref="message"/>
+          <xs:element ref="parameterList"/>
+        </xs:choice>
+      </xs:sequence>
+      <xs:attribute name="name" use="required" type="xs:NCName"/>
+      <xs:attribute name="type" type="xs:NCName"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="actionScript">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" ref="message"/>
+        <xs:element minOccurs="0" ref="parameterList"/>
+        <xs:element ref="followOnAction"/>
+      </xs:sequence>
+      <xs:attribute name="name" use="required" type="xs:NCName"/>
+      <xs:attribute name="type" use="required" type="xs:NCName"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="value" type="xs:string"/>
+  <xs:element name="link">
+    <xs:complexType mixed="true">
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="parameterList"/>
+      </xs:sequence>
+      <xs:attribute name="connectionRequired" type="xs:NCName"/>
+      <xs:attribute name="target" type="xs:NCName"/>
+      <xs:attribute name="type" type="xs:NCName"/>
+      <xs:attribute name="window" type="xs:NCName"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="c_title" type="xs:string"/>
+  <xs:element name="icon" type="xs:string"/>
+  <xs:element name="c_prefill">
+    <xs:complexType mixed="true">
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="column"/>
+        <xs:element ref="table"/>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="message" type="xs:string"/>
+  <xs:element name="parameterList">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="parameter"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="parameter">
+    <xs:complexType mixed="true">
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="value"/>
+      </xs:sequence>
+      <xs:attribute name="name" use="required"/>
+      <xs:attribute name="type" type="xs:NCName"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="followOnAction">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="task"/>
+      </xs:sequence>
+      <xs:attribute name="condition"/>
+      <xs:attribute name="negCondition" type="xs:boolean"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="task">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="action"/>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="assignLocalParameter"/>
+        <xs:choice minOccurs="0">
+          <xs:element ref="alert"/>
+          <xs:element ref="loadPage"/>
+          <xs:element ref="panelReload"/>
+        </xs:choice>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="assignLocalParameter">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="value"/>
+      </xs:sequence>
+      <xs:attribute name="name" use="required" type="xs:NCName"/>
+      <xs:attribute name="type" use="required" type="xs:NCName"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="alert" type="xs:string"/>
+  <xs:element name="loadPage">
+    <xs:complexType>
+      <xs:choice>
+        <xs:element ref="linkList"/>
+        <xs:element ref="pageWindow"/>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="linkList">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="link"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="pageWindow">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="panel"/>
+      </xs:sequence>
+      <xs:attribute name="target" use="required" type="xs:NCName"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="panel">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="URL"/>
+      </xs:sequence>
+      <xs:attribute name="name" use="required" type="xs:NCName"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="URL" type="xs:anyURI"/>
+  <xs:element name="panelReload">
+    <xs:complexType/>
+  </xs:element>
+</xs:schema>

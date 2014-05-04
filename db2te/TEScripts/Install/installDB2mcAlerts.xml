@@ -1,0 +1,493 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2013 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+<tutorial name="Install Alerts" autoPlayTime="5">
+    <closeAction />
+    <openAction />
+    <globalCodeHighlightOptions highlightCode = "true" />
+    <WMDConfig/>
+    <pageList>
+    	 <page name="Create Control Tables" type="intro">
+    	 	<entryAction/>
+    	 	<exitAction/>
+            <contentText>
+<![CDATA[
+<p/>
+Setup control tables for db2mc Alerts
+<p/>
+This is a simple process for monitoring certain aspects using the ATS scheduler. 
+]]>
+			</contentText>
+            <SQLText>
+<![CDATA[
+create table "s#db2mc".alert (
+		 name varchar(128) not null
+		,frequency_minutes int not null
+		,active char(1) not null
+		,type char(2) not null
+		,dataType char(1) not null
+		,description char(128) not null
+		,formula varchar(3500) not null
+		,last_checked timestamp not null
+	)
+	in SYSTOOLSPACE 
+@
+create unique index "s#db2mc".alert_u1
+	on "s#db2mc".alert (name)
+	allow reverse scans
+@
+create table "s#db2mc".alert_level (
+		 name varchar(128) not null
+		,level char(1) not null
+		,value varchar(128) not null with default
+		,valueDecimal decimal(13,2) not null with default
+		,description varchar(128) not null
+	)
+	in SYSTOOLSPACE
+@
+create unique index "s#db2mc".alert_level_u1 on "s#db2mc".alert_level (name,value,level)
+	allow reverse scans
+@
+create table "s#db2mc".alert_history (
+		 name varchar(128) not null
+		,level char(1) not null
+		,value varchar(128) not null 
+		,id varchar(3000) not null
+		,sample_ts timestamp default current timestamp
+	)
+	in SYSTOOLSPACE
+@
+create index "s#db2mc".alert_history_u1 on "s#db2mc".alert_history (sample_ts,name,level)
+	allow reverse scans
+@
+]]>
+			</SQLText>
+            <SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar="@"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+        </page>
+    	 <page name="Add Alert Conditions" type="general">
+    	 	<entryAction/>
+    	 	<exitAction/>
+            <contentText>
+<![CDATA[
+<p/>
+Setup alerts conditions in control tables.
+]]>
+			</contentText>
+            <SQLText>
+<![CDATA[
+insert into "s#db2mc".alert (last_checked,active,frequency_minutes,type,dataType,name,description,formula)
+ values(current timestamp - 1 year,'Y',5,'=','C','Test1'			,'Test Status'			,'values(''Y'',''test object1 yes''),(''N'',''test object2 no'')')
+@
+insert into "s#db2mc".alert (last_checked,active,frequency_minutes,type,dataType,name,description,formula)
+values(current timestamp - 1 year,'Y',5,'!','C','Tablespace Status'			,'Tablespace Status'			,'select tbsp_state,tbsp_name from table(SNAP_GET_TBSP_PART('''', -2)) AS PART ')
+     ,(current timestamp - 1 year,'Y',5,'!','C','Table Status'				,'Table Status'					,'select STATUS,''"''||TABSCHEMA||''"."''||TABNAME||''"'' from SYSCAT.TABLES')
+     ,(current timestamp - 1 year,'Y',5,'!','C','Table Access Mode'			,'Table Access Mode'			,'select access_mode,''"''||TABSCHEMA||''"."''||TABNAME||''"'' from SYSCAT.TABLES')
+     ,(current timestamp - 1 year,'Y',5,'=','C','Table Foreign Key'			,'Table foreign key constraint'	,'select SUBSTR(CONST_CHECKED,1,1),''"''||TABSCHEMA||''"."''||TABNAME||''"'' from SYSCAT.TABLES')
+     ,(current timestamp - 1 year,'Y',5,'=','C','Table Check'				,'Table check constraint'		,'select SUBSTR(CONST_CHECKED,2,1),''"''||TABSCHEMA||''"."''||TABNAME||''"'' from SYSCAT.TABLES')
+     ,(current timestamp - 1 year,'Y',5,'=','C','Table MQT'					,'Table MQT'					,'select SUBSTR(CONST_CHECKED,5,1),''"''||TABSCHEMA||''"."''||TABNAME||''"'' from SYSCAT.TABLES')
+     ,(current timestamp - 1 year,'Y',5,'=','C','Table Generated'			,'Table Generated'				,'select SUBSTR(CONST_CHECKED,6,1),''"''||TABSCHEMA||''"."''||TABNAME||''"'' from SYSCAT.TABLES')
+     ,(current timestamp - 1 year,'Y',5,'=','C','Table Staging'				,'Table Staging'				,'select SUBSTR(CONST_CHECKED,7,1),''"''||TABSCHEMA||''"."''||TABNAME||''"'' from SYSCAT.TABLES')
+     ,(current timestamp - 1 year,'Y',5,'=','C','Table Data Partitioning'	,'Table Data Partitioning'		,'select SUBSTR(CONST_CHECKED,8,1),''"''||TABSCHEMA||''"."''||TABNAME||''"'' from SYSCAT.TABLES')
+@
+insert into "s#db2mc".alert_level (level,value,valueDecimal,name,description)
+values('E','NORMAL',0,'Tablespace Status',' ')
+     ,('E','N',0,'Table Status',' ')
+     ,('E','F',0,'Table Access Mode',' ')
+     ,('E','N',0,'Table Foreign Key',' ')
+     ,('E','F',0,'Table Foreign Key',' ')
+     ,('E','W',0,'Table Foreign Key',' ')
+     ,('E','N',0,'Table Check',' ')
+     ,('E','F',0,'Table Check',' ')
+     ,('E','W',0,'Table Check',' ')
+     ,('E','N',0,'Table MQT',' ')
+     ,('E','F',0,'Table MQT',' ')
+     ,('E','W',0,'Table MQT',' ')
+     ,('E','N',0,'Table Generated',' ')
+     ,('E','F',0,'Table Generated',' ')
+     ,('E','W',0,'Table Generated',' ')
+     ,('E','N',0,'Table Staging',' ')
+     ,('E','F',0,'Table Staging',' ')
+     ,('E','W',0,'Table Staging',' ')
+     ,('E','N',0,'Table Data Partitioning',' ')
+     ,('E','F',0,'Table Data Partitioning',' ')
+     ,('E','W',0,'Table Data Partitioning',' ')
+@
+insert into "s#db2mc".alert (last_checked,active,frequency_minutes,type,dataType,name,description,formula)
+values(current timestamp - 1 year,'Y',1440,'>','I','Database Backup'		,'Database Backup'				,'select coalesce(TIMESTAMPDIFF(16,CHAR(current timestamp - LAST_BACKUP)),9999) ,DB_NAME FROM table(SNAP_GET_DB('''', -2) ) a')
+@
+insert into "s#db2mc".alert_level (level,value,valueDecimal,name,description)
+values('W','1',1,'Database Backup',' ')
+     ,('E','7',7,'Database Backup',' ')
+@
+insert into "s#db2mc".alert (last_checked,active,frequency_minutes,type,dataType,name,description,formula)
+values(current timestamp - 1 year,'Y',1440,'=','C','Invalid Objects'		,'Invalid Objects'				,'select ''E'',OBJECTTYPE||'' "''||OBJECTSCHEMA||''"."''||OBJECTNAME||''"'' FROM SYSCAT.INVALIDOBJECTS')
+@
+insert into "s#db2mc".alert_level (level,value,valueDecimal,name,description)
+values('E','E',0,'Invalid Objects',' ')
+@
+insert into "s#db2mc".alert (last_checked,active,frequency_minutes,type,dataType,name,description,formula)
+values(current timestamp - 1 year,'Y',5,'>','I','CPU'		,'CPU %'	,'select value,value from sysibmadm.env_sys_resources as s where name=''CPU_USAGE_TOTAL''')
+@
+insert into "s#db2mc".alert_level (level,value,valueDecimal,name,description)
+values('W','85',85,'CPU',' ')
+     ,('E','95',95,'CPU',' ')
+@
+insert into "s#db2mc".alert (last_checked,active,frequency_minutes,type,dataType,name,description,formula)
+values(current timestamp - 1 year,'Y',5,'>','I','UOW'		,'UOW Elapse'	,'
+select uowTime,''seconds'' from 
+(select max(case when UOW_START_TIME <= SNAPSHOT_TIMESTAMP - 30 minutes then double(TIMESTAMPDIFF(2,CHAR(SNAPSHOT_TIMESTAMP - UOW_START_TIME))) 
+		else double(TIMESTAMPDIFF(1,CHAR(SNAPSHOT_TIMESTAMP - UOW_START_TIME)))/1000000 end) as uowtime
+from SYSIBMADM.SNAPAPPL  where uow_stop_time is null) a
+
+')
+@
+insert into "s#db2mc".alert_level (level,value,valueDecimal,name,description)
+values('W','10',10,'UOW',' ')
+     ,('E','60',60,'UOW',' ')
+@
+insert into "s#db2mc".alert (last_checked,active,frequency_minutes,type,dataType,name,description,formula)
+values(current timestamp - 1 year,'Y',5,'!','C','Invalid Datatype'		,'Invalid Datatype'	,'
+select VALID, ''"''||TYPESCHEMA||''"."''||TYPENAME||''"."'' from SYSCAT.DATATYPES where valid NOT IN (''Y'','' '')
+')
+@
+insert into "s#db2mc".alert_level (level,value,valueDecimal,name,description)
+values('E',' ',0,'Invalid Datatype',' ')
+@
+insert into "s#db2mc".alert (last_checked,active,frequency_minutes,type,dataType,name,description,formula)
+values(current timestamp - 1 year,'Y',5,'!','C','Invalid Package'		,'Invalid Package'	,'
+select VALID, ''"''||PKGSCHEMA||''"."''||PKGNAME||''"."'' from SYSCAT.PACKAGES where valid NOT IN (''Y'','' '')
+')
+@
+insert into "s#db2mc".alert_level (level,value,valueDecimal,name,description)
+values('E',' ',0,'Invalid Package',' ')
+@
+insert into "s#db2mc".alert (last_checked,active,frequency_minutes,type,dataType,name,description,formula)
+values(current timestamp - 1 year,'Y',5,'!','C','Invalid Procedure'		,'Invalid Procedure'	,'
+select VALID, ''"''||PROCSCHEMA||''"."''||PROCNAME||''"."'' from SYSCAT.PROCEDURES where valid NOT IN (''Y'','' '')
+')
+@
+insert into "s#db2mc".alert_level (level,value,valueDecimal,name,description)
+values('E',' ',0,'Invalid Procedure',' ')
+@
+insert into "s#db2mc".alert (last_checked,active,frequency_minutes,type,dataType,name,description,formula)
+values(current timestamp - 1 year,'Y',5,'!','C','Invalid Routine'		,'Invalid Routine'	,'
+select VALID, ''"''||ROUTINESCHEMA||''"."''||ROUTINENAME||''"."'' from SYSCAT.ROUTINES where valid NOT IN (''Y'','' '')
+')
+@
+insert into "s#db2mc".alert_level (level,value,valueDecimal,name,description)
+values('E',' ',0,'Invalid Routine',' ')
+@
+insert into "s#db2mc".alert (last_checked,active,frequency_minutes,type,dataType,name,description,formula)
+values(current timestamp - 1 year,'Y',5,'!','C','Invalid Trigger'		,'Invalid Trigger'	,'
+select VALID, ''"''||TRIGSCHEMA||''"."''||TRIGNAME||''"."'' from SYSCAT.TRIGGERS where valid NOT IN (''Y'','' '')
+')
+@
+insert into "s#db2mc".alert_level (level,value,valueDecimal,name,description)
+values('E',' ',0,'Invalid Trigger',' ')
+@
+insert into "s#db2mc".alert (last_checked,active,frequency_minutes,type,dataType,name,description,formula)
+values(current timestamp - 1 year,'Y',5,'!','C','Invalid Variable'		,'Invalid Variable'	,'
+select VALID, ''"''||VARSCHEMA||''"."''||VARNAME||''"."'' from SYSCAT.VARIABLES where valid NOT IN (''Y'','' '')
+')
+@
+insert into "s#db2mc".alert_level (level,value,valueDecimal,name,description)
+values('E',' ',0,'Invalid Variable',' ')
+@
+insert into "s#db2mc".alert (last_checked,active,frequency_minutes,type,dataType,name,description,formula)
+values(current timestamp - 1 year,'Y',5,'!','C','Invalid View'		,'Invalid View'	,'
+select VALID, ''"''||VIEWSCHEMA||''"."''||VIEWNAME||''"."'' from SYSCAT.VIEWS where valid NOT IN (''Y'','' '')
+')
+@
+insert into "s#db2mc".alert_level (level,value,valueDecimal,name,description)
+values('E',' ',0,'Invalid View',' ')
+@
+]]>
+			</SQLText>
+            <SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar="@"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+		</page>
+		<page name="Create Collection Stored Proc" type="general">
+    	 	<entryAction/>
+    	 	<exitAction/>
+            <contentText>
+<![CDATA[
+<p>Create the stored proc that checks the alerts and stores the results into the history table</p>
+]]>
+			</contentText>
+            <SQLText>
+<![CDATA[
+CREATE PROCEDURE "s#db2mc"."gatherAlerts" ()
+  SPECIFIC "s#db2mc.gatherAlerts"
+  DYNAMIC RESULT SETS 0
+  LANGUAGE SQL
+  BEGIN
+--/******************************************************************************	
+--  Author: Peter Prib
+--  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2013 All rights reserved.
+--
+--  Licensed under the Apache License, Version 2.0 (the "License");
+--  you may not use this file except in compliance with the License.
+--  You may obtain a copy of the License at
+--
+--      http://www.apache.org/licenses/LICENSE-2.0
+--
+--  Unless required by applicable law or agreed to in writing, software
+--  distributed under the License is distributed on an "AS IS" BASIS,
+--  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+--  See the License for the specific language governing permissions and
+--  limitations under the License.
+--******************************************************************************/
+--
+	DECLARE SQLSTATE CHAR(5) DEFAULT '00000';
+	DECLARE stmt varchar(32000);
+	DECLARE return_level char(1);
+	DECLARE return_value varchar(256);
+	DECLARE return_id varchar(3000);
+	DECLARE return_message VARCHAR(32672);
+	DECLARE CONTINUE HANDLER FOR not found begin end;
+
+	for alerts as alert_cursor cursor with hold 
+	for select name as name_active,type,dataType,formula from "s#db2mc".alert where active='Y' and last_checked < current timestamp - frequency_minutes minutes 
+	do
+		set stmt = 'select level,f.value,id from ('||formula||') as f (value,id) , "s#db2mc".alert_level as al where al.name = ? and '
+				||	case 
+						when dataType='C' and type='<' then ' al.value = (select min(value) from "s#db2mc".alert_level m where m.name = al.name and f.value < m.value) '
+						when dataType='I' and type='<' then ' al.valueDecimal = (select min(valueDecimal) from "s#db2mc".alert_level m where m.name = al.name and f.value < valueDecimal) '
+						when dataType='C' and type='<=' then ' al.value = (select min(value) from "s#db2mc".alert_level m where m.name = al.name and f.value <= m.value) '
+						when dataType='I' and type='<=' then ' al.valueDecimal = (select min(valueDecimal) from "s#db2mc".alert_level m where m.name = al.name and f.value <= valueDecimal) '
+						when dataType='C' and type='>' then ' al.value = (select max(value) from "s#db2mc".alert_level m where m.name = al.name and f.value > m.value) '
+						when dataType='I' and type='>' then ' al.valueDecimal = (select max(valueDecimal) from "s#db2mc".alert_level m where m.name = al.name and f.value > valueDecimal) '
+						when dataType='C' and type='>=' then ' al.value = (select max(value) from "s#db2mc".alert_level m where m.name = al.name and f.value >= m.value) '
+						when dataType='I' and type='>=' then ' al.valueDecimal = (select max(valueDecimal) from "s#db2mc".alert_level m where m.name = al.name and f.value >= valueDecimal) '
+						when dataType='C' and type='=' then ' f.value = al.value' 
+						when dataType='I' and type='=' then ' f.value = al.valueDecimal' 
+						when dataType='C' and type='!' then ' f.value <> al.value' 
+						when dataType='I' and type='!' then ' f.value <> al.valueDecimal' 
+					end;
+		begin
+			DECLARE more_rows CHAR(1);
+			DECLARE alert statement;
+			DECLARE alert_cursor CURSOR FOR alert;
+			DECLARE CONTINUE HANDLER FOR SQLEXCEPTION,SQLWARNING begin 
+				DECLARE CONTINUE HANDLER FOR SQLEXCEPTION,SQLWARNING begin end;
+				GET DIAGNOSTICS EXCEPTION 1 return_message = MESSAGE_TEXT;
+				insert into "s#db2mc".alert_history 
+							(name,level  ,value,id)
+					values	(name_active,'E'   ,SQLSTATE,'SQLSTATE, SQL: '||stmt||' Error:'||return_message);
+				set more_rows = 'E';
+			end;
+			DECLARE CONTINUE HANDLER FOR not found begin 
+				set more_rows = 'N';
+			end;
+--			insert into "s#db2mc".alert_history 
+--							(name,level,value,id)
+--					values	('debug','I',' ',stmt);
+			set more_rows = 'Y';
+			prepare alert from stmt;
+			open alert_cursor using name_active;
+			alertRows: loop
+				FETCH alert_cursor INTO return_level,return_value,return_id;
+				if more_rows != 'Y' then leave alertRows; end if;  
+				insert into "s#db2mc".alert_history 
+							(name       ,level        ,value      ,id)
+					values	(name_active,return_level,return_value,return_id);
+				
+   		    end loop;
+   		    update "s#db2mc".alert set last_checked = current timestamp where name=name_active;
+		end;
+	end for;
+end
+
+]]>
+			</SQLText>
+            <SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar="@"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+		</page>
+    	<page name="Create Prune History Proc" type="general">
+    	 	<entryAction/>
+    	 	<exitAction/>
+            <contentText>
+<![CDATA[
+<p/>
+Create the stored stored procedure to clear down history.
+]]>
+			</contentText>
+            <SQLText>
+<![CDATA[
+CREATE PROCEDURE "s#db2mc"."pruneAlerts" (
+	in data_Retain_Days int 
+	)
+  SPECIFIC "s#db2mc.pruneAlerts"
+  DYNAMIC RESULT SETS 0
+  LANGUAGE SQL
+begin
+--/******************************************************************************	
+--  Author: Peter Prib
+--  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2013 All rights reserved.
+--
+--  Licensed under the Apache License, Version 2.0 (the "License");
+--  you may not use this file except in compliance with the License.
+--  You may obtain a copy of the License at
+--
+--      http://www.apache.org/licenses/LICENSE-2.0
+--
+--  Unless required by applicable law or agreed to in writing, software
+--  distributed under the License is distributed on an "AS IS" BASIS,
+--  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+--  See the License for the specific language governing permissions and
+--  limitations under the License.
+--******************************************************************************/
+	DECLARE stmt varchar(4000);
+	DECLARE CONTINUE HANDLER FOR not found begin end;
+
+-- deliberate use of dynamic SQL to avoid rebinding
+	
+	set stmt = 'delete from "s#db2mc".alert_history where sample_ts < current timestamp - '||cast(coalesce(data_Retain_Days,60) as char(8))||' days';
+	prepare s1 from stmt;
+	execute s1;
+	commit;
+end
+]]>
+			</SQLText>
+            <SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar="@"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+        </page>
+    	 <page name="Test Stored Procedure" type="general" focusOnWindow="TutorialSQL">
+    	 	<entryAction/>
+    	 	<exitAction/>
+            <contentText>
+<![CDATA[
+<p/>
+Test run the store procedures.  Results can be reviewed in adjacent panels.
+]]>
+			</contentText>
+            <SQLText>
+<![CDATA[
+call "s#db2mc"."gatherAlerts"()
+@
+call  "s#db2mc"."pruneAlerts"(10)
+@
+]]>
+			</SQLText>
+            <SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar="@"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+
+			<autoLoadLink>
+				<pageWindow target="monitorControl"> 
+					<title>Monitor Control</title>
+	            	<panel name="core-site" PrimaryContainer="true">
+						<link connectionRequired="y" target="_self" type="action" window="_self"> 
+							<parameterList>
+								<parameter name="action">list_table</parameter>
+								<parameter name="table">Monitor/monitorControl</parameter>
+							</parameterList>
+						</link>
+					</panel>
+				</pageWindow>
+            </autoLoadLink>
+			<autoLoadLink>
+				<pageWindow target="history"> 
+					<title>Alert Overview</title> 
+					<info>Alert overview</info>
+					<panelHeaders refreshEnabled="true"/>
+					<panel name="main" >
+						<panelHeaders refreshEnabled="true"/>
+						<link type="action" target="_self" window="_self" connectionRequired="y">
+							<parameterList>
+								<parameter name="table">Monitor/alertHistory</parameter>
+								<parameter name="action">list_table</parameter>
+							</parameterList>
+						</link>				
+					</panel>
+				</pageWindow>
+            </autoLoadLink>
+        </page>
+		<page name="ATS Schedule Jobs" type="general" focusOnWindow="TutorialSQL">
+    	 	<entryAction/>
+    	 	<exitAction/>
+            <contentText>
+<![CDATA[
+<p/>
+Schedule the store procedure in ATS.  Collection for every minute and pruning once a day.
+<p/>
+Even though the collector is scheduled every minute only select checks are processed based on the interval set.
+]]>
+			</contentText>
+            <SQLText>
+<![CDATA[
+call ADMIN_TASK_ADD('db2mc Alert Collection'
+							,cast(NULL as TIMESTAMP)
+							,cast(NULL as TIMESTAMP)
+							,cast(NULL as INTEGER)
+							,'59 * * * *' 
+							,'s#db2mc'
+							,'gatherAlerts'
+							,cast('' as CLOB(100))
+							,cast(null as VARCHAR(512))
+							,'')
+@
+call ADMIN_TASK_ADD('db2mc History Alert Prune'
+							,cast(NULL as TIMESTAMP)
+							,cast(NULL as TIMESTAMP)
+							,cast(NULL as INTEGER)
+							,'10 6 * * *' 
+							,'s#db2mc'
+							,'pruneAlerts'
+							,cast('values(null)' as CLOB(100))
+							,cast(null as VARCHAR(512))
+							,'')
+@
+]]>
+			</SQLText>
+            <SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar="@"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+
+			<autoLoadLink>
+				<pageWindow target="ats"> 
+					<title>ATS - Job Scheduler</title>
+		            <panel name="main" PrimaryContainer="true">
+        		    	<link type="action" target="_self" window="_self" connectionRequired="y">
+                  			<parameterList>
+                     			<parameter name="table">AdminTask/atsBaseView</parameter>
+                     			<parameter name="action">list_table</parameter>
+                  			</parameterList>
+               			</link>         
+            		</panel>
+				</pageWindow>
+            </autoLoadLink>
+        </page>
+        <page name="Uninstall" type="last" autoPlay="false">
+            <contentText>Uninstall alerts.</contentText>
+            <SQLText>
+<![CDATA[
+call ADMIN_TASK_REMOVE('db2mc History Alert Prune',NULL)@
+call ADMIN_TASK_REMOVE('db2mc Alert Collection',NULL)@
+drop PROCEDURE "s#db2mc"."pruneAlerts"@
+drop PROCEDURE "s#db2mc"."gatherAlerts" @
+drop table "s#db2mc".alert_history @
+drop table "s#db2mc".alert_level @
+drop table "s#db2mc".alert @
+]]>
+            </SQLText>
+            <SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar="@"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+        </page>
+        
+    </pageList>
+</tutorial>

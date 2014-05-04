@@ -1,0 +1,133 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2009 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+
+<actionScript name="installTablespaceSystools" type="serverAction">
+	<parameterList>
+		<parameter name="action" type="raw">
+			<value>getSQLValue</value>
+		</parameter>
+		<parameter name="query" type="fixed">
+			<value>
+<![CDATA[
+(select case 
+			when exists(select 1 from TABLE(SNAP_GET_DB('', -2)) as db where NUM_DB_STORAGE_PATHS>0)
+				then 'AUTO'
+			else 'MANUAL'
+			end
+		
+from (values(1)) a )
+]]>
+			</value>
+		</parameter>
+	</parameterList>
+	<ifNot condition="true">
+		<task>
+			<assignLocalParameter name="error" type="returnObject">
+				<value>installTablespaceSystools.returnValue</value>
+			</assignLocalParameter>
+			<alert>?error?</alert>
+		</task>
+	</ifNot>
+	<if condition="AUTO" compareOn="installTablespaceSystools.returnValue" compareOnType="returnObject">
+		<task>
+			<action name="install" type="serverAction">
+				<parameterList>
+					<parameter name="action" type="fixed">
+						<value>executeSQL</value>
+					</parameter>
+					<parameter name="SQL[0]" type="fixed">
+						<value>
+<![CDATA[
+CREATE TABLESPACE SYSTOOLSPACE IN IBMCATGROUP 
+  MANAGED BY AUTOMATIC STORAGE 
+  EXTENTSIZE 4
+]]>
+						</value>
+					</parameter>
+					<parameter name="SQL[1]" type="fixed">
+						<value>
+<![CDATA[
+CREATE USER TEMPORARY TABLESPACE SYSTOOLSTMPSPACE IN IBMCATGROUP 
+  MANAGED BY AUTOMATIC STORAGE 
+  EXTENTSIZE 4
+]]>
+						</value>
+					</parameter>
+				</parameterList>
+				<if condition="true" negCondition="true">
+					<task>
+						<assignSharedConstant name="ERROR_MESSAGE" type="returnObject">
+							<value>install.returnValue.STMTMSG</value>
+						</assignSharedConstant>
+						<alert>Failed to create SYSTOOL tablespaces using auto storage  : ?ERROR_MESSAGE?</alert>
+					</task>
+					<exit/>
+				</if>
+				<if condition="true">
+					<task>
+						<alert>SYSTOOL tablespaces using auto storage created</alert>
+					</task>
+				</if>
+			</action>
+			<exit/>
+		</task>
+	</if>
+	<if condition="AUTO" compareOn="installTablespaceSystools.returnValue" compareOnType="returnObject">
+		<task>
+			<action name="install" type="serverAction">
+				<parameterList>
+					<parameter name="action" type="fixed">
+						<value>executeSQL</value>
+					</parameter>
+					<parameter name="SQL[0]" type="fixed">
+						<value>
+<![CDATA[
+CREATE TABLESPACE SYSTOOLSPACE IN IBMCATGROUP 
+  MANAGED BY DATABASE USING ( FILE 'SYSTOOLSPACE' 32 M ) 
+  AUTORESIZE YES 
+  EXTENTSIZE 4
+]]>
+						</value>
+					</parameter>
+					<parameter name="SQL[1]" type="fixed">
+						<value>
+<![CDATA[
+CREATE USER TEMPORARY TABLESPACE SYSTOOLSTMPSPACE IN IBMCATGROUP 
+  MANAGED BY SYSTEM USING ( 'SYSTOOLSTMPSPACE' ) 
+  EXTENTSIZE 4
+]]>
+						</value>
+					</parameter>
+				</parameterList>
+				<if condition="true" negCondition="true">
+					<task>
+						<assignSharedConstant name="ERROR_MESSAGE" type="returnObject">
+							<value>install.returnValue.STMTMSG</value>
+						</assignSharedConstant>
+						<alert>Failed to create SYSTOOL tablespaces using manual storage : ?ERROR_MESSAGE?</alert>
+					</task>
+				</if>
+				<if condition="true">
+					<task>
+						<alert>SYSTOOL tablespaces created</alert>
+					</task>
+				</if>
+			</action>
+		</task>
+	</if>
+</actionScript>

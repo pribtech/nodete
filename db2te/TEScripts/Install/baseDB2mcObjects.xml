@@ -1,0 +1,262 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2013 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+<tutorial name="Setup DB2mc Base Objects"  autoPlayTime="5">
+	<flowRestriction>forwardexploration</flowRestriction>
+    <closeAction />
+    <openAction />
+    <globalCodeHighlightOptions highlightCode = "true" />
+    <WMDConfig/>
+    <pageList>
+       	<page name="Overview" type="intro">
+	    	<entryAction/>
+    	 	<exitAction/>
+            <contentText>
+<![CDATA[
+This tutorial creates the various base objects used within db2 Technology Explorer.
+These include such things as the control tables and generic data prune process.
+]]>
+			</contentText>
+        </page>
+    
+    	 <page name="Create Control Tables" type="general">
+			<codeHighlightOptions highlightCode="true">
+				<changedHighlightTokens>
+					<text>SYSTOOLSPACE</text>
+				</changedHighlightTokens>
+			</codeHighlightOptions>
+			<exitAction  name="checkForTable" type="serverAction"> 
+				<parameterList> 
+					<parameter name="action" type="fixed"><value>checkForObjectWithCase</value></parameter> 
+					<parameter name="objectType" type="raw"><value>table</value></parameter> 
+					<parameter name="object[schema]" type="raw"><value>s#db2mc</value></parameter> 
+					<parameter name="object[table]" type="raw"><value>PARAMETER</value></parameter> 
+				</parameterList> 
+				<if condition="true"> 
+					<task> 
+						<setActionReturn value="true"/> 
+					</task> 
+				</if>
+				<if condition="false"> 
+					<task> 
+						<alert>The required tables must all be created before proceeding with the tutorial.</alert> 
+						<setActionReturn value="false"/> 
+					</task> 
+				</if>
+			</exitAction>
+            <contentText>
+<![CDATA[
+<p/>Setup the environment for the db2mc history monitors
+<p/>The default tablespace is SYSTOOLSPACE.  This can be changed to any tablespace and the tablespace defined.
+]]>
+            </contentText>
+            <SQLText><![CDATA[
+create table "s#db2mc".parameter 
+	(parameter varchar(128) not null
+	,value     varchar(3800) 
+	)
+	in "SYSTOOLSPACE" 
+@
+create unique index "s#db2mc".parameter_pk 
+	on "s#db2mc".parameter  (parameter)
+	allow reverse scans
+@
+insert into "s#db2mc".parameter (parameter,value)
+  values('tablespace','SYSTOOLSPACE')
+       ,('defaultDataRentionPeriodDays','14')
+       ,('targetCommitIntervalSeconds','10')
+@
+create table "s#db2mc".prune_control 
+	(schema	varchar(128) not null with default 's#db2mc'
+	,table 	varchar(128) not null
+	,status char(1) not null with default 'A'
+	,timestampColumn varchar(128) not null
+	,retentionDays int not null with default 14
+	,commitFrequency int not null with default 1000
+	,lastPruneTimestamp timestamp not null with default '0001-01-01 00:00:00.00000'
+	,statement clob(32k)
+	,message_timestamp timestamp
+	,message clob(32k)
+	
+	)
+	in "SYSTOOLSPACE" 
+@
+create unique index "s#db2mc".prune_control_pk 
+	on "s#db2mc".prune_control  (schema,table)
+	allow reverse scans
+@
+]]>
+			</SQLText>
+            <SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar="@"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+        </page>
+    	 <page name="Create Prune Stored Procedure " type="general">
+            <contentText>
+<![CDATA[
+Create the prune stored procedure.
+This deletes aged entries acording to the parameters set and in pruned control list.
+]]>
+ 			</contentText>
+            <SQLText>
+<![CDATA[
+CREATE PROCEDURE "s#db2mc"."pruneData" ()
+  SPECIFIC "s#db2mc.pruneData"
+  DYNAMIC RESULT SETS 0
+  LANGUAGE SQL
+begin
+--/******************************************************************************	
+--  Author: Peter Prib
+--  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2013 All rights reserved.
+--
+--  Licensed under the Apache License, Version 2.0 (the "License");
+--  you may not use this file except in compliance with the License.
+--  You may obtain a copy of the License at
+--
+--      http://www.apache.org/licenses/LICENSE-2.0
+--
+--  Unless required by applicable law or agreed to in writing, software
+--  distributed under the License is distributed on an "AS IS" BASIS,
+--  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+--  See the License for the specific language governing permissions and
+--  limitations under the License.
+--******************************************************************************/
+	DECLARE stmt varchar(4000);
+	DECLARE lastExecution timestamp;
+	DECLARE messageOut varchar(32000);
+	DECLARE retainTimestamp timestamp;
+	DECLARE rowCount INTEGER  default 0;
+	DECLARE rowsPerCommit INTEGER  default 0;
+	DECLARE targetCommitIntervalSeconds int;
+	DECLARE schemaControl ANCHOR  "s#db2mc".prune_control.schema;
+	DECLARE tableControl ANCHOR  "s#db2mc".prune_control.table;
+	DECLARE CONTINUE HANDLER FOR not found begin end;
+
+	SET targetCommitIntervalSeconds     = (select cast(value as int) from "s#db2mc".parameter where parameter='defaultDataRentionPeriodDays');
+	for tables as table_cursor cursor with hold for
+	 	select schema as schemaPrune ,table as tablePrune ,timestampColumn ,retentionDays ,commitFrequency
+	 	from "s#db2mc".prune_control
+	do
+		pruning: begin
+			DECLARE CONTINUE HANDLER FOR SQLEXCEPTION begin
+				GET DIAGNOSTICS EXCEPTION 1 messageOut = MESSAGE_TEXT;
+				update "s#db2mc".prune_control set status='E', message=messageOut, message_timestamp=current timestamp where schema=schemaPrune and table = tablePrune;	
+				commit;
+			end;
+			DECLARE CONTINUE HANDLER FOR SQLWARNING begin
+				GET DIAGNOSTICS EXCEPTION 1 messageOut = MESSAGE_TEXT;
+				update "s#db2mc".prune_control set status='E', message=messageOut, message_timestamp=current timestamp where schema=schemaPrune and table = tablePrune;	
+				commit;
+			end;
+			set retainTimestamp = current timestamp - retentionDays days;
+			set lastExecution = current timestamp - 99 days;
+			set rowsPerCommit =  commitFrequency;
+			update "s#db2mc".prune_control set lastPruneTimestamp=retainTimestamp where schema=schemaPrune and table = tablePrune;	
+			deleteLoop: repeat 
+				if (lastExecution + targetCommitIntervalSeconds seconds < current timestamp ) then
+					if rowCount > 0 then
+						set rowsPerCommit =  rowsPerCommit * 0.9;
+						if rowsPerCommit < 1 then
+							set rowsPerCommit =  1;
+						end if;
+					end if;
+					set stmt = 'delete from (select * from "'||schemaPrune||'"."'||tablePrune||'" where "'||timestampColumn||'" < ? order by '||timestampColumn||' asc fetch first '||char(rowsPerCommit)||' rows only)';
+					update "s#db2mc".prune_control set statement=stmt where schema=schemaPrune and table = tablePrune;	
+					prepare s1 from stmt;
+				end if;
+				set lastExecution = current timestamp;
+				execute s1 using retainTimestamp;
+				GET DIAGNOSTICS rowCount = ROW_COUNT;
+				commit;
+			until rowCount <= 0 end repeat deleteLoop;
+		end pruning;
+	end for;
+end
+@
+]]>
+			</SQLText>
+            <SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar="@"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+        </page>
+    	 <page name="Test Prune " type="general">
+            <contentText>Test the pruning stored procedure.  Set to prune once a day at 6:10am.</contentText>
+            <SQLText>
+<![CDATA[
+insert into "s#db2mc".prune_control
+	     (schema 	,table 								,timestampColumn 			,retentionDays	,commitFrequency)
+values   ('s#db2mc'	,upper('prune_control_test')		,upper('timestampColumn')	,3				,10)
+ 		,('s#db2mc'	,upper('prune_control_testdummy')	,upper('timestampColumn')	,3				,10)
+@
+create table "s#db2mc".prune_control_test 
+	(test	varchar(128) not null with default 's#db2mc'
+	,timestampColumn timestamp not null
+	)
+	in "SYSTOOLSPACE" 
+@
+insert into "s#db2mc".prune_control_test 
+values('t1', current timestamp)
+     ,('t2', current timestamp - 2 days)
+     ,('t3', current timestamp - 3 days)
+     ,('t4', current timestamp - 4 days)
+@
+call "s#db2mc"."pruneData" ()
+@
+select * from "s#db2mc".prune_control
+@
+select * from "s#db2mc".prune_control_test 
+@
+drop table "s#db2mc".prune_control_test 
+@
+]]>
+            </SQLText>
+            <SQLExecutionOptions xml="false" clob="true" clobinline="true" blob="false" dbclob="false" termChar="@"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+        </page>
+    	 <page name="Schedule Prune " type="general">
+            <contentText>Schedule the data pruning stored procedure.  Set to prune once a day at 6:10am.</contentText>
+            <SQLText>
+<![CDATA[
+call ADMIN_TASK_ADD('db2mc Prune Data'
+							,cast(NULL as TIMESTAMP)
+							,cast(NULL as TIMESTAMP)
+							,cast(NULL as INTEGER)
+							,'10 6 * * *' 
+							,'s#db2mc'
+							,'pruneData'
+							,cast(null as CLOB(100))
+							,cast(null as VARCHAR(512))
+							,'')
+]]>
+            </SQLText>
+            <SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar="@"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+        </page>
+        
+    	 <page name="Uninstall" type="last"  autoPlay="false">
+            <contentText>Uninstall base objects.</contentText>
+            <SQLText>
+<![CDATA[
+call ADMIN_TASK_REMOVE('db2mc Prune Data',NULL)@
+drop PROCEDURE "s#db2mc"."pruneData"@
+drop table "s#db2mc".prune_control@
+drop table "s#db2mc".parameter@
+]]>
+            </SQLText>
+            <SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar="@"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+        </page>
+    </pageList>
+</tutorial>

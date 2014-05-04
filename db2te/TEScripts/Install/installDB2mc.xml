@@ -1,0 +1,472 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2009 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+
+<actionScript name="installDB2mc" type="form">
+	<message><![CDATA[
+<div style='width:500px'>
+<p>Create the objects required for db2mc added features such as visual explain</p>
+<p>The task to create the objects may take a while.</p>
+</div>
+]]>
+    </message>
+    <parameterList>
+		<parameter name="buttonOK" type="raw">
+			<value>Install</value>
+		</parameter>
+	</parameterList>
+	<if condition="true">
+		<task>
+			<echo>Started Installing</echo>>
+			<action name="setupDB2mc" type="serverAction">
+				<parameterList>
+					<parameter name="action" type="raw">
+						<value>executeSQL</value>
+					</parameter>
+					<parameter name="STMTermChar" type="raw">
+						<value>@</value>
+					</parameter>
+					<parameter name="abortOnFailure" type="raw">
+						<value>false</value>
+					</parameter>
+					<parameter name="commitPerSTMT" type="raw">
+						<value>true</value>
+					</parameter>
+					<parameter name="SQL[0]" type="raw">
+						<value>
+<![CDATA[
+create function "s#db2mc".explainExpandNode
+	(in_EXPLAIN_SCHEMA VARCHAR(128)
+	,in_EXPLAIN_REQUESTER VARCHAR(128)
+    ,in_EXPLAIN_TIME      TIMESTAMP
+    ,in_SOURCE_NAME       VARCHAR(128) 
+    ,in_SOURCE_SCHEMA     VARCHAR(128)
+    ,in_SOURCE_VERSION    VARCHAR(64)
+    ,in_EXPLAIN_LEVEL     CHAR(1) 
+    ,in_STMTNO            INTEGER        
+    ,in_SECTNO            INTEGER
+    ,in_TYPE              CHAR(1)
+    ,in_OPERATOR_ID       INTEGER
+    ,in_OBJECT_SCHEMA     VARCHAR(128)
+    ,in_OBJECT_NAME       VARCHAR(128) 
+    )
+	RETURNS CLOB(10m)
+	NOT DETERMINISTIC
+	NO EXTERNAL ACTION
+begin 
+--/******************************************************************************	
+--  Author: Peter Prib
+--  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2009 All rights reserved.
+--
+--  Licensed under the Apache License, Version 2.0 (the "License");
+--  you may not use this file except in compliance with the License.
+--  You may obtain a copy of the License at
+--
+--      http://www.apache.org/licenses/LICENSE-2.0
+--
+--  Unless required by applicable law or agreed to in writing, software
+--  distributed under the License is distributed on an "AS IS" BASIS,
+--  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+--  See the License for the specific language governing permissions and
+--  limitations under the License.
+--******************************************************************************/ 
+	DECLARE stmt varchar(16000);
+	DECLARE xmlOut clob(10m);
+	DECLARE cur_s1 CURSOR FOR s1;
+	if in_TYPE = 'O' then
+  		set stmt = 'select  XML2CLOB('
+				||'XMLELEMENT(NAME "operator"'
+					|| ',XMLATTRIBUTES(OPERATOR_ID AS ID,OPERATOR_TYPE AS TYPE,TOTAL_COST,IO_COST,CPU_COST,FIRST_ROW_COST,RE_TOTAL_COST,RE_IO_COST,RE_CPU_COST,COMM_COST,FIRST_COMM_COST,BUFFERS,REMOTE_TOTAL_COST,REMOTE_COMM_COST)'
+					|| ',(select XMLAGG('
+								||'XMLELEMENT(NAME "stream"'
+									|| ',XMLATTRIBUTES(STREAM_ID AS ID,STREAM_COUNT,COLUMN_COUNT,COLUMN_NAMES,PMID,SINGLE_NODE,PARTITION_COLUMNS,SEQUENCE_SIZES)'
+									|| ',XMLPARSE( DOCUMENT "s#db2mc".explainExpandNode(?,s.EXPLAIN_REQUESTER,s.EXPLAIN_TIME,s.SOURCE_NAME,s.SOURCE_SCHEMA,s.SOURCE_VERSION,s.EXPLAIN_LEVEL,s.STMTNO,s.SECTNO,s.source_type,s.SOURCE_ID,object_schema,object_name))'
+								|| '))'
+						|| ' from "'||in_EXPLAIN_SCHEMA||'".explain_stream s'
+						|| '  where s.TARGET_type=''O'''
+						||   ' and s.TARGET_ID=op.operator_id'
+ 						||   ' and s.EXPLAIN_TIME=op.EXPLAIN_TIME'
+ 						||   ' and s.EXPLAIN_REQUESTER=op.EXPLAIN_REQUESTER'
+ 						||   ' and s.SOURCE_NAME=op.SOURCE_NAME'
+ 						||   ' and s.SOURCE_SCHEMA=op.SOURCE_SCHEMA'
+ 						||   ' and S.SOURCE_VERSION=op.SOURCE_VERSION'
+ 						||   ' and s.EXPLAIN_LEVEL=op.EXPLAIN_LEVEL'
+ 						||   ' and s.STMTNO=op.STMTNO'
+ 						||   ' and s.SECTNO=op.SECTNO'
+						||')'
+			|| '))'
+			||' FROM "'||in_EXPLAIN_SCHEMA||'".EXPLAIN_OPERATOR as OP'
+			||' WHERE op.EXPLAIN_REQUESTER = ?'
+			||  ' AND op.EXPLAIN_TIME = ?'
+			||  ' AND op.SOURCE_NAME = ?' 
+			||  ' AND op.SOURCE_SCHEMA = ?'
+			||  ' AND op.SOURCE_VERSION = ?'
+			||  ' AND op.EXPLAIN_LEVEL = ?'
+			||  ' AND op.STMTNO = ?'      
+			||  ' AND op.SECTNO = ?'
+			||  ' AND op.OPERATOR_ID = ?'
+			;
+	else
+  		set stmt = 'select  XML2CLOB('
+				||'XMLELEMENT(NAME "object"'
+					|| ',XMLATTRIBUTES(OBJECT_TYPE AS TYPE,object_schema as schema, object_name as name,CREATE_TIME,STATISTICS_TIME,COLUMN_COUNT,ROW_COUNT,WIDTH,PAGES,DISTINCT,TABLESPACE_NAME,OVERHEAD,TRANSFER_RATE,PREFETCHSIZE,EXTENTSIZE,CLUSTER,NLEAF,NLEVELS,FULLKEYCARD,OVERFLOW,FIRSTKEYCARD,FIRST2KEYCARD,FIRST3KEYCARD,FIRST4KEYCARD,SEQUENTIAL_PAGES,DENSITY,STATS_SRC,AVERAGE_SEQUENCE_GAP,AVERAGE_SEQUENCE_FETCH_GAP,AVERAGE_SEQUENCE_PAGES,AVERAGE_SEQUENCE_FETCH_PAGES,AVERAGE_RANDOM_PAGES,AVERAGE_RANDOM_FETCH_PAGES,NUMRIDS,NUMRIDS_DELETED,NUM_EMPTY_LEAFS,ACTIVE_BLOCKS,NUM_DATA_PARTS)'
+					|| ',(select XMLAGG('
+								||'XMLELEMENT(NAME "stream"'
+									|| ',XMLATTRIBUTES(STREAM_ID AS ID,STREAM_COUNT,COLUMN_COUNT,COLUMN_NAMES,PMID,SINGLE_NODE,PARTITION_COLUMNS,SEQUENCE_SIZES)'
+									|| ',XMLPARSE( DOCUMENT "s#db2mc".explainExpandNode(?,s.EXPLAIN_REQUESTER,s.EXPLAIN_TIME,s.SOURCE_NAME,s.SOURCE_SCHEMA,s.SOURCE_VERSION,s.EXPLAIN_LEVEL,s.STMTNO,s.SECTNO,s.source_type,s.SOURCE_ID,object_schema,object_name))'
+								|| '))'
+						|| ' from "'||in_EXPLAIN_SCHEMA||'".explain_stream s'
+						|| '  where s.TARGET_type=''D'''
+						||   ' and s.OBJECT_SCHEMA=ob.OBJECT_SCHEMA'
+						||   ' and s.OBJECT_NAME=ob.OBJECT_NAME'
+ 						||   ' and s.EXPLAIN_TIME=ob.EXPLAIN_TIME'
+ 						||   ' and s.EXPLAIN_REQUESTER=ob.EXPLAIN_REQUESTER'
+ 						||   ' and s.SOURCE_NAME=ob.SOURCE_NAME'
+ 						||   ' and s.SOURCE_SCHEMA=ob.SOURCE_SCHEMA'
+ 						||   ' and S.SOURCE_VERSION=ob.SOURCE_VERSION'
+ 						||   ' and s.EXPLAIN_LEVEL=ob.EXPLAIN_LEVEL'
+ 						||   ' and s.STMTNO=ob.STMTNO'
+ 						||   ' and s.SECTNO=ob.SECTNO'
+						||')'
+			|| '))'
+			||' FROM "'||in_EXPLAIN_SCHEMA||'".EXPLAIN_OBJECT as OB'
+			||' WHERE ob.EXPLAIN_REQUESTER = ?'
+			||  ' AND ob.EXPLAIN_TIME = ?'
+			||  ' AND ob.SOURCE_NAME = ?' 
+			||  ' AND ob.SOURCE_SCHEMA = ?'
+			||  ' AND ob.SOURCE_VERSION = ?'
+			||  ' AND ob.EXPLAIN_LEVEL = ?'
+			||  ' AND ob.STMTNO = ?'      
+			||  ' AND ob.SECTNO = ?'
+			||  ' and ob.OBJECT_SCHEMA=?'
+			||  ' and ob.OBJECT_NAME=?'
+			
+			;
+	end if;
+	prepare s1 from stmt;
+	if in_TYPE = 'O' then
+		open cur_s1
+		  	using
+				 in_EXPLAIN_SCHEMA 
+				,in_EXPLAIN_REQUESTER 
+    			,in_EXPLAIN_TIME      
+    			,in_SOURCE_NAME        
+    			,in_SOURCE_SCHEMA     
+    			,in_SOURCE_VERSION    
+  	  			,in_EXPLAIN_LEVEL      
+    			,in_STMTNO                    
+    			,in_SECTNO        
+				,in_OPERATOR_ID
+		;
+	else
+		open cur_s1
+		  	using
+				 in_EXPLAIN_SCHEMA 
+				,in_EXPLAIN_REQUESTER 
+    			,in_EXPLAIN_TIME      
+    			,in_SOURCE_NAME        
+    			,in_SOURCE_SCHEMA     
+    			,in_SOURCE_VERSION    
+  	  			,in_EXPLAIN_LEVEL      
+    			,in_STMTNO                    
+    			,in_SECTNO        
+				,in_OBJECT_SCHEMA
+				,in_OBJECT_NAME
+		;
+	end if;
+	fetch cur_s1 into xmlOut;
+	close cur_s1;
+	return xmlOut;
+end
+]]>
+						</value>
+					</parameter>
+					<parameter name="SQL[1]" type="raw">
+						<value>
+<![CDATA[
+create function "s#db2mc".lockTreeNodes
+	(in_agent_id bigint
+	,in_level int)
+	RETURNS CLOB(10m)
+	NOT DETERMINISTIC
+	NO EXTERNAL ACTION
+begin 
+--/******************************************************************************	
+--  Author: Peter Prib
+--  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2009 All rights reserved.
+--
+--  Licensed under the Apache License, Version 2.0 (the "License");
+--  you may not use this file except in compliance with the License.
+--  You may obtain a copy of the License at
+--
+--      http://www.apache.org/licenses/LICENSE-2.0
+--
+--  Unless required by applicable law or agreed to in writing, software
+--  distributed under the License is distributed on an "AS IS" BASIS,
+--  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+--  See the License for the specific language governing permissions and
+--  limitations under the License.
+--******************************************************************************/ 
+	DECLARE stmt varchar(4000);
+	DECLARE xmlOut clob(10m);
+	DECLARE cur_s1 CURSOR FOR s1;
+	if in_level is null then
+		set stmt = 'with parent (agent_id,level)'
+			||	' as ( values(cast(? as bigint) ,cast(1 as int)) '
+			||		' union all select AGENT_ID_HOLDING_LK, level+1'
+			||			' from SYSIBMADM.SNAPLOCKWAIT l'
+			||				' ,parent p'
+			||			' where p.AGENT_ID=l.AGENT_ID'
+			||			' and level<1000'
+			||		' )'
+			||		' select XML2CLOB('
+			||			'XMLELEMENT(NAME "agent"'
+			|| 				',XMLATTRIBUTES(AGENT_ID)'
+			||				',XMLPARSE( DOCUMENT "s#db2mc".lockTreeNodes(AGENT_ID,1))'
+			|| 			'))'
+			||		' from parent where level= (select max(level) from parent)'
+			;
+		prepare s1 from stmt;
+		open cur_s1
+	  		using  in_agent_id 
+			;
+	else
+		set stmt = 'select  XML2CLOB(XMLELEMENT(NAME "waiting", XMLATTRIBUTES(''true'' AS "node__Hide"),xmlagg('
+			||			'XMLELEMENT(NAME "agent"'
+			|| 				',XMLATTRIBUTES(l.AGENT_ID,l.SUBSECTION_NUMBER,l.LOCK_MODE,l.LOCK_OBJECT_TYPE,l.AGENT_ID_HOLDING_LK'
+			|| 							',l.LOCK_WAIT_START_TIME,l.LOCK_MODE_REQUESTED,l.LOCK_ESCALATION,l.TABNAME,l.TABSCHEMA,l.TBSP_NAME'
+			|| 							',l.LOCK_ATTRIBUTES,l.LOCK_CURRENT_MODE,l.LOCK_NAME,l.LOCK_RELEASE_FLAGS,l.DATA_PARTITION_ID,l.DBPARTITIONNUM)'
+			||				',XMLPARSE( DOCUMENT "s#db2mc".lockTreeNodes(AGENT_ID,cast(? as int) +1))'
+			|| 			'))))'
+			||		' FROM SYSIBMADM.SNAPLOCKWAIT as l'
+			||		' WHERE l.AGENT_ID_HOLDING_LK = ?'
+			;
+		prepare s1 from stmt;
+		open cur_s1
+	  		using in_level,in_agent_id 
+			;
+	end if;
+	fetch cur_s1 into xmlOut;
+	close cur_s1;
+	return xmlOut;
+end
+]]>
+						</value>
+					</parameter>
+					<parameter name="SQL[2]" type="raw">
+						<value>
+<![CDATA[
+create function "s#db2mc".tabAuthTree
+	(in_GRANTOR varchar(128)
+	,in_GRANTORTYPE char(1)
+	,in_TABSCHEMA varchar(128)
+	,in_TABNAME varchar(128)
+	,in_level int
+	)
+	RETURNS CLOB(10m)
+	NOT DETERMINISTIC
+	NO EXTERNAL ACTION
+begin 
+--/******************************************************************************	
+--  Author: Peter Prib
+--  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2009 All rights reserved.
+--
+--  Licensed under the Apache License, Version 2.0 (the "License");
+--  you may not use this file except in compliance with the License.
+--  You may obtain a copy of the License at
+--
+--      http://www.apache.org/licenses/LICENSE-2.0
+--
+--  Unless required by applicable law or agreed to in writing, software
+--  distributed under the License is distributed on an "AS IS" BASIS,
+--  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+--  See the License for the specific language governing permissions and
+--  limitations under the License.
+--******************************************************************************/ 
+	DECLARE stmt varchar(4000);
+	DECLARE xmlOut clob(10m);
+	DECLARE cur_s1 CURSOR FOR s1;
+	if in_level is null then
+		set stmt = 'with parent (TABSCHEMA,TABNAME,GRANTOR,GRANTORTYPE,level)'
+			||	' as ( values(cast(? as varchar(128)) ' 
+			||			',cast(? as varchar(128)) ' 
+			||			',cast(? as varchar(128)) ' 
+			||			',cast(? as char(1)) ' 
+			||			',cast(1 as int)) '
+			||		' union all select a.TABSCHEMA,a.TABNAME,a.GRANTOR,a.GRANTORTYPE,level+1'
+			||			' from SYSCAT.TABAUTH a'
+			||				' ,parent p'
+			||			' where p.TABSCHEMA=a.TABSCHEMA'
+			||			  ' and p.TABNAME=a.TABNAME'
+			||			  ' and p.GRANTOR=a.GRANTEE'
+			||			  ' and p.GRANTORTYPE=a.GRANTEETYPE'
+			||			' and level<1000'
+			||		' )'
+			||		' select XML2CLOB('
+			||			'XMLELEMENT(NAME "Authorisation"'
+			|| 				',XMLATTRIBUTES(GRANTOR,GRANTORTYPE,TABSCHEMA,TABNAME)'
+			||				',XMLPARSE( DOCUMENT "s#db2mc".tabAuthTree(GRANTOR,GRANTORTYPE,TABSCHEMA,TABNAME,1))'
+			|| 			'))'
+			||		' from parent where level= (select max(level) from parent)'
+			;
+		prepare s1 from stmt;
+		open cur_s1
+	  		using in_TABSCHEMA 
+	  			, in_TABNAME 
+	  			, in_GRANTOR 
+	  			, in_GRANTORTYPE 
+			;
+	else
+		set stmt = 'select  XML2CLOB('
+			||			'XMLELEMENT(NAME "Authorisation"'
+			|| 				',XMLATTRIBUTES(TABSCHEMA,TABNAME,GRANTOR,GRANTORTYPE,GRANTEE,GRANTEETYPE'
+			|| 							',CONTROLAUTH,ALTERAUTH,DELETEAUTH,INDEXAUTH,INSERTAUTH,REFAUTH,SELECTAUTH,UPDATEAUTH)'
+--			||				',XMLPARSE( DOCUMENT "s#db2mc".tabAuthTree(GRANTEE,GRANTEETYPE,TABSCHEMA,TABNAME,cast(? as int)+1))'
+			||				',XMLPARSE( DOCUMENT "s#db2mc".tabAuthTree(GRANTEE,GRANTEETYPE,TABSCHEMA,TABNAME,1))'
+			|| 			'))'
+			||		' from SYSCAT.TABAUTH a'
+			||			' where a.TABSCHEMA=?'
+			||			  ' and a.TABNAME=?'
+			||			  ' and a.GRANTOR=?'
+			||			  ' and a.GRANTORTYPE=?'
+			;
+		prepare s1 from stmt;
+		open cur_s1
+	  		using in_TABSCHEMA 
+	  			, in_TABNAME 
+	  			, in_GRANTOR 
+	  			, in_GRANTORTYPE 
+			;
+	end if;
+	fetch cur_s1 into xmlOut;
+	close cur_s1;
+	return xmlOut;
+end
+]]>
+						</value>
+					</parameter>
+					<parameter name="SQL[3]" type="raw">
+						<value>
+<![CDATA[
+CREATE FUNCTION "s#db2mc".HashSqlSimilar(str clob(1M))
+RETURNS double
+SPECIFIC "s#db2mc".HashSqlSimilar
+DETERMINISTIC NO EXTERNAL ACTION CONTAINS SQL
+BEGIN ATOMIC
+	DECLARE hash double  DEFAULT 0;--
+	DECLARE c char(1) DEFAULT ' ';--
+	DECLARE amt double DEFAULT 1;--
+	DECLARE factor double DEFAULT 1;--
+	DECLARE pos INTEGER DEFAULT 1;--
+	DECLARE length_str INTEGER;--
+	set pos=1;--
+	set factor=1;--
+	set length_str = LENGTH(str);--
+	WHILE pos <= length_str DO
+		set c =SUBSTR(str, pos, 1);--
+		while pos < length_str and c = ' ' DO
+			set c =SUBSTR(str, pos, 1);--
+			SET pos = pos + 1;--
+		end while;--
+		if c = '''' then 
+			SET pos = pos + 1;--
+			set c =SUBSTR(str, pos, 1);--
+			while pos < length_str and c <> '''' DO
+				SET pos = pos + 1;--
+				set c =SUBSTR(str, pos, 1);--
+			end while;--
+		end if;--
+		if upper(c) between 'A' and 'Z' 
+		then 
+			set amt=0;
+			while pos < length_str and amt is not null do
+				SET amt = CASE upper(c)
+						WHEN 'A' THEN 11
+						WHEN 'B' THEN 12
+						WHEN 'C' THEN 13
+						WHEN 'D' THEN 14
+						WHEN 'E' THEN 15
+						WHEN 'F' THEN 16
+						WHEN 'G' THEN 17
+						WHEN 'H' THEN 18
+						WHEN 'I' THEN 19
+						WHEN 'J' THEN 20
+						WHEN 'K' THEN 21
+						WHEN 'L' THEN 22
+						WHEN 'M' THEN 23
+						WHEN 'N' THEN 24
+						WHEN 'O' THEN 25
+						WHEN 'P' THEN 26
+						WHEN 'Q' THEN 27
+						WHEN 'R' THEN 28
+						WHEN 'S' THEN 29
+						WHEN 'T' THEN 30
+						WHEN 'U' THEN 31
+						WHEN 'V' THEN 32
+						WHEN 'W' THEN 33
+						WHEN 'X' THEN 34
+						WHEN 'Y' THEN 35
+						WHEN 'Z' THEN 36
+						WHEN '1' THEN 1
+						WHEN '2' THEN 2
+						WHEN '3' THEN 3
+						WHEN '4' THEN 4
+						WHEN '5' THEN 5
+						WHEN '6' THEN 6
+						WHEN '7' THEN 7
+						WHEN '8' THEN 8
+						WHEN '9' THEN 9
+						WHEN '0' THEN 10
+					END;--
+				if amt is not null then 
+			 		SET factor = factor+101;--
+					SET hash = hash+factor*amt;-- 
+					SET pos = pos + 1;--
+					set c =SUBSTR(str, pos, 1);--
+				end if;--
+			end while;
+		end if;--
+		SET pos = pos + 1;--
+	END WHILE;--
+	RETURN hash;--
+END
+]]>
+						</value>
+					</parameter>
+				</parameterList>
+				<if condition="true" negCondition="true">
+					<task>
+						<assignSharedConstant name="STMT" type="returnObject">
+							<value>setupDB2mc.returnValue.STMT</value>
+						</assignSharedConstant>
+						<assignSharedConstant name="STMTMSG" type="returnObject">
+							<value>setupDB2mc.returnValue.STMTMSG</value>
+						</assignSharedConstant>
+						<alert>Failed to setup db2mc UDFs
+							?STMTMSG?
+					
+							?STMT?
+						</alert>
+						<exit/>
+					</task>
+				</if>
+			</action>
+			<echo>Setup db2mc UDFs completed successfully</echo>>
+			<alert>Setup db2mc UDFs completed successfully</alert>
+		</task>
+	</if>
+</actionScript>

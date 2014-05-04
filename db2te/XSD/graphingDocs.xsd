@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:element name="Graph" type="Graph"/>
+	<xs:complexType name="Graph">
+		<xs:annotation>
+			<xs:documentation>
+				This graphing object can be included in a menu item or a table definition.
+				Note that some elements will be ignored when used in the table definition file because that data
+				can be inferred from the table definition itself.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="title" type="xs:string" >
+				<xs:annotation>
+					<xs:documentation>
+						The title to be used for the graph.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="graphType">
+				<xs:annotation>
+					<xs:documentation>
+						Choose between one of the 4 types of graphs: line, bar, pie, or column.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">					
+						<xs:enumeration value="line" />
+						<xs:enumeration value="bar" />
+						<xs:enumeration value="column" />
+						<xs:enumeration value="pie" />								
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:choice>
+				<xs:element name="yField" type="xs:string" >
+					<xs:annotation>
+						<xs:documentation>
+							Identifies which of the datasets is to be used as the y axis.  Most
+							commonly used in the bar type of graph.
+							Ignored in table definition.
+						</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="xField" type="xs:string" >
+					<xs:annotation>
+						<xs:documentation>
+							Identifies which of the datasets is to be used as the x axis.  Most
+							commonly used in the line or column graphs.
+							Ignored in table definition.
+						</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:choice>
+			<xs:element name="categoryField" type="xs:string" minOccurs="0" >
+				<xs:annotation>
+					<xs:documentation>
+						Identifies which dataset is to be used as the list of categories.
+						Only used for pie charts.
+						Ignored in table definition.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="dataField" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>
+						Specifies which dataset is to be used for the data in a pie chart.
+						Only used for pie charts.
+						Ignored in table definition.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="dataSourceType">
+				<xs:annotation>
+					<xs:documentation>
+						This specifies where the data for the graph will be coming from.
+						Data_from_raw specifies that the data will be included with the graph.
+						Data_from_url specifies that a web services will be used to retrieve the
+						data.
+						Ignored in table definition.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="data_from_raw" />
+						<xs:enumeration value="data_from_url" />
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="datasource" type="xs:string" minOccurs="0" >
+				<xs:annotation>
+					<xs:documentation>
+						If the dataSourceType is set to data_from_url, then this field
+						indicates the location of the web service the data will be received from.
+						Ignored in table definition.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="polling" type="xs:int" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>
+						If dataSourceType is set to data_from_ulr, this will indicate how often to 
+						poll the web service for new data.
+						Ignored in table definition.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="responseSchema" type="xs:string" >
+				<xs:annotation>
+					<xs:documentation>
+						The response schema defines what labels in the datasets are to be used in the graph.
+						Ignored in table definition.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="style">
+				<xs:annotation>
+					<xs:documentation>
+						The style attribute allows you to define look and feel for the graph.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="legend">
+							<xs:annotation>
+								<xs:documentation>
+									This will let you define the look and feel of the legend.
+									Currently, the only supported action is to change the location of the legend
+									to top, left, bottom, or right.
+								</xs:documentation>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="display" >
+										<xs:simpleType>
+											<xs:restriction base="xs:string">
+												<xs:enumeration value="right" />
+												<xs:enumeration value="left" />
+												<xs:enumeration value="top" />
+												<xs:enumeration value="bottom" />
+											</xs:restriction>
+										</xs:simpleType>
+									</xs:element>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+						<xs:element name="animationEnabled" type="xs:boolean" >
+							<xs:annotation>
+								<xs:documentation>
+									This specifies whether or not you want to use smooth flash animation.
+								</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="seriesDef">
+				<xs:complexType>
+					<xs:annotation>
+						<xs:documentation>
+							The seriesDef defines for each series, how you want it to display.  This includes
+							which datasets to use with which axis and what their label in the legend should be.
+							Ignored in table definition.
+						</xs:documentation>
+					</xs:annotation>
+					<xs:sequence>
+						<xs:element name="series">
+							<xs:annotation>
+								<xs:documentation>
+									The series defines how a single series will be represented in the graph.
+								</xs:documentation>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:attribute name="displayName" type="xs:string">
+									<xs:annotation>
+										<xs:documentation>
+											The display name defines what will appear for the dataset as a lable in the legend.
+										</xs:documentation>
+									</xs:annotation>
+								</xs:attribute>
+								<xs:attribute name="xField" type="xs:string" >
+									<xs:annotation>
+										<xs:documentation>
+											If this field is used, it defines a label in the datasets to be plotted against the x axis.
+										</xs:documentation>
+									</xs:annotation>
+								</xs:attribute>
+								<xs:attribute name="yField" type="xs:string" >
+									<xs:annotation>
+										<xs:documentation>
+											If this field is used, it defines a label in the datasets to be plotted against the y axis.
+										</xs:documentation>
+									</xs:annotation>
+								</xs:attribute>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="datasets" type="datasets" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="datasets">
+		<xs:annotation>
+			<xs:documentation>
+				The data element specifies a single dataset.  The dataset is a comma seperated
+				list of values.  The title is what will be used as the label in the JSON object. i.e.
+				"datasets":
+				Ignored in table definition.
+				[ 
+				{ "month": "January", "utilities": 894.68, "gas": 150.00 }, 
+				{ "month": "February", "utilities": 901.35, "gas": 128.34 }, 
+				{ "month": "March", "utilities": 889.32, "gas": 164.00 }, 
+				{ "month": "April", "utilities": 884.71, "gas": 154.37 }, 
+				{ "month": "May",   "utilities": 879.811, "gas": 123.45 }, 
+				{ "month": "June",  "utilities": 897.95, "gas": 145.94 } 
+				]
+				Month, utilities, and gas are the titles.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="dataset" type="dataset" maxOccurs="unbounded" minOccurs="1" />
+			
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="dataset">
+		<xs:annotation>
+			<xs:documentation>
+				This element is to represent a dataset for the graph.  It should be a comma
+				separated list of values.  i.e.
+				10, 15, 32, 65, ...
+			</xs:documentation>
+		</xs:annotation>
+		<xs:attribute name="Title" >
+			<xs:annotation>
+				<xs:documentation>
+					The title defines what label will be used for the dataset.
+				</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+</xs:schema>

@@ -1,0 +1,111 @@
+
+ <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+ xmlns:db2mc="http://www.w3.org/2001/XMLSchema">
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2009 All rights reserved.
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+
+<xsd:element name="cube" db2mc:title="Cube">
+  <xsd:complexType>
+    <xsd:sequence>
+      <xsd:element ref="fact" minOccurs="1" maxOccurs="1" db2mc:title="Fact"/>
+      <xsd:element ref="dimension" minOccurs="1" maxOccurs="unbounded" db2mc:title="Dimension"/>
+      <xsd:element ref="measure" minOccurs="1" maxOccurs="unbounded" db2mc:title="Measure"/>
+    </xsd:sequence>
+  </xsd:complexType>
+</xsd:element>
+
+<xsd:element name="fact" db2mc:title="Fact" type="tableType"/>
+<xsd:element name="dimension" db2mc:title="Dimension" type="tableType"/>
+<xsd:element name="table" db2mc:title="Dimension" type="tableType"/>
+
+<xsd:complexType name="tableType">
+    <xsd:attribute name="id" type="xsd:string" use="required" default="db2mc:nextSequenceAlpha(tableId)"/>
+    <xsd:attribute name="schema" type="db2mc:sql" use="required">
+		<db2mc:sql>select distinct tabschema from syscat.tables</db2mc:sql>
+    </xsd:attribute>
+    <xsd:attribute name="name" type="db2mc:sql" use="required">
+		<db2mc:sql>select distinct tabname from syscat.tables
+					where tabschema='<db2mc:value id="schema"/>'
+		</db2mc:sql>
+    </xsd:attribute>
+    <xsd:sequence>
+      <xsd:element ref="join" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+</xsd:complexType>
+
+<xsd:element name="measure">
+	<xsd:complexType>
+		<xsd:sequence>
+			<xsd:element name="column" minOccurs="1" maxOccurs="unbounded">
+				<xsd:complexType>
+					<xsd:attribute name="tableId" type="db2mc:list" use="required">
+						<db2mc:list xpath="../descendant::fact/@id"/>
+					</xsd:attribute>
+					<xsd:attribute name="name" type="db2mc:sql" use="required">
+						<db2mc:sql>
+							select colname from syscat.columns
+							where tabschema='<db2mc:value xpath="../descendant::fact[@id='db2mc:attr(tableId)']/@schema"/>'
+							  and tabname='<db2mc:value xpath="../descendant::fact[@id='db2mc:attr(tableId)']/@name"/>'
+						</db2mc:sql>
+					</xsd:attribute>
+					<xsd:attribute name="as" type="xsd:string"/>
+ 				</xsd:complexType>
+			</xsd:element>
+   		</xsd:sequence>
+   	</xsd:complexType>
+</xsd:element>
+
+<xsd:element name="join" db2mc:title="Join" type="joinType"/>
+<xsd:element name="level" db2mc:title="Dimension Level" type="joinType"/>
+
+<xsd:complexType>
+	<xsd:attribute name="type" type="db2mc:list">
+		<option>inner</option>
+		<option>left</option>
+		<option>right</option>
+		<option>outer</option>
+    </xsd:attribute>
+	<xsd:sequence>
+		<xsd:element ref="table" minOccurs="1" maxOccurs="1"/>
+		<xsd:element name="on" minOccurs="0" maxOccurs="1">
+			<xsd:complexType>
+				<xsd:sequence>
+					<xsd:element name="matchPair" minOccurs="1" maxOccurs="32">
+						<xsd:complexType>
+					    	<xsd:attribute name="parent" type="db2mc:sql" use="required">
+								<db2mc:sql>
+									select colname from syscat.columns
+									where tabschema='<db2mc:value xpath="../../@schema"/>'
+		  							  and tabname='<db2mc:value xpath="../../@name"/>'
+								</db2mc:sql>
+	   							</xsd:attribute>
+			    			<xsd:attribute name="child" type="db2mc:sql" use="required">
+								<db2mc:sql>
+									select colname from syscat.columns
+									where tabschema='<db2mc:value xpath="../table/@schema"/>'
+	  						 		 and tabname='<db2mc:value xpath="../table/@name"/>'
+								</db2mc:sql>
+  								</xsd:attribute>
+						</xsd:complexType>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:complexType>
+		</xsd:element>
+	</xsd:sequence>
+</xsd:complexType>
+
+</xsd:schema>

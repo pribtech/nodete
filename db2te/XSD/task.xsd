@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"  xmlns:xa="action.xsd" xmlns:xv="parameter.xsd" xmlns:xc="menu.xsd">
+    <xs:include schemaLocation="menu.xsd"/>
+    <xs:include schemaLocation="parameter.xsd"/>
+    <xs:include schemaLocation="action.xsd"/>
+        <xs:complexType name="task">
+            <xs:annotation>
+                <xs:documentation><![CDATA[
+                         A task contains an ordered list of thing to be executed.
+                    ]]></xs:documentation>
+            </xs:annotation>
+            <xs:sequence>
+                <xs:element name="alert" type="xs:string" >
+                    <xs:annotation>
+                        <xs:documentation><![CDATA[
+                        An alert will raise an alert box containing the text in the element.
+                    ]]></xs:documentation>
+                    </xs:annotation></xs:element>
+                <xs:element name="action" type="action" >
+                    <xs:annotation>
+                        <xs:documentation><![CDATA[
+                    Executed the defined action.
+                    ]]></xs:documentation>
+                    </xs:annotation></xs:element>
+                <xs:element name="echo" type="xs:string" >
+                    <xs:annotation>
+                        <xs:documentation><![CDATA[
+                    Echo the contained string to a HTML element if one was defined when the action was called. Used mainly with action panels.
+                    ]]></xs:documentation>
+                    </xs:annotation></xs:element>
+                <xs:element name="assignSharedConstant" type="parameter" >
+                    <xs:annotation>
+                        <xs:documentation><![CDATA[
+                    Allows you to assign a parameter that will be visible across this entire action call and if a shared parameter set was defined (as is done for the action panel and tutorial panel) the parameters will be accessible across the panel in different action calls. 
+                    ]]></xs:documentation>
+                    </xs:annotation></xs:element>
+                <xs:element name="assignLocalParameter" type="parameter" >
+                    <xs:annotation>
+                        <xs:documentation><![CDATA[
+                    Allows you to assign a parameter that will be visible only within the scope of this action. This value will not be accessible in sub action calls.
+                    ]]></xs:documentation>
+                    </xs:annotation></xs:element>
+                <xs:element name="loadPage" type="menu">
+                    <xs:annotation>
+                        <xs:documentation><![CDATA[
+                    LoadPage will allow you to load a given menu link in the the TE
+                    ]]></xs:documentation>
+                    </xs:annotation></xs:element>
+                <xs:element name="gotoAction">
+                    <xs:annotation>
+                        <xs:documentation><![CDATA[
+                    Execute a predefined action located within this overall action script
+                    ]]></xs:documentation>
+                    </xs:annotation>
+                    <xs:complexType>
+                        <xs:attribute name="name" type="xs:string" use="required">
+                            <xs:annotation>
+                                <xs:documentation><![CDATA[
+                    The name of the action to run 
+                    ]]></xs:documentation>
+                            </xs:annotation></xs:attribute>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="panelReload">
+                    <xs:annotation>
+                        <xs:documentation><![CDATA[
+                    PanelReload will trigger a reload of a panel by default this will be the calling panel 
+                    ]]></xs:documentation>
+                    </xs:annotation>
+                    <xs:complexType>
+                        <xs:attribute name="name" type="xs:string" use="optional">
+                            <xs:annotation>
+                                <xs:documentation><![CDATA[
+                    The name of the panel to reload that is located within the same window as the panel with who called this action.
+                    ]]></xs:documentation>
+                            </xs:annotation></xs:attribute>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="blockUpdate">
+                    <xs:annotation>
+                        <xs:documentation><![CDATA[
+BlockUpdate expected a name value pair within the returnObject.returnValue of this action. 
+
+The key is used to access data from with in the block (namespace) that the action is running within. The value of the element with the id “<Block>_<key>” is updated corresponding value. 
+This is most commonly seen in column actions located with in the table definition files. Where a block (namespace) is the current row that the action is executed on and a column value in that row can be updated using the column ID as the value name.
+                    ]]></xs:documentation>
+                    </xs:annotation></xs:element>
+                <xs:element name="setActionReturn">
+                    <xs:annotation>
+                        <xs:documentation><![CDATA[
+                    Once a complete action script has run it will call back it calling action and return a status. The status is set using attribute 'value'. When use with in a tutorial on a entry or exit page action given the appropriate flow can stop a user from advancing to the next or previous page. With in the tutorial system a return value of 'true' (the default value) will allow the page to change anything else will halt the user on the current page.
+                    ]]></xs:documentation>
+                    </xs:annotation>
+                    <xs:complexType>
+                        <xs:attribute name="value" type="xs:string" use="required">
+                            <xs:annotation>
+                                <xs:documentation><![CDATA[
+                    The value to set the return value
+                    ]]></xs:documentation>
+                            </xs:annotation></xs:attribute>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="break">
+                    <xs:annotation>
+                        <xs:documentation><![CDATA[
+                    Stops processing and breaks out of the task
+                    ]]></xs:documentation>
+                    </xs:annotation></xs:element>
+                <xs:element name="breakControlGroup">
+                    <xs:annotation>
+                        <xs:documentation><![CDATA[
+                    Stops processing and breaks out of the control group. Control group elements include followOnAction, onMatch, onNotMatch.
+                    ]]></xs:documentation>
+                    </xs:annotation></xs:element>
+                <xs:element name="breakCheck">
+                    <xs:annotation>
+                        <xs:documentation><![CDATA[
+                    Stops processing and breaks out of the check. WARNING – this will continue to traverse the stack till it finds a check to break out of or hits the end of the stack and terminates the action.
+                    ]]></xs:documentation>
+                    </xs:annotation></xs:element>
+                <xs:element name="return">
+                    <xs:annotation>
+                        <xs:documentation><![CDATA[
+                    Stops processing and returns from an action. 
+                    ]]></xs:documentation>
+                    </xs:annotation></xs:element>
+                <xs:element name="exit">
+                    <xs:annotation>
+                        <xs:documentation><![CDATA[
+                    Stops processing and exits from the action script. 
+                    ]]></xs:documentation>
+                    </xs:annotation></xs:element>
+            </xs:sequence>
+        </xs:complexType>
+</xs:schema>

@@ -1,0 +1,957 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="DB2SchemaAnnotation.xsl"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:db2-xdb="http://www.ibm.com/xmlns/prod/db2/xdb1"
+           xmlns="http://www.ibm.com/xmlns/prod/db2/mon"
+           targetNamespace="http://www.ibm.com/xmlns/prod/db2/mon"
+           elementFormDefault="qualified"  >
+
+<xs:include schemaLocation="http://www.ibm.com/xmlns/prod/db2/mon" />
+
+<xs:annotation>
+  <xs:documentation>
+   ------------------------------------------------------------------
+   DB2 Unit Of Work Event Monitor XML Schema
+   ------------------------------------------------------------------
+
+   To view documentation regarding each attribute and element in this
+   schema file: open this XSD file in a web browser. If you copy the XSD
+   file to a different directory ensure that the XML stylesheet file
+   DB2SchemaAnnotation.xsl is also copied.
+  </xs:documentation>
+  <xs:appinfo>
+     <db2-xdb:table>
+        <db2-xdb:name>UOW_EVENT</db2-xdb:name>
+        <db2-xdb:rowSet>UOW_EVENT_SET</db2-xdb:rowSet>
+        <createStmt>
+            CREATE TABLE UOW_EVENT(
+                EVENT_ID                  INTEGER       NOT NULL,
+                TYPE                      VARCHAR(128)  NOT NULL,
+                EVENT_TIMESTAMP           TIMESTAMP     NOT NULL,
+                MEMBER                    SMALLINT,
+                COORD_MEMBER              SMALLINT,
+                COMPLETION_STATUS         VARCHAR(128),
+                START_TIME                TIMESTAMP,
+                STOP_TIME                 TIMESTAMP,
+                WORKLOAD_NAME             VARCHAR(128),
+                WORKLOAD_ID               INTEGER,
+                SERVICE_SUPERCLASS_NAME   VARCHAR(128),
+                SERVICE_SUBCLASS_NAME     VARCHAR(128),
+                SERVICE_CLASS_ID          INTEGER,
+                UOW_ID                    INTEGER,
+                WORKLOAD_OCCURRENCE_ID    INTEGER,
+                CONNECTION_TIME           TIMESTAMP,
+                MEMBER_ACTIVATION_TIME    TIMESTAMP,
+                APPLICATION_ID            VARCHAR(128),
+                APPLICATION_HANDLE        BIGINT,
+                APPLICATION_NAME          VARCHAR(128),
+                SYSTEM_AUTHID             VARCHAR(128),
+                SESSION_AUTHID            VARCHAR(128),
+                CLIENT_PLATFORM           VARCHAR(12),
+                CLIENT_PID                BIGINT,
+                CLIENT_PRODUCT_ID         VARCHAR(128),
+                CLIENT_PROTOCOL           VARCHAR(10),
+                CLIENT_HOSTNAME           VARCHAR(255),
+                CLIENT_PORT_NUMBER        INTEGER,
+                CLIENT_WRKSTNNAME         VARCHAR(255),
+                CLIENT_ACCTNG             VARCHAR(255),
+                CLIENT_USERID             VARCHAR(255),
+                CLIENT_APPLNAME           VARCHAR(255),
+                LOCAL_TRANSACTION_ID      VARCHAR(16),
+                GLOBAL_TRANSACTION_ID     VARCHAR(40),
+                UOW_LOG_SPACE_USED        BIGINT,
+                PACKAGE_LIST_SIZE         INTEGER,
+                PACKAGE_LIST_EXCEEDED     CHAR(3),
+                METRICS                   BLOB(1M) )
+
+        </createStmt>
+        <createIndex>
+          CREATE INDEX UOW_EVENT_IND1 ON UOW_EVENT 
+                (MEMBER, UOW_ID, APPLICATION_ID)
+        </createIndex>
+     </db2-xdb:table>
+     <db2-xdb:table>
+        <db2-xdb:name>UOW_PACKAGE_LIST</db2-xdb:name>
+        <db2-xdb:rowSet>UOW_PACKAGE_LIST_SET</db2-xdb:rowSet>
+        <createStmt>
+            CREATE TABLE UOW_PACKAGE_LIST(
+                MEMBER                    SMALLINT,
+                UOW_ID                    INTEGER,
+                APPLICATION_ID            VARCHAR(128),
+                PACKAGE_ID                BIGINT,
+                NESTING_LEVEL             INTEGER,
+                ROUTINE_ID                INTEGER,
+                INVOCATION_ID             INTEGER,
+                PACKAGE_ELAPSED_TIME      BIGINT )
+        </createStmt>
+        <createIndex>
+          CREATE INDEX UOW_PACKAGE_LIST_IND1 ON UOW_PACKAGE_LIST 
+                (MEMBER, UOW_ID, APPLICATION_ID)
+        </createIndex>
+     </db2-xdb:table>
+     <db2-xdb:table>
+        <db2-xdb:name>UOW_METRICS</db2-xdb:name>
+        <db2-xdb:rowSet>UOW_METRICS_SET</db2-xdb:rowSet>
+        <createStmt>
+            CREATE TABLE UOW_METRICS(
+                MEMBER                            SMALLINT,
+                UOW_ID                            INTEGER,
+                APPLICATION_ID                    VARCHAR(128),
+                ACT_ABORTED_TOTAL                 BIGINT,
+                ACT_COMPLETED_TOTAL               BIGINT,
+                ACT_REJECTED_TOTAL                BIGINT,
+                AGENT_WAIT_TIME                   BIGINT,
+                AGENT_WAITS_TOTAL                 BIGINT,
+                POOL_DATA_L_READS                 BIGINT,
+                POOL_INDEX_L_READS                BIGINT,
+                POOL_TEMP_DATA_L_READS            BIGINT,
+                POOL_TEMP_INDEX_L_READS           BIGINT,
+                POOL_TEMP_XDA_L_READS             BIGINT,
+                POOL_XDA_L_READS                  BIGINT,
+                POOL_DATA_P_READS                 BIGINT,
+                POOL_INDEX_P_READS                BIGINT,
+                POOL_TEMP_DATA_P_READS            BIGINT,
+                POOL_TEMP_INDEX_P_READS           BIGINT,
+                POOL_TEMP_XDA_P_READS             BIGINT,
+                POOL_XDA_P_READS                  BIGINT,
+                POOL_DATA_WRITES                  BIGINT,
+                POOL_INDEX_WRITES                 BIGINT,
+                POOL_XDA_WRITES                   BIGINT,
+                POOL_READ_TIME                    BIGINT,
+                POOL_WRITE_TIME                   BIGINT,
+                CLIENT_IDLE_WAIT_TIME             BIGINT,
+                DEADLOCKS                         BIGINT,
+                DIRECT_READS                      BIGINT,
+                DIRECT_READ_TIME                  BIGINT,
+                DIRECT_WRITES                     BIGINT,
+                DIRECT_WRITE_TIME                 BIGINT,
+                DIRECT_READ_REQS                  BIGINT,
+                DIRECT_WRITE_REQS                 BIGINT,
+                FCM_RECV_VOLUME                   BIGINT,
+                FCM_RECVS_TOTAL                   BIGINT,
+                FCM_SEND_VOLUME                   BIGINT,
+                FCM_SENDS_TOTAL                   BIGINT,
+                FCM_RECV_WAIT_TIME                BIGINT,
+                FCM_SEND_WAIT_TIME                BIGINT,
+                IPC_RECV_VOLUME                   BIGINT,
+                IPC_RECV_WAIT_TIME                BIGINT,
+                IPC_RECVS_TOTAL                   BIGINT,
+                IPC_SEND_VOLUME                   BIGINT,
+                IPC_SEND_WAIT_TIME                BIGINT,
+                IPC_SENDS_TOTAL                   BIGINT,
+                LOCK_ESCALS                       BIGINT,
+                LOCK_TIMEOUTS                     BIGINT,
+                LOCK_WAIT_TIME                    BIGINT,
+                LOCK_WAITS                        BIGINT,
+                LOG_BUFFER_WAIT_TIME              BIGINT,
+                NUM_LOG_BUFFER_FULL               BIGINT,
+                LOG_DISK_WAIT_TIME                BIGINT,
+                LOG_DISK_WAITS_TOTAL              BIGINT,
+                RQSTS_COMPLETED_TOTAL             BIGINT,
+                ROWS_MODIFIED                     BIGINT,
+                ROWS_READ                         BIGINT,
+                ROWS_RETURNED                     BIGINT,
+                TCPIP_RECV_VOLUME                 BIGINT,
+                TCPIP_SEND_VOLUME                 BIGINT,
+                TCPIP_RECV_WAIT_TIME              BIGINT,
+                TCPIP_RECVS_TOTAL                 BIGINT,
+                TCPIP_SEND_WAIT_TIME              BIGINT,
+                TCPIP_SENDS_TOTAL                 BIGINT,
+                TOTAL_APP_RQST_TIME               BIGINT,
+                TOTAL_RQST_TIME                   BIGINT,
+                WLM_QUEUE_TIME_TOTAL              BIGINT,
+                WLM_QUEUE_ASSIGNMENTS_TOTAL       BIGINT,
+                TOTAL_CPU_TIME                    BIGINT,
+                TOTAL_WAIT_TIME                   BIGINT,
+                APP_RQSTS_COMPLETED_TOTAL         BIGINT,
+                TOTAL_SECTION_SORT_TIME           BIGINT,
+                TOTAL_SECTION_SORT_PROC_TIME      BIGINT,
+                TOTAL_SECTION_SORTS               BIGINT,
+                TOTAL_SORTS                       BIGINT,
+                POST_THRESHOLD_SORTS              BIGINT,
+                POST_SHRTHRESHOLD_SORTS           BIGINT,
+                SORT_OVERFLOWS                    BIGINT,
+                TOTAL_COMPILE_TIME                BIGINT,
+                TOTAL_COMPILE_PROC_TIME           BIGINT,
+                TOTAL_COMPILATIONS                BIGINT,
+                TOTAL_IMPLICIT_COMPILE_TIME       BIGINT,
+                TOTAL_IMPLICIT_COMPILE_PROC_TIME  BIGINT,
+                TOTAL_IMPLICIT_COMPILATIONS       BIGINT,
+                TOTAL_SECTION_TIME                BIGINT,
+                TOTAL_SECTION_PROC_TIME           BIGINT,
+                TOTAL_APP_SECTION_EXECUTIONS      BIGINT,
+                TOTAL_ACT_TIME                    BIGINT,
+                TOTAL_ACT_WAIT_TIME               BIGINT,
+                ACT_RQSTS_TOTAL                   BIGINT,
+                TOTAL_ROUTINE_TIME                BIGINT,
+                TOTAL_ROUTINE_INVOCATIONS         BIGINT,
+                TOTAL_COMMIT_TIME                 BIGINT,
+                TOTAL_COMMIT_PROC_TIME            BIGINT,
+                TOTAL_APP_COMMITS                 BIGINT,
+                INT_COMMITS                       BIGINT,
+                TOTAL_ROLLBACK_TIME               BIGINT,
+                TOTAL_ROLLBACK_PROC_TIME          BIGINT,
+                TOTAL_APP_ROLLBACKS               BIGINT,
+                INT_ROLLBACKS                     BIGINT,
+                TOTAL_RUNSTATS_TIME               BIGINT,
+                TOTAL_RUNSTATS_PROC_TIME          BIGINT,
+                TOTAL_RUNSTATS                    BIGINT,
+                TOTAL_REORG_TIME                  BIGINT,
+                TOTAL_REORG_PROC_TIME             BIGINT,
+                TOTAL_REORGS                      BIGINT,
+                TOTAL_LOAD_TIME                   BIGINT,
+                TOTAL_LOAD_PROC_TIME              BIGINT,
+                TOTAL_LOADS                       BIGINT,
+                CAT_CACHE_INSERTS                 BIGINT,
+                CAT_CACHE_LOOKUPS                 BIGINT,
+                PKG_CACHE_INSERTS                 BIGINT,
+                PKG_CACHE_LOOKUPS                 BIGINT,
+                THRESH_VIOLATIONS                 BIGINT,
+                NUM_LW_THRESH_EXCEEDED            BIGINT,
+                FCM_TQ_RECV_WAIT_TIME             BIGINT,
+                FCM_MESSAGE_RECV_WAIT_TIME        BIGINT,
+                FCM_TQ_SEND_WAIT_TIME             BIGINT,
+                FCM_MESSAGE_SEND_WAIT_TIME        BIGINT,
+                AUDIT_FILE_WRITE_WAIT_TIME        BIGINT,
+                AUDIT_FILE_WRITES_TOTAL           BIGINT,
+                AUDIT_SUBSYSTEM_WAIT_TIME         BIGINT,
+                AUDIT_SUBSYSTEM_WAITS_TOTAL       BIGINT,
+                DIAGLOG_WRITE_WAIT_TIME           BIGINT,
+                DIAGLOG_WRITES_TOTAL              BIGINT,
+                FCM_MESSAGE_SENDS_TOTAL           BIGINT,
+                FCM_MESSAGE_RECVS_TOTAL           BIGINT,
+                FCM_MESSAGE_SEND_VOLUME           BIGINT,
+                FCM_MESSAGE_RECV_VOLUME           BIGINT,
+                FCM_TQ_SENDS_TOTAL                BIGINT,
+                FCM_TQ_RECVS_TOTAL                BIGINT,
+                FCM_TQ_SEND_VOLUME                BIGINT,
+                FCM_TQ_RECV_VOLUME                BIGINT,
+                TQ_TOT_SEND_SPILLS                BIGINT,
+                AUDIT_EVENTS_TOTAL                BIGINT,
+                TOTAL_ROUTINE_USER_CODE_PROC_TIME BIGINT,
+                TOTAL_ROUTINE_USER_CODE_TIME      BIGINT )
+        </createStmt>
+        <createIndex>
+          CREATE INDEX UOW_METRCIS_IND1 ON UOW_METRICS
+                (MEMBER, UOW_ID, APPLICATION_ID)
+        </createIndex>
+     </db2-xdb:table>
+     <db2-xdb:rowSetOperationOrder>
+        <db2-xdb:order>
+           <db2-xdb:rowSet>uow_event_set</db2-xdb:rowSet>
+           <db2-xdb:rowSet>uow_package_list_set</db2-xdb:rowSet>
+           <db2-xdb:rowSet>uow_metrics_set</db2-xdb:rowSet>
+        </db2-xdb:order>
+     </db2-xdb:rowSetOperationOrder>
+  </xs:appinfo>
+</xs:annotation>
+
+<xs:complexType name="package_entry_type">
+  <xs:annotation>
+    <xs:documentation>
+    This defines the information this is present for each package that
+    is included in the package list
+    </xs:documentation>
+  </xs:annotation>
+  <xs:sequence>
+    <xs:element name = "package_id"
+                type = "xs:long"
+                db2-xdb:rowSet = "uow_package_list_set"
+                db2-xdb:column = "package_id"
+                db2-xdb:condition="$DECOMP_CONTENT IS NOT NULL" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element package_id for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "package_elapsed_time"
+                type = "xs:long"
+                db2-xdb:rowSet = "uow_package_list_set"
+                db2-xdb:column = "package_elapsed_time"
+                db2-xdb:condition="$DECOMP_CONTENT IS NOT NULL" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element package_elapsed_time for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "invocation_id"
+                type = "xs:int"
+                db2-xdb:rowSet = "uow_package_list_set"
+                db2-xdb:column = "invocation_id"
+                db2-xdb:condition="$DECOMP_CONTENT IS NOT NULL" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element invocation_id for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+
+    <xs:element name = "routine_id"
+                type = "xs:int"
+                db2-xdb:rowSet = "uow_package_list_set"
+                db2-xdb:column = "routine_id"
+                db2-xdb:condition="$DECOMP_CONTENT IS NOT NULL" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element routine_id for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+
+    <xs:element name = "nesting_level"
+                type = "xs:int"
+                db2-xdb:rowSet = "uow_package_list_set"
+                db2-xdb:column = "nesting_level"
+                db2-xdb:condition="$DECOMP_CONTENT IS NOT NULL" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element nesting_level for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+
+
+    <xs:any minOccurs="0" maxOccurs="unbounded" processContents="skip" />
+
+  </xs:sequence>
+  <xs:anyAttribute processContents="skip" />
+</xs:complexType>
+
+
+
+
+<xs:complexType name="package_list_entries_type">
+  <xs:annotation>
+    <xs:documentation>
+    A container for the package_entry elements.  We may have
+    an unlimited number of them.
+    </xs:documentation>
+  </xs:annotation>
+  <xs:sequence>
+    <xs:element name = "package_entry"
+                type = "package_entry_type"
+                minOccurs = "0"
+                maxOccurs = "unbounded" >
+    </xs:element>
+  </xs:sequence>
+  <xs:anyAttribute processContents="skip" />
+</xs:complexType>
+
+
+<xs:complexType name="package_list_type">
+  <xs:annotation>
+    <xs:documentation>
+      See monitor element package_list for more details.
+    </xs:documentation>
+  </xs:annotation>
+  <xs:sequence>
+    <xs:element name = "package_list_size"
+                type = "xs:int"
+                db2-xdb:rowSet = "uow_event_set"
+                db2-xdb:column = "package_list_size" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element package_list_size for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+
+    <xs:element name = "package_list_exceeded"
+                db2-xdb:rowSet = "uow_event_set"
+                db2-xdb:column = "package_list_exceeded" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element package_list_exceeded for more details.
+        </xs:documentation>
+      </xs:annotation>
+       <xs:simpleType>
+         <xs:restriction base="db2_string_type_3">
+           <xs:enumeration value="yes"/>
+           <xs:enumeration value="no"/>
+         </xs:restriction>
+       </xs:simpleType>
+    </xs:element>
+
+    <xs:element name = "package_list_entries"
+                type = "package_list_entries_type" >
+    </xs:element>
+    
+    <xs:any minOccurs="0" maxOccurs="unbounded" processContents="skip" />
+    
+  </xs:sequence>
+  <xs:anyAttribute processContents="skip" />
+</xs:complexType>
+
+
+
+<xs:element name = "db2_uow_event"
+            type = "db2uowevent" >
+  <xs:annotation>
+    <xs:documentation>
+    The main schema that describes a unit of work event.
+    </xs:documentation>
+  </xs:annotation>
+</xs:element>
+
+
+<xs:complexType name="db2uowevent" >
+  <xs:annotation>
+    <xs:documentation>
+   ------------------------------------------------------------------
+   db2_uow_event (db2uowevent)
+   ------------------------------------------------------------------
+    This schema describes the structure of each unit of work event captured by the
+    event monitor.
+    </xs:documentation>
+  </xs:annotation>
+
+  <xs:sequence>
+
+    <xs:element name      = "completion_status"
+                db2-xdb:rowSet = "uow_event_set"
+                db2-xdb:column = "completion_status" >
+       <xs:annotation>
+         <xs:documentation>
+         The completion status of the unit of work. Possible values
+         are: UNKNOWN, COMMIT, ROLLBACK, GLOBAL_COMMIT, GLOBAL ROLLBACK,
+         XA_END, XA_PREPARE
+         </xs:documentation>
+       </xs:annotation>
+       <xs:simpleType>
+         <xs:restriction base="db2_string_type_128">
+           <xs:enumeration value="UNKNOWN"/>
+           <xs:enumeration value="COMMIT"/>
+           <xs:enumeration value="ROLLBACK"/>
+           <xs:enumeration value="GLOBAL_COMMIT"/>
+           <xs:enumeration value="GLOBAL_ROLLBACK"/>
+           <xs:enumeration value="XA_END"/>
+           <xs:enumeration value="XA_PREPARE"/>
+         </xs:restriction>
+       </xs:simpleType>
+    </xs:element>
+
+    <xs:element name      = "start_time"
+                type      = "xs:dateTime"
+                db2-xdb:rowSet = "uow_event_set"
+                db2-xdb:column = "start_time" >
+      <xs:annotation>
+        <xs:documentation>
+        The start time of the unit of work.
+        See monitor element uow_start_time for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+
+    <xs:element name      = "stop_time"
+                type      = "xs:dateTime"
+                db2-xdb:rowSet = "uow_event_set"
+                db2-xdb:column = "stop_time" >
+      <xs:annotation>
+        <xs:documentation>
+        The stop time of the unit of work.
+        See monitor element uow_stop_time for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+
+    <xs:element name      = "connection_time"
+                type      = "xs:dateTime"
+                db2-xdb:rowSet = "uow_event_set"
+                db2-xdb:column = "connection_time" >
+      <xs:annotation>
+        <xs:documentation>
+        The time the application connected to the database member.
+        See monitor element conn_time for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+
+
+    <xs:element name      = "application_name"
+                type      = "db2_string_type_128"
+                db2-xdb:rowSet = "uow_event_set"
+                db2-xdb:column = "application_name" >
+      <xs:annotation>
+        <xs:documentation>
+        The name of the application running at the client, as known to the database.
+        See monitor element appl_name for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+
+    <xs:element name      = "application_handle"
+                type      = "application_handle_type"
+                db2-xdb:rowSet = "uow_event_set"
+                db2-xdb:column = "application_handle" >
+      <xs:annotation>
+        <xs:documentation>
+        A system-wide unique ID for the application.
+        See monitor element agent_id for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+
+    <xs:element name      = "application_id"
+                type      = "appl_id_type"
+                db2-xdb:rowSet = "uow_event_set"
+                db2-xdb:column = "application_id" >
+      <xs:annotation>
+        <xs:documentation>
+        This identifier is generated when the application connects to the
+        database at the database manager. See monitor element appl_id for
+        more details.
+        </xs:documentation>
+        <xs:appinfo>
+           <db2-xdb:rowSetMapping>
+              <db2-xdb:rowSet>uow_package_list_set</db2-xdb:rowSet>
+              <db2-xdb:column>application_id</db2-xdb:column>
+           </db2-xdb:rowSetMapping>
+           <db2-xdb:rowSetMapping>
+              <db2-xdb:rowSet>uow_metrics_set</db2-xdb:rowSet>
+              <db2-xdb:column>application_id</db2-xdb:column>
+           </db2-xdb:rowSetMapping>
+        </xs:appinfo>
+      </xs:annotation>
+    </xs:element>
+
+    <xs:element name      = "uow_id"
+                type      = "incrementing_id_type"
+                db2-xdb:rowSet = "uow_event_set"
+                db2-xdb:column = "uow_id" >
+      <xs:annotation>
+        <xs:documentation>
+        The unit of work ID to which this activity record applies.
+        See monitor element uow_id for more details.
+        </xs:documentation>
+        <xs:appinfo>
+           <db2-xdb:rowSetMapping>
+              <db2-xdb:rowSet>uow_package_list_set</db2-xdb:rowSet>
+              <db2-xdb:column>uow_id</db2-xdb:column>
+           </db2-xdb:rowSetMapping>
+           <db2-xdb:rowSetMapping>
+              <db2-xdb:rowSet>uow_metrics_set</db2-xdb:rowSet>
+              <db2-xdb:column>uow_id</db2-xdb:column>
+           </db2-xdb:rowSetMapping>
+        </xs:appinfo>
+      </xs:annotation>
+    </xs:element>
+
+    <xs:element name      = "workload_occurrence_id"
+                type      = "incrementing_id_type"
+                db2-xdb:rowSet = "uow_event_set"
+                db2-xdb:column = "workload_occurrence_id" >
+      <xs:annotation>
+        <xs:documentation>
+        The workload occurrence ID to which this activity record applies.
+        See monitor element workload_occurrence_id for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+
+    <xs:element name      = "coord_member"
+                type      = "member_type"
+                db2-xdb:rowSet = "uow_event_set"
+                db2-xdb:column = "coord_member" >
+      <xs:annotation>
+        <xs:documentation>
+        The coordinating member for this unit of work.
+        See monitor element coord_partitition_num for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+
+    <xs:element name      = "member_activation_time"
+                type      = "xs:dateTime"
+                db2-xdb:rowSet = "uow_event_set"
+                db2-xdb:column = "member_activation_time" >
+      <xs:annotation>
+        <xs:documentation>
+        The time this database member was activated.
+        See monitor element db_conn_time for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+
+    <xs:element name      = "workload_name"
+                type      = "db_object_name_type"
+                db2-xdb:rowSet = "uow_event_set"
+                db2-xdb:column = "workload_name" >
+      <xs:annotation>
+        <xs:documentation>
+        The name of the workload under which the unit of work completed.
+        See monitor element workload_name for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+
+    <xs:element name      = "workload_id"
+                type      = "db_object_id_type"
+                db2-xdb:rowSet = "uow_event_set"
+                db2-xdb:column = "workload_id" >
+      <xs:annotation>
+        <xs:documentation>
+        The workload ID of the workload under which the unit of work completed.
+        See monitor element workload_id for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+
+    <xs:element name      = "service_superclass_name"
+                type      = "db_object_name_type"
+                minOccurs = "0"
+                maxOccurs = "1"
+                db2-xdb:rowSet = "uow_event_set"
+                db2-xdb:column = "service_superclass_name" >
+      <xs:annotation>
+        <xs:documentation>
+        The name ofthe service super class under which the unit of work completed.
+        See monitor element service_superclass_name for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+
+    <xs:element name      = "service_subclass_name"
+                type      = "db_object_name_type"
+                minOccurs = "0"
+                maxOccurs = "1"
+                db2-xdb:rowSet = "uow_event_set"
+                db2-xdb:column = "service_subclass_name" >
+      <xs:annotation>
+        <xs:documentation>
+        The name ofthe service sub class under which the unit of work completed.
+        See monitor element service_subclass_name for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+
+    <xs:element name      = "service_class_id"
+                type      = "db_object_id_type"
+                minOccurs = "0"
+                maxOccurs = "1"
+                db2-xdb:rowSet = "uow_event_set"
+                db2-xdb:column = "service_class_id" >
+      <xs:annotation>
+        <xs:documentation>
+        The service class ID of the service class under which the unit of
+        work completed.
+        See monitor element service_class_id for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+
+    <xs:element name      = "session_authid"
+                type      = "authid_type"
+                minOccurs = "0"
+                maxOccurs = "1"
+                db2-xdb:rowSet = "uow_event_set"
+                db2-xdb:column = "session_authid" >
+      <xs:annotation>
+        <xs:documentation>
+        The session authorization ID of the user who invoked the application that is being monitored.
+        See monitor element session_auth_id for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+
+    <xs:element name      = "system_authid"
+                type      = "authid_type"
+                db2-xdb:rowSet = "uow_event_set"
+                db2-xdb:column = "system_authid" >
+      <xs:annotation>
+        <xs:documentation>
+        The system authorization ID of the user who invoked the application that is being monitored.
+        See monitor element system_auth_id for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+
+    <xs:element name      = "client_pid"
+                type      = "xs:long"
+                db2-xdb:rowSet = "uow_event_set"
+                db2-xdb:column = "client_pid" >
+      <xs:annotation>
+        <xs:documentation>
+        The process ID reported by the client.
+        See monitor element client_pid for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+
+    <xs:element name      = "client_product_id"
+                type      = "db2_string_type_128"
+                db2-xdb:rowSet = "uow_event_set"
+                db2-xdb:column = "client_product_id" >
+       <xs:annotation>
+         <xs:documentation>
+         The product ID of the client.
+         See monitor element client_prdid for more details.
+         </xs:documentation>
+       </xs:annotation>
+    </xs:element>
+
+    <xs:element name      = "client_platform"
+                db2-xdb:rowSet = "uow_event_set"
+                db2-xdb:column = "client_platform" >
+      <xs:annotation>
+        <xs:documentation>
+        The platform of the client.
+        See monitor element client_platform for more details.
+        </xs:documentation>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:simpleContent>
+            <xs:extension base = "db2_string_type_12">
+               <xs:attribute name = "id"
+                             type = "xs:short"
+                             use  = "optional" />
+            </xs:extension>
+         </xs:simpleContent>
+      </xs:complexType>
+    </xs:element>
+
+    <xs:element name      = "client_protocol"
+                type      = "db2_string_type_10"
+                minOccurs = "0"
+                maxOccurs = "1"
+                db2-xdb:rowSet = "uow_event_set"
+                db2-xdb:column = "client_protocol" >
+       <xs:annotation>
+         <xs:documentation>
+         The product ID of the client.
+         See monitor element client_protocol for more details.
+         </xs:documentation>
+       </xs:annotation>
+    </xs:element>
+
+    <xs:element name      = "client_userid"
+                type      = "tpmon_type"
+                minOccurs = "0"
+                maxOccurs = "1"
+                db2-xdb:rowSet = "uow_event_set"
+                db2-xdb:column = "client_userid" >
+       <xs:annotation>
+         <xs:documentation>
+         The client user ID generated by a transaction manager and provided
+         to the server. See monitor element client_userid for more details.
+         </xs:documentation>
+       </xs:annotation>
+    </xs:element>
+
+    <xs:element name      = "client_wrkstnname"
+                type      = "tpmon_type"
+                minOccurs = "0"
+                maxOccurs = "1"
+                db2-xdb:rowSet = "uow_event_set"
+                db2-xdb:column = "client_wrkstnname" >
+       <xs:annotation>
+         <xs:documentation>
+         Identifies the client system or workstation, if the sqleseti API
+         was issued in this connection. See monitor element
+         client_wrkstnname for more details.
+         </xs:documentation>
+       </xs:annotation>
+    </xs:element>
+
+    <xs:element name      = "client_applname"
+                type      = "tpmon_type"
+                minOccurs = "0"
+                maxOccurs = "1"
+                db2-xdb:rowSet = "uow_event_set"
+                db2-xdb:column = "client_applname" >
+       <xs:annotation>
+         <xs:documentation>
+         Identifies the server transaction program performing the transaction,
+         if the sqleseti API was issued in this connection.
+         See monitor element client_applname for more details.
+         </xs:documentation>
+       </xs:annotation>
+    </xs:element>
+
+    <xs:element name      = "client_acctng"
+                type      = "tpmon_type"
+                minOccurs = "0"
+                maxOccurs = "1"
+                db2-xdb:rowSet = "uow_event_set"
+                db2-xdb:column = "client_acctng" >
+       <xs:annotation>
+         <xs:documentation>
+         The data passed to the target database for logging and diagnostic purposes,
+         if the sqleseti API was issued in this connection.
+         See monitor element client_acctng for more details.
+         </xs:documentation>
+       </xs:annotation>
+    </xs:element>
+
+    <xs:element name      = "local_transaction_id"
+                type      = "local_transaction_id_type"
+                db2-xdb:rowSet = "uow_event_set"
+                db2-xdb:column = "local_transaction_id" >
+      <xs:annotation>
+        <xs:documentation>
+        The local transaction id for the unit of work.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+
+    <xs:element name      = "global_transaction_id"
+                type      = "global_transaction_id_type"
+                db2-xdb:rowSet = "uow_event_set"
+                db2-xdb:column  = "global_transaction_id" >
+      <xs:annotation>
+        <xs:documentation>
+        The global transaction id for the unit of work.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+
+
+    <xs:element name      = "system_metrics"
+                type      = "system_level_metrics"
+                db2-xdb:rowSet = "uow_event_set"
+                db2-xdb:column = "metrics" >
+      <xs:annotation>
+        <xs:documentation>
+        The metrics for the unit of work.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+
+    <xs:element name      = "client_hostname"
+                type      = "db2_string_type_255"
+                db2-xdb:rowSet = "uow_event_set"
+                db2-xdb:column = "client_hostname" >
+      <xs:annotation>
+        <xs:documentation>
+        The hostname of the client.
+        See monitor element client_hostname for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+
+    <xs:element name      = "client_port_number"
+                type      = "xs:int"
+                db2-xdb:rowSet = "uow_event_set"
+                db2-xdb:column = "client_port_number" >
+      <xs:annotation>
+        <xs:documentation>
+        The port number of the client.
+        See monitor element client_port_number for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+
+    <xs:element name      = "uow_log_space_used"
+                type      = "xs:long"
+                db2-xdb:rowSet = "uow_event_set"
+                db2-xdb:column = "uow_log_space_used" >
+      <xs:annotation>
+        <xs:documentation>
+        The amount of log space used during the unit of work.
+        See monitor element uow_log_space_used for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+
+    <xs:element name      = "package_list"
+                type      = "package_list_type" >
+      <xs:annotation>
+        <xs:documentation>
+        The package list for the unit of work.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+
+    <xs:any minOccurs="0" maxOccurs="unbounded" processContents="skip" />
+
+  </xs:sequence>
+  
+  <xs:attribute  name = "id"
+                 type = "xs:long"
+                 use  = "required"
+                 db2-xdb:rowSet = "uow_event_set"
+                 db2-xdb:column = "event_id" >
+     <xs:annotation>
+       <xs:documentation>
+       Integer representing the Event ID.
+       </xs:documentation>
+     </xs:annotation>
+  </xs:attribute>
+
+  <xs:attribute  name = "type"
+                 use  = "required"
+                db2-xdb:rowSet = "uow_event_set"
+                db2-xdb:column = "type" >
+     <xs:annotation>
+       <xs:documentation>
+       Type of unit of work event that has occurred. Events can be of
+       the following types: UOW
+       </xs:documentation>
+     </xs:annotation>
+     <xs:simpleType>
+       <xs:restriction base="db2_string_type_32">
+         <xs:enumeration value="UOW"/>
+       </xs:restriction>
+     </xs:simpleType>
+  </xs:attribute>
+
+  <xs:attribute name = "timestamp"
+                type = "xs:dateTime"
+                use  = "required"
+                db2-xdb:rowSet = "uow_event_set"
+                db2-xdb:column = "event_timestamp" >
+     <xs:annotation>
+       <xs:documentation>
+       Timestamp representing when the UOW event occurred.
+       </xs:documentation>
+     </xs:annotation>
+  </xs:attribute>
+
+  <xs:attribute name = "member"
+                type = "member_type"
+                use  = "required" >
+     <xs:annotation>
+       <xs:documentation>
+       Memeber where the UOW event occurred.
+       </xs:documentation>
+       <xs:appinfo>
+          <db2-xdb:rowSetMapping>
+             <db2-xdb:rowSet>uow_event_set</db2-xdb:rowSet>
+             <db2-xdb:column>member</db2-xdb:column>
+          </db2-xdb:rowSetMapping>
+          <db2-xdb:rowSetMapping>
+             <db2-xdb:rowSet>uow_package_list_set</db2-xdb:rowSet>
+             <db2-xdb:column>member</db2-xdb:column>
+          </db2-xdb:rowSetMapping>
+          <db2-xdb:rowSetMapping>
+             <db2-xdb:rowSet>uow_metrics_set</db2-xdb:rowSet>
+             <db2-xdb:column>member</db2-xdb:column>
+          </db2-xdb:rowSetMapping>
+       </xs:appinfo>
+     </xs:annotation>
+  </xs:attribute>
+
+  <xs:attribute name = "release"
+                type = "xs:long"
+                use  = "required" > 
+     <xs:annotation>
+       <xs:documentation>
+       Represents the DB2 product level this event was captured on.
+       </xs:documentation>
+     </xs:annotation>
+  </xs:attribute>
+
+  <xs:anyAttribute processContents="skip" />
+  
+</xs:complexType >
+
+
+
+
+
+</xs:schema >
+

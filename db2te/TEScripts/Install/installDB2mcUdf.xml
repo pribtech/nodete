@@ -1,0 +1,516 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2010-2011 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+
+<tutorial name="installAddedFeatures" disableSetSchema="true" autoPlayTime="2">
+	<flowRestriction>forwardexploration</flowRestriction>
+    <closeAction />
+    <openAction />
+    <globalCodeHighlightOptions highlightCode = "true" />
+    <WMDConfig/>
+  
+    <pageList>
+		<page name="Install db2mc jar" type="general">
+    	 	<entryAction/>
+    	 	<exitAction/>
+            <contentText>
+<![CDATA[
+Installs Java jar used by some of the UDFs in the following steps.
+</p>
+When run button is pressed the following command is issued in the background first. 
+<p/>
+CALL sqlj.install_jar('file:&lt;jar directory&gt;/db2mcUdf.jar', 'DB2MCUDF')
+<p/>
+Refreshes the classes from the jar used by some of the UDFs in the following steps. 
+]]>
+			</contentText>
+            <SQLText>
+<![CDATA[
+CALL SQLJ.REFRESH_CLASSES()
+@
+SELECT JARSCHEMA,JAR_ID,DEFINERTYPE,DEFINER,ALTEREDTS,CREATEDTS
+FROM SYSIBM.SYSJAROBJECTS  
+WHERE JAR_ID LIKE 'DB2MC%'
+FOR READ ONLY
+@
+]]>
+			</SQLText>
+            <SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar="@"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+        </page>
+    
+		<page name="Compression UDFs" type="general">
+    	 	<entryAction/>
+    	 	<exitAction/>
+			<preAdhocRunAction name="installJar" type="serverAction">
+				<parameterList>
+					<parameter name="action" type="raw">
+						<value>installJar</value>
+					</parameter>
+					<parameter name="jar" type="raw">
+						<value>db2mcUdf</value>
+					</parameter>
+				</parameterList>
+				<if condition="true" negCondition="false">
+					<task>
+						<alert>db2mcUdf jar installed</alert>
+						<setActionReturn value="true"/> 
+					</task>
+				</if>
+				<if condition="true" negCondition="true">
+					<task>
+						<assignSharedConstant name="MSG" type="returnObject">
+							<value>installJar.returnValue</value>
+						</assignSharedConstant>
+						<alert>Problem installing jar, error: ?MSG?</alert>
+						<setActionReturn value="false"/> 
+					</task>
+				</if>
+			</preAdhocRunAction>
+            <contentText>
+<![CDATA[
+Install java compress/uncompress UDFs. 
+]]>
+			</contentText>
+            <SQLText>
+<![CDATA[
+CREATE FUNCTION "s#db2mc".compress(blob(1g))
+	RETURNS blob(1g)
+	SPECIFIC dbzcompress
+	EXTERNAL NAME 'DB2MCUDF:dbz.db2mc!compress'     
+	LANGUAGE JAVA
+	PARAMETER STYLE DB2GENERAL
+	NOT VARIANT
+	FENCED
+	NO SQL
+	NO EXTERNAL ACTION
+@
+
+CREATE FUNCTION "s#db2mc".uncompress(blob(1g))
+	RETURNS blob(1g)
+	SPECIFIC dbzuncompress
+	EXTERNAL NAME 'DB2MCUDF:dbz.db2mc!uncompress'
+	LANGUAGE JAVA
+	PARAMETER STYLE DB2GENERAL
+	NOT VARIANT
+	FENCED
+	NO SQL
+	NO EXTERNAL ACTION
+@
+
+CREATE FUNCTION "s#db2mc".compressClob(clob(1g))
+	RETURNS blob(1g)
+	SPECIFIC dbzcompressclob
+	EXTERNAL NAME 'DB2MCUDF:dbz.db2mc!compressClob'
+	LANGUAGE JAVA
+	PARAMETER STYLE DB2GENERAL
+	NOT VARIANT
+	FENCED
+	NO SQL
+	NO EXTERNAL ACTION
+@
+
+CREATE FUNCTION "s#db2mc".uncompressClob(blob(1g))
+	RETURNS clob(1g)
+	SPECIFIC dbzuncompressclob
+	EXTERNAL NAME 'DB2MCUDF:dbz.db2mc!uncompressClob'
+	LANGUAGE JAVA
+	PARAMETER STYLE DB2GENERAL
+	NOT VARIANT
+	FENCED
+	NO SQL
+	NO EXTERNAL ACTION
+@
+]]>
+			</SQLText>
+            <SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar="@"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+        </page>
+
+		<page name="Install SQL/PL UDFs" type="general">
+    	 	<entryAction/>
+    	 	<exitAction/>
+            <contentText>
+<![CDATA[
+Create SQL/PL UDFs
+<ul>
+<li>Specific system variables</li>
+<li>Various time periods
+</ul>
+]]>
+			</contentText>
+            <SQLText>
+<![CDATA[
+create function "s#db2mc".time_period
+	(in_date date)
+	RETURNS table (
+	 last_month_start_timestamp timestamp
+	,last_month_end_timestamp timestamp
+	,last_running_year_start_timestamp timestamp
+	,last_running_quarter_start_timestamp timestamp
+	,last_running_half_start_timestamp timestamp
+	,current_year_start_timestamp timestamp
+	,last_half_start_timestamp timestamp
+	,last_half_end_timestamp  timestamp
+	,last_quarter_start_timestamp timestamp
+	,last_quarter_end_timestamp  timestamp
+	,last_year_start_timestamp timestamp
+	,last_year_end_timestamp  timestamp
+	,last_running_quarter_end_timestamp timestamp
+	,last_running_half_end_timestamp timestamp
+	,last_running_year_end_timestamp timestamp
+	,ytd_end_month_timestamp timestamp
+	)
+	DETERMINISTIC
+	NO EXTERNAL ACTION
+--/******************************************************************************	
+--  Author: Peter Prib
+--  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2011 All rights reserved.
+--
+--  Licensed under the Apache License, Version 2.0 (the "License");
+--  you may not use this file except in compliance with the License.
+--  You may obtain a copy of the License at
+--
+--      http://www.apache.org/licenses/LICENSE-2.0
+--
+--  Unless required by applicable law or agreed to in writing, software
+--  distributed under the License is distributed on an "AS IS" BASIS,
+--  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+--  See the License for the specific language governing permissions and
+--  limitations under the License.
+--******************************************************************************/ 
+return
+select
+	t.*
+	,last_month_end_timestamp as last_running_quarter_end_timestamp
+	,last_month_end_timestamp as last_running_half_end_timestamp
+	,last_month_end_timestamp as last_running_year_end_timestamp
+	,last_month_end_timestamp as ytd_end_month_timestamp
+from (
+select 
+	last_month_start_timestamp
+	,last_month_start_timestamp + 1 month - 1 microsecond as last_month_end_timestamp
+	,last_month_start_timestamp + 1 month - 1 year as last_running_year_start_timestamp
+	,last_month_start_timestamp - 2 months as last_running_quarter_start_timestamp
+	,last_month_start_timestamp - 5 months as last_running_half_start_timestamp
+	,current_year_start_timestamp
+	,last_half_start_timestamp
+	,last_half_start_timestamp + 6 month - 1 microsecond as last_half_end_timestamp 
+	,last_quarter_start_timestamp
+	,last_quarter_start_timestamp + 3 month - 1 microsecond as last_quarter_end_timestamp 
+	,last_year_start_timestamp
+	,last_year_start_timestamp + 1 year - 1 microsecond as last_year_end_timestamp 
+from  (
+ select timestamp( substr(char(in_date - 1 months),1,8)||'01'  ,'00:00:00') as last_month_start_timestamp
+ 		 ,timestamp( substr(char(in_date - 1 months),1,4)||'-01-01'  ,'00:00:00') as current_year_start_timestamp
+ 		 ,timestamp( substr(char(in_date - 1 year),1,4)||'-01-01'  ,'00:00:00') as last_year_start_timestamp
+ 		 ,timestamp( substr(char(in_date - 7 months),1,4)||'-01-01','00:00:00')
+ 		 	+ ((month(in_date - 7 months)/6)*6) months  
+ 		 	as last_half_start_timestamp
+ 		 ,timestamp( substr(char(in_date - 4 months),1,4)||'-01-01','00:00:00')
+ 		 	+ ((month(in_date - 4 months)/3)*3) months  
+			as last_quarter_start_timestamp
+ from (values(coalesce(in_date,current date))) as base(in_date)
+) a
+) t
+@
+]]>
+			</SQLText>
+            <SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar="@"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+        </page>
+		<page name="Install Various Java UDFs" type="general">
+            <contentText>
+<![CDATA[
+Install a various java UDFs.
+<ul>
+<li>checksum</li>
+<li>javaProperty</li>
+<li>javaProperties</li>
+<li>processuserid</li>
+<li>oscmd</li>
+<li>oscmdclob</li>
+<li>readfile</li>
+<li>sleep</li>
+</ul>
+]]>
+			</contentText>
+            <SQLText>
+<![CDATA[
+create function "s#db2mc".checksum(long varchar)
+   RETURNS varchar(64) for bit data
+   SPECIFIC dbzchecksumvarchar
+   EXTERNAL NAME 'DB2MCUDF:dbz.db2mc!checksum' 
+   LANGUAGE JAVA 
+   PARAMETER STYLE DB2GENERAL
+   NOT VARIANT
+   FENCED 
+   NO SQL
+   NO EXTERNAL ACTION
+   ALLOW PARALLEL
+@
+create function "s#db2mc".checksum(blob(2g))
+   returns varchar(64) for bit data
+   SPECIFIC dbzchecksumblob
+   external name 'DB2MCUDF:dbz.db2mc!checksum' 
+   language java 
+   PARAMETER STYLE DB2GENERAL
+   NOT VARIANT
+   fenced 
+   no sql 
+   NO EXTERNAL ACTION
+   ALLOW PARALLEL
+@
+create function "s#db2mc".checksum(clob(2g))
+   returns varchar(64) for bit data
+   SPECIFIC dbzchecksumclob
+   external name 'DB2MCUDF:dbz.db2mc!checksum' 
+   language java 
+   PARAMETER STYLE DB2GENERAL
+   NOT VARIANT
+   fenced 
+   no sql 
+   NO EXTERNAL ACTION
+   ALLOW PARALLEL
+@
+create function "s#db2mc".checksum1m(clob(1m))
+   returns varchar(64) for bit data
+   SPECIFIC dbzchecksumclob1m
+   external name 'DB2MCUDF:dbz.db2mc!checksum' 
+   language java 
+   PARAMETER STYLE DB2GENERAL
+   NOT VARIANT
+   fenced 
+   no sql 
+   NO EXTERNAL ACTION
+   ALLOW PARALLEL
+@
+create function "s#db2mc".javaProperty(name varchar(255))
+   returns varchar(4000)
+   SPECIFIC dbzjavaprop
+   external name 'DB2MCUDF:dbz.db2mc!javaProperty' 
+   language java 
+   PARAMETER STYLE DB2GENERAL
+   VARIANT
+   fenced 
+   no sql 
+   NO EXTERNAL ACTION
+   DISALLOW PARALLEL
+@
+create function "s#db2mc".javaProperties()
+   returns table( name varchar(255),value varchar(4000))
+   SPECIFIC dbzjavaprops
+   external name 'DB2MCUDF:dbz.db2mc!javaProperties' 
+   language java 
+   PARAMETER STYLE DB2GENERAL
+   VARIANT
+   fenced 
+   no sql 
+   NO EXTERNAL ACTION
+   DISALLOW PARALLEL
+@
+create function "s#db2mc".oscmd(cmd varchar(32000))
+   returns table( linenum integer,line varchar(255))
+   SPECIFIC dbzoscmd
+   external name 'DB2MCUDF:dbz.db2mc!osCmd' 
+   language java 
+   PARAMETER STYLE DB2GENERAL
+   NOT VARIANT
+   fenced 
+   no sql 
+   NO EXTERNAL ACTION
+   DISALLOW PARALLEL
+@   
+create function "s#db2mc".oscmdclob(cmd varchar(32000))
+   returns clob
+   SPECIFIC dbzoscmdclob
+   external name 'DB2MCUDF:dbz.db2mc!osCmdClob' 
+   language java 
+   PARAMETER STYLE DB2GENERAL
+   NOT VARIANT
+   fenced 
+   no sql 
+   NO EXTERNAL ACTION
+   ALLOW PARALLEL
+@ 
+create function "s#db2mc".processuserid(
+	)
+   returns  varchar(128)
+   SPECIFIC dbzprocessuserid
+   external name 'DB2MCUDF:dbz.db2mc!userIdProcess' 
+   language java 
+   PARAMETER STYLE DB2GENERAL
+   NOT VARIANT
+   fenced 
+   no sql 
+   NO EXTERNAL ACTION
+   ALLOW PARALLEL
+   RETURNS NULL ON NULL INPUT
+@   
+create function "s#db2mc".readfile(file varchar(255))
+   returns table( linenum integer,line varchar(255))
+   SPECIFIC dbzreadfile
+   external name 'DB2MCUDF:dbz.db2mc!readFile' 
+   language java 
+   PARAMETER STYLE DB2GENERAL
+   NOT VARIANT
+   fenced 
+   no sql 
+   NO EXTERNAL ACTION
+   DISALLOW PARALLEL
+@   
+create function "s#db2mc".sleep(
+		 microsends integer  
+	)
+   returns  integer
+   SPECIFIC dbzsleep
+   external name 'DB2MCUDF:dbz.db2mc!sleepWait' 
+   language java 
+   PARAMETER STYLE DB2GENERAL
+   VARIANT
+   fenced 
+   no sql 
+   NO EXTERNAL ACTION
+   DISALLOW PARALLEL
+   RETURNS NULL ON NULL INPUT
+@
+
+]]>
+            </SQLText>
+            <SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar="@"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+        </page>
+
+		<page name="Test UDFs" type="general">
+            <contentText>
+<![CDATA[
+Test the UDFs.
+]]>
+			</contentText>
+            <SQLText>
+<![CDATA[
+values(hex("s#db2mc".checksum('a test')))@
+select * from table("s#db2mc".javaProperties()) a@
+values("s#db2mc".javaProperty('java.runtime.name'))@
+select * from table("s#db2mc".readfile((SELECT VALUE FROM SYSIBMADM.DBMCFG where name='diagpath')||'db2diag.log')) a@
+select * from table("s#db2mc".oscmd('netstat')) a@
+--values("s#db2mc".oscmdclob('netstat'))@
+values("s#db2mc".sleep(2))@
+values("s#db2mc".processuserid())@
+select * from table("s#db2mc".time_period(current date)) a@
+]]>
+            </SQLText>
+            <SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar="@"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+        </page>
+		<page name="Create Views" type="general">
+            <contentText>
+<![CDATA[
+Create views and functions based on the java functions.
+]]>
+			</contentText>
+            <SQLText>
+<![CDATA[
+create function "s#db2mc".file_separator()
+	RETURNS char(1)
+	DETERMINISTIC
+	NO EXTERNAL ACTION
+ return	"s#db2mc".javaProperty('file.separator')
+@
+create function "s#db2mc".db2_bin_directory ()
+	RETURNS varchar(255)
+	DETERMINISTIC
+	NO EXTERNAL ACTION
+ return
+ 	(select REG_VAR_VALUE||"s#db2mc".file_separator||'bin'||"s#db2mc".file_separator
+ 	from SYSIBMADM.REG_VARIABLES 
+ 	where REG_VAR_NAME='DB2PATH')
+@
+create function "s#db2mc".execute_db2_system_command(command varchar(2048))
+	RETURNS table( linenum varchar(255),line varchar(255))
+	NOT DETERMINISTIC
+	NO EXTERNAL ACTION
+ return
+ select linenum,line from table("s#db2mc".oscmd("s#db2mc".db2_bin_directory()||command)) a
+@
+create view "s#db2mc".db2diag 
+as select * from table("s#db2mc".readfile((SELECT VALUE FROM SYSIBMADM.DBMCFG where name='diagpath')||'db2diag.log')) a
+@
+create view "s#db2mc".netstat 
+as select 
+  substr(line,2,6)as protocol
+ ,substr(line,9,22)as local_address
+ ,substr(line,32,22)as Foreign_address
+,substr(line,55)as state
+from table("s#db2mc".oscmd('netstat')) a
+where linenum > 4
+@
+create view "s#db2mc".netstat_all 
+as select 
+  substr(line,2,6)as protocol
+ ,substr(line,9,22)as local_address
+ ,substr(line,32,22)as Foreign_address
+,substr(line,55)as state
+from table("s#db2mc".oscmd('netstat -a')) a
+where linenum > 4
+@
+]]>
+            </SQLText>
+            <SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar="@"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+        </page>
+        
+		<page name="Uninstall" type="last" autoPlay="false">
+            <contentText>
+<![CDATA[
+Uninstall objects.
+]]>
+			</contentText>
+            <SQLText>
+<![CDATA[
+drop function "s#db2mc".db2diag@
+drop function "s#db2mc".db2_bin_directory@
+drop function "s#db2mc".file_separator@
+drop view "s#db2mc".db2diag@
+drop view "s#db2mc".netstat@
+drop view "s#db2mc".netstat_all@
+drop function "s#db2mc".checksum(blob(2g))@
+drop function "s#db2mc".checksum(clob(2g))@
+drop function "s#db2mc".checksum1m(clob(1m))@
+drop function "s#db2mc".checksum(long varchar)@
+drop function "s#db2mc".javaProperty@
+drop function "s#db2mc".javaProperties@
+drop function "s#db2mc".readfile@
+drop function "s#db2mc".processuserid@
+drop function "s#db2mc".oscmd@
+drop function "s#db2mc".oscmdclob@
+drop function "s#db2mc".sleep@
+drop function "s#db2mc".compress@
+drop function "s#db2mc".uncompress@
+drop function "s#db2mc".compressClob@
+drop function "s#db2mc".uncompressClob@
+drop function "s#db2mc".time_period@
+CALL SQLJ.REFRESH_CLASSES()@
+CALL sqlj.remove_jar('DB2MCUDF')@
+]]>
+            </SQLText>
+            <SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar="@"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+        </page>
+
+    </pageList>
+</tutorial>

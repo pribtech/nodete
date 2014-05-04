@@ -1,0 +1,1967 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="DB2SchemaAnnotation.xsl"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="http://www.ibm.com/xmlns/prod/db2/mon"
+           xmlns="http://www.ibm.com/xmlns/prod/db2/mon"
+           elementFormDefault="qualified"  >
+
+
+<xs:simpleType name="db2_timestamp_type">
+  <xs:annotation>
+    <xs:documentation>
+    Timestamp in the following format: YYYY-MM-DD-HH.MM.SS.FFFFFF
+    </xs:documentation>
+  </xs:annotation>
+  <xs:restriction base="xs:string">
+    <xs:maxLength value = "26" />
+    <xs:pattern value="[0-9]{4}-[0-9]{2}-[0-9]{2}-[0-9]{2}.[0-9]{2}.[0-9]{2}.[0-9]{6}"/>
+  </xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name = "db_object_name_type" >
+  <xs:annotation>
+     <xs:documentation>
+        This is a string that is used for most database objects names.
+     </xs:documentation>
+  </xs:annotation>
+   <xs:restriction base = "xs:string" >
+      <xs:maxLength value = "128" />
+   </xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name = "db_object_id_type" >
+  <xs:annotation>
+     <xs:documentation>
+       Type for the ID for various database objects.
+     </xs:documentation>
+  </xs:annotation>
+   <xs:restriction base = "xs:int" >
+   </xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name = "incrementing_id_type" >
+  <xs:annotation>
+     <xs:documentation>
+       Any ID that is generally incremented in value for the next entry
+       such as activity_id.
+     </xs:documentation>
+  </xs:annotation>
+   <xs:restriction base = "xs:int" >
+   </xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name = "tpmon_type" >
+  <xs:annotation>
+     <xs:documentation>
+       The CLIENT INFO fields.
+     </xs:documentation>
+  </xs:annotation>
+   <xs:restriction base = "xs:string" >
+      <xs:maxLength value = "255" />
+   </xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name = "executable_id_type" >
+  <xs:annotation>
+     <xs:documentation>
+       The binary Executable ID
+     </xs:documentation>
+  </xs:annotation>
+   <xs:restriction base = "xs:hexBinary" >
+      <xs:maxLength value = "32" />
+   </xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name = "local_transaction_id_type" >
+  <xs:annotation>
+     <xs:documentation>
+       Type for the local transaction ID.
+     </xs:documentation>
+  </xs:annotation>
+   <xs:restriction base = "xs:hexBinary" >
+      <xs:maxLength value = "8" />
+   </xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name = "global_transaction_id_type" >
+  <xs:annotation>
+     <xs:documentation>
+       Type for the global transaction ID.
+     </xs:documentation>
+  </xs:annotation>
+   <xs:restriction base = "xs:hexBinary" >
+      <xs:maxLength value = "20" />
+   </xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name = "member_type" >
+  <xs:annotation>
+     <xs:documentation>
+       A type for the member (or DB Partition) number.
+     </xs:documentation>
+  </xs:annotation>
+   <xs:restriction base = "xs:short" >
+      <xs:maxInclusive value = "999" />
+   </xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name = "metric_value_type" >
+  <xs:annotation>
+     <xs:documentation>
+        A type for the value of metric times and counters.
+     </xs:documentation>
+  </xs:annotation>
+   <xs:restriction base = "xs:long" >
+   </xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name = "appl_id_type" >
+  <xs:annotation>
+     <xs:documentation>
+       A type for the application ID.
+     </xs:documentation>
+  </xs:annotation>
+   <xs:restriction base = "xs:string" >
+      <xs:maxLength value = "128" />
+   </xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name = "authid_type" >
+  <xs:annotation>
+     <xs:documentation>
+        A type for any authorization ID 
+     </xs:documentation>
+  </xs:annotation>
+   <xs:restriction base = "xs:string" >
+      <xs:maxLength value = "128" />
+   </xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name = "application_handle_type" >
+  <xs:annotation>
+     <xs:documentation>
+       A type for the application_handle.
+     </xs:documentation>
+  </xs:annotation>
+   <xs:restriction base = "xs:long" >
+   </xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name = "lock_name_hex_type" >
+  <xs:annotation>
+     <xs:documentation>
+        A type fo the hexBinary lock_name element.
+     </xs:documentation>
+  </xs:annotation>
+   <xs:restriction base = "xs:hexBinary" >
+      <xs:maxLength value = "16" />
+   </xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name = "lock_attributes_type" >
+  <xs:annotation>
+     <xs:documentation>
+        A type fo the hexBinary lock_attributes element.
+     </xs:documentation>
+  </xs:annotation>
+   <xs:restriction base = "xs:hexBinary" >
+      <xs:maxLength value = "4" />
+   </xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name = "lock_release_flags_type" >
+  <xs:annotation>
+     <xs:documentation>
+        A type fo the hexBinary lock_release_flags element.
+     </xs:documentation>
+  </xs:annotation>
+   <xs:restriction base = "xs:hexBinary" >
+      <xs:maxLength value = "4" />
+   </xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name = "tentry_flag_type" >
+  <xs:annotation>
+     <xs:documentation>
+        A type fo the hexBinary lock_release_flags element.
+     </xs:documentation>
+  </xs:annotation>
+   <xs:restriction base = "xs:hexBinary" >
+      <xs:maxLength value = "8" />
+   </xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name = "xid_type" >
+  <xs:annotation>
+     <xs:documentation>
+        A type fo the hexBinary xid element.
+     </xs:documentation>
+  </xs:annotation>
+   <xs:restriction base = "xs:hexBinary" >
+      <xs:maxLength value = "140" />
+   </xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name = "db2_statement_text_type" >
+  <xs:annotation>
+     <xs:documentation>
+        A type for any statement text max 2MB.
+     </xs:documentation>
+  </xs:annotation>
+   <xs:restriction base = "xs:string" >
+      <xs:maxLength value = "2097152" />
+   </xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name = "db2_string_type_2" >
+  <xs:annotation>
+     <xs:documentation>
+        A simple string type of max length 2.
+     </xs:documentation>
+  </xs:annotation>
+   <xs:restriction base = "xs:string" >
+      <xs:maxLength value = "2" />
+   </xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name = "db2_string_type_3" >
+  <xs:annotation>
+     <xs:documentation>
+        A simple string type of max length 3.
+     </xs:documentation>
+  </xs:annotation>
+   <xs:restriction base = "xs:string" >
+      <xs:maxLength value = "3" />
+   </xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name = "db2_string_type_6" >
+  <xs:annotation>
+     <xs:documentation>
+        A simple string type of max length 6.
+     </xs:documentation>
+  </xs:annotation>
+   <xs:restriction base = "xs:string" >
+      <xs:maxLength value = "6" />
+   </xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name = "db2_string_type_8" >
+  <xs:annotation>
+     <xs:documentation>
+        A simple string type of max length 8.
+     </xs:documentation>
+  </xs:annotation>
+   <xs:restriction base = "xs:string" >
+      <xs:maxLength value = "8" />
+   </xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name = "db2_string_type_10" >
+  <xs:annotation>
+     <xs:documentation>
+        A simple string type of max length 10.
+     </xs:documentation>
+  </xs:annotation>
+   <xs:restriction base = "xs:string" >
+      <xs:maxLength value = "10" />
+   </xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name = "db2_string_type_12" >
+  <xs:annotation>
+     <xs:documentation>
+        A simple string type of max length 12.
+     </xs:documentation>
+  </xs:annotation>
+   <xs:restriction base = "xs:string" >
+      <xs:maxLength value = "12" />
+   </xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name = "db2_string_type_16" >
+  <xs:annotation>
+     <xs:documentation>
+        A simple string type of max length 16.
+     </xs:documentation>
+  </xs:annotation>
+   <xs:restriction base = "xs:string" >
+      <xs:maxLength value = "16" />
+   </xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name = "db2_string_type_32" >
+  <xs:annotation>
+     <xs:documentation>
+        A simple string type of max length 32.
+     </xs:documentation>
+  </xs:annotation>
+   <xs:restriction base = "xs:string" >
+      <xs:maxLength value = "32" />
+   </xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name = "db2_string_type_64" >
+  <xs:annotation>
+     <xs:documentation>
+        A simple string type of max length 64.
+     </xs:documentation>
+  </xs:annotation>
+   <xs:restriction base = "xs:string" >
+      <xs:maxLength value = "64" />
+   </xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name = "db2_string_type_128" >
+  <xs:annotation>
+     <xs:documentation>
+        A simple string type of max length 128.
+     </xs:documentation>
+  </xs:annotation>
+   <xs:restriction base = "xs:string" >
+      <xs:maxLength value = "128" />
+   </xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name = "db2_string_type_256" >
+  <xs:annotation>
+     <xs:documentation>
+        A simple string type of max length 256.
+     </xs:documentation>
+  </xs:annotation>
+   <xs:restriction base = "xs:string" >
+      <xs:maxLength value = "256" />
+   </xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name = "db2_string_type_1024" >
+  <xs:annotation>
+     <xs:documentation>
+        A simple string type of max length 1024.
+     </xs:documentation>
+  </xs:annotation>
+   <xs:restriction base = "xs:string" >
+      <xs:maxLength value = "1024" />
+   </xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name = "db2_string_type_32768" >
+  <xs:annotation>
+     <xs:documentation>
+        A simple string type of max length 32768 (32K).
+     </xs:documentation>
+  </xs:annotation>
+   <xs:restriction base = "xs:string" >
+      <xs:maxLength value = "32768" />
+   </xs:restriction>
+</xs:simpleType>
+
+
+<xs:annotation>
+  <xs:documentation>
+  -----------------------------------------------------------------------------
+  Activity and System Level Metrics
+
+  Monitoring metrics are divided into two levels, those at the activity level
+  and those at the system level.  The following types define which elements
+  are approrpriate for each level.
+  -----------------------------------------------------------------------------
+  </xs:documentation>
+</xs:annotation>
+
+<xs:complexType name="system_level_metrics">
+  <xs:annotation>
+    <xs:documentation>
+    This type defines the metrics that are part of the system level.
+    </xs:documentation>
+  </xs:annotation>
+  <xs:sequence>
+    <xs:element name = "wlm_queue_time_total"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element wlm_queu_time_total for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "wlm_queue_assignments_total"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element wlm_queue_assignments_total for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "fcm_tq_recv_wait_time"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element fcm_tq_recv_wait_time for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "fcm_message_recv_wait_time"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element fcm_message_recv_wait_time for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "fcm_tq_send_wait_time"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element fcm_tq_send_wait_time for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "fcm_message_send_wait_time"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element fcm_message_send_wait_time for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "agent_wait_time"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element agent_wait_time for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "agent_waits_total"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element agent_waits_total for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "lock_wait_time"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element lock_wait_time for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "lock_waits"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element lock_waits for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "direct_read_time"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element direct_read_time for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "direct_read_reqs"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element direct_read_reqs for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "direct_write_time"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element direct_write_time for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "direct_write_reqs"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element direct_write_reqs for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "log_buffer_wait_time"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element log_buffer_wait_time for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "num_log_buffer_full"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element num_log_buffer_full for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "log_disk_wait_time"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element log_disk_wait_time for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "log_disk_waits_total"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element log_disk_waits_total for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "tcpip_recv_wait_time"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element tcpip_recv_wait_time for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "tcpip_recvs_total"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element tcpip_recvs_total for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "client_idle_wait_time"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element client_idle_wait_time for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "ipc_recv_wait_time"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element ipc_recv_wait_time for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "ipc_recvs_total"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element ipc_recvs_total for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "ipc_send_wait_time"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element ipc_send_wait_time for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "ipc_sends_total"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element ipc_sends_total for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "tcpip_send_wait_time"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element tcpip_send_wait_time for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "tcpip_sends_total"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element tcpip_sends_total for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "pool_write_time"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element pool_write_time for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "pool_read_time"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element pool_read_time for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "audit_file_write_wait_time"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element audit_file_write_wait_time for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "audit_file_writes_total"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element audit_file_writes_total for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "audit_subsystem_wait_time"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element audit_subsystem_wait_time for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "audit_subsystem_waits_total"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element audit_subsystem_waits_total for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "diaglog_write_wait_time"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element diaglog_write_wait_time for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "diaglog_writes_total"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element diaglog_writes_total for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "fcm_send_wait_time"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element fcm_send_wait_time for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "fcm_recv_wait_time"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element fcm_recv_wait_time for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "total_wait_time"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element total_wait_time for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "total_rqst_time"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element total_rqst_time for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "rqsts_completed_total"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element rqsts_completed_total for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "total_app_rqst_time"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element total_app_rqst_time for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "app_rqsts_completed_total"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element app_rqsts_completed_total for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "total_section_sort_proc_time"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element total_section_sort_proc_time for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "total_section_sort_time"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element total_section_sort_time for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+
+    <xs:element name = "total_section_sorts"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element total_section_sorts for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "rows_read"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element rows_read for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "rows_modified"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element rows_modified for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "pool_data_l_reads"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element pool_data_l_reads for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "pool_index_l_reads"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element pool_index_l_reads for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "pool_temp_data_l_reads"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element pool_temp_data_l_reads for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "pool_temp_index_l_reads"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element pool_temp_index_l_reads for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "pool_xda_l_reads"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element pool_xda_l_reads for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "pool_temp_xda_l_reads"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element pool_temp_xda_l_reads for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "total_cpu_time"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element total_cpu_time for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "act_completed_total"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element act_completed_total for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "pool_data_p_reads"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element pool_data_p_reads for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "pool_temp_data_p_reads"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element pool_temp_data_p_reads for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "pool_xda_p_reads"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element pool_xda_p_reads for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "pool_temp_xda_p_reads"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element pool_temp_xda_p_reads for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "pool_index_p_reads"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element pool_index_p_reads for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "pool_temp_index_p_reads"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element pool_temp_index_p_reads for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "pool_data_writes"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element pool_data_writes for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "pool_xda_writes"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element pool_xda_writes for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "pool_index_writes"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element pool_index_writes for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "direct_reads"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element direct_reads for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "direct_writes"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element direct_writes for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "rows_returned"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element rows_returned for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "deadlocks"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element deadlocks for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "lock_timeouts"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element lock_timeouts for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "lock_escals"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element lock_escals for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "fcm_sends_total"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element fcm_sends_total for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "fcm_recvs_total"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element fcm_recvs_total for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "fcm_send_volume"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element fcm_send_volume for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "fcm_recv_volume"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element fcm_recv_volume for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "fcm_message_sends_total"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element fcm_message_sends_total for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "fcm_message_recvs_total"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element fcm_message_recvs_total for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "fcm_message_send_volume"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element fcm_message_send_volume for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "fcm_message_recv_volume"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element fcm_message_recv_volume for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "fcm_tq_sends_total"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element fcm_tq_sends_total for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "fcm_tq_recvs_total"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element fcm_tq_recvs_total for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "fcm_tq_send_volume"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element fcm_tq_send_volume for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "fcm_tq_recv_volume"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element fcm_tq_recv_volume for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "tq_tot_send_spills"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element tq_tot_send_spills for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "tcpip_send_volume"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element tcpip_send_volume for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "tcpip_recv_volume"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element tcpip_recv_volume for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "ipc_send_volume"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element ipc_send_volume for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "ipc_recv_volume"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element ipc_recv_volume for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "post_threshold_sorts"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element post_threshold_sorts for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "post_shrthreshold_sorts"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element post_shrthreshold_sorts for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "sort_overflows"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element sort_overflows for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "audit_events_total"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element audit_events_total for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "total_rqst_mapped_in"
+                type = "metric_value_type"
+                minOccurs = "0"
+                maxOccurs = "1" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element total_rqst_mapped_in for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "total_rqst_mapped_out"
+                type = "metric_value_type"
+                minOccurs = "0"
+                maxOccurs = "1" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element total_rqst_mapped_out for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+
+    <xs:element name = "act_rejected_total"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element act_rejected_total for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "act_aborted_total"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element act_aborted_total for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+
+    <xs:element name = "total_sorts"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element total_sorts for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+
+    <xs:any minOccurs="0" maxOccurs="unbounded" processContents="skip" />
+    
+  </xs:sequence>
+  <xs:attribute name = "release"
+                type = "xs:long"
+                use  = "required" > 
+     <xs:annotation>
+       <xs:documentation>
+       Represents the DB2 product level this event was captured on.
+       </xs:documentation>
+     </xs:annotation>
+  </xs:attribute>
+
+  <xs:anyAttribute processContents="skip" />
+</xs:complexType>
+
+<xs:complexType name="activity_level_metrics">
+  <xs:annotation>
+    <xs:documentation>
+    This type defines the metrics that are part of the activity level.
+    </xs:documentation>
+  </xs:annotation>
+  <xs:sequence>
+    <xs:element name = "wlm_queue_time_total"
+                type = "metric_value_type" >
+           <xs:annotation>
+             <xs:documentation>
+             See monitor element wlm_queue_time_total for more details.
+             </xs:documentation>
+           </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "wlm_queue_assignments_total"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element wlm_queue_assignments_total for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "fcm_tq_recv_wait_time"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element fcm_tq_recv_wait_time for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "fcm_message_recv_wait_time"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element fcm_message_recv_wait_time for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "fcm_tq_send_wait_time"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element fcm_tq_send_wait_time for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "fcm_message_send_wait_time"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element fcm_message_send_wait_time for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "lock_wait_time"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element lock_wait_time for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "lock_waits"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element lock_waits for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "direct_read_time"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element direct_read_time for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "direct_read_reqs"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element direct_read_reqs for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "direct_write_time"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element direct_write_time for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "direct_write_reqs"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element direct_write_reqs for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "log_buffer_wait_time"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element log_buffer_wait_time for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "num_log_buffer_full"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element num_log_buffer_full for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "log_disk_wait_time"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element log_disk_wait_time for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "log_disk_waits_total"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element log_disk_waits_total for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "pool_write_time"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element pool_write_time for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "pool_read_time"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element pool_read_time for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "audit_file_write_wait_time"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element audit_file_write_wait_time for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "audit_file_writes_total"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element audit_file_writes_total for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "audit_subsystem_wait_time"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element audit_subsystem_wait_time for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "audit_subsystem_waits_total"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element audit_subsystem_waits_total for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "diaglog_write_wait_time"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element diaglog_write_wait_time for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "diaglog_writes_total"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element diaglog_writes_total for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "fcm_send_wait_time"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element fcm_send_wait_time for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "fcm_recv_wait_time"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element fcm_recv_wait_time for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "total_act_wait_time"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element total_act_wait_time for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "total_section_sort_proc_time"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element total_section_sort_proc_time for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "total_section_sort_time"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element total_section_sort_time for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "total_section_sorts"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element total_section_sorts for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "total_act_time"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element total_act_time for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "rows_read"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element rows_read for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "rows_modified"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element rows_modified for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "pool_data_l_reads"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element pool_data_l_reads for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "pool_index_l_reads"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element pool_index_l_reads for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "pool_temp_data_l_reads"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element pool_temp_data_l_reads for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "pool_temp_index_l_reads"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element pool_temp_index_l_reads for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "pool_xda_l_reads"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element pool_xda_l_reads for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "pool_temp_xda_l_reads"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element pool_temp_xda_l_reads for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "total_cpu_time"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element total_cpu_time for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "pool_data_p_reads"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element pool_data_p_reads for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "pool_temp_data_p_reads"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element pool_temp_data_p_reads for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "pool_xda_p_reads"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element pool_xda_p_reads for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "pool_temp_xda_p_reads"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element pool_temp_xda_p_reads for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "pool_index_p_reads"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element pool_index_p_reads for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "pool_temp_index_p_reads"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element pool_temp_index_p_reads for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "pool_data_writes"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element pool_data_writes for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "pool_xda_writes"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element pool_xda_writes for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "pool_index_writes"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element pool_index_writes for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "direct_reads"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element direct_reads for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "direct_writes"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element direct_writes for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "rows_returned"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element rows_returned for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "deadlocks"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element deadlocks for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "lock_timeouts"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element lock_timeouts for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "lock_escals"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element lock_escals for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "fcm_sends_total"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element fcm_sends_total for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "fcm_recvs_total"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element fcm_recvs_total for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "fcm_send_volume"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element fcm_send_volume for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "fcm_recv_volume"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element fcm_recv_volume for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "fcm_message_sends_total"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element fcm_message_sends_total for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "fcm_message_recvs_total"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element fcm_message_recvs_total for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "fcm_message_send_volume"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element fcm_message_send_volume for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "fcm_message_recv_volume"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element fcm_message_recv_volume for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "fcm_tq_sends_total"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element fcm_tq_sends_total for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "fcm_tq_recvs_total"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element fcm_tq_recvs_total for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "fcm_tq_send_volume"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element fcm_tq_send_volume for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "fcm_tq_recv_volume"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element fcm_tq_recv_volume for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "tq_tot_send_spills"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element tq_tot_send_spills for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "post_threshold_sorts"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element post_threshold_sorts for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "post_shrthreshold_sorts"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element post_shrthreshold_sorts for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "sort_overflows"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element sort_overflows for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:element name = "audit_events_total"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element audit_events_total for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+
+    <xs:element name = "total_sorts"
+                type = "metric_value_type" >
+      <xs:annotation>
+        <xs:documentation>
+          See monitor element total_sorts for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+    
+    <xs:any minOccurs="0" maxOccurs="unbounded" processContents="skip" />
+
+  </xs:sequence>
+
+  <xs:attribute name = "release"
+                type = "xs:long"
+                use  = "required" > 
+     <xs:annotation>
+       <xs:documentation>
+       Represents the DB2 product level this event was captured on.
+       </xs:documentation>
+     </xs:annotation>
+  </xs:attribute>
+
+  <xs:anyAttribute processContents="skip" />
+  
+</xs:complexType>
+
+
+<xs:element name = "system_metrics"
+            type = "system_level_metrics" >
+  <xs:annotation>
+    <xs:documentation>
+      System level metrics.
+    </xs:documentation>
+  </xs:annotation>
+</xs:element>
+
+
+<xs:element name = "activity_metrics" 
+            type = "activity_level_metrics" >
+  <xs:annotation>
+    <xs:documentation>
+      Activity level metrics.
+    </xs:documentation>
+  </xs:annotation>
+</xs:element>
+
+
+</xs:schema >
