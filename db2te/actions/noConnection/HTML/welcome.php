@@ -36,6 +36,9 @@ Java Bridge <?php if(JAVA_BRIDGE_ACTIVE) $v=java_get_version_info(); echo (JAVA_
 <p>
 PHP database driver check:<br/><br/>
 <?php
+if(DEBUG_LOG_2_CONSOLE)
+	error_log("Loading connection drivers started in Welcome");
+
 try {
 	$fileInDir = scandir(PHP_INCLUDE_BASE_DIRECTORY, 0);
 	sort($fileInDir);
@@ -43,6 +46,8 @@ try {
 	foreach($fileInDir as $currentFile) {
 		// Look for XML files that start with 'menu_' and end with '.xml' while ignoring case
 		if(preg_match('/^DBConnection_.*\.php$/i', $currentFile )) {
+			if(DEBUG_LOG_2_CONSOLE)
+				error_log("Loading connection driver ".$currentFile);
 			try {
 				include_once(PHP_INCLUDE_BASE_DIRECTORY . $currentFile);
 			} catch (Exception $e){
@@ -105,6 +110,8 @@ try {
 } catch (Exception $e){
 	error_log('Error loading DBConnections, exception: '.$e->getMessage());
 }
+if(DEBUG_LOG_2_CONSOLE)
+	error_log("Loading connection drivers finished ");
 ?>
 <p>
 Loaded PHP extensions:<br/><br/>
