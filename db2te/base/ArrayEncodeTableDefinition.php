@@ -52,9 +52,9 @@ class ArrayEncodeTableDefinition {
 			$doc = new XMLNode();
 			if($doc->loadXML($actionXML) == false) return null;
 			return array_merge( ArrayEncodeTableDefinition::fromDOM($doc) , array("sourceXML" => $actionXML ) );
-		} catch (Exception $e){
-			return null;
-		}
+		} catch (Exception $e){	}
+		error_log('ArrayEncodeTableDefinition::fromString exception xlm: '.$actionXML,0);
+		return null;
 	}
 	
 	static function fromDOM(&$tableDefNode) {

@@ -48,6 +48,7 @@ try {
 			if(DEBUG_LOG_2_CONSOLE)	error_log("Loading connection driver ".$currentFile,0);
 			try {
 				include_once(PHP_INCLUDE_BASE_DIRECTORY . $currentFile);
+				if(DEBUG_LOG_2_CONSOLE)	error_log("Loaded connection driver ".$currentFile,0);
 			} catch (Exception $e){
 				if(DEBUG_LOG_2_CONSOLE) error_log("error ".$e->getMessage(),0);
 				echo '<font style="background-color:RED;padding:5px;">';
@@ -93,8 +94,12 @@ try {
 				echo strtoupper($requiredExtension) . ' v' . $extension_version . ' PHP module detected';
 				echo '</font><br/><br/>';
 				continue;
-			} 
-			$driverLoaded = eval('return ' . $className . '::$driverLoaded  ;');
+			}
+			if (version_compare(PHP_VERSION, '5.3.0') >= 0) 
+				$driverLoaded = $className::$driverLoaded;
+			else
+				$driverLoaded = eval('return ' . $className . '::$driverLoaded  ;');
+				
 			if(!isset($GLOBALS[$driverLoaded]) || ! $GLOBALS[$driverLoaded]) {
 				echo '<font style="background-color:RED;padding:5px;">';
 				echo strtoupper($requiredExtension) . (JAVA_BRIDGE_ACTIVE?" The driver class library location not defined or found.":" PHP Java Bridge not installed");

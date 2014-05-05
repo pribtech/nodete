@@ -45,6 +45,10 @@ try {
 			$FeedDataFromAllSources[]=errorFeed( $source['title'], 'No data' );
 			continue; 
 		}
+		if(preg_match('/^Not Found/', $RawData) > 0) {
+			$FeedDataFromAllSources[]=errorFeed( $source['title'], $RawData );
+			continue; 
+		}
 		$Feed = ArrayEncodeFeed::fromString($RawData);
 		if($Feed==null || !isset($Feed['description']) ) {
 			$FeedDataFromAllSources[]=errorFeed( $source['title'], 'No RSS data' );

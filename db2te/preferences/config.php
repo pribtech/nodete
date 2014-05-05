@@ -76,6 +76,5 @@
 //@define("TRACE_ACTION_CALLS", true);
 setDefine("DEVELOPMENT_MODE", true);
 //setDefineDirectory("JAVA_DB_DRIVER_JSON_NOSQL_DB2", "C:\\Program Files\\IBM\\SQLLIB_E105\\json\\lib");
-setDefine("DEBUG_LOG_2_CONSOLE", true);
 
 

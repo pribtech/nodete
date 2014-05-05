@@ -27,8 +27,9 @@ class XMLNodeParser implements XMLNodeParser_Interface {
 	}
 	
 	
-	public static function loadXML($Document, &$XMLNode) {
+	public static function loadXML($Document="", &$XMLNode) {
 		try {
+			if($Document=="") throw new Exception( "Null or empty xml");
 			$doc = new DOMDocument();
 			set_error_handler('XMLNodeParser::HandleXmlError');
 			if(@$doc->loadXML($Document)) {
@@ -41,10 +42,12 @@ class XMLNodeParser implements XMLNodeParser_Interface {
  				}
 				return $XMLNode;
 			}
+			error_log('XMLNodeParser::loadXML exception xml: '.$Document,0);
 			return false;
 		} catch (Exception $e)	{
 			restore_error_handler();
-			error_log("XMLNodeParser->XMLNodeParser error: ".$e->getMessage()." Document: ".$Document,0);
+			error_log("XMLNodeParser::loadXML error: ".$e->getMessage()." Document: ".$Document,0);
+			error_log("Stack trace: ".var_export($e->getTrace(),true));
 			throw $e;
 		}
 	}
@@ -54,10 +57,9 @@ class XMLNodeParser implements XMLNodeParser_Interface {
 		$XMLNode->nodeName = $NativeNode->nodeName;
 		$XMLNode->textContent = $NativeNode->textContent;
 
-		if($NativeNode->attributes != null) {
+		if($NativeNode->attributes != null)
 			foreach ($NativeNode->attributes as $index=>$attr) 
 				$XMLNode->attributes[$index] = stripslashes($attr->value);
-		}
 
 		if($NativeNode->childNodes != null)
 			foreach ($NativeNode->childNodes as $childNativeNode) 

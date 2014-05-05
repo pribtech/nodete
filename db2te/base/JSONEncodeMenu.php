@@ -480,11 +480,14 @@ class JSONEncodeMenu {
 		return null;
 	}
 	
-	static function loadStringNodes($xml, $nodeNameToEncode, $depth = -1) {
+	static function loadStringNodes($xml = "", $nodeNameToEncode, $depth = -1) {
 		if($xml == "") return null;
 		try {
 			$doc = new XMLNode();
-			if($doc->loadXML($xml) == false) return null;
+			if($doc->loadXML($xml) == false) {
+				error_log('JSONEncodeMenu loadsStringNodes loadXML failed xml: '.$xml,0);
+				return null;
+			}
 			$returnObject = array();
 			foreach($doc->childNodes as $node) {
 	     		if( trim($node->nodeName) == $nodeNameToEncode)
@@ -537,13 +540,15 @@ class JSONEncodeMenu {
 		return $returnObject;
 	}
 	
-	static function retrieveLinksFromString($XMLString)	{
-		if($DomObject == "") return null;
+	static function retrieveLinksFromString($XMLString = "")	{
+		if($XMLString == "") return null;
 		try {
 			$DomObject = new XMLNode();
 			if($DomObject->loadXML($DomObject))
 				return JSONEncodeMenu::retrieveLinksFromDOM($DomObject);
-		} catch (Exception $e){	}
+		} catch (Exception $e){	
+			error_log('JSONEncodeMenu retrieveLinksFromString, exception: '.$e->getMessage().' xml:'.$XMLString,0);
+		}
 		return null;		
 	}
 	

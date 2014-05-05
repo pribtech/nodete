@@ -2,7 +2,7 @@
 /*******************************************************************************
  *  Author: Peter Prib
  * 
- * Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2013 All rights reserved.
+ * Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2014 All rights reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -47,7 +47,6 @@ class Connection_HADOOP extends Connection {
 		$this->connected = false;
 		$this->DBMS=self::$classDBMS;
 		if(!@$this->driverCheck()) return;
-
 		$this->description = $username."@".$hostname.":". $portnumber;
 		$this->username = $username;
 		$this->password = $password;

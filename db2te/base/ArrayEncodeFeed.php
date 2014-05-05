@@ -25,6 +25,7 @@ class ArrayEncodeFeed {
 	static function fromFile($directory, $filename)	{
 		if(file_exists($directory.$filename))
 			return ArrayEncodeFeed::fromString(file_get_contents($directory . $filename));
+		error_log('ArrayEncodeFeed::fromFile file not found : '.$directory . $filename,0);
 		return null;
 	}
 	
@@ -36,6 +37,7 @@ class ArrayEncodeFeed {
 					return ArrayEncodeFeed::fromDOM($doc);
 			} catch (Exception $e){}
 		}
+		error_log('ArrayEncodeFeed::fromString exception xlm: '.$actionXML,0);
 		return null;		
 	}
 	

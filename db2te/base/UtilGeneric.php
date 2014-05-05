@@ -148,13 +148,12 @@ Table;
 }
 
 function parseXML($input) {
-	$doc = null;
-
 	try  {
 		$doc = new XMLNode();
 		if($doc->loadXML($input) === false)
-			return "\n\n-- XML parsing error  --\n\n";
+			throw new Exception("loadXML failed");
 	} catch (Exception $e) {
+		error_log('parseXML exception: '.$e->getMessage().' xml: '.$input,0);
 		return "\n\n-- XML parsing error  --\n\n";
 	}
 	return print_XML_NODE($doc, 0);
