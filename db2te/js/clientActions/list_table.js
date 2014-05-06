@@ -648,7 +648,7 @@ CORE_CLIENT_ACTIONS.set("list_table",Class.create(basePageElement, {
 								if(e instanceof Array)
 									thisObject.setErrorFormatted(e[0],e[1]);
 								else 
-									thisObject.setErrorFormatted(e);
+									thisObject.setErrorFormatted(decodeURI(e));
 								return;
 							}
 							retrievedData=thisObject.retrieveStack.shift();

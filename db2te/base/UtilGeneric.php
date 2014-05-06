@@ -2,6 +2,9 @@
 /*******************************************************************************
  *  Copyright IBM Corp. 2007 All rights reserved.
  *
+ *  Addition and Modification, author: Peter Prib
+ * 	Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2014 All rights reserved.
+ *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
  *  You may obtain a copy of the License at
@@ -36,8 +39,9 @@ function callAction($ActionToCall) {
 	try {
   		include_once($ActionToCall);
 	}catch(Exception $err){
+		error_log($err,0);
 		if(RETURN_TYPE == "JSON") {
-			$errormsg = rawurlencode($err);
+			$errormsg = rawurlencode($err->getMessage());
 			echo <<<JSON
 			{
 				flagGeneralError: true,
@@ -280,4 +284,46 @@ function logError($level,$message) {
 /* Returns server path to a PHP file. */
 function getServerPath($serv, $URI, $fname) {
     return $serv.substr($URI, 0, stripos($URI, basename($fname)));
+}
+
+
+function getFileLastLines($fileName="",$maxLines=10) {
+	if($fileName=="")
+		throw new Exception('No file specified');
+	$testFile=$fileName;
+	if(is_file($testFile)) {
+		$testFile='"'.$fileName.'"';
+		if(is_file($testFile))
+			throw new Exception('File not found');
+	}
+	if(is_readable($testFile))
+		throw new Exception('Not authorised to read file');
+	$file = fopen((substr(php_uname(), 0, 7) == "Windows"?addcslashes($fileName, '\\'):$fileName), 'r');
+	if(!$file)
+		throw new Exception('Cannot open file');
+	$position = filesize($fileName); 
+	$lines = array();
+	$currentLine = '';
+	if (-1 !== fseek($file ,$position ,SEEK_SET)) {
+		$char = fgetc($file);
+		if ($char == "\r" ) $position--;
+		if (-1 !== fseek($file ,$position ,SEEK_SET)) {
+			$char = fgetc($file);
+			if ($char == "\n" ) $position--;
+		}
+	}
+	$minPosition=$position-($maxLines*128);
+	while ($position>$minPosition && (-1 !== fseek($file ,$position ,SEEK_SET))) {
+		$char = fgetc($file);
+		if ($char == "\n" ) {
+			$lines[] = $currentLine;
+			if( count($lines) > $maxLines) 
+				return $lines;
+			$currentLine = '';
+		} elseif ($char !== "\r") 
+			$currentLine = $char . $currentLine;
+		$position--;
+	}
+	$lines[] = $currentLine;
+	return $lines;
 }
