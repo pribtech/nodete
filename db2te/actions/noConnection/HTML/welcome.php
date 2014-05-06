@@ -70,19 +70,25 @@ try {
 				if(DEBUG_LOG_2_CONSOLE)	error_log("Loaded connection driver ".$currentFile,0);
 			} catch (Exception $e){
 				if(DEBUG_LOG_2_CONSOLE) error_log("error ".$e->getMessage(),0);
-				echo '</tr><tr><td>'.$currentFile.'</td><td style="background-color:RED;">PHP module has problem loading. Error: '.$e->getMessage().'</td>';
+				echo '</tr><tr><td>'.$currentFile.'</td><td style="background-color:RED;">PHP module has problem loading, error: '.$e->getMessage().'</td>';
 				continue;
 			}
 			$className = substr($currentFile, 2, -4);
 			if($className === false) continue;
-			if (version_compare(PHP_VERSION, '5.3.0') >= 0) {
-				$isPHPExtension      = $className::$isPHPExtension;
-				$requiredExtension   = $className::$requiredDBExtension;
-				$reqMinVersion       = $className::$requiredDBExtensionMinVersion;
-			} else {
-				$isPHPExtension      = eval('return ' . $className . '::$isPHPExtension;');
-				$requiredExtension   = eval('return ' . $className . '::$requiredDBExtension;');
-				$reqMinVersion       = eval('return ' . $className . '::$requiredDBExtensionMinVersion;');
+			try{
+				if (version_compare(PHP_VERSION, '5.3.0') >= 0) {
+					$isPHPExtension      = $className::$isPHPExtension;
+					$requiredExtension   = $className::$requiredDBExtension;
+					$reqMinVersion       = $className::$requiredDBExtensionMinVersion;
+				} else {
+					$isPHPExtension      = eval('return ' . $className . '::$isPHPExtension;');
+					$requiredExtension   = eval('return ' . $className . '::$requiredDBExtension;');
+					$reqMinVersion       = eval('return ' . $className . '::$requiredDBExtensionMinVersion;');
+				}
+			} catch (Exception $e){
+				if(DEBUG_LOG_2_CONSOLE) error_log("error ".$e->getMessage(),0);
+				echo '</tr><tr><td>'.$currentFile.'</td><td style="background-color:RED;">PHP module has problem with class definition, error: '.$e->getMessage().'</td>';
+				continue;
 			}
 			if($requiredExtension === false) continue;
 			echo '</tr><tr><td>'.strtoupper($requiredExtension).'</td>';		
