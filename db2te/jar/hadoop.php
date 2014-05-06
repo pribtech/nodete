@@ -28,11 +28,13 @@ $files = @scandir(HADOOP_HOME);
 foreach($files as $file)
 	if(preg_match('/hadoop-core*/i', $file) ) $jarfile=$file;
 if(!isset($jarfile)) return;
+if(DEBUG_LOG_2_CONSOLE)	error_log("hadoop hadoopLoader start",0);
 $GLOBALS["hadoopLoader"] = new JavaClassLoader(HADOOP_HOME.$jarfile,HADOOP_HOME.'lib/');
 $GLOBALS["hadoopLoader"]->getClass('org.apache.hadoop.conf.Configuration');
 $GLOBALS["hadoopLoader"]->getClass('org.apache.hadoop.mapreduce.Job');
 $GLOBALS["hadoopLoader"]->getClass('org.apache.hadoop.mapred.JobConf');
 $GLOBALS["hadoopLoader"]->getClass('org.apache.hadoop.mapred.JobClient');
 $GLOBALS["hadoopDriverLoaded"]=($GLOBALS["org.apache.hadoop.conf.Configuration"]!=null);
+if(DEBUG_LOG_2_CONSOLE)	error_log("hadoop hadoopLoader completed",0);
  
 ?>
