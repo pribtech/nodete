@@ -6,7 +6,7 @@
 	<tr>
 		<td><img src="./images/logo.jpg"/></td>
 		<td><h1>The Technology Explorer for IBM DB2 <?php echo TE_VERSION ?></h1></td>
-		<td><img src="./images/frygmalogo.jpg" height="80" /></td>
+		<td><img src="./images/frygmaLogo.jpg" height="80" /></td>
 		</tr>
 </table>
 <table border="0" cellspacing="0" cellpadding="5">
@@ -105,13 +105,17 @@ try {
 				echo '<td style="background-color:limegreen;"> v' . $extension_version . ' PHP module detected</td>';
 				continue;
 			}
+			if(!JAVA_BRIDGE_ACTIVE) {
+				echo '<td style="background-color:RED;">PHP Java Bridge not installed"</td>';
+				continue;;
+			} 
 			if (version_compare(PHP_VERSION, '5.3.0') >= 0)
 				$driverLoaded = $className::$driverLoaded;
 			else
 				$driverLoaded = eval('return ' . $className . '::$driverLoaded  ;');
 				
 			if(!isset($GLOBALS[$driverLoaded]) || ! $GLOBALS[$driverLoaded]) {
-				echo '<td style="background-color:RED;">'.(JAVA_BRIDGE_ACTIVE?" The driver class library location not defined or found.": " PHP Java Bridge not installed").'</td>';
+				echo '<td style="background-color:RED;">The driver class library location not defined or found.</td>';
 				continue;;
 			} 
 			echo '<td style="background-color:limegreen;"> extension using java bridge module detected</td>';		
