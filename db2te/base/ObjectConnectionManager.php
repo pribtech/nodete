@@ -416,44 +416,23 @@ class connectionManager{
 		return null;
 	}
 
-	public static function retrieveVCAP_SERVICES()	{
-		if(BLUEMIX) return;
-	/*
-
-VCAP_SERVICES={"SQLDB-1.0":
-	[{"name":"SQLDB-testdb2"
-	,"label":"SQLDB-1.0"
-	,"tags":["ibm_created","data_management"]
-	,"plan":"SQLDB_OpenBeta"
-	,"credentials":{
-		"hostname":"192.155.243.151"
-		,"host":"192.155.243.151"
-		,"port":50000
-		,"username":"u42849"
-		,"password":"UPTAyidsAZ"
-		,"db":"I_268507"
-		,"jdbcurl":"jdbc:db2://192.155.243.151:50000/I_268507"
-		,"uri":"db2://u42849:UPTAyidsAZ@192.155.243.151:50000/I_268507"
-		}}
-	]}
-*/
+	public static function setVCAP_SERVICES($connectionList) {
+		if(!CLOUD) return;
 		foreach(VCAP_SERVICES as $service) {
-			if($service["credentials"]["jdbcurl"]) continue;
+			if(!isset($service["credentials"]["jdbcurl"])) continue;
 			if($service["credentials"]["jdbcurl"]=="") continue;
-			$description = "@".$service["name"];
-			$connectionList[$description]['group'] = "VCAP_SERVICE";
-			$connectionList[$description]['comment'] = "Bluemix service";
-			$connectionList[$description]['database'] = $service["credentials"]["db"];
-			$connectionList[$description]['hostname'] = $service["credentials"]["host"];
-			$connectionList[$description]['portnumber'] = $service["credentials"]["port"];
-			$connectionList[$description]['description'] = $description;
-			$connectionList[$description]['username'] = $service["credentials"]["username"];
-			$connectionList[$description]['password'] = $service["credentials"]["password"];
+			$description = "@".(isset($service["name"])?:"*** not found ***");
+			$connectionList[$description]['group'] 		= "VCAP_SERVICE";
+			$connectionList[$description]['comment'] 	= "Bluemix service";
+			$connectionList[$description]['database'] 	= (isset($service["credentials"]["db"])?$service["credentials"]["db"]:"*** not found ***");
+			$connectionList[$description]['hostname'] 	= (isset($service["credentials"]["host"])?$service["credentials"]["host"]:"*** not found ***");
+			$connectionList[$description]['portnumber'] = (isset($service["credentials"]["port"])?$service["credentials"]["port"]:"*** not found ***");
+			$connectionList[$description]['description']= $description;
+			$connectionList[$description]['username'] 	= (isset($service["credentials"]["username"])?$service["credentials"]["username"]:"*** not found ***");
+			$connectionList[$description]['password']	= (isset($service["credentials"]["password"])?$service["credentials"]["password"]:"*** not found ***");
 			$connectionList[$description]['activeOnFirstLoad'] = true;
 			$connectionList[$description]['connectionStatus'] = false;
 			$jdburl=$service["credentials"]["jdbcurl"];
-			
-			
 			$connectionList[$description]['databaseDriver'] = DEFAULT_DATABASE_DRIVER;
 		}
 	}
@@ -500,6 +479,7 @@ VCAP_SERVICES={"SQLDB-1.0":
 			TE_session_write_close();
 			return $connectionList;
 		}
+		self::setVCAP_SERVICES($connectionList);
 		$connectionStoreDoc = self::readSavedConnectionList();
 		if($connectionStoreDoc !== false) {
 			foreach($connectionStoreDoc->childNodes as $node) {
