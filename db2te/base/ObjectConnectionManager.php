@@ -418,7 +418,7 @@ class connectionManager{
 
 	public static function setVCAP_SERVICES($connectionList) {
 		if(!CLOUD) return;
-		foreach(VCAP_SERVICES as $service) {
+		foreach(json_decode(VCAP_SERVICES, true) as $service) {
 			if(!isset($service["credentials"]["jdbcurl"])) continue;
 			if($service["credentials"]["jdbcurl"]=="") continue;
 			$description = "@".(isset($service["name"])?:"*** not found ***");

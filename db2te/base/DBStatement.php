@@ -163,7 +163,7 @@ abstract class Statement {
  * $db2conn the database connection 
  * Returns the number of bindable parameters
  * @return array */
-	abstract public static function getNumberOfParametersToBind($query, $db2conn);
+	public static function getNumberOfParametersToBind($query, $db2conn){return 0;}
 	
 	abstract public function executeStmtWithParameters($bindParameters);
 	

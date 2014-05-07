@@ -19,7 +19,7 @@
 if( getenv('VCAP_APPLICATION')) {
 	setDefine("CLOUD", true);
 	setDefine("VCAP_APPLICATION", json_decode(getenv('VCAP_APPLICATION'), true));
-	setDefine("VCAP_SERVICES", json_decode(getenv('VCAP_SERVICES'), true));
+	setDefine("VCAP_SERVICES", getenv('VCAP_SERVICES'));
 	if( getenv('VCAP_APP_PORT'))
 		setDefine("VCAP_APP_PORT", getenv('VCAP_APP_PORT'));
 } else 
