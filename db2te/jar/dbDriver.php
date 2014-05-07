@@ -47,14 +47,14 @@ try {
 			}
 		}
 	}
-	if(JAVA_DB_DRIVER_DB2 != null) {
+	if(is_file(JAVA_DB_DRIVER_DB2)) {
 		if(!isset($GLOBALS["DB2DriverLoaded"])) {
 			$GLOBALS["db2ClassLoader"] = new JavaClassLoader(JAVA_DB_DRIVER_DB2,JAVA_DB_DRIVER_DB2_LICENSE);
 			$GLOBALS["db2ClassLoader"]->getClass('com.ibm.db2.jcc.DB2ConnectionPoolDataSource');
 			$GLOBALS["DB2DriverLoaded"]=true;
 		}
 	}
-	if(JAVA_DB_DRIVER_JSON_NOSQL_DB2 != null) {
+	if(is_dir(JAVA_DB_DRIVER_JSON_NOSQL_DB2)) {
 		if(isset($GLOBALS["DB2DriverLoaded"]) && !isset($GLOBALS["jsonNoSqlDB2DriverLoaded"])) {
 			$GLOBALS["jsonNoSqlDB2DriverLoaded"] = new JavaClassLoader(JAVA_DB_DRIVER_DB2,JAVA_DB_DRIVER_DB2_LICENSE,JAVA_DB_DRIVER_JSON_NOSQL_DB2);
 			$GLOBALS["jsonNoSqlDB2DriverLoaded"]->getClass('com.ibm.nosql.json.api.NoSQLClient');

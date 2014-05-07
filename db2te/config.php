@@ -22,20 +22,12 @@ function setDefine($var,$value=null) {
 function setDefineFile($var,$valueWindows=null,$valueLinux=null) {
 	if (defined($var)) return;
 	$value=(substr(php_uname(), 0, 7) == "Windows"?$valueWindows:$valueLinux);
-	if(is_file($value))
-		@define($var, $value);
-	else {
-		@define($var, null);
-//		error_log("define variable ".$var." file not found: \"".$value."\"",0);
-	}
+	@define($var, $value);
 }
 function setDefineDirectory($var,$valueWindows,$valueLinux=null) {
 	if (defined($var)) return;
 	$value=(substr(php_uname(), 0, 7) == "Windows"?$valueWindows:$valueLinux);
-	if(is_dir($value))
-		@define($var, $value);
-	else
-		@define($var, null);
+	@define($var, $value);
 }
 
 /******************************************************************************
@@ -50,7 +42,6 @@ function setDefineDirectory($var,$valueWindows,$valueLinux=null) {
 /******************************************************************************
  * END - VERSION INFORMATION
  *****************************************************************************/
-require_once("./config.bluemix.php");
 if( getenv('TE_SETTINGS') )
 	try{
 		$settings =  json_decode(getenv('TE_SETTINGS'), true);
@@ -576,7 +567,7 @@ setDefine("JAVA_DB_DRIVER_DERBY", __DIR__."/jar/derby/derbyclient.jar");
  * @var  string JAVA_DB_DRIVER_DB2 */
 setDefineFile("JAVA_DB_DRIVER_DB2", "C:\\Program Files\\IBM\\SQLLIB\\java\\db2jcc4.jar","/home/db2inst1/SQLLIB/java/db2jcc4.jar");
 setDefineFile("JAVA_DB_DRIVER_DB2_LICENSE", "C:\\Program Files\\IBM\\SQLLIB\\java\\db2jcc_license_cu.jar","/home/db2inst1/SQLLIB/java/db2jcc_license_cu.jar");
-setDefineDirectory("JAVA_DB_DRIVER_JSON_NOSQL_DB2", "C:\\Program Files\\IBM\\SQLLIB\\json\\lib");
+setDefineDirectory("JAVA_DB_DRIVER_JSON_NOSQL_DB2", "C:\\Program Files\\IBM\\SQLLIB\\json\\lib","/home/db2inst1/SQLLIB/json/lib/");
 
 /******************************************************************************
  * END -  BASE FOLDERS AND FILES

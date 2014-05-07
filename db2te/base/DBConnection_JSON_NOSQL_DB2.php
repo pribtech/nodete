@@ -36,6 +36,7 @@ class Connection_json_NoSql_DB2 extends Connection {
 	public static function driverCheck() {
 		if(self::driverOK(self::$driverLoaded)) return true;
 		if(self::driverNotDefined("JAVA_DB_DRIVER_JSON_NOSQL_DB2")) return false; 
+		if(is_dir(JAVA_DB_DRIVER_JSON_NOSQL_DB2)) return true;
 		self::setError( -1, "Connection_json_NoSql_DB2 driverCheck  was not loaded, driver location: ".JAVA_DB_DRIVER_JSON_NOSQL_DB2);
 		return false;
 	}

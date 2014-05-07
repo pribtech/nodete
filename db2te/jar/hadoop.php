@@ -23,7 +23,8 @@ if( isset($GLOBALS["hadoopLoader"]) )
 		if($GLOBALS["hadoopLoader"]) 
 			return; 
 if(HADOOP_HOME==null) return;  
-if(HADOOP_HOME=="") return;  
+if(HADOOP_HOME=="") return; 
+if(!is_dir(HADOOP_HOME)) return;
 $files = @scandir(HADOOP_HOME);
 foreach($files as $file)
 	if(preg_match('/hadoop-core*/i', $file) ) $jarfile=$file;
