@@ -419,26 +419,37 @@ class connectionManager{
 	public static function setVCAP_SERVICES($connectionList) {
 		if(!($services = getenv('VCAP_SERVICES'))) return;
 		foreach(json_decode($services, true) as $serviceName => $service) {
-			error_log('test '.var_export($service,true),0);
-			if(!isset($service["credentials"]["jdbcurl"])) continue;
-			if($service["credentials"]["jdbcurl"]=="") continue;
+//test array 0 => array ( 'name' => 'SQLDB-testdb2', 'label' => 'SQLDB-1.0', 'tags' => array ( 0 => 'ibm_created', 1 => 'data_management', ), 'plan' => 'SQLDB_OpenBeta', 'credentials' => array ( 'hostname' => '192.155.243.151', 'host' => '192.155.243.151', 'port' => 50000, 'username' => 'u893133', 'password' => 'okMiaBE0zF', 'db' => 'I_268507', 'jdbcurl' => 'jdbc:db2://192.155.243.151:50000/I_268507', 'uri' => 'db2://u893133:okMiaBE0zF@192.155.243.151:50000/I_268507', ), ), ) 
+
+			error_log('test '.var_export($service,true),0); 
+			$credentials=$service[0]["credentials"];
+			if(!isset($credentials["jdbcurl"])) continue;
+			if($credentials["jdbcurl"]=="") continue; 
 			error_log('test found',0);
 			$connection=array();
 			$description = "@".(isset($service["name"])?:"*** not found ***");
 			$connection['group'] 					= "VCAP_SERVICE";
 			$connection['comment'] 					= "Bluemix service ".$serviceName;
-			$connection[$connection]['database'] 	= (isset($service["credentials"]["db"])?$service["credentials"]["db"]:"*** not found ***");
-			$connection['hostname'] 				= (isset($service["credentials"]["host"])?$service["credentials"]["host"]:"*** not found ***");
-			$connection['portnumber'] 				= (isset($service["credentials"]["port"])?$service["credentials"]["port"]:"*** not found ***");
+			$connection[$connection]['database'] 	= (isset($credentials["db"])?$credentials["db"]:"*** not found ***");
+			$connection['hostname'] 				= (isset($credentials["host"])?$credentials["host"]:"*** not found ***");
+			$connection['portnumber'] 				= (isset($credentials["port"])?$credentials["port"]:"*** not found ***");
 			$connection['description']				= $description;
-			$connection['username'] 				= (isset($service["credentials"]["username"])?$service["credentials"]["username"]:"*** not found ***");
-			$connection['password']					= (isset($service["credentials"]["password"])?$service["credentials"]["password"]:"*** not found ***");
+			$connection['username'] 				= (isset($credentials["username"])?$credentials["username"]:"*** not found ***");
+			$connection['password']					= (isset($credentials["password"])?$credentials["password"]:"*** not found ***");
 			$connection['activeOnFirstLoad'] 		= true;
 			$connection['connectionStatus'] 		= false;
-			$jdburl=$service["credentials"]["jdbcurl"];
-			$connection['databaseDriver'] 			= DEFAULT_DATABASE_DRIVER;
 			$connection['connectionStatus']			= true;
-			$connectionList[$description]=$connection;
+			$dbtype=expode(":",$connection['uri']);
+			switch ($dbtype) {
+				case 'db2' :
+					$connection['databaseDriver']='IBM_DB2';
+					$connectionList[$description]=$connection;
+					$connection['databaseDriver']='JDBC_DB2';
+					$connectionList[$description]=$connection;
+				default:
+					$connection['databaseDriver']=toUpperCase('$dbtype');
+					$connectionList[$description]=$connection;
+			}
 		}
 	}
 
