@@ -28,7 +28,7 @@ foreach($lines as &$line)
 		$newLines[]=array(substr($line,1,$split-1),substr($line,$split+1,-1).$message);
 		$message="";
 	} else
-		$message='\n'.$line.$message;
+		$message=$line.PHP_EOL.$message;
 $returnObject = array(
 		 'returnCode' => 'true'
 		,'returnValue' => array(
