@@ -1,0 +1,115 @@
+<!--
+  Peter Prib, Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2012 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<table name="plSqlProfilerRuns">
+	<sqlName>plSqlProfilerRuns</sqlName>
+	<singularName>PL/SQL Profiler Run</singularName>
+	<pluralName>PL/SQL Profiler Runs</pluralName>
+	<inlinequery>SELECT	'?' as tabschema, r.* FROM "?".PLSQL_PROFILER_RUNS r </inlinequery>
+	<parameters>
+		<parm name="tabSchema">
+			<title>Schema</title>
+			<value>no schema</value>
+			<type>n</type>
+		</parm>
+		<parm name="tabSchema">
+			<title>Schema</title>
+			<value>no schema</value>
+			<type>n</type>
+		</parm>
+	</parameters>
+	<description/>
+	<disableEdit/>
+	<output>
+		<type name="DDL" destination="" title="" generator=""/>
+	</output>	<order_by_index name="runid" direction="D"/>
+	<displayColumns>
+		<col type="column" name="runid"/>
+		<col type="reference" name="units"/>
+		<col type="column" name="related_run"/>
+		<col type="column" name="run_owner"/>
+		<col type="column" name="run_date"/>
+		<col type="column" name="run_comment"/>
+		<col type="column" name="run_total_time"/>
+		<col type="column" name="run_system_info"/>
+		<col type="column" name="run_comment1"/>
+		<col type="column" name="spare1"/>
+	</displayColumns>
+	<reference name="units">
+		<title>Units</title>
+		<reftype>table</reftype>
+		<refvalue>Oracle/Monitor/plSqlProfilerUnits</refvalue>
+		<icon>images/icon-histo.gif</icon>
+		<panel>units</panel>
+		<ref foreign_column_name="tabSchema">
+			<local_column_name>tabSchema</local_column_name>
+		</ref>
+		<ref foreign_column_name="runid">
+			<local_column_name>runid</local_column_name>
+		</ref>
+	</reference>
+	<column name="runid">
+		<sql_name>RUNID</sql_name>
+		<title>Id.</title>
+		<type>n</type>
+	</column>
+	<column name="related_run">
+		<sql_name>RELATED_RUN</sql_name>
+		<title>Related</title>
+		<type>n</type>
+	</column>
+	<column name="run_owner">
+		<sql_name>RUN_OWNER</sql_name>
+		<title>Owner</title>
+		<type>s</type>
+	</column>
+	<column name="run_date">
+		<sql_name>RUN_DATE</sql_name>
+		<title>Run date</title>
+		<type>n</type>
+	</column>
+	<column name="run_comment">
+		<sql_name>RUN_COMMENT</sql_name>
+		<title>Comment</title>
+		<type>s</type>
+	</column>
+	<column name="run_total_time">
+		<sql_name>RUN_TOTAL_TIME/1000000000</sql_name>
+		<title>Total Time</title>
+		<type>n</type>
+		<formatNumber toDuration="ss"/> 
+	</column>
+	<column name="run_system_info">
+		<sql_name>RUN_SYSTEM_INFO</sql_name>
+		<title>System Info</title>
+		<type>s</type>
+	</column>
+	<column name="run_comment1">
+		<sql_name>RUN_COMMENT1</sql_name>
+		<title>Comment</title>
+		<type>s</type>
+	</column>
+	<column name="spare1">
+		<sql_name>SPARE1</sql_name>
+		<title>Spare</title>
+		<type>s</type>
+	</column>
+	<column name="tabSchema">
+		<c_sql_name>tabSchema</c_sql_name>
+		<c_title>Profile Table Schema</c_title>
+		<c_presentation/>
+	</column>
+</table>

@@ -1,0 +1,1980 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="DB2SchemaAnnotation.xsl"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:db2-xdb="http://www.ibm.com/xmlns/prod/db2/xdb1"
+           targetNamespace="http://www.ibm.com/xmlns/prod/db2/mon"
+           xmlns="http://www.ibm.com/xmlns/prod/db2/mon"
+           elementFormDefault="qualified"  >
+
+<xs:include schemaLocation="http://www.ibm.com/xmlns/prod/db2/mon" />
+
+<xs:annotation>
+  <xs:documentation>
+   ------------------------------------------------------------------
+   DB2 Locking Event Monitor XML Schema
+   ------------------------------------------------------------------
+
+   To view documentation regarding each attribute and element in this
+   schema file: open this XSD file in a web browser. If you copy the XSD
+   file to a different directory ensure that the XML stylesheet file
+   DB2SchemaAnnotation.xsl is also copied.
+  </xs:documentation>
+  <xs:appinfo>
+     <db2-xdb:table>
+       <db2-xdb:name>LOCK_EVENT</db2-xdb:name>
+       <db2-xdb:rowSet>LOCK_EVENT_SET</db2-xdb:rowSet>
+       <db2-xdb:rowSet>LOCK_DEADLOCK_SET</db2-xdb:rowSet>
+       <createStmt>
+       CREATE TABLE LOCK_EVENT(
+         XMLID                      VARCHAR(1000) NOT NULL,
+         EVENT_ID                   BIGINT        NOT NULL,
+         EVENT_TYPE                 VARCHAR(128)  NOT NULL,
+         EVENT_TIMESTAMP            TIMESTAMP     NOT NULL,
+         MEMBER                     SMALLINT      NOT NULL,
+         DL_CONNS                   INTEGER,
+         ROLLED_BACK_PARTICIPANT_NO INTEGER)
+       </createStmt>
+       <createIndex>
+       CREATE INDEX LOCK_EVENT_IND1 ON LOCK_EVENT (XMLID)
+       </createIndex>
+     </db2-xdb:table>
+     <db2-xdb:table>
+       <db2-xdb:name>LOCK_PARTICIPANTS</db2-xdb:name>
+       <db2-xdb:rowSet>LOCK_PARTICIPANTS_SET</db2-xdb:rowSet>
+       <createStmt>
+       CREATE TABLE LOCK_PARTICIPANTS(
+         XMLID                      VARCHAR(1000) NOT NULL,
+         PARTICIPANT_NO             INTEGER,
+         PARTICIPANT_TYPE           VARCHAR(10),
+         PARTICIPANT_NO_HOLDING_LK  INTEGER,
+         APPLICATION_HANDLE         BIGINT,
+         APPL_ID                    VARCHAR(128),
+         APPL_NAME                  VARCHAR(128),
+         AUTH_ID                    VARCHAR(128),
+         AGENT_TID                  BIGINT,
+         COORD_AGENT_TID            BIGINT,
+         AGENT_STATUS               INTEGER,
+         LOCK_TIMEOUT_VAL           BIGINT,
+         LOCK_WAIT_VAL              BIGINT,
+         WORKLOAD_ID                INTEGER,
+         WORKLOAD_NAME              VARCHAR(128),
+         SERVICE_CLASS_ID           INTEGER,
+         SERVICE_SUBCLASS_NAME      VARCHAR(128),
+         CURRENT_REQUEST            VARCHAR(32),
+         LOCK_ESCALATION            CHAR(3),
+         PAST_ACTIVITIES_WRAPPED    CHAR(3),
+         CLIENT_USERID              VARCHAR(255),
+         CLIENT_WRKSTNNAME          VARCHAR(255),
+         CLIENT_APPLNAME            VARCHAR(255),
+         CLIENT_ACCTNG              VARCHAR(255),
+         OBJECT_REQUESTED           VARCHAR(10),
+         LOCK_NAME                  CHAR(32),
+         LOCK_OBJECT_TYPE           VARCHAR(32),
+         LOCK_OBJECT_TYPE_ID        CHAR(1) FOR BIT DATA,
+         LOCK_ATTRIBUTES            CHAR(8),
+         LOCK_CURRENT_MODE          BIGINT,
+         LOCK_MODE_REQUESTED        BIGINT,
+         LOCK_MODE                  BIGINT,
+         LOCK_COUNT                 BIGINT,
+         LOCK_HOLD_COUNT            BIGINT,
+         LOCK_RRIID                 BIGINT,
+         LOCK_STATUS                BIGINT,
+         LOCK_RELEASE_FLAGS         CHAR(8),
+         LOCK_WAIT_START_TIME       TIMESTAMP,
+         LOCK_WAIT_END_TIME         TIMESTAMP,
+         TABLE_FILE_ID              BIGINT,
+         TABLE_NAME                 VARCHAR(128),
+         TABLE_SCHEMA               VARCHAR(128),
+         TABLESPACE_NAME            VARCHAR(128),
+         THRESHOLD_ID               INTEGER,
+         THRESHOLD_NAME             VARCHAR(128))
+       </createStmt>
+       <createIndex>
+       CREATE INDEX LOCK_PARTICIPANTS_IND1 ON LOCK_PARTICIPANTS 
+         (XMLID, PARTICIPANT_NO)
+       </createIndex>
+     </db2-xdb:table>
+     <db2-xdb:table>
+       <db2-xdb:name>LOCK_PARTICIPANT_ACTIVITIES</db2-xdb:name>
+       <db2-xdb:rowSet>LOCK_ACT_PARTICIPANT_SET</db2-xdb:rowSet>
+       <createStmt>
+       CREATE TABLE LOCK_PARTICIPANT_ACTIVITIES(
+         XMLID                      VARCHAR(1000) NOT NULL,
+         PARTICIPANT_NO             INTEGER,
+         ACTIVITY_ID                INTEGER,
+         ACTIVITY_TYPE              VARCHAR(10),
+         UOW_ID                     INTEGER,
+         PACKAGE_NAME               VARCHAR(128),
+         PACKAGE_SCHEMA             VARCHAR(128),
+         PACKAGE_VERSION_ID         VARCHAR(64),
+         CONSISTENCY_TOKEN          VARCHAR(8),
+         SECTION_NUMBER             BIGINT,
+         REOPT                      VARCHAR(10),
+         INCREMENTAL_BIND           CHAR(3),
+         EFFECTIVE_ISOLATION        CHAR(2),
+         EFFECTIVE_QUERY_DEGREE     BIGINT,
+         STMT_LOCK_TIMEOUT          INTEGER,
+         STMT_TYPE                  BIGINT,
+         STMT_QUERY_ID              BIGINT,
+         STMT_NEST_LEVEL            BIGINT,
+         STMT_INVOCATION_ID         BIGINT,
+         STMT_SOURCE_ID             BIGINT,
+         STMT_PKGCACHE_ID           BIGINT,
+         STMT_TEXT                  CLOB(2097152))
+       </createStmt>
+       <createIndex>
+       CREATE INDEX LOCK_PARTICIPANT_ACTIVITIES_IND1 ON LOCK_PARTICIPANT_ACTIVITIES 
+         (XMLID, PARTICIPANT_NO, ACTIVITY_ID, UOW_ID)
+       </createIndex>
+     </db2-xdb:table>
+     <db2-xdb:table>
+       <db2-xdb:name>LOCK_ACTIVITY_VALUES</db2-xdb:name>
+       <db2-xdb:rowSet>LOCK_ACT_VALUES_SET</db2-xdb:rowSet>
+       <createStmt>
+       CREATE TABLE LOCK_ACTIVITY_VALUES(
+         XMLID                      VARCHAR(1000) NOT NULL,
+         PARTICIPANT_NO             INTEGER,
+         ACTIVITY_ID                INTEGER,
+         UOW_ID                     INTEGER,
+         STMT_VALUE_INDEX           INTEGER,
+         STMT_VALUE_ISREOPT         INTEGER,
+         STMT_VALUE_ISNULL          INTEGER,
+         STMT_VALUE_TYPE            CHAR(16),
+         STMT_VALUE_DATA            CLOB(32K))
+       </createStmt>
+       <createIndex>
+       CREATE INDEX LOCK_ACTIVITY_VALUES_IND1 ON LOCK_ACTIVITY_VALUES 
+         (XMLID, PARTICIPANT_NO, ACTIVITY_ID, UOW_ID)
+       </createIndex>
+     </db2-xdb:table>
+     <db2-xdb:rowSetOperationOrder>
+        <db2-xdb:order>
+           <db2-xdb:rowSet>lock_event_set</db2-xdb:rowSet>
+           <db2-xdb:rowSet>lock_deadlock_set</db2-xdb:rowSet>
+           <db2-xdb:rowSet>lock_participants_set</db2-xdb:rowSet>
+           <db2-xdb:rowSet>lock_act_participant_set</db2-xdb:rowSet>
+           <db2-xdb:rowSet>lock_act_values_set</db2-xdb:rowSet>
+        </db2-xdb:order>
+     </db2-xdb:rowSetOperationOrder>
+  </xs:appinfo>
+</xs:annotation>
+
+
+<xs:element name = "db2_lock_event"
+            type = "db2lockevent" >
+  <xs:annotation>
+    <xs:documentation>
+    The main schema that describes a lock timeout, lock wait or deadlock
+    event in details.
+    </xs:documentation>
+  </xs:annotation>
+</xs:element>
+
+<xs:annotation>
+  <xs:documentation>
+   ------------------------------------------------------------------
+   db2LockEvent (db2lockevent)
+   ------------------------------------------------------------------
+  </xs:documentation>
+</xs:annotation>
+<xs:complexType name="db2lockevent" >
+  <xs:annotation>
+    <xs:documentation>
+    This schema describes the structure of each locking event captured by the
+    event monitor.
+    </xs:documentation>
+  </xs:annotation>
+
+  <xs:choice>
+    <xs:sequence>
+      <xs:element name      = "db2_deadlock_graph"
+                  type      = "db2dgraph"
+                  minOccurs = "0"
+                  maxOccurs = "1" >
+         <xs:annotation>
+           <xs:documentation>
+            Schema element represents the DB2 Deadlock Graph. The graph outlines
+            all the participants involved in the deadlock.
+           </xs:documentation>
+         </xs:annotation>
+      </xs:element>
+      <xs:element name      = "db2_participant"
+                  type      = "db2appinfo"
+                  minOccurs = "1"
+                  maxOccurs = "unbounded" >
+         <xs:annotation>
+           <xs:documentation>
+            Schema element represents the application information of the
+            all the participants involved in a lock event.
+           </xs:documentation>
+         </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+    <xs:sequence>
+      <xs:element name      = "db2_message"
+                  type      = "db2_string_type_1024"
+                  minOccurs = "1"
+                  maxOccurs = "1" >
+         <xs:annotation>
+           <xs:documentation>
+           Error message
+           </xs:documentation>
+         </xs:annotation>
+      </xs:element>
+      <xs:element name      = "db2_event_file"
+                  type      = "db2_string_type_1024"
+                  minOccurs = "1"
+                  maxOccurs = "1" >
+         <xs:annotation>
+           <xs:documentation>
+           Fully qualified path to file where event has been written.
+           </xs:documentation>
+         </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:choice>
+
+  <xs:attribute  name = "id"
+                 type = "xs:long"
+                 use  = "required" >
+     <xs:annotation>
+       <xs:documentation>
+       Integer representing the Event ID.
+       </xs:documentation>
+       <xs:appinfo>
+         <db2-xdb:rowSetMapping>
+            <db2-xdb:rowSet>lock_event_set</db2-xdb:rowSet>
+            <db2-xdb:column>event_id</db2-xdb:column>
+         </db2-xdb:rowSetMapping>
+         <db2-xdb:rowSetMapping>
+            <db2-xdb:rowSet>lock_event_set</db2-xdb:rowSet>
+            <db2-xdb:column>xmlid</db2-xdb:column>
+            <db2-xdb:expression>$DECOMP_DOCUMENTID</db2-xdb:expression>
+         </db2-xdb:rowSetMapping>
+         <db2-xdb:rowSetMapping>
+            <db2-xdb:rowSet>lock_deadlock_set</db2-xdb:rowSet>
+            <db2-xdb:column>xmlid</db2-xdb:column>
+            <db2-xdb:expression>$DECOMP_DOCUMENTID</db2-xdb:expression>
+         </db2-xdb:rowSetMapping>
+         <db2-xdb:rowSetMapping>
+            <db2-xdb:rowSet>lock_deadlock_set</db2-xdb:rowSet>
+            <db2-xdb:column>event_id</db2-xdb:column>
+         </db2-xdb:rowSetMapping>
+         <db2-xdb:rowSetMapping>
+            <db2-xdb:rowSet>lock_participants_set</db2-xdb:rowSet>
+            <db2-xdb:column>xmlid</db2-xdb:column>
+            <db2-xdb:expression>$DECOMP_DOCUMENTID</db2-xdb:expression>
+         </db2-xdb:rowSetMapping>
+         <db2-xdb:rowSetMapping>
+            <db2-xdb:rowSet>lock_act_participant_set</db2-xdb:rowSet>
+            <db2-xdb:column>xmlid</db2-xdb:column>
+            <db2-xdb:expression>$DECOMP_DOCUMENTID</db2-xdb:expression>
+         </db2-xdb:rowSetMapping>
+         <db2-xdb:rowSetMapping>
+            <db2-xdb:rowSet>lock_act_values_set</db2-xdb:rowSet>
+            <db2-xdb:column>xmlid</db2-xdb:column>
+            <db2-xdb:expression>$DECOMP_DOCUMENTID</db2-xdb:expression>
+         </db2-xdb:rowSetMapping>
+       </xs:appinfo>
+     </xs:annotation>
+  </xs:attribute>
+
+  <xs:attribute  name = "type"
+                 use  = "required" >
+     <xs:annotation>
+       <xs:documentation>
+       Type of locking event that has occurred. Lock events can be of
+       the following types: Locktimeout, Deadlock, or Lockwait.
+       </xs:documentation>
+       <xs:appinfo>
+         <db2-xdb:rowSetMapping>
+            <db2-xdb:rowSet>lock_event_set</db2-xdb:rowSet>
+            <db2-xdb:column>event_type</db2-xdb:column>
+            <db2-xdb:condition>$DECOMP_CONTENT != 'DEADLOCK'</db2-xdb:condition>
+         </db2-xdb:rowSetMapping>
+         <db2-xdb:rowSetMapping>
+            <db2-xdb:rowSet>lock_deadlock_set</db2-xdb:rowSet>
+            <db2-xdb:column>event_type</db2-xdb:column>
+            <db2-xdb:condition>$DECOMP_CONTENT = 'DEADLOCK'</db2-xdb:condition>
+         </db2-xdb:rowSetMapping>
+       </xs:appinfo>
+     </xs:annotation>
+     <xs:simpleType>
+       <xs:restriction base="db2_string_type_32">
+         <xs:enumeration value="LOCKTIMEOUT"/>
+         <xs:enumeration value="DEADLOCK"/>
+         <xs:enumeration value="LOCKWAIT"/>
+       </xs:restriction>
+     </xs:simpleType>
+  </xs:attribute>
+
+  <xs:attribute name = "timestamp"
+                type = "xs:dateTime"
+                use  = "required">
+     <xs:annotation>
+       <xs:documentation>
+       Timestamp representing when the lock event occurred.
+       </xs:documentation>
+       <xs:appinfo>
+         <db2-xdb:rowSetMapping>
+            <db2-xdb:rowSet>lock_event_set</db2-xdb:rowSet>
+            <db2-xdb:column>event_timestamp</db2-xdb:column>
+         </db2-xdb:rowSetMapping>
+         <db2-xdb:rowSetMapping>
+            <db2-xdb:rowSet>lock_deadlock_set</db2-xdb:rowSet>
+            <db2-xdb:column>event_timestamp</db2-xdb:column>
+         </db2-xdb:rowSetMapping>
+       </xs:appinfo>
+     </xs:annotation>
+  </xs:attribute>
+
+  <xs:attribute name = "member"
+                type = "member_type"
+                use  = "required" >
+     <xs:annotation>
+       <xs:documentation>
+       Memeber where the lock event occurred.
+       </xs:documentation>
+       <xs:appinfo>
+         <db2-xdb:rowSetMapping>
+            <db2-xdb:rowSet>lock_event_set</db2-xdb:rowSet>
+            <db2-xdb:column>member</db2-xdb:column>
+         </db2-xdb:rowSetMapping>
+         <db2-xdb:rowSetMapping>
+            <db2-xdb:rowSet>lock_deadlock_set</db2-xdb:rowSet>
+            <db2-xdb:column>member</db2-xdb:column>
+         </db2-xdb:rowSetMapping>
+       </xs:appinfo>
+     </xs:annotation>
+  </xs:attribute>
+
+  <xs:attribute name = "release"
+                type = "xs:long"
+                use  = "required" >
+     <xs:annotation>
+       <xs:documentation>
+       Represents the DB2 product level this event was captured on.
+       </xs:documentation>
+     </xs:annotation>
+  </xs:attribute>
+
+  <xs:anyAttribute processContents="skip" />
+</xs:complexType >
+
+<xs:annotation>
+  <xs:documentation>
+   ------------------------------------------------------------------
+   Application details
+   ------------------------------------------------------------------
+  </xs:documentation>
+</xs:annotation>
+<xs:complexType name="db2appdetails">
+  <xs:annotation>
+    <xs:documentation>
+    This schema represents the details regarding the participant.
+    </xs:documentation>
+  </xs:annotation>
+  <xs:sequence>
+    <xs:element name      = "application_handle"
+                type      = "application_handle_type"
+                minOccurs = "1"
+                maxOccurs = "1"
+                db2-xdb:rowSet = "lock_participants_set"
+                db2-xdb:column = "application_handle" >
+      <xs:annotation>
+        <xs:documentation>
+        A system-wide unique ID for the application.
+        See monitor element agent_id for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+
+    <xs:element name      = "appl_id"
+                type      = "appl_id_type"
+                minOccurs = "1"
+                maxOccurs = "1"
+                db2-xdb:truncate = "true"
+                db2-xdb:rowSet   = "lock_participants_set"
+                db2-xdb:column   = "appl_id" >
+      <xs:annotation>
+        <xs:documentation>
+        This identifier is generated when the application connects to the
+        database at the database manager. See monitor element appl_id for
+        more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+
+    <xs:element name      = "appl_name"
+                type      = "db2_string_type_128"
+                minOccurs = "1"
+                maxOccurs = "1"
+                db2-xdb:truncate = "true"
+                db2-xdb:rowSet   = "lock_participants_set"
+                db2-xdb:column   = "appl_name" >
+      <xs:annotation>
+        <xs:documentation>
+        The name of the application running at the client, as known to the database.
+        See monitor element appl_name for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+
+    <xs:element name      = "auth_id"
+                type      = "authid_type"
+                minOccurs = "1"
+                maxOccurs = "1"
+                db2-xdb:truncate = "true"
+                db2-xdb:rowSet   = "lock_participants_set"
+                db2-xdb:column   = "auth_id" >
+      <xs:annotation>
+        <xs:documentation>
+        The authorization ID of the user who invoked the application that is being monitored.
+        See monitor element auth_id for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+
+    <xs:element name      = "agent_tid"
+                type      = "xs:long"
+                minOccurs = "1"
+                maxOccurs = "1"
+                db2-xdb:rowSet   = "lock_participants_set"
+                db2-xdb:column   = "agent_tid" >
+      <xs:annotation>
+        <xs:documentation>
+        The unique identifier for the engine dispatchable unit (EDU) for the agent.
+        See monitor element agent_tid for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+
+    <xs:element name      = "coord_agent_tid"
+                type      = "xs:long"
+                minOccurs = "1"
+                maxOccurs = "1"
+                db2-xdb:rowSet   = "lock_participants_set"
+                db2-xdb:column   = "coord_agent_tid" >
+      <xs:annotation>
+        <xs:documentation>
+        The engine dispatchable unit (EDU) identifier of the coordinator agent for the application.
+        See monitor element coord_agent_tid for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+
+    <xs:element name      = "agent_status"
+                minOccurs = "1"
+                maxOccurs = "1">
+      <xs:annotation>
+        <xs:documentation>
+        The current status of the application.
+        See monitor element appl_status for more details.
+        </xs:documentation>
+      </xs:annotation>
+      <xs:complexType>
+        <xs:simpleContent>
+          <xs:extension base="db2_string_type_32">
+            <xs:attribute name = "id"
+                          type = "xs:int"
+                          use  = "optional"
+                          db2-xdb:rowSet = "lock_participants_set"
+                          db2-xdb:column = "agent_status" />
+          </xs:extension>
+        </xs:simpleContent>
+      </xs:complexType>
+    </xs:element>
+
+    <xs:element name      = "appl_action"
+                minOccurs = "1"
+                maxOccurs = "1">
+      <xs:annotation>
+        <xs:documentation>
+        The action/request that the client application is performing
+        </xs:documentation>
+      </xs:annotation>
+      <xs:complexType>
+        <xs:simpleContent>
+          <xs:extension base="db2_string_type_32">
+            <xs:attribute name = "id"
+                          type = "xs:int"
+                          use  = "optional" />
+          </xs:extension>
+        </xs:simpleContent>
+      </xs:complexType>
+    </xs:element>
+
+    <xs:element name      = "lock_timeout_val"
+                type      = "xs:long"
+                minOccurs = "1"
+                maxOccurs = "1"
+                db2-xdb:rowSet = "lock_participants_set"
+                db2-xdb:column = "lock_timeout_val" >
+      <xs:annotation>
+        <xs:documentation>
+        The database configuration parameter lock timeout. Value in seconds.
+        See monitor element lock_timeout_val for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+
+    <xs:element name      = "lock_wait_val"
+                type      = "xs:long"
+                minOccurs = "1"
+                maxOccurs = "1"
+                db2-xdb:rowSet = "lock_participants_set"
+                db2-xdb:column = "lock_wait_val" >
+      <xs:annotation>
+        <xs:documentation>
+        The lock wait parameter in effect during the lock event. This is either
+        the database configuration parameter MON_LKWAIT_THRSH or the COLLECT
+        LOCK WAIT DATA setting specified at the workload level. Value in
+        milliseconds.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+
+    <xs:element name      = "tentry_state"
+                minOccurs = "1"
+                maxOccurs = "1" >
+       <xs:annotation>
+         <xs:documentation>
+         TEntry state. Internal use only.
+         </xs:documentation>
+       </xs:annotation>
+       <xs:complexType>
+         <xs:simpleContent>
+           <xs:extension base="db2_string_type_32">
+             <xs:attribute name = "id"
+                           type = "xs:int"
+                           use  = "optional" />
+           </xs:extension>
+         </xs:simpleContent>
+       </xs:complexType>
+    </xs:element>
+
+    <xs:element name      = "tentry_flag1"
+                type      = "tentry_flag_type"
+                minOccurs = "1"
+                maxOccurs = "1" >
+       <xs:annotation>
+         <xs:documentation>
+         TEntry flags1. Internal use only.
+         </xs:documentation>
+       </xs:annotation>
+    </xs:element>
+
+    <xs:element name      = "tentry_flag2"
+                type      = "tentry_flag_type"
+                minOccurs = "1"
+                maxOccurs = "1" >
+       <xs:annotation>
+         <xs:documentation>
+         TEntry flags2. Internal use only.
+         </xs:documentation>
+       </xs:annotation>
+    </xs:element>
+
+    <xs:element name      = "xid"
+                type      = "xid_type"
+                minOccurs = "1"
+                maxOccurs = "1" >
+       <xs:annotation>
+         <xs:documentation>
+         XID - Global transaction identifier
+         </xs:documentation>
+       </xs:annotation>
+    </xs:element>
+
+    <xs:element name      = "workload_id"
+                type      = "db_object_id_type"
+                minOccurs = "1"
+                maxOccurs = "1"
+                db2-xdb:rowSet   = "lock_participants_set"
+                db2-xdb:column   = "workload_id" >
+      <xs:annotation>
+        <xs:documentation>
+        ID of the workload to which this application belongs.
+        See monitor element workload_id for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+
+    <xs:element name      = "workload_name"
+                type      = "db_object_name_type"
+                minOccurs = "1"
+                maxOccurs = "1"
+                db2-xdb:truncate = "true"
+                db2-xdb:rowSet   = "lock_participants_set"
+                db2-xdb:column   = "workload_name" >
+      <xs:annotation>
+        <xs:documentation>
+        Name of the workload to which this application belongs.
+        See monitor element workload_name for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+
+    <xs:element name      = "service_class_id"
+                type      = "db_object_id_type"
+                minOccurs = "1"
+                maxOccurs = "1"
+                db2-xdb:rowSet   = "lock_participants_set"
+                db2-xdb:column   = "service_class_id" >
+      <xs:annotation>
+        <xs:documentation>
+        ID of the service subclass to which this application belongs.
+        See monitor element service_class_id for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+
+    <xs:element name      = "service_subclass_name"
+                type      = "db_object_name_type"
+                minOccurs = "1"
+                maxOccurs = "1"
+                db2-xdb:truncate = "true"
+                db2-xdb:rowSet   = "lock_participants_set"
+                db2-xdb:column   = "service_subclass_name" >
+      <xs:annotation>
+        <xs:documentation>
+        Name of the service subclass to which this application belongs.
+        See monitor element service_subclass_name for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+
+    <xs:element name      = "current_request"
+                type      = "db2_string_type_32"
+                minOccurs = "1"
+                maxOccurs = "1"
+                db2-xdb:truncate = "true"
+                db2-xdb:rowSet   = "lock_participants_set"
+                db2-xdb:column   = "current_request" >
+      <xs:annotation>
+        <xs:documentation>
+         The operation currently being processed or most recently processed.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+
+    <xs:element name      = "lock_escalation"
+                minOccurs = "1"
+                maxOccurs = "1"
+                db2-xdb:rowSet = "lock_participants_set"
+                db2-xdb:column = "lock_escalation" >
+      <xs:annotation>
+        <xs:documentation>
+         Indicates whether a lock request was made as part of a lock escalation.
+         See monitor element lock_escalation for more details. Possible values: Yes or No.
+        </xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+        <xs:restriction base="db2_string_type_3">
+          <xs:enumeration value="yes"/>
+          <xs:enumeration value="no"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:element>
+
+
+    <xs:element name      = "past_activities_wrapped"
+                minOccurs = "1"
+                maxOccurs = "1"
+                db2-xdb:rowSet = "lock_participants_set"
+                db2-xdb:column = "past_activities_wrapped" >
+      <xs:annotation>
+        <xs:documentation>
+        Indicates whether the activities list has wrapped. The default limit on
+        the number of past activities to be kept by any one application is 250.
+        This default can be overridden using the registry variable
+        DB2_MAX_INACT_STMTS. Users may want to choose a different value for the
+        limit to increase or reduce the amount of system monitor heap used for
+        inactive statement information.
+        </xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+        <xs:restriction base="db2_string_type_3">
+          <xs:enumeration value="yes"/>
+          <xs:enumeration value="no"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:element>
+
+    <xs:element name      = "client_userid"
+                type      = "tpmon_type"
+                minOccurs = "1"
+                maxOccurs = "1"
+                db2-xdb:truncate = "true"
+                db2-xdb:rowSet   = "lock_participants_set"
+                db2-xdb:column   = "client_userid" >
+       <xs:annotation>
+         <xs:documentation>
+         The client user ID generated by a transaction manager and provided
+         to the server. See monitor element client_userid for more details.
+         </xs:documentation>
+       </xs:annotation>
+    </xs:element>
+
+    <xs:element name      = "client_wrkstnname"
+                type      = "tpmon_type"
+                minOccurs = "1"
+                maxOccurs = "1"
+                db2-xdb:truncate = "true"
+                db2-xdb:rowSet   = "lock_participants_set"
+                db2-xdb:column   = "client_wrkstnname" >
+       <xs:annotation>
+         <xs:documentation>
+         Identifies the client system or workstation, if the sqleseti API
+         was issued in this connection. See monitor element
+         client_wrkstnname for more details.
+         </xs:documentation>
+       </xs:annotation>
+    </xs:element>
+
+    <xs:element name      = "client_applname"
+                type      = "tpmon_type"
+                minOccurs = "1"
+                maxOccurs = "1"
+                db2-xdb:truncate = "true"
+                db2-xdb:rowSet   = "lock_participants_set"
+                db2-xdb:column   = "client_applname" >
+       <xs:annotation>
+         <xs:documentation>
+         Identifies the server transaction program performing the transaction,
+         if the sqleseti API was issued in this connection.
+         See monitor element client_applname for more details.
+         </xs:documentation>
+       </xs:annotation>
+    </xs:element>
+
+    <xs:element name      = "client_acctng"
+                type      = "tpmon_type"
+                minOccurs = "1"
+                maxOccurs = "1"
+                db2-xdb:truncate = "true"
+                db2-xdb:rowSet   = "lock_participants_set"
+                db2-xdb:column   = "client_acctng" >
+       <xs:annotation>
+         <xs:documentation>
+         The data passed to the target database for logging and diagnostic purposes,
+         if the sqleseti API was issued in this connection.
+         See monitor element client_acctng for more details.
+         </xs:documentation>
+       </xs:annotation>
+    </xs:element>
+
+    <xs:any minOccurs="0" maxOccurs="unbounded" processContents="skip" />
+
+  </xs:sequence>
+</xs:complexType>
+
+<xs:annotation>
+  <xs:documentation>
+   ------------------------------------------------------------------
+   db2LockRequestor or db2LockOwner (db2appinfo)
+   ------------------------------------------------------------------
+  </xs:documentation>
+</xs:annotation>
+<xs:complexType name="db2appinfo">
+  <xs:annotation>
+    <xs:documentation>
+    This schema describes the structure of the application that is either
+    requesting the lock or holding the lock.
+    </xs:documentation>
+  </xs:annotation>
+
+  <xs:sequence>
+    <xs:element name      = "db2_object_requested"
+                type      = "db2objectrequested"
+                minOccurs = "0"
+                maxOccurs = "1" >
+       <xs:annotation>
+         <xs:documentation>
+          Schema element represents the DB2 lock that the Requestor is
+          attempting to acquire, which is being held by the Owner.
+         </xs:documentation>
+       </xs:annotation>
+    </xs:element>
+
+    <xs:element name      = "db2_app_details"
+                type      = "db2appdetails"
+                minOccurs = "1"
+                maxOccurs = "1" >
+       <xs:annotation>
+         <xs:documentation>
+          Schema element represents the details regarding this participant.
+         </xs:documentation>
+       </xs:annotation>
+    </xs:element>
+
+    <xs:element name = "db2_activity"
+                type = "db2activity"
+                minOccurs = "0"
+                maxOccurs = "unbounded">
+      <xs:annotation>
+        <xs:documentation>
+        List of all DB2 activities the application is currently executing or has
+        executed.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+  </xs:sequence>
+
+  <xs:attribute name = "no"
+                type = "xs:int"
+                use  = "required"
+                db2-xdb:rowSet = "lock_participants_set"
+                db2-xdb:column = "participant_no" >
+    <xs:annotation>
+      <xs:documentation>
+      A sequence number uniquely identifying this participant in a lock event.
+      </xs:documentation>
+      <xs:appinfo>
+         <db2-xdb:rowSetMapping>
+            <db2-xdb:rowSet>lock_act_participant_set</db2-xdb:rowSet>
+            <db2-xdb:column>participant_no</db2-xdb:column>
+         </db2-xdb:rowSetMapping>
+         <db2-xdb:rowSetMapping>
+            <db2-xdb:rowSet>lock_act_values_set</db2-xdb:rowSet>
+            <db2-xdb:column>participant_no</db2-xdb:column>
+         </db2-xdb:rowSetMapping>
+      </xs:appinfo>
+    </xs:annotation>
+  </xs:attribute>
+
+  <xs:attribute  name = "type"
+                 use  = "required"
+                 db2-xdb:rowSet = "lock_participants_set"
+                 db2-xdb:column = "participant_type" >
+     <xs:annotation>
+       <xs:documentation>
+       The participant type. The participant can either be the Requestor
+       or Owner.
+       </xs:documentation>
+     </xs:annotation>
+     <xs:simpleType>
+       <xs:restriction base="db2_string_type_32">
+         <xs:enumeration value="Requester"/>
+         <xs:enumeration value="Owner"/>
+       </xs:restriction>
+     </xs:simpleType>
+  </xs:attribute>
+
+  <xs:attribute name = "participant_no_holding_lk"
+                type = "xs:int"
+                use  = "optional"
+                db2-xdb:rowSet = "lock_participants_set"
+                db2-xdb:column = "participant_no_holding_lk" >
+    <xs:annotation>
+      <xs:documentation>
+      The participant number identifying the application holding the lock.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:attribute>
+
+  <xs:anyAttribute processContents="skip" />
+
+</xs:complexType>
+
+<xs:annotation>
+  <xs:documentation>
+   ------------------------------------------------------------------
+   db2objectrequested
+   ------------------------------------------------------------------
+  </xs:documentation>
+</xs:annotation>
+<xs:complexType name="db2objectrequested">
+  <xs:choice>
+    <xs:sequence>
+      <xs:annotation>
+        <xs:documentation>
+        The object being requested is a DB2 lock which contains the following
+        elements:
+        </xs:documentation>
+      </xs:annotation>
+
+      <xs:element name      = "lock_name"
+                  type      = "lock_name_hex_type"
+                  minOccurs = "1"
+                  maxOccurs = "1"
+                  db2-xdb:truncate = "true"
+                  db2-xdb:rowSet   = "lock_participants_set"
+                  db2-xdb:column   = "lock_name" >
+         <xs:annotation>
+           <xs:documentation>
+           Internal binary lock name. This element serves as a unique identifier for locks.
+           See monitor element lock_name for more details.
+           </xs:documentation>
+         </xs:annotation>
+      </xs:element>
+
+      <xs:element name      = "lock_object_type"
+                  minOccurs = "1"
+                  maxOccurs = "1"
+                  db2-xdb:truncate = "true"
+                  db2-xdb:rowSet   = "lock_participants_set"
+                  db2-xdb:column   = "lock_object_type" >
+         <xs:annotation>
+           <xs:documentation>
+           The type of object the application is waiting to obtain a lock.
+           See monitor element lock_object_type for more details.
+           </xs:documentation>
+         </xs:annotation>
+         <xs:complexType>
+           <xs:simpleContent>
+             <xs:extension base="db2_string_type_32">
+               <xs:attribute name = "id"
+                             type = "xs:long"
+                             use  = "optional" />
+             </xs:extension>
+           </xs:simpleContent>
+         </xs:complexType>
+      </xs:element>
+
+      <xs:element name      = "lock_specifics"
+                  type      = "db2_string_type_128"
+                  minOccurs = "1"
+                  maxOccurs = "1">
+         <xs:annotation>
+           <xs:documentation>
+           Internal specifics about the lock. For information use only.
+           </xs:documentation>
+         </xs:annotation>
+      </xs:element>
+
+      <xs:element name      = "lock_attributes"
+                  type      = "lock_attributes_type"
+                  minOccurs = "1"
+                  maxOccurs = "1"
+                  db2-xdb:rowSet   = "lock_participants_set"
+                  db2-xdb:column   = "lock_attributes" >
+         <xs:annotation>
+           <xs:documentation>
+           Lock attributes. See monitor element lock_attributes for more details.
+           </xs:documentation>
+         </xs:annotation>
+      </xs:element>
+
+      <xs:element name      = "lock_current_mode"
+                  minOccurs = "1"
+                  maxOccurs = "1" >
+         <xs:annotation>
+           <xs:documentation>
+           Orginal lock before conversion.
+           See monitor element lock_current_mode for more details.
+           </xs:documentation>
+         </xs:annotation>
+         <xs:complexType>
+           <xs:simpleContent>
+             <xs:extension base="db2_string_type_32">
+               <xs:attribute name = "id"
+                             type = "xs:long"
+                             use  = "optional"
+                             db2-xdb:rowSet = "lock_participants_set"
+                             db2-xdb:column = "lock_current_mode" />
+               <xs:attribute name = "mode"
+                             type = "db2_string_type_6"
+                             use  = "optional" />
+             </xs:extension>
+           </xs:simpleContent>
+         </xs:complexType>
+      </xs:element>
+
+      <xs:element name      = "lock_mode_requested"
+                  minOccurs = "1"
+                  maxOccurs = "1" >
+         <xs:annotation>
+           <xs:documentation>
+           The lock mode being requested by this participant.
+           See monitor element lock_mode_requested for more details.
+           </xs:documentation>
+         </xs:annotation>
+         <xs:complexType>
+           <xs:simpleContent>
+             <xs:extension base="db2_string_type_32">
+               <xs:attribute name = "id"
+                             type = "xs:long"
+                             use  = "optional"
+                             db2-xdb:rowSet = "lock_participants_set"
+                             db2-xdb:column = "lock_mode_requested" />
+               <xs:attribute name = "mode"
+                             type = "db2_string_type_6"
+                             use  = "optional" />
+             </xs:extension>
+           </xs:simpleContent>
+         </xs:complexType>
+      </xs:element>
+
+      <xs:element name      = "lock_mode"
+                  minOccurs = "1"
+                  maxOccurs = "1" >
+         <xs:annotation>
+           <xs:documentation>
+           The type of lock being held.
+           See monitor element lock_mode for more details.
+           </xs:documentation>
+         </xs:annotation>
+         <xs:complexType>
+           <xs:simpleContent>
+             <xs:extension base="db2_string_type_32">
+               <xs:attribute name = "id"
+                             type = "xs:long"
+                             use  = "optional"
+                             db2-xdb:rowSet = "lock_participants_set"
+                             db2-xdb:column = "lock_mode" />
+               <xs:attribute name = "mode"
+                             type = "db2_string_type_6"
+                             use  = "optional" />
+             </xs:extension>
+           </xs:simpleContent>
+         </xs:complexType>
+      </xs:element>
+
+      <xs:element name      = "lock_count"
+                  type      = "xs:long"
+                  minOccurs = "1"
+                  maxOccurs = "1"
+                  db2-xdb:rowSet   = "lock_participants_set"
+                  db2-xdb:column   = "lock_count" >
+         <xs:annotation>
+           <xs:documentation>
+           The number of locks on the lock being held.
+           See monitor element lock_count for more details.
+           </xs:documentation>
+         </xs:annotation>
+      </xs:element>
+      <xs:element name      = "lock_hold_count"
+                  type      = "xs:long"
+                  minOccurs = "1"
+                  maxOccurs = "1"
+                  db2-xdb:rowSet   = "lock_participants_set"
+                  db2-xdb:column   = "lock_hold_count" >
+         <xs:annotation>
+           <xs:documentation>
+           The number of holds placed on the lock.
+           See monitor element lock_hold_count for more details.
+           </xs:documentation>
+         </xs:annotation>
+      </xs:element>
+      <xs:element name      = "lock_rriid"
+                  type      = "xs:long"
+                  minOccurs = "1"
+                  maxOccurs = "1"
+                  db2-xdb:rowSet   = "lock_participants_set"
+                  db2-xdb:column   = "lock_rriid" >
+         <xs:annotation>
+           <xs:documentation>
+           IID for Row locking. Internal use only.
+           </xs:documentation>
+         </xs:annotation>
+      </xs:element>
+      <xs:element name      = "lock_status"
+                  minOccurs = "1"
+                  maxOccurs = "1" >
+         <xs:annotation>
+           <xs:documentation>
+           Indicates the internal status of the lock.
+           See monitor element lock_status for more details.
+           </xs:documentation>
+         </xs:annotation>
+         <xs:complexType>
+           <xs:simpleContent>
+             <xs:extension base="db2_string_type_32">
+               <xs:attribute name = "id"
+                             type = "xs:int"
+                             use  = "optional"
+                             db2-xdb:rowSet   = "lock_participants_set"
+                             db2-xdb:column   = "lock_status" />
+             </xs:extension>
+           </xs:simpleContent>
+         </xs:complexType>
+      </xs:element>
+
+      <xs:element name      = "lock_release_flags"
+                  type      = "lock_release_flags_type"
+                  minOccurs = "1"
+                  maxOccurs = "1"
+                  db2-xdb:rowSet   = "lock_participants_set"
+                  db2-xdb:column   = "lock_release_flags" >
+         <xs:annotation>
+           <xs:documentation>
+           Lock release flags. See monitor element lock_release_flags for more details.
+           </xs:documentation>
+         </xs:annotation>
+      </xs:element>
+
+      <xs:element name      = "tablespace_name"
+                  minOccurs = "1"
+                  maxOccurs = "1"
+                  db2-xdb:truncate = "true"
+                  db2-xdb:rowSet   = "lock_participants_set"
+                  db2-xdb:column   = "tablespace_name" >
+         <xs:annotation>
+           <xs:documentation>
+           The name of the table space where the lock is held. See monitor element
+           tablespace_name for more details.
+           </xs:documentation>
+         </xs:annotation>
+         <xs:complexType>
+           <xs:simpleContent>
+             <xs:extension base="db_object_name_type">
+               <xs:attribute name = "id"
+                             type = "xs:long"
+                             use  = "optional"  />
+             </xs:extension>
+           </xs:simpleContent>
+         </xs:complexType>
+      </xs:element>
+
+      <xs:element name      = "table_name"
+                  minOccurs = "1"
+                  maxOccurs = "1"
+                  db2-xdb:truncate = "true"
+                  db2-xdb:rowSet   = "lock_participants_set"
+                  db2-xdb:column   = "table_name" >
+         <xs:annotation>
+           <xs:documentation>
+           The name of the table where the lock is held. See monitor element
+           table_name for more details.
+           </xs:documentation>
+         </xs:annotation>
+         <xs:complexType>
+           <xs:simpleContent>
+             <xs:extension base="db_object_name_type">
+               <xs:attribute name = "id"
+                             type = "xs:long"
+                             use  = "optional"
+                             db2-xdb:rowSet = "lock_participants_set"
+                             db2-xdb:column = "table_file_id" />
+               <xs:attribute name = "data_member_id"
+                             type = "member_type"
+                             use  = "optional" >
+                <xs:annotation>
+                  <xs:documentation>
+                  The identifier of the data member for which information is returned.
+                  </xs:documentation>
+                </xs:annotation>
+               </xs:attribute>
+             </xs:extension>
+           </xs:simpleContent>
+         </xs:complexType>
+      </xs:element>
+
+      <xs:element name      = "table_schema"
+                  type      = "db_object_name_type"
+                  minOccurs = "1"
+                  maxOccurs = "1"
+                  db2-xdb:truncate = "true"
+                  db2-xdb:rowSet   = "lock_participants_set"
+                  db2-xdb:column   = "table_schema" >
+         <xs:annotation>
+           <xs:documentation>
+           The schema of the table. See monitor element table_schema for more details.
+           </xs:documentation>
+         </xs:annotation>
+      </xs:element>
+
+      <xs:element name      = "lock_object_type_id"
+                  type      = "lock_object_type_hex"
+                  minOccurs = "1"
+                  maxOccurs = "1"
+                  db2-xdb:rowSet  = "lock_participants_set"
+                  db2-xdb:column   = "lock_object_type_id" >
+         <xs:annotation>
+           <xs:documentation>
+           The type of object the application is waiting to obtain a lock.
+           See monitor element lock_object_type for more details.
+           </xs:documentation>
+         </xs:annotation>
+      </xs:element>
+
+      <xs:element name      = "lock_wait_start_time"
+                  type      = "xs:dateTime"
+                  minOccurs = "1"
+                  maxOccurs = "1"
+                  db2-xdb:rowSet    = "lock_participants_set"
+                  db2-xdb:column    = "lock_wait_start_time" >
+         <xs:annotation>
+           <xs:documentation>
+           The data and time the application started waiting to obtain a lock
+           on the object that is currently locked by the lock owner.
+           See monitor element lock_wait_start_time for more details.
+           </xs:documentation>
+         </xs:annotation>
+      </xs:element>
+
+      <xs:element name      = "lock_wait_end_time"
+                  type      = "xs:dateTime"
+                  minOccurs = "1"
+                  maxOccurs = "1"
+                  db2-xdb:rowSet  = "lock_participants_set"
+                  db2-xdb:column   = "lock_wait_end_time" >
+         <xs:annotation>
+           <xs:documentation>
+           The data and time the application stopped waiting to obtain a lock
+           on the object that is currently locked by the lock owner.
+           </xs:documentation>
+         </xs:annotation>
+      </xs:element>
+
+      <xs:any minOccurs="0" maxOccurs="unbounded" processContents="skip" />
+
+    </xs:sequence>
+
+    <xs:sequence>
+      <xs:annotation>
+        <xs:documentation>
+        The object being requested is a threshold ticket which contains the
+        following elements:
+        </xs:documentation>
+      </xs:annotation>
+      <xs:element name      = "threshold_name"
+                  type      = "db_object_name_type"
+                  minOccurs = "1"
+                  maxOccurs = "1"
+                  db2-xdb:truncate = "true"
+                  db2-xdb:rowSet   = "lock_participants_set"
+                  db2-xdb:column   = "threshold_name" >
+         <xs:annotation>
+           <xs:documentation>
+           The name of the threshold queue.
+           </xs:documentation>
+         </xs:annotation>
+      </xs:element>
+
+      <xs:element name      = "threshold_id"
+                  type      = "db_object_id_type"
+                  minOccurs = "1"
+                  maxOccurs = "1"
+                  db2-xdb:rowSet   = "lock_participants_set"
+                  db2-xdb:column   = "threshold_id" >
+         <xs:annotation>
+           <xs:documentation>
+           The ID of the threshold queue.
+           </xs:documentation>
+         </xs:annotation>
+      </xs:element>
+
+      <xs:element name      = "queued_agents"
+                  type      = "xs:long"
+                  minOccurs = "1"
+                  maxOccurs = "1" >
+         <xs:annotation>
+           <xs:documentation>
+           The total number of agents currently queued in the threshold.
+           </xs:documentation>
+         </xs:annotation>
+      </xs:element>
+
+      <xs:element name      = "queue_start_time"
+                  type      = "xs:dateTime"
+                  minOccurs = "1"
+                  maxOccurs = "1" >
+         <xs:annotation>
+           <xs:documentation>
+           The data and time the application started waiting in the queue to
+           to obtain a threshold ticket.
+           </xs:documentation>
+         </xs:annotation>
+      </xs:element>
+
+      <xs:any minOccurs="0" maxOccurs="unbounded" processContents="skip" />
+
+    </xs:sequence>
+  </xs:choice>
+
+  <xs:attribute  name = "type"
+                 use  = "required"
+                 db2-xdb:rowSet   = "lock_participants_set"
+                 db2-xdb:column   = "object_requested" >
+     <xs:annotation>
+       <xs:documentation>
+       The type of object being requested. Possible values: lock or ticket.
+       </xs:documentation>
+     </xs:annotation>
+     <xs:simpleType>
+       <xs:restriction base="db2_string_type_10">
+         <xs:enumeration value="lock"/>
+         <xs:enumeration value="ticket"/>
+       </xs:restriction>
+     </xs:simpleType>
+  </xs:attribute>
+</xs:complexType>
+
+<xs:annotation>
+  <xs:documentation>
+   ------------------------------------------------------------------
+   db2DeadlockGraph (db2dgraph)
+   ------------------------------------------------------------------
+  </xs:documentation>
+</xs:annotation>
+<xs:complexType name="db2dgraph" >
+  <xs:annotation>
+    <xs:documentation>
+    This schema describes the structure of the deadlock graph and the participants
+    involved in the deadlock cycle.
+    </xs:documentation>
+  </xs:annotation>
+
+  <xs:sequence>
+    <xs:element name      = "db2_participant"
+                type      = "db2dstack"
+                minOccurs = "1"
+                maxOccurs = "unbounded" >
+       <xs:annotation>
+         <xs:documentation>
+         Schema element represents a single stack entry in a deadlock graph.
+         </xs:documentation>
+       </xs:annotation>
+    </xs:element>
+  </xs:sequence>
+
+  <xs:attribute name = "dl_conns"
+                type = "xs:int"
+                use  = "required"
+                db2-xdb:rowSet = "lock_deadlock_set"
+                db2-xdb:column = "dl_conns" >
+     <xs:annotation>
+       <xs:documentation>
+       The total number of participants involved in a deadlock.
+       See monitor element dl_conns for more details.
+       </xs:documentation>
+     </xs:annotation>
+  </xs:attribute>
+
+  <xs:attribute name = "rolled_back_participant_no"
+                type = "xs:int"
+                use  = "required"
+                db2-xdb:rowSet = "lock_deadlock_set"
+                db2-xdb:column = "rolled_back_participant_no" >
+     <xs:annotation>
+       <xs:documentation>
+       The participant number identifying the rolled back application.
+       See monitor element rolled_back_participant_no for more details.
+       </xs:documentation>
+     </xs:annotation>
+  </xs:attribute>
+
+  <xs:attribute  name = "type"
+                 use  = "required" >
+     <xs:annotation>
+       <xs:documentation>
+       Type of deadlock that has occurred: local or global. In a global deadlock
+       at least one or more participants reside on a different members.
+       In a local deadlock all participants reside on the same member.
+       </xs:documentation>
+     </xs:annotation>
+     <xs:simpleType>
+       <xs:restriction base="db2_string_type_10">
+         <xs:enumeration value="local"/>
+         <xs:enumeration value="global"/>
+       </xs:restriction>
+     </xs:simpleType>
+  </xs:attribute>
+
+  <xs:anyAttribute processContents="skip" />
+
+</xs:complexType >
+
+<xs:annotation>
+  <xs:documentation>
+   ------------------------------------------------------------------
+   db2dstack
+   ------------------------------------------------------------------
+  </xs:documentation>
+</xs:annotation>
+<xs:complexType name="db2dstack">
+  <xs:annotation>
+    <xs:documentation>
+    This schema describes the structure of an entry in a deadlock graph. The
+    entry contains information regarding the participant requesting and holding
+    the lock in a deadlock cycle.
+    </xs:documentation>
+  </xs:annotation>
+
+  <xs:attribute name = "no"
+                type = "xs:int"
+                use  = "required">
+    <xs:annotation>
+      <xs:documentation>
+      The participant number identifying the application requesting the lock.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:attribute>
+
+  <xs:attribute name = "deadlock_member"
+                type = "member_type"
+                use  = "required" >
+    <xs:annotation>
+      <xs:documentation>
+      Memeber where the participant is requesting the lock.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:attribute>
+
+  <xs:attribute name = "participant_no_holding_lk"
+                type = "xs:int"
+                use  = "required">
+    <xs:annotation>
+      <xs:documentation>
+      The participant number identifying the application holding the lock.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:attribute>
+
+  <xs:attribute name  = "application_handle"
+              type    = "application_handle_type"
+              use     = "required" >
+    <xs:annotation>
+      <xs:documentation>
+      A system-wide unique ID for the application.
+      See monitor element agent_id for more details.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:attribute>
+
+  <xs:anyAttribute processContents="skip" />
+</xs:complexType>
+
+<xs:annotation>
+  <xs:documentation>
+   ------------------------------------------------------------------
+   db2 activity details
+   ------------------------------------------------------------------
+  </xs:documentation>
+</xs:annotation>
+<xs:complexType name="db2actdetails">
+  <xs:annotation>
+    <xs:documentation>
+    This schema describes the details regarding an activity
+    </xs:documentation>
+  </xs:annotation>
+  <xs:sequence>
+    <xs:element name      = "activity_id"
+                type      = "incrementing_id_type"
+                minOccurs = "1"
+                maxOccurs = "1"
+                db2-xdb:rowSet = "lock_act_participant_set"
+                db2-xdb:column = "activity_id"
+                db2-xdb:condition = "activity_id > 0">
+        <xs:annotation>
+          <xs:documentation>
+          Counter which uniquely identifies an activity for an application
+          within a given unit of work.
+          See monitor element activity_id for more details.
+          </xs:documentation>
+          <xs:appinfo>
+             <db2-xdb:rowSetMapping>
+                <db2-xdb:rowSet>lock_act_values_set</db2-xdb:rowSet>
+                <db2-xdb:column>activity_id</db2-xdb:column>
+                <db2-xdb:condition>activity_id > 0 </db2-xdb:condition>
+             </db2-xdb:rowSetMapping>
+          </xs:appinfo>
+        </xs:annotation>
+    </xs:element>
+
+    <xs:element name      = "uow_id"
+                type      = "incrementing_id_type"
+                minOccurs = "1"
+                maxOccurs = "1"
+                db2-xdb:rowSet = "lock_act_participant_set"
+                db2-xdb:column = "uow_id" >
+      <xs:annotation>
+        <xs:documentation>
+        The unit of work ID to which this activity record applies.
+        See monitor element uow_id for more details.
+        </xs:documentation>
+        <xs:appinfo>
+           <db2-xdb:rowSetMapping>
+              <db2-xdb:rowSet>lock_act_values_set</db2-xdb:rowSet>
+              <db2-xdb:column>uow_id</db2-xdb:column>
+           </db2-xdb:rowSetMapping>
+        </xs:appinfo>
+      </xs:annotation>
+    </xs:element>
+
+    <xs:element name      = "package_name"
+                type      = "db_object_name_type"
+                minOccurs = "1"
+                maxOccurs = "1"
+                db2-xdb:truncate = "true"
+                db2-xdb:rowSet = "lock_act_participant_set"
+                db2-xdb:column = "package_name" >
+       <xs:annotation>
+         <xs:documentation>
+         The name of the package that contains the SQL statement currently executing.
+         See monitor element package_name for more details.
+         </xs:documentation>
+       </xs:annotation>
+    </xs:element>
+
+    <xs:element name      = "package_schema"
+                type      = "db_object_name_type"
+                minOccurs = "1"
+                maxOccurs = "1"
+                db2-xdb:truncate = "true"
+                db2-xdb:rowSet = "lock_act_participant_set"
+                db2-xdb:column = "package_schema" >
+       <xs:annotation>
+         <xs:documentation>
+         The schema name of the package associated with an SQL statement.
+         See monitor element package_schema for more details.
+         </xs:documentation>
+       </xs:annotation>
+    </xs:element>
+
+    <xs:element name      = "package_version_id"
+                type      = "db2_string_type_64"
+                minOccurs = "1"
+                maxOccurs = "1"
+                db2-xdb:truncate = "true"
+                db2-xdb:rowSet = "lock_act_participant_set"
+                db2-xdb:column = "package_version_id" >
+       <xs:annotation>
+         <xs:documentation>
+         The package version identifies the version identifier of the package that
+         contains the SQL statement currently executing.
+         See monitor element package_version_id for more details.
+         </xs:documentation>
+       </xs:annotation>
+    </xs:element>
+
+    <xs:element name      = "consistency_token"
+                type      = "db2_string_type_8"
+                minOccurs = "1"
+                maxOccurs = "1"
+                db2-xdb:truncate = "true"
+                db2-xdb:rowSet = "lock_act_participant_set"
+                db2-xdb:column = "consistency_token" >
+       <xs:annotation>
+         <xs:documentation>
+         The package consistency token helps to identify the version of the package
+         that contains the SQL statement currently executing.
+         See monitor element consistency_token for more details.
+         </xs:documentation>
+       </xs:annotation>
+    </xs:element>
+
+    <xs:element name      = "section_number"
+                type      = "xs:long"
+                minOccurs = "1"
+                maxOccurs = "1"
+                db2-xdb:rowSet = "lock_act_participant_set"
+                db2-xdb:column = "section_number" >
+       <xs:annotation>
+         <xs:documentation>
+         The internal section number in the package for the SQL statement
+         currently processing or most recently processed.
+         See monitor element section_number for more details.
+         </xs:documentation>
+       </xs:annotation>
+    </xs:element>
+
+    <xs:element name      = "reopt"
+                minOccurs = "1"
+                maxOccurs = "1"
+                db2-xdb:truncate = "true"
+                db2-xdb:rowSet = "lock_act_participant_set"
+                db2-xdb:column = "reopt" >
+       <xs:annotation>
+         <xs:documentation>
+         The REOPT bind option used to precompile this package. Possible values
+         are: NONE, ONCE, and ALWAYS. See the REOPT bind options for more details.
+         </xs:documentation>
+       </xs:annotation>
+       <xs:simpleType>
+         <xs:restriction base="db2_string_type_10">
+           <xs:enumeration value="none"/>
+           <xs:enumeration value="once"/>
+           <xs:enumeration value="always"/>
+         </xs:restriction>
+       </xs:simpleType>
+    </xs:element>
+
+    <xs:element name      = "incremental_bind"
+                minOccurs = "1"
+                maxOccurs = "1"
+                db2-xdb:rowSet = "lock_act_participant_set"
+                db2-xdb:column = "incremental_bind" >
+       <xs:annotation>
+         <xs:documentation>
+         The package was incrementally bound at execution time.
+         Possible values: Yes or No.
+         </xs:documentation>
+       </xs:annotation>
+       <xs:simpleType>
+         <xs:restriction base="db2_string_type_3">
+           <xs:enumeration value="yes"/>
+           <xs:enumeration value="no"/>
+         </xs:restriction>
+       </xs:simpleType>
+    </xs:element>
+
+    <xs:element name       = "effective_isolation"
+                minOccurs  = "1"
+                maxOccurs  = "1"
+                db2-xdb:rowSet = "lock_act_participant_set"
+                db2-xdb:column = "effective_isolation" >
+      <xs:annotation>
+        <xs:documentation>
+        The isolation value in effect for the SQL statement while it was being run.
+        See monitor element effective_isolation for more details.
+        </xs:documentation>
+      </xs:annotation>
+      <xs:complexType>
+        <xs:simpleContent>
+          <xs:extension base="db2_string_type_2">
+            <xs:attribute name = "id"
+                          type = "xs:long"
+                          use  = "optional" />
+          </xs:extension>
+        </xs:simpleContent>
+      </xs:complexType>
+    </xs:element>
+
+    <xs:element name      = "effective_query_degree"
+                type      = "xs:long"
+                minOccurs = "1"
+                maxOccurs = "1"
+                db2-xdb:rowSet = "lock_act_participant_set"
+                db2-xdb:column = "effective_query_degree" >
+      <xs:annotation>
+        <xs:documentation>
+        The degree value in effect for the SQL statement while it was being run.
+        See monitor element effective_query_degree for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+
+    <xs:element name      = "stmt_unicode"
+                minOccurs = "1"
+                maxOccurs = "1" >
+       <xs:annotation>
+         <xs:documentation>
+         The SQL statement unicode flag. Possible values: Yes or No.
+         </xs:documentation>
+       </xs:annotation>
+       <xs:simpleType>
+         <xs:restriction base="db2_string_type_3">
+           <xs:enumeration value="yes"/>
+           <xs:enumeration value="no"/>
+         </xs:restriction>
+       </xs:simpleType>
+    </xs:element>
+
+    <xs:element name      = "stmt_lock_timeout"
+                type      = "xs:int"
+                minOccurs = "1"
+                maxOccurs = "1"
+                db2-xdb:rowSet = "lock_act_participant_set"
+                db2-xdb:column = "stmt_lock_timeout" >
+      <xs:annotation>
+        <xs:documentation>
+        The locktimeout value in effect for the SQL statement while it was being run.
+        See monitor element stmt_lock_timeout for more details
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+
+    <xs:element name      = "stmt_type"
+                minOccurs = "1"
+                maxOccurs = "1" >
+       <xs:annotation>
+         <xs:documentation>
+         The type of SQL statement processed. Possible values: Dynamic or Static.
+         See monitor element stmt_type for more details.
+         </xs:documentation>
+       </xs:annotation>
+       <xs:complexType>
+         <xs:simpleContent>
+           <xs:extension base="db2_string_type_10">
+             <xs:attribute name = "id"
+                           type = "xs:long"
+                           use  = "required"
+                           db2-xdb:rowSet = "lock_act_participant_set"
+                           db2-xdb:column = "stmt_type" />
+           </xs:extension>
+         </xs:simpleContent>
+       </xs:complexType>
+    </xs:element>
+
+    <xs:element name      = "stmt_operation"
+                type      = "db2_string_type_128"
+                minOccurs = "1"
+                maxOccurs = "1" >
+       <xs:annotation>
+         <xs:documentation>
+         The SQL statement operation type. See monitor element stmt_operation
+         for more details.
+         </xs:documentation>
+       </xs:annotation>
+    </xs:element>
+
+    <xs:element name      = "stmt_query_id"
+                type      = "xs:long"
+                minOccurs = "1"
+                maxOccurs = "1"
+                db2-xdb:rowSet = "lock_act_participant_set"
+                db2-xdb:column = "stmt_query_id" >
+      <xs:annotation>
+        <xs:documentation>
+        Internal query identifier given to any SQL statement.
+        See monitor element stmt_query_id for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+
+    <xs:element name      = "stmt_nest_level"
+                type      = "xs:long"
+                minOccurs = "1"
+                maxOccurs = "1"
+                db2-xdb:rowSet = "lock_act_participant_set"
+                db2-xdb:column = "stmt_nest_level" >
+      <xs:annotation>
+        <xs:documentation>
+        This element shows the level of nesting or recursion in effect when
+        the statement was run.
+        See monitor element stmt_nest_level for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+
+    <xs:element name      = "stmt_invocation_id"
+                type      = "xs:long"
+                minOccurs = "1"
+                maxOccurs = "1"
+                db2-xdb:rowSet = "lock_act_participant_set"
+                db2-xdb:column = "stmt_invocation_id" >
+      <xs:annotation>
+        <xs:documentation>
+        This element shows the identifier of the routine invocation in which
+        the SQL statement was run.
+        See monitor element stmt_invocation_id for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+
+    <xs:element name      = "stmt_source_id"
+                type      = "xs:long"
+                minOccurs = "1"
+                maxOccurs = "1"
+                db2-xdb:rowSet = "lock_act_participant_set"
+                db2-xdb:column = "stmt_source_id" >
+      <xs:annotation>
+        <xs:documentation>
+        This element shows the internal identifier given to the source of the
+        the SQL statement that was run.
+        See monitor element stmt_source_id for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+
+    <xs:element name      = "stmt_pkgcache_id"
+                type      = "xs:long"
+                minOccurs = "1"
+                maxOccurs = "1"
+                db2-xdb:rowSet = "lock_act_participant_set"
+                db2-xdb:column = "stmt_pkgcache_id" >
+      <xs:annotation>
+        <xs:documentation>
+        This element shows the internal package cahce identifier of a dynamic
+        SQL statement.
+        See monitor element stmt_pkgcache_id for more details.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+
+    <xs:element name      = "stmt_text"
+                type      = "db2_statement_text_type"
+                minOccurs = "1"
+                maxOccurs = "1"
+                db2-xdb:truncate = "true"
+                db2-xdb:rowSet = "lock_act_participant_set"
+                db2-xdb:column = "stmt_text" >
+       <xs:annotation>
+         <xs:documentation>
+         The text of the SQL statement. See monitor element stmt_text for more
+         details.
+         </xs:documentation>
+       </xs:annotation>
+    </xs:element>
+
+    <xs:any minOccurs="0" maxOccurs="unbounded" processContents="skip" />
+
+  </xs:sequence>
+</xs:complexType>
+
+<xs:annotation>
+  <xs:documentation>
+   ------------------------------------------------------------------
+   db2Activity (db2activity)
+   ------------------------------------------------------------------
+  </xs:documentation>
+</xs:annotation>
+<xs:complexType name="db2activity">
+  <xs:annotation>
+    <xs:documentation>
+    This schema describes the structure of a single DB2 activity for an application
+    in a given unit of work.
+    </xs:documentation>
+  </xs:annotation>
+  <xs:sequence>
+    <xs:element name      = "db2_activity_details"
+                type      = "db2actdetails"
+                minOccurs = "1"
+                maxOccurs = "1">
+        <xs:annotation>
+          <xs:documentation>
+          Schema represents the details regarding this activity
+          </xs:documentation>
+        </xs:annotation>
+    </xs:element>
+
+    <xs:element name      = "db2_input_variable"
+                type      = "db2inputvar"
+                minOccurs = "0"
+                maxOccurs = "unbounded" >
+       <xs:annotation>
+         <xs:documentation>
+         Schema element represents the list of input variables associated with the
+         SQL statement.
+         </xs:documentation>
+       </xs:annotation>
+    </xs:element>
+  </xs:sequence>
+
+  <xs:attribute  name = "type"
+                 use  = "required"
+                db2-xdb:rowSet = "lock_act_participant_set"
+                db2-xdb:column = "activity_type" >
+     <xs:annotation>
+       <xs:documentation>
+       The attribute represents the type or activity. Possible values are
+       current or past.
+       </xs:documentation>
+     </xs:annotation>
+     <xs:simpleType>
+       <xs:restriction base="db2_string_type_10">
+         <xs:enumeration value="current"/>
+         <xs:enumeration value="past"/>
+       </xs:restriction>
+     </xs:simpleType>
+  </xs:attribute>
+
+  <xs:anyAttribute processContents="skip" />
+</xs:complexType>
+
+<xs:annotation>
+  <xs:documentation>
+   ------------------------------------------------------------------
+   db2Inputvar (db2inputvar)
+   ------------------------------------------------------------------
+  </xs:documentation>
+</xs:annotation>
+<xs:complexType name = "db2inputvar" >
+  <xs:annotation>
+    <xs:documentation>
+    This schema describes the structure of a single input variable.
+    </xs:documentation>
+  </xs:annotation>
+
+  <xs:sequence>
+    <xs:element name      = "stmt_value_index"
+                type      = "incrementing_id_type"
+                minOccurs = "1"
+                maxOccurs = "1"
+                db2-xdb:rowSet = "lock_act_values_set"
+                db2-xdb:column = "stmt_value_index"
+                db2-xdb:condition = "stmt_value_index > 0">
+       <xs:annotation>
+         <xs:documentation>
+         The element represents the position of the input parameter marker
+         or host variable used in the SQL statement. See monitor element
+         stmt_value_index for more details.
+         </xs:documentation>
+       </xs:annotation>
+    </xs:element>
+
+    <xs:element name      = "stmt_value_isreopt"
+                minOccurs = "1"
+                maxOccurs = "1" >
+       <xs:annotation>
+         <xs:documentation>
+         The element shows whether the variable was used during statement
+         reoptimization. See monitor element stmt_value_isreopt for more details.
+         </xs:documentation>
+       </xs:annotation>
+       <xs:complexType>
+         <xs:simpleContent>
+           <xs:extension base="db2_string_type_3">
+             <xs:attribute name = "id"
+                           type = "xs:int"
+                           use  = "required"
+                           db2-xdb:rowSet = "lock_act_values_set"
+                           db2-xdb:column = "stmt_value_isreopt" />
+           </xs:extension>
+         </xs:simpleContent>
+       </xs:complexType>
+    </xs:element>
+
+    <xs:element name      = "stmt_value_isnull"
+                minOccurs = "1"
+                maxOccurs = "1" >
+       <xs:annotation>
+         <xs:documentation>
+         The element shows whether a data value associated with the SQL statement
+         is the NULL value. See monitor element stmt_value_isnull for more details.
+         </xs:documentation>
+       </xs:annotation>
+       <xs:complexType>
+         <xs:simpleContent>
+           <xs:extension base="db2_string_type_3">
+             <xs:attribute name = "id"
+                           type = "xs:int"
+                           use  = "required"
+                           db2-xdb:rowSet = "lock_act_values_set"
+                           db2-xdb:column = "stmt_value_isnull" />
+           </xs:extension>
+         </xs:simpleContent>
+       </xs:complexType>
+    </xs:element>
+
+    <xs:element name      = "stmt_value_type"
+                type      = "db2_string_type_16"
+                minOccurs = "1"
+                maxOccurs = "1"
+                db2-xdb:truncate = "true"
+                db2-xdb:rowSet = "lock_act_values_set"
+                db2-xdb:column = "stmt_value_type" >
+       <xs:annotation>
+         <xs:documentation>
+         The element contains a string representation of the type of data value
+         associated with an SQL statement. See monitor element stmt_value_type
+         for more details.
+         </xs:documentation>
+       </xs:annotation>
+    </xs:element>
+
+    <xs:element name      = "stmt_value_data"
+                type      = "db2_string_type_32768"
+                minOccurs = "1"
+                maxOccurs = "1"
+                db2-xdb:truncate = "true"
+                db2-xdb:rowSet = "lock_act_values_set"
+                db2-xdb:column = "stmt_value_data" >
+       <xs:annotation>
+         <xs:documentation>
+         The element contains a string representation of a data value associated
+         with an SQL statement. See monitor element stmt_value_data for more details.
+         </xs:documentation>
+       </xs:annotation>
+    </xs:element>
+
+    <xs:any  minOccurs="0" maxOccurs="unbounded" processContents="skip" />
+  </xs:sequence>
+</xs:complexType>
+
+
+</xs:schema >

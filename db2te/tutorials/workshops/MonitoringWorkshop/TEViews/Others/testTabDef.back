@@ -1,0 +1,75 @@
+<font face="courier new">
+<table>
+<tr><td>&lt;table name="testTabDef"&gt;</td></tr>
+<tr><td>&nbsp&nbsp &lt;sql_name&gt;</td></tr>testTabDef&lt;/sql_name&gt;</td></tr>
+<tr><td>&nbsp&nbsp &lt;singular_name&gt;</td></tr>testTabDef&lt;/singular_name&gt;</td></tr>
+<tr><td>&nbsp&nbsp &lt;plural_name&gt;</td></tr>testTabDef&lt;/plural_name&gt;</td></tr>
+<tr><td>&nbsp&nbsp &lt;inlinequery&gt;</td></tr>
+<tr><td>&lt;![CDATA[</td></tr>
+<tr><td>SELECT APPLICATION_HANDLE, </td></tr>
+<tr><td>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp APPLICATION_NAME,</td></tr>
+<tr><td>&nbsp&nbsp&nbsp&nbsp&nbsp&nbspTOTAL_CPU_TIME, </td></tr>
+<tr><td>&nbsp&nbsp&nbsp&nbsp&nbsp&nbspTOTAL_ACT_TIME, </td></tr>
+<tr><td>&nbsp&nbsp&nbsp&nbsp&nbsp&nbspACT_COMPLETED_TOTAL, </td></tr>
+<tr><td>&nbsp&nbsp&nbsp&nbsp&nbsp&nbspTOTAL_WAIT_TIME, </td></tr>
+<tr><td>&nbsp&nbsp&nbsp&nbsp&nbsp&nbspCLIENT_IDLE_WAIT_TIME</td></tr>
+<tr><td>&nbsp&nbsp FROM TABLE(MON_GET_CONNECTION(NULL, -1)) as t</td></tr>
+<tr><td>]]&gt;</td></tr>
+<tr><td>&nbsp&nbsp &lt;/inlinequery&gt;</td></tr>
+<tr><td>&nbsp&nbsp &lt;description&gt;</td></tr>Query from ad hoc&lt;/description&gt;</td></tr>
+<tr><td>&nbsp&nbsp &lt;rows_per_page&gt;</td></tr>50&lt;/rows_per_page&gt;</td></tr>
+<tr><td>&nbsp&nbsp &lt;order_by_index&gt;</td></tr>&lt;/order_by_index&gt;</td></tr>
+<tr><td>&nbsp&nbsp &lt;display_columns&gt;</td></tr>
+<tr><td>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&lt;col type="column" name="APPLICATION_HANDLE"/&gt;</td></tr>
+<tr><td>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&lt;col type="column" name="APPLICATION_NAME"/&gt;</td></tr>
+<tr><td>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&lt;col type="column" name="TOTAL_CPU_TIME"/&gt;</td></tr>
+<tr><td>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&lt;col type="column" name="TOTAL_ACT_TIME"/&gt;</td></tr>
+<tr><td>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&lt;col type="column" name="ACT_COMPLETED_TOTAL"/&gt;</td></tr>
+<tr><td>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&lt;col type="column" name="TOTAL_WAIT_TIME"/&gt;</td></tr>
+<tr><td>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&lt;col type="column" name="CLIENT_IDLE_WAIT_TIME"/&gt;</td></tr>
+<tr><td>&nbsp&nbsp &lt;/display_columns&gt;</td></tr>
+<tr><td>&nbsp&nbsp &lt;column name="APPLICATION_HANDLE"&gt;</td></tr>
+<tr><td>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&lt;c_sql_name&gt;</td></tr>APPLICATION_HANDLE&lt;/c_sql_name&gt;</td></tr>
+<tr><td>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&lt;c_title&gt;</td></tr>APPLICATION_HANDLE&lt;/c_title&gt;</td></tr>
+<tr><td>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&lt;c_presentation&gt;</td></tr>&lt;/c_presentation&gt;</td></tr>
+<tr><td>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&lt;c_drill&gt;</td></tr>n&lt;/c_drill&gt;</td></tr>
+<tr><td>&nbsp&nbsp &lt;/column&gt;</td></tr>
+<tr><td>&nbsp&nbsp &lt;column name="APPLICATION_NAME"&gt;</td></tr>
+<tr><td>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&lt;c_sql_name&gt;</td></tr>APPLICATION_NAME&lt;/c_sql_name&gt;</td></tr>
+<tr><td>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&lt;c_title&gt;</td></tr>APPLICATION_NAME&lt;/c_title&gt;</td></tr>
+<tr><td>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&lt;c_presentation&gt;</td></tr>&lt;/c_presentation&gt;</td></tr>
+<tr><td>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&lt;c_drill&gt;</td></tr>y&lt;/c_drill&gt;</td></tr>
+<tr><td>&nbsp&nbsp &lt;/column&gt;</td></tr>
+<tr><td>&nbsp&nbsp &lt;column name="TOTAL_CPU_TIME"&gt;</td></tr>
+<tr><td>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&lt;c_sql_name&gt;</td></tr>TOTAL_CPU_TIME&lt;/c_sql_name&gt;</td></tr>
+<tr><td>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&lt;c_title&gt;</td></tr>TOTAL_CPU_TIME&lt;/c_title&gt;</td></tr>
+<tr><td>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&lt;c_presentation&gt;</td></tr>&lt;/c_presentation&gt;</td></tr>
+<tr><td>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&lt;c_drill&gt;</td></tr>n&lt;/c_drill&gt;</td></tr>
+<tr><td>&nbsp&nbsp &lt;/column&gt;</td></tr>
+<tr><td>&nbsp&nbsp &lt;column name="TOTAL_ACT_TIME"&gt;</td></tr>
+<tr><td>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&lt;c_sql_name&gt;</td></tr>TOTAL_ACT_TIME&lt;/c_sql_name&gt;</td></tr>
+<tr><td>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&lt;c_title&gt;</td></tr>TOTAL_ACT_TIME&lt;/c_title&gt;</td></tr>
+<tr><td>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&lt;c_presentation&gt;</td></tr>&lt;/c_presentation&gt;</td></tr>
+<tr><td>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&lt;c_drill&gt;</td></tr>n&lt;/c_drill&gt;</td></tr>
+<tr><td>&nbsp&nbsp &lt;/column&gt;</td></tr>
+<tr><td>&nbsp&nbsp &lt;column name="ACT_COMPLETED_TOTAL"&gt;</td></tr>
+<tr><td>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&lt;c_sql_name&gt;</td></tr>ACT_COMPLETED_TOTAL&lt;/c_sql_name&gt;</td></tr>
+<tr><td>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&lt;c_title&gt;</td></tr>ACT_COMPLETED_TOTAL&lt;/c_title&gt;</td></tr>
+<tr><td>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&lt;c_presentation&gt;</td></tr>&lt;/c_presentation&gt;</td></tr>
+<tr><td>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&lt;c_drill&gt;</td></tr>n&lt;/c_drill&gt;</td></tr>
+<tr><td>&nbsp&nbsp &lt;/column&gt;</td></tr>
+<tr><td>&nbsp&nbsp &lt;column name="TOTAL_WAIT_TIME"&gt;</td></tr>
+<tr><td>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&lt;c_sql_name&gt;</td></tr>TOTAL_WAIT_TIME&lt;/c_sql_name&gt;</td></tr>
+<tr><td>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&lt;c_title&gt;</td></tr>TOTAL_WAIT_TIME&lt;/c_title&gt;</td></tr>
+<tr><td>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&lt;c_presentation&gt;</td></tr>&lt;/c_presentation&gt;</td></tr>
+<tr><td>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&lt;c_drill&gt;</td></tr>n&lt;/c_drill&gt;</td></tr>
+<tr><td>&nbsp&nbsp &lt;/column&gt;</td></tr>
+<tr><td>&nbsp&nbsp &lt;column name="CLIENT_IDLE_WAIT_TIME"&gt;</td></tr>
+<tr><td>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&lt;c_sql_name&gt;</td></tr>CLIENT_IDLE_WAIT_TIME&lt;/c_sql_name&gt;</td></tr>
+<tr><td>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&lt;c_title&gt;</td></tr>CLIENT_IDLE_WAIT_TIME&lt;/c_title&gt;</td></tr>
+<tr><td>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&lt;c_presentation&gt;</td></tr>&lt;/c_presentation&gt;</td></tr>
+<tr><td>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&lt;c_drill&gt;</td></tr>n&lt;/c_drill&gt;</td></tr>
+<tr><td>&nbsp&nbsp &lt;/column&gt;</td></tr>
+<tr><td>&lt;/table&gt;</td></tr>
+</table>
+</font>

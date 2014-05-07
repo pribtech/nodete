@@ -1,0 +1,162 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2010 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+<table name="theshholdViolation">
+	<sql_name>theshholdViolation</sql_name>
+	<singular_name>Theshhold Violation</singular_name>
+	<plural_name>Theshhold Violations</plural_name>
+	<inlinequery>SELECT	* FROM "?"."?"</inlinequery>
+	<parameters>
+		<parm name="tabschema">
+			<title>tabschema</title>
+			<value>no schema</value>
+			<type>n</type>
+		</parm>
+		<parm name="tabname">
+			<title>tabname</title>
+			<value>no table</value>
+			<type>n</type>
+		</parm>
+	</parameters>
+	<description />
+	<order_by_index name="ACTIVITY_COLLECTED" direction="D"/>
+	<order_by_index name="AGENT_ID" direction="A"/>
+	<display_columns>
+		<col type="column" name="ACTIVITY_COLLECTED"/>
+		<col type="column" name="ACTIVATE_TIMESTAMP"/>
+		<col type="column" name="PARTITION_KEY"/>
+		<col type="column" name="ACTIVITY_ID"/>
+		<col type="column" name="AGENT_ID"/>
+		<col type="column" name="APPL_ID"/>
+		<col type="column" name="COORD_PARTITION_NUM"/>
+		<col type="column" name="DESTINATION_SERVICE_CLASS_ID"/>
+		<col type="column" name="PARTITION_NUMBER"/>
+		<col type="column" name="SOURCE_SERVICE_CLASS_ID"/>
+		<col type="column" name="THRESHOLD_ACTION"/>
+		<col type="column" name="THRESHOLD_MAXVALUE"/>
+		<col type="column" name="THRESHOLD_PREDICATE"/>
+		<col type="column" name="THRESHOLD_QUEUESIZE"/>
+		<col type="column" name="THRESHOLDID"/>
+		<col type="column" name="TIME_OF_VIOLATION"/>
+		<col type="column" name="UOW_ID"/>
+	</display_columns>
+	<column name="PARTITION_KEY" minVersion="9.7">
+		<c_sql_name>PARTITION_KEY</c_sql_name>
+		<c_title>Partition Key</c_title>
+		<c_presentation/>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="ACTIVATE_TIMESTAMP">
+		<c_sql_name>ACTIVATE_TIMESTAMP</c_sql_name>
+		<c_title>Activated</c_title>
+		<c_presentation/>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="ACTIVITY_COLLECTED">
+		<c_sql_name>ACTIVITY_COLLECTED</c_sql_name>
+		<c_title>Collected</c_title>
+		<c_presentation/>
+		<c_drill>y</c_drill>
+		<c_pkey>p</c_pkey>
+	</column>
+	<column name="ACTIVITY_ID">
+		<c_sql_name>ACTIVITY_ID</c_sql_name>
+		<c_title>Activity Id.</c_title>
+		<c_presentation/>
+		<c_drill>n</c_drill>
+		<c_pkey>p</c_pkey>
+	</column>
+	<column name="AGENT_ID">
+		<c_sql_name>AGENT_ID</c_sql_name>
+		<c_title>Agent Id.</c_title>
+		<c_presentation/>
+		<c_drill>n</c_drill>
+		<c_pkey>p</c_pkey>
+	</column>
+	<column name="APPL_ID">
+		<c_sql_name>APPL_ID</c_sql_name>
+		<c_title>Appl. Id.</c_title>
+		<c_presentation/>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="COORD_PARTITION_NUM">
+		<c_sql_name>COORD_PARTITION_NUM</c_sql_name>
+		<c_title>Co-ord. Partition</c_title>
+		<c_presentation/>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="DESTINATION_SERVICE_CLASS_ID" minVersion="9.7">
+		<c_sql_name>DESTINATION_SERVICE_CLASS_ID</c_sql_name>
+		<c_title>Dest. Service Class</c_title>
+		<c_presentation/>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="PARTITION_NUMBER" minVersion="9.7">
+		<c_sql_name>PARTITION_NUMBER</c_sql_name>
+		<c_title>Partition</c_title>
+		<c_presentation/>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="SOURCE_SERVICE_CLASS_ID" minVersion="9.7">
+		<c_sql_name>SOURCE_SERVICE_CLASS_ID</c_sql_name>
+		<c_title>Source Service Class</c_title>
+		<c_presentation/>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="THRESHOLD_ACTION">
+		<c_sql_name>THRESHOLD_ACTION</c_sql_name>
+		<c_title>Threshold Action</c_title>
+		<c_presentation/>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="THRESHOLD_MAXVALUE">
+		<c_sql_name>THRESHOLD_MAXVALUE</c_sql_name>
+		<c_title>Threshold Max. Value</c_title>
+		<c_presentation/>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="THRESHOLD_PREDICATE">
+		<c_sql_name>THRESHOLD_PREDICATE</c_sql_name>
+		<c_title>Threshold Predicate</c_title>
+		<c_presentation/>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="THRESHOLD_QUEUESIZE">
+		<c_sql_name>THRESHOLD_QUEUESIZE</c_sql_name>
+		<c_title>Threshold Queue Size</c_title>
+		<c_presentation/>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="THRESHOLDID">
+		<c_sql_name>THRESHOLDID</c_sql_name>
+		<c_title>Threshold</c_title>
+		<c_presentation/>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="TIME_OF_VIOLATION">
+		<c_sql_name>TIME_OF_VIOLATION</c_sql_name>
+		<c_title>Violation Time</c_title>
+		<c_presentation/>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="UOW_ID">
+		<c_sql_name>UOW_ID</c_sql_name>
+		<c_title>UOW</c_title>
+		<c_presentation/>
+		<c_drill>n</c_drill>
+	</column>
+</table>

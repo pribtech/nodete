@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tutorial name="WLM Table Functions to Investigate Delay">
+    <FlowRestriction>forwardExploration</FlowRestriction>
+    <closeAction />
+    <openAction />
+    <globalCodeHighlightOptions highlightCode = "true" />
+    <WMDConfig>
+		<load>
+			<workload name="WLM_tut_app1" profile="wmd/workload_profile_WLM_tutorial_app1" taskset="wmd/task_set_WLM_tutorial_app1"/>
+			<workload name="WLM_tut_app2" profile="wmd/workload_profile_WLM_tutorial_app2" taskset="wmd/task_set_WLM_tutorial_app2"/>
+		</load>
+	</WMDConfig>
+    <pageList>
+    	<page name="WLM Table Functions to Investigate Delay" type="intro">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>WLMTableFunctionsToInvestigateDelay.html</contentFile>
+            <autoLoadLink/>
+        </page>
+        <page name="Create WAIT Routine" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>CreateWAITRoutine.html</contentFile>
+            <SQLFile>CreateWAITRoutine.sql</SQLFile>
+            <SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar="#"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+        </page>
+         <page name="Run Activities" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>RunActivities.html</contentFile>
+            <autoLoadLink>
+				<pageWindow target="_blank">
+            	<splitPane direction="h" splitPercent="0.5">
+						<topPane>
+							<panel name="Workload Driver" PrimaryContainer="true" panelTitle="Workload Driver">
+								<link type="action" target="main" window="mainLayout" connectionRequired="y">
+									<parameterList>
+										<parameter name="action">WMDTutorialBootstrap</parameter>
+										<parameter name="workload">WLM_tut_app1</parameter>
+										<parameter name="controlerID">?TUTORIAL_ID?</parameter>
+										<parameter name="controlerType">?TUTORIAL_TYPE?</parameter>
+										<parameter name="connection">active</parameter>
+										<parameter name="compactView">true</parameter>
+									</parameterList>
+								</link>
+							</panel>
+						</topPane>
+						<bottomPane>
+							<panel name="Workload Driver 2">
+								<link type="action" target="workload" window="mainLayout" connectionRequired="y">
+									<parameterList>
+										<parameter name="action">WMDTutorialBootstrap</parameter>
+										<parameter name="workload">WLM_tut_app2</parameter>
+										<parameter name="controlerID">?TUTORIAL_ID?</parameter>
+										<parameter name="controlerType">?TUTORIAL_TYPE?</parameter>
+										<parameter name="connection">active</parameter>
+										<parameter name="compactView">true</parameter>
+									</parameterList>
+								</link>
+							</panel>
+						</bottomPane>
+					</splitPane>
+				</pageWindow>
+			</autoLoadLink>
+        </page>
+         <page name="View Currently Active Workload Occurrences" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>ViewCurrentlyActiveWorkloadOccurrences.html</contentFile>
+            <SQLFile>ViewCurrentlyActiveWorkloadOccurrences.sql</SQLFile>
+        </page>
+         <page name="Find Application Handle For APP2" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>FindApplicationHandleForAPP2.html</contentFile>
+            <SQLFile>FindApplicationHandleForAPP2.sql</SQLFile>
+        </page>
+         <page name="Figure Out What Is Causing The Problem" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>FigureOutWhatIsCausingTheProblem.html</contentFile>
+            <SQLFile>blank.sql</SQLFile>
+            <!--  <SQLFile>FigureOutWhatIsCausingTheProblem.sql</SQLFile>-->            
+        </page>
+         <page name="Find The Lock That The Transaction Is Waiting On" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>FindTheLockThatTheTransactionIsWaitingOn.html</contentFile>
+            <SQLFile>blank.sql</SQLFile>
+            <!--  <SQLFile>FindTheLockThatTheTransactionIsWaitingOn.sql</SQLFile>-->
+        </page>
+         <page name="Determine Application Holding The Lock" type="last">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>DetermineApplicationHoldingTheLock.html</contentFile>
+            <SQLFile>blank.sql</SQLFile>
+            <!--  <SQLFile>DetermineApplicationHoldingTheLock.sql</SQLFile>-->
+         </page>
+         <page name="Resolve The Problem" type="last">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>ResolveTheProblem.html</contentFile>
+            <SQLFile>ViewCurrentlyActiveWorkloadOccurrences.sql</SQLFile><autoLoadLink>
+				<pageWindow target="_blank">
+							<panel name="Workload Driver" PrimaryContainer="true" panelTitle="Workload Driver">
+								<link type="action" target="main" window="mainLayout" connectionRequired="y">
+									<parameterList>
+										<parameter name="action">WMDTutorialBootstrap</parameter>
+										<parameter name="workload">WLM_tut_app1</parameter>
+										<parameter name="controlerID">?TUTORIAL_ID?</parameter>
+										<parameter name="controlerType">?TUTORIAL_TYPE?</parameter>
+										<parameter name="connection">active</parameter>
+										<parameter name="compactView">false</parameter>
+									</parameterList>
+								</link>
+							</panel>
+				</pageWindow>
+			</autoLoadLink>
+         </page>
+         <page name="Check The WLMTUT.EXITDEMO Table And Stop App2" type="last">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>CheckAndStopApp2.html</contentFile>
+            <SQLFile>CheckAndStopApp2.sql</SQLFile><autoLoadLink>
+				<pageWindow target="_blank">
+            				<panel name="Workload Driver 2">
+								<link type="action" target="workload" window="mainLayout" connectionRequired="y">
+									<parameterList>
+										<parameter name="action">WMDTutorialBootstrap</parameter>
+										<parameter name="workload">WLM_tut_app2</parameter>
+										<parameter name="controlerID">?TUTORIAL_ID?</parameter>
+										<parameter name="controlerType">?TUTORIAL_TYPE?</parameter>
+										<parameter name="connection">active</parameter>
+										<parameter name="compactView">false</parameter>
+									</parameterList>
+								</link>
+							</panel>
+				</pageWindow>
+			</autoLoadLink>
+         </page>
+         <page name="Other Alternatives" type="last">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>OtherAlternatives.html</contentFile>
+            <SQLFile>blank.sql</SQLFile>
+         </page>
+         </pageList>
+</tutorial>

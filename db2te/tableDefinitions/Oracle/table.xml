@@ -1,0 +1,413 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2012 All rights reserved.
+  
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+
+<table name="table">
+	<sql_name>sys.ALL_TABLES</sql_name>
+	<singular_name>Table</singular_name>
+	<plural_name>Table</plural_name>
+	<output>
+		<type name="DDL" destination="" title="" generator=""/>
+		<type name="DROP" destination="adhoc" title="Drop" generator="XSL/compareTableUpdates.xsl">
+			<parameterList>
+				<parameter name="action" type="raw"><value>delete</value></parameter>
+			</parameterList>
+		</type>
+		<type name="CREATE" destination="adhoc" title="Generate DDL" generator="XSL/createTableOracle.xsl" action="getSQLValue">
+			<parameterList>
+				<parameter name="query" type="fixed"><value>file:predefined/Table2XMLOracle[where OWNER='?OWNER?' and TABLE_NAME='?TABLE_NAME?']</value></parameter>
+			</parameterList>
+		</type>
+	</output>
+	<order_by_index name="OWNER" direction="A"/>
+	<order_by_index name="TABLE_NAME" direction="A"/>
+	<display_columns>
+		<col type="reference" name="contents"/>
+		<col type="column" name="OWNER"/>
+		<col type="column" name="TABLE_NAME"/>
+		<col type="reference" name="columns"/>
+		<col type="reference" name="indexCols"/>
+		<col type="column" name="TABLESPACE_NAME"/>
+		<col type="column" name="CLUSTER_NAME"/>
+		<col type="column" name="IOT_NAME"/>
+		<col type="column" name="STATUS"/>
+		<col type="column" name="NUM_ROWS"/>
+		<col type="column" name="AVG_ROW_LEN"/>
+		<col type="column" name="LAST_ANALYZED"/>
+		<col type="column" name="BUFFER_POOL"/>
+		<col type="column" name="READ_ONLY"/>
+	</display_columns>
+	<disable_edit/>
+	<action name="xmlgen">
+		<title>XML</title>
+		<icon>images/icon-xml.gif</icon>
+		<actionScript name="helloworld" type="block">
+				<followOnAction condition="">
+					<task>	
+						<assignLocalParameter name="TABLE_NAME" type="blockValue">
+							<value>TABLENAME</value>
+						</assignLocalParameter>
+						<assignLocalParameter name="OWNER" type="blockValue">
+							<value>SCHEMANAME</value>
+						</assignLocalParameter>
+						<loadPage>
+							<pageWindow target="_blank" windowStage="?CALLING_STAGE?">
+								<panel name="main" PrimaryContainer="true">
+									<URL>
+<![CDATA[
+http://?DB2MC_SERVER?/?ACTION_PROCESSOR??action=xmlgen&schemanameparm=?SCHEMANAME?&tablenameparm=?TABLENAME?&USE_CONNECTION=?ACTIVE_DATABASE_CONNECTION?
+]]>
+									</URL>				
+								</panel>
+							</pageWindow>
+						</loadPage>
+					</task>
+				</followOnAction>
+		</actionScript>
+	</action>
+	<reference name="contents">
+		<title>Contents</title>
+		<reftype>table</reftype>
+		<refvalue></refvalue>
+		<frame>main</frame>
+		<window>_blank</window>
+		<icon>images/icon-link-calendar.gif</icon>
+		<ref foreign_column_name="schema">
+			<local_column_name>OWNER</local_column_name>
+		</ref>
+		<ref foreign_column_name="table">
+			<local_column_name>TABLE_NAME</local_column_name>
+		</ref>
+	</reference>
+	<reference name="columns">
+		<title>Columns</title>
+		<reftype>table</reftype>
+		<refvalue>Oracle/tableColumn</refvalue>
+		<displayColumnsSet>table</displayColumnsSet>
+		<icon>images/icon-column.gif</icon>
+		<ref foreign_column_name="OWNER">
+			<local_column_name>OWNER</local_column_name>
+		</ref>
+		<ref foreign_column_name="TABLE_NAME">
+			<local_column_name>TABLE_NAME</local_column_name>
+		</ref>
+	</reference>
+	<reference name="constraints">
+		<title>Constraints</title>
+		<reftype>table</reftype>
+		<refvalue>Oracle/constraint</refvalue>
+		<icon>images/icon-column.gif</icon>
+		<ref foreign_column_name="OWNER">
+			<local_column_name>OWNER</local_column_name>
+		</ref>
+		<ref foreign_column_name="TABLE_NAME">
+			<local_column_name>TABLE_NAME</local_column_name>
+		</ref>
+	</reference>
+	<reference name="indexCols">
+		<title>Indices Col.</title>
+		<reftype>table</reftype>
+		<refvalue>Oracle/indexColumn</refvalue>
+		<displayColumnsSet>table</displayColumnsSet>
+		<icon>images/icon-column.gif</icon>
+		<ref foreign_column_name="OWNER">
+			<local_column_name>OWNER</local_column_name>
+		</ref>
+		<ref foreign_column_name="TABLE_NAME">
+			<local_column_name>TABLE_NAME</local_column_name>
+		</ref>
+	</reference>
+	<reference name="indices">
+		<title>Indices</title>
+		<reftype>table</reftype>
+		<refvalue>Oracle/index</refvalue>
+		<icon>images/icon-column.gif</icon>
+		<ref foreign_column_name="OWNER">
+			<local_column_name>OWNER</local_column_name>
+		</ref>
+		<ref foreign_column_name="TABLE_NAME">
+			<local_column_name>TABLE_NAME</local_column_name>
+		</ref>
+	</reference>
+	<column name="OWNER">
+		<sql_name>OWNER</sql_name>
+		<title>Owner</title>
+		<type>s</type>
+		<drillEnable/>
+		<primaryKey/>
+		<prefillEnable/>
+	</column>
+	<column name="TABLE_NAME">
+		<sql_name>TABLE_NAME</sql_name>
+		<title>Table</title>
+		<type>s</type>
+		<drill_enable/>
+		<primaryKey/>
+	</column>
+	<column name="TABLESPACE_NAME">
+		<sql_name>TABLESPACE_NAME</sql_name>
+		<title>Tablespace</title>
+		<type>s</type>
+		<drill_enable/>
+	</column>
+	<column name="CLUSTER_NAME">
+		<sql_name>CLUSTER_NAME</sql_name>
+		<title>Cluster</title>
+		<type>s</type>
+		<drill_enable/>
+	</column>
+	<column name="IOT_NAME">
+		<sql_name>IOT_NAME</sql_name>
+		<title>IOT</title>
+		<type>s</type>
+		<drill_enable/>
+	</column>
+	<column name="STATUS">
+		<sql_name>STATUS</sql_name>
+		<title>Status</title>
+		<type>s</type>
+	</column>
+	<column name="PCT_FREE">
+		<sql_name>PCT_FREE</sql_name>
+		<title>Free %</title>
+		<type>n</type>
+	</column>
+	<column name="PCT_USED">
+		<sql_name>PCT_USED</sql_name>
+		<title>Used %</title>
+		<type>n</type>
+	</column>
+	<column name="INI_TRANS">
+		<sql_name>INI_TRANS</sql_name>
+		<title>Init Trans</title>
+		<type>n</type>
+	</column>
+	<column name="MAX_TRANS">
+		<sql_name>MAX_TRANS</sql_name>
+		<title>Max Trans</title>
+		<type>n</type>
+	</column>
+	<column name="INITIAL_EXTENT">
+		<sql_name>INITIAL_EXTENT</sql_name>
+		<title>Initial Extent</title>
+		<type>n</type>
+	</column>
+	<column name="NEXT_EXTENT">
+		<sql_name>NEXT_EXTENT</sql_name>
+		<title>Next Extent</title>
+		<type>n</type>
+	</column>
+	<column name="MIN_EXTENTS">
+		<sql_name>MIN_EXTENTS</sql_name>
+		<title>Min Extents</title>
+		<type>n</type>
+	</column>
+	<column name="MAX_EXTENTS">
+		<sql_name>MAX_EXTENTS</sql_name>
+		<title>Max Extents</title>
+		<type>n</type>
+	</column>
+	<column name="PCT_INCREASE">
+		<sql_name>PCT_INCREASE</sql_name>
+		<title>Increase %</title>
+		<type>n</type>
+	</column>
+	<column name="FREELISTS">
+
+		<sql_name>FREELISTS</sql_name>
+		<title>Free Lists</title>
+		<type>n</type>
+	</column>
+	<column name="FREELIST_GROUPS">
+		<sql_name>FREELIST_GROUPS</sql_name>
+		<title>Free List Groups</title>
+		<type>n</type>
+	</column>
+	<column name="LOGGING">
+		<sql_name>LOGGING</sql_name>
+		<title>Logging</title>
+		<type>s</type>
+	</column>
+	<column name="BACKED_UP">
+		<sql_name>BACKED_UP</sql_name>
+		<title>Backed Up</title>
+		<type>s</type>
+	</column>
+	<column name="NUM_ROWS">
+		<sql_name>NUM_ROWS</sql_name>
+		<title>N0. Rows</title>
+		<type>n</type>
+	</column>
+	<column name="BLOCKS">
+		<sql_name>BLOCKS</sql_name>
+		<title>Blocks</title>
+		<type>n</type>
+	</column>
+	<column name="EMPTY_BLOCKS">
+		<sql_name>EMPTY_BLOCKS</sql_name>
+		<title>Empty Blocks</title>
+		<type>n</type>
+	</column>
+	<column name="AVG_SPACE">
+		<sql_name>AVG_SPACE</sql_name>
+		<title>Avg Space</title>
+		<type>n</type>
+	</column>
+	<column name="CHAIN_CNT">
+		<sql_name>CHAIN_CNT</sql_name>
+		<title>Chain Count</title>
+		<type>n</type>
+	</column>
+	<column name="AVG_ROW_LEN">
+		<sql_name>AVG_ROW_LEN</sql_name>
+		<title>Avg Row Length</title>
+		<type>n</type>
+	</column>
+	<column name="AVG_SPACE_FREELIST_BLOCKS">
+		<sql_name>AVG_SPACE_FREELIST_BLOCKS</sql_name>
+		<title>Avg_space_freelist_blocks</title>
+		<type>n</type>
+	</column>
+	<column name="NUM_FREELIST_BLOCKS">
+		<sql_name>NUM_FREELIST_BLOCKS</sql_name>
+		<title>No. Free List Blocks</title>
+		<type>n</type>
+	</column>
+	<column name="DEGREE">
+		<sql_name>DEGREE</sql_name>
+		<title>Degree</title>
+		<type>s</type>
+	</column>
+	<column name="INSTANCES">
+		<sql_name>INSTANCES</sql_name>
+		<title>Instances</title>
+		<type>s</type>
+	</column>
+	<column name="CACHE">
+		<sql_name>CACHE</sql_name>
+		<title>Cache</title>
+		<type>s</type>
+	</column>
+	<column name="TABLE_LOCK">
+		<sql_name>TABLE_LOCK</sql_name>
+		<title>Table Lock</title>
+		<type>s</type>
+	</column>
+	<column name="SAMPLE_SIZE">
+		<sql_name>SAMPLE_SIZE</sql_name>
+		<title>Sample Size</title>
+		<type>n</type>
+	</column>
+	<column name="LAST_ANALYZED">
+		<sql_name>LAST_ANALYZED</sql_name>
+		<title>Last Analyzed</title>
+		<type>n</type>
+	</column>
+	<column name="PARTITIONED">
+		<sql_name>PARTITIONED</sql_name>
+		<title>Partitioned</title>
+		<type>s</type>
+	</column>
+	<column name="IOT_TYPE">
+		<sql_name>IOT_TYPE</sql_name>
+		<title>IOT Type</title>
+		<type>s</type>
+	</column>
+	<column name="TEMPORARY">
+		<sql_name>TEMPORARY</sql_name>
+		<title>Temporary</title>
+		<type>s</type>
+	</column>
+	<column name="SECONDARY">
+		<sql_name>SECONDARY</sql_name>
+		<title>Secondary</title>
+		<type>s</type>
+	</column>
+	<column name="NESTED">
+		<sql_name>NESTED</sql_name>
+		<title>Nested</title>
+		<type>s</type>
+		<drill_enable/>
+	</column>
+	<column name="BUFFER_POOL">
+		<sql_name>BUFFER_POOL</sql_name>
+		<title>Buffer Pool</title>
+		<type>s</type>
+	</column>
+	<column name="ROW_MOVEMENT">
+		<sql_name>ROW_MOVEMENT</sql_name>
+		<title>Row Movement</title>
+		<type>s</type>
+	</column>
+	<column name="GLOBAL_STATS">
+		<sql_name>GLOBAL_STATS</sql_name>
+		<title>Global Stats</title>
+		<type>s</type>
+	</column>
+	<column name="USER_STATS">
+		<sql_name>USER_STATS</sql_name>
+		<title>User Stats</title>
+		<type>s</type>
+	</column>
+	<column name="DURATION">
+		<sql_name>DURATION</sql_name>
+		<title>Duration</title>
+		<type>s</type>
+	</column>
+	<column name="SKIP_CORRUPT">
+		<sql_name>SKIP_CORRUPT</sql_name>
+		<title>Skip Corrupt</title>
+		<type>s</type>
+	</column>
+	<column name="MONITORING">
+		<sql_name>MONITORING</sql_name>
+		<title>Monitoring</title>
+		<type>s</type>
+		<drill_enable/>
+	</column>
+	<column name="CLUSTER_OWNER">
+		<sql_name>CLUSTER_OWNER</sql_name>
+		<title>Cluster Owner</title>
+		<type>s</type>
+		<drill_enable/>
+	</column>
+	<column name="DEPENDENCIES">
+		<sql_name>DEPENDENCIES</sql_name>
+		<title>Dependencies</title>
+		<type>s</type>
+	</column>
+	<column name="COMPRESSION">
+		<sql_name>COMPRESSION</sql_name>
+		<title>Compression</title>
+		<type>s</type>
+	</column>
+	<column name="COMPRESS_FOR">
+		<sql_name>COMPRESS_FOR</sql_name>
+		<title>Compress_for</title>
+		<type>s</type>
+	</column>
+	<column name="DROPPED">
+		<sql_name>DROPPED</sql_name>
+		<title>Dropped</title>
+		<type>s</type>
+	</column>
+	<column name="READ_ONLY">
+		<sql_name>READ_ONLY</sql_name>
+		<title>Read Only</title>
+		<type>s</type>
+	</column>
+</table>

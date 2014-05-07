@@ -1,0 +1,76 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2012 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+
+<table name="overviewDatabases">
+	<sql_name>OverviewDatabases</sql_name>
+	<inlinequery>
+<![CDATA[
+SELECT * FROM v$database   a
+]]>
+	</inlinequery>
+	<singular_name>Overview Database Detail</singular_name>
+	<plural_name>Overview Databases Detail</plural_name>
+	<description/>
+	<output>
+		<type name="DDL" destination="" title="" generator=""/>
+		<type name="PDF" destination="fo2pdf" title="PDF" generator="XSL/compareTable2FO.xsl"/>
+	</output>
+	<display_columns>
+		<col type="column" name="connection"/>
+		<col type="column" name="NAME"/>
+		<col type="column" name="job"/>
+	</display_columns>
+	<column name="connection">
+		<generated>connection</generated>
+		<title>Connection</title>
+		<type>s</type>
+	</column>
+	<column name="sample_ts">
+		<generated>timestamp</generated>
+		<title>Sample Time</title>
+		<type>s</type>
+	</column>
+	<column name="NAME">
+		<sql_name>NAME</sql_name>
+		<title>Name</title>
+		<primary_key/>
+		<type>s</type>
+	</column>
+	<column name="job">
+		<sql_name>
+<![CDATA[
+(SELECT sum(FAILURES) + sum(EXCEPTIONQ_MSGS) FROM SYS.MGW_JOBS)
+]]>		
+   		</sql_name>
+		<title>Jobs</title>
+		<type>n</type>
+		<reference name="jobIssues">
+			<title>Job Issue</title>
+			<reftype>table</reftype>
+			<refvalue>Oracle/mqwJobs</refvalue>
+			<icon>images/fw_bold.gif</icon>								
+			<ref foreign_column_name="useConnection">
+				<local_column_name>connection</local_column_name>
+			</ref>		
+		</reference>
+		<style>
+			<option gt='0' style='ERROR'/>
+		</style>
+		
+	</column>
+</table>

@@ -1,0 +1,134 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2013 All rights reserved.
+  
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+<table name="triggers">
+	<sqlName>information_schema.triggers</sqlName>
+	<singularName>Triggers</singularName>
+	<pluralName>Triggers</pluralName>
+	<description/>
+	<disableEdit/>
+	<output>
+	<type name="DDL" destination="" title="" generator=""/>
+	</output>
+	<orderBy name="trigger_catalog" direction="A"/>
+	<orderBy name="trigger_schema" direction="A"/>
+	<orderBy name="trigger_name" direction="A"/>
+	<displayColumns titleDepth="2">
+		<col type="column" name="trigger_catalog"/>
+		<col type="column" name="trigger_schema"/>
+		<col type="column" name="trigger_name"/>
+		<col type="column" name="event_manipulation"/>
+		<col type="column" name="event_object_catalog"/>
+		<col type="column" name="event_object_schema"/>
+		<col type="column" name="event_object_table"/>
+		<col type="column" name="action_order"/>
+		<col type="column" name="action_condition"/>
+		<col type="column" name="action_statement"/>
+		<col type="column" name="action_orientation"/>
+		<col type="column" name="action_timing"/>
+		<col type="column" name="action_reference_old_table"/>
+		<col type="column" name="action_reference_new_table"/>
+		<col type="column" name="action_reference_old_row"/>
+		<col type="column" name="action_reference_new_row"/>
+		<col type="column" name="created"/>
+	</displayColumns>
+	<column name="trigger_catalog">
+		<sqlName>trigger_catalog</sqlName>
+		<title>Trigger Catalog</title>
+		<type>s</type>
+	</column>
+	<column name="trigger_schema">
+		<sqlName>trigger_schema</sqlName>
+		<title>Trigger Schema</title>
+		<type>s</type>
+	</column>
+	<column name="trigger_name">
+		<sqlName>trigger_name</sqlName>
+		<title>Trigger Name</title>
+		<type>s</type>
+	</column>
+	<column name="event_manipulation">
+		<sqlName>event_manipulation</sqlName>
+		<title>Event Manipulation</title>
+		<type>s</type>
+	</column>
+	<column name="event_object_catalog">
+		<sqlName>event_object_catalog</sqlName>
+		<title>Event Object Catalog</title>
+		<type>s</type>
+	</column>
+	<column name="event_object_schema">
+		<sqlName>event_object_schema</sqlName>
+		<title>Event Object Schema</title>
+		<type>s</type>
+	</column>
+	<column name="event_object_table">
+		<sqlName>event_object_table</sqlName>
+		<title>Event Object Table</title>
+		<type>s</type>
+	</column>
+	<column name="action_order">
+		<sqlName>action_order</sqlName>
+		<title>Action Order</title>
+		<type>n</type>
+	</column>
+	<column name="action_condition">
+		<sqlName>action_condition</sqlName>
+		<title>Action Condition</title>
+		<type>s</type>
+	</column>
+	<column name="action_statement">
+		<sqlName>action_statement</sqlName>
+		<title>Action Statement</title>
+		<type>s</type>
+	</column>
+	<column name="action_orientation">
+		<sqlName>action_orientation</sqlName>
+		<title>Action Orientation</title>
+		<type>s</type>
+	</column>
+	<column name="action_timing">
+		<sqlName>action_timing</sqlName>
+		<title>Action Timing</title>
+		<type>s</type>
+	</column>
+	<column name="action_reference_old_table">
+		<sqlName>action_reference_old_table</sqlName>
+		<title>Action Reference Old Table</title>
+		<type>s</type>
+	</column>
+	<column name="action_reference_new_table">
+		<sqlName>action_reference_new_table</sqlName>
+		<title>Action Reference New Table</title>
+		<type>s</type>
+	</column>
+	<column name="action_reference_old_row">
+		<sqlName>action_reference_old_row</sqlName>
+		<title>Action Reference Old Row</title>
+		<type>s</type>
+	</column>
+	<column name="action_reference_new_row">
+		<sqlName>action_reference_new_row</sqlName>
+		<title>Action Reference New Row</title>
+		<type>s</type>
+	</column>
+	<column name="created">
+		<sqlName>created</sqlName>
+		<title>Created</title>
+		<type>d</type>
+	</column>
+</table>

@@ -1,0 +1,109 @@
+<i><font color="#9a1900">&lt;!--</font></i><br>
+<i><font color="#9a1900">  Copyright IBM Corp. 2009 All rights reserved.</font></i><br>
+<br>
+<i><font color="#9a1900">  Licensed under the Apache License, Version 2.0 (the "License");</font></i><br>
+<i><font color="#9a1900">  you may not use this file except in compliance with the License.</font></i><br>
+<i><font color="#9a1900">  You may obtain a copy of the License at</font></i><br>
+
+<br>
+<i><font color="#9a1900">      http://www.apache.org/licenses/LICENSE-2.0</font></i><br>
+<br>
+<i><font color="#9a1900">  Unless required by applicable law or agreed to in writing, software</font></i><br>
+<i><font color="#9a1900">  distributed under the License is distributed on an "AS IS" BASIS,</font></i><br>
+<i><font color="#9a1900">  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</font></i><br>
+<i><font color="#9a1900">  See the License for the specific language governing permissions and</font></i><br>
+
+<i><font color="#9a1900">  limitations under the License.</font></i><br>
+<i><font color="#9a1900">--&gt;</font></i><br>
+
+<PRE>
+<table><tr><td class="sourceCopiedFrom">
+&lt;table name="monConnectionNN"&gt;
+&nbsp&nbsp&nbsp&lt;sql_name&gt;monConnectionNN&lt;/sql_name&gt;
+&nbsp&nbsp&nbsp&lt;singular_name&gt;Monitored Connection&lt;/singular_name&gt;
+&nbsp&nbsp&nbsp&lt;plural_name&gt;Monitored Connections&lt;/plural_name&gt;
+&nbsp&nbsp&nbsp&lt;inlinequery&gt;
+&lt;![CDATA[
+SELECT APPLICATION_HANDLE, 
+       APPLICATION_NAME,
+&nbsp&nbsp&nbsp   TOTAL_CPU_TIME, 
+&nbsp&nbsp&nbsp   TOTAL_ACT_TIME, 
+&nbsp&nbsp&nbsp   ACT_COMPLETED_TOTAL, 
+&nbsp&nbsp&nbsp   TOTAL_WAIT_TIME, 
+&nbsp&nbsp&nbsp   CLIENT_IDLE_WAIT_TIME
+&nbsp&nbsp&nbspFROM TABLE(MON_GET_CONNECTION(NULL, -1)) as t
+]]&gt;
+&nbsp&nbsp&nbsp&lt;/inlinequery&gt;
+&nbsp&nbsp&nbsp&lt;description&gt;This pane gives the information about all the applications currently connected to the database&lt;/description&gt;
+&nbsp&nbsp&nbsp&lt;order_by_index/&gt;
+&nbsp&nbsp&nbsp&lt;display_columns&gt;
+&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&lt;col type="column" name="APPLICATION_HANDLE"/&gt;
+&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&lt;col type="column" name="APPLICATION_NAME"/&gt;
+&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&lt;col type="column" name="TOTAL_CPU_TIME"/&gt;
+&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<a class="sourceAdd">&lt;col type="dynamiccolumn" name="totalCPURate"/&gt;</a>
+&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&lt;col type="column" name="TOTAL_ACT_TIME"/&gt;
+&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&lt;col type="column" name="ACT_COMPLETED_TOTAL"/&gt;
+&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&lt;col type="column" name="TOTAL_WAIT_TIME"/&gt;
+&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&lt;col type="column" name="CLIENT_IDLE_WAIT_TIME"/&gt;
+&nbsp&nbsp&nbsp&lt;/display_columns&gt;
+&nbsp&nbsp&nbsp&lt;column name="APPLICATION_HANDLE"&gt;
+&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&lt;c_sql_name&gt;APPLICATION_HANDLE&lt;/c_sql_name&gt;
+&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&lt;c_title&gt;Application Handle&lt;/c_title&gt;
+&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&lt;c_presentation&gt;n&lt;/c_presentation&gt;
+&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&lt;c_drill&gt;n&lt;/c_drill&gt;
+&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&lt;c_pkey&gt;p&lt;/c_pkey&gt;
+&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&lt;c_reference name="instance"&gt;
+&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&lt;reftype&gt;table&lt;/reftype&gt;
+&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&lt;refvalue&gt;Monitor/monConnection&lt;/refvalue&gt;
+&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&lt;icon&gt;images/sout.gif&lt;/icon&gt;
+&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&lt;ref foreign_column_name="APPLICATION_HANDLE"&gt;
+&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&lt;local_column_name&gt;APPLICATION_HANDLE&lt;/local_column_name&gt;
+&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&lt;/ref&gt;
+&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&lt;/c_reference&gt;
+&nbsp&nbsp&nbsp&lt;/column&gt;
+&nbsp&nbsp&nbsp&lt;column name="APPLICATION_NAME"&gt;
+&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&lt;c_sql_name&gt;APPLICATION_NAME&lt;/c_sql_name&gt;
+&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&lt;c_title&gt;Application Name&lt;/c_title&gt;
+&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&lt;c_presentation&gt;n&lt;/c_presentation&gt;
+&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&lt;c_drill&gt;n&lt;/c_drill&gt;
+&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&lt;c_reference name="instance"&gt;
+&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&lt;reftype&gt;table&lt;/reftype&gt;
+&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&lt;refvalue&gt;Monitor/monConnection&lt;/refvalue&gt;
+&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&lt;icon&gt;images/sout.gif&lt;/icon&gt;
+&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&lt;ref foreign_column_name="APPLICATION_HANDLE"&gt;
+&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&lt;local_column_name&gt;APPLICATION_HANDLE&lt;/local_column_name&gt;
+&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&lt;/ref&gt;
+&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&lt;/c_reference&gt;
+&nbsp&nbsp&nbsp&lt;/column&gt;
+&nbsp&nbsp&nbsp&lt;column name="TOTAL_CPU_TIME"&gt;
+&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&lt;c_sql_name&gt;TOTAL_CPU_TIME&lt;/c_sql_name&gt;
+&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&lt;c_title&gt;Total CPU Time&lt;/c_title&gt;
+&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&lt;c_drill&gt;n&lt;/c_drill&gt;
+&nbsp&nbsp&nbsp&lt;/column&gt;
+&nbsp&nbsp&nbsp&lt;column name="TOTAL_ACT_TIME"&gt;
+&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&lt;c_sql_name&gt;TOTAL_ACT_TIME&lt;/c_sql_name&gt;
+&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&lt;c_title&gt;TOTAL_ACT_TIME&lt;/c_title&gt;
+&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&lt;c_drill&gt;n&lt;/c_drill&gt;
+&nbsp&nbsp&nbsp&lt;/column&gt;
+&nbsp&nbsp&nbsp&lt;column name="ACT_COMPLETED_TOTAL"&gt;
+&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&lt;c_sql_name&gt;ACT_COMPLETED_TOTAL&lt;/c_sql_name&gt;
+&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&lt;c_title&gt;Activities Completed Total&lt;/c_title&gt;
+&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&lt;c_presentation&gt;n&lt;/c_presentation&gt;
+&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&lt;c_drill&gt;n&lt;/c_drill&gt;
+&nbsp&nbsp&nbsp&lt;/column&gt;
+&nbsp&nbsp&nbsp&lt;column name="TOTAL_WAIT_TIME"&gt;
+&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&lt;c_sql_name&gt;TOTAL_WAIT_TIME&lt;/c_sql_name&gt;
+&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&lt;c_title&gt;TOTAL_WAIT_TIME&lt;/c_title&gt;
+&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&lt;c_presentation&gt;n&lt;/c_presentation&gt;
+&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&lt;c_drill&gt;n&lt;/c_drill&gt;
+&nbsp&nbsp&nbsp&lt;/column&gt;
+&nbsp&nbsp&nbsp&lt;column name="CLIENT_IDLE_WAIT_TIME"&gt;
+&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&lt;c_sql_name&gt;CLIENT_IDLE_WAIT_TIME&lt;/c_sql_name&gt;
+&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&lt;c_title&gt;CLIENT_IDLE_WAIT_TIME&lt;/c_title&gt;
+&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&lt;c_presentation&gt;n&lt;/c_presentation&gt;
+&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&lt;c_drill&gt;n&lt;/c_drill&gt;
+&nbsp&nbsp&nbsp&lt;/column&gt;
+&nbsp&nbsp&nbsp <a class="sourceAdd">&lt;dynamicColumn name="totalCPURate" type="DELTA_NORMALIZED" column="TOTAL_CPU_TIME" title="Total CPU Rate"/&gt;</a>
+&lt;/table&gt;
+</td></tr></table>
+</PRE>

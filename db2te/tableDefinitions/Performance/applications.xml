@@ -1,0 +1,194 @@
+<!--
+  Copyright IBM Corp. 2007 All rights reserved.
+
+  Updated by Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2010 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+	<table name="applications">
+		<sql_name>SYSIBMADM.APPLICATIONS</sql_name>
+		<singular_name>Application</singular_name>
+		<plural_name>Applications</plural_name>
+		<description>Each row represents a
+		&lt;a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.admin.dbobj.doc/doc/c0005409.html?noframes=true');"&gt;DB2 agent&lt;/a&gt;.
+		This list is based on the &lt;a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.admin.dbobj.doc/doc/r0022011.html?noframes=true');"&gt;SYSIBMADM.APPLICATIONS&lt;/a&gt; administrative view.
+		You can 
+		&lt;a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.admin.dbobj.doc/doc/r0023574.html?noframes=true');"&gt;FORCE&lt;/a&gt; an application
+		to disconnect from the DB2 server by selecting the force icon at the left side of a row.
+		</description>
+		<output>
+			<type name="DDL" destination="" title="" generator=""/>
+			<type name="ADHOC" destination="adhoc" title="Force" generator="XSL/compareForce.xsl"/>
+		</output>
+		<rowStyle interfaceColumn='applstat'>
+			<option eq='UOWEXEC' style='INFO'/>
+			<option eq='LOCKWAIT' style='ERROR'/>
+			<option eq='COMMIT_ACT' style='ERROR'/>
+			<option eq='ROLLBACK_ACT' style='ERROR'/>
+			<option eq='RECOMP' style='INFO'/>
+			<option eq='COMP' style='INFO'/>
+			<option eq='INTR' style='INFO'/>
+			<option eq='TPREP' style='INFO'/>
+			<option eq='THCOMT' style='INFO'/>
+			<option eq='THABRT' style='ERROR'/>
+			<option eq='TEND' style='INFO'/>
+			<option eq='CREATE_DB' style='ERROR'/>
+			<option eq='RESTART' style='ERROR'/>
+			<option eq='RESTORE' style='ERROR'/>
+			<option eq='BACKUP' style='INFO'/>
+			<option eq='LOAD' style='INFO'/>
+			<option eq='UNLOAD' style='INFO'/>
+			<option eq='IOERROR_WAIT' style='ERROR'/>
+			<option eq='QUIESCE_TABLESPACE' style='ERROR'/>
+			<option eq='WAITFOR_REMOTE' style='ERROR'/>
+			<option eq='REMOTE_RQST' style='ERROR'/>
+			<option eq='ROLLBACK_TO_SAVEPOINT' style='ERROR'/>
+		</rowStyle>			
+		<order_by_index name="AGENT_ID" direction="A"/>
+		<display_columns>
+			<col type="reference" name="stmt"/>
+			<col type="reference" name="applicationInfo"/>
+			<col type="reference" name="locks"/>
+			<col type="column" name="AGENT_ID"/>
+			<col type="column" name="applname"/>
+			<col type="reference" name="authid"/>						
+			<col type="column" name="authid"/>
+			<col type="column" name="TPMON_CLIENT_USERID"/>						
+			<col type="column" name="TPMON_CLIENT_WKSTN"/>						
+			<col type="column" name="TPMON_CLIENT_APP"/>
+			<col type="column" name="applstat"/>
+			<col type="column" name="statuschg"/>			
+			<col type="action" name="force"/>
+		</display_columns>
+		<disable_edit/>
+
+		<action name="force">
+			<c_title>Force</c_title>
+			<icon>images/cancel.gif</icon>   
+    		<actionScript>
+    			<task>
+			    	<assignSharedConstant name="AGENT_ID" type="blockValue">
+						<value>AGENT_ID</value>
+					</assignSharedConstant>
+		   			<callGlobalAction name="forceAgent"/>
+	   			</task>
+    		</actionScript>
+    	</action>
+
+		<reference name="stmt">
+			<c_title />
+			<reftype>table</reftype>
+			<refvalue>Performance/snapStmt</refvalue>
+			<icon>images/icon-application.gif</icon>
+			<ref foreign_column_name="AGENT_ID">
+				<local_column_name>AGENT_ID</local_column_name>
+			</ref>
+		</reference>
+		<reference name="applicationInfo">
+			<c_title/>
+			<reftype>displayRow</reftype>
+			<refvalue>Performance/snapApplicationInfo</refvalue>
+			<icon>images/icon-application.gif</icon>
+			<ref foreign_column_name="AGENT_ID">
+				<local_column_name>AGENT_ID</local_column_name>
+			</ref>
+		</reference>
+		<reference name="authid">
+			<title>Auth</title>
+			<reftype>displayRow</reftype>
+			<refvalue>Authority/authids</refvalue>
+			<icon>images/icon-user.gif</icon>						
+			<ref foreign_column_name="authid">
+				<local_column_name>authid</local_column_name>
+			</ref>
+		</reference>					
+		<reference name="locks">
+			<c_title>Locks</c_title>
+			<reftype>table</reftype>
+			<refvalue>Performance/toplock</refvalue>
+			<icon>images/icon-application.gif</icon>
+			<ref foreign_column_name="AGENT_ID">
+				<local_column_name>AGENT_ID</local_column_name>
+			</ref>
+		</reference>
+		<column name="AGENT_ID">
+			<c_sql_name>AGENT_ID</c_sql_name>
+			<c_title>Agent ID</c_title>
+			<c_presentation>n</c_presentation>
+		</column>
+		<column name="applname">
+			<c_sql_name>APPL_NAME</c_sql_name>
+			<c_title>Application Name</c_title>
+		</column>
+		<column name="TPMON_CLIENT_USERID">
+			<c_sql_name>TPMON_CLIENT_USERID</c_sql_name>
+			<c_title>Client user ID</c_title>
+		</column>
+		<column name="TPMON_CLIENT_WKSTN">
+			<c_sql_name>TPMON_CLIENT_WKSTN</c_sql_name>
+			<c_title>Client Workstation</c_title>
+		</column>
+		<column name="TPMON_CLIENT_APP">
+			<c_sql_name>TPMON_CLIENT_APP</c_sql_name>
+			<c_title>Client application name</c_title>
+		</column>
+		<column name="authid">
+			<c_sql_name>AUTHID</c_sql_name>
+			<c_title>Authorization ID</c_title>
+		</column>
+		<column name="applid">
+			<c_sql_name>APPL_ID</c_sql_name>
+			<c_title>Application ID</c_title>
+			<c_drill>n</c_drill>
+			<c_presentation>n</c_presentation>			
+		</column>
+		<column name="applstat">
+			<c_sql_name>APPL_STATUS</c_sql_name>
+			<c_title>Application Status</c_title>
+			<c_prefill>y</c_prefill>
+	   		<c_column_mask>
+				<value_mask value="CONNECTPEND"><mask>Database Connect Pending</mask></value_mask>
+				<value_mask value="CONNECTED"><mask>Database Connected</mask></value_mask>
+				<value_mask value="UOWEXEC"><mask>Unit of Work Executing</mask></value_mask>
+				<value_mask value="UOWWAIT"><mask>Unit of Work Waiting</mask></value_mask>
+				<value_mask value="LOCKWAIT"><mask>Lock Wait</mask></value_mask>
+				<value_mask value="COMMIT_ACT"><mask>Commit Active</mask></value_mask>
+				<value_mask value="ROLLBACK_ACT"><mask>Rollback Active</mask></value_mask>
+				<value_mask value="RECOMP"><mask>Recompiling</mask></value_mask>
+				<value_mask value="COMP"><mask>Compiling</mask></value_mask>
+				<value_mask value="INTR"><mask>Request Interrupted</mask></value_mask>
+				<value_mask value="DISCONNECTPEND"><mask>Database Disconnect Pending</mask></value_mask>
+				<value_mask value="DECOUPLED"><mask>Decoupled from Agent</mask></value_mask>
+				<value_mask value="TPREP"><mask>Transaction Prepared</mask></value_mask>
+				<value_mask value="THCOMT"><mask>Transaction Heuristically Committed</mask></value_mask>
+				<value_mask value="THABRT"><mask>Transaction Heuristically Rolled Back</mask></value_mask>
+				<value_mask value="TEND"><mask>Transaction Ended</mask></value_mask>
+				<value_mask value="CREATE_DB"><mask>Creating Database</mask></value_mask>
+				<value_mask value="RESTART"><mask>Restarting Database</mask></value_mask>
+				<value_mask value="RESTORE"><mask>Restoring Database</mask></value_mask>
+				<value_mask value="BACKUP"><mask>Backing Up Database</mask></value_mask>
+				<value_mask value="LOAD"><mask>Data Fast Load</mask></value_mask>
+				<value_mask value="UNLOAD"><mask>Data Fast Unload</mask></value_mask>
+				<value_mask value="IOERROR_WAIT"><mask>Wait to Disable Table space</mask></value_mask>
+				<value_mask value="QUIESCE_TABLESPACE"><mask>Quiescing a Table space</mask></value_mask>
+				<value_mask value="WAITFOR_REMOTE"><mask>Wait for Remote Partition</mask></value_mask>
+				<value_mask value="REMOTE_RQST"><mask>Remote Request Pending</mask></value_mask>
+				<value_mask value="ROLLBACK_TO_SAVEPOINT"><mask>Rollback to savepoint</mask></value_mask>
+	   		</c_column_mask>				
+		</column>
+		<column name="statuschg">
+			<c_sql_name>STATUS_CHANGE_TIME</c_sql_name>
+			<c_title>Time of last status change</c_title>
+		</column>
+	</table>

@@ -1,0 +1,21 @@
+<H3>Setting the Administrator User and Group</H3><hr>
+<p>The next steps are adding the administrator user name to the USERS table, adding the SYSADM group name to the GROUPS table, and making the administrator user a member of the newly added SYSADM group by adding the information to the GROUP_MEMBERSHIPS table.</p>
+
+<H2>Steps:</H2><p>
+<ol><li>Open the interactive administration program with the command:
+<br/><i>db2auth_admin admin</i></li><br/>
+<li>Enter the name of the DB2 authentication database to connect to.  <ul><li>This is the name of the database which you specified in the db2auth_key.txt file.
+</li><li>In the screenshot to the right, 'db2auth' is the name of the DB2 authentication database.</li></ul></li>
+<br/><li>If the DB2 authentication database is <b>local</b>, then press the Enter key <b> without entering a userid</b> when it asks for the connection userid.  <br/>If it is <b>remote</b>, then <b>enter the userid</b>.</li>
+<br/><li>When the program asks to enter an action number, enter 2.
+<ul><li>This will let you add the system administrator's name (as you specified in the db2auth_key.txt file)</li>
+<br/><li>The screenshot to the right uses the name 'db2admin' as the system administrator.</li></ul>
+</li>
+<br/><li>Add the SYSADM group name (as you specified in the db2auth_key.txt file) using option #3.
+</li>
+<br/><li>Add the user to the group using option #4.
+</li>
+<br/><li>Exit the program using option #9.
+</li>
+<br/><li>Keep the terminal open.
+</li><br/></p>

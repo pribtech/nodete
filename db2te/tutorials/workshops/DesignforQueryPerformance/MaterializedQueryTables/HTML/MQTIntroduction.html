@@ -1,0 +1,29 @@
+<BR><H2><B>Problem Statement</B></H2><HR>
+<p>With data spread across multiple partitions, key challenges in optimizing query performance include :</p>
+<ol>
+<li>Repeated resource intensive scans for frequently run queries (especially complex queries)</li>
+<li>Aggregated data over one or more dimensions</li>
+<li>Increased network traffic in a partitioned database environment for frequently joined tables that reside on different partitions</li>
+</ol>
+
+<BR><H2><B>Solution</B></H2><HR>
+
+<BR>
+<h4>What is a Materialized Query Table ?</h4>
+<p>A materialized query table (MQT) is a table whose definition is based upon the result of a query. The data that is contained in an MQT is derived from one or more tables on which the materialized query table definition is based. A MQT provides few benefits over views as described below.</p>
+
+<H2><B>Operation</B></H2><HR>
+<p>This tutorial introduces MQTs, the need for them and their advantages. Creation of a replicated MQT is demonstrated.</p>
+<p><b>The performance is not showcased in this case owing to less data being present in the database. However, 
+with adequate data, there would be a good performance improvement with the use of MQTs.</b></p>
+
+<BR><H2><B>Benefits of Materialized Query Tables</B></H2><HR>
+<p>
+<ol>
+<li>Significantly improved query performance by avoiding repetitive table/index scans and calculations</li>
+<li>An MQT actually stores the query results as data, and you can work with the data that is in the MQT instead of the data that is in the underlying tables, highly improving query performance</li>
+<li>Replicated MQTs avoid broadcast of data and increase collocation resulting in improved query performance</li>
+</ol>
+</p>
+
+

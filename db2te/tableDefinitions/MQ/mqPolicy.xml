@@ -1,0 +1,428 @@
+<!--
+  Peter Prib, Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2012 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<table name="mqPolicy">
+	<sqlName>DB2MQ.MQPOLICY</sqlName>
+	<singularName>MQ Policy</singularName>
+	<pluralName>MQ Policies</pluralName>
+	<orderBy name="policyname" direction="A"/>
+	<description/>
+	<displayColumns titleDepth="2">
+		<col type="column" name="policyname"/>
+		<col type="column" name="description"/>
+		<col type="column" name="connectionname"/>
+		<col type="column" name="connectionmode"/>
+		<col type="column" name="snd_priority" title="Send\\nPriority"/>
+		<col type="column" name="snd_persistent" title="Send\\nPersistent"/>
+		<col type="column" name="snd_expiry" title="Send\\nExpiry"/>
+		<col type="column" name="snd_retrycount" title="Send\\nPriority"/>
+		<col type="column" name="snd_retry_interval" title="Send\\nRetries"/>
+		<col type="column" name="snd_newcorrelid" title="Send New\\nCorrel Id."/>
+		<col type="column" name="snd_responsecorrelid" title="Send Response\\nCorrel Id."/>
+		<col type="column" name="snd_exceptionaction" title="Send\\nException Action"/>
+		<col type="column" name="snd_reportdata" title="Send\\nReport Data"/>
+		<col type="column" name="snd_rtexception" title="Send RT\\nException"/>
+		<col type="column" name="snd_rtcoa" title="Send RT\\nCOA"/>
+		<col type="column" name="snd_rtcod" title="Send RT\\nCode"/>
+		<col type="column" name="snd_rtexpiry" title="Send RT\\nExpiry"/>
+		<col type="column" name="rcv_waitinterval" title="Receive\\nWait Interval"/>
+		<col type="column" name="rcv_convert" title="Receive\\nConvert"/>
+		<col type="column" name="rcv_handlepoisonmsg" title="Receive Handle\\nPoison Msg"/>
+		<col type="column" name="rcv_rcvtruncatedmsg" title="Receive\\nTruncated Msg"/>
+		<col type="column" name="rcv_openshared" title="Receive\\nOpen Shared"/>
+		<col type="column" name="pub_retain" title="Publisher\\nRetain"/>
+		<col type="column" name="pub_othersonly" title="Publisher\\nOthers Only"/>
+		<col type="column" name="pub_suppressreg" title="Publisher\\nSuppress Reg."/>
+		<col type="column" name="pub_publocal" title="Publisher\\nPub. Local"/>
+		<col type="column" name="pub_direct" title="Publisher\\nDirect"/>
+		<col type="column" name="pub_anonymous" title="Publisher\\nAnonymous"/>
+		<col type="column" name="pub_correlasid" title="Publisher\\nCorrelas Id."/>
+		<col type="column" name="sub_sublocal" title="Subscriber\\nSub Local"/>
+		<col type="column" name="sub_newpubsonly" title="Subscriber\\nNew Pub. Only"/>
+		<col type="column" name="sub_pubonreqonly" title="Subscriber\\nPub. Reg. Only"/>
+		<col type="column" name="sub_informifret" title="Subscriber\\nPub. Reg. Only"/>
+		<col type="column" name="sub_unsuball" title="Subscriber\\nPub. Unsub. All"/>
+		<col type="column" name="sub_anonymous" title="Subscriber\\nPub. Anonymous"/>
+		<col type="column" name="sub_correlasid" title="Subscriber\\nCorrelas Id."/>
+	</displayColumns>
+	<reference name="Host">
+		<title>Host</title>
+		<reftype>displayRow</reftype>
+		<refvalue>MQ/mqHost</refvalue>
+		<icon>images/icon-tbs.gif</icon>
+		<ref foreign_column_name="CONNECTIONNAME">
+			<local_column_name>CONNECTIONNAME</local_column_name>
+		</ref>
+	</reference>
+	<reference name="messages">
+		<title>Messages</title>
+		<reftype>table</reftype>
+		<refvalue>MQ/mqServicePolicyQueue</refvalue>
+		<icon>images/icon-tbs.gif</icon>
+		<ref foreign_column_name="policyname">
+			<local_column_name>policyname</local_column_name>
+		</ref>
+	</reference>
+	<column name="policyname">
+		<sql_name>POLICYNAME</sql_name>
+		<title>Policy Name</title>
+		<type>s</type>
+		<primaryKey/>
+	</column>
+	<column name="connectionname" nullable="false">
+		<sql_name>CONNECTIONNAME</sql_name>
+		<title>Connection</title>
+		<type>s</type>
+		<prefill>
+			<table>DB2MQ.MQHOST</table>
+			<column>CONNECTIONNAME</column>
+		</prefill> 
+	</column>
+	<column name="connectionmode" nullable="false">
+		<sql_name>CONNECTIONMODE</sql_name>
+		<title>Connection Mode</title>
+		<type>s</type>
+		<columnMask>
+			<value_mask value="R"><mask>Real</mask></value_mask>
+			<value_mask value="L"><mask>Logical</mask></value_mask>
+		</columnMask>
+		<default>L</default>
+	</column>
+	<column name="snd_priority" nullable="false">
+		<sql_name>SND_PRIORITY</sql_name>
+		<title>Send Priority</title>
+		<type>s</type>
+		<prefill>
+			<value>0</value>
+			<value>1</value>
+			<value>2</value>
+			<value>3</value>
+			<value>4</value>
+			<value>5</value>
+			<value>6</value>
+			<value>7</value>
+			<value>8</value>
+			<value>9</value>
+			<value>T</value>
+		</prefill>
+		<default>T</default>
+	</column>
+	<column name="snd_persistent" nullable="false">
+		<sql_name>SND_PERSISTENT</sql_name>
+		<title>Send Persistent</title>
+		<type>s</type>
+		<columnMask>
+			<value_mask value="Y"><mask>Yes</mask></value_mask>
+			<value_mask value="N"><mask>No</mask></value_mask>
+			<value_mask value="T"><mask>as Transport</mask></value_mask>
+		</columnMask>
+		<prefillEnable/>
+		<default>T</default>
+	</column>
+	<column name="snd_expiry" nullable="false">
+		<sql_name>SND_EXPIRY</sql_name>
+		<title>Send Expiry</title>
+		<type>n</type>
+		<default>0</default>
+	</column>
+	<column name="snd_retrycount" nullable="false">
+		<sql_name>SND_RETRYCOUNT</sql_name>
+		<title>Send Retry Count</title>
+		<type>n</type>
+	</column>
+	<column name="snd_retry_interval" nullable="false">
+		<sql_name>SND_RETRY_INTERVAL</sql_name>
+		<title>Send Retry Interval</title>
+		<type>n</type>
+	</column>
+	<column name="snd_newcorrelid" nullable="false">
+		<sql_name>SND_NEWCORRELID</sql_name>
+		<title>Send New Correlid</title>
+		<type>s</type>
+		<columnMask>
+			<value_mask value="Y"><mask>Yes</mask></value_mask>
+			<value_mask value="N"><mask>No</mask></value_mask>
+		</columnMask>
+		<prefillEnable/>
+	</column>
+	<column name="snd_responsecorrelid" nullable="false">
+		<sql_name>SND_RESPONSECORRELID</sql_name>
+		<title>Send Response Correlid</title>
+		<type>s</type>
+		<columnMask>
+			<value_mask value="M"><mask>MessageID</mask></value_mask>
+			<value_mask value="C"><mask>CorrelID</mask></value_mask>
+		</columnMask>
+		<prefillEnable/>
+	</column>
+	<column name="snd_exceptionaction" nullable="false">
+		<sql_name>SND_EXCEPTIONACTION</sql_name>
+		<title>Send Exception Action</title>
+		<type>s</type>
+		<columnMask>
+			<value_mask value="Q"><mask>Dead Letter Queue</mask></value_mask>
+			<value_mask value="D"><mask>Discard</mask></value_mask>
+		</columnMask>
+		<prefillEnable/>
+	</column>
+	<column name="snd_reportdata" nullable="false">
+		<sql_name>SND_REPORTDATA</sql_name>
+		<title>Send Report Data</title>
+		<type>s</type>
+		<columnMask>
+			<value_mask value="R"><mask>No Data</mask></value_mask>
+			<value_mask value="D"><mask>First 100 bytes</mask></value_mask>
+			<value_mask value="F"><mask>Full Data</mask></value_mask>
+		</columnMask>
+		<prefillEnable/>
+	</column>
+	<column name="snd_rtexception" nullable="false">
+		<sql_name>SND_RTEXCEPTION</sql_name>
+		<title>Send RT Exception</title>
+		<type>s</type>
+		<columnMask>
+			<value_mask value="Y"><mask>Yes</mask></value_mask>
+			<value_mask value="N"><mask>No</mask></value_mask>
+		</columnMask>
+		<prefillEnable/>
+	</column>
+	<column name="snd_rtcoa" nullable="false">
+		<sql_name>SND_RTCOA</sql_name>
+		<title>Send RT COA</title>
+		<type>s</type>
+		<drillEnable/>
+		<columnMask>
+			<value_mask value="Y"><mask>Yes</mask></value_mask>
+			<value_mask value="N"><mask>No</mask></value_mask>
+		</columnMask>
+		<prefillEnable/>
+	</column>
+	<column name="snd_rtcod" nullable="false">
+		<sql_name>SND_RTCOD</sql_name>
+		<title>Send RT Code</title>
+		<type>s</type>
+		<columnMask>
+			<value_mask value="Y"><mask>Yes</mask></value_mask>
+			<value_mask value="N"><mask>No</mask></value_mask>
+		</columnMask>
+		<prefillEnable/>
+	</column>
+	<column name="snd_rtexpiry" nullable="false">
+		<sql_name>SND_RTEXPIRY</sql_name>
+		<title>Send RT Expiry</title>
+		<type>s</type>
+		<columnMask>
+			<value_mask value="Y"><mask>Yes</mask></value_mask>
+			<value_mask value="N"><mask>No</mask></value_mask>
+		</columnMask>
+		<prefillEnable/>
+	</column>
+	<column name="rcv_waitinterval" nullable="false">
+		<sql_name>RCV_WAITINTERVAL</sql_name>
+		<title>Receive Wait Interval</title>
+		<type>n</type>
+	</column>
+	<column name="rcv_convert" nullable="false">
+		<sql_name>RCV_CONVERT</sql_name>
+		<title>Receive Convert</title>
+		<type>s</type>
+		<columnMask>
+			<value_mask value="Y"><mask>Yes</mask></value_mask>
+			<value_mask value="N"><mask>No</mask></value_mask>
+		</columnMask>
+		<prefillEnable/>
+	</column>
+	<column name="rcv_handlepoisonmsg" nullable="false">
+		<sql_name>RCV_HANDLEPOISONMSG</sql_name>
+		<title>Receive Handle Poison Msg</title>
+		<type>s</type>
+		<columnMask>
+			<value_mask value="Y"><mask>Yes</mask></value_mask>
+			<value_mask value="N"><mask>No</mask></value_mask>
+		</columnMask>
+		<prefillEnable/>
+	</column>
+	<column name="rcv_rcvtruncatedmsg" nullable="false">
+		<sql_name>RCV_RCVTRUNCATEDMSG</sql_name>
+		<title>Receive Truncated Msg</title>
+		<type>s</type>
+		<columnMask>
+			<value_mask value="Y"><mask>Yes</mask></value_mask>
+			<value_mask value="N"><mask>No</mask></value_mask>
+		</columnMask>
+		<prefillEnable/>
+	</column>
+	<column name="rcv_openshared" nullable="false">
+		<sql_name>RCV_OPENSHARED</sql_name>
+		<title>Receive Open Shared</title>
+		<type>s</type>
+		<columnMask>
+			<value_mask value="Y"><mask>Yes</mask></value_mask>
+			<value_mask value="N"><mask>No</mask></value_mask>
+		</columnMask>
+		<prefillEnable/>
+	</column>
+	<column name="pub_retain" nullable="false">
+		<sql_name>PUB_RETAIN</sql_name>
+		<title>Publish Retain</title>
+		<type>s</type>
+		<drillEnable/>
+		<columnMask>
+			<value_mask value="Y"><mask>Yes</mask></value_mask>
+			<value_mask value="N"><mask>No</mask></value_mask>
+		</columnMask>
+		<prefillEnable/>
+	</column>
+	<column name="pub_othersonly" nullable="false">
+		<sql_name>PUB_OTHERSONLY</sql_name>
+		<title>Publish Othersonly</title>
+		<type>s</type>
+		<columnMask>
+			<value_mask value="Y"><mask>Yes</mask></value_mask>
+			<value_mask value="N"><mask>No</mask></value_mask>
+		</columnMask>
+		<prefillEnable/>
+	</column>
+	<column name="pub_suppressreg" nullable="false">
+		<sql_name>PUB_SUPPRESSREG</sql_name>
+		<title>Publish Suppress Reg</title>
+		<type>s</type>
+		<columnMask>
+			<value_mask value="Y"><mask>Yes</mask></value_mask>
+			<value_mask value="N"><mask>No</mask></value_mask>
+		</columnMask>
+		<prefillEnable/>
+	</column>
+	<column name="pub_publocal" nullable="false">
+		<sql_name>PUB_PUBLOCAL</sql_name>
+		<title>Publish Pub Local</title>
+		<type>s</type>
+		<columnMask>
+			<value_mask value="Y"><mask>Yes</mask></value_mask>
+			<value_mask value="N"><mask>No</mask></value_mask>
+		</columnMask>
+		<prefillEnable/>
+	</column>
+	<column name="pub_direct" nullable="false">
+		<sql_name>PUB_DIRECT</sql_name>
+		<title>Publish Direct</title>
+		<type>s</type>
+		<columnMask>
+			<value_mask value="Y"><mask>Yes</mask></value_mask>
+			<value_mask value="N"><mask>No</mask></value_mask>
+		</columnMask>
+		<prefillEnable/>
+	</column>
+	<column name="pub_anonymous" nullable="false">
+		<sql_name>PUB_ANONYMOUS</sql_name>
+		<title>Publish Anonymous</title>
+		<type>s</type>
+		<drillEnable/>
+		<columnMask>
+			<value_mask value="Y"><mask>Yes</mask></value_mask>
+			<value_mask value="N"><mask>No</mask></value_mask>
+		</columnMask>
+		<prefillEnable/>
+	</column>
+	<column name="pub_correlasid" nullable="false">
+		<sql_name>PUB_CORRELASID</sql_name>
+		<title>Publish Correlasid</title>
+		<type>s</type>
+		<columnMask>
+			<value_mask value="Y"><mask>Yes</mask></value_mask>
+			<value_mask value="N"><mask>No</mask></value_mask>
+		</columnMask>
+		<prefillEnable/>
+	</column>
+	<column name="sub_sublocal" nullable="false">
+		<sql_name>SUB_SUBLOCAL</sql_name>
+		<title>Sub Sublocal</title>
+		<type>s</type>
+		<columnMask>
+			<value_mask value="Y"><mask>Yes</mask></value_mask>
+			<value_mask value="N"><mask>No</mask></value_mask>
+		</columnMask>
+		<prefillEnable/>
+	</column>
+	<column name="sub_newpubsonly" nullable="false">
+		<sql_name>SUB_NEWPUBSONLY</sql_name>
+		<title>Sub New Pubs Only</title>
+		<type>s</type>
+		<drillEnable/>
+		<columnMask>
+			<value_mask value="Y"><mask>Yes</mask></value_mask>
+			<value_mask value="N"><mask>No</mask></value_mask>
+		</columnMask>
+		<prefillEnable/>
+	</column>
+	<column name="sub_pubonreqonly" nullable="false">
+		<sql_name>SUB_PUBONREQONLY</sql_name>
+		<title>Sub Pub on Req. Only</title>
+		<type>s</type>
+		<columnMask>
+			<value_mask value="Y"><mask>Yes</mask></value_mask>
+			<value_mask value="N"><mask>No</mask></value_mask>
+		</columnMask>
+		<prefillEnable/>
+	</column>
+	<column name="sub_informifret" nullable="false">
+		<sql_name>SUB_INFORMIFRET</sql_name>
+		<title>Sub Informifret</title>
+		<type>s</type>
+		<columnMask>
+			<value_mask value="Y"><mask>Yes</mask></value_mask>
+			<value_mask value="N"><mask>No</mask></value_mask>
+		</columnMask>
+		<prefillEnable/>
+	</column>
+	<column name="sub_unsuball" nullable="false">
+		<sql_name>SUB_UNSUBALL</sql_name>
+		<title>Sub Unsubscribe All</title>
+		<type>s</type>
+		<columnMask>
+			<value_mask value="Y"><mask>Yes</mask></value_mask>
+			<value_mask value="N"><mask>No</mask></value_mask>
+		</columnMask>
+		<prefillEnable/>
+	</column>
+	<column name="sub_anonymous" nullable="false">
+		<sql_name>SUB_ANONYMOUS</sql_name>
+		<title>Sub Anonymous</title>
+		<type>s</type>
+		<drillEnable/>
+		<columnMask>
+			<value_mask value="Y"><mask>Yes</mask></value_mask>
+			<value_mask value="N"><mask>No</mask></value_mask>
+		</columnMask>
+		<prefillEnable/>
+	</column>
+	<column name="sub_correlasid" nullable="false">
+		<sql_name>SUB_CORRELASID</sql_name>
+		<title>Sub Correlasid</title>
+		<type>s</type>
+		<drillEnable/>
+		<columnMask>
+			<value_mask value="Y"><mask>Yes</mask></value_mask>
+			<value_mask value="N"><mask>No</mask></value_mask>
+		</columnMask>
+		<prefillEnable/>
+	</column>
+	<column name="description">
+		<sql_name>DESCRIPTION</sql_name>
+		<title>Description</title>
+		<type>s</type>
+	</column>
+</table>

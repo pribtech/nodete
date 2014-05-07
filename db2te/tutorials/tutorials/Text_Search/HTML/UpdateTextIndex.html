@@ -1,0 +1,46 @@
+<p>Changes to the data column resulted from <code>INSERT</code>, <code>UPDATE</code>, and <code>DELETE</code> statements are tracked in the staging table associated to the text index. Upon successful completion of an <code>UPDATE INDEX</code> command or <code>CALL SYSTS_UPDATE</code> statement, the text index will be synchronized with the base table rows. </p>
+
+<div>
+<img width="522" height="166" src="?BASE_DIRECTORY?/HTML/IncrementalUpdate.JPG" /><table width="1000" height="200"><tr><td></td></tr></table>
+</div>
+
+<p>Let's use an example to demonstrate the above. Run the Adhoc SQL on the right.</p>
+
+<BR>
+<h4>Insert a row into BOOKS</h4>
+<p>This step stimulates activities on the BOOKS table. A row is inserted to the table.</p>
+<pre><code>
+INSERT INTO books
+VALUES ( '456-456456456'
+       , 'John Doe'
+       , 'The Database Book'
+       , 2005
+       , XMLPARSE(DOCUMENT '<bookinfo> <author>John Doe</author> <title>The Database Book</title><story>The ultimate book about contemporary databases. </story> <year>2005</year> <price>55.00</price><pages>176</pages></bookinfo>'))
+</code></pre>
+
+<BR>
+<h4>Populate the text indexes</h4>
+<p>To synchronize the text index with the changed data, update the text indexes.</p>
+
+<pre><code>
+db2ts "UPDATE INDEX mytitleidx FOR TEXT"
+db2ts "UPDATE INDEX myxmlidx FOR TEXT"
+</code></pre>
+
+<p>Here in the Technology Explorer, we update the indexes using the administrative SQL routine.</p>
+<pre><code>
+CALL SYSTS_UPDATE('MYSCHEMA', 'MYTITLEIDX', '', 'en_US', ?);
+CALL SYSTS_UPDATE('MYSCHEMA', 'MYXMLIDX'  , '', 'en_US', ?);
+</code></pre>
+
+<p>Upon successful completion of every UPDATE INDEX command or CALL SYSTS_UPDATE statment, the text index is synchronized with the base table rows.</p>
+
+<BR>
+<h4>Text search with XPath expression</h4>
+<p>Search the XML documents again. The recently added row is also returned.</p>
+<pre><code>
+SELECT author, year, substr(title,1,30)
+  FROM books
+ WHERE CONTAINS ( bookinfo
+                , '@xpath:''/bookinfo/story [. contains("database")]''') = 1
+</code></pre>

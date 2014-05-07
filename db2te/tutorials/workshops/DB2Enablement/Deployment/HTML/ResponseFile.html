@@ -1,0 +1,31 @@
+<H2>Response File</H2><HR>
+<p>
+	The next step in the DB2 product deployment is to create a <b class="sourceChange">response file</b>. 
+	A response file is used to tell the installation process what to install and how to configure it. 
+	Using response file can simplify the installation 
+	script considerably by reducing the number of commands that must be run after the installation.
+	You can create a response file using below methods:-
+</p>
+<ol>
+	<li><b class="sourceCopiedFrom">Using <a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v9r7/topic/com.ibm.db2.luw.qb.server.doc/doc/t0011028.html');"><b>DB2 Setup wizard</b></a>:-</b></li>
+	The easiest way to create a response file is using the DB2 Setup wizard. 
+	You can use this GUI wizard to go through the installation and then save the response file. 
+	This method enables you to easily select which components you want to install and what configuration 
+	options you want.
+	<br><br><li><b class="sourceCopiedFrom">Using <a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v9r7/topic/com.ibm.db2.luw.qb.server.doc/doc/c0007508.html');"><b>Response file generator</b></a>:-</b></li>
+	After installing your DB2 product, you can create a response file using the DB2 response file 
+	generator utility, <a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v9r7/topic/com.ibm.db2.luw.admin.cmd.doc/doc/r0007509.html');"><b>db2rspgn</b></a>. The db2rspgn utility takes a snapshot of your product installation 
+	and configuration settings. This utility saves this information in a response file and in a 
+	configuration profile. This utility is not available for the Data Server Driver.
+	<br><br><li><b class="sourceCopiedFrom">Using <a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v9r7/topic/com.ibm.db2.luw.qb.server.doc/doc/t0007293.html');"><b>sample response files</b></a>:-</b></li>
+	You can also create a response file by copying one of the <a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v9r7/topic/com.ibm.db2.luw.qb.server.doc/doc/r0007504.html');"><b>sample response files</b></a> from the DVD and 
+	modifying it. Samples are typically available in the <b class="sourceChange">db2/platform/samples</b> directory, 
+	where platform is the platform identifier.
+</ol>	
+	<br>
+	After successful creation of response file from the above methods the next step is to modify the response file.
+	A response file can be easy to use, although you should test it prior to deploying it across a large enterprise.
+	According to the requirement you can modify the response file.
+	
+	
+	

@@ -1,0 +1,110 @@
+<actionPanel>
+    <flow>free</flow>
+    <useConsole>yes</useConsole>
+
+    <taskList>
+        <task name="Select">
+            <discription>
+                This action is going to run a SELECT statement five times against both the empMDC and empNoMDC tables and record the execution times. 
+            </discription>
+            <action  name="runMultiSelect_trans" type="blank">
+                    <task>
+                        <echo>Running statement: SELECT store, quarter, item, sum(sales) as total FROM ?SCHEMA?.transactions GROUP BY store, quarter, item</echo>
+                        <action  name="runSelect" type="serverAction">
+                            <parameterList>
+                                <parameter name="action" type="fixed">
+                                    <value>run_workload</value>
+                                </parameter>
+                                <parameter name="SQL[1]" type="fixed">
+                                    <value>SET current refresh age 0; SELECT store, quarter, item, sum(sales) as total FROM ?SCHEMA?.transactions GROUP BY store, quarter, item</value>
+                                </parameter>
+                                <parameter name="SQL[2]" type="fixed">
+                                    <value>SET current refresh age any; SELECT store, quarter, item, sum(sales) as total FROM ?SCHEMA?.transactions GROUP BY store, quarter, item</value>
+                                </parameter>
+                                <parameter name="Repetition" type="fixed">
+                                    <value>5</value>
+                                </parameter>
+                                <parameter name="SampleRate" type="fixed">
+                                    <value>1</value>
+                                </parameter>
+                            </parameterList>
+                            <if condition="true">
+                                <task>
+                                    <setGlobal name="SELECT5TIME_TRANS" type="returnObject">
+                                        <value>runSelect.returnValue.SQL.1</value>
+                                    </setGlobal>
+                                    <echo>Running time [w/o a summary table]: ?SELECT5TIME_TRANS?s</echo>
+                                </task>
+                                <task>
+                                    <setGlobal name="SELECT5TIME_SUM" type="returnObject">
+                                        <value>runSelect.returnValue.SQL.2</value>
+                                    </setGlobal>
+                                    <echo>Running time [w/ a summary table]: ?SELECT5TIME_SUM?s</echo>
+                                </task>
+                            </if>
+                            <if condition="false">
+                                <task>
+                                    <echo>Couldn't run the query, is your connection active?</echo>
+                                </task>
+                            </if>
+                        </action>
+                    </task>
+            </action>
+        </task>
+                        
+        <task name="Visualize">
+            <discription>
+                We are now going to graph the data we just acquired.
+            </discription>
+            <action  name="runSelect" type="blank">
+                <followOnAction condition="true" compareOn="true" compareOnType="raw">
+                    <task>
+                        <echo>Graphing times</echo>
+                        <loadPage>
+                            <pageWindow target="informationWindow">
+                                <panel name="main">
+                                    <link type="action" target="_self" window="_self" connectionRequired="y">
+                                        <parameterList>
+                                            <parameter name="action">graphYUI</parameter>
+                                            <parameter name="graph">	
+                                                <![CDATA[					       				
+                                                  {
+	                                                "Graph": 
+	                                                {
+		                                                "title": "SELECT Performance",
+		                                                "graphType": "column",
+                                                        "xField": "attempt",
+		                                                "forceYBaseline": "true",
+		                                                "forceXBaseline": "true",
+		                                                "style":{	"legend": { "display": "right" }, "animationEnabled" : "false"},
+		                                                "responseSchema": {"fields": ["attempt", "with_sum", "without_sum"]},
+		                                                "seriesDef": [
+                                                                        {yField:"with_sum", displayName:"Using a Summary Table"},
+                                                                        {yField:"without_sum", displayName:"Without Using a Summary Table"},
+                                                                     ],
+		                                                "datasets":
+			                                                 [ 
+                                                                    
+				                                                    {"attempt": "Attempt #1", "with_sum": [?SELECT5TIME_SUM?][0], "without_sum": [?SELECT5TIME_TRANS?][0]},
+				                                                    {"attempt": "Attempt #2", "with_sum": [?SELECT5TIME_SUM?][1], "without_sum": [?SELECT5TIME_TRANS?][1]},
+				                                                    {"attempt": "Attempt #3", "with_sum": [?SELECT5TIME_SUM?][2], "without_sum": [?SELECT5TIME_TRANS?][2]},
+				                                                    {"attempt": "Attempt #4", "with_sum": [?SELECT5TIME_SUM?][3], "without_sum": [?SELECT5TIME_TRANS?][3]},
+				                                                    {"attempt": "Attempt #5", "with_sum": [?SELECT5TIME_SUM?][4], "without_sum": [?SELECT5TIME_TRANS?][4]}
+		
+				                                                ]
+	                                                }
+                                                }
+
+                                                ]]>                              
+                                            </parameter>
+                                        </parameterList>
+                                    </link>				
+                                </panel>
+                            </pageWindow>
+                        </loadPage>
+                    </task>	
+                </followOnAction>
+            </action>
+        </task> 
+    </taskList>
+</actionPanel>

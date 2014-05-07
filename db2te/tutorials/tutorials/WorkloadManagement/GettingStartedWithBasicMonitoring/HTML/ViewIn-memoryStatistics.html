@@ -1,0 +1,15 @@
+<p>You can view the in-memory service class statistics using
+  the <a onclick="OpenURLInFloatingWindow
+('http://publib.boulder.ibm.com/infocenter/db2luw/v9r7/topic/com.ibm.db2.luw.sql.rtn.doc/doc/r0053580.html?noframes=true');">WLM_GET_SERVICE_SUBCLASS_STATS_V97</a> table function.
+</p>
+
+<p>
+If you are using a 9.5 database, you will need to run the 
+<a onclick="OpenURLInFloatingWindow
+('http://publib.boulder.ibm.com/infocenter/db2luw/v9r7/topic/com.ibm.db2.luw.sql.rtn.doc/doc/r0052917.html?noframes=true');">WLM_GET_SERVICE_SUBCLASS_STATS</a> table function instead.  Since DB2 9.7, this table function has been deprecated and replaced by the WLM_GET_SERVICE_SUBCLASS_STATS_V97 table function.  
+Click on the 'Edit mode' button in the top right panel, and edit the SQL before clicking on 'Run.'
+</p>
+
+<p>
+Take note of the LAST_RESET timestamp.  We will be comparing this value in a couple steps.
+</p>

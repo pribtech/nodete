@@ -1,0 +1,104 @@
+<!--
+  Author: Peter Prib
+  
+  Copyright Independent Systems Integrators Pty Ltd 2008 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+<table name="healthDbInfo">
+	<sql_name>healthDbInfo</sql_name>
+	<singular_name>Health Database Summary</singular_name>
+	<plural_name>Health Database Summaries</plural_name>
+	<inlinequery>
+<![CDATA[
+select * from table(HEALTH_DB_INFO('',-2)) a
+]]>
+	</inlinequery>
+	<description>Query from ad hoc</description>
+	<rows_per_page>50</rows_per_page>
+	<order_by_index/>
+	<display_columns>
+		<col type="column" name="ROLLED_UP_ALERT_STATE"/>
+		<col type="column" name="DB_NAME"/>
+		<col type="column" name="INPUT_DB_ALIAS"/>
+		<col type="column" name="DB_PATH"/>
+		<col type="column" name="DB_LOCATION"/>
+		<col type="column" name="SERVER_PLATFORM"/>
+	</display_columns>
+	
+	<column name="DB_NAME">
+		<c_sql_name>DB_NAME</c_sql_name>
+		<c_title>Database Name</c_title>
+		<c_presentation/>
+		<c_drill>y</c_drill>
+		<c_pkey>p</c_pkey>
+		<c_reference name="database">
+			<reftype>table</reftype>
+			<refvalue>Health/healthDbHi</refvalue>
+			<icon>images/sout.gif</icon>
+			<ref foreign_column_name="DB_NAME">
+				<local_column_name>DB_NAME</local_column_name>
+			</ref>
+		</c_reference>
+	</column>
+	<column name="INPUT_DB_ALIAS">
+		<c_sql_name>INPUT_DB_ALIAS</c_sql_name>
+		<c_title>Database Alias</c_title>
+		<c_presentation/>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="DB_PATH">
+		<c_sql_name>DB_PATH</c_sql_name>
+		<c_title>Path</c_title>
+		<c_presentation/>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="DB_LOCATION">
+		<c_sql_name>DB_LOCATION</c_sql_name>
+		<c_title>Location</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+		<c_column_mask>
+			<value_mask value="1"><mask>Local</mask></value_mask>
+			<value_mask value="2"><mask>Remote</mask></value_mask>
+		</c_column_mask>
+	</column>
+	<column name="SERVER_PLATFORM">
+		<c_sql_name>SERVER_PLATFORM</c_sql_name>
+		<c_title>Platform</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+		<c_column_mask_file>masks/healthPlatform.xml</c_column_mask_file>
+
+	</column>
+	<column name="ROLLED_UP_ALERT_STATE">
+		<c_sql_name>ROLLED_UP_ALERT_STATE</c_sql_name>
+		<c_title>State</c_title>
+		<c_presentation>html</c_presentation>
+		<c_drill>n</c_drill>
+		<c_column_mask_file>masks/healthStateHtmlColor.xml</c_column_mask_file>
+	</column>
+	<column name="ROLLED_UP_ALERT_STATE_DETAIL">
+		<c_sql_name>ROLLED_UP_ALERT_STATE_DETAIL</c_sql_name>
+		<c_title>State Detail</c_title>
+		<c_presentation/>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="SNAPSHOT_TIMESTAMP">
+		<c_sql_name>SNAPSHOT_TIMESTAMP</c_sql_name>
+		<c_title>SNAPSHOT_TIMESTAMP</c_title>
+		<c_presentation/>
+		<c_drill>n</c_drill>
+	</column>
+</table>

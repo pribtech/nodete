@@ -1,0 +1,17 @@
+<task_set autocommit="false" isolation_level="CS" currently_committed="ON">
+    <statement type="statement" group="read">  
+            <text>select * from SYSCAT.SCHEMATA </text>
+    </statement>
+    <statement type="statement" group="read">  
+            <text>select * from SYSCAT.ROLES </text>
+    </statement>
+    <statement type="statement" group="write">  
+            <text>insert into WLMTUT.SALES VALUES (current date, 'LEE', 'Quebec', 433) </text>
+    </statement>
+    <statement type="statement" group="write">  
+            <text>update WLMTUT.SALES VALUES set sales = 23 where sales = 433</text>
+    </statement>
+    <statement type="statement" group="write">  
+            <text>delete from WLMTUT.SALES WHERE sales = 23 </text>
+    </statement>
+</task_set>

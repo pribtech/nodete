@@ -1,0 +1,18 @@
+<p>This tutorial gives an overview of the physical storage model for a database.</p>
+
+<H2><B>Problem Description</B></H2><HR>
+<p>In order for a database to perform well, it must be able to efficiently store and quickly retreive, search and manipulate large amounts of data. Within a DB2 database, data is stored on disk and must be read into memory in order to be searched and manipulated. On disk, data is stored within tablespaces and when the data is needed to build the result set for a particular query, the required pages must be read from the tablespaces into the buffer pool.</p> 
+<p>Therefore, physical placement of data will have a direct effect on the overall performance of the databaes system. To design and build a database that will meet performance expectations, the database administrator must understand the concepts of data placement and data manipulation in order to create an appropriate physical database design.</p>
+
+<H2><B>Operation</B></H2><HR>
+<p>The <b>DB2 storage model</b> provides a basis to establish a good physical database design through efficient data placement.</p>
+
+<H2><B>Solution</B></H2><HR>
+<p>Within a DB2 database, the storage of data is defined and controlled at four different levels :
+<ol>
+<li><b>Database</b> - A collection of objects that includes tables, indexes, views, etc</li>
+<li><b>Partition Groups</b> - An abstract layer to accommodate partitioned databases. A partition group is a collection of one or more database partitions within a database</li>
+<li><b>Tablespaces</b> - Stores the database objects. When a tablespace is created, it is assigned to a partition group</li>
+<li><b>Containers</b> - Defines the physical storage for the tablespace</li>
+</ol>
+</p>

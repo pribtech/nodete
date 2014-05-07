@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tutorial name="Concurrent Testing" useLongAdHoc="true">
+	<flowRestriction>forwardexploration</flowRestriction>
+	<globalCodeHighlightOptions  highlightCode="true" />
+	<closeAction/>
+	<openAction/>
+	<pageList>
+	
+		<page name="Concurrent Testing" type="intro">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>ConcurrentTesting.html</contentFile>
+			<SQLFile>PreSQL.SQL</SQLFile>
+			<SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar="@"
+			cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+		</page>
+		
+		<page name="Introduction" type="general">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>Intro.html</contentFile>
+			<autoLoadLink>
+				<pageWindow target="informationWindow">
+					<panel name="main" PrimaryContainer="true">
+						<URL>http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.admin.perf.doc/doc/c0053760.html</URL>
+					</panel>
+				</pageWindow>
+			</autoLoadLink>
+		</page>
+		
+		<page name="Create procedure to update table" type="general">
+			<contentFile>UpdateTable.html</contentFile>
+			<SQLFile>UpdateTable.SQL</SQLFile>
+			<SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar="@"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+			<codeHighlightOptions highlightCode="true">
+				<changedHighlightTokens>
+				  <text>DBMS_ALERT.WAITONE</text>
+				  <text>DBMS_ALERT.SIGNAL</text>
+				  <text>DBMS_OUTPUT.PUT_LINE</text>
+				</changedHighlightTokens>
+			</codeHighlightOptions>
+		</page>
+		
+		<page name="Testing Application with Currently Committed" type="general">
+			<entryAction></entryAction>
+			<exitAction />
+			<contentFile>ConcTestingWithCC.html</contentFile>
+			<loadActionScriptFile>
+				ApplicationA.xml
+			</loadActionScriptFile>
+		</page>	
+		
+		<page name="Testing Application without Currently Committed" type="general">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>ConcTestingWithoutCC.html</contentFile>
+			<autoLoadLink>
+				<pageWindow target="informationWindow">
+					<panel name="main" PrimaryContainer="true">
+					<raw><![CDATA[<div id='tutorial name'><Ttile of </div><img src='?BASE_DIRECTORY?/Other/withoutCC.PNG'/>]]></raw>
+					</panel>
+				</pageWindow>
+			</autoLoadLink>
+		</page>	
+	</pageList>
+</tutorial>

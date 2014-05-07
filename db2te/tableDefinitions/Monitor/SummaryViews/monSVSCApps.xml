@@ -1,0 +1,213 @@
+
+	<!--
+
+
+		Copyright Independent Systems Integrators Pty Ltd 2008 All rights
+		reserved. Updated by Author: Peter Kohlmann Copyright IBM Canada Ltd
+		2008 All rights reserved. Licensed under the Apache License, Version
+		2.0 (the "License"); you may not use this file except in compliance
+		with the License. You may obtain a copy of the License at
+
+		http://www.apache.org/licenses/LICENSE-2.0 Unless required by
+		applicable law or agreed to in writing, software distributed under the
+		License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+		CONDITIONS OF ANY KIND, either express or implied. See the License for
+		the specific language governing permissions and limitations under the
+		License.
+	-->
+<table name="monWorkload">
+	<sql_name>monTest</sql_name>
+	<singular_name>Workload Metrics</singular_name>
+	<plural_name>Workload Metrics</plural_name>
+	<inlinequery>
+<![CDATA[
+SELECT SERVICE_SUPERCLASS_NAME, SERVICE_SUBCLASS_NAME, DBPARTITIONNUM, COORD_PARTITION_NUM, APPLICATION_HANDLE, WORKLOAD_NAME, WORKLOAD_OCCURRENCE_ID, WORKLOAD_OCCURRENCE_STATE, UOW_ID, SYSTEM_AUTH_ID, SESSION_AUTH_ID, APPLICATION_NAME, CLIENT_WRKSTNNAME, CLIENT_ACCTNG, CLIENT_USER, CLIENT_APPLNAME, COORD_ACT_COMPLETED_TOTAL, COORD_ACT_ABORTED_TOTAL, COORD_ACT_REJECTED_TOTAL, CONCURRENT_ACT_TOP, ADDRESS, CONCAT(CONCAT('''', WORKLOAD_NAME), '''')  WORKLOAD_NAME_TEMP
+	FROM TABLE(WLM_GET_SERVICE_CLASS_WORKLOAD_OCCURRENCES_V97(CAST(NULL AS VARCHAR(128)), CAST(NULL AS VARCHAR(128)), -2)) AS SCINFO
+]]>
+	</inlinequery>
+	<messages><SQL0551N>Security issue. Please install "Monitoring Switches/Security" in Tools -> Installed Components</SQL0551N></messages>
+	<description></description>
+	<order_by_index />
+	<display_columns>
+		<col type="column" name="SERVICE_SUPERCLASS_NAME" />
+		<col type="column" name="SERVICE_SUBCLASS_NAME" />
+		<col type="column" name="DBPARTITIONNUM" />
+		<col type="column" name="COORD_PARTITION_NUM" />
+		<col type="column" name="APPLICATION_HANDLE" />
+		<col type="column" name="WORKLOAD_NAME" />
+		<col type="column" name="WORKLOAD_OCCURRENCE_ID" />
+		<col type="column" name="WORKLOAD_OCCURRENCE_STATE" />
+		<col type="column" name="UOW_ID" />
+		<col type="column" name="SYSTEM_AUTH_ID" />
+		<col type="column" name="SESSION_AUTH_ID" />
+		<col type="column" name="APPLICATION_NAME" />
+		<col type="column" name="CLIENT_WRKSTNNAME" />
+		<col type="column" name="CLIENT_ACCTNG" />
+		<col type="column" name="CLIENT_USER" />
+		<col type="column" name="CLIENT_APPLNAME" />
+		<col type="column" name="COORD_ACT_COMPLETED_TOTAL" />
+		<col type="column" name="COORD_ACT_ABORTED_TOTAL" />
+		<col type="column" name="COORD_ACT_REJECTED_TOTAL" />
+		<col type="column" name="CONCURRENT_ACT_TOP" />
+		<col type="column" name="ADDRESS" />
+	</display_columns>
+	<column name="SERVICE_SUPERCLASS_NAME">
+		<c_sql_name>SERVICE_SUPERCLASS_NAME</c_sql_name>
+		<c_title>Service class</c_title>
+		<c_drill>n</c_drill>
+		<c_pkey>p</c_pkey>
+		<c_column_mask_file>masks/skipNulls.xml</c_column_mask_file>
+	</column>
+	<column name="SERVICE_SUBCLASS_NAME">
+		<c_sql_name>SERVICE_SUBCLASS_NAME</c_sql_name>
+		<c_title>SERVICE_SUBCLASS_NAME</c_title>
+		<c_drill>n</c_drill>
+		<c_pkey>p</c_pkey>
+
+		<c_column_mask_file>masks/skipNulls.xml</c_column_mask_file>
+	</column>
+	<column name="DBPARTITIONNUM">
+		<c_sql_name>DBPARTITIONNUM</c_sql_name>
+		<c_title>DBPARTITIONNUM</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+		<c_reference name="instance">
+			<reftype>table</reftype>
+			<refvalue>Monitor/monWorkLoad</refvalue>
+			<icon>images/sout.gif</icon>
+			<ref foreign_column_name="WORKLOAD_ID">
+				<local_column_name>WORKLOAD_ID</local_column_name>
+			</ref>
+		</c_reference>
+		<c_column_mask_file>masks/skipNulls.xml</c_column_mask_file>
+	</column>
+	<column name="COORD_PARTITION_NUM">
+		<c_sql_name>COORD_PARTITION_NUM</c_sql_name>
+		<c_title>COORD_PARTITION_NUM</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+
+		<c_column_mask_file>masks/skipNulls.xml</c_column_mask_file>
+	</column>
+	<column name="APPLICATION_HANDLE">
+		<c_sql_name>APPLICATION_HANDLE</c_sql_name>
+		<c_title>APPLICATION_HANDLE</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+		<c_column_mask_file>masks/skipNulls.xml</c_column_mask_file>
+	</column>
+	<column name="WORKLOAD_NAME">
+		<c_sql_name>WORKLOAD_NAME</c_sql_name>
+		<c_title>WORKLOAD_NAME</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+		<c_reference name="instance">
+			<reftype>table</reftype>
+			<refvalue>Monitor/SummaryViews/monSVWorkload</refvalue>
+			<icon>images/sout.gif</icon>
+			<ref foreign_column_name="WORKLOAD_NAME">
+				<local_column_name>WORKLOAD_NAME_TEMP</local_column_name>
+			</ref>
+		</c_reference>
+		<c_column_mask_file>masks/skipNulls.xml</c_column_mask_file>
+	</column>
+	<column name="WORKLOAD_OCCURRENCE_ID">
+		<c_sql_name>WORKLOAD_OCCURRENCE_ID</c_sql_name>
+		<c_title>WORKLOAD_OCCURRENCE_ID</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+		<c_column_mask_file>masks/skipNulls.xml</c_column_mask_file>
+	</column>
+	<column name="WORKLOAD_OCCURRENCE_STATE">
+		<c_sql_name>WORKLOAD_OCCURRENCE_STATE</c_sql_name>
+		<c_title>WORKLOAD_OCCURRENCE_STATE</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+		<c_column_mask_file>masks/skipNulls.xml</c_column_mask_file>
+	</column>
+	<column name="UOW_ID">
+		<c_sql_name>UOW_ID</c_sql_name>
+		<c_title>UOW_ID</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+		<c_column_mask_file>masks/skipNulls.xml</c_column_mask_file>
+	</column>
+	<column name="SYSTEM_AUTH_ID">
+		<c_sql_name>SYSTEM_AUTH_ID</c_sql_name>
+		<c_title>SYSTEM_AUTH_ID</c_title>
+		<c_drill>n</c_drill>
+		<c_column_mask_file>masks/skipNulls.xml</c_column_mask_file>
+	</column>
+	<column name="SESSION_AUTH_ID">
+		<c_sql_name>SESSION_AUTH_ID</c_sql_name>
+		<c_title>SESSION_AUTH_ID</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="APPLICATION_NAME">
+		<c_sql_name>APPLICATION_NAME</c_sql_name>
+		<c_title>APPLICATION_NAME</c_title>
+		<c_drill>n</c_drill>
+		<c_column_mask_file>masks/skipNulls.xml</c_column_mask_file>
+	</column>
+	<column name="CLIENT_WRKSTNNAME">
+		<c_sql_name>CLIENT_WRKSTNNAME</c_sql_name>
+		<c_title>CLIENT_WRKSTNNAME</c_title>
+		<c_drill>n</c_drill>
+		<c_column_mask_file>masks/skipNulls.xml</c_column_mask_file>
+	</column>
+	<column name="CLIENT_ACCTNG">
+		<c_sql_name>CLIENT_ACCTNG</c_sql_name>
+		<c_title>CLIENT_ACCTNG</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+		<c_column_mask_file>masks/skipNulls.xml</c_column_mask_file>
+	</column>
+	<column name="CLIENT_USER">
+		<c_sql_name>CLIENT_USER</c_sql_name>
+		<c_title>CLIENT_USER</c_title>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="CLIENT_APPLNAME">
+		<c_sql_name>CLIENT_APPLNAME</c_sql_name>
+		<c_title>CLIENT_APPLNAME</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+		<c_column_mask_file>masks/skipNulls.xml</c_column_mask_file>
+	</column>
+	<column name="COORD_ACT_COMPLETED_TOTAL">
+		<c_sql_name>COORD_ACT_COMPLETED_TOTAL</c_sql_name>
+		<c_title>COORD_ACT_COMPLETED_TOTAL</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+		<c_column_mask_file>masks/skipNulls.xml</c_column_mask_file>
+	</column>
+	<column name="COORD_ACT_ABORTED_TOTAL">
+		<c_sql_name>COORD_ACT_ABORTED_TOTAL</c_sql_name>
+		<c_title>COORD_ACT_ABORTED_TOTAL</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+		<c_column_mask_file>masks/skipNulls.xml</c_column_mask_file>
+	</column>
+	<column name="COORD_ACT_REJECTED_TOTAL">
+		<c_sql_name>COORD_ACT_REJECTED_TOTAL</c_sql_name>
+		<c_title>COORD_ACT_REJECTED_TOTAL</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+		<c_column_mask_file>masks/skipNulls.xml</c_column_mask_file>
+	</column>
+	<column name="CONCURRENT_ACT_TOP">
+		<c_sql_name>CONCURRENT_ACT_TOP</c_sql_name>
+		<c_title>CONCURRENT_ACT_TOP</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+		<c_column_mask_file>masks/skipNulls.xml</c_column_mask_file>
+	</column>
+	<column name="ADDRESS">
+		<c_sql_name>ADDRESS</c_sql_name>
+		<c_title>ADDRESS</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+		<c_column_mask_file>masks/skipNulls.xml</c_column_mask_file>
+	</column>
+</table>

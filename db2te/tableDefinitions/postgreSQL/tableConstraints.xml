@@ -1,0 +1,83 @@
+<table name="tableConstraints">
+	<sqlName>information_schema.table_constraints</sqlName>
+	<singularName>Table Constraints</singularName>
+	<pluralName>Table Constraints</pluralName>
+	<description></description>
+	<orderBy name="table_catalog" direction="A"/>
+	<orderBy name="table_schema" direction="A"/>
+	<orderBy name="constraint_name" direction="A"/>
+	<orderBy name="constraint_schema" direction="A"/>
+	<displayColumns>
+		<col type="column" name="constraint_catalog"/>
+		<col type="column" name="constraint_schema"/>
+		<col type="column" name="constraint_name"/>
+		<col type="column" name="table_catalog"/>
+		<col type="column" name="table_schema"/>
+		<col type="column" name="table_name"/>
+		<col type="column" name="constraint_type"/>
+		<col type="column" name="is_deferrable"/>
+		<col type="column" name="initially_deferred"/>
+	</displayColumns>
+	<displayColumns name="Specific Table">
+		<col type="column" name="constraint_catalog"/>
+		<col type="column" name="constraint_schema"/>
+		<col type="column" name="constraint_name"/>
+		<col type="column" name="constraint_type"/>
+		<col type="column" name="is_deferrable"/>
+		<col type="column" name="initially_deferred"/>
+	</displayColumns>
+	<column name="constraint_catalog">
+		<sqlName>constraint_catalog</sqlName>
+		<title>Catalog</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="constraint_schema">
+		<sqlName>constraint_schema</sqlName>
+		<title>Schema</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="constraint_name">
+		<sqlName>constraint_name</sqlName>
+		<title>Name</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="table_catalog">
+		<sqlName>table_catalog</sqlName>
+		<title>Table Catalog</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="table_schema">
+		<sqlName>table_schema</sqlName>
+		<title>Table Schema</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="table_name">
+		<sqlName>table_name</sqlName>
+		<title>Table Name</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="constraint_type">
+		<sqlName>constraint_type</sqlName>
+		<title>Constraint Type</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="is_deferrable">
+		<sqlName>is_deferrable</sqlName>
+		<title>Deferrable</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="initially_deferred">
+		<sqlName>initially_deferred</sqlName>
+		<title>Initially Deferred</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+</table>

@@ -1,0 +1,534 @@
+<?xml version="1.0"?>
+<xsd:schema targetNamespace="http://www.ibm.com/xmlns/prod/db2/autonomic/policylang" 
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+            xmlns="http://www.ibm.com/xmlns/prod/db2/autonomic/policylang" 
+            elementFormDefault="qualified">
+  <xsd:annotation>
+    <xsd:documentation>
+			Schema for Cortex V1 R1.
+
+			Copyright 2002, 2003 IBM Corp. all rights reserved.
+
+			Revision Comment: This is a reworking of the schema based
+			on the phone confernece on June 7, 2003.
+
+			Revision Comment: This is a reworking of the schema to
+			include DecisionName mappings and time period conditions based
+			on RFC 3060.
+
+
+		</xsd:documentation>
+  </xsd:annotation>
+  <!-- This is the beginning of the Schema -->
+  <xsd:element name="PolicyDocument" type="AC_PolicyDocumentType"/>
+  <xsd:complexType name="AC_PolicyDocumentType">
+    <xsd:annotation>
+      <xsd:documentation>
+				Each Policy Document should begin with the global
+				element "PolicyDocument".
+
+
+				The Policy Document consists of the following sections:
+
+				1 or more sections including reusable Decision.
+
+				1 or more sections including reusable conditions.
+
+				1 or more sections including a set of policies, with
+				each set of policies being for a particular decision
+				type.
+
+				The policy document has three attributes
+
+				MEDSpecification identifies the MED associated with
+				this document. Each MED is identified by a unique name.
+				We assume that the MED name is specified as a URI - and
+				the structuring of the URI can be used to determine
+				uniqueness.
+
+				Version - a string which represents the version of the
+				policy document
+
+				logicalForm specifies the format of the preconditions
+				in the document, CNF, DNF or Open (default).
+
+			</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="Metadata" type="MetadataType" minOccurs="0"/>
+      <xsd:element name="Description" type="xsd:string" minOccurs="0"/>
+      <xsd:element name="DecisionSection" type="DecisionSectionType" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="PreconditionSection" type="PreconditionSectionType" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="PolicySection" type="PolicySectionType" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="medScope" type="xsd:string" use="required"/>
+    <xsd:attribute name="version" type="xsd:string" use="optional"/>
+    <xsd:attribute name="logicalForm" type="logicalFormType" default="openForm"/>
+  </xsd:complexType>
+  <!-- Each exploiter provides an extension to the policy language 
+		by specifying the type of tags that it can use. These are 
+		the 6 global elements that should be subsituted for the
+		purpose of customization in the MED document.
+		
+		MEDScopeName: used once and defines the scope for the MED
+		AbstractSensorValue: defines an abstract sensor value
+		AbstractSensorName: defines the name of an abstract sensor value
+		ResultValue: defines a policy result
+		ResultName: defines the name of a result
+		DecisionName: defines the linkage between sensors and results
+		
+	-->
+  <xsd:element name="MED_ScopeName" type="xsd:string"/>
+  <xsd:element name="AbstractSensorValue"/>
+  <xsd:element name="AbstractSensorName" type="xsd:string"/>
+  <xsd:element name="ResultValue"/>
+  <xsd:element name="ResultName" type="xsd:string"/>
+  <xsd:element name="DecisionName" type="xsd:string"/>
+  <xsd:simpleType name="logicalFormType">
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="openForm"/>
+      <xsd:enumeration value="cnf"/>
+      <xsd:enumeration value="dnf"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:complexType name="PreconditionSectionType">
+    <xsd:annotation>
+      <xsd:documentation>
+				A condition section consists of one or more conditions.
+				Each condition is of type Precondition Type.
+
+			</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="Precondition" type="PreconditionType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="name" type="xsd:string" use="required"/>
+  </xsd:complexType>
+  <xsd:complexType name="DecisionSectionType">
+    <xsd:annotation>
+      <xsd:documentation>
+				The Decision section consists of one or more reusable
+				decisions (outputs). In cortex R1V1, this will be mostly
+				a set of reusable result definitions.
+
+			</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element ref="Decision" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="DecisionReference" type="PolicyReference" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="name" type="xsd:string" use="required"/>
+  </xsd:complexType>
+  <xsd:complexType name="PolicySectionType">
+    <xsd:annotation>
+      <xsd:documentation>
+
+				A policy section consists of one or more policy
+				definitions. The name of the section would allow
+				policies to be arranged and defined into multiple
+				logical groups.
+			</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="AC_Policy" type="AC_PolicyType" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="Description" type="xsd:string" minOccurs="0"/>
+    </xsd:sequence>
+    <xsd:attribute name="name" type="xsd:string" use="required"/>
+  </xsd:complexType>
+  <!-- The classes below specify some constructs that are used to identify and refer to 
+		elements that are described in the other pieces of the document. Each element has an attribute
+		of policyElementID which can be referred by other peices of the document using the xpointer 
+		notation 
+	-->
+  <xsd:simpleType name="policyElementIdType">
+    <xsd:annotation>
+      <xsd:documentation>One non-null identifier, with no whitespace</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:ID"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="PolicyReference">
+    <xsd:annotation>
+      <xsd:documentation>URIs are always of the form "URI-of-Policy-document#xpointer(policyElementId('ID-value'))</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:anyURI">
+      <xsd:pattern value=".*xpointer\\(.*policyElementID\\('\\S+'\\)\\)"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:complexType name="ReferredElementType">
+    <xsd:attribute name="policyElementId" type="policyElementIdType" use="optional"/>
+    <!-- content model to be added by subclassing types -->
+  </xsd:complexType>
+  <!-- The following definitions define the type of constructs that are used within the Policy 
+		Grammer - types of policies, types of preconditions, etc. 
+		
+	-->
+  <xsd:complexType name="AC_PolicyType">
+    <xsd:annotation>
+      <xsd:documentation>
+
+				An AC Policy consists of a pre-condition, a result (or
+				reference to a reusable result, and a business value.
+				The business value must be an integer.
+
+				Since AC Policies can be defined to be in reusable
+				section, they must be of type ReferredElementType.
+
+				The AC Policy consists of four items:
+
+				- The Scope
+
+				- The Precondition
+
+				- The Decision
+
+				- BusinessValue - supported only as an integer in this
+
+				version.
+
+				It also has an optional description
+			</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="ReferredElementType">
+        <xsd:sequence>
+          <xsd:element name="Scope" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
+          <xsd:element name="Precondition" type="PreconditionType" minOccurs="0"/>
+          <xsd:element ref="Decision"/>
+          <xsd:element name="BusinessValue" minOccurs="0">
+            <xsd:simpleType>
+              <xsd:restriction base="xsd:int">
+                <xsd:minInclusive value="0"/>
+                <xsd:maxInclusive value="2147483647"/>
+              </xsd:restriction>
+            </xsd:simpleType>
+          </xsd:element>
+          <xsd:element name="Description" type="xsd:string" minOccurs="0"/>
+        </xsd:sequence>
+        <xsd:attribute name="policyEnabled" type="xsd:boolean" use="optional" default="true"/>
+        <xsd:attribute name="policyStatus" use="optional" default="ready">
+          <xsd:simpleType>
+            <xsd:restriction base="xsd:string">
+              <xsd:enumeration value="draft"/>
+              <xsd:enumeration value="ready"/>
+              <xsd:enumeration value="deployed"/>
+            </xsd:restriction>
+          </xsd:simpleType>
+        </xsd:attribute>
+        <xsd:attribute name="lastModified" type="xsd:dateTime"/>
+        <xsd:attribute name="lastModifiedBy" type="xsd:string"/>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <!-- This Section marks the beginning of the definition of the precondition -->
+  <xsd:complexType name="PreconditionType">
+    <xsd:annotation>
+      <xsd:documentation>
+
+				A precondition is one of the following kinds: - A
+				logical expression. A logical expression is And/OR/NOT.
+				- An ArithmeticExpression. A Arithmetic Expression is
+				Equals, GreaterThan, LessThan, LessThanOrEqual,
+				GreaterThanOrEqual. - An ArithmeticExpression consists
+				of two ArithmeticOperators (logically the lhs of the
+				expression and the rhs of the expression). These
+				operators could be Plus, Minus, Product, Divide,
+				UnaryMinus. - A String Comparison Expression. - An
+				abstract sensor value. This will be subsituted by the
+				different actual sensor values in an element's schema.
+				- An Interval to which a named abstract sensor could
+				belong. - A set to which an abstract sensor could
+				belong (could include values and intervals) - An rfc
+				3060 time condition
+
+				Since AC Policies can be defined to be in reusable
+				section, they must be of type ReferredElementType.
+
+
+			</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="ReferredElementType">
+        <xsd:sequence>
+          <xsd:choice>
+            <xsd:element ref="LogicalExpression"/>
+            <xsd:element ref="ArithmeticExpression"/>
+            <xsd:element ref="Interval"/>
+            <xsd:element ref="Set"/>
+            <xsd:element ref="AbstractSensorValue"/>
+            <xsd:element ref="StringExpression"/>
+            <xsd:element ref="PolicyTimePeriodCondition"/>
+            <xsd:element ref="SimplePolicyCondition"/>
+            <xsd:element ref="PreconditionReference"/>
+          </xsd:choice>
+          <xsd:element name="Description" type="xsd:string" minOccurs="0"/>
+        </xsd:sequence>
+        <xsd:attribute name="logicalForm" type="logicalFormType" default="openForm"/>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <xsd:element name="LogicalExpression"/>
+  <xsd:element name="And" type="MultiaryOperator" substitutionGroup="LogicalExpression"/>
+  <xsd:element name="Or" type="MultiaryOperator" substitutionGroup="LogicalExpression"/>
+  <xsd:element name="Not" type="UnaryOperator" substitutionGroup="LogicalExpression"/>
+  <xsd:element name="PreconditionReference" type="PolicyReference"/>
+  <xsd:element name="ArithmeticExpression"/>
+  <xsd:element name="Equals" type="ComparisonOperator" substitutionGroup="ArithmeticExpression"/>
+  <xsd:element name="GreaterThan" type="ComparisonOperator" substitutionGroup="ArithmeticExpression"/>
+  <xsd:element name="LessThan" type="ComparisonOperator" substitutionGroup="ArithmeticExpression"/>
+  <xsd:element name="LessThanOrEqual" type="ComparisonOperator" substitutionGroup="ArithmeticExpression"/>
+  <xsd:element name="GreaterThanOrEqual" type="ComparisonOperator" substitutionGroup="ArithmeticExpression"/>
+  <xsd:element name="ArithmeticOperator"/>
+  <xsd:element name="Plus" type="MultiaryOperator" substitutionGroup="ArithmeticOperator"/>
+  <xsd:element name="Minus" type="BinaryOperator" substitutionGroup="ArithmeticOperator"/>
+  <xsd:element name="Product" type="MultiaryOperator" substitutionGroup="ArithmeticOperator"/>
+  <xsd:element name="Divide" type="BinaryOperator" substitutionGroup="ArithmeticOperator"/>
+  <xsd:element name="UnaryMinus" type="UnaryOperator" substitutionGroup="ArithmeticOperator"/>
+  <xsd:element name="StringLength" type="StringLengthOperator" substitutionGroup="ArithmeticOperator"/>
+  <xsd:element name="StringExpression"/>
+  <xsd:element name="StringEquals" type="StringOperator" substitutionGroup="StringExpression"/>
+  <xsd:element name="StringLessThan" type="StringOperator" substitutionGroup="StringExpression"/>
+  <xsd:element name="StringGreaterThan" type="StringOperator" substitutionGroup="StringExpression"/>
+  <xsd:element name="StringStartsWith" type="StringOperator" substitutionGroup="StringExpression"/>
+  <xsd:element name="StringEndsWith" type="StringOperator" substitutionGroup="StringExpression"/>
+  <xsd:element name="Decision" type="DecisionType"/>
+  <xsd:element name="Constant"/>
+  <xsd:complexType name="StringLengthOperator">
+    <xsd:choice>
+      <xsd:element ref="AbstractSensorName"/>
+      <xsd:element ref="Constant"/>
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:complexType name="StringOperator">
+    <xsd:sequence>
+      <xsd:choice>
+        <xsd:element ref="AbstractSensorName"/>
+        <xsd:element ref="Constant"/>
+      </xsd:choice>
+      <xsd:choice>
+        <xsd:element ref="AbstractSensorName"/>
+        <xsd:element ref="Constant"/>
+      </xsd:choice>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="ComparisonOperator">
+    <xsd:sequence>
+      <xsd:choice>
+        <xsd:element ref="ArithmeticOperator"/>
+        <xsd:element ref="AbstractSensorName"/>
+        <xsd:element ref="Constant"/>
+      </xsd:choice>
+      <xsd:choice>
+        <xsd:element ref="ArithmeticOperator"/>
+        <xsd:element ref="AbstractSensorName"/>
+        <xsd:element ref="Constant"/>
+      </xsd:choice>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="MultiaryOperator">
+    <xsd:sequence>
+      <xsd:sequence minOccurs="2" maxOccurs="unbounded">
+        <xsd:any/>
+        <!-- This is an XML hack - we would like either an unnamed Precondition or a SimpleCondition
+					but there is no way in current XML schema to specify that constraint -->
+      </xsd:sequence>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="UnaryOperator">
+    <xsd:sequence>
+      <xsd:any/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="BinaryOperator">
+    <xsd:sequence>
+      <xsd:sequence minOccurs="2" maxOccurs="2">
+        <xsd:any/>
+      </xsd:sequence>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!-- 
+		The specification of value in simple conditions, Intervals and Sets follows the following convention.
+		The type of the value field is obtained from the MED description.
+		For strings, the native encoding of the XML document is assumed. 
+		For integers, the prefix 0x is used for hexadecimal and prefix 0o for octal enodings. Default is deciomal.
+		For floating points, the standard encoding understood by Java programs is assumed. 
+	-->
+  <xsd:element name="SimplePolicyCondition" abstract="true"/>
+  <xsd:element name="Interval" type="IntervalConditionType"/>
+  <xsd:complexType name="IntervalConditionType">
+    <xsd:complexContent>
+      <xsd:extension base="ReferredElementType">
+        <xsd:sequence>
+          <xsd:element name="LowerBound" type="BoundType" minOccurs="0"/>
+          <xsd:element name="UpperBound" type="BoundType" minOccurs="0"/>
+        </xsd:sequence>
+        <xsd:attribute name="maxInclusive" type="xsd:boolean" use="optional" default="true"/>
+        <xsd:attribute name="minInclusive" type="xsd:boolean" use="optional" default="true"/>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <!-- A set to which an abstract sensor could belong (could include values and intervals) -->
+  <!-- A constraint is that the set must have multiple values of the same AbstractSensorValue -->
+  <!-- Schema Parser will not catch this automatically, the check would need to be made additionally -->
+  <xsd:element name="Set" type="SetConditionType"/>
+  <xsd:complexType name="SetConditionType">
+    <xsd:complexContent>
+      <xsd:extension base="ReferredElementType">
+        <xsd:sequence>
+          <xsd:element ref="AbstractSensorValue" minOccurs="0" maxOccurs="unbounded"/>
+          <xsd:element ref="Interval" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <xsd:complexType name="BoundType">
+    <xsd:sequence>
+      <xsd:element ref="AbstractSensorValue"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!-- Time period conditions-->
+  <xsd:element name="PolicyTimePeriodCondition" type="PolicyTimePeriodConditionType"/>
+  <xsd:complexType name="PolicyTimePeriodConditionType">
+    <xsd:complexContent>
+      <xsd:extension base="ReferredElementType">
+        <xsd:sequence>
+          <xsd:element name="TimePeriod" type="DateTimeRangeType" minOccurs="0"/>
+          <xsd:element name="MonthOfYearMask" minOccurs="0">
+            <xsd:simpleType>
+              <xsd:restriction base="xsd:string">
+                <xsd:pattern value="(0|1){12}"/>
+              </xsd:restriction>
+            </xsd:simpleType>
+          </xsd:element>
+          <xsd:element name="DayOfMonthMask" minOccurs="0">
+            <xsd:simpleType>
+              <xsd:restriction base="xsd:string">
+                <xsd:pattern value="(0|1){62}"/>
+              </xsd:restriction>
+            </xsd:simpleType>
+          </xsd:element>
+          <xsd:element name="DayOfWeekMask" minOccurs="0">
+            <xsd:simpleType>
+              <xsd:restriction base="xsd:string">
+                <xsd:pattern value="(0|1){7}"/>
+              </xsd:restriction>
+            </xsd:simpleType>
+          </xsd:element>
+          <xsd:element name="TimeOfDayMask" type="TimeRangeType" minOccurs="0"/>
+          <!-- All sequence elements come from PCIM - RFC 3060 -->
+        </xsd:sequence>
+        <xsd:attribute name="timeZone" type="timeZoneType" default="utc"/>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <xsd:simpleType name="DateTimeRangeType">
+    <xsd:restriction base="xsd:string">
+      <xsd:pattern value="(\\d{4}(0[0-9]|1[0-2])([0-2][0-9]|3[0-1])T([0-1][0-9]|2[0-4])([0-5][0-9]){2}|THISANDPRIOR)/(\\d{4}(0[0-9]|1[0-2])([0-2][0-9]|3[0-1])T([0-1][0-9]|2[0-4])([0-5][0-9]){2}|THISANDFUTURE)">
+        <xsd:annotation>
+          <xsd:documentation>From PCIM - RFC3060.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:pattern>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="TimeRangeType">
+    <xsd:restriction base="xsd:string">
+      <xsd:pattern value="T([0-1][0-9]|2[0-4])([0-5][0-9]){2}/T([0-1][0-9]|2[0-4])([0-5][0-9]){2}">
+        <xsd:annotation>
+          <xsd:documentation>From PCIM - RFC3060.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:pattern>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="timeZoneType">
+    <xsd:annotation>
+      <xsd:documentation>From PCIM - RFC3060.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="utc"/>
+      <xsd:enumeration value="local"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!-- Each Policy Document  can have an optional metadata section 
+		The metadata section must be defined to be as per the following type 
+	-->
+  <xsd:complexType name="MetadataType">
+    <xsd:sequence>
+      <xsd:sequence minOccurs="0" maxOccurs="unbounded">
+        <xsd:any/>
+      </xsd:sequence>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!-- Decision type -->
+  <xsd:complexType name="DecisionType">
+    <xsd:complexContent>
+      <xsd:extension base="ReferredElementType">
+        <xsd:sequence>
+          <xsd:choice>
+            <xsd:sequence>
+              <xsd:element ref="ResultValue" minOccurs="0" maxOccurs="unbounded"/>
+            </xsd:sequence>
+            <xsd:element ref="SimplePolicyAction"/>
+            <xsd:element ref="GoalConstraint"/>
+            <xsd:element name="DecisionReference" type="PolicyReference"/>
+            <!-- Future versions can add actions and goals here as other choices -->
+            <!-- Cortex V1R1 is only supporting result,  not actions or goals -->
+          </xsd:choice>
+          <xsd:element name="Description" type="xsd:string" minOccurs="0"/>
+        </xsd:sequence>
+        <xsd:attribute name="type" default="result">
+          <xsd:simpleType>
+            <xsd:restriction base="xsd:string">
+              <xsd:enumeration value="result"/>
+              <xsd:enumeration value="action"/>
+              <xsd:enumeration value="goal"/>
+            </xsd:restriction>
+          </xsd:simpleType>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <!-- Action Definitions that are extended in MEDs -->
+  <xsd:element name="SimplePolicyAction" type="SimplePolicyActionType" abstract="true"/>
+  <xsd:complexType name="SimplePolicyActionType">
+    <xsd:complexContent>
+      <xsd:extension base="ReferredElementType"/>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <xsd:element name="SimplePolicyActionName" type="xsd:string"/>
+  <xsd:element name="GoalConstraint" type="GoalConstraintType"/>
+  <xsd:complexType name="GoalConstraintType">
+    <xsd:annotation>
+      <xsd:documentation>
+    
+                  A Goal Constraint is one of the following kinds: 
+                    - A logical expression. A logical expression is And/OR/NOT.
+                    - An ArithmeticExpression. A Arithmetic Expression is
+                      Equals, GreaterThan, LessThan, LessThanOrEqual,
+                      GreaterThanOrEqual. 
+                      - An ArithmeticExpression consists
+                        of two ArithmeticOperators (logically the lhs of the
+                        expression and the rhs of the expression). These
+                        operators could be Plus, Minus, Product, Divide,
+                        UnaryMinus.
+                    - A String Comparison Expression
+    
+                    Since AC Policy elements can be defined to be in reusable
+                    section, they must be of type ReferredElementType.
+    
+          </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="ReferredElementType">
+        <xsd:sequence>
+          <xsd:choice>
+            <xsd:element ref="LogicalExpression"/>
+            <xsd:element ref="ArithmeticExpression"/>
+            <xsd:element ref="StringExpression"/>
+            <xsd:element name="PreConditionRef" type="PolicyReference"/>
+          </xsd:choice>
+          <xsd:element name="Description" type="xsd:string" minOccurs="0"/>
+        </xsd:sequence>
+        <xsd:attribute name="logicalForm" type="logicalFormType" default="openForm"/>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+</xsd:schema>

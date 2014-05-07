@@ -1,0 +1,60 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2009 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+
+<table name="DBMMemory">
+	<sql_name>instanceMemory</sql_name>
+	<singular_name>Instance Memory</singular_name>
+	<plural_name>Instance Memory</plural_name>
+	<inlinequery>
+<![CDATA[
+SELECT * FROM TABLE (SYSPROC.ADMIN_GET_DBP_MEM_USAGE()) AS T
+]]>
+	</inlinequery>
+	<description></description>
+	<rows_per_page>50</rows_per_page>
+	<display_columns>
+		<col type="column" name="DBPARTITIONNUM"/>
+		<col type="column" name="MAX_PARTITION_MEM"/>
+		<col type="column" name="CURRENT_PARTITION_MEM"/>
+		<col type="column" name="PEAK_PARTITION_MEM"/>
+	</display_columns>
+	<column name="DBPARTITIONNUM">
+		<c_sql_name>DBPARTITIONNUM</c_sql_name>
+		<c_title>Partition</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="MAX_PARTITION_MEM">
+		<c_sql_name>MAX_PARTITION_MEM/1024/1024</c_sql_name>
+		<c_title>Max Allowed (MB)</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="CURRENT_PARTITION_MEM">
+		<c_sql_name>CURRENT_PARTITION_MEM/1024/1024</c_sql_name>
+		<c_title>Current (MB)</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="PEAK_PARTITION_MEM">
+		<c_sql_name>PEAK_PARTITION_MEM/1024/1024</c_sql_name>
+		<c_title>Peak (MB)</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+</table>

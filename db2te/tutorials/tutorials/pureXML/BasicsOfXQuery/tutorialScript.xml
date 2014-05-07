@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tutorial name="Basics of XQuery" autoCloseWindowsInRightStage="true" autoClearAdhocResults="true">
+    <flowRestriction>Free</flowRestriction>
+    <closeAction/>
+    <openAction />
+    <globalCodeHighlightOptions highlightCode = "true" />
+    <pageList>
+    	<page name="Basics of XQuery" type="intro">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>01_BasicsOfXQuery.html</contentFile>
+            <autoLoadLink>
+    	        <pageWindow target="informationWindow">
+    	            <panel name="main">
+    	                <URL>http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.xml.doc/doc/xqrover.html?noframes=true</URL>
+    	            </panel>
+    	        </pageWindow>
+    	      </autoLoadLink>
+        </page>
+    <page name="XQuery Command" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>02_XQueryCommand.html</contentFile>
+            <SQLFile>01_XQueryCommand.sql</SQLFile>
+            <SQLExecutionOptions xmlinline="true" xml="true" clob="false" blob="false" dbclob="false" termChar=";" cursor="forward" commitPerStmt="true" numRowReturned="100" />
+        </page>
+    	<page name="Simple return of a value" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>03_SimpleReturnOfAValue.html</contentFile>
+        		<SQLFile>02_SimpleReturnOfAValue.sql</SQLFile>
+            <SQLExecutionOptions xmlinline="true" xml="true" clob="false" blob="false" dbclob="false" termChar=";" cursor="forward" commitPerStmt="true" numRowReturned="100" />
+      </page> 
+        
+   		<page name="Multiple values in one XQuery command" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>04_MultipleValuesInOneXQueryCommand.html</contentFile>
+            <SQLFile>03_MultipleValuesInOneXQueryCommand.sql</SQLFile>
+            <SQLExecutionOptions xmlinline="true" xml="true" clob="false" blob="false" dbclob="false" termChar=";" cursor="forward" commitPerStmt="true" numRowReturned="100" />
+   		</page>
+  		<page name="Calculations returned" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>05_CalculationsReturned.html</contentFile>
+            <SQLFile>04_CalculationsReturned.sql</SQLFile>
+            <SQLExecutionOptions xmlinline="true" xml="true" clob="false" blob="false" dbclob="false" termChar=";" cursor="forward" commitPerStmt="true" numRowReturned="100" />
+      </page>
+            <page name="Case Sensitivity" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>06_CaseSensitivity.html</contentFile>
+            <SQLFile>05_CaseSensitivity.sql</SQLFile>
+            <SQLExecutionOptions xmlinline="true" xml="true" clob="false" blob="false" dbclob="false" termChar=";" cursor="forward" commitPerStmt="true" numRowReturned="100" />
+        </page><page name="Single versus Double Quotes" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>07_SingleVersusDoubleQuotes.html</contentFile>
+            <SQLFile>06_SingleVersusDoubleQuotes.sql</SQLFile>
+            <SQLExecutionOptions xmlinline="true" xml="true" clob="false" blob="false" dbclob="false" termChar=";" cursor="forward" commitPerStmt="true" numRowReturned="100" />
+        </page><page name="White Space" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>08_WhiteSpace.html</contentFile>
+            <SQLFile>07_WhiteSpace.sql</SQLFile>
+            <SQLExecutionOptions xmlinline="true" xml="true" clob="false" blob="false" dbclob="false" termChar=";" cursor="forward" commitPerStmt="true" numRowReturned="100" />
+        </page><page name="Bad math because of no spaces" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>09_BadMathBecauseOfNoSpaces.html</contentFile>
+            <SQLFile>08_BadMathBecauseOfNoSpaces.sql</SQLFile>
+            <SQLExecutionOptions xmlinline="true" xml="true" clob="false" blob="false" dbclob="false" termChar=";" cursor="forward" commitPerStmt="true" numRowReturned="100" />
+        </page><page name="Proper math with spaces" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>10_ProperMathWithSpaces.html</contentFile>
+            <SQLFile>09_ProperMathWithSpaces.sql</SQLFile>
+            <SQLExecutionOptions xmlinline="true" xml="true" clob="false" blob="false" dbclob="false" termChar=";" cursor="forward" commitPerStmt="true" numRowReturned="100" />
+        </page><page name="Comments" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>11_Comments.html</contentFile>
+            <SQLFile>10_Comments.sql</SQLFile>
+            <SQLExecutionOptions xmlinline="true" xml="true" clob="false" blob="false" dbclob="false" termChar=";" cursor="forward" commitPerStmt="true" numRowReturned="100" />
+        </page><page name="Statement Delimiters" type="last">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>12_StatementDelimiters.html</contentFile>
+            <SQLFile>11_StatementDelimiters.sql</SQLFile>
+            <SQLExecutionOptions xmlinline="true" xml="true" clob="false" blob="false" dbclob="false" termChar="#" cursor="forward" commitPerStmt="true" numRowReturned="100" />
+        </page></pageList>
+</tutorial>

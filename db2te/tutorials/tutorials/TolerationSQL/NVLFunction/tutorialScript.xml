@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tutorial name="NVL Function">
+    <flowRestriction>forwardExploration</flowRestriction>
+    <closeAction/>
+    <openAction />
+    <globalCodeHighlightOptions highlightCode = "true" />
+    <pageList>
+    	<page name="NVL Function" type="intro">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>NVLFunction.html</contentFile>
+    	    <autoLoadLink>
+    	        <pageWindow target="informationWindow">
+    	            <panel name="main">
+    	                <URL>http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.sql.ref.doc/doc/r0052627.html?noframes=true</URL>
+    	            </panel>
+    	        </pageWindow>
+    	    </autoLoadLink>
+        </page>
+        
+    <page name="Use NVL to find missing values" type="general">
+        <entryAction name="createDepartmentTable" type="serverAction">
+            <parameterList>
+                <parameter name="action" type="fixed">
+                    <value>createTablesFromSampleDatabase</value>
+                </parameter>
+                <parameter name="schema" type="constant">
+                    <value>SCHEMA</value>
+                </parameter>
+                <parameter name="table" type="fixed">
+                    <value>DEPARTMENT</value>
+                </parameter>
+            </parameterList>
+            <followOnAction condition="false"   >
+                <task>
+                    <action name="" type="alert">
+                        <message>Failed to create base tables for initial setup of tutorial. Cannot proceed further with tutorial.</message>
+                    </action>
+                </task>
+                <task>
+                    <setActionReturn>false</setActionReturn>
+                </task>
+            </followOnAction>
+            <followOnAction condition="[0-9][0-9]*"   >
+                <task>
+                    <assignLocalParameter name="ERROR_MESSAGE" type="returnObject">
+                        <value>createDepartmentTable.returnValue</value>
+                    </assignLocalParameter>
+                    <alert>Failed to create base tables for initial setup of tutorial. Cannot proceed further with tutorial.  
+                        SQLMSG: ?ERROR_MESSAGE?</alert>
+                </task>
+                <task>
+                    <setActionReturn>false</setActionReturn>
+                </task>
+            </followOnAction>
+        </entryAction>
+            <exitAction/>
+            <contentFile>UseNVLToFindMissingValues.html</contentFile>
+        <SQLFile>UseNVLToFindMissingValues.sql</SQLFile>
+        </page><page name="Create table for NVL Example" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>CreateTableForNVLExample.html</contentFile>
+            <SQLFile>CreateTableForNVLExample.sql</SQLFile>
+        </page><page name="Error calculation with null" type="general">
+            <entryAction name="checkForInsert" type="serverAction">
+                <parameterList>
+                    <parameter name="action" type="fixed">
+                        <value>checkForRow</value>
+                    </parameter>
+                    <parameter name="schema" type="constant">
+                        <value>SCHEMA</value>
+                    </parameter>
+                    <parameter name="name" type="fixed">
+                        <value>temp_emp</value>
+                    </parameter>
+                </parameterList>
+                <followOnAction condition="true"  negCondition="true">
+                    <task>
+                        <action name="displayMsgForFailedInsert" type="alert">
+                            <message>Data hasn't been inserted in the table. Please try this step again.</message>
+                        </action>
+                    </task>
+                    <task>
+                        <setActionReturn>false</setActionReturn>
+                    </task>
+                </followOnAction>
+            </entryAction> 
+            <exitAction/>
+            <contentFile>ErrorCalculationWithNull.html</contentFile>
+            <SQLFile>ErrorCalculationWithNull.sql</SQLFile>
+        </page><page name="Proper calculation with null" type="last">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>ProperCalculationWithNull.html</contentFile>
+            <SQLFile>ProperCalculationWithNull.sql</SQLFile>
+        </page></pageList>
+</tutorial>

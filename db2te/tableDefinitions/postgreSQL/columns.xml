@@ -1,0 +1,357 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2013 All rights reserved.
+  
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+<table name="columns">
+	<sqlName>"information_schema"."columns"</sqlName>
+	<singularName>Column</singularName>
+	<pluralName>Column</pluralName>
+	<description></description>
+	<orderBy name="table_catalog" direction="A"/>
+	<orderBy name="table_schema" direction="A"/>
+	<orderBy name="table_name" direction="A"/>
+	<orderBy name="column_name" direction="A"/>
+	<displayColumns titleDepth="2">
+		<col type="column" name="table_catalog"/>
+		<col type="column" name="table_schema"/>
+		<col type="column" name="table_name"/>
+		<col type="column" name="column_name"/>
+		<col type="column" name="ordinal_position"/>
+		<col type="column" name="column_default"/>
+		<col type="column" name="is_nullable"/>
+		<col type="column" name="data_type"/>
+		<col type="column" name="character_maximum_length"/>
+		<col type="column" name="character_octet_length"/>
+		<col type="column" name="numeric_precision"/>
+		<col type="column" name="numeric_precision_radix"/>
+		<col type="column" name="numeric_scale"/>
+		<col type="column" name="datetime_precision"/>
+		<col type="column" name="interval_type"/>
+		<col type="column" name="interval_precision"/>
+		<col type="column" name="character_set_catalog"/>
+		<col type="column" name="character_set_schema"/>
+		<col type="column" name="character_set_name"/>
+		<col type="column" name="collation_catalog"/>
+		<col type="column" name="collation_schema"/>
+		<col type="column" name="collation_name"/>
+		<col type="column" name="domain_catalog"/>
+		<col type="column" name="domain_schema"/>
+		<col type="column" name="domain_name"/>
+		<col type="column" name="udt_catalog"/>
+		<col type="column" name="udt_schema"/>
+		<col type="column" name="udt_name"/>
+		<col type="column" name="scope_catalog"/>
+		<col type="column" name="scope_schema"/>
+		<col type="column" name="scope_name"/>
+		<col type="column" name="maximum_cardinality"/>
+		<col type="column" name="dtd_identifier"/>
+		<col type="column" name="is_self_referencing"/>
+		<col type="column" name="is_identity"/>
+		<col type="column" name="identity_generation"/>
+		<col type="column" name="identity_start"/>
+		<col type="column" name="identity_increment"/>
+		<col type="column" name="identity_maximum"/>
+		<col type="column" name="identity_minimum"/>
+		<col type="column" name="identity_cycle"/>
+		<col type="column" name="is_generated"/>
+		<col type="column" name="generation_expression"/>
+		<col type="column" name="is_updatable"/>
+	</displayColumns>
+	<displayColumns titleDepth="2"  name="Specific Table">
+		<col type="column" name="column_name"/>
+		<col type="column" name="ordinal_position"/>
+		<col type="column" name="column_default"/>
+		<col type="column" name="is_nullable"/>
+		<col type="column" name="data_type"/>
+		<col type="column" name="character_maximum_length"/>
+		<col type="column" name="character_octet_length"/>
+		<col type="column" name="numeric_precision"/>
+		<col type="column" name="numeric_precision_radix"/>
+		<col type="column" name="numeric_scale"/>
+		<col type="column" name="datetime_precision"/>
+		<col type="column" name="interval_type"/>
+		<col type="column" name="interval_precision"/>
+		<col type="column" name="character_set_catalog"/>
+		<col type="column" name="character_set_schema"/>
+		<col type="column" name="character_set_name"/>
+		<col type="column" name="collation_catalog"/>
+		<col type="column" name="collation_schema"/>
+		<col type="column" name="collation_name"/>
+		<col type="column" name="domain_catalog"/>
+		<col type="column" name="domain_schema"/>
+		<col type="column" name="domain_name"/>
+		<col type="column" name="udt_catalog"/>
+		<col type="column" name="udt_schema"/>
+		<col type="column" name="udt_name"/>
+		<col type="column" name="scope_catalog"/>
+		<col type="column" name="scope_schema"/>
+		<col type="column" name="scope_name"/>
+		<col type="column" name="maximum_cardinality"/>
+		<col type="column" name="dtd_identifier"/>
+		<col type="column" name="is_self_referencing"/>
+		<col type="column" name="is_identity"/>
+		<col type="column" name="identity_generation"/>
+		<col type="column" name="identity_start"/>
+		<col type="column" name="identity_increment"/>
+		<col type="column" name="identity_maximum"/>
+		<col type="column" name="identity_minimum"/>
+		<col type="column" name="identity_cycle"/>
+		<col type="column" name="is_generated"/>
+		<col type="column" name="generation_expression"/>
+		<col type="column" name="is_updatable"/>
+	</displayColumns>
+	<column name="table_catalog">
+		<sqlName>table_catalog</sqlName>
+		<title>Table Catalog</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="table_schema">
+		<sqlName>table_schema</sqlName>
+		<title>Table Schema</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="table_name">
+		<sqlName>table_name</sqlName>
+		<title>Table Name</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="column_name">
+		<sqlName>column_name</sqlName>
+		<title>Column Name</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="ordinal_position">
+		<sqlName>ordinal_position</sqlName>
+		<title>Ordinal Position</title>
+		<type>n</type>
+	</column>
+	<column name="column_default">
+		<sqlName>column_default</sqlName>
+		<title>Column Default</title>
+		<type>s</type>
+	</column>
+	<column name="is_nullable">
+		<sqlName>is_nullable</sqlName>
+		<title>Is Nullable</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="data_type">
+		<sqlName>data_type</sqlName>
+		<title>Data Type</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="character_maximum_length">
+		<sqlName>character_maximum_length</sqlName>
+		<title>Char Max Length</title>
+		<type>n</type>
+	</column>
+	<column name="character_octet_length">
+		<sqlName>character_octet_length</sqlName>
+		<title>Char Octet Length</title>
+		<type>n</type>
+	</column>
+	<column name="numeric_precision">
+		<sqlName>numeric_precision</sqlName>
+		<title>Numeric Precision</title>
+		<type>n</type>
+	</column>
+	<column name="numeric_precision_radix">
+		<sqlName>numeric_precision_radix</sqlName>
+		<title>Numeric Precision Radix</title>
+		<type>n</type>
+	</column>
+	<column name="numeric_scale">
+		<sqlName>numeric_scale</sqlName>
+		<title>Numeric Scale</title>
+		<type>n</type>
+	</column>
+	<column name="datetime_precision">
+		<sqlName>datetime_precision</sqlName>
+		<title>Datetime Precision</title>
+		<type>n</type>
+	</column>
+	<column name="interval_type">
+		<sqlName>interval_type</sqlName>
+		<title>Interval Type</title>
+		<type>s</type>
+	</column>
+	<column name="interval_precision">
+		<sqlName>interval_precision</sqlName>
+		<title>Interval Precision</title>
+		<type>n</type>
+	</column>
+	<column name="character_set_catalog">
+		<sqlName>character_set_catalog</sqlName>
+		<title>Char Set Catalog</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="character_set_schema">
+		<sqlName>character_set_schema</sqlName>
+		<title>Char Set Schema</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="character_set_name">
+		<sqlName>character_set_name</sqlName>
+		<title>Char Set Name</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="collation_catalog">
+		<sqlName>collation_catalog</sqlName>
+		<title>Collation Catalog</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="collation_schema">
+		<sqlName>collation_schema</sqlName>
+		<title>Collation Schema</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="collation_name">
+		<sqlName>collation_name</sqlName>
+		<title>Collation Name</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="domain_catalog">
+		<sqlName>domain_catalog</sqlName>
+		<title>Domain Catalog</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="domain_schema">
+		<sqlName>domain_schema</sqlName>
+		<title>Domain Schema</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="domain_name">
+		<sqlName>domain_name</sqlName>
+		<title>Domain Name</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="udt_catalog">
+		<sqlName>udt_catalog</sqlName>
+		<title>Udt Catalog</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="udt_schema">
+		<sqlName>udt_schema</sqlName>
+		<title>UDTSchema</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="udt_name">
+		<sqlName>udt_name</sqlName>
+		<title>UDT Name</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="scope_catalog">
+		<sqlName>scope_catalog</sqlName>
+		<title>Scope Catalog</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="scope_schema">
+		<sqlName>scope_schema</sqlName>
+		<title>Scope Schema</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="scope_name">
+		<sqlName>scope_name</sqlName>
+		<title>Scope Name</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="maximum_cardinality">
+		<sqlName>maximum_cardinality</sqlName>
+		<title>Max Cardinality</title>
+		<type>n</type>
+	</column>
+	<column name="dtd_identifier">
+		<sqlName>dtd_identifier</sqlName>
+		<title>DTD Identifier</title>
+		<drillEnable/>
+	</column>
+	<column name="is_self_referencing">
+		<sqlName>is_self_referencing</sqlName>
+		<title>Self Referencing</title>
+		<type>s</type>
+	</column>
+	<column name="is_identity">
+		<sqlName>is_identity</sqlName>
+		<title>Identity</title>
+		<type>s</type>
+	</column>
+	<column name="identity_generation">
+		<sqlName>identity_generation</sqlName>
+		<title>Identity Generation</title>
+		<type>s</type>
+	</column>
+	<column name="identity_start">
+		<sqlName>identity_start</sqlName>
+		<title>Identity Start</title>
+		<type>s</type>
+	</column>
+	<column name="identity_increment">
+		<sqlName>identity_increment</sqlName>
+		<title>Identity Increment</title>
+		<type>s</type>
+	</column>
+	<column name="identity_maximum">
+		<sqlName>identity_maximum</sqlName>
+		<title>Identity Maximum</title>
+		<type>s</type>
+	</column>
+	<column name="identity_minimum">
+		<sqlName>identity_minimum</sqlName>
+		<title>Identity Minimum</title>
+		<type>s</type>
+	</column>
+	<column name="identity_cycle">
+		<sqlName>identity_cycle</sqlName>
+		<title>Identity Cycle</title>
+		<type>s</type>
+	</column>
+	<column name="is_generated">
+		<sqlName>is_generated</sqlName>
+		<title>Generated</title>
+		<type>s</type>
+	</column>
+	<column name="generation_expression">
+		<sqlName>generation_expression</sqlName>
+		<title>Generation Expression</title>
+		<type>s</type>
+	</column>
+	<column name="is_updatable">
+		<sqlName>is_updatable</sqlName>
+		<title>Updatable</title>
+		<type>s</type>
+	</column>
+</table>

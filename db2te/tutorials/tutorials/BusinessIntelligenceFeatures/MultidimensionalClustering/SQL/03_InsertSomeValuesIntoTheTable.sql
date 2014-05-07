@@ -1,0 +1,7 @@
+INSERT into ?SCHEMA?.empMDC
+SELECT
+  *
+FROM
+ ?SCHEMA?.tempMDC;
+
+call admin_cmd('RUNSTATS ON TABLE ?SCHEMA?.EMPMDC AND INDEXES ALL');

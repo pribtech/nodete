@@ -1,0 +1,174 @@
+<!--
+  Peter Prib, Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2012 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<table name="wlmGetQueueStats">
+	<sqlName>WLM_GET_QUEUE_STATS</sqlName>
+	<singularName>WLM Queue Stats</singularName>
+	<pluralName>WLM Queue Stats</pluralName>
+    <function>WLM_GET_QUEUE_STATS</function>
+    <description/>
+	<disableEdit/>
+	<output>
+		<type name="DDL" destination="" title="" generator=""/>
+	</output>
+    <parameters>
+        <parm name="PREDICATE" ordinal="1" mode="IN">
+            <title>Threshold Predicate</title>
+            <type>VARCHAR</type>
+            <value></value>
+        </parm>
+        <parm name="DOMAIN" ordinal="2" mode="IN">
+            <title>Domain</title>
+            <type>VARCHAR</type>
+            <value></value>
+        </parm>
+        <parm name="NAME" ordinal="3" mode="IN">
+            <title>Domain</title>
+            <type>VARCHAR</type>
+            <value></value>
+        </parm>
+        <parm name="ID" ordinal="4" mode="IN">
+            <title>Id.</title>
+            <type>INT</type>
+            <value>-1</value>
+        </parm>
+    </parameters>
+	<orderBy name="THRESHOLD_ID" direction="A"/>
+	<displayColumns>
+		<col type="column" name="THRESHOLD_PREDICATE"/>
+		<col type="column" name="THRESHOLD_DOMAIN"/>
+		<col type="column" name="THRESHOLD_NAME"/>
+		<col type="column" name="THRESHOLD_ID"/>
+		<col type="column" name="DBPARTITIONNUM"/>
+		<col type="column" name="SERVICE_SUPERCLASS_NAME"/>
+		<col type="column" name="SERVICE_SUBCLASS_NAME"/>
+		<col type="column" name="WORK_ACTION_SET_NAME"/>
+		<col type="column" name="WORK_CLASS_NAME"/>
+		<col type="column" name="WORKLOAD_NAME"/>
+		<col type="column" name="LAST_RESET"/>
+		<col type="column" name="QUEUE_SIZE_TOP"/>
+		<col type="column" name="QUEUE_TIME_TOTAL"/>
+		<col type="column" name="QUEUE_ASSIGNMENTS_TOTAL"/>
+		<col type="column" name="QUEUE_SIZE_CURRENT"/>
+		<col type="column" name="QUEUE_TIME_LATEST"/>
+		<col type="column" name="QUEUE_EXIT_TIME_LATEST"/>
+		<col type="column" name="THRESHOLD_CURRENT_CONCURRENCY"/>
+		<col type="column" name="THRESHOLD_MAX_CONCURRENCY"/>
+	</displayColumns>
+	<column name="THRESHOLD_PREDICATE">
+		<sqlName>THRESHOLD_PREDICATE</sqlName>
+		<title>Threshold Predicate</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="THRESHOLD_DOMAIN">
+		<sqlName>THRESHOLD_DOMAIN</sqlName>
+		<title>Threshold Domain</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="THRESHOLD_NAME">
+		<sqlName>THRESHOLD_NAME</sqlName>
+		<title>Threshold Name</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="THRESHOLD_ID">
+		<sqlName>THRESHOLD_ID</sqlName>
+		<title>Threshold Id</title>
+		<type>n</type>
+	</column>
+	<column name="DBPARTITIONNUM">
+		<sqlName>DBPARTITIONNUM</sqlName>
+		<title>DB Part.</title>
+		<type>n</type>
+	</column>
+	<column name="SERVICE_SUPERCLASS_NAME">
+		<sqlName>SERVICE_SUPERCLASS_NAME</sqlName>
+		<title>Service Superclass Name</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="SERVICE_SUBCLASS_NAME">
+		<sqlName>SERVICE_SUBCLASS_NAME</sqlName>
+		<title>Service Subclass Name</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="WORK_ACTION_SET_NAME">
+		<sqlName>WORK_ACTION_SET_NAME</sqlName>
+		<title>Work Action Set Name</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="WORK_CLASS_NAME">
+		<sqlName>WORK_CLASS_NAME</sqlName>
+		<title>Work Class Name</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="WORKLOAD_NAME">
+		<sqlName>WORKLOAD_NAME</sqlName>
+		<title>Workload Name</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="LAST_RESET">
+		<sqlName>LAST_RESET</sqlName>
+		<title>Last Reset</title>
+		<type>n</type>
+	</column>
+	<column name="QUEUE_SIZE_TOP">
+		<sqlName>QUEUE_SIZE_TOP</sqlName>
+		<title>Queue Size Top</title>
+		<type>n</type>
+	</column>
+	<column name="QUEUE_TIME_TOTAL">
+		<sqlName>QUEUE_TIME_TOTAL</sqlName>
+		<title>Queue Time Total</title>
+		<type>n</type>
+	</column>
+	<column name="QUEUE_ASSIGNMENTS_TOTAL">
+		<sqlName>QUEUE_ASSIGNMENTS_TOTAL</sqlName>
+		<title>Queue Assignments Total</title>
+		<type>n</type>
+	</column>
+	<column name="QUEUE_SIZE_CURRENT">
+		<sqlName>QUEUE_SIZE_CURRENT</sqlName>
+		<title>Queue Size Current</title>
+		<type>n</type>
+	</column>
+	<column name="QUEUE_TIME_LATEST">
+		<sqlName>QUEUE_TIME_LATEST</sqlName>
+		<title>Queue Time Latest</title>
+		<type>n</type>
+	</column>
+	<column name="QUEUE_EXIT_TIME_LATEST">
+		<sqlName>QUEUE_EXIT_TIME_LATEST</sqlName>
+		<title>Queue Exit Time Latest</title>
+		<type>n</type>
+	</column>
+	<column name="THRESHOLD_CURRENT_CONCURRENCY">
+		<sqlName>THRESHOLD_CURRENT_CONCURRENCY</sqlName>
+		<title>Threshold Current Concurrency</title>
+		<type>n</type>
+	</column>
+	<column name="THRESHOLD_MAX_CONCURRENCY">
+		<sqlName>THRESHOLD_MAX_CONCURRENCY</sqlName>
+		<title>Threshold Max Concurrency</title>
+		<type>n</type>
+	</column>
+</table>

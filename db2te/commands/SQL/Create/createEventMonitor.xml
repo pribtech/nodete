@@ -1,0 +1,328 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2009 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<command name="createEventMonitor" title="Create Event Monitor">
+<![CDATA[
+>>-CREATE EVENT MONITOR--event-monitor-name--FOR---------------->
+]]>
+	<text>CREATE EVENT MONITOR</text><clauseReference name="event-monitor-name"/><text>FOR</text>
+	<br/>
+<![CDATA[
+   .-,------------------------------------------------------------.   
+   V                                                              |   
+>----+-+-DATABASE---------------------------------------------+-+-+-->
+     | +-TABLES-----------------------------------------------+ |     
+     | +-DEADLOCKS--+---------------------------------------+-+ |     
+     | |            '-WITH DETAILS--+---------------------+-' | |     
+     | |                            '-HISTORY--+--------+-'   | |     
+     | |                                       '-VALUES-'     | |     
+     | +-TABLESPACES------------------------------------------+ |     
+     | '-BUFFERPOOLS------------------------------------------' |     
+     '-+-CONNECTIONS--+--+----------------------------+---------'     
+       +-STATEMENTS---+  '-WHERE--| event-condition |-'               
+       '-TRANSACTIONS-'                                               
+]]>
+	<repeatable>
+		<select>
+			<option>
+				<select>
+					<option default="true"><text>DATABASE</text></option>
+					<option><text>TABLES</text></option>
+					<option>
+						<text>DEADLOCKS</text>
+						<select>
+							<option default="true"><note>no details</note></option>
+							<option>
+								<text>WITH DETAILS</text>
+								<select>
+									<option default="true"><note>no history</note></option>
+									<option>
+										<text>HISTORY</text>
+										<select>
+											<option default="true"><note>no values</note></option>
+											<option><text>VALUES</text></option>
+										</select>
+									</option>
+								</select>
+							</option>
+						</select>
+					</option>
+					<option><text>TABLESPACES</text></option>
+					<option><text>BUFFERPOOLS</text></option>
+				</select>
+				<select>
+					<option default="true"><text>CONNECTIONS</text></option>
+					<option><text>STATEMENTS</text></option>
+					<option><text>TRANSACTIONS</text></option>
+				</select>
+			</option>
+			<option>
+				<select>
+					<option default="true"><note>all</note></option>
+					<option><text>WHERE</text><clauseReference name="event-condition"/></option>
+				</select>
+			</option>
+		</select>
+	</repeatable>
+	<br/>
+<![CDATA[
+>--WRITE TO--+-TABLE--| evm-group-info |---------+--●----------->
+             +-PIPE--pipe-name-------------------+      
+             '-FILE--path-name--| file-options |-'      
+]]>
+	<text>WRITE TO</text>
+	<select>
+		<option default="true"><text>TABLE</text><clauseReference name="evm-group-info"/></option>
+		<option><text>PIPE</text><clauseReference name="pipe-name"/></option>
+		<option><text>FILE</text><clauseReference name="path-name"/><clauseReference name="file-options"/></option>
+		</select>
+	<br/>
+<![CDATA[
+   .-MANUALSTART-.      
+>--+-------------+--●------------------------------------------->
+   '-AUTOSTART---'      
+]]>
+	<select>
+		<option><text>MANUALSTART</text></option>
+		<option default="true"><note>MANUALSTART</note></option>
+		<option><text>AUTOSTART</text></option>
+	</select>
+	<br/>
+<![CDATA[
+>--+----------------------------------------+--●---------------->
+   '-ON DBPARTITIONNUM--db-partition-number-'      
+]]>
+	<select>
+		<option default="true"><note></note></option>
+		<option><text>ON DBPARTITIONNUM</text><clauseReference name="db-partition-number"/></option>
+	</select>
+	<br/>
+<![CDATA[
+   .-LOCAL--.      
+>--+--------+--●-----------------------------------------------><
+   '-GLOBAL-'      
+]]>
+	<select>
+		<option><text>LOCAL</text></option>
+		<option default="true"><note>LOCAL</note></option>
+		<option><text>GLOBAL</text></option>
+	</select>
+
+	<clause name="event-condition" title="event condition">
+<![CDATA[
+   .-AND | OR-----------------------------------------------------.   
+   V                                                              |   
+|----+-----+--+-+-APPL_ID---+--+-=---------+--comparison-string-+-+--|
+     '-NOT-'  | +-AUTH_ID---+  |    (1)    |                    |     
+              | '-APPL_NAME-'  +-<>--------+                    |     
+              |                +->---------+                    |     
+              |                |    (1)    |                    |     
+              |                +->=--------+                    |     
+              |                +-<---------+                    |     
+              |                |    (1)    |                    |     
+              |                +-<=--------+                    |     
+              |                +-LIKE------+                    |     
+              |                '-NOT--LIKE-'                    |     
+              '-(--event-condition--)---------------------------'     
+]]>
+			<select>
+				<option default="true"></option>
+				<option><text>NOT</text></option>
+			</select>
+			<select>
+				<option default="true">
+					<select>
+						<option default="true"><text>APPL_ID</text></option>
+						<option><text>AUTH_ID</text></option>
+						<option><text>APPL_NAME</text></option>
+					</select>
+					<select>
+						<option default="true"><text>=</text></option>
+						<option><text><![CDATA[<>]]></text></option>
+						<option><text><![CDATA[>]]></text></option>
+						<option><text><![CDATA[>=]]></text></option>
+						<option><text><![CDATA[<]]></text></option>
+						<option><text><![CDATA[<=]]></text></option>
+						<option><text>LIKE</text></option>
+						<option><text>NOT LIKE</text></option>
+					</select>
+					<input size="32" title="comparison-string"/>
+				</option>
+				<option><text>(</text><clauseReference name="event-condition"/><text>)</text></option>
+			</select>
+
+		<repeatable separator=" ">
+			<select>
+				<option default="true"><text>AND</text></option>
+				<option><text>OR</text></option>
+			</select>
+
+			<select>
+				<option default="true"></option>
+				<option><text>NOT</text></option>
+			</select>
+			<select>
+				<option default="true">
+					<select>
+						<option default="true"><text>APPL_ID</text></option>
+						<option><text>AUTH_ID</text></option>
+						<option><text>APPL_NAME</text></option>
+					</select>
+					<select>
+						<option default="true"><text>=</text></option>
+						<option><text><![CDATA[<>]]></text></option>
+						<option><text><![CDATA[>]]></text></option>
+						<option><text><![CDATA[>=]]></text></option>
+						<option><text><![CDATA[<]]></text></option>
+						<option><text><![CDATA[<=]]></text></option>
+						<option><text>LIKE</text></option>
+						<option><text>NOT LIKE</text></option>
+					</select>
+					<input size="32" title="comparison-string"/>
+				</option>
+				<option><text>(</text><clauseReference name="event-condition"/><text>)</text></option>
+			</select>
+		</repeatable>
+	</clause>
+
+	<clause name="evm-group-info" title="evm group info">
+<![CDATA[
+|--●--+------------------------------------------------+--●----->
+      | .-,------------------------------------------. |      
+      | V                                            | |      
+      '---evm-group--+-----------------------------+-+-'      
+                     '-(--| target-table-info |--)-'          
+
+   .-BUFFERSIZE--4-----.     .-BLOCKED----.      
+>--+-------------------+--●--+------------+--●------------------|
+   '-BUFFERSIZE--pages-'     '-NONBLOCKED-'      
+]]>
+		<select>
+			<option default="true"><note>no grouping</note></option>
+			<option>
+				<repeatable>
+					<clauseReference name="evm-group"/>
+					<select>
+						<option default="true"><note>no table info</note></option>
+						<option><text>(</text><clauseReference name="target-table-info"/><text>)</text></option>
+					</select>
+				</repeatable>
+			</option>
+		</select>
+		<br/>
+		<select>
+			<option><text>BUFFERSIZE 4</text></option>
+			<option default="true"><note>BUFFERSIZE 4</note></option>
+			<option><text>BUFFERSIZE</text><clauseReference name="pages"/></option>
+		</select>
+		<select>
+			<option><text>BLOCKED</text></option>
+			<option default="true"><note>BLOCKED</note></option>
+			<option><text>NONBLOCKED</text></option>
+		</select>
+	</clause>
+
+	<clause name="target-table-info" title="target table info">
+<![CDATA[
+   .-------------------------------------------.   
+   V  (2)                                      |   
+|----------+-TABLE--table-name---------------+-+----------------|
+           +-IN--tablespace-name-------------+     
+           | .-PCTDEACTIVATE--100-----.      |     
+           +-+-PCTDEACTIVATE--integer-+------+     
+           +-TRUNC---------------------------+     
+           |                  .-,-------.    |     
+           |                  V         |    |     
+           '-+-INCLUDES-+--(----element-+--)-'     
+             '-EXCLUDES-'                          
+]]>
+		<repeatable separator=" ">
+			<select>
+				<option default="true"><text>TABLE</text><clauseReference name="table-name"/></option>
+				<option><text>IN</text><clauseReference name="tablespace-name"/></option>
+				<option>
+					<select>
+						<option default="true"><text>PCTDEACTIVATE 100</text></option>
+						<option><text>PCTDEACTIVATE</text><input size="2" type="int"/></option>
+					</select>
+				</option>
+				<option><text>TRUNC</text></option>
+				<option>
+					<select>
+						<option default="true"><text>INCLUDES</text></option>
+						<option><text>EXCLUDES</text></option>
+					</select>
+					<text>(</text>
+					<repeatable>
+						<input size="32" title="element"/>
+					</repeatable>
+					<text>)</text>
+				</option>
+			</select>
+		</repeatable>
+	</clause>
+
+	<clause name="file-options" title="file options">
+<![CDATA[
+      .-MAXFILES--NONE------------.      
+|--●--+---------------------------+--●-------------------------->
+      '-MAXFILES--number-of-files-'      
+
+                                  .-BUFFERSIZE--4-----.      
+>--+------------------------+--●--+-------------------+--●------>
+   '-MAXFILESIZE--+-pages-+-'     '-BUFFERSIZE--pages-'      
+                  '-NONE--'                                  
+
+   .-BLOCKED----.     .-APPEND--.      
+>--+------------+--●--+---------+--●----------------------------|
+   '-NONBLOCKED-'     '-REPLACE-'      
+]]>
+		<select>
+			<option><text>MAXFILES NONE</text></option>
+			<option default="true"><note>MAXFILES NONE</note></option>
+			<option><text>MAXFILES</text><input size="3" type="int"/></option>
+		</select>
+		<br/>
+		<select>
+			<option default="true"><note>maxfilesize</note></option>
+			<option><text>MAXFILESIZE</text>
+				<select>
+					<option default="true"><clauseReference name="pages"/></option>
+					<option><text>NONE</text></option>
+				</select>
+			</option>
+		</select>
+		<select>
+			<option><text>BUFFERSIZE 4</text></option>
+			<option default="true"><note>BUFFERSIZE 4</note></option>
+			<option><text>BUFFERSIZE</text><clauseReference name="pages"/></option>
+		</select>
+		<br/>
+		<select>
+			<option><text>BLOCKED</text></option>
+			<option default="true"><note>BLOCKED</note></option>
+			<option><text>NONBLOCKED</text></option>
+		</select>
+		<select>
+			<option><text>APPEND</text></option>
+			<option default="true"><note>APPEND</note></option>
+			<option><text>REPLACE</text></option>
+		</select>
+	</clause>
+
+</command>
+

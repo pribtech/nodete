@@ -1,0 +1,103 @@
+<!--
+  Copyright IBM Corp. 2007 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<table name="HISTOGRAMBIN_DB2STATISTICS">
+<sql_name>HISTOGRAMBIN_DB2STATISTICS</sql_name>
+<singular_name>HISTOGRAMBIN_DB2STATISTICS</singular_name>
+<plural_name>HISTOGRAMBIN_DB2STATISTICS</plural_name>
+<description/>
+	<disableEdit/>
+	<output>
+		<type name="DDL" destination="" title="" generator=""/>
+	</output>
+
+<display_columns>
+<col type="column" name="top"/>
+<col type="column" name="number_in_bin"/>
+</display_columns>
+
+<disable_edit/>
+  <graph>
+		<prefix>_gr_histo</prefix>
+		<title>Histogram</title>
+		<imageHeight>300</imageHeight>
+		<imageWidth>800</imageWidth>
+		<sizeRatio>0.3</sizeRatio>
+		<xTitle>Bin (ms)</xTitle>
+		<xTitleDistFromAxis>115</xTitleDistFromAxis>
+		<forceXBaseline>false</forceXBaseline>
+		<xBaseline></xBaseline>
+		<yTitleLeft>Number in bin</yTitleLeft>
+		<legendWidth>200</legendWidth>
+		<forceYBaseline>true</forceYBaseline>
+		<yBaseline></yBaseline>
+		<xNumOfTicks>5</xNumOfTicks>
+		<yNumOfTicks>5</yNumOfTicks>
+		<datasetType></datasetType>
+		<showGrid>true</showGrid>
+		<sortData>true</sortData>
+		<enableMarkers>false</enableMarkers>
+  </graph>
+
+<column name="service_class_id">
+	<c_sql_name>SERVICE_CLASS_ID</c_sql_name>
+	<c_title>Service Class Id</c_title>
+	<c_presentation>n</c_presentation>
+	<c_drill>y</c_drill>
+	<c_prefill>y</c_prefill>		
+</column>
+
+<column name="histogram_type">
+	<c_sql_name>HISTOGRAM_TYPE</c_sql_name>
+	<c_title>Type</c_title>
+	<c_presentation>s</c_presentation>
+	<c_drill>y</c_drill>
+	<c_prefill>y</c_prefill>	
+</column>
+
+<column name="statistics_timestamp">
+	<c_sql_name>STATISTICS_TIMESTAMP</c_sql_name>
+	<c_title>Timestamp</c_title>
+	<c_presentation>s</c_presentation>
+	<c_drill>y</c_drill>
+	<c_prefill>y</c_prefill>	
+</column>
+
+<column name="top">
+	<c_sql_name>TOP</c_sql_name>
+	<c_title>Bin top (ms)</c_title>
+	<c_presentation>n</c_presentation>
+	<c_drill>n</c_drill>
+	<c_graph>
+		<g_x_categories>y</g_x_categories>
+	</c_graph>
+</column>
+
+<column name="number_in_bin">
+	<c_sql_name>NUMBER_IN_BIN</c_sql_name>
+	<c_title>Number in bin</c_title>
+	<c_presentation>n</c_presentation>
+	<c_drill>n</c_drill>
+	<c_graph>
+		<g_description>In bin</g_description>
+		<g_color>#00CC00</g_color>
+		<g_marker>cross</g_marker>
+		<g_yAxisUsed>left</g_yAxisUsed>
+		<g_x_scale>n</g_x_scale>
+		<g_type>bar</g_type>				
+	</c_graph>	
+</column>
+
+</table>

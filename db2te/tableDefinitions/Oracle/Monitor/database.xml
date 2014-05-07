@@ -1,0 +1,375 @@
+<!--
+  Peter Prib, Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2012 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<table name="database">
+	<sqlName>v$database</sqlName>
+	<singularName>Database</singularName>
+	<pluralName>Databases</pluralName>
+	<description></description>
+	<disable_edit/>
+	<output>
+		<type name="DDL" destination="" title="" generator=""/>
+	</output>
+	<displayColumns>
+		<col type="column" name="DBID"/>
+		<col type="column" name="NAME"/>
+		<col type="column" name="CREATED"/>
+		<col type="column" name="RESETLOGS_CHANGE#"/>
+		<col type="column" name="RESETLOGS_TIME"/>
+		<col type="column" name="PRIOR_RESETLOGS_CHANGE#"/>
+		<col type="column" name="PRIOR_RESETLOGS_TIME"/>
+		<col type="column" name="LOG_MODE"/>
+		<col type="column" name="CHECKPOINT_CHANGE#"/>
+		<col type="column" name="ARCHIVE_CHANGE#"/>
+		<col type="column" name="CONTROLFILE_TYPE"/>
+		<col type="column" name="CONTROLFILE_CREATED"/>
+		<col type="column" name="CONTROLFILE_SEQUENCE#"/>
+		<col type="column" name="CONTROLFILE_CHANGE#"/>
+		<col type="column" name="CONTROLFILE_TIME"/>
+		<col type="column" name="OPEN_RESETLOGS"/>
+		<col type="column" name="VERSION_TIME"/>
+		<col type="column" name="OPEN_MODE"/>
+		<col type="column" name="PROTECTION_MODE"/>
+		<col type="column" name="PROTECTION_LEVEL"/>
+		<col type="column" name="REMOTE_ARCHIVE"/>
+		<col type="column" name="ACTIVATION#"/>
+		<col type="column" name="SWITCHOVER#"/>
+		<col type="column" name="DATABASE_ROLE"/>
+		<col type="column" name="ARCHIVELOG_CHANGE#"/>
+		<col type="column" name="ARCHIVELOG_COMPRESSION"/>
+		<col type="column" name="SWITCHOVER_STATUS"/>
+		<col type="column" name="DATAGUARD_BROKER"/>
+		<col type="column" name="GUARD_STATUS"/>
+		<col type="column" name="SUPPLEMENTAL_LOG_DATA_MIN"/>
+		<col type="column" name="SUPPLEMENTAL_LOG_DATA_PK"/>
+		<col type="column" name="SUPPLEMENTAL_LOG_DATA_UI"/>
+		<col type="column" name="FORCE_LOGGING"/>
+		<col type="column" name="PLATFORM_ID"/>
+		<col type="column" name="PLATFORM_NAME"/>
+		<col type="column" name="RECOVERY_TARGET_INCARNATION#"/>
+		<col type="column" name="LAST_OPEN_INCARNATION#"/>
+		<col type="column" name="CURRENT_SCN"/>
+		<col type="column" name="FLASHBACK_ON"/>
+		<col type="column" name="SUPPLEMENTAL_LOG_DATA_FK"/>
+		<col type="column" name="SUPPLEMENTAL_LOG_DATA_ALL"/>
+		<col type="column" name="DB_UNIQUE_NAME"/>
+		<col type="column" name="STANDBY_BECAME_PRIMARY_SCN"/>
+		<col type="column" name="FS_FAILOVER_STATUS"/>
+		<col type="column" name="FS_FAILOVER_CURRENT_TARGET"/>
+		<col type="column" name="FS_FAILOVER_THRESHOLD"/>
+		<col type="column" name="FS_FAILOVER_OBSERVER_PRESENT"/>
+		<col type="column" name="FS_FAILOVER_OBSERVER_HOST"/>
+		<col type="column" name="CONTROLFILE_CONVERTED"/>
+		<col type="column" name="PRIMARY_DB_UNIQUE_NAME"/>
+		<col type="column" name="SUPPLEMENTAL_LOG_DATA_PL"/>
+		<col type="column" name="MIN_REQUIRED_CAPTURE_CHANGE#"/>
+	</displayColumns>
+	<column name="DBID">
+		<sqlName>DBID</sqlName>
+		<title>DB Id</title>
+		<type>n</type>
+	</column>
+	<column name="NAME">
+		<sqlName>NAME</sqlName>
+		<title>Name</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="CREATED">
+		<sqlName>CREATED</sqlName>
+		<title>Created</title>
+		<type>n</type>
+		<drillEnable/>
+	</column>
+	<column name="RESETLOGS_CHANGE#">
+		<sqlName>RESETLOGS_CHANGE#</sqlName>
+		<title>Reset Logs Change</title>
+		<type>n</type>
+	</column>
+	<column name="RESETLOGS_TIME">
+		<sqlName>RESETLOGS_TIME</sqlName>
+		<title>Reset Logs Time</title>
+		<type>n</type>
+		<drillEnable/>
+	</column>
+	<column name="PRIOR_RESETLOGS_CHANGE#">
+		<sqlName>PRIOR_RESETLOGS_CHANGE#</sqlName>
+		<title>Prior Reset Logs Change</title>
+		<type>n</type>
+	</column>
+	<column name="PRIOR_RESETLOGS_TIME">
+		<sqlName>PRIOR_RESETLOGS_TIME</sqlName>
+		<title>Prior Reset Logs Time</title>
+		<type>n</type>
+		<drillEnable/>
+	</column>
+	<column name="LOG_MODE">
+		<sqlName>LOG_MODE</sqlName>
+		<title>Log Mode</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="CHECKPOINT_CHANGE#">
+		<sqlName>CHECKPOINT_CHANGE#</sqlName>
+		<title>Checkpoint Change</title>
+		<type>n</type>
+	</column>
+	<column name="ARCHIVE_CHANGE#">
+		<sqlName>ARCHIVE_CHANGE#</sqlName>
+		<title>Archive Change</title>
+		<type>n</type>
+	</column>
+	<column name="CONTROLFILE_TYPE">
+		<sqlName>CONTROLFILE_TYPE</sqlName>
+		<title>Control File Type</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="CONTROLFILE_CREATED">
+		<sqlName>CONTROLFILE_CREATED</sqlName>
+		<title>Control File Created</title>
+		<type>n</type>
+		<drillEnable/>
+	</column>
+	<column name="CONTROLFILE_SEQUENCE#">
+		<sqlName>CONTROLFILE_SEQUENCE#</sqlName>
+		<title>Control File Sequence</title>
+		<type>n</type>
+	</column>
+	<column name="CONTROLFILE_CHANGE#">
+		<sqlName>CONTROLFILE_CHANGE#</sqlName>
+		<title>Control File Change</title>
+		<type>n</type>
+	</column>
+	<column name="CONTROLFILE_TIME">
+		<sqlName>CONTROLFILE_TIME</sqlName>
+		<title>Controlfile Time</title>
+		<type>n</type>
+		<drillEnable/>
+	</column>
+	<column name="OPEN_RESETLOGS">
+		<sqlName>OPEN_RESETLOGS</sqlName>
+		<title>Open Reset Logs</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="VERSION_TIME">
+		<sqlName>VERSION_TIME</sqlName>
+		<title>Version Time</title>
+		<type>n</type>
+		<drillEnable/>
+	</column>
+	<column name="OPEN_MODE">
+		<sqlName>OPEN_MODE</sqlName>
+		<title>Open Mode</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="PROTECTION_MODE">
+		<sqlName>PROTECTION_MODE</sqlName>
+		<title>Protection Mode</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="PROTECTION_LEVEL">
+		<sqlName>PROTECTION_LEVEL</sqlName>
+		<title>Protection Level</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="REMOTE_ARCHIVE">
+		<sqlName>REMOTE_ARCHIVE</sqlName>
+		<title>Remote Archive</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="ACTIVATION#">
+		<sqlName>ACTIVATION#</sqlName>
+		<title>Activation#</title>
+		<type>n</type>
+	</column>
+	<column name="SWITCHOVER#">
+		<sqlName>SWITCHOVER#</sqlName>
+		<title>Switch Over</title>
+		<type>n</type>
+	</column>
+	<column name="DATABASE_ROLE">
+		<sqlName>DATABASE_ROLE</sqlName>
+		<title>Database Role</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="ARCHIVELOG_CHANGE#">
+		<sqlName>ARCHIVELOG_CHANGE#</sqlName>
+		<title>Archive Log Change</title>
+		<type>n</type>
+	</column>
+	<column name="ARCHIVELOG_COMPRESSION">
+		<sqlName>ARCHIVELOG_COMPRESSION</sqlName>
+		<title>Archivelog Compression</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="SWITCHOVER_STATUS">
+		<sqlName>SWITCHOVER_STATUS</sqlName>
+		<title>Switchover Status</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="DATAGUARD_BROKER">
+		<sqlName>DATAGUARD_BROKER</sqlName>
+		<title>Dataguard Broker</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="GUARD_STATUS">
+		<sqlName>GUARD_STATUS</sqlName>
+		<title>Guard Status</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="SUPPLEMENTAL_LOG_DATA_MIN">
+		<sqlName>SUPPLEMENTAL_LOG_DATA_MIN</sqlName>
+		<title>Supplemental Log Data Min</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="SUPPLEMENTAL_LOG_DATA_PK">
+		<sqlName>SUPPLEMENTAL_LOG_DATA_PK</sqlName>
+		<title>Supplemental Log Data PK</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="SUPPLEMENTAL_LOG_DATA_UI">
+		<sqlName>SUPPLEMENTAL_LOG_DATA_UI</sqlName>
+		<title>Supplemental Log Data Ui</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="FORCE_LOGGING">
+		<sqlName>FORCE_LOGGING</sqlName>
+		<title>Force Logging</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="PLATFORM_ID">
+		<sqlName>PLATFORM_ID</sqlName>
+		<title>Platform Id</title>
+		<type>n</type>
+	</column>
+	<column name="PLATFORM_NAME">
+		<sqlName>PLATFORM_NAME</sqlName>
+		<title>Platform Name</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="RECOVERY_TARGET_INCARNATION#">
+		<sqlName>RECOVERY_TARGET_INCARNATION#</sqlName>
+		<title>Recovery Target Incarnation</title>
+		<type>n</type>
+	</column>
+	<column name="LAST_OPEN_INCARNATION#">
+		<sqlName>LAST_OPEN_INCARNATION#</sqlName>
+		<title>Last Open Incarnation</title>
+		<type>n</type>
+	</column>
+	<column name="CURRENT_SCN">
+		<sqlName>CURRENT_SCN</sqlName>
+		<title>Current SCN</title>
+		<type>n</type>
+	</column>
+	<column name="FLASHBACK_ON">
+		<sqlName>FLASHBACK_ON</sqlName>
+		<title>Flashback On</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="SUPPLEMENTAL_LOG_DATA_FK">
+		<sqlName>SUPPLEMENTAL_LOG_DATA_FK</sqlName>
+		<title>Supplemental Log Data FK</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="SUPPLEMENTAL_LOG_DATA_ALL">
+		<sqlName>SUPPLEMENTAL_LOG_DATA_ALL</sqlName>
+		<title>Supplemental Log Data All</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="DB_UNIQUE_NAME">
+		<sqlName>DB_UNIQUE_NAME</sqlName>
+		<title>DB Unique Name</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="STANDBY_BECAME_PRIMARY_SCN">
+		<sqlName>STANDBY_BECAME_PRIMARY_SCN</sqlName>
+		<title>Standby Became Primary Scn</title>
+		<type>n</type>
+	</column>
+	<column name="FS_FAILOVER_STATUS">
+		<sqlName>FS_FAILOVER_STATUS</sqlName>
+		<title>FS Failover Status</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="FS_FAILOVER_CURRENT_TARGET">
+		<sqlName>FS_FAILOVER_CURRENT_TARGET</sqlName>
+		<title>FS Failover Current Target</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="FS_FAILOVER_THRESHOLD">
+		<sqlName>FS_FAILOVER_THRESHOLD</sqlName>
+		<title>FS Failover Threshold</title>
+		<type>n</type>
+	</column>
+	<column name="FS_FAILOVER_OBSERVER_PRESENT">
+		<sqlName>FS_FAILOVER_OBSERVER_PRESENT</sqlName>
+		<title>FS Failover Observer Present</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="FS_FAILOVER_OBSERVER_HOST">
+		<sqlName>FS_FAILOVER_OBSERVER_HOST</sqlName>
+		<title>FS Failover Observer Host</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="CONTROLFILE_CONVERTED">
+		<sqlName>CONTROLFILE_CONVERTED</sqlName>
+		<title>Control File Converted</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="PRIMARY_DB_UNIQUE_NAME">
+		<sqlName>PRIMARY_DB_UNIQUE_NAME</sqlName>
+		<title>Primary DB Unique Name</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="SUPPLEMENTAL_LOG_DATA_PL">
+		<sqlName>SUPPLEMENTAL_LOG_DATA_PL</sqlName>
+		<title>Supplemental Log Data PL</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="MIN_REQUIRED_CAPTURE_CHANGE#">
+		<sqlName>MIN_REQUIRED_CAPTURE_CHANGE#</sqlName>
+		<title>Min Required Capture Change</title>
+		<type>n</type>
+	</column>
+</table>

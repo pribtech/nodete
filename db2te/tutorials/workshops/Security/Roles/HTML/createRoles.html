@@ -1,0 +1,22 @@
+<BR><H2><B>Create and grant roles</B></H2><HR><br>
+<p><b>You must log into the database as Pat before proceeding with this page.</b></p>
+<p>A database role is essentially a database object that groups together one or more privileges or database authorities. Roles can be granted to users, groups, PUBLIC, trusted context, and other roles.
+</p>
+
+<p>Data in the <font face="courier"> 'credit_card' </font> table is accessible to all employees of J.K.Avro superstore.
+To protect access to sensitive information and provide ease of access management, J.K.Avrosuper store implements DB2 roles.
+
+<h4>Operation</h4><br>
+<p>Pat, the SECADM, creates and grants roles to users as defined below.
+<ul>
+  <li> Create roles 'Mgr' and 'custService'. </li>
+  <li> Grant role 'Mgr' to all managers .</li>
+  <li> Grant role 'custService' to all employees of the customer service department. </li>
+  <li> Grant SELECT, INSERT, UPDATE, and DELETE privileges to role 'Mgr' on 'sales.credit_card' table.</li>
+  <li> Grant SELECT, INSERT, and UPDATE privileges to role 'custService'  on 'sales.credit_card' table.</li>
+</ul>
+</p>
+
+
+<br><h4>Solution</h4><br>
+The commands in the right pane show that Pat creates roles and grants them to users Joe and Bob.

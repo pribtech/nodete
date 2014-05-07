@@ -1,0 +1,39 @@
+<p>
+The concept of inlining data in the base table is extended to large data objects (LOBs) in DB2 version 9.7. This tutorial explores the usage and performance benefits of inline LOBs.
+</p>
+
+<p>
+LOBs can be as large as 2G bytes in size. Because of the potential size of a LOB, they are not cached in buffer pools to perform fast in-memory reads. It is not a best nor a general practice to reference a LOB as a whole. Application programs typically process LOB values one piece at a time by referencing the large object descriptors.
+</p>
+
+<p>
+A LOB descriptor is placed in the base table row. It refers to the location of a single LOB value stored apart from the base table rows on the database server. With LOB descriptors, buffer pools can be used to cache the location of the LOBs. However there is a tradeoff of using LOB descriptors. Manipulation of the LOB data is more difficult because of the need to use the LOB descriptor and the need to store the LOB in a separate location.
+</p>
+
+<p>
+To help simplify LOB manipulation and improve LOB query performance, you can now choose to store smaller LOB data inline within the base table rows. Unlike regular LOB data, inline LOBs are cached in buffer pools. They are also qualified for row compression if row compression is enabled.
+</p>
+
+<p>
+In this tutorial, you will complete the following steps to discover the benefits of using inline LOBs:<br>
+<ol>
+<li>Create a table with a regular LOB column and populate the table with 10,000 rows.</li>
+<li>Fetch LOB data and examine direct read and write operations.</li>
+<li>Create another table with the same columns but with inline LOB column. Populate the table with 10,000 rows.</li>
+<li>Fetch LOB data and compare number of direct read and write operations between regular LOB and inline LOB data.</li>
+<li>Use ADMIN_IS_INLINED function to determine if the LOB is inlined or not. Use ADMIN_EST_INLINE_LENGTH function to estimate inline length of the LOB.</li>
+<li>Increase the LOB column INLINE LENGTH. Run REORG with LONGLOBDATA option to convert any potential LOB descriptors into inlined LOB data.</li>
+<li>Create and populate an additional table with inlined LOB and compression enabled. Compare the query performance for the regular LOB table, the inlined LOB table, the compressed inlined LOB table.</li>
+</ol>
+</p>
+
+<p></p>
+<h4>Pre-requisites</h4>
+<p>This tutorial uses the database snapshot monitors to show the underlying read and write activities. Before you begin, make sure you have turned on all the monitor switches.</p>
+
+<p>From the Technology Explorer, go to the menu View > Configurations > Monitor Settings. For each of the monitor switches, click the Change icon and enter 'ON'. You should see the 'Deferred Value' is set to 'ON'. You need to restart DB2 so that the changes can take effect.</p>
+<p>The snapshot monitor accumulates information for a database only while it is active. You need to start the database with the ACTIVATE DATABASE command. For example, issue the following in a DB2 Command Window to activate the SAMPLE database.</p>
+
+<pre><code>
+DB2 ACTIVATE DATABASE SAMPLE
+</code></pre>

@@ -1,0 +1,32 @@
+<h3>View XML Profile</h3>
+<hr>
+Now we will start builing the views in Technology Explorer using the SQL mentioned in previous pages.
+
+<p><B>Steps Involved:</B>
+<ul>
+	<li>Run the SQL in right pane. <BR><br>
+<pre>
+SELECT APPLICATION_HANDLE, 
+       APPLICATION_NAME,
+	   TOTAL_CPU_TIME, 
+	   TOTAL_ACT_TIME, 
+	   ACT_COMPLETED_TOTAL, 
+	   TOTAL_WAIT_TIME, 
+	   CLIENT_IDLE_WAIT_TIME
+  FROM TABLE(MON_GET_CONNECTION(NULL, -1)) as t;
+</pre>	<br>
+	</li>
+	
+	<li>Click on 'View' on top right side of the results window. This shows the XML profile of this SQL statement. You can use this profile as is and deploy it as a view in TE.</li><img src="?BASE_DIRECTORY?/Others/viewXMLProfile.PNG"/><BR><BR><BR><BR>
+	<li>Alternatively, you can directly save the XML profile by clicking on 'Save' on top right side of the results window.</li>
+	<img src="?BASE_DIRECTORY?/Others/saveXMLProfile.PNG"/><BR><BR><BR><BR>
+	<li>Once you have your XML profile, you need to place it in tableDefinitions directory.(You can find this directory under TE base directory.)
+		<ul>
+			<li>You can put these files in any existing directory under tableDefinitions directory</li>
+			<li>Else you can create a new directory under tableDefinitions and put your files in this directory. Lets suppose you saved this XML profile as 'testTabDef.xml' under 'tableDefinitions/test' directory.</li>
+		</ul>
+	</li>
+	<li>Once the file is saved at proper location, you need to create a menu item in Technology Explorer.(Explained in next page)</li>	
+</ul>
+
+

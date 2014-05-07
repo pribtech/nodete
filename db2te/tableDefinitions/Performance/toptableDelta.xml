@@ -1,0 +1,168 @@
+<!--
+  Copyright IBM Corp. 2007 All rights reserved.
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<!-- Updated peter prib, Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2011 All rights reserved. -->
+
+<table name="toptableDelta">
+	<sql_name>TOP_TAB_VIEW</sql_name>
+	<singular_name>Table Activity</singular_name>
+	<plural_name>Table Activity</plural_name>
+	<queryfile>predefined/Table.SQL</queryfile>
+		<description>Each row represents a 
+		&lt;a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.admin.dbobj.doc/doc/c0004098.html?noframes=true');"&gt;table&lt;/a&gt;,
+		in the database. 
+		It returns the equivalent information to the GET SNAPSHOT FOR TABLES CLP command.
+		This list is generated from the &lt;a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.admin.dbobj.doc/doc/r0022007.html?noframes=true');"&gt;SNAP_GET_TAB_V91&lt;/a&gt; table function.
+		</description>
+	<order_by_index name="rows_read" direction="D"/>
+	<history depth="10" time="snapshot_timestamp"/>
+	<display_columns>
+		<col type="reference" name="tab"/>	
+		<col type="reference" name="dynSQL"/>	
+		<col type="column" name="tabschema"/>
+		<col type="column" name="tabname"/>
+		<col type="dynamiccolumnsimple" name="rows_read_persec"/>
+		<col type="dynamiccolumnsimple" name="rows_written_persec"/>
+		<col type="dynamiccolumnsimple" name="overflow_accesses_persec"/>
+		<col type="dynamiccolumnsimple" name="data_object_pages_persec"/>
+		<col type="dynamiccolumnsimple" name="index_object_pages_persec"/>
+		<col type="dynamiccolumnsimple" name="lob_object_pages_persec"/>
+		<col type="dynamiccolumnsimple" name="xda_object_pages_persec"/>
+		<col type="dynamiccolumnsimple" name="page_reorgs_persec"/>
+		<col type="reference" name="tbspace"/>
+		<col type="column" name="tbsp_id"/>
+	</display_columns>
+	<reference name="tab">
+		<title>Tables</title>
+		<reftype>table</reftype>
+		<refvalue>tablecat</refvalue>
+		<icon>images/icon-link-calendar.gif</icon>								
+		<ref foreign_column_name="tabschema">
+			<local_column_name>tabschema</local_column_name>
+		</ref>
+		<ref foreign_column_name="tabname">
+			<local_column_name>tabname</local_column_name>
+		</ref>
+	</reference>
+	<reference name="tbspace">
+		<title>Tablespaces</title>
+		<reftype>displayRow</reftype>
+		<refvalue>tablespaces</refvalue>
+		<icon>images/icon-tbs.gif</icon>
+		<ref foreign_column_name="tbspaceid">
+			<local_column_name>tbsp_id</local_column_name>
+		</ref>
+	</reference>
+	<reference name="dynSQL" DBMS="DB2">
+		<title>Possible SQL</title>
+		<reftype>table</reftype>
+		<refvalue>Performance/snapdynsql</refvalue>
+		<icon>images/icon-link-calendar.gif</icon>								
+		<ref foreign_column_name="stmttext">
+			<comparetype>locateAnyCase</comparetype>
+			<local_column_name>tabname</local_column_name>
+		</ref>
+	</reference>
+	<column name="tabschema"><sql_name>TABSCHEMA</sql_name><primary_key/><title>Schema</title><type>s</type><c_drill>y</c_drill></column>
+	<column name="tabname"><sql_name>TABNAME</sql_name><primary_key/><title>Table</title><type>s</type><c_drill>y</c_drill></column>
+    <column name="data_partition_id"><sql_name>data_partition_id</sql_name><primary_key/><title>Data Partition</title><type>n</type></column>	
+	<column name="data_object_pages"><sql_name>DATA_OBJECT_PAGES</sql_name><title>Data Object Pages</title><type>n</type></column>
+	<dynamicColumnSimple name="data_object_pages_rate" type="DELTA" column="data_object_pages" title="Data Rate"/>
+	<dynamicColumnSimple name="data_object_pages_persec" type="DELTA_NORMALIZED" column="data_object_pages" title="Data(/s)">
+		<formatNumber round="true" toFixedVal="1" separator=","/>
+		<style>
+			<option gt='1000' style='ERROR'/>
+			<option gt='100' style='WARNING'/>
+		</style>
+	</dynamicColumnSimple>
+	<column name="index_object_pages"><sql_name>INDEX_OBJECT_PAGES</sql_name><title>Index Object Pages</title><type>n</type></column>
+	<dynamicColumnSimple name="index_object_pages_rate" type="DELTA" column="index_object_pages" title="Index Rate"/>
+	<dynamicColumnSimple name="index_object_pages_persec" type="DELTA_NORMALIZED" column="index_object_pages" title="Index (/s)">
+		<formatNumber round="true" toFixedVal="1" separator=","/>
+		<style>
+			<option gt='1000' style='ERROR'/>
+			<option gt='100' style='WARNING'/>
+		</style>
+	</dynamicColumnSimple>
+	<column name="page_reorgs"><sql_name>PAGE_REORGS</sql_name><title>Page Reorgs</title><type>n</type></column>
+	<dynamicColumnSimple name="page_reorgs_rate" type="DELTA" column="page_reorgs" title="Page Reorg Rate"/>
+	<dynamicColumnSimple name="page_reorgs_persec" type="DELTA_NORMALIZED" column="page_reorgs" title="Page Reorg (/s)">
+		<formatNumber round="true" toFixedVal="1" separator=","/>
+		<style>
+			<option gt='10' style='ERROR'/>
+			<option gt='1' style='WARNING'/>
+		</style>
+	</dynamicColumnSimple>
+	<dynamicColumnSimple name="index_object_pages_persec" type="DELTA_NORMALIZED" column="index_object_pages" title="Index (/s)">
+		<formatNumber round="true" toFixedVal="1" separator=","/>
+		<style>
+			<option gt='10' style='ERROR'/>
+			<option gt='1' style='WARNING'/>
+		</style>
+	</dynamicColumnSimple>
+	<column name="rows_read"><sql_name>ROWS_READ</sql_name><title>Rows Read</title><type>n</type></column>
+	<dynamicColumnSimple name="rows_read_rate" type="DELTA" column="rows_read" title="Rows Read Rate"/>
+	<dynamicColumnSimple name="rows_read_persec" type="DELTA_NORMALIZED" column="rows_read" title="Rows Read (/s)">
+		<formatNumber round="true" toFixedVal="1" separator=","/> 
+		<style>
+			<option gt='1000' style='ERROR'/>
+			<option gt='100' style='WARNING'/>
+		</style>
+	</dynamicColumnSimple>
+	<column name="rows_written"><sql_name>ROWS_WRITTEN</sql_name><title>Rows Written</title><type>n</type></column>
+	<dynamicColumnSimple name="rows_written_rate" type="DELTA" column="rows_written" title="Rows Written Rate"/>
+	<dynamicColumnSimple name="rows_written_persec" type="DELTA_NORMALIZED" column="rows_written" title="Rows Written (/s)">
+		<formatNumber round="true" toFixedVal="1" separator=","/>
+		<style>
+			<option gt='100' style='ERROR'/>
+			<option gt='10' style='WARNING'/>
+		</style>
+	</dynamicColumnSimple>
+	<column name="snapshot_timestamp"><sql_name>SNAPSHOT_TIMESTAMP</sql_name><title>Time</title><type>n</type></column>
+	<column name="tabname"><sql_name>TABNAME</sql_name><title>Table</title><type>s</type><c_drill>y</c_drill></column>
+	<column name="tab_type"><sql_name>TAB_TYPE</sql_name><title>Type</title><type>s</type></column>
+	<column name="tab_file_id"><sql_name>tab_file_id</sql_name><title>Table File Id.</title><type>n</type></column>
+	<column name="lob_object_pages"><sql_name>lob_object_pages</sql_name><title>LOB Object Pages</title><type>n</type></column>
+	<dynamicColumnSimple name="lob_object_pages_rate" type="DELTA" column="lob_object_pages" title="LOB Rate"/>
+	<dynamicColumnSimple name="lob_object_pages_persec" type="DELTA_NORMALIZED" column="lob_object_pages" title="LOB (/s)">
+		<formatNumber round="true" toFixedVal="1" separator=","/> 
+		<style>
+			<option gt='1000' style='ERROR'/>
+			<option gt='100' style='WARNING'/>
+		</style>
+	</dynamicColumnSimple>
+	<column name="xda_object_pages"><sql_name>xda_object_pages</sql_name><title>XDA Object Pages</title><type>n</type></column>
+	<dynamicColumnSimple name="xda_object_pages_rate" type="DELTA" column="xda_object_pages" title="XDA Rate"/>
+	<dynamicColumnSimple name="xda_object_pages_persec" type="DELTA_NORMALIZED" column="xda_object_pages" title="XDA (/s)">
+		<formatNumber round="true" toFixedVal="1" separator=","/> 
+		<style>
+			<option gt='1000' style='ERROR'/>
+			<option gt='100' style='WARNING'/>
+		</style>
+	</dynamicColumnSimple>
+    <column name="overflow_accesses"><sql_name>overflow_accesses</sql_name><title>Overflow Accesses</title><type>n</type></column>
+	<dynamicColumnSimple name="overflow_accesses_rate" type="DELTA" column="overflow_accesses" title="Overflow Rate"/>
+	<dynamicColumnSimple name="overflow_accesses_persec" type="DELTA_NORMALIZED" column="overflow_accesses" title="Overflow(/s)">
+		<formatNumber round="true" toFixedVal="1" separator=","/> 
+		<style>
+			<option gt='10' style='ERROR'/>
+			<option gt='1' style='WARNING'/>
+		</style>
+	</dynamicColumnSimple>
+    <column name="dbPartitionNum"><sql_name>dbPartitionNum</sql_name><title>DB Partition No.</title><type>n</type></column>
+    <column name="tbsp_id"><sql_name>tbsp_id</sql_name><title>Tablespace Id.</title><type>n</type></column>
+    <column name="TBSPACE"><sql_name>TBSPACE</sql_name><title>Tablespace</title><type>s</type></column>
+    <column name="BUFFERPOOLID"><sql_name>BUFFERPOOLID</sql_name><title>Bufferpool Id.</title><type>n</type></column>
+    <column name="BPNAME"><sql_name>BPNAME</sql_name><title>Bufferpool</title><type>s</type></column>
+</table>

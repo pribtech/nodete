@@ -1,0 +1,163 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2013 All rights reserved.
+  
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+<table name="iostat-dx">
+	<sqlName>iostat-dx</sqlName>
+	<singularName>Disk Activity</singularName>
+	<pluralName>Disk Activity</pluralName>
+	<inlinequery>
+<![CDATA[
+iostat -dx
+]]>
+	</inlinequery>
+	<description></description>
+<!-- 
+Linux 2.6.32-358.23.2.el6.x86_64 (webtest2.technocrat.com.au) 	11/11/2013 	_x86_64_	(1 CPU)
+
+Device:         rrqm/s   wrqm/s     r/s     w/s   rsec/s   wsec/s avgrq-sz avgqu-sz   await  svctm  %util
+xvdep1            0.00     2.08   35.17    7.79   144.75   123.79     6.25     0.08    1.79   0.42   1.79
+ -->
+	<filters>
+		<row operator="first" value="3"/>
+		<column name="Line" operator="is empty"/>
+	</filters>
+	<output>
+		<type name="DDL" destination="" title="" generator=""/>
+	</output>
+	<displayColumns>
+		<col type="column" name="util"/>
+		<col type="column" name="Device"/>
+		<col type="column" name="rrqm"/>
+		<col type="column" name="wrqm"/>
+		<col type="column" name="r"/>
+		<col type="column" name="w"/>
+		<col type="column" name="rsec"/>
+		<col type="column" name="wsec"/>
+		<col type="column" name="avgrq"/>
+		<col type="column" name="avgqu"/>
+		<col type="column" name="await"/>
+		<col type="column" name="svctm"/>
+	</displayColumns>
+	<history depth="30" time="SAMPLE_TS"/>
+	<column name="SAMPLE_TS">
+		<generated>timestamp</generated>
+		<title>Time</title>
+		<type>s</type>
+	</column>
+	<column name="connection">
+		<generated>connection</generated>
+		<title>Connection</title>
+		<type>s</type>
+		<primaryKey/>
+	</column>
+	<column name="Line">
+		<sqlName>Line</sqlName>
+		<title>Line</title>
+		<type>c</type>
+	</column>
+	<column name="Device">
+		<sortDisable/>
+		<title>Device</title>
+		<generated>word,Line,1</generated>
+		<primaryKey/>
+	</column>
+	<column name="rrqm">
+		<description>The number of read requests merged per second that  were issued to the device</description>
+		<sortDisable/>
+		<title>Merged Reads (/s)</title>
+		<generated>word,Line,2</generated>
+		<type>n</type>
+	</column>
+	<column name="wrqm">
+		<description>The number of write requests merged per second that were issued to the device</description>
+		<sortDisable/>
+		<title>Merged Writes (/s)</title>
+		<generated>word,Line,3</generated>
+		<type>n</type>
+	</column>
+	<column name="r">
+		<description>The  number of read requests per second that were issued to the device</description>
+		<sortDisable/>
+		<title>Reads (/s)</title>
+		<generated>word,Line,4</generated>
+		<type>n</type>
+	</column>
+	<column name="w">
+		<description>The  number of write requests per second that were issued to the device</description>
+		<sortDisable/>
+		<title>Writes (/s)</title>
+		<generated>word,Line,5</generated>
+		<type>n</type>
+	</column>
+	<column name="rsec">
+		<description>The number of sectors read from the device per second.</description>
+		<sortDisable/>
+		<title>Sector Reads (/s)</title>
+		<generated>word,Line,6</generated>
+		<type>n</type>
+	</column>
+	<column name="wsec">
+		<description>The number of sectors Writes to the device per second.</description>
+		<sortDisable/>
+		<title>Sector Writes (/s)</title>
+		<generated>word,Line,7</generated>
+		<type>n</type>
+	</column>
+	<column name="avgrq">
+		<description>The average size (in sectors) of the requests that were issued to the device.</description>
+		<sortDisable/>
+		<title>Avg Size (sectors)</title>
+		<generated>word,Line,8</generated>
+		<type>n</type>
+	</column>
+	<column name="avgqu">
+		<description>The average queue length of the requests that were issued to the device.</description>
+		<sortDisable/>
+		<title>Avg Queue</title>
+		<generated>word,Line,9</generated>
+		<type>n</type>
+	</column>
+	<column name="await">
+		<description>
+			The average time (in milliseconds) for I/O requests issued to the device to be served. 
+			This includes the time spent by the requests in queue and the time spent servicing them.
+		</description>
+		<sortDisable/>
+		<title>Avg Time (ms)</title>
+		<generated>word,Line,10</generated>
+		<type>n</type>
+	</column>
+	<column name="svctm">
+		<description>
+			The average service time (in milliseconds) for I/O requests that were issued to the device.
+		</description>
+		<sortDisable/>
+		<title>Avg Service (ms)</title>
+		<generated>word,Line,11</generated>
+		<type>n</type>
+	</column>
+	<column name="util">
+		<description>
+			Percentage of CPU time during which I/O requests were issued to the device (bandwidth utilization for the device).
+			Device saturation occurs when this value is close to 100%.
+		</description>
+		<sortDisable/>
+		<title>Util %</title>
+		<generated>word,Line,12</generated>
+		<type>bg</type>
+	</column>
+</table>

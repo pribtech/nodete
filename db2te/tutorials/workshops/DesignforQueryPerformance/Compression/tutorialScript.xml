@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	Copyright IBM Corp. 2007 All rights reserved.
+	
+	Licensed under the Apache License, Version 2.0 (the "License");
+	you may not use this file except in compliance with the License.
+	You may obtain a copy of the License at
+	
+	http://www.apache.org/licenses/LICENSE-2.0
+	
+	Unless required by applicable law or agreed to in writing, software
+	distributed under the License is distributed on an "AS IS" BASIS,
+	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	See the License for the specific language governing permissions and
+	limitations under the License.
+-->
+<tutorial name="Compression" autoCloseWindowsInRightStage="true" autoClearAdhocResults="true">
+	<flowRestriction>forwardexploration</flowRestriction>
+	<globalCodeHighlightOptions  highlightCode="true">
+		<addedHighlightTokens>
+			<text><![CDATA[COMPRESS YES]]></text>
+			<text><![CDATA[REORG TABLE]]></text>						
+		</addedHighlightTokens>
+	</globalCodeHighlightOptions>	
+	<closeAction/>
+	
+	<closeAction/>
+	<openAction />
+	<pageList>
+		<page name="Introduction" type="intro">
+			<entryAction />
+			<exitAction />
+			<contentFile>CompressionIntroduction.html</contentFile>
+			<autoLoadLink>
+				<pageWindow target="informationWindow">
+					<panel name="main" PrimaryContainer="true">
+						<raw><![CDATA[<div id='tutorial name'><Ttile of </div><img width = "550" height="500"src='?BASE_DIRECTORY?/Other/Compression.jpg'/>]]></raw>
+					</panel>
+				</pageWindow>
+			</autoLoadLink>
+		</page>	
+
+		<page name="Prerequisite" type="general">
+			<exitAction />
+			<contentFile>
+				CreatePrereqTables.html
+			</contentFile>
+			<loadActionScriptFile>
+				Prerequisite.xml
+			</loadActionScriptFile>
+			<SQLExecutionOptions xml="false" clob="false" blob="false"
+				dbclob="false" termChar=";" cursor="forward" commitPerStmt="false"
+				numRowReturned="100" />
+			<codeHighlightOptions highlightCode="true">
+				<changedHighlightTokens>
+					<text>ORGANIZE BY (SUBSCRIBER_CIRCLE_ID, EVENT_START_DT)</text>
+				</changedHighlightTokens>
+			</codeHighlightOptions>
+		</page>
+
+		<page name="Enable first fact table for Compression" type="general">
+			<entryAction />
+			<exitAction />
+			<contentFile>
+				AlterTableCompressOn1.html
+			</contentFile>
+			<SQLFile>
+				AlterTableCompressOn1.sql
+			</SQLFile>
+			<SQLExecutionOptions xml="false" clob="false" blob="false"
+				dbclob="false" termChar=";" cursor="forward" commitPerStmt="true"
+				numRowReturned="100" />
+			<codeHighlightOptions highlightCode="true">
+				<changedHighlightTokens>
+					<text>ALTER TABLE</text>
+					<text>COMPRESS YES</text>
+					<text>ALTER INDEX</text>
+					<text>REORG TABLE</text>
+					<text>REORG INDEX</text>
+				</changedHighlightTokens>
+			</codeHighlightOptions>
+		</page>
+
+		<page name="Enable second fact table for Compression" type="general">
+			<entryAction />
+			<exitAction />
+			<contentFile>
+				AlterTableCompressOn2.html
+			</contentFile>
+			<SQLFile>
+				AlterTableCompressOn2.sql
+			</SQLFile>
+			<SQLExecutionOptions xml="false" clob="false" blob="false"
+				dbclob="false" termChar=";" cursor="forward" commitPerStmt="true"
+				numRowReturned="100" />
+			<codeHighlightOptions highlightCode="true">
+				<changedHighlightTokens>
+					<text>ALTER TABLE</text>
+					<text>COMPRESS YES</text>
+					<text>ALTER INDEX</text>
+					<text>REORG TABLE</text>
+					<text>REORG INDEX</text>
+				</changedHighlightTokens>
+			</codeHighlightOptions>
+		</page>
+		
+		<page name="Compare Savings" type="general">
+			  
+			<exitAction />
+			<contentFile>
+				CheckCompressionSavings.html
+			</contentFile>
+			<loadActionScriptFile>
+				CheckCompressionSavings.xml
+			</loadActionScriptFile>
+		</page>
+
+	</pageList>
+</tutorial>

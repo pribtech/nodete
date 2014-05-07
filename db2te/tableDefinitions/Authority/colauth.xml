@@ -1,0 +1,130 @@
+<table name="SYSCAT.COLAUTH">
+    <sql_name>SYSCAT.COLAUTH</sql_name>
+    <singular_name>Column Privilege</singular_name>
+    <plural_name>Column Privileges</plural_name>
+    <description>
+    	Each line is a column
+		&lt;a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.admin.sec.doc/doc/c0005478.html?noframes=true');"&gt;privilege&lt;/a&gt;
+		granted to a user, group or role.		
+		This list is generated from the &lt;a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.sql.ref.doc/doc/r0001035.html?noframes=true');"&gt;SYSCAT.COLAUTH&lt;/a&gt; view.
+    </description>
+    <rows_per_page>50</rows_per_page>
+    <order_by_index></order_by_index>
+    <display_columns>
+        <col type="column" name="tabschema"></col>
+        <col type="column" name="tabname"></col>
+        <col type="column" name="colname"></col>
+        <col type="column" name="colno"></col>
+		<col type="reference" name="granteelink"/>
+		<col type="column" name="grantee"/>
+		<col type="column" name="granteetype"/>
+		<col type="reference" name="grantorlink"/>			
+		<col type="column" name="grantor"/>
+		<!--<col type="column" name="grantortype"/>-->
+	    <col type="column" name="privtype"></col>
+        <col type="column" name="grantable"></col>
+    </display_columns>
+	<disable_edit/>
+		<order_by_index name="tabschema" direction="A"/>
+		<order_by_index name="tabname" direction="A"/>
+		<order_by_index name="colname" direction="A"/>		
+		<reference name="granteelink">
+			<title>Grantee</title>
+			<reftype>displayRow</reftype>
+			<refvalue>Authority/authids</refvalue>
+			<icon>images/icon-user.gif</icon>						
+			<ref foreign_column_name="authid">
+				<local_column_name>grantee</local_column_name>
+			</ref>
+		</reference>			
+		<reference name="grantorlink">
+			<title>Grantor</title>
+			<reftype>displayRow</reftype>
+			<refvalue>Authority/authids</refvalue>
+			<icon>images/icon-user.gif</icon>						
+			<ref foreign_column_name="authid">
+				<local_column_name>grantor</local_column_name>
+			</ref>
+		</reference>			
+    <column name="grantor">
+        <c_sql_name>GRANTOR</c_sql_name>
+        <c_title>Grantor</c_title>
+        <c_presentation>s</c_presentation>
+        <c_drill>y</c_drill>
+    </column>
+    <!--<column name="grantortype">
+        <c_sql_name>GRANTORTYPE</c_sql_name>
+        <c_title>Type</c_title>
+        <c_presentation>s</c_presentation>
+        <c_drill>y</c_drill>
+	   	  <c_column_mask>
+				  <value_mask value="S"><mask>System</mask></value_mask>
+				  <value_mask value="U"><mask>User</mask></value_mask>
+	   	  </c_column_mask>						                
+    </column>-->
+    <column name="grantee">
+        <c_sql_name>GRANTEE</c_sql_name>
+        <c_title>Grantee</c_title>
+        <c_presentation>s</c_presentation>
+        <c_drill>y</c_drill>
+    </column>
+    <column name="granteetype">
+        <c_sql_name>GRANTEETYPE</c_sql_name>
+        <c_title>Type</c_title>
+        <c_presentation>s</c_presentation>
+        <c_drill>y</c_drill>
+	   	  <c_column_mask>
+				  <value_mask value="G"><mask>Group</mask></value_mask>
+				  <value_mask value="R"><mask>Role</mask></value_mask>
+				  <value_mask value="U"><mask>User</mask></value_mask>
+	   	  </c_column_mask>						                
+    </column>
+    <column name="tabschema">
+        <c_sql_name>TABSCHEMA</c_sql_name>
+        <c_title>Schema</c_title>
+        <c_presentation>s</c_presentation>
+        <c_drill>y</c_drill>
+		<c_prefill>
+			<table>schema</table>
+			<column>SCHEMANAME</column>
+		</c_prefill>                        
+    </column>
+    <column name="tabname">
+        <c_sql_name>TABNAME</c_sql_name>
+        <c_title>Name</c_title>
+        <c_presentation>s</c_presentation>
+        <c_drill>y</c_drill>
+    </column>
+    <column name="colname">
+        <c_sql_name>COLNAME</c_sql_name>
+        <c_title>Column</c_title>
+        <c_presentation>s</c_presentation>
+        <c_drill>y</c_drill>
+    </column>
+    <column name="colno">
+        <c_sql_name>COLNO</c_sql_name>
+        <c_title>Column Number</c_title>
+        <c_presentation>n</c_presentation>
+        <c_drill>n</c_drill>
+    </column>
+    <column name="privtype">
+        <c_sql_name>PRIVTYPE</c_sql_name>
+        <c_title>Privlege</c_title>
+        <c_presentation>s</c_presentation>
+        <c_drill>y</c_drill>
+	   	  <c_column_mask>
+				  <value_mask value="R"><mask>Reference</mask></value_mask>
+				  <value_mask value="U"><mask>Update</mask></value_mask>
+	   	  </c_column_mask>						                
+    </column>
+    <column name="grantable">
+        <c_sql_name>GRANTABLE</c_sql_name>
+        <c_title>Grantable</c_title>
+        <c_presentation>s</c_presentation>
+        <c_drill>y</c_drill>
+	   	  <c_column_mask>
+				  <value_mask value="G"><mask>Grantable</mask></value_mask>
+				  <value_mask value="N"><mask>Not grantable</mask></value_mask>
+	   	  </c_column_mask>						                
+    </column>
+</table>

@@ -1,0 +1,32 @@
+<H2>Prepare for online table move</H2><HR>
+<p>
+On the right pane, you are going to create two new tablespaces tbs2 and tbs3. 
+You will first move the ORDER_DETAILS table to tablespace tbs2 by using the ADMIN_MOVE_TABLE procedure with the INSERT FROM CURSOR option which is the default.
+Then, the same outcome (but to tablespace tbs3) can be achieved in less time by using the LOAD option.
+
+</p>
+
+<BR><H2>Capture and drop foreign keys (referential constraints)</H2><HR>
+<p>	
+Foreign keys are not support by the ADMIN_MOVE_TABLE stored procedure. To move a table with foreign keys, you should:
+<ol>
+<li>capture the foreign keys using the <a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v9r7/topic/com.ibm.db2.luw.admin.cmd.doc/doc/r0002051.html');"><b class="sourceCopiedFrom"> db2look</b></a> command.
+You can also capture the foreign keys using this <a onclick="OpenURLInFloatingWindow('?BASE_DIRECTORY?HTML/DropForeignKeys.html');"><b class="sourceCopiedFrom"> SQL statement</b></a></li>
+<li>drop the foreign keys</li>
+<li>perform the table move</li>
+<li>recreate the foreign keys</li>
+</ol>
+</p>
+
+<p>
+On the right pane, the foreign keys FK_ORDER, FK_PRODUCTS are dropped	
+</p>
+
+<p>
+<span style="background-color: green"><b>Note:-</b></span> If source table is either a parent or child in an RI relationship, 
+	you need to capture the foreign keys definition and recreate them 
+	after the table is moved.
+<p>
+<p>
+	The last two commands in the right pane will DROP the FOREIGN KEYs 
+</p>	

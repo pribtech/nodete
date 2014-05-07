@@ -1,0 +1,26 @@
+  <p>This task demonstrates how to use the COLLECT AGGREGATE ACTIVITY DATA
+  BASE option on a service class to produce histograms of coordinator
+  activity lifetimes, coordinator activity execution times, and
+  coordinator activity queue times. These three histograms are useful
+  for knowing more than just the average lifetime, execution time, or
+  queue time of the activities run on the system, since they can be used
+  to calculate standard deviations and can reveal outliers.
+  </p>
+  <p>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+  For more information on histograms, see Histograms in workload
+  management in the DB2 Information Center (also shown on the right).
+  Histograms are accessed through the statistics event monitor.  
+  </p>
+  <p>
+  The statistics event monitor is a
+  write-to-table event monitor and contains logical data groups.   The
+  first is the control logical data group, which every event monitor
+  has, and then there are the logical data groups that are specific to
+  the statistics event monitor type. Those are:</p>
+  <ul>
+  <li>histogrambin for histogram information </li>
+  <li>qstats for threshold queue statistics </li>
+  <li>scstats service class statistics </li>
+  <li>wcstats for work class statistics </li>
+  <li>wlstats for workload statistics. </li>
+  </ul>

@@ -1,0 +1,23 @@
+<BR><H2><B>Create and grant roles</B></H2><HR><br>
+<p><b>You must log into the database as Pat before proceeding with this page.</b></p>
+
+<p>The data in table <font face="courier"> 'credit_card' </font> is accessible to all employees of J.K.Avro superstore.
+To protect sensitive information stored in table <font face="courier"> 'credit_card' </font>and provide ease of data access management, SECADM Pat uses database roles.</p>
+
+
+<h4>Operation</h4><br>
+<p>To prevent access to sensitive data (like credit card number, CCV, card holder name) in the table <font face="courier">'credit_card'</font> by any employee
+in the company, SECADM Pat creates and grants roles to users as defined below.
+<ul>
+  <li> Create roles 'Mgr' and 'custService'. </li>
+  <li> Grant role 'Mgr' to Joe, manager of customer service department.</li>
+  <li> Grant role 'custService' to Bob, an employee of the customer service department. </li>
+  <li> Grant SELECT, INSERT, UPDATE, and DELETE privileges to role 'Mgr' on table <font face="courier">'credit_card'</font>.</li>
+  <li> Grant SELECT, INSERT, and UPDATE privileges to role 'custService' on table <font face="courier">'credit_card'</font>.</li>
+</ul>
+</p>
+
+
+<br><h4>Solution</h4><br>
+The query results on the right pane show that SECADM Pat creates roles and grants them to Joe and Bob.
+

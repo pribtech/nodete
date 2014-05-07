@@ -1,0 +1,158 @@
+<!--
+  Peter Prib, Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2012 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+
+<table name="mqServicePolicyQueue">
+	<sqlName>mqServicePolicyQueue</sqlName>
+	<singularName>MQ Service Policy Queue</singularName>
+	<pluralName>MQ Service Policies Queues</pluralName>
+	<inlinequery>
+<![CDATA[
+SELECT ps.PUBSUBNAME,s.QUEUENAME, s.SERVICENAME, h.QUEUEMGRNAME, h.CONNECTIONNAME ,p.POLICYNAME
+FROM DB2MQ.MQPUBSUB ps
+JOIN DB2MQ.MQSERVICE s
+  ON s.SERVICENAME=ps.BROKER
+JOIN DB2MQ.MQHOST h
+  ON s.QUEUEMGRNAME=h.QUEUEMGRNAME
+  OR s.QUEUEMGRNAME=' ' AND h.CONNECTIONNAME='defaultConnection'
+JOIN DB2MQ.MQPOLICY p
+  ON p.CONNECTIONMODE = 'L' and h.CONNECTIONNAME = p.CONNECTIONNAME 
+  OR p.CONNECTIONMODE = 'R' and h.QUEUEMGRNAME = p.CONNECTIONNAME
+WHERE ps.TYPE='P' 
+]]>
+	</inlinequery>
+	<description></description>
+	<orderBy name="queuemgrname" direction="A"/> 
+	<orderBy name="queuename" direction="A"/> 
+	<displayColumns>
+		<col type="column" name="pubsubname"/>
+		<col type="column" name="queuemgrname"/>
+		<col type="column" name="queuename"/>
+		<col type="reference" name="messages"/>
+		<col type="reference" name="messagesCLOB"/>
+		<col type="column" name="servicename"/>
+		<col type="column" name="connectionname"/>
+		<col type="column" name="policyname"/>
+	</displayColumns>
+	<reference name="messagesCLOB">
+		<title>Msg's CLOB</title>
+		<reftype>table</reftype>
+		<refvalue>MQ/mqReadAllClob</refvalue>
+		<icon>images/icon-tbs.gif</icon>
+		<ref foreign_column_name="servicename">
+			<local_column_name>servicename</local_column_name>
+		</ref>
+		<ref foreign_column_name="policyname">
+			<local_column_name>policyname</local_column_name>
+		</ref>
+	</reference>
+	<reference name="messages">
+		<title>Messages</title>
+		<reftype>table</reftype>
+		<refvalue>MQ/mqReadAll</refvalue>
+		<icon>images/icon-tbs.gif</icon>
+		<ref foreign_column_name="servicename">
+			<local_column_name>servicename</local_column_name>
+		</ref>
+		<ref foreign_column_name="policyname">
+			<local_column_name>policyname</local_column_name>
+		</ref>
+	</reference>
+	<column name="pubsubname">
+		<sql_name>PUBSUBNAME</sql_name>
+		<title>Publisher</title>
+		<type>s</type>
+		<primaryKey/>
+	</column>
+	<column name="queuename">
+		<sqlName>QUEUENAME</sqlName>
+		<title>Queue</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="servicename">
+		<sqlName>SERVICENAME</sqlName>
+		<title>Service</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="queuemgrname">
+		<sqlName>QUEUEMGRNAME</sqlName>
+		<title>Queue Manager</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="connectionname">
+		<sqlName>CONNECTIONNAME</sqlName>
+		<title>Connection</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="policyname">
+		<sqlName>POLICYNAME</sqlName>
+		<title>Policy</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<action name="TestMessage">
+		<title>Test Message</title>
+		<icon>images/trash.gif</icon>   
+    	<actionScript>
+    		<task>
+				<assignSharedConstant name="sql" type="fixed">
+					<value>
+<![CDATA[
+  VALUES db2mq.MQPUBLISH('?pubsubname?','?policyname?','Test publish message '||char(current timestamp),'TESTTOPIC','TESTCORRID')
+]]>
+					</value>
+				</assignSharedConstant>
+		   		<callGlobalAction name="sqlExecution"/>
+	   		</task>
+    	</actionScript>
+    </action>
+	<action name="TestMessageCoord">
+		<title>Test Message Coordinated</title>
+		<icon>images/trash.gif</icon>   
+    	<actionScript>
+    		<task>
+				<assignSharedConstant name="sql" type="fixed">
+					<value>
+<![CDATA[
+  VALUES db2mq1c.MQPUBLISH('?pubsubname?','?policyname?','Test publish message '||char(current timestamp),'TESTTOPIC','TESTCORRID')
+]]>
+					</value>
+				</assignSharedConstant>
+		   		<callGlobalAction name="sqlExecution"/>
+	   		</task>
+    	</actionScript>
+    </action>
+	<action name="purgeQueue">
+		<title>Purge Queue</title>
+		<icon>images/trash.gif</icon>   
+		<actionScript name="purgeQueueScript">
+    		<task>
+				<assignSharedConstant name="sql" type="fixed">
+					<value>
+<![CDATA[
+  select * from table(db2mq.MQRECEIVEALL('?servicename?','?policyname?')) a
+]]>
+					</value>
+				</assignSharedConstant>
+	   			<callGlobalAction name="sqlExecution"/>
+   			</task>
+    	</actionScript>
+    </action>
+</table>

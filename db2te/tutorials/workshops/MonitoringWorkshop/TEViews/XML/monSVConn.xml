@@ -1,0 +1,161 @@
+<!--
+  Author: Peter Prib
+  
+  Copyright Independent Systems Integrators Pty Ltd 2008 All rights reserved.
+  
+  Updated by Author: Peter Kohlmann
+  Copyright IBM Canada Ltd 2008 All rights reserved.
+
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+<table name="monConnection">
+	<sql_name>monConnection</sql_name>
+	<singular_name>Monitored Connection</singular_name>
+	<plural_name>Monitored Connections</plural_name>
+	<inlinequery>
+<![CDATA[
+SELECT t1.*, t2.commit_sql_stmts from (
+SELECT APPL_NAME, APPLICATION_HANDLE, APPL_STATUS, CASE WHEN TOTAL_APP_RQST_TIME <> 0 THEN (TOTAL_WAIT_TIME * 100) / TOTAL_APP_RQST_TIME ELSE 0 END PERCENTAGE_WAIT_TIME 
+		, CASE WHEN TOTAL_APP_RQST_TIME <> 0 THEN (ACT_COMPLETED_TOTAL*1000)/TOTAL_APP_RQST_TIME ELSE 0 END ACT_COMPLETION_RATE 
+		, CASE WHEN ROWS_RETURNED <> 0 THEN (ROWS_READ/ROWS_RETURNED) ELSE 0 END ROWS_READ_PER_ROW_RETURNED 
+		, CASE WHEN ROWS_MODIFIED <> 0 THEN (ROWS_READ/ROWS_MODIFIED) ELSE 0 END ROWS_READ_PER_ROW_MODIFIED 
+		, (POOL_DATA_L_READS + POOL_TEMP_DATA_L_READS + POOL_TEMP_XDA_L_READS + POOL_XDA_L_READS + POOL_DATA_P_READS + POOL_TEMP_DATA_P_READS +  POOL_TEMP_XDA_P_READS + POOL_XDA_P_READS) TOTAL_DATA_READS  
+		, (POOL_INDEX_L_READS + POOL_TEMP_INDEX_L_READS + POOL_INDEX_P_READS + POOL_TEMP_INDEX_P_READS) TOTAL_INDEX_READS	  	
+FROM TABLE(MON_GET_CONNECTION(cast(NULL as bigint), -2)) AS t, SYSIBMADM.APPLICATIONS  
+WHERE APPLICATION_HANDLE=AGENT_ID  ) t1, SYSIBMADM.SNAPAPPL t2  
+WHERE t1.APPLICATION_HANDLE=t2.agent_id
+]]>
+	</inlinequery>
+	<description>This pane gives the information about all the applications currently connected to the database</description>
+	<order_by_index/>
+	<display_columns>
+		<col type="column" name="APPLICATION_HANDLE"/>
+		<col type="column" name="APPL_NAME"/>
+		<col type="column" name="APPL_STATUS"/>
+		<col type="dynamiccolumn" name="commitRate"/>
+		<col type="column" name="PERCENTAGE_WAIT_TIME"/>
+		<col type="column" name="ACT_COMPLETION_RATE"/>
+		<col type="column" name="ROWS_READ_PER_ROW_RETURNED"/>
+		<col type="column" name="ROWS_READ_PER_ROW_MODIFIED"/>
+		<col type="dynamiccolumn" name="totalDataReadRate"/>	
+		<col type="dynamiccolumn" name="totalIndexReadRate"/>
+	</display_columns>
+	<column name="APPLICATION_HANDLE">
+		<c_sql_name>APPLICATION_HANDLE</c_sql_name>
+		<c_title>Application Handle</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+		<c_pkey>p</c_pkey>
+		<c_reference name="instance">
+			<reftype>table</reftype>
+			<refvalue>Monitor/monConnection</refvalue>
+			<icon>images/sout.gif</icon>
+			<ref foreign_column_name="APPLICATION_HANDLE">
+				<local_column_name>APPLICATION_HANDLE</local_column_name>
+			</ref>
+		</c_reference>
+	</column>
+	<column name="APPL_NAME">
+		<c_sql_name>APPL_NAME</c_sql_name>
+		<c_title>Application</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+		<c_reference name="instance">
+			<reftype>table</reftype>
+			<refvalue>Monitor/monConnection</refvalue>
+			<icon>images/sout.gif</icon>
+			<ref foreign_column_name="APPLICATION_HANDLE">
+				<local_column_name>APPLICATION_HANDLE</local_column_name>
+			</ref>
+		</c_reference>
+	</column>
+	<column name="APPL_STATUS">
+		<c_sql_name>APPL_STATUS</c_sql_name>
+		<c_title>Application Status</c_title>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="PERCENTAGE_WAIT_TIME">
+		<c_sql_name>PERCENTAGE_WAIT_TIME</c_sql_name>
+		<c_title>Application Wait time(%)</c_title>
+		<c_drill>n</c_drill>
+		<c_presentation>bg</c_presentation>
+		<graphattributes flipColor="n"/>
+		<c_reference name="instance">
+			<reftype>table</reftype>
+			<refvalue>Monitor/SummaryViews/monSVConnWaits</refvalue>
+			<icon>images/sout.gif</icon>
+			<ref foreign_column_name="APPLICATION_HANDLE">
+				<local_column_name>APPLICATION_HANDLE</local_column_name>
+			</ref>
+		</c_reference>
+	</column>
+	<column name="ACT_COMPLETION_RATE">
+		<c_sql_name>ACT_COMPLETION_RATE</c_sql_name>
+		<c_title>Activities Completed(per sec.)</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+		<c_reference name="instance">
+			<reftype>table</reftype>
+			<refvalue>Monitor/SummaryViews/monSVConnAct</refvalue>
+			<icon>images/sout.gif</icon>
+			<ref foreign_column_name="APPLICATION_HANDLE">
+				<local_column_name>APPLICATION_HANDLE</local_column_name>
+			</ref>
+		</c_reference>
+	</column>
+	<column name="ROWS_READ_PER_ROW_RETURNED">
+		<c_sql_name>ROWS_READ_PER_ROW_RETURNED</c_sql_name>
+		<c_title>Rows read/row returned</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+		
+		<c_column_mask_file>masks/skipNulls.xml</c_column_mask_file>
+	</column>
+	<column name="ROWS_READ_PER_ROW_MODIFIED">
+		<c_sql_name>ROWS_READ_PER_ROW_MODIFIED</c_sql_name>
+		<c_title>Rows read/row modified</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+		
+		<c_column_mask_file>masks/skipNulls.xml</c_column_mask_file>
+	</column>
+	<column name="TOTAL_DATA_READS">
+		<c_sql_name>TOTAL_DATA_READS</c_sql_name>
+		<c_title>Total data reads</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+		
+		<c_column_mask_file>masks/skipNulls.xml</c_column_mask_file>
+	</column>
+		<column name="commit_sql_stmts">
+		<c_sql_name>commit_sql_stmts</c_sql_name>
+		<c_title>Commit Rate</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<dynamicColumn name="totalDataReadRate" type="DELTA_NORMALIZED" column="TOTAL_DATA_READS" title="Total Data Read Rate"/>
+	<dynamicColumn name="totalIndexReadRate" type="DELTA_NORMALIZED" column="TOTAL_INDEX_READS" title="Total Index Read Rate"/>
+	<dynamicColumn name="commitRate" type="DELTA_NORMALIZED" column="commit_sql_stmts" title="Commit Rate"/>
+	<column name="TOTAL_INDEX_READS">
+		<c_sql_name>TOTAL_INDEX_READS</c_sql_name>
+		<c_title>Total index reads</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+		
+		<c_column_mask_file>masks/skipNulls.xml</c_column_mask_file>
+	</column>
+
+
+</table>

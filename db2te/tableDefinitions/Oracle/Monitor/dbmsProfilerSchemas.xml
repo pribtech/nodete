@@ -1,0 +1,49 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2012 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<table name="dbmsProfilerSchemas">
+	<sql_name>dbmsProfilerSchema</sql_name>
+	<singular_name>DBMS Profiler Schema</singular_name>
+	<plural_name>DBMS Profiler Schemas</plural_name>
+	<inlinequery>SELECT	OWNER from sys.ALL_TABLES where TABLE_NAME = 'PLSQL_PROFILER_RUNS'</inlinequery>
+	<description>List of all schemas where the table EXPLAIN_INSTANCE exists.  This should be all the schema used for explain table creation</description>
+	<output>
+		<type name="DDL" destination="" title="" generator=""/>
+	</output>
+   	<disable_edit/>
+	<order_by_index name="OWNER" direction="A"/>
+	<display_columns>
+		<col type="column" name="tabSchema"/>
+		<col type="reference" name="Runs"/>
+	</display_columns>
+	<column name="tabSchema">
+		<c_sql_name>OWNER</c_sql_name>
+		<c_title>Schema</c_title>
+		<c_presentation/>
+		<c_drill>n</c_drill>
+	</column>
+	<reference name="Runs">
+		<c_title>Runs</c_title>
+		<reftype>table</reftype>
+		<refvalue>Oracle/Monitor/plSqlProfilerRuns</refvalue>
+		<icon>images/icon-histo.gif</icon>
+		<panel>runs</panel>
+		<ref foreign_column_name="tabSchema">
+			<local_column_name>tabSchema</local_column_name>
+		</ref>
+	</reference>
+</table>

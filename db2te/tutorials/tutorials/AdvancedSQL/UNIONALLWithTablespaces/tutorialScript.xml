@@ -1,0 +1,712 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tutorial name="UNION ALL with Tablespaces">
+    <FlowRestriction>forwardExploration</FlowRestriction>
+    <closeAction />
+    <openAction />
+    <globalCodeHighlightOptions highlightCode = "true" />
+    <pageList>
+        <page name="UNION ALL with Tablespaces" type="intro">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>UNIONALLWithTablespaces.html</contentFile>
+            <autoLoadLink>
+                <pageWindow target="informationWindow">
+                    <panel name="main">
+                        <URL>http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.dwe.sqw.doc/designing/data_flow/copunion.html?noframes=true</URL>
+                    </panel>
+                </pageWindow>
+            </autoLoadLink>
+        </page>
+        
+        <page name="Create 4 tablespaces and tables" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>Create4TablespacesAndTables.html</contentFile>
+            <SQLFile>Create4TablespacesAndTables.sql</SQLFile>
+            <SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar=";"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+        </page>
+        
+        <page name="Create 4 Quarter tables (in different tablespaces)" type="general">
+            <exitAction/>
+            <entryAction name="checkForFirstTablespace" type="serverAction">
+                <parameterList>
+                    <parameter name="action" type="serverAction">
+                        <value>checkForObject</value>
+                    </parameter>
+                    
+                    <parameter name="objectType" type="raw">
+                        <value>tablespace</value>
+                    </parameter>
+                    
+                    <parameter name="object[tablespace]" type="fixed">
+                        <value>Q1_2001</value>
+                    </parameter>
+                </parameterList>
+                
+                <followOnAction condition="false">
+                    <task>
+                        <action name="displayMsg" type="alert">
+                            <message>Required tablespace Q1_2001 hasn't been created. Please execute this step again.</message>
+                        </action>
+                    </task>
+                    
+                    <task>
+                        <setActionReturn>false</setActionReturn>
+                    </task>
+                </followOnAction>
+                
+                <followOnAction condition="true">
+                    <task>
+                        <action name="checkForSecondTablespace" type="serverAction">
+                            <parameterList>
+                                
+                                <parameter name="action" type="serverAction">
+                                    <value>CheckForObject</value>
+                                </parameter>
+                                
+                                <parameter name="objectType" type="raw">
+                                    <value>tablespace</value>
+                                </parameter>
+                                
+                                <parameter name="object[tablespace]" type="fixed">
+                                    <value>Q2_2001</value>
+                                </parameter>
+                            </parameterList>
+                            
+                            <followOnAction condition="false">
+                                <task>
+                                    <action name="displayMsg" type="alert">
+                                        <message>Required tablespace Q2_2001 hasn't been created. Please execute this step again.</message>
+                                    </action>
+                                </task>
+                                <task>
+                                    <setActionReturn>false</setActionReturn>
+                                </task>
+                            </followOnAction>
+                            
+                            <followOnAction condition="true">
+                                <task>
+                                    <action name="checkForThirdTablespace" type="serverAction">
+                                        <parameterList>
+                                            
+                                            <parameter name="action" type="serverAction">
+                                                <value>CheckForObject</value>
+                                            </parameter>
+                                            
+                                            <parameter name="objectType" type="raw">
+                                                <value>tablespace</value>
+                                            </parameter>
+                                            
+                                            <parameter name="object[tablespace]" type="fixed">
+                                                <value>Q3_2001</value>
+                                            </parameter>
+                                        </parameterList>
+                                        
+                                        <followOnAction condition="false">
+                                            <task>
+                                                <action name="displayMsg" type="alert">
+                                                    <message>Required tablespace Q3_2001 hasn't been created. Please execute this step again.</message>
+                                                </action>
+                                            </task>
+                                            <task>
+                                                <setActionReturn>false</setActionReturn>
+                                            </task>
+                                        </followOnAction>
+                                        
+                                        <followOnAction condition="true">
+                                            <task>
+                                                <action name="checkForFourthTablespace" type="serverAction">
+                                                    <parameterList>
+                                                        
+                                                        <parameter name="action" type="serverAction">
+                                                            <value>CheckForObject</value>
+                                                        </parameter>
+                                                        
+                                                        <parameter name="objectType" type="raw">
+                                                            <value>tablespace</value>
+                                                        </parameter>
+                                                        
+                                                        <parameter name="object[tablespace]" type="fixed">
+                                                            <value>Q4_2001</value>
+                                                        </parameter>
+                                                    </parameterList>
+                                                    
+                                                    <followOnAction condition="false">
+                                                        <task>
+                                                            <action name="displayMsg" type="alert">
+                                                                <message>Required tablespace Q4_2001 hasn't been created. Please execute this step again.</message>
+                                                            </action>
+                                                        </task>
+                                                        <task>
+                                                            <setActionReturn>false</setActionReturn>
+                                                        </task>
+                                                    </followOnAction>
+                                                </action>
+                                            </task>
+                                        </followOnAction>
+                                        
+                                    </action>
+                                </task>
+                            </followOnAction>
+                        </action>
+                    </task>
+                </followOnAction> 
+            </entryAction>                
+            
+            <contentFile>Create4QuarterTables-inDifferentTablespaces.html</contentFile>
+            <SQLFile>Create4QuarterTables(inDifferentTablespaces).sql</SQLFile>
+        </page>
+        
+        <page name="Insert some records into each range of data" type="general">
+            
+            <entryAction name="checkForFirstTable" type="serverAction">
+                <parameterList>
+                    <parameter name="action" type="serverAction">
+                        <value>checkForObject</value>
+                    </parameter>
+                    
+                    <parameter name="objectType" type="raw">
+                        <value>table</value>
+                    </parameter>
+                    
+                    <parameter name="object[schema]" type="constant">
+                        <value>SCHEMA</value>
+                    </parameter>
+                    
+                    <parameter name="object[table]" type="fixed">
+                        <value>Q1_2001</value>
+                    </parameter>
+                </parameterList>
+                
+                <followOnAction condition="false">
+                    <task>
+                        <action name="displayMsg" type="alert">
+                            <message>Required table Q1_2001 hasn't been created. Please execute this step again.</message>
+                        </action>
+                    </task>
+                    
+                    <task>
+                        <setActionReturn>false</setActionReturn>
+                    </task>
+                </followOnAction>
+                
+                <followOnAction condition="true">
+                    <task>
+                        <action name="checkForSecondTable" type="serverAction">
+                            <parameterList>
+                                
+                                <parameter name="action" type="serverAction">
+                                    <value>CheckForObject</value>
+                                </parameter>
+                                
+                                <parameter name="objectType" type="raw">
+                                    <value>table</value>
+                                </parameter>
+                                
+                                <parameter name="object[schema]" type="constant">
+                                    <value>SCHEMA</value>
+                                </parameter>
+                                
+                                <parameter name="object[table]" type="fixed">
+                                    <value>Q2_2001</value>
+                                </parameter>
+                            </parameterList>
+                            
+                            <followOnAction condition="false">
+                                <task>
+                                    <action name="displayMsg" type="alert">
+                                        <message>Required table Q2_2001 hasn't been created. Please execute this step again.</message>
+                                    </action>
+                                </task>
+                                <task>
+                                    <setActionReturn>false</setActionReturn>
+                                </task>
+                            </followOnAction>
+                            
+                            <followOnAction condition="true">
+                                <task>
+                                    <action name="checkForThird" type="serverAction">
+                                        <parameterList>
+                                            
+                                            <parameter name="action" type="serverAction">
+                                                <value>CheckForObject</value>
+                                            </parameter>
+                                            
+                                            <parameter name="object[schema]" type="constant">
+                                                <value>SCHEMA</value>
+                                            </parameter>
+                                            
+                                            <parameter name="objectType" type="raw">
+                                                <value>table</value>
+                                            </parameter>
+                                            
+                                            <parameter name="object[table]" type="fixed">
+                                                <value>Q3_2001</value>
+                                            </parameter>
+                                        </parameterList>
+                                        
+                                        <followOnAction condition="false">
+                                            <task>
+                                                <action name="displayMsg" type="alert">
+                                                    <message>Required table Q3_2001 hasn't been created. Please execute this step again.</message>
+                                                </action>
+                                            </task>
+                                            <task>
+                                                <setActionReturn>false</setActionReturn>
+                                            </task>
+                                        </followOnAction>
+                                        
+                                        <followOnAction condition="true">
+                                            <task>
+                                                <action name="checkForFourthTable" type="serverAction">
+                                                    <parameterList>
+                                                        
+                                                        <parameter name="action" type="serverAction">
+                                                            <value>CheckForObject</value>
+                                                        </parameter>
+                                                        
+                                                        <parameter name="objectType" type="raw">
+                                                            <value>table</value>
+                                                        </parameter>
+                                                        
+                                                        <parameter name="object[schema]" type="constant">
+                                                            <value>SCHEMA</value>
+                                                        </parameter>
+                                                        
+                                                        <parameter name="object[table]" type="fixed">
+                                                            <value>Q4_2001</value>
+                                                        </parameter>
+                                                    </parameterList>
+                                                    
+                                                    <followOnAction condition="false">
+                                                        <task>
+                                                            <action name="displayMsg" type="alert">
+                                                                <message>Required table Q4_2001 hasn't been created. Please execute this step again.</message>
+                                                            </action>
+                                                        </task>
+                                                        <task>
+                                                            <setActionReturn>false</setActionReturn>
+                                                        </task>
+                                                    </followOnAction>
+                                                </action>
+                                            </task>
+                                        </followOnAction>
+                                        
+                                    </action>
+                                </task>
+                            </followOnAction>
+                        </action>
+                    </task>
+                </followOnAction> 
+            </entryAction>       
+            
+            <exitAction/>
+            <contentFile>InsertSomeRecordsIntoEachRangeOfData.html</contentFile>
+            <SQLFile>InsertSomeRecordsIntoEachRangeOfData.sql</SQLFile>
+            <SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar="#" cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+        </page>
+        
+        <page name="Create a view to combine all 4 quarters into one view" type="general">
+            <entryAction name="checkForInsert" type="serverAction">
+                <parameterList>
+                    <parameter name="action" type="fixed">
+                        <value>checkForRow</value>
+                    </parameter>
+                    <parameter name="schema" type="constant">
+                        <value>SCHEMA</value>
+                    </parameter>
+                    <parameter name="name" type="fixed">
+                        <value>Q1_2001</value>
+                    </parameter>
+                </parameterList>
+                <followOnAction condition="true"  negCondition="true">
+                    <task>
+                        <action name="displayMsgForFailedInsert" type="alert">
+                            <message>Data hasn't been inserted in table Q1_2001. Please try this step again.</message>
+                        </action>
+                    </task>
+                    <task>
+                        <setActionReturn>false</setActionReturn>
+                    </task>
+                </followOnAction>
+                
+                
+                <followOnAction condition="true">
+                    <task>
+                        <action name="checkForSecondInsert" type="serverAction">
+                            <parameterList>
+                                <parameter name="action" type="fixed">
+                                    <value>checkForRow</value>
+                                </parameter>
+                                <parameter name="schema" type="constant">
+                                    <value>SCHEMA</value>
+                                </parameter>
+                                <parameter name="name" type="fixed">
+                                    <value>Q2_2001</value>
+                                </parameter>
+                            </parameterList>
+                            <followOnAction condition="true"  negCondition="true">
+                                <task>
+                                    <action name="displayMsgForFailedInsert" type="alert">
+                                        <message>Data hasn't been inserted in table Q2_2001. Please try this step again.</message>
+                                    </action>
+                                </task>
+                                <task>
+                                    <setActionReturn>false</setActionReturn>
+                                </task>
+                            </followOnAction>
+                            
+                            <followOnAction condition="true">
+                                <task>
+                                    <action name="checkForThirdInsert" type="serverAction">
+                                        <parameterList>
+                                            <parameter name="action" type="fixed">
+                                                <value>checkForRow</value>
+                                            </parameter>
+                                            <parameter name="schema" type="constant">
+                                                <value>SCHEMA</value>
+                                            </parameter>
+                                            <parameter name="name" type="fixed">
+                                                <value>Q3_2001</value>
+                                            </parameter>
+                                        </parameterList>
+                                        <followOnAction condition="true"  negCondition="true">
+                                            <task>
+                                                <action name="displayMsgForFailedInsert" type="alert">
+                                                    <message>Data hasn't been inserted in table Q3_2001. Please try this step again.</message>
+                                                </action>
+                                            </task>
+                                            <task>
+                                                <setActionReturn>false</setActionReturn>
+                                            </task>
+                                        </followOnAction>
+                                        <followOnAction condition="true">
+                                            <task>
+                                                <action name="checkForThirdInsert" type="serverAction">
+                                                    <parameterList>
+                                                        <parameter name="action" type="fixed">
+                                                            <value>checkForRow</value>
+                                                        </parameter>
+                                                        <parameter name="schema" type="constant">
+                                                            <value>SCHEMA</value>
+                                                        </parameter>
+                                                        <parameter name="name" type="fixed">
+                                                            <value>Q4_2001</value>
+                                                        </parameter>
+                                                    </parameterList>
+                                                    <followOnAction condition="true"  negCondition="true">
+                                                        <task>
+                                                            <action name="displayMsgForFailedInsert" type="alert">
+                                                                <message>Data hasn't been inserted in table Q4_2001. Please try this step again.</message>
+                                                            </action>
+                                                        </task>
+                                                        <task>
+                                                            <setActionReturn>false</setActionReturn>
+                                                        </task>
+                                                    </followOnAction>
+                                                    
+                                                </action>
+                                            </task>
+                                        </followOnAction>
+                                        
+                                    </action>
+                                </task>
+                            </followOnAction>
+                            
+                        </action>
+                    </task>
+                </followOnAction>
+            </entryAction> 
+            <exitAction/>
+            <contentFile>CreateAViewToCombineAll4QuartersIntoOneView.html</contentFile>
+            <SQLFile>CreateAViewToCombineAll4QuartersIntoOneView.sql</SQLFile>
+        </page>
+        
+        <page name="Do average calculation across tables" type="general">
+            
+            
+            <entryAction name="checkForView" type="serverAction">
+                <parameterList>
+                    <parameter name="action" type="serverAction">
+                        <value>checkForObject</value>
+                    </parameter>
+                    <parameter name="objectType" type="raw">
+                        <value>view</value>
+                    </parameter>
+                    <parameter name="object[schema]" type="constant">
+                        <value>SCHEMA</value>
+                    </parameter>
+                    <parameter name="object[view]" type="fixed">
+                        <value>FourQuarters</value>
+                    </parameter>
+                </parameterList>
+                <followOnAction condition="false">
+                    <task>
+                        <action name="displayMsg" type="alert">
+                            <message>Required View "FourQuarters" hasn't been created. Please execute this step again.</message>
+                        </action>
+                    </task>
+                    <task>
+                        <setActionReturn>false</setActionReturn>
+                    </task>
+                </followOnAction>
+                
+            </entryAction>
+            
+            <exitAction/>
+            <contentFile>DoAverageCalculationAcrossTables.html</contentFile>
+            <SQLFile>DoAverageCalculationAcrossTables.sql</SQLFile>
+        </page>
+        
+        <!--<page name="Show Explain of Average Calculation" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>ShowExplainOfAverageCalculation.html</contentFile>
+            <SQLFile>ShowExplainOfAverageCalculation.sql</SQLFile>
+            </page>-->
+        
+        <page name="Maintenance of QYear" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>MaintenanceOfQYear.html</contentFile>
+            <SQLFile>MaintenanceOfQYear.sql</SQLFile>
+            <SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar=";"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+        </page>
+        
+        <page name="Load some data into Q1_2002" type="general">
+            
+            <entryAction name="checkForTable" type="serverAction">
+                <parameterList>
+                    <parameter name="action" type="serverAction">
+                        <value>checkForObject</value>
+                    </parameter>
+                    
+                    <parameter name="objectType" type="raw">
+                        <value>table</value>
+                    </parameter>
+                    
+                    <parameter name="object[schema]" type="constant">
+                        <value>SCHEMA</value>
+                    </parameter>
+                    
+                    <parameter name="object[table]" type="fixed">
+                        <value>Q1_2002</value>
+                    </parameter>
+                </parameterList>
+                
+                <followOnAction condition="false">
+                    <task>
+                        <action name="displayMsg" type="alert">
+                            <message>Required table Q1_2002 hasn't been created. Please execute this step again.</message>
+                        </action>
+                    </task>
+                    
+                    <task>
+                        <setActionReturn>false</setActionReturn>
+                    </task>
+                </followOnAction>
+            </entryAction>
+            
+            <exitAction/>
+            <contentFile>LoadSomeDataIntoQ1_2002.html</contentFile>
+            <SQLFile>LoadSomeDataIntoQ1_2002.sql</SQLFile>
+            <SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar="#" cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+        </page>
+        
+        <page name="Show the data from Q1 2002" type="general">
+            <entryAction name="checkForInsert" type="serverAction">
+                <parameterList>
+                    <parameter name="action" type="fixed">
+                        <value>checkForRow</value>
+                    </parameter>
+                    <parameter name="schema" type="constant">
+                        <value>SCHEMA</value>
+                    </parameter>
+                    <parameter name="name" type="fixed">
+                        <value>Q1_2002</value>
+                    </parameter>
+                </parameterList>
+                <followOnAction condition="true"  negCondition="true">
+                    <task>
+                        <action name="displayMsgForFailedInsert" type="alert">
+                            <message>Data hasn't been inserted in table Q1_2002. Please try this step again.</message>
+                        </action>
+                    </task>
+                    <task>
+                        <setActionReturn>false</setActionReturn>
+                    </task>
+                </followOnAction>
+            </entryAction>
+            <exitAction/>
+            <contentFile>ShowTheDataFromQ12002.html</contentFile>
+            <SQLFile>ShowTheDataFromQ12002.sql</SQLFile>
+        </page>
+        
+        <page name="Show FourQuarter summarization" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>ShowFourQuarterSummarization.html</contentFile>
+            <SQLFile>ShowFourQuarterSummarization.sql</SQLFile>
+        </page>
+        
+        <page name="Drop 2001 Q1, add 2002 Q1 data" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>Drop2001Q1AndAdd2002Q1Data.html</contentFile>
+            <SQLFile>Drop2001Q1,Add2002Q1Data.sql</SQLFile>
+        </page>
+        
+        <page name="Show new summarization" type="general">
+            
+            <entryAction name="checkForNewView" type="serverAction">
+                <parameterList>
+                    <parameter name="action" type="serverAction">
+                        <value>checkForObject</value>
+                    </parameter>
+                    
+                    <parameter name="objectType" type="raw">
+                        <value>view</value>
+                    </parameter>
+                    
+                    <parameter name="object[schema]" type="constant">
+                        <value>SCHEMA</value>
+                    </parameter>
+                    
+                    <parameter name="object[view]" type="fixed">
+                        <value>FourQuarters</value>
+                    </parameter>
+                </parameterList>
+                
+                <followOnAction condition="false">
+                    <task>
+                        <action name="displayMsg" type="alert">
+                            <message>Required View "FourQuartersNew" hasn't been created. Please execute this step again.</message>
+                        </action>
+                    </task>
+                    <task>
+                        <setActionReturn>false</setActionReturn>
+                    </task>
+                </followOnAction>
+            </entryAction>
+            
+            <exitAction/>
+            <contentFile>ShowNewSummarization.html</contentFile>
+            <SQLFile>ShowNewSummarization.sql</SQLFile>
+        </page>
+        
+        <page name="Performance of Calculations across subtable boundaries." type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>PerformanceOfCalculationsAcrossSubtableBoundaries..html</contentFile>
+            <SQLFile>PerformanceOfCalculationsAcrossSubtableBoundaries..sql</SQLFile>
+        </page>
+        
+        <page name="Show the data from the Total_Sales table" type="general">
+            
+            <entryAction name="checkForNewView" type="serverAction">
+                <parameterList>
+                    <parameter name="action" type="serverAction">
+                        <value>checkForObject</value>
+                    </parameter>
+                    
+                    <parameter name="objectType" type="raw">
+                        <value>view</value>
+                    </parameter>
+                    
+                    <parameter name="object[schema]" type="constant">
+                        <value>SCHEMA</value>
+                    </parameter>
+                    
+                    <parameter name="object[view]" type="fixed">
+                        <value>Total_Sales</value>
+                    </parameter>
+                </parameterList>
+                
+                <followOnAction condition="false">
+                    <task>
+                        <action name="displayMsg" type="alert">
+                            <message>Required View "Total_Sales" hasn't been created. Please execute this step again.</message>
+                        </action>
+                    </task>
+                    <task>
+                        <setActionReturn>false</setActionReturn>
+                    </task>
+                </followOnAction>
+            </entryAction>
+            
+            <exitAction/>
+            <contentFile>ShowTheDataFromTheTotal_SalesTable.html</contentFile>
+            <SQLFile>ShowTheDataFromTheTotal_SalesTable.sql</SQLFile>
+        </page>
+        
+        <page name="Show the sales of the X22 product during March" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>ShowTheSalesOfTheX22ProductDuringMarch.html</contentFile>
+            <SQLFile>ShowTheSalesOfTheX22ProductDuringMarch.sql</SQLFile>
+        </page>
+        
+        <!--<page name="Show Textual Explain of select" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>ShowTextualExplainOfSelect.html</contentFile>
+            <SQLFile>ShowTextualExplainOfSelect.sql</SQLFile>
+            </page>-->
+        
+        <page name="Show the same results using a function" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>ShowTheSameResultsUsingAFunction.html</contentFile>
+            <SQLFile>ShowTheSameResultsUsingAFunction.sql</SQLFile>
+        </page>
+        
+        <!--<page name="Show Textual Explain of select" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>ShowTextualExplainOfSelect.html</contentFile>
+            <SQLFile>ShowTextualExplainOfSelect.sql</SQLFile>
+            </page>-->
+        
+        <!--<page name="Plot the results" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>PlotTheResults.html</contentFile>
+            <SQLFile>PlotTheResults.sql</SQLFile>
+        </page>
+        -->
+        
+        <page name="Show the averaged values" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>ShowTheAveragedValues.html</contentFile>
+            <SQLFile>ShowTheAveragedValues.sql</SQLFile>
+        </page>
+        
+        <!--<page name="Plot the averaged results" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>PlotTheAveragedResults.html</contentFile>
+            <SQLFile>PlotTheAveragedResults.sql</SQLFile>
+        </page>
+        -->
+        
+        <page name="Show results of normal versus Average calculations" type="last">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>ShowResultsOfNormalVersusAverageCalculations.html</contentFile>
+            <SQLFile>ShowResultsOfNormalVersusAverageCalculations.sql</SQLFile>
+        </page>
+        
+        <page name="Plot results of normal versus Average calculations" type="last">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>PlotResultsOfNormalVersusAverageCalculations.html</contentFile>
+            <loadActionScriptFile>
+				CompareNormalVersusAverage.xml
+			</loadActionScriptFile>
+        </page>
+        
+        </pageList>
+</tutorial>

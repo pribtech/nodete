@@ -1,0 +1,38 @@
+<H2>Scenario</H2><HR>
+<p class="sourceChange">
+	<b>A company launches a new product campaign. Customers can register and 
+	try out the product during the promotion period. Company wants to track how many customers 
+	have registered for this campaign. Customer can be a 'Registered (R)' customer 
+	or a 'Temporary (T)' customer. To accommodate this requirement, a new column has to be added 
+	to the CUSTOMER table to store the customer type, by the DBA. When the column is added to the table 
+	the default value will be 'T'. Once the customers registers himself for the campaign, the column value 
+	will be changed to 'R'.</b>
+	</p>	
+
+<BR><H2>Problem</H2><HR>
+<p>
+As a customer table contains customer data it is not possible for the DBA to drop and recreate the table with the new column required for the campaign.
+</p>
+
+<BR><H2>Solution</H2><HR>
+<p>
+	To solve the above problem, DB2 9.7 offers (<a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v9r7/topic/com.ibm.db2.luw.admin.dbobj.doc/doc/t0020132.html');"><b>ADD COLUMN</b></a>) option in the (<a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v9r7/topic/com.ibm.db2.luw.sql.ref.doc/doc/r0000888.html');"><b>ALTER TABLE</b></a>) command.
+	Now the DBA can add the column in the table using the ADD COLUMN option in the ALTER TABLE command.
+	DBA performs below steps to meet campaign requirement.
+	<ol>
+	<li class="sourceCopiedFrom">Add column in a table using <b>ALTER TABLE</b> command.</li><br>
+	<li class="sourceCopiedFrom">Update the column information using <b>UPDATE TABLE</b> command.</li><br>
+	<li class="sourceCopiedFrom"><b>REORG TABLE</b> customer.</li><br>
+	<li class="sourceCopiedFrom">Verify the new definition of table from <b>syscat.columns</b>.</li><br>
+	<li class="sourceCopiedFrom">Fetch the rows from customer table using <b>SELECT</b> command.</li>
+	</ol>
+</p>
+<BR><H2>Output</H2><HR>
+<p>
+	After running the SQL statements on the right pane, <br><SPAN style="BACKGROUND-COLOR: #ffff00">Result tab 4 of 5 </SPAN>shows a new column <b class="sourceCopiedFrom">TYPE</b> added in the 
+	base table CUSTOMER.</br><br><br>
+<img src="?BASE_DIRECTORY?HTML/AddColumn.PNG"/>
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+<br><SPAN style="BACKGROUND-COLOR: #ffff00">Result tab 5 of 5 </SPAN>shows the values inserted in the column <b class="sourceCopiedFrom">TYPE</b></br>
+<br><br>
+<img src="?BASE_DIRECTORY?HTML/AddColumnValues.PNG"/>

@@ -1,0 +1,57 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2009 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+
+<menu type="leaf" branchDirectory="">
+	<description>Rebuild Session</description>
+		<actionScript name="rebuildSession" type="form" lockScreen="true">
+		<message>
+<![CDATA[
+<div style='width:500px'>
+<h1>Rebuild session connections from connection store</h1>
+<p>
+</div>
+]]>
+    	</message>
+    	<parameterList>
+			<parameter name="buttonOK" type="raw">
+				<value>Rebuild</value>
+			</parameter>
+		</parameterList>
+		<if condition="true">
+			<task>
+				<action name="rebuildSessionExecute" type="serverAction">
+					<parameterList>
+						<parameter name="action" type="fixed">
+							<value>rebuildSessionConnections</value>
+						</parameter>
+					</parameterList>
+					<if condition="true" negCondition="true">
+						<task>
+							<alert>Failed to rebuild</alert>
+						</task>
+					</if>
+					<if condition="true">
+						<task>
+							<alert>Rebuilt</alert>
+						</task>
+					</if>
+				</action>
+			</task>
+		</if>
+	</actionScript>
+</menu>

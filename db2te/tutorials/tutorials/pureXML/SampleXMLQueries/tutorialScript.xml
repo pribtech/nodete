@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tutorial name="Sample XML Queries">
+	<flowRestriction>forwardExploration</flowRestriction>
+    <closeAction/>
+    <openAction />
+    <globalCodeHighlightOptions highlightCode = "true" />
+    <pageList>
+    	<page name="Sample XML Queries - Intro" type="intro">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>01_SampleXMLQueries.html</contentFile>
+            <SQLFile>SampleXMLQuery.sql</SQLFile>
+            <autoLoadLink/>
+        </page>
+        
+    <page name="Query 1: XQuery and xmlcolumn" type="general">
+
+            <entryAction name="checkForInsert" type="serverAction">
+                <parameterList>
+                    <parameter name="action" type="fixed">
+                        <value>checkForRow</value>
+                    </parameter>
+                    <parameter name="schema" type="constant">
+                        <value>SCHEMA</value>
+                    </parameter>
+                    <parameter name="name" type="fixed">
+                        <value>xmlcustomer</value>
+                    </parameter>
+                </parameterList>
+                <followOnAction condition="true"  negCondition="true">
+                    <task>
+                        <action name="displayMsgForFailedInsert" type="alert">
+                            <message>Data hasn't been inserted in the table. Please try this step again.</message>
+                        </action>
+                    </task>
+                    <task>
+                        <setActionReturn>false</setActionReturn>
+                    </task>
+                </followOnAction>
+            </entryAction>    
+
+            <exitAction/>
+            <contentFile>02_Query.html</contentFile>
+            <SQLFile>01_Query.sql</SQLFile>
+			<SQLExecutionOptions xmlinline="true" xml="true"/>
+        </page><page name="Query 2: XQuert and sqlquery" type="general">
+            <exitAction/>
+            <contentFile>03_Query.html</contentFile>
+            <SQLFile>02_Query.sql</SQLFile>
+			<SQLExecutionOptions xmlinline="true" xml="true"/>
+        </page><page name="Query 3: XQuery and xmlcolumn (using conditions)" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>04_Query.html</contentFile>
+            <SQLFile>03_Query.sql</SQLFile>
+			<SQLExecutionOptions xmlinline="true" xml="true"/>
+        </page><page name="Query 4: XQuery and xmlcolumn (using conditions)" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>05_Query.html</contentFile>
+            <SQLFile>04_Query.sql</SQLFile>
+			<SQLExecutionOptions xmlinline="true" xml="true"/>
+        </page><page name="Query 5: XQUERY and fn:count" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>06_Query.html</contentFile>
+            <SQLFile>05_Query.sql</SQLFile>
+			<SQLExecutionOptions xmlinline="true" xml="true"/>
+        </page><page name="Query 6: SQL and XMLEXISTS" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>07_Query.html</contentFile>
+            <SQLFile>06_Query.sql</SQLFile>
+			<SQLExecutionOptions xmlinline="true" xml="true"/>
+        </page><page name="Query 7: SQL and xmlquery" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>08_Query.html</contentFile>
+            <SQLFile>07_Query.sql</SQLFile>
+			<SQLExecutionOptions xmlinline="true" xml="true"/>
+        </page><page name="Query 8: XQuery and multiple conditions" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>09_Query.html</contentFile>
+            <SQLFile>08_Query.sql</SQLFile>
+			<SQLExecutionOptions xmlinline="true" xml="true"/>
+        </page><page name="Query 9: SQL with xmlquery and XMLEXISTS" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>10_Query.html</contentFile>
+            <SQLFile>09_Query.sql</SQLFile>
+			<SQLExecutionOptions xmlinline="true" xml="true"/>
+        </page><page name="Query 10: XQuery and sqlquery (using conditions)" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>11_Query.html</contentFile>
+            <SQLFile>10_Query.sql</SQLFile>
+			<SQLExecutionOptions xmlinline="true" xml="true"/>
+        </page><page name="Query 11: XQuery and sqlquery (returning an XML block)" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>12_Query.html</contentFile>
+            <SQLFile>11_Query.sql</SQLFile>
+			<SQLExecutionOptions xmlinline="true" xml="true"/>
+        </page><page name="Query 12: XQuery FLWOR Statement" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>13_Query.html</contentFile>
+            <SQLFile>12_Query.sql</SQLFile>
+			<SQLExecutionOptions xmlinline="true" xml="true"/>
+        </page><page name="Query 13: XQuery, joining over 2 XML Columns" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>14_Query.html</contentFile>
+            <SQLFile>13_Query.sql</SQLFile>
+			<SQLExecutionOptions xmlinline="true" xml="true"/>
+        </page><page name="Query 14: List all customers' names without including XML tags" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>15_Query.html</contentFile>
+            <SQLFile>14_Query.sql</SQLFile>
+			<SQLExecutionOptions xmlinline="true" xml="true"/>
+        </page><page name="Query 15: List all customers' names in alphabetical order" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>16_Query.html</contentFile>
+            <SQLFile>15_Query.sql</SQLFile>
+			<SQLExecutionOptions xmlinline="true" xml="true"/>
+        </page><page name="Query 16: List all customers who live in Markham, in alphabetical order" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>17_Query.html</contentFile>
+            <SQLFile>16_Query.sql</SQLFile>
+			<SQLExecutionOptions xmlinline="true" xml="true"/>
+        </page><page name="Query 17: List all customers' names in alphabetical (those living in Markham or San Jose)" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>18_Query.html</contentFile>
+            <SQLFile>17_Query.sql</SQLFile>
+			<SQLExecutionOptions xmlinline="true" xml="true"/>
+        </page><page name="Query 18: List all customers who live in Canada" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>19_Query.html</contentFile>
+            <SQLFile>18_Query.sql</SQLFile>
+        </page><page name="Query 19: List all customers who live in Canada (variation)" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>20_Query.html</contentFile>
+            <SQLFile>19_Query.sql</SQLFile>
+			<SQLExecutionOptions xmlinline="true" xml="true"/>
+        </page><page name="Query 20: List all products' names ordered by price (string)" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>21_Query.html</contentFile>
+            <SQLFile>20_Query.sql</SQLFile>
+			<SQLExecutionOptions xmlinline="true" xml="true"/>
+        </page><page name="Query 21: List all products' names ordered by price (numeric)" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>22_Query.html</contentFile>
+            <SQLFile>21_Query.sql</SQLFile>
+			<SQLExecutionOptions xmlinline="true" xml="true"/>
+        </page><page name="Query 22: Select products with prices that are greater than 5 and less than 500" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>23_Query.html</contentFile>
+            <SQLFile>22_Query.sql</SQLFile>
+			<SQLExecutionOptions xmlinline="true" xml="true"/>
+        </page><page name="Query 23: Get a result table with customer name, street and city" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>24_Query.html</contentFile>
+            <SQLFile>23_Query.sql</SQLFile>
+			<SQLExecutionOptions xmlinline="true" xml="true"/>
+        </page><page name="Query 24: Get a result table with customer name, street, city and country column" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>25_Query.html</contentFile>
+            <SQLFile>24_Query.sql</SQLFile>
+			<SQLExecutionOptions xmlinline="true" xml="true"/>
+        </page><page name="Query 25: Create a result table with customer name, street, city and country column (Canada)" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>26_Query.html</contentFile>
+            <SQLFile>25_Query.sql</SQLFile>
+			<SQLExecutionOptions xmlinline="true" xml="true"/>
+        </page><page name="Query 26: Create a result table with CID, name, street, city and country column (Canada)" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>27_Query.html</contentFile>
+            <SQLFile>26_Query.sql</SQLFile>
+			<SQLExecutionOptions xmlinline="true" xml="true"/>
+        </page><page name="Query 27: Create a result table with CID, name, street, city and country column (Canada) wher the CID is &gt;1001" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>28_Query.html</contentFile>
+            <SQLFile>27_Query.sql</SQLFile>
+			<SQLExecutionOptions xmlinline="true" xml="true"/>
+        </page><page name="Query 28: Use an XMLTable function to get a table of all customer phone numbers" type="last">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>29_Query.html</contentFile>
+            <SQLFile>28_Query.sql</SQLFile>
+			<SQLExecutionOptions xmlinline="true" xml="true"/>
+        </page></pageList>
+</tutorial>

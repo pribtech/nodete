@@ -1,0 +1,134 @@
+<!--
+  Author: Peter Prib
+  
+  Copyright Independent Systems Integrators Pty Ltd 2008 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+<table name="SYSTOOLS.STMG_OBJ_HISTORICAL_THRESHOLDS">
+	<sql_name>SYSTOOLS.STMG_OBJ_HISTORICAL_THRESHOLDS</sql_name>
+	<singular_name>SYSTOOLS.STMG_OBJ_HISTORICAL_THRESHOLDS</singular_name>
+	<plural_name>SYSTOOLS.STMG_OBJ_HISTORICAL_THRESHOLDS</plural_name>
+	<description />
+	<rows_per_page>50</rows_per_page>
+	<order_by_index />
+	<display_columns>
+		<col type="column" name="stmg_timestamp" />
+		<col type="column" name="obj_id" />
+		<col type="column" name="obj_name" />
+		<col type="column" name="obj_schema" />
+		<col type="column" name="dbpg_name" />
+		<col type="column" name="ts_name" />
+		<col type="column" name="space_warning_threshold" />
+		<col type="column" name="space_alarm_threshold" />
+		<col type="column" name="space_threshold_exceeded" />
+		<col type="column" name="skew_warning_threshold" />
+		<col type="column" name="skew_alarm_threshold" />
+		<col type="column" name="skew_threshold_exceeded" />
+		<col type="column" name="cluster_warning_threshold" />
+		<col type="column" name="cluster_alarm_threshold" />
+		<col type="column" name="cluster_threshold_exceeded" />
+	</display_columns>
+	<disable_edit/>
+	<column name="stmg_timestamp">
+		<c_sql_name>STMG_TIMESTAMP</c_sql_name>
+		<c_title>STMG_TIMESTAMP</c_title>
+		<c_presentation>s</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="obj_id">
+		<c_sql_name>OBJ_ID</c_sql_name>
+		<c_title>OBJ_ID</c_title>
+		<c_presentation>s</c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="obj_name">
+		<c_sql_name>OBJ_NAME</c_sql_name>
+		<c_title>OBJ_NAME</c_title>
+		<c_presentation>s</c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="obj_schema">
+		<c_sql_name>OBJ_SCHEMA</c_sql_name>
+		<c_title>OBJ_SCHEMA</c_title>
+		<c_presentation>s</c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="dbpg_name">
+		<c_sql_name>DBPG_NAME</c_sql_name>
+		<c_title>DBPG_NAME</c_title>
+		<c_presentation>s</c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="ts_name">
+		<c_sql_name>TS_NAME</c_sql_name>
+		<c_title>TS_NAME</c_title>
+		<c_presentation>s</c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="space_warning_threshold">
+		<c_sql_name>SPACE_WARNING_THRESHOLD</c_sql_name>
+		<c_title>SPACE_WARNING_THRESHOLD</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="space_alarm_threshold">
+		<c_sql_name>SPACE_ALARM_THRESHOLD</c_sql_name>
+		<c_title>SPACE_ALARM_THRESHOLD</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="space_threshold_exceeded">
+		<c_sql_name>SPACE_THRESHOLD_EXCEEDED</c_sql_name>
+		<c_title>SPACE_THRESHOLD_EXCEEDED</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="skew_warning_threshold">
+		<c_sql_name>SKEW_WARNING_THRESHOLD</c_sql_name>
+		<c_title>SKEW_WARNING_THRESHOLD</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="skew_alarm_threshold">
+		<c_sql_name>SKEW_ALARM_THRESHOLD</c_sql_name>
+		<c_title>SKEW_ALARM_THRESHOLD</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="skew_threshold_exceeded">
+		<c_sql_name>SKEW_THRESHOLD_EXCEEDED</c_sql_name>
+		<c_title>SKEW_THRESHOLD_EXCEEDED</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="cluster_warning_threshold">
+		<c_sql_name>CLUSTER_WARNING_THRESHOLD</c_sql_name>
+		<c_title>CLUSTER_WARNING_THRESHOLD</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="cluster_alarm_threshold">
+		<c_sql_name>CLUSTER_ALARM_THRESHOLD</c_sql_name>
+		<c_title>CLUSTER_ALARM_THRESHOLD</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="cluster_threshold_exceeded">
+		<c_sql_name>CLUSTER_THRESHOLD_EXCEEDED</c_sql_name>
+		<c_title>CLUSTER_THRESHOLD_EXCEEDED</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+</table>

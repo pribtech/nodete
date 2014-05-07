@@ -1,0 +1,41 @@
+<h3>Goal of this tutorial</h3>
+<hr>
+Before proceeding further, lets see what we want to achieve from this tutorial.
+
+<P>
+You can see a sample view  in right pane. This is what we will be creating in subsequent steps. 
+<p><B>Things to note:</B>
+<ul>
+	<li>The view displays the result of an SQL statement</li>
+	<li>The view has an option of selecting REFRESH INTERVAL on top right. You can set it to any value you want, and the view will keep on refreshing itself after this time interval automatically.</li>
+	<li>Column 'Total CPU Rate' displays the rate at which CPU is being used. This rate is calculated by TE automatically. In this example, it shows the amount of CPU an application has comsumed in last n seconds('n' is the denominator of this column). </li>
+</ul>
+</p>
+<BR><BR>
+<h3>Pre-Requisites</h3>
+<hr>
+Before proceeding to the next step, make sure that:
+<ul>
+	<li>Sample database is created. Use following command to create sample database:</li>
+	<ul>
+		<li><CODE>'db2sampl'</CODE></li>
+	</ul>
+	<li>All monitor switches are turned ON. Use following commands to turn ON the monitor switches:
+		<ul>
+			<li><CODE>UPDATE DBM CFG USING DFT_MON_BUFPOOL ON</CODE></li>
+			<li><CODE>UPDATE DBM CFG USING DFT_MON_LOCK ON</CODE></li>
+			<li><CODE>UPDATE DBM CFG USING DFT_MON_SORT ON</CODE></li>
+			<li><CODE>UPDATE DBM CFG USING DFT_MON_STMT ON</CODE></li>
+			<li><CODE>UPDATE DBM CFG USING DFT_MON_TABLE ON</CODE></li>
+			<li><CODE>UPDATE DBM CFG USING DFT_MON_TIMESTAMP ON</CODE></li>
+			<li><CODE>UPDATE DBM CFG USING DFT_MON_UOW ON</CODE></li>
+		</ul>
+	</li>
+	<li>Database is activated. Use following command to activate the database:
+		<ul>
+			<li><CODE>ACTIVATE DATABASE SAMPLE</CODE></li>
+		</ul>
+	</li>
+</ul>
+
+

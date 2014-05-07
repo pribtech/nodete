@@ -1,0 +1,117 @@
+<div id="title">tutorialScript.xml</div>
+<pre><table><tbody><pre><tt>
+<b><font color="#000080">&lt;?xml</font></b> <font color="#009900">version</font><font color="#990000">=</font><font color="#FF0000">"1.0"</font> <font color="#009900">encoding</font><font color="#990000">=</font><font color="#FF0000">"UTF-8"</font><b><font color="#000080">?&gt;</font></b>
+<b><font color="#0000FF">&lt;tutorial</font></b> <font color="#009900">name</font><font color="#990000">=</font><font color="#FF0000" class="sourceChange">"New Tutorial"</font> <font color="#009900">closeWindowsInRightStage</font><font color="#990000">=</font><font color="#FF0000">"true"</font> <font color="#009900">clearAdhocResults</font><font color="#990000">=</font><font color="#FF0000">"true"</font><b><font color="#0000FF">&gt;</font></b>
+  <i><font color="#9A1900">&lt;!--</font></i>
+<i><font color="#9A1900">  Flow restriction dictates how the user is allowed to move through a tutorial.</font></i>
+<i><font color="#9A1900">  possibly flow restriction values:</font></i>
+<i><font color="#9A1900">    free - no error checking done between pages.  free to go to any page</font></i>
+<i><font color="#9A1900">    freewithchecks - checks will be done when user exits and enters any page.  free to go to any page.</font></i>
+<i><font color="#9A1900">    forwardexploration - checks done each step forward first time only.  Can only progess one step at a time unless step has been completed</font></i>
+<i><font color="#9A1900">    forwardsequential - checks done each step forward.  If user jumps back, checks will be done again moving forward.</font></i>
+<i><font color="#9A1900">    strictsequential - checks are done always.  User can only move to the next step or previous step.</font></i>
+<i><font color="#9A1900">  --&gt;</font></i>
+  <b><font color="#0000FF">&lt;flowRestriction&gt;</font></b>free<b><font color="#0000FF">&lt;/flowRestriction&gt;</font></b>
+  <i><font color="#9A1900">&lt;!--</font></i>
+<i><font color="#9A1900">    If you want anything down when the tutorial closes, include it in the closeAction.</font></i>
+<i><font color="#9A1900">  --&gt;</font></i>
+  <b><font color="#0000FF">&lt;closeAction/&gt;</font></b>
+  <i><font color="#9A1900">&lt;!--</font></i>
+<i><font color="#9A1900">    openAction will be performed each time  the tutorial is opened.</font></i>
+<i><font color="#9A1900">  --&gt;</font></i>
+  <b><font color="#0000FF">&lt;openAction/&gt;</font></b>
+  <b><font color="#0000FF">&lt;pageList&gt;</font></b>
+    <i><font color="#9A1900">&lt;!--BEGIN: basic tutorial page--&gt;</font></i>
+    <b><font color="#0000FF">&lt;page</font></b> <font color="#009900">name</font><font color="#990000">=</font><font color="#FF0000">"Page 1 title - loading a webpage"</font> <font color="#009900">type</font><font color="#990000">=</font><font color="#FF0000">"intro"</font><b><font color="#0000FF">&gt;</font></b>
+      <b><font color="#0000FF">&lt;entryAction/&gt;</font></b>
+      <b><font color="#0000FF">&lt;exitAction/&gt;</font></b>
+      <b><font color="#0000FF">&lt;contentFile&gt;</font></b>page1.html<b><font color="#0000FF">&lt;/contentFile&gt;</font></b>
+      <b><font color="#0000FF">&lt;autoLoadLink/&gt;</font></b>
+    <b><font color="#0000FF">&lt;/page&gt;</font></b></td></tr>
+    
+    <tr><td>    <i><font color="#9A1900">&lt;!-- END: basic tutorial page --&gt;</font></i>
+    <i><font color="#9A1900">&lt;!-- BEGIN: Basic page with SQL --&gt;</font></i>
+    <b><font color="#0000FF">&lt;page</font></b> <font color="#009900">name</font><font color="#990000">=</font><font color="#FF0000">"Page 2 title - including sql"</font> <font color="#009900">type</font><font color="#990000">=</font><font color="#FF0000">"general"</font><b><font color="#0000FF">&gt;</font></b>
+      <b><font color="#0000FF">&lt;entryAction/&gt;</font></b>
+      <b><font color="#0000FF">&lt;exitAction/&gt;</font></b>
+      <b><font color="#0000FF">&lt;contentFile&gt;</font></b>page2.html<b><font color="#0000FF">&lt;/contentFile&gt;</font></b>
+      <b><font color="#0000FF">&lt;SQLFile&gt;</font></b>page2.SQL<b><font color="#0000FF">&lt;/SQLFile&gt;</font></b>
+      <b><font color="#0000FF">&lt;SQLExecutionOptions</font></b> <font color="#009900">xml</font><font color="#990000">=</font><font color="#FF0000">"false"</font> <font color="#009900">clob</font><font color="#990000">=</font><font color="#FF0000">"false"</font> <font color="#009900">xmlinline</font><font color="#990000">=</font><font color="#FF0000">"false"</font> <font color="#009900">clobinline</font><font color="#990000">=</font><font color="#FF0000">"false"</font> <font color="#009900">blob</font><font color="#990000">=</font><font color="#FF0000">"false"</font> <font color="#009900">dbclob</font><font color="#990000">=</font><font color="#FF0000">"false"</font> <font color="#009900">termChar</font><font color="#990000">=</font><font color="#FF0000">"#"</font> <font color="#009900">cursor</font><font color="#990000">=</font><font color="#FF0000">"forward"</font> <font color="#009900">commitPerStmt</font><font color="#990000">=</font><font color="#FF0000">"true"</font> <font color="#009900">numRowReturned</font><font color="#990000">=</font><font color="#FF0000">"100"</font><b><font color="#0000FF">/&gt;</font></b>
+    <b><font color="#0000FF">&lt;/page&gt;</font></b>
+    <i><font color="#9A1900">&lt;!-- END: basic page with SQL --&gt;</font></i>
+    <i><font color="#9A1900">&lt;!-- BEGIN: Check previous table creation --&gt;</font></i>
+    <b><font color="#0000FF">&lt;page</font></b> <font color="#009900">name</font><font color="#990000">=</font><font color="#FF0000">"Page 3 title - checking previous work"</font> <font color="#009900">type</font><font color="#990000">=</font><font color="#FF0000">"general"</font><b><font color="#0000FF">&gt;</font></b>
+      <i><font color="#9A1900">&lt;!--</font></i>
+<i><font color="#9A1900">        This entryAction will check that a table named table5k was created in the previous step.</font></i>
+<i><font color="#9A1900">      --&gt;</font></i>
+      <b><font color="#0000FF">&lt;entryAction</font></b> <font color="#009900">name</font><font color="#990000">=</font><font color="#FF0000">"checkForTable5k"</font> <font color="#009900">type</font><font color="#990000">=</font><font color="#FF0000">"serverAction"</font><b><font color="#0000FF">&gt;</font></b>
+        <b><font color="#0000FF">&lt;parameterList&gt;</font></b>
+          <b><font color="#0000FF">&lt;parameter</font></b> <font color="#009900">name</font><font color="#990000">=</font><font color="#FF0000">"action"</font> <font color="#009900">type</font><font color="#990000">=</font><font color="#FF0000">"fixed"</font><b><font color="#0000FF">&gt;</font></b>
+            <b><font color="#0000FF">&lt;value&gt;</font></b>checkForObject<b><font color="#0000FF">&lt;/value&gt;</font></b>
+          <b><font color="#0000FF">&lt;/parameter&gt;</font></b>
+          <b><font color="#0000FF">&lt;parameter</font></b> <font color="#009900">name</font><font color="#990000">=</font><font color="#FF0000">"objectType"</font> <font color="#009900">type</font><font color="#990000">=</font><font color="#FF0000">"fixed"</font><b><font color="#0000FF">&gt;</font></b>
+            <b><font color="#0000FF">&lt;value&gt;</font></b>table<b><font color="#0000FF">&lt;/value&gt;</font></b>
+          <b><font color="#0000FF">&lt;/parameter&gt;</font></b>
+          <b><font color="#0000FF">&lt;parameter</font></b> <font color="#009900">name</font><font color="#990000">=</font><font color="#FF0000">"object[schema]"</font> <font color="#009900">type</font><font color="#990000">=</font><font color="#FF0000">"constant"</font><b><font color="#0000FF">&gt;</font></b>
+            <b><font color="#0000FF">&lt;value&gt;</font></b>SCHEMA<b><font color="#0000FF">&lt;/value&gt;</font></b>
+          <b><font color="#0000FF">&lt;/parameter&gt;</font></b>
+          <b><font color="#0000FF">&lt;parameter</font></b> <font color="#009900">name</font><font color="#990000">=</font><font color="#FF0000">"object[table]"</font> <font color="#009900">type</font><font color="#990000">=</font><font color="#FF0000">"raw"</font><b><font color="#0000FF">&gt;</font></b>
+            <b><font color="#0000FF">&lt;value&gt;</font></b>table5k<b><font color="#0000FF">&lt;/value&gt;</font></b>
+          <b><font color="#0000FF">&lt;/parameter&gt;</font></b>
+        <b><font color="#0000FF">&lt;/parameterList&gt;</font></b>
+        <i><font color="#9A1900">&lt;!--</font></i>
+<i><font color="#9A1900">          This followOnAction will display an error message.</font></i>
+<i><font color="#9A1900">        --&gt;</font></i>
+        <b><font color="#0000FF">&lt;followOnAction</font></b> <font color="#009900">condition</font><font color="#990000">=</font><font color="#FF0000">"0"</font> <font color="#009900">compareOn</font><font color="#990000">=</font><font color="#FF0000">"checkForTable5k.returnValue"</font><b><font color="#0000FF">&gt;</font></b>
+          <b><font color="#0000FF">&lt;task&gt;</font></b>
+            <b><font color="#0000FF">&lt;action</font></b> <font color="#009900">name</font><font color="#990000">=</font><font color="#FF0000">"alertTablesNotCreated"</font> <font color="#009900">type</font><font color="#990000">=</font><font color="#FF0000">"alert"</font><b><font color="#0000FF">&gt;</font></b>
+              <b><font color="#0000FF">&lt;message&gt;</font></b>The required tables must be created before proceeding with the tutorial.<b><font color="#0000FF">&lt;/message&gt;</font></b>
+            <b><font color="#0000FF">&lt;/action&gt;</font></b>
+            <b><font color="#0000FF">&lt;setActionReturn</font></b> <font color="#009900">value</font><font color="#990000">=</font><font color="#009900">'false'/</font><b><font color="#0000FF">&gt;</font></b>
+          <b><font color="#0000FF">&lt;/task&gt;</font></b>
+        <b><font color="#0000FF">&lt;/followOnAction&gt;</font></b>
+      <b><font color="#0000FF">&lt;/entryAction&gt;</font></b>
+      <b><font color="#0000FF">&lt;exitAction/&gt;</font></b>
+      <b><font color="#0000FF">&lt;contentFile&gt;</font></b>page3.html<b><font color="#0000FF">&lt;/contentFile&gt;</font></b>
+    <b><font color="#0000FF">&lt;/page&gt;</font></b>
+    <i><font color="#9A1900">&lt;!-- END: check previous table creation --&gt;</font></i>
+    <i><font color="#9A1900">&lt;!-- BEGIN: including a view --&gt;</font></i>
+    <b><font color="#0000FF">&lt;page</font></b> <font color="#009900">name</font><font color="#990000">=</font><font color="#FF0000">"Page 4 title - including a view"</font> <font color="#009900">type</font><font color="#990000">=</font><font color="#FF0000">"general"</font><b><font color="#0000FF">&gt;</font></b>
+      <b><font color="#0000FF">&lt;entryAction</font></b> <b><font color="#0000FF">/&gt;</font></b>
+      <b><font color="#0000FF">&lt;exitAction/&gt;</font></b>
+      <b><font color="#0000FF">&lt;contentFile&gt;</font></b>page4.html<b><font color="#0000FF">&lt;/contentFile&gt;</font></b>
+      <i><font color="#9A1900">&lt;!--autoLoadLink will bring in a view from the TE --&gt;</font></i>
+      <b><font color="#0000FF">&lt;autoLoadLink&gt;</font></b>
+        <b><font color="#0000FF">&lt;pageWindow</font></b> <font color="#009900">target</font><font color="#990000">=</font><font color="#FF0000">"informationWindow"</font> <font color="#009900">raiseToTop</font><font color="#990000">=</font><font color="#FF0000">"y"</font><b><font color="#0000FF">&gt;</font></b>
+          <b><font color="#0000FF">&lt;splitPane</font></b> <font color="#009900">direction</font><font color="#990000">=</font><font color="#FF0000">"h"</font><b><font color="#0000FF">&gt;</font></b>
+            <b><font color="#0000FF">&lt;topPane&gt;</font></b>
+              <b><font color="#0000FF">&lt;panel</font></b> <font color="#009900">name</font><font color="#990000">=</font><font color="#FF0000">"main"</font> <font color="#009900">PrimaryContainer</font><font color="#990000">=</font><font color="#FF0000">"true"</font><b><font color="#0000FF">&gt;</font></b>
+                <b><font color="#0000FF">&lt;link</font></b> <font color="#009900">type</font><font color="#990000">=</font><font color="#FF0000">"action"</font> <font color="#009900">target</font><font color="#990000">=</font><font color="#FF0000">"_self"</font> <font color="#009900">window</font><font color="#990000">=</font><font color="#FF0000">"_self"</font> <font color="#009900">connectionRequired</font><font color="#990000">=</font><font color="#FF0000">"y"</font><b><font color="#0000FF">&gt;</font></b>
+                  <b><font color="#0000FF">&lt;parameterList&gt;</font></b>
+                    <b><font color="#0000FF">&lt;parameter</font></b> <font color="#009900">name</font><font color="#990000">=</font><font color="#FF0000">"table"</font><b><font color="#0000FF">&gt;</font></b>tablecat<b><font color="#0000FF">&lt;/parameter&gt;</font></b>
+                    <b><font color="#0000FF">&lt;parameter</font></b> <font color="#009900">name</font><font color="#990000">=</font><font color="#FF0000">"action"</font><b><font color="#0000FF">&gt;</font></b>list_table<b><font color="#0000FF">&lt;/parameter&gt;</font></b>
+                    <b><font color="#0000FF">&lt;parameter</font></b> <font color="#009900">name</font><font color="#990000">=</font><font color="#FF0000">"tabschema"</font><b><font color="#0000FF">&gt;</font></b>?SCHEMA?<b><font color="#0000FF">&lt;/parameter&gt;</font></b>
+                  <b><font color="#0000FF">&lt;/parameterList&gt;</font></b>
+                <b><font color="#0000FF">&lt;/link&gt;</font></b>
+              <b><font color="#0000FF">&lt;/panel&gt;</font></b>
+            <b><font color="#0000FF">&lt;/topPane&gt;</font></b>
+            <b><font color="#0000FF">&lt;bottomPane&gt;</font></b>
+              <b><font color="#0000FF">&lt;panel</font></b> <font color="#009900">name</font><font color="#990000">=</font><font color="#FF0000">"detail"</font><b><font color="#0000FF">/&gt;</font></b>
+            <b><font color="#0000FF">&lt;/bottomPane&gt;</font></b>
+          <b><font color="#0000FF">&lt;/splitPane&gt;</font></b>
+        <b><font color="#0000FF">&lt;/pageWindow&gt;</font></b>
+      <b><font color="#0000FF">&lt;/autoLoadLink&gt;</font></b>
+    <b><font color="#0000FF">&lt;/page&gt;</font></b>
+    <i><font color="#9A1900">&lt;!-- END: including a view --&gt;</font></i>
+    <i><font color="#9A1900">&lt;!-- BEGIN: graph --&gt;</font></i>
+    <b><font color="#0000FF">&lt;page</font></b> <font color="#009900">name</font><font color="#990000">=</font><font color="#FF0000">"Page 5 title - graphing"</font> <font color="#009900">type</font><font color="#990000">=</font><font color="#FF0000">"general"</font><b><font color="#0000FF">&gt;</font></b>
+      <b><font color="#0000FF">&lt;entryAction</font></b> <b><font color="#0000FF">/&gt;</font></b>
+      <b><font color="#0000FF">&lt;exitAction/&gt;</font></b>
+      <b><font color="#0000FF">&lt;contentFile&gt;</font></b>page5.html<b><font color="#0000FF">&lt;/contentFile&gt;</font></b>
+      <b><font color="#0000FF">&lt;loadActionScriptFile&gt;</font></b>graph.xml<b><font color="#0000FF">&lt;/loadActionScriptFile&gt;</font></b>
+    <b><font color="#0000FF">&lt;/page&gt;</font></b>
+    <i><font color="#9A1900">&lt;!-- END: graph --&gt;</font></i>
+  <b><font color="#0000FF">&lt;/pageList&gt;</font></b>
+<b><font color="#0000FF">&lt;/tutorial&gt;</font></b>
+</td></tr>
+</tt></pre>

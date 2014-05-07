@@ -1,0 +1,82 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2009 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+<table name="wrapper">
+	<sqlName>syscat.wrappers</sqlName>
+	<singular_name>Wrapper</singular_name>
+	<plural_name>Wrapper</plural_name>
+
+	<description>&lt;a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v9/index.jsp?topic=/com.ibm.websphere.ii.db2udb.federation.overview.doc/prod_overview/cfpint07.html');"&gt;Federated wrapper&lt;/a&gt;</description>
+	<orderBy name="WRAPNAME" direction="A"/>
+	<display_columns>
+		<col type="column" name="WRAPNAME"/>
+		<col type="reference" name="options"/>
+		<col type="reference" name="servers"/>
+		<col type="column" name="WRAPTYPE"/>
+		<col type="column" name="WRAPVERSION"/>
+		<col type="column" name="LIBRARY"/>
+		<col type="column" name="REMARKS"/>
+	</display_columns>
+	<disableEdit/>
+	
+	<reference name="options">
+		<title>Options</title>
+		<reftype>table</reftype>
+		<refvalue>Federation/wrapoptions</refvalue>
+		<icon>images/icon-link-calendar.gif</icon>
+		<ref foreign_column_name="WRAPNAME">
+			<localColumnName>WRAPNAME</localColumnName>
+		</ref>
+	</reference>	
+	<reference name="Servers">
+		<panel>server</panel>
+		<title>Servers</title>
+		<reftype>table</reftype>
+		<refvalue>Federation/server</refvalue>
+		<icon>images/icon-link-calendar.gif</icon>
+		<ref foreign_column_name="wrapName">
+			<localColumnName>WRAPNAME</localColumnName>
+		</ref>
+	</reference>		
+	<column name="WRAPNAME">
+		<sqlName>WRAPNAME</sqlName>
+		<title>Name</title>
+		<type></type>
+		<primaryKey/>        
+	</column>
+	<column name="WRAPTYPE">
+		<sqlName>WRAPTYPE</sqlName>
+		<title>Type</title>
+		<type></type>
+		<drillEnable/>
+	</column>
+	<column name="WRAPVERSION">
+		<sqlName>WRAPVERSION</sqlName>
+		<title>Version</title>
+		<type>s</type>
+	</column>
+	<column name="LIBRARY">
+		<sqlName>LIBRARY</sqlName>
+		<title>Library</title>
+		<type>s</type>
+	</column>
+	<column name="REMARKS">
+		<sqlName>REMARKS</sqlName>
+		<title>Remarks</title>
+		<type>s</type>
+	</column>
+</table>

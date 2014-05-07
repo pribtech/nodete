@@ -1,0 +1,98 @@
+<!--
+   
+  
+  Copyright Independent Systems Integrators Pty Ltd 2008 All rights reserved.
+  
+  Updated by Author: Peter Kohlmann
+  Copyright IBM Canada Ltd 2008 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+ -->
+<table name="monWorkload">
+	<sql_name>monTest</sql_name>
+	<singular_name>Long running queries</singular_name>
+	<plural_name>Long running queries</plural_name>
+	<inlinequery>
+<![CDATA[
+SELECT AGENT_ID, APPL_NAME, APPL_STATUS, STMT_TEXT, 
+       ELAPSED_TIME_MIN, DBPARTITIONNUM 
+   FROM SYSIBMADM.LONG_RUNNING_SQL ORDER BY ELAPSED_TIME_MIN DESC
+]]>
+	</inlinequery>
+	<messages><SQL0551N>Security issue. Please install "Monitoring Switches/Security" in Tools -> Installed Components</SQL0551N></messages>
+	<description>This pane gives the information about all long running queries executing in the database</description>
+	<order_by_index/>
+	<display_columns>
+		<col type="column" name="AGENT_ID"/>
+		<col type="column" name="APPL_NAME"/>
+		<col type="column" name="APPL_STATUS"/>
+		<col type="column" name="ELAPSED_TIME_MIN"/>
+		<col type="column" name="STMT_TEXT"/>
+		<col type="column" name="DBPARTITIONNUM"/>
+	</display_columns>
+	<column name="AGENT_ID">
+		<c_sql_name>AGENT_ID</c_sql_name>
+		<c_title>Agent ID</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+		<c_reference name="instance">
+			<reftype>table</reftype>
+			<refvalue>Monitor/monConnection</refvalue>
+			<icon>images/sout.gif</icon>
+			<ref foreign_column_name="APPLICATION_HANDLE">
+				<local_column_name>AGENT_ID</local_column_name>
+			</ref>
+		</c_reference>
+	</column>
+	<column name="APPL_NAME">
+		<c_sql_name>APPL_NAME</c_sql_name>
+		<c_title>Application Name</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+		<c_pkey>p</c_pkey>
+		
+		<c_column_mask_file>masks/skipNulls.xml</c_column_mask_file>
+	</column>
+	<column name="APPL_STATUS">
+		<c_sql_name>APPL_STATUS</c_sql_name>
+		<c_title>Application Status</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+		
+		<c_column_mask_file>masks/skipNulls.xml</c_column_mask_file>
+	</column>
+	<column name="STMT_TEXT">
+		<c_sql_name>STMT_TEXT</c_sql_name>
+		<c_title>Statement</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+		
+		<c_column_mask_file>masks/skipNulls.xml</c_column_mask_file>
+	</column>
+	<column name="ELAPSED_TIME_MIN">
+		<c_sql_name>ELAPSED_TIME_MIN</c_sql_name>
+		<c_title>Elapsed time (in min)</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+		<c_column_mask_file>masks/skipNulls.xml</c_column_mask_file>
+	</column>
+	<column name="DBPARTITIONNUM">
+		<c_sql_name>DBPARTITIONNUM</c_sql_name>
+		<c_title>DBPARTITIONNUM</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+		
+		<c_column_mask_file>masks/skipNulls.xml</c_column_mask_file>
+	</column>
+	
+</table>

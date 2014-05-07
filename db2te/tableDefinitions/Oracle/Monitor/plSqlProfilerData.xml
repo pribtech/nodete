@@ -1,0 +1,149 @@
+<!--
+  Peter Prib, Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2012 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<table name="plSqlProfilerData">
+	<sqlName>J2.PLSQL_PROFILER_DATA</sqlName>
+	<singularName>PL/SQL Profiler Data</singularName>
+	<pluralName>PL/SQL Profiler Data</pluralName>
+	<inlinequery>
+		SELECT D.*,S.TEXT
+			,to_char(100*d.TOTAL_TIME/nullif(r.RUN_TOTAL_TIME,0) , '990.99') AS run_percent
+			,to_char(100*d.TOTAL_TIME/nullif(U.TOTAL_TIME,0) , '990.99') AS total_percent
+		FROM "?".PLSQL_PROFILER_DATA D
+		JOIN "?".PLSQL_PROFILER_UNITS U
+		  ON  D.RUNID        = U.RUNID
+		  AND D.UNIT_NUMBER  = U.UNIT_NUMBER
+		JOIN "?".PLSQL_PROFILER_RUNS R
+		  ON  U.RUNID        = R.RUNID
+		LEFT JOIN  sys.dba_source S
+		  ON  S.OWNER      = U.UNIT_OWNER
+		  AND S.NAME       = U.UNIT_NAME
+		  AND S.TYPE       = U.UNIT_TYPE
+		  AND S.LINE       = D.LINE#
+	</inlinequery>
+	<parameters>
+		<parm name="tabSchema">
+			<title>Schema</title>
+			<value>no schema</value>
+			<type>n</type>
+		</parm>
+		<parm name="tabSchema">
+			<title>Schema</title>
+			<value>no schema</value>
+			<type>n</type>
+		</parm>
+		<parm name="tabSchema">
+			<title>Schema</title>
+			<value>no schema</value>
+			<type>n</type>
+		</parm>
+	</parameters>
+	<description/>
+	<disableEdit/>
+	<output>
+		<type name="DDL" destination="" title="" generator=""/>
+	</output>
+	<order_by_index name="runid" direction="D"/>
+	<order_by_index name="unit_number" direction="A"/>
+	<order_by_index name="total_time" direction="D"/>
+	<displayColumns>
+		<col type="column" name="runid"/>
+		<col type="column" name="unit_number"/>
+		<col type="column" name="line#"/>
+		<col type="column" name="run_percent"/>
+		<col type="column" name="total_percent"/>
+		<col type="column" name="total_occur"/>
+		<col type="column" name="total_time"/>
+		<col type="column" name="min_time"/>
+		<col type="column" name="max_time"/>
+		<col type="column" name="text"/>
+	</displayColumns>
+	<column name="runid">
+		<sql_name>RUNID</sql_name>
+		<title>Run Id.</title>
+		<type>n</type>
+	</column>
+	<column name="unit_number">
+		<sql_name>UNIT_NUMBER</sql_name>
+		<title>Unit No.</title>
+		<type>n</type>
+	</column>
+	<column name="line#">
+		<sql_name>LINE#</sql_name>
+		<title>Line</title>
+		<type>n</type>
+	</column>
+	<column name="total_occur">
+		<sql_name>TOTAL_OCCUR</sql_name>
+		<title>Total occur</title>
+		<type>n</type>
+		<formatNumber separator=","/>
+	</column>
+	<column name="run_percent">
+		<sql_name>RUN_PERCENT</sql_name>
+		<title>Run %</title>
+		<type>n</type>
+		<graphattributes flipColor="n"/>
+	</column>
+	<column name="total_percent">
+		<sql_name>TOTAL_PERCENT</sql_name>
+		<title>Object %</title>
+		<type>n</type>
+		<graphattributes flipColor="n"/>
+	</column>
+	<column name="total_time">
+		<sql_name>TOTAL_TIME/1000000000</sql_name>
+		<title>Total time</title>
+		<type>n</type>
+		<formatNumber toDuration="ss"/> 
+	</column>
+	<column name="min_time">
+		<sql_name>MIN_TIME/1000000000</sql_name>
+		<title>Min time</title>
+		<type>n</type>
+		<formatNumber toDuration="ss"/> 
+	</column>
+	<column name="max_time">
+		<sql_name>MAX_TIME/1000000000</sql_name>
+		<title>Max time</title>
+		<type>n</type>
+		<formatNumber toDuration="ss"/> 
+	</column>
+	<column name="spare1">
+		<sql_name>SPARE1</sql_name>
+		<title>Spare1</title>
+		<type>n</type>
+	</column>
+	<column name="spare2">
+		<sql_name>SPARE2</sql_name>
+		<title>Spare2</title>
+		<type>n</type>
+	</column>
+	<column name="spare3">
+		<sql_name>SPARE3</sql_name>
+		<title>Spare3</title>
+		<type>n</type>
+	</column>
+	<column name="spare4">
+		<sql_name>SPARE4</sql_name>
+		<title>Spare4</title>
+		<type>n</type>
+	</column>
+	<column name="TEXT">
+		<sql_name>TEXT</sql_name>
+		<title>Text</title>
+		<type>s</type>
+	</column>
+</table>

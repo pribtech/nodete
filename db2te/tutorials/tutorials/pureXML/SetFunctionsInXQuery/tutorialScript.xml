@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tutorial name="Set Functions in XQuery" autoCloseWindowsInRightStage="true" autoClearAdhocResults="true">
+    <flowRestriction>Free</flowRestriction>
+    <closeAction/>
+    <openAction />
+    <globalCodeHighlightOptions highlightCode = "true" />
+    <pageList>
+    	<page name="Set Functions in XQuery" type="intro">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>01_SetFunctionsInXQuery.html</contentFile>
+            <autoLoadLink>
+							<pageWindow target="informationWindow">
+							<panel name="main">
+							<URL>
+							http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.xml.doc/doc/xqrfncategory.html
+							</URL>
+							</panel>
+							</pageWindow>
+						</autoLoadLink>            
+        </page>
+        
+    <page name="Functions on a Set" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>02_FunctionsOnASet.html</contentFile>
+            <SQLFile>01_FunctionsOnASet.sql</SQLFile>
+            <SQLExecutionOptions xmlinline="true" xml="true" clob="false" blob="false" dbclob="false" termChar=";" cursor="forward" commitPerStmt="true" numRowReturned="100" />
+        </page><page name="Set Manipulation Functions" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>03_SetManipulationFunctions.html</contentFile>
+            <SQLFile>02_SetManipulationFunctions.sql</SQLFile>
+            <SQLExecutionOptions xmlinline="true" xml="true" clob="false" blob="false" dbclob="false" termChar=";" cursor="forward" commitPerStmt="true" numRowReturned="100" />
+        </page><page name="Get the nth item of a set" type="last">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>04_GetTheNthItemOfASet.html</contentFile>
+            <SQLFile>03_GetTheNthItemOfASet.sql</SQLFile>
+            <SQLExecutionOptions xmlinline="true" xml="true" clob="false" blob="false" dbclob="false" termChar=";" cursor="forward" commitPerStmt="true" numRowReturned="100" />
+        </page></pageList>
+</tutorial>

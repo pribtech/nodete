@@ -1,0 +1,77 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2013 All rights reserved.
+  
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+<table name="users">
+	<sqlName>pg_user</sqlName>
+	<singularName>User</singularName>
+	<pluralName>Users</pluralName>
+	<description></description>
+	<orderBy name="usename" direction="A"/>
+	<disableEdit/>
+	<output>
+		<type name="DDL" destination="" title="" generator=""/>
+	</output>
+	<displayColumns>
+		<col type="column" name="usename"/>
+		<col type="column" name="usesysid"/>
+		<col type="column" name="usecreatedb"/>
+		<col type="column" name="usesuper"/>
+		<col type="column" name="usecatupd"/>
+		<col type="column" name="userepl"/>
+		<col type="column" name="valuntil"/>
+		<col type="column" name="useconfig"/>
+	</displayColumns>
+	<column name="usename">
+		<sqlName>usename</sqlName>
+		<title>Name</title>
+	</column>
+	<column name="usesysid">
+		<sqlName>usesysid</sqlName>
+		<title>Sysid</title>
+		<type>n</type>
+	</column>
+	<column name="usecreatedb">
+		<sqlName>usecreatedb</sqlName>
+		<title>Created</title>
+		<type>n</type>
+	</column>
+	<column name="usesuper">
+		<sqlName>usesuper</sqlName>
+		<title>Super</title>
+		<type>n</type>
+	</column>
+	<column name="usecatupd">
+		<sqlName>usecatupd</sqlName>
+		<title>Updated</title>
+		<type>n</type>
+	</column>
+	<column name="userepl">
+		<sqlName>userepl</sqlName>
+		<title>Replace</title>
+		<type>n</type>
+	</column>
+	<column name="valuntil">
+		<sqlName>valuntil</sqlName>
+		<title>Valid Until</title>
+		<type>n</type>
+	</column>
+	<column name="useconfig">
+		<sqlName>useconfig</sqlName>
+		<title>Config</title>
+		<type>n</type>
+	</column>
+</table>

@@ -1,0 +1,219 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2013 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+<table name="systemctl">
+	<sqlName>systemctl</sqlName>
+	<singularName>Service</singularName>
+	<pluralName>Services</pluralName>
+	<inlinequery>
+<![CDATA[
+ systemctl  -t service --all --no-pager --no-legend --full | sort
+]]>
+	</inlinequery>
+	<filters>
+		<column name="Line" operator="is empty"/>
+	</filters>
+	<rowStyle interfaceColumn='active'>
+		<option eq='failed' style='ERROR'/>
+		<option gt='inactive' style='WARNING'/>
+	</rowStyle>
+	<output>
+		<type name="DDL" destination="" title="" generator=""/>
+		<type name="SYSTEMCTLSTATUS" destination="adhoc" title="systemctl status" generator="XSL/compareSystemctl.xsl">
+			<parameterList>
+				<parameter name="action" type="raw"><value>status</value></parameter>
+			</parameterList>
+		</type>
+		<type name="SYSTEMCTLRESTART" destination="adhoc" title="systemctl restart" generator="XSL/compareSystemctl.xsl">
+			<parameterList>
+				<parameter name="action" type="raw"><value>restart</value></parameter>
+			</parameterList>
+		</type>
+		<type name="SYSTEMCTLSTART" destination="adhoc" title="systemctl start" generator="XSL/compareSystemctl.xsl">
+			<parameterList>
+				<parameter name="action" type="raw"><value>start</value></parameter>
+			</parameterList>
+		</type>
+		<type name="SYSTEMCTLSTOP" destination="adhoc" title="systemctl stop" generator="XSL/compareSystemctl.xsl">
+			<parameterList>
+				<parameter name="action" type="raw"><value>stop</value></parameter>
+			</parameterList>
+		</type>
+		<type name="SYSTEMCTLKILL" destination="adhoc" title="systemctl kill" generator="XSL/compareSystemctl.xsl">
+			<parameterList>
+				<parameter name="action" type="raw"><value>kill</value></parameter>
+			</parameterList>
+		</type>
+		<type name="SYSTEMCTLRELOAD" destination="adhoc" title="systemctl reload" generator="XSL/compareSystemctl.xsl">
+			<parameterList>
+				<parameter name="action" type="raw"><value>reload</value></parameter>
+			</parameterList>
+		</type>
+	</output>
+	<description></description>
+	<displayColumns>
+		<col type="column" name="service"/>
+		<col type="column" name="load"/>
+		<col type="column" name="active"/>
+		<col type="column" name="sub"/>
+		<col type="column" name="description"/>
+	</displayColumns>
+	<column name="Line">
+		<sqlName>Line</sqlName>
+		<title>Line</title>
+		<sortDisable/>
+	</column>
+	<column name="service">
+		<generated>word,Line,1</generated>
+		<title>Service</title>
+		<sortDisable/>
+		<type>s</type>
+	</column>
+	<column name="serviceName">
+		<generated>word,Line,1</generated>
+		<title>Service</title>
+		<sortDisable/>
+		<type>s</type>
+	</column>
+	<column name="load">
+		<generated>word,Line,2</generated>
+		<title>Load</title>
+		<sortDisable/>
+		<style>
+			<option eq="error" style="ERROR"/>
+		</style>
+	</column>
+	<column name="active">
+		<generated>word,Line,3</generated>
+		<title>Active</title>
+		<sortDisable/>
+		<style>
+			<option eq="dead" style="ERROR"/>
+			<option eq="inactive" style="WARNING"/>
+		</style>
+	</column>
+	<column name="sub">
+		<generated>word,Line,4</generated>
+		<title>Sub</title>
+		<sortDisable/>
+		<style>
+			<option eq="dead" style="ERROR"/>
+			<option eq="exited" style="WARNING"/>
+		</style>
+	</column>
+	<column name="description">
+		<generated>getStringAfterDelimiter,Line,4</generated>
+		<title>Description</title>
+		<sortDisable/>
+	</column>
+	<action name="start">
+		<title>Start</title>
+		<icon>images/trash.gif</icon>   
+    	<actionScript>
+    		<task>
+				<assignSharedConstant name="sql" type="fixed">
+					<value>
+<![CDATA[
+systemctl start ?service? 
+]]>
+					</value>
+				</assignSharedConstant>
+		   		<callGlobalAction name="sqlExecution"/>
+	   		</task>
+    	</actionScript>
+    </action>
+	<action name="stop">
+		<title>Stop</title>
+		<icon>images/trash.gif</icon>   
+    	<actionScript>
+    		<task>
+				<assignSharedConstant name="sql" type="fixed">
+					<value>
+<![CDATA[
+systemctl stop ?service? 
+]]>
+					</value>
+				</assignSharedConstant>
+		   		<callGlobalAction name="sqlExecution"/>
+	   		</task>
+    	</actionScript>
+    </action>
+	<action name="restart">
+		<title>Restart</title>
+		<icon>images/trash.gif</icon>   
+    	<actionScript>
+    		<task>
+				<assignSharedConstant name="sql" type="fixed">
+					<value>
+<![CDATA[
+systemctl restart ?service? 
+]]>
+					</value>
+				</assignSharedConstant>
+		   		<callGlobalAction name="sqlExecution"/>
+	   		</task>
+    	</actionScript>
+    </action>
+	<action name="status">
+		<title>Status</title>
+		<icon>images/trash.gif</icon>   
+    	<actionScript>
+    		<task>
+				<assignSharedConstant name="sql" type="fixed">
+					<value>
+<![CDATA[
+systemctl status ?service? 
+]]>
+					</value>
+				</assignSharedConstant>
+		   		<callGlobalAction name="sqlExecution"/>
+	   		</task>
+    	</actionScript>
+    </action>
+	<action name="reload">
+		<title>Reload</title>
+		<icon>images/trash.gif</icon>   
+    	<actionScript>
+    		<task>
+				<assignSharedConstant name="sql" type="fixed">
+					<value>
+<![CDATA[
+systemctl reload ?service? 
+]]>
+					</value>
+				</assignSharedConstant>
+		   		<callGlobalAction name="sqlExecution"/>
+	   		</task>
+    	</actionScript>
+    </action>
+	<action name="kill">
+		<title>Kill</title>
+		<icon>images/trash.gif</icon>   
+    	<actionScript>
+    		<task>
+				<assignSharedConstant name="sql" type="fixed">
+					<value>
+<![CDATA[
+systemctl kill ?service? 
+]]>
+					</value>
+				</assignSharedConstant>
+		   		<callGlobalAction name="sqlExecution"/>
+	   		</task>
+    	</actionScript>
+    </action>
+</table>

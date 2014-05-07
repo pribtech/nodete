@@ -1,0 +1,215 @@
+<table name="CompEstimate">
+	<sqlName>COMPESTIMATE</sqlName>
+	<function>ADMIN_GET_TAB_COMPRESS_INFO</function>
+	<singularName>Compression Estimate</singularName>
+	<pluralName>Compression Estimate</pluralName>
+	<description>Each row contains a detailed estimate of the potential savings from 
+		&lt;a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.admin.dbobj.doc/doc/c0023489.html?noframes=true');"&gt;row compression&lt;/a&gt;.
+		This list is generated from the 
+		&lt;a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.sql.rtn.doc/doc/r0052896.html?noframes=true');"&gt;ADMINTABCOMPRESSINFO&lt;/a&gt; administrative view.
+	</description>
+	<orderByIndex name="BYTES_SAVED_PERCENT" direction="D"/>
+	<displayColumns>
+		<col type="reference" name="tab"/>	
+		<col type="column" name="TABSCHEMA"/>
+		<col type="column" name="TABNAME"/>
+		<col type="action" name="reorg"/>
+		<col type="column" name="BYTES_SAVED_PERCENT"/>		
+		<col type="column" name="COMPRESS_ATTR"/>
+		<col type="column" name="DICT_BUILDER"/>
+		<col type="column" name="COMPRESS_DICT_SIZE"/>
+		<col type="column" name="EXPAND_DICT_SIZE"/>
+		<col type="column" name="ROWS_SAMPLED"/>
+	  	<col type="column" name="AVG_COMPRESS_REC_LENGTH"/>		
+		<col type="column" name="DICT_BUILD_TIMESTAMP"/>		
+	</displayColumns>
+	<disable_edit/>
+	<parameters>
+		<parm name="tabschema">
+			<title>Schema Name</title>
+			<type>s</type>
+		</parm>
+		<parm name="tabname">
+			<title>Table Name</title>
+			<value></value>
+			<type>s</type>
+		</parm>
+		<parm name="execmode">
+			<title>Execution Mode</title>
+			<value>ESTIMATE</value>
+			<type>s</type>
+		</parm>
+	</parameters>
+	<reference name="tab">
+		<title>Table</title>
+		<reftype>displayRow</reftype>
+		<refvalue>tablecat</refvalue>
+		<icon>images/icon-link-calendar.gif</icon>
+		<ref foreignColumnName="tabschema">
+			<localColumnName>TABSCHEMA</localColumnName>
+		</ref>
+		<ref foreignColumnName="tabname">
+			<localColumnName>TABNAME</localColumnName>
+		</ref>
+	</reference>    		
+	<column name="TABSCHEMA">
+		<sqlName>TABSCHEMA</sqlName>
+		<title>Schema</title>
+		<primaryKey/>
+		<drillEnabled/>
+	</column>
+	<column name="TABNAME">
+		<sqlName>TABNAME</sqlName>
+		<title>Name</title>
+		<primaryKey/>
+		<drillEnabled/>
+	</column>
+	<column name="COMPRESS_ATTR">
+		<sqlName>COMPRESS_ATTR</sqlName>
+		<title>Compressed</title>
+		<drillEnabled/>
+		<columnMask>
+			<valueMask value="Y"><mask>Row Compression</mask></valueMask>
+			<valueMask value="N"><mask>No Compression</mask></valueMask>
+		</columnMask>        
+	</column>
+	<column name="DICT_BUILDER">
+        <sqlName>DICT_BUILDER</sqlName>
+        <title>Builder</title>
+        <type>s</type>
+		<columnMask>
+			<valueMask value="INSPECT"><mask>Inspection</mask></valueMask>
+			<valueMask value="LOAD"><mask>Load</mask></valueMask>
+			<valueMask value="NOT BUILD"><mask>No dictionary</mask></valueMask>
+			<valueMask value="REDISTRIBUTE"><mask>Redistribute</mask></valueMask>
+			<valueMask value="REORG"><mask>Reorganization</mask></valueMask>
+			<valueMask value="TABLE GROWTH"><mask>Growth</mask></valueMask>
+			<valueMask value="TABLE FUNCTION"><mask>Estimate</mask></valueMask>					
+		</columnMask>        
+	</column>
+	<column name="DICT_BUILD_TIMESTAMP">
+		<sqlName>DICT_BUILD_TIMESTAMP</sqlName>
+		<title>Build Time</title>
+		<type>n</type>
+	</column>
+	<column name="COMPRESS_DICT_SIZE">
+		<sqlName>COMPRESS_DICT_SIZE</sqlName>
+		<title>Dictionary Size (bytes)</title>
+		<type>n</type>
+	</column>
+	<column name="EXPAND_DICT_SIZE">
+		<sqlName>EXPAND_DICT_SIZE</sqlName>
+		<title>Expansion Dictionary Size (bytes)</title>
+		<type>n</type>
+	</column>
+	<column name="ROWS_SAMPLED">
+		<sqlName>ROWS_SAMPLED</sqlName>
+		<title>Rows Sampled</title>
+		<type>n</type>
+	</column>
+	<column name="PAGES_SAVED_PERCENT">
+		<sqlName>PAGES_SAVED_PERCENT</sqlName>
+		<title>Pages Saved</title>
+		<type>bg</type>
+		<graphattributes flipColor="y">		
+			<value>100.0</value>
+	  </graphattributes>	
+	</column>
+	<column name="BYTES_SAVED_PERCENT">
+		<sqlName>BYTES_SAVED_PERCENT</sqlName>
+		<title>Bytes Saved</title>
+		<type>bg</type>		
+		<graphattributes flipColor="y">		
+			<value>100.0</value>
+	  </graphattributes>	
+	</column>
+	<column name="AVG_COMPRESS_REC_LENGTH">
+		<sqlName>AVG_COMPRESS_REC_LENGTH</sqlName>
+		<title>Compression Row Length</title>
+		<type>n</type>
+	</column>
+<!-- added peter prib, Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2009 All rights reserved. -->
+	<action name="dropTable">
+		<title>Drop</title>
+		<icon>images/trash.gif</icon>   
+    	<actionScript>
+    		<task>
+		    	<assignSharedConstant name="objectType" type="raw">
+					<value>TABLE</value>
+				</assignSharedConstant>
+				<assignSharedConstant name="objectName" type="fixed">
+					<value>"?tabschema?"."?tabname?"</value>
+				</assignSharedConstant>
+		   		<callGlobalAction name="dropSQLObject"/>
+	   		</task>
+    	</actionScript>
+    </action>
+	<action name="reorg">
+		<title>Reorg</title>
+    	<actionScript>
+    		<task>
+		    	<assignSharedConstant name="table-name" type="fixed">
+					<value>"?tabschema?"."?tabname?"</value>
+				</assignSharedConstant>
+		    	<assignSharedConstant name="command" type="raw">
+					<value>SQL/adminCmdReorg</value>
+				</assignSharedConstant>
+		   		<callGlobalAction name="commandExecution"/>
+	   		</task>
+    	</actionScript>
+    </action>
+	<action name="setCompressYes">
+		<title>Set Compress</title>
+		<icon>images/switch.gif</icon>	
+		<actionScript name="setCompressYesScript" type="form">
+			<message>
+alter table ?table-name? compress yes
+			</message>
+			<parameterList>
+				<parameter name="table-name" type="fixed">
+					<value>"?tabschema?"."?tabname?"</value>
+				</parameter>
+			</parameterList>
+			<followOnAction condition="true">
+				<task>
+					<action name="executeSetCompress" type="serverAction">
+						<parameterList>
+							<parameter name="action" type="fixed">
+								<value>executeSQL</value>
+							</parameter>
+							<parameter name="SQL" type="fixed">
+								<value>alter table ?table-name? compress yes</value>
+							</parameter>
+							<parameter name="parameter[table-name]" type="fixed">
+								<value>"?tabschema?"."?tabname?"</value>
+							</parameter>
+						</parameterList>
+						<followOnAction condition="true" negCondition="true">
+							<task>
+								<action name="raiseError" type="alert">
+									<message>Database Configuration Parameter Change Failed: ?ERROR_MESSAGE?</message>
+									<parameterList>
+										<parameter name="ERROR_MESSAGE" type="returnObject">
+											<value>executeSetCompress.returnValue.STMTMSG</value>
+										</parameter>
+									</parameterList>
+								</action>
+							</task>
+						</followOnAction>
+						<followOnAction condition="true">
+							<task>
+								<action name="raiseError" type="alert">
+									<message>Database Configuration Parameter Change Succeeded</message>
+								</action>
+							</task>
+							<task>
+								<windowReload/>
+							</task>
+						</followOnAction>
+					</action>
+				</task>
+			</followOnAction>
+		</actionScript>
+	</action>  		
+<!-- added end --> 	
+</table>

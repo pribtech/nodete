@@ -1,0 +1,46 @@
+<h3>Dynamic Columns in TE Views</h3>
+<hr>
+In pages 3, 4 and 5, we collected the results from monitoring table function, then ran some workload and then collected the results again to analyze the difference. This can easily be done by using dynamic columns in Technology Explorer. Dynamic columns gives you the deltas in column values. This delta is the 'change' in column value. Values are collected after certain time interval specified by the user.
+
+<p>
+Dynamic column calculates the changes in values and displays these values as rates. It looks like X/n where 'X' is the change in base value for 'n' period of time. 
+
+Lets go back to our SQL statement: 
+
+<PRE><a class="sourceChange">SELECT APPLICATION_HANDLE, 
+       APPLICATION_NAME,
+	   TOTAL_CPU_TIME, 
+	   TOTAL_ACT_TIME, 
+	   ACT_COMPLETED_TOTAL, 
+	   TOTAL_WAIT_TIME, 
+	   CLIENT_IDLE_WAIT_TIME
+	FROM TABLE(MON_GET_CONNECTION(NULL, -1)) as t;
+</a></PRE><BR>
+
+In this query, TOTAL_CPU_TIME column is cumulative and will keep on increasing. If we can get the rate out of this column, then it will show the amount of CPU an application has consumed in last n seconds.
+
+<P>Let us add a dynamic column in the view we created in previous pages. Open testTableDef.xml, you should get a similar XML profile as shown on the right pane.
+
+To add a dynamic column in this view, we need to add following code in this XML profile.
+<PRE>
+<a class="sourceAdd">&lt;col type="dynamiccolumn" name="totalIndexReadRate"/&gt;
+&lt;dynamicColumn name="commitRate" type="DELTA_NORMALIZED" column="commit_sql_stmts" title="Commit Rate"/&gt;
+&lt;column name="TOTAL_INDEX_READS"&gt;
+	&lt;c_sql_name&gt;TOTAL_INDEX_READS&lt;/c_sql_name&gt;
+	&lt;c_title&gt;Total index reads&lt;/c_title&gt;
+	&lt;c_presentation&gt;n&lt;/c_presentation&gt;
+	&lt;c_drill&gt;n&lt;/c_drill&gt;
+&lt;/column&gt;
+</a></PRE>
+<BR>
+<P>
+Define a primary key :
+<ul>
+	<li>In order to generate a dynamic view with real time data in TE, you need to identify a primary key in the table definition. <BR>
+Refer to the right pane, the c_pkey element is added to the APPLICATION_HANDLE column. We choose this column to be the primary key because application handle must be unique. </li>
+ 
+		<ul><li><B>For example : </B><BR><a class="sourceAdd">&lt;c_pkey&gt;y&lt;/c_pkey&gt;</a></li></ul>
+	</li>
+</ul>
+
+

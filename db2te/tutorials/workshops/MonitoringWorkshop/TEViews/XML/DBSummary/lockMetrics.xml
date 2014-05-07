@@ -1,0 +1,120 @@
+<!--
+  Author: Sanjay Kumar
+  
+  Copyright Independent Systems Integrators Pty Ltd 2008 All rights reserved.
+  
+  Updated by Author: Peter Kohlmann
+  Copyright IBM Canada Ltd 2008 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+<table name="lockMetrics">
+	<sql_name>lockMetrics</sql_name>
+	<singular_name>Locking</singular_name>
+	<plural_name>Locking</plural_name>
+	<inlinequery>
+<![CDATA[
+SELECT SUM(LOCK_WAIT_TIME) LOCK_WAIT_TIME_TOTAL,
+       SUM(LOCK_WAITS) LOCK_WAITS_TOTAL,
+	   SUM(LOCK_TIMEOUTS) LOCK_TIMEOUTS_TOTAL,
+	   SUM(DEADLOCKS) DEADLOCKS_TOTAL,
+	   SUM(LOCK_ESCALS) LOCK_ESCALS_TOTAL,
+	   CASE WHEN SUM(ACT_COMPLETED_TOTAL) <> 0 THEN SUM(LOCK_WAIT_TIME)/SUM(ACT_COMPLETED_TOTAL) ELSE 0 END LOCK_WAIT_TIME_PER_ACTIVITY,
+       CASE WHEN SUM(ACT_COMPLETED_TOTAL) <> 0 THEN SUM(LOCK_WAITS)/SUM(ACT_COMPLETED_TOTAL) ELSE 0 END LOCK_WAITS_PER_ACTIVITY,
+	   CASE WHEN SUM(ACT_COMPLETED_TOTAL) <> 0 THEN SUM(LOCK_TIMEOUTS)/SUM(ACT_COMPLETED_TOTAL) ELSE 0 END LOCK_TIMEOUTS_PER_ACTIVITY,
+	   CASE WHEN SUM(ACT_COMPLETED_TOTAL) <> 0 THEN SUM(DEADLOCKS)/SUM(ACT_COMPLETED_TOTAL) ELSE 0 END DEADLOCKS_PER_ACTIVITY,
+	   CASE WHEN SUM(ACT_COMPLETED_TOTAL) <> 0 THEN SUM(LOCK_ESCALS)/SUM(ACT_COMPLETED_TOTAL) ELSE 0 END LOCK_ESCALS_PER_ACTIVITY
+	FROM TABLE(MON_GET_SERVICE_SUBCLASS('', '',-2)) AS METRICS
+]]>
+	</inlinequery>
+	<description>
+	</description>
+	<order_by_index/>
+	<display_columns>
+		<col type="column" name="LOCK_WAIT_TIME_TOTAL"/>
+		<col type="column" name="LOCK_WAIT_TIME_PER_ACTIVITY"/>
+		<col type="column" name="LOCK_WAITS_TOTAL"/>
+		<col type="column" name="LOCK_WAITS_PER_ACTIVITY"/>
+		<col type="column" name="LOCK_TIMEOUTS_TOTAL"/>
+		<col type="column" name="LOCK_TIMEOUTS_PER_ACTIVITY"/>
+		<col type="column" name="DEADLOCKS_TOTAL"/>
+		<col type="column" name="DEADLOCKS_PER_ACTIVITY"/>
+		<col type="column" name="LOCK_ESCALS_TOTAL"/>
+		<col type="column" name="LOCK_ESCALS_PER_ACTIVITY"/>
+	</display_columns>
+	<column name="LOCK_WAIT_TIME_TOTAL">
+		<c_sql_name>LOCK_WAIT_TIME_TOTAL</c_sql_name>
+		<c_title>Total Lockwait time</c_title>
+		<c_presentation/>
+		<c_drill>y</c_drill>
+		<c_pkey>p</c_pkey>
+	</column>
+	<column name="LOCK_WAITS_TOTAL">
+		<c_sql_name>LOCK_WAITS_TOTAL</c_sql_name>
+		<c_title>Total Lockwaits</c_title>
+		<c_presentation/>
+		<c_drill>y</c_drill>
+		<c_pkey>p</c_pkey>
+	</column>
+	<column name="LOCK_TIMEOUTS_TOTAL">
+		<c_sql_name>LOCK_TIMEOUTS_TOTAL</c_sql_name>
+		<c_title>Total Lock timeouts</c_title>
+		<c_presentation>n</c_presentation>
+	</column>
+	<column name="DEADLOCKS_TOTAL">
+		<c_sql_name>DEADLOCKS_TOTAL</c_sql_name>
+		<c_title>Total Deadlocks</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+		<c_pkey>p</c_pkey>
+	</column>
+	<column name="LOCK_ESCALS_TOTAL">
+		<c_sql_name>LOCK_ESCALS_TOTAL</c_sql_name>
+		<c_title>Total Lock Escalations</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="LOCK_WAIT_TIME_PER_ACTIVITY">
+		<c_sql_name>LOCK_WAIT_TIME_PER_ACTIVITY</c_sql_name>
+		<c_title>Lockwait time per activity</c_title>
+		<c_presentation/>
+		<c_drill>y</c_drill>
+		<c_pkey>p</c_pkey>
+	</column>
+	<column name="LOCK_WAITS_PER_ACTIVITY">
+		<c_sql_name>LOCK_WAITS_PER_ACTIVITY</c_sql_name>
+		<c_title>Lockwaits per activity</c_title>
+		<c_presentation/>
+		<c_drill>y</c_drill>
+		<c_pkey>p</c_pkey>
+	</column>
+	<column name="LOCK_TIMEOUTS_PER_ACTIVITY">
+		<c_sql_name>LOCK_TIMEOUTS_PER_ACTIVITY</c_sql_name>
+		<c_title>Lock timeouts per activity</c_title>
+		<c_presentation>n</c_presentation>
+	</column>
+	<column name="DEADLOCKS_PER_ACTIVITY">
+		<c_sql_name>DEADLOCKS_PER_ACTIVITY</c_sql_name>
+		<c_title>Deadlocks per activity</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+		<c_pkey>p</c_pkey>
+	</column>
+	<column name="LOCK_ESCALS_PER_ACTIVITY">
+		<c_sql_name>LOCK_ESCALS_PER_ACTIVITY</c_sql_name>
+		<c_title>Lock Escalations per activity</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+</table>

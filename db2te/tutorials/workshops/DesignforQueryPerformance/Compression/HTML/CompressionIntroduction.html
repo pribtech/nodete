@@ -1,0 +1,25 @@
+<BR><H2><B>Problem Statement</B></H2><HR>
+<p>A Data Warehouse contains huge amounts of data, and increasing exponentially. The key challenge in storage and query performance optimization in such a scenario include :</p>
+<p>With huge volumes of data, the cost of the storage subsystem can easily exceed the combined cost of the hardware server and the data server software.</p>
+
+<H2><B>Solution : <a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v9r7/topic/com.ibm.db2.luw.admin.dbobj.doc/doc/c0055401.html');">Compression</B></H2><HR></a>
+
+<BR>
+<h4>What is Compression ?</h4>
+<p>The data compression technology in IBM DB2 9 uses a dictionary based algorithm for compressing data records. That is, DB2 9 can compress rows in database tables by scanning tables for repetitive, duplicate data and building dictionaries that assign short, numeric keys to those repetitive entries. Text data tends to compress well because of recurring strings as well as data with lots of repeating characters, or leading or trailing blanks. </p>
+
+<H2><B>Operation</B></H2><HR>
+<p>This tutorial demonstrates data compression and highlights the best practices to do the same. 
+The need for compression and their advantages are analysed. The compression size is estimated and verified and a
+graph comparing the query execution time against the tables with and without compression enabled is generated.</p>
+
+<H2><B>Benefits of Compression</B></H2><HR>
+<p>
+<ol>
+<li>Compression of data can save up to 80% savings on disc space resulting in decreased storage costs. </li>
+<li>I/O improvements of up to 40% can be obtained resulting in query performance improvement.</li>
+<li>DB2 keeps the data compressed on both disk and memory, thereby reducing the amount of memory consumed, and freeing it up for other database or system operations. This can further improve database performance for queries and other operations.</li>
+</ol>
+</p>
+
+

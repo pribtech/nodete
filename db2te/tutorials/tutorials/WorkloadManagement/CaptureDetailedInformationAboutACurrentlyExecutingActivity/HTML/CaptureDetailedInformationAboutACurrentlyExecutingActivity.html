@@ -1,0 +1,20 @@
+<p>This task demonstrates how you can use the
+  <a onclick="OpenURLInFloatingWindow
+('http://publib.boulder.ibm.com/infocenter/db2luw/v9r7/topic/com.ibm.db2.luw.sql.rtn.doc/doc/r0052913.html?noframes=true');">
+WLM_CAPTURE_ACTIVITY_IN_PROGRESS</a> procedure to capture detailed
+  information about a currently executing activity for later historical
+  analysis. Activity information you capture is sent to the active event
+  monitor for activities.
+  </p><p>
+  Previous tasks showed how the COLLECT ACTIVITY DATA clause is used for
+  workloads, service classes, work actions and thresholds to capture
+  detailed activity information. This clause needs to be specified in
+  advance before an activity begins executing and information is sent to
+  the activities event monitor when the activity completes.  The
+  WLM_CAPTURE_ACTIVITY_IN_PROGRESS procedure allows you to capture
+  information reactively when you notice a problem with an activity
+  already in progress. When this procedure is used, information about an
+  activity is sent to the activities event monitor immediately. Both
+  basic and statement activity information are collected, but not input
+  data.
+  </p>

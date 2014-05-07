@@ -1,0 +1,224 @@
+<!--
+  Peter Prib, Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2012 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<table name="sessionMetric">
+	<sqlName>v$sessmetric</sqlName>
+	<singularName>Session Metric</singularName>
+	<pluralName>Session Metrics</pluralName>
+	<output>
+		<type name="DDL" destination="" title="" generator=""/>
+	</output>
+	<disable_edit/>
+	<description></description>
+	<history depth="10" time="SAMPLE_TS"/>
+	<orderBy name="CPU" direction="D"/>
+	<displayColumns>
+		<col type="column" name="SESSION_ID"/>
+		<col type="reference" name="session"/>
+		<col type="column" name="SESSION_SERIAL_NUM"/>
+		<col type="column" name="CPU"/>
+		<col type="column" name="PHYSICAL_READS"/>
+		<col type="column" name="LOGICAL_READS"/>
+		<col type="column" name="PGA_MEMORY"/>
+		<col type="column" name="HARD_PARSES"/>
+		<col type="column" name="SOFT_PARSES"/>
+		<col type="column" name="PHYSICAL_READ_PCT"/>
+		<col type="column" name="LOGICAL_READ_PCT"/>
+		<col type="column" name="BEGIN_TIME"/>
+		<col type="column" name="END_TIME"/>
+		<col type="column" name="INTSIZE_CSEC"/>
+	</displayColumns>
+	<column name="BEGIN_TIME">
+		<sqlName>BEGIN_TIME</sqlName>
+		<title>Begin Time</title>
+		<type>s</type>
+	</column>
+	<column name="END_TIME">
+		<sqlName>END_TIME</sqlName>
+		<title>End Time</title>
+		<type>s</type>
+	</column>
+	<column name="INTSIZE_CSEC">
+		<sqlName>INTSIZE_CSEC</sqlName>
+		<title>IntSize CSEC</title>
+		<type>n</type>
+	</column>
+	<column name="SESSION_ID">
+		<sqlName>SESSION_ID</sqlName>
+		<title>Session</title>
+		<type>n</type>
+		<primaryKey/>
+	</column>
+	<column name="SESSION_SERIAL_NUM">
+		<sqlName>SESSION_SERIAL_NUM</sqlName>
+		<title>Serial No.</title>
+		<type>n</type>
+		<primaryKey/>
+	</column>
+	<column name="CPU">
+		<sqlName>CPU</sqlName>
+		<title>CPU</title>
+		<type>n</type>
+		<style>
+			<option gt="1" style="WARNING"/>
+		</style>
+	</column>
+	<column name="PHYSICAL_READS">
+		<sqlName>PHYSICAL_READS</sqlName>
+		<title>Physical Reads</title>
+		<type>n</type>
+		<style>
+			<option gt="1" style="WARNING"/>
+		</style>
+	</column>
+	<column name="LOGICAL_READS">
+		<sqlName>LOGICAL_READS</sqlName>
+		<title>Logical Reads</title>
+		<type>n</type>
+		<style>
+			<option gt="1" style="WARNING"/>
+		</style>
+	</column>
+	<column name="PGA_MEMORY">
+		<sqlName>PGA_MEMORY</sqlName>
+		<title>PGA Memory</title>
+		<type>n</type>
+	</column>
+	<column name="HARD_PARSES">
+		<sqlName>HARD_PARSES</sqlName>
+		<title>Hard Parses</title>
+		<type>n</type>
+	</column>
+	<column name="SOFT_PARSES">
+		<sqlName>SOFT_PARSES</sqlName>
+		<title>Soft Parses</title>
+		<type>n</type>
+	</column>
+	<column name="PHYSICAL_READ_PCT">
+		<sqlName>PHYSICAL_READ_PCT</sqlName>
+		<title>Physical Read Pct</title>
+		<type>n</type>
+		<style>
+			<option gt="1" style="WARNING"/>
+		</style>
+		<formatNumber round="true" toFixedVal="2"/>	
+	</column>
+	<column name="LOGICAL_READ_PCT">
+		<sqlName>LOGICAL_READ_PCT</sqlName>
+		<title>Logical Read %</title>
+		<type>n</type>
+		<style>
+			<option gt="1" style="WARNING"/>
+		</style>
+		<formatNumber round="true" toFixedVal="2"/>	
+	</column>
+	<column name="SAMPLE_TS">
+		<generated>timestamp</generated>
+		<title>Time</title>
+		<type>s</type>
+	</column>
+	<reference name="session">
+		<title>Session</title>
+		<reftype>displayRow</reftype>
+		<refvalue>Oracle/Monitor/session</refvalue>
+		<icon>images/icon-column.gif</icon>
+		<ref foreign_column_name="SID">
+			<local_column_name>SESSION_ID</local_column_name>
+		</ref>
+	</reference>
+	<reference name="io">
+		<title>IO</title>
+		<reftype>table</reftype>
+		<refvalue>Oracle/Monitor/sessionIO</refvalue>
+		<icon>images/icon-column.gif</icon>
+		<ref foreign_column_name="SID">
+			<local_column_name>SESSION_ID</local_column_name>
+		</ref>
+	</reference>
+	<reference name="stats">
+		<title>Statistics</title>
+		<reftype>table</reftype>
+		<refvalue>Oracle/Monitor/sessionStats</refvalue>
+		<icon>images/icon-column.gif</icon>
+		<ref foreignColumnName="SID">
+			<localColumnName>SESSION_ID</localColumnName>
+		</ref>
+		<ref foreignColumnName="VALUE">
+			<compareType>&lt;&gt;</compareType>
+			<value>0</value>
+		</ref>
+	</reference>
+	<reference name="waits">
+		<title>Waits</title>
+		<reftype>table</reftype>
+		<refvalue>Oracle/Monitor/sessionWait</refvalue>
+		<icon>images/icon-column.gif</icon>
+		<ref foreign_column_name="SID">
+			<local_column_name>SESSION_ID</local_column_name>
+		</ref>
+	</reference>
+	<reference name="waitsHist">
+		<title>Waits Hist.</title>
+		<reftype>table</reftype>
+		<refvalue>Oracle/Monitor/sessionWaitHistory</refvalue>
+		<icon>images/icon-column.gif</icon>
+		<ref foreign_column_name="SID">
+			<local_column_name>SESSION_ID</local_column_name>
+		</ref>
+	</reference>
+	<reference name="events">
+		<title>Events</title>
+		<reftype>table</reftype>
+		<refvalue>Oracle/Monitor/sessionEvent</refvalue>
+		<icon>images/icon-column.gif</icon>
+		<ref foreign_column_name="SID">
+			<local_column_name>SESSION_ID</local_column_name>
+		</ref>
+	</reference>
+	<reference name="timeModel">
+		<title>Time Model</title>
+		<reftype>table</reftype>
+		<refvalue>Oracle/Monitor/sessionTimeModel</refvalue>
+		<icon>images/icon-column.gif</icon>
+		<ref foreign_column_name="SID">
+			<local_column_name>SESSION_ID</local_column_name>
+		</ref>
+	</reference>
+	<reference name="waitClass">
+		<title>Wait Class</title>
+		<reftype>table</reftype>
+		<refvalue>Oracle/Monitor/sessionWaitClass</refvalue>
+		<icon>images/icon-column.gif</icon>
+		<ref foreign_column_name="SID">
+			<local_column_name>SESSION_ID</local_column_name>
+		</ref>
+		<ref foreign_column_name="SERIAL#">
+			<local_column_name>SESSION_SERIAL_NUM</local_column_name>
+		</ref>
+	</reference>
+	<reference name="activeHistory">
+		<title>Active History</title>
+		<reftype>table</reftype>
+		<refvalue>Oracle/Monitor/activeSessionHistory</refvalue>
+		<icon>images/icon-column.gif</icon>
+		<ref foreign_column_name="SESSION_ID">
+			<local_column_name>SESSION_ID</local_column_name>
+		</ref>
+		<ref foreign_column_name="SESSION_SERIAL#">
+			<local_column_name>SESSION_SERIAL_NUM</local_column_name>
+		</ref>
+	</reference>
+
+</table>

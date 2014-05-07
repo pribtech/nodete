@@ -1,0 +1,14 @@
+<p>The 
+<a onclick="OpenURLInFloatingWindow
+('http://publib.boulder.ibm.com/infocenter/db2luw/v9r7/topic/com.ibm.db2.luw.sql.ref.doc/doc/r0050556.html?noframes=true');">GRANT (workload privileges)</a> statement grants usage on the workload.
+  </p><p>
+  A connection can only be associated
+  with a workload if the session user has USAGE privilege on
+  the workload. This is necessary to prevent users from
+  changing connection attributes of their application in an
+  attempt to run their work in a higher priority service
+  class. Some connection attributes can be changed
+  programmatically (e.g. using the sqleseti API). In this
+  task, we will just grant USAGE privilege to PUBLIC. You
+  would want to be more discriminating on a real system. 
+  </p>

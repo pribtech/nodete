@@ -1,0 +1,92 @@
+<table name="auths">
+    <sql_name>AUTH_LIST</sql_name>
+    <function>SYSPROC.AUTH_LIST_AUTHORITIES_FOR_AUTHID</function>    
+    <singular_name>Authority</singular_name>
+    <plural_name>Authorities</plural_name>
+    <description>This report returns a list of all authorities that can be held by an authorization ID.
+    Authorities can be granted through the database configuration file or granted to an authorization ID directly or indirectly through a group or a role.
+    This list is generated from the &lt;a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.sql.rtn.doc/doc/r0052898.html?noframes=true');"&gt;SYSPROC.AUTH_LIST_AUTHORITIES_FOR_AUTHID&lt;/a&gt; table function.    
+    </description>
+    <rows_per_page>50</rows_per_page>
+    <order_by_index></order_by_index>
+	<parameters>
+		<parm name="authid">
+		<title>Authorization ID</title>
+			<value>KOHLMANN</value>
+			<type>s</type>
+		</parm>
+		<parm name="authidtype">
+		<title>Authorization ID Type</title>
+			<value>U</value>
+			<type>s</type>
+		</parm>
+	</parameters>    	
+    <display_columns>
+        <col type="column" name="authority"></col>
+        <col type="column" name="authdesc"></col>        
+        <col type="column" name="d_public"></col>        
+        <col type="column" name="d_user"></col>                
+        <col type="column" name="d_group"></col>
+        <col type="column" name="d_role"></col>
+        <col type="column" name="role_public"></col>
+        <col type="column" name="role_user"></col>
+        <col type="column" name="role_group"></col>
+    </display_columns>
+	<disable_edit/>
+    <column name="authority">
+        <c_sql_name>AUTHORITY</c_sql_name>
+        <c_title>Authority</c_title>
+        <c_presentation>s</c_presentation>
+				<c_mask_display_order>lv</c_mask_display_order>
+				<c_column_mask_file>masks/authoritiesMask.xml</c_column_mask_file>        
+    </column>
+    <column name="authdesc">
+        <c_sql_name>AUTHORITY</c_sql_name>
+        <c_title>Description</c_title>
+        <c_presentation>s</c_presentation>
+				<c_mask_display_order>m</c_mask_display_order>
+				<c_column_mask_file>masks/authoritiesMask.xml</c_column_mask_file>                
+    </column>
+    <column name="d_group">
+        <c_sql_name>D_GROUP</c_sql_name>
+        <c_title>Group</c_title>
+        <c_presentation>s</c_presentation>
+        <c_drill>y</c_drill>
+    </column>
+    <column name="d_public">
+        <c_sql_name>D_PUBLIC</c_sql_name>
+        <c_title>Public</c_title>
+        <c_presentation>s</c_presentation>
+        <c_drill>y</c_drill>
+    </column>
+    <column name="d_role">
+        <c_sql_name>D_ROLE</c_sql_name>
+        <c_title>Role</c_title>
+        <c_presentation>s</c_presentation>
+        <c_drill>y</c_drill>
+    </column>
+    <column name="d_user">
+        <c_sql_name>D_User</c_sql_name>
+        <c_title>User</c_title>
+        <c_presentation>s</c_presentation>
+        <c_drill>y</c_drill>
+    </column>
+    <column name="role_group">
+        <c_sql_name>ROLE_GROUP</c_sql_name>
+        <c_title>Role Group</c_title>
+        <c_presentation>s</c_presentation>
+        <c_drill>y</c_drill>
+    </column>
+    <column name="role_public">
+        <c_sql_name>ROLE_PUBLIC</c_sql_name>
+        <c_title>Role Public</c_title>
+        <c_presentation>s</c_presentation>
+        <c_drill>y</c_drill>
+    </column>
+    <column name="role_user">
+        <c_sql_name>ROLE_USER</c_sql_name>
+        <c_title>Role User</c_title>
+        <c_presentation>s</c_presentation>
+        <c_drill>y</c_drill>
+    </column>
+</table>

@@ -1,0 +1,25 @@
+<p>Now that the tutorial is loading within the TE the next set will be to add pages to the tutorial.
+</p>
+<p>If you have a look at the tab 'tutorialScript.xml' there is now a page element inside of the pageList. As mentioned earlier this page element represents one page within your tutorial. The attribute 'name' in the page is used to define the page title. 
+</p>
+<p>There is also the attribute type. Pages within the the pageList are displayed in order that they appear within there given page type. There are 3 page types that exist and there use is optional. 
+
+<ul>
+<li>intro <ul><li>All pages within the page group type will be displayed at the start of the tutorial</li></ul>
+</li><li>general
+</li><li>last <ul><li>All pages within the page group type will be displayed at the end of the tutorial</li></ul>
+</li></ul>
+</p>
+<p>The 'contentFile' element within the page element indicates where to pull the text for the information contained in this left hand panel. These files are expected to be stored within the HTML directory of the tutorial. These files should be valid HTML snippets.
+</p>
+<p>
+Steps to complete:
+<ul>
+<li>Copy the contents of tab 'tutorialScript.xml' located to the right into the file 'tutorialScript.xml'.
+</li><li>Save the file, but do not close it
+</li><li>Create a file called 'introduction.html' in the folder './tutorials/tableJoins/HTML'
+</li><li>Copy the contents of tab 'introduction.html' located to the right into the new created file.
+</li><li>Save & close the file
+</li><li>Reload the 'About table joins' tutorial you should now see your introductory page
+</li></ul>
+</p>

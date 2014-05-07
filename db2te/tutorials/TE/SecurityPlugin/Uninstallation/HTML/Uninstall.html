@@ -1,0 +1,17 @@
+<H3>Uninstalling the Db2auth Plug-in</H3><hr>
+<p>To uninstall the plug-in, we need to set DB2 back to use the default O/S authentication, and remove the schema, tables, stored procedures, executables, and libraries that were created during installation.</p>
+
+<H2>Steps (issue the following commands in order):</H2><p>
+<ol><i><li>db2stop force</i></li>
+<li><i>db2 terminate</i></li>
+<li><i>configure_null_plugin</i>
+<ul><li>This sets DB2 back to use the default O/S authentication.
+</li><li>It sets to null the GROUP_PLUGIN, SRVCON_PW_PLUGIN and SYSADM_GROUP database manager configuration parameters.</li>
+</li></ul>
+<li><i>db2start</i></li>
+<li><i>db2 connect to (your authentication database name here)</i></li>
+<li><i>db2auth_uninstall.bat</i>
+<ul><li>This drops database objects in the db2auth schema as well as db2 executables and libraries from DB2 plugin installation directories</li></ul></li>
+</ol>
+</p>
+

@@ -1,0 +1,149 @@
+<!--
+  Peter Prib, Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2011 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<table name="trigger">
+	<sql_name>SYS.ALL_TRIGGERS</sql_name>
+	<singular_name>Trigger</singular_name>
+	<plural_name>Triggers</plural_name>
+	<description>Query from ad hoc</description>
+	<order_by_index name="OWNER" direction="A"/>
+	<order_by_index name="TRIGGER_NAME" direction="A"/>
+	<display_columns>
+		<col type="column" name="OWNER"/>
+		<col type="column" name="TRIGGER_NAME"/>
+		<col type="column" name="TRIGGER_TYPE"/>
+		<col type="column" name="TRIGGERING_EVENT"/>
+		<col type="column" name="TABLE_OWNER"/>
+		<col type="column" name="BASE_OBJECT_TYPE"/>
+		<col type="column" name="TABLE_NAME"/>
+		<col type="column" name="COLUMN_NAME"/>
+		<col type="column" name="REFERENCING_NAMES"/>
+		<col type="column" name="WHEN_CLAUSE"/>
+		<col type="column" name="STATUS"/>
+		<col type="column" name="DESCRIPTION"/>
+		<col type="column" name="ACTION_TYPE"/>
+		<col type="column" name="TRIGGER_BODY"/>
+		<col type="column" name="CROSSEDITION"/>
+		<col type="column" name="BEFORE_STATEMENT"/>
+		<col type="column" name="BEFORE_ROW"/>
+		<col type="column" name="AFTER_ROW"/>
+		<col type="column" name="AFTER_STATEMENT"/>
+		<col type="column" name="INSTEAD_OF_ROW"/>
+	</display_columns>
+	<column name="OWNER">
+		<sql_name>OWNER</sql_name>
+		<title>Owner</title>
+		<type>s</type>
+		<primaryKey/>
+		<prefillEnable/>
+	</column>
+	<column name="TRIGGER_NAME">
+		<sql_name>TRIGGER_NAME</sql_name>
+		<title>Name</title>
+		<type>s</type>
+		<primaryKey/>
+	</column>
+	<column name="TRIGGER_TYPE">
+		<sql_name>TRIGGER_TYPE</sql_name>
+		<title>Trigger Type</title>
+		<type>s</type>
+	</column>
+	<column name="TRIGGERING_EVENT">
+		<sql_name>TRIGGERING_EVENT</sql_name>
+		<title>Triggering Event</title>
+		<type>s</type>
+	</column>
+	<column name="TABLE_OWNER">
+		<sql_name>TABLE_OWNER</sql_name>
+		<title>Table Oowner</title>
+		<type>s</type>
+		<drill_enable/>
+	</column>
+	<column name="BASE_OBJECT_TYPE">
+		<sql_name>BASE_OBJECT_TYPE</sql_name>
+		<title>Base Object Type</title>
+		<type>s</type>
+	</column>
+	<column name="TABLE_NAME">
+		<sql_name>TABLE_NAME</sql_name>
+		<title>Table</title>
+		<type>s</type>
+	</column>
+	<column name="COLUMN_NAME">
+		<sql_name>COLUMN_NAME</sql_name>
+		<title>Column_name</title>
+		<type>s</type>
+	</column>
+	<column name="REFERENCING_NAMES">
+		<sql_name>REFERENCING_NAMES</sql_name>
+		<title>Referencing Names</title>
+		<type>s</type>
+	</column>
+	<column name="WHEN_CLAUSE">
+		<sql_name>WHEN_CLAUSE</sql_name>
+		<title>When</title>
+		<type>s</type>
+	</column>
+	<column name="STATUS">
+		<sql_name>STATUS</sql_name>
+		<title>Status</title>
+		<type>s</type>
+	</column>
+	<column name="DESCRIPTION">
+		<sql_name>DESCRIPTION</sql_name>
+		<title>Description</title>
+		<type>l</type>
+	</column>
+	<column name="ACTION_TYPE">
+		<sql_name>ACTION_TYPE</sql_name>
+		<title>Action Type</title>
+		<type>s</type>
+	</column>
+	<column name="TRIGGER_BODY">
+		<sql_name>TRIGGER_BODY</sql_name>
+		<title>Trigger Body</title>
+		<type>l</type>
+	</column>
+	<column name="CROSSEDITION">
+		<sql_name>CROSSEDITION</sql_name>
+		<title>Cross Edition</title>
+		<type>s</type>
+	</column>
+	<column name="BEFORE_STATEMENT">
+		<sql_name>BEFORE_STATEMENT</sql_name>
+		<title>Before Statement</title>
+		<type>s</type>
+	</column>
+	<column name="BEFORE_ROW">
+		<sql_name>BEFORE_ROW</sql_name>
+		<title>Before Row</title>
+		<type>s</type>
+	</column>
+	<column name="AFTER_ROW">
+		<sql_name>AFTER_ROW</sql_name>
+		<title>After Row</title>
+		<type>s</type>
+	</column>
+	<column name="AFTER_STATEMENT">
+		<sql_name>AFTER_STATEMENT</sql_name>
+		<title>After Statement</title>
+		<type>s</type>
+	</column>
+	<column name="INSTEAD_OF_ROW">
+		<sql_name>INSTEAD_OF_ROW</sql_name>
+		<title>Instead of Row</title>
+		<type>s</type>
+	</column>
+</table>

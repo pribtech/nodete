@@ -1,0 +1,151 @@
+<!--
+  Peter Prib, Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2012 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<table name="workloadStats">
+	<sqlName>workloadStats</sqlName>
+	<singularName>Workload Statistic</singularName>
+	<pluralName>Workload Statistic</pluralName>
+    <function>
+    	<value minVersion="9.7">WLM_GET_WORKLOAD_STATS_V97</value>
+    	<value maxVersion="9.5">WLM_GET_WORKLOAD_STATS</value>
+    </function>
+    <description/>
+	<disableEdit/>
+	<output>
+		<type name="DDL" destination="" title="" generator=""/>
+	</output>
+    <parameters>
+        <parm name="workload" ordinal="1" mode="IN">
+            <title>Workload</title>
+            <type>VARCHAR</type>
+            <value></value>
+        </parm>
+        <parm name="partition" ordinal="2" mode="IN">
+            <title>DB Part.</title>
+            <type>Integer</type>
+            <value>-2</value>
+        </parm>
+    </parameters>
+	<orderBy name="WORKLOAD_NAME" direction="A"/>
+	<orderBy name="DBPARTITIONNUM" direction="A"/>
+	<displayColumns>
+		<col type="column" name="WORKLOAD_NAME"/>
+		<col type="column" name="DBPARTITIONNUM"/>
+		<col type="column" name="LAST_RESET"/>
+		<col type="column" name="CONCURRENT_WLO_TOP"/>
+		<col type="column" name="CONCURRENT_WLO_ACT_TOP"/>
+		<col type="column" name="COORD_ACT_COMPLETED_TOTAL"/>
+		<col type="column" name="COORD_ACT_ABORTED_TOTAL"/>
+		<col type="column" name="COORD_ACT_REJECTED_TOTAL"/>
+		<col type="column" name="WLO_COMPLETED_TOTAL"/>
+		<col type="column" name="COORD_ACT_LIFETIME_TOP"/>
+		<col type="column" name="COORD_ACT_LIFETIME_AVG"/>
+		<col type="column" name="COORD_ACT_LIFETIME_STDDEV"/>
+		<col type="column" name="COORD_ACT_EXEC_TIME_AVG"/>
+		<col type="column" name="COORD_ACT_EXEC_TIME_STDDEV"/>
+		<col type="column" name="COORD_ACT_QUEUE_TIME_AVG"/>
+		<col type="column" name="COORD_ACT_QUEUE_TIME_STDDEV"/>
+		<col type="column" name="UOW_TOTAL_TIME_TOP"/>
+	</displayColumns>
+	<column name="WORKLOAD_NAME">
+		<sqlName>WORKLOAD_NAME</sqlName>
+		<title>Workload Name</title>
+		<type>s</type>
+		<primaryKey/>
+	</column>
+	<column name="DBPARTITIONNUM">
+		<sqlName>DBPARTITIONNUM</sqlName>
+		<title>DB Part.</title>
+		<type>n</type>
+		<primaryKey/>
+	</column>
+	<column name="LAST_RESET">
+		<sqlName>LAST_RESET</sqlName>
+		<title>Last Reset</title>
+		<type>n</type>
+	</column>
+	<column name="CONCURRENT_WLO_TOP">
+		<sqlName>CONCURRENT_WLO_TOP</sqlName>
+		<title>Concurrent WLO Top</title>
+		<type>n</type>
+	</column>
+	<column name="CONCURRENT_WLO_ACT_TOP">
+		<sqlName>CONCURRENT_WLO_ACT_TOP</sqlName>
+		<title>Concurrent WLO Act Top</title>
+		<type>n</type>
+	</column>
+	<column name="COORD_ACT_COMPLETED_TOTAL">
+		<sqlName>COORD_ACT_COMPLETED_TOTAL</sqlName>
+		<title>Coord Act Completed Total</title>
+		<type>n</type>
+	</column>
+	<column name="COORD_ACT_ABORTED_TOTAL">
+		<sqlName>COORD_ACT_ABORTED_TOTAL</sqlName>
+		<title>Coord Act Aborted Total</title>
+		<type>n</type>
+	</column>
+	<column name="COORD_ACT_REJECTED_TOTAL">
+		<sqlName>COORD_ACT_REJECTED_TOTAL</sqlName>
+		<title>Coord Act Rejected Total</title>
+		<type>n</type>
+	</column>
+	<column name="WLO_COMPLETED_TOTAL">
+		<sqlName>WLO_COMPLETED_TOTAL</sqlName>
+		<title>WLO Completed Total</title>
+		<type>n</type>
+	</column>
+	<column name="COORD_ACT_LIFETIME_TOP" minVersion="9.7">
+		<sqlName>COORD_ACT_LIFETIME_TOP</sqlName>
+		<title>Coord Act Lifetime Top</title>
+		<type>n</type>
+	</column>
+	<column name="COORD_ACT_LIFETIME_AVG" minVersion="9.7">
+		<sqlName>COORD_ACT_LIFETIME_AVG</sqlName>
+		<title>Coord Act Lifetime Avg</title>
+		<type>n</type>
+	</column>
+	<column name="COORD_ACT_LIFETIME_STDDEV" minVersion="9.7">
+		<sqlName>COORD_ACT_LIFETIME_STDDEV</sqlName>
+		<title>Coord Act Lifetime Stddev</title>
+		<type>n</type>
+	</column>
+	<column name="COORD_ACT_EXEC_TIME_AVG" minVersion="9.7">
+		<sqlName>COORD_ACT_EXEC_TIME_AVG</sqlName>
+		<title>Coord Act Exec Time Avg</title>
+		<type>n</type>
+	</column>
+	<column name="COORD_ACT_EXEC_TIME_STDDEV" minVersion="9.7">
+		<sqlName>COORD_ACT_EXEC_TIME_STDDEV</sqlName>
+		<title>Coord Act Exec Time Stddev</title>
+		<type>n</type>
+	</column>
+	<column name="COORD_ACT_QUEUE_TIME_AVG" minVersion="9.7">
+		<sqlName>COORD_ACT_QUEUE_TIME_AVG</sqlName>
+		<title>Coord Act Queue Time Avg</title>
+		<type>n</type>
+	</column>
+	<column name="COORD_ACT_QUEUE_TIME_STDDEV" minVersion="9.7">
+		<sqlName>COORD_ACT_QUEUE_TIME_STDDEV</sqlName>
+		<title>Coord Act Queue Time Stddev</title>
+		<type>n</type>
+	</column>
+	<column name="UOW_TOTAL_TIME_TOP" minVersion="9.7">
+		<sqlName>UOW_TOTAL_TIME_TOP</sqlName>
+		<title>UOW Total Time Top</title>
+		<type>n</type>
+	</column>
+</table>
+

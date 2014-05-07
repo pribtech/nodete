@@ -1,0 +1,109 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2010 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+
+<table name="viewDep">
+	<sql_name>SYSCAT.VIEWDEP</sql_name>
+	<singular_name>View Dependency</singular_name>
+	<plural_name>View Dependencies</plural_name>
+	<description/>
+	<order_by_index/>
+	<disable_edit/>
+	<display_columns>
+		<col type="column" name="dtype"/>
+		<col type="column" name="viewschema"/>
+		<col type="column" name="viewname"/>
+		<col type="column" name="owner"/>
+		<col type="column" name="btype"/>
+		<col type="column" name="bschema"/>
+		<col type="column" name="bname"/>
+		<col type="column" name="tabauth"/>
+		<col type="column" name="definer"/>
+	</display_columns>
+	<reference name="dynSQL" DBMS="DB2">
+		<title>Possible SQL</title>
+		<reftype>table</reftype>
+		<refvalue>Performance/snapdynsql</refvalue>
+		<icon>images/icon-link-calendar.gif</icon>								
+		<ref foreign_column_name="stmttext">
+			<comparetype>locateAnyCase</comparetype>
+			<local_column_name>viewname</local_column_name>
+		</ref>
+	</reference>
+	<reference name="view">
+		<title>displayRow</title>
+		<reftype></reftype>
+		<refvalue>viewcat</refvalue>
+		<icon>images/icon-privilege.gif</icon>
+		<ref foreign_column_name="tabschema">
+			<local_column_name>viewschema</local_column_name>
+		</ref>
+		<ref foreign_column_name="tabname">
+			<local_column_name>viewname</local_column_name>
+		</ref>
+	</reference>
+	<column name="dtype">
+		<c_sql_name>DTYPE</c_sql_name>
+		<c_title>Type</c_title>
+		<c_presentation>s</c_presentation>
+	</column>
+	<column name="viewschema">
+		<c_sql_name>VIEWSCHEMA</c_sql_name>
+		<c_title>Schema</c_title>
+		<c_presentation>s</c_presentation>
+		<c_drill>y</c_drill>
+		<c_pkey>p</c_pkey>
+	</column>
+	<column name="viewname">
+		<c_sql_name>VIEWNAME</c_sql_name>
+		<c_title>Name</c_title>
+		<c_presentation>s</c_presentation>
+		<c_pkey>p</c_pkey>
+	</column>
+	<column name="owner">
+		<c_sql_name>OWNER</c_sql_name>
+		<c_title>OWNER</c_title>
+		<c_presentation>s</c_presentation>
+	</column>
+	<column name="btype">
+		<c_sql_name>BTYPE</c_sql_name>
+		<c_title>Dependent Type</c_title>
+		<c_presentation>s</c_presentation>
+	</column>
+	<column name="bschema">
+		<c_sql_name>BSCHEMA</c_sql_name>
+		<c_title>Dependent Schema</c_title>
+		<c_presentation>s</c_presentation>
+		<c_pkey>p</c_pkey>
+	</column>
+	<column name="bname">
+		<c_sql_name>BNAME</c_sql_name>
+		<c_title>Dependent Name</c_title>
+		<c_presentation>s</c_presentation>
+		<c_pkey>p</c_pkey>
+	</column>
+	<column name="tabauth">
+		<c_sql_name>TABAUTH</c_sql_name>
+		<c_title>Authorisation</c_title>
+		<c_presentation>n</c_presentation>
+	</column>
+	<column name="definer">
+		<c_sql_name>DEFINER</c_sql_name>
+		<c_title>Definer</c_title>
+		<c_presentation>s</c_presentation>
+	</column>
+</table>

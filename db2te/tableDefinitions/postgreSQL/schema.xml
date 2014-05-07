@@ -1,0 +1,66 @@
+<table name="schema">
+	<sqlName>pg_namespace</sqlName>
+	<singularName>Schema</singularName>
+	<pluralName>Schema</pluralName>
+	<description></description>
+	<orderBy name="nspname" direction="A"/>
+	<disableEdit/>
+	<output>
+		<type name="DDL" destination="" title="" generator=""/>
+	</output>
+	<displayColumns>
+		<col type="column" name="nspname"/>
+		<col type="column" name="comment"/>
+		<col type="column" name="owner"/>
+		<col type="column" name="nspacl"/>
+	</displayColumns>
+	<column name="nspname">
+		<sqlName>nspname</sqlName>
+		<title>Schema</title>
+	</column>
+	<column name="comment">
+		<sqlName>pg_catalog.obj_description(oid, 'pg_namespace')</sqlName>
+		<title>Comment</title>
+	</column>
+	<column name="nspowner">
+		<sqlName>nspowner</sqlName>
+		<title>Owner ID</title>
+		<type>n</type>
+	</column>
+	<column name="owner">
+		<sqlName>(select usename from pg_user t where t.usesysid=nspowner)</sqlName>
+		<title>Owner</title>
+	</column>
+	<column name="nspacl">
+		<sqlName>nspacl</sqlName>
+		<title>ACL</title>
+		<type>n</type>
+	</column>
+	<reference name="Views">
+		<title>Views</title>
+		<reftype>table</reftype>
+		<refvalue>postgreSQL/tables</refvalue>
+		<icon>images/icon-column.gif</icon>
+		<ref foreign_column_name="table_schema">
+			<local_column_name>nspname</local_column_name>
+		</ref>
+	</reference>
+	<reference name="tables">
+		<title>Tables</title>
+		<reftype>table</reftype>
+		<refvalue>postgreSQL/tables</refvalue>
+		<icon>images/icon-column.gif</icon>
+		<ref foreign_column_name="table_schema">
+			<local_column_name>nspname</local_column_name>
+		</ref>
+	</reference>
+	<reference name="routines">
+		<title>Routines</title>
+		<reftype>table</reftype>
+		<refvalue>postgreSQL/routines</refvalue>
+		<icon>images/icon-column.gif</icon>
+		<ref foreign_column_name="specificschema">
+			<local_column_name>nspname</local_column_name>
+		</ref>
+	</reference>
+</table>

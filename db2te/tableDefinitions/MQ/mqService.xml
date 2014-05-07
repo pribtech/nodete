@@ -1,0 +1,103 @@
+<!--
+  Peter Prib, Copyright Frygma Pty Ltd (ABN 90 791 388 622 2012) 2011 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<table name="mqService">
+	<sqlName>DB2MQ.MQSERVICE</sqlName>
+	<singularName>MQ Service</singularName>
+	<pluralName>MQ Services</pluralName>
+	<description/>
+	<orderBy name="servicename" direction="A"/>
+	<displayColumns>
+		<col type="column" name="servicename"/>
+		<col type="column" name="servicetype"/>
+		<col type="reference" name="messages"/>
+		<col type="column" name="defaultqueuemgrname"/>
+		<col type="column" name="queuemgrname"/>
+		<col type="column" name="queuename"/>
+		<col type="column" name="ccsid"/>
+		<col type="column" name="description"/>
+	</displayColumns>
+	<reference name="messages">
+		<title>Messages</title>
+		<reftype>table</reftype>
+		<refvalue>MQ/mqServicePolicyQueue</refvalue>
+		<icon>images/icon-tbs.gif</icon>
+		<ref foreign_column_name="servicename">
+			<local_column_name>servicename</local_column_name>
+		</ref>
+		<ref foreign_column_name="queuemgrname">
+			<local_column_name>queuemgrname</local_column_name>
+		</ref>
+	</reference>
+	<column name="servicename">
+		<sql_name>SERVICENAME</sql_name>
+		<title>Name</title>
+		<type>s</type>
+		<primaryKey/>
+	</column>
+	<column name="servicetype" >
+		<sql_name>SERVICETYPE</sql_name>
+		<title>Type</title>
+		<type>s</type>
+		<columnMask>
+			<value_mask value="Native"><mask>Native</mask></value_mask>
+			<value_mask value="MQSeries_Integrator_V1"><mask>MQSeries_Integrator_V1</mask></value_mask>
+			<value_mask value="MQSeries_Integrator_V2"><mask>MQSeries_Integrator_V2</mask></value_mask>
+			<value_mask value="MQRFH2"><mask>MQRFH</mask></value_mask>
+			<value_mask value="MQRFH"><mask>MQRFH</mask></value_mask>
+		</columnMask>
+		<default>Native</default>
+		<prefillEnable/>
+	</column>
+	<column name="defaultqueuemgrname">
+		<sql_name>CASE WHEN QUEUEMGRNAME='' THEN 'Y' ELSE ' ' END</sql_name>
+		<title>Default QM</title>
+		<type>s</type>
+		<disableEdit/>
+	</column>
+	<column name="queuemgrname" nullable="false">
+		<sql_name>coalesce(nullif(QUEUEMGRNAME,''),(SELECT QUEUEMGRNAME FROM DB2MQ.MQHOST WHERE CONNECTIONNAME = 'defaultConnection'))</sql_name>
+		<title>Queue Manager</title>
+		<type>s</type>
+		<default> </default>
+		<prefill>
+			<table>DB2MQ.MQHOST</table>
+			<column>CONNECTIONNAME</column>
+		</prefill> 
+	</column>
+	<column name="queuename" nullable="false">
+		<sql_name>QUEUENAME</sql_name>
+		<title>Queue</title>
+		<type>s</type>
+	</column>
+	<column name="defaultformat" nullable="false">
+		<sql_name>DEFAULTFORMAT</sql_name>
+		<title>Default Format</title>
+		<type>s</type>
+		<default> </default>
+	</column>
+	<column name="ccsid" nullable="false">
+		<sql_name>CCSID</sql_name>
+		<title>CCSID</title>
+		<type>s</type>
+		<default> </default>
+	</column>
+	<column name="description">
+		<sql_name>DESCRIPTION</sql_name>
+		<title>Description</title>
+		<type>s</type>
+	</column>
+</table>

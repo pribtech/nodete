@@ -1,0 +1,192 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2009 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+
+<table name="SYSCAT.REFERENCES">
+	<sql_name>SYSCAT.REFERENCES</sql_name>
+	<singular_name>Reference</singular_name>
+	<plural_name>References</plural_name>
+	<description/>
+	<output>
+		<type name="DDL" destination="adhoc" title="Create/Drop" generator="XSL/compareReference.xsl"/>
+	</output>
+	<order_by_index name="refkeyname" direction="A"/>
+	<order_by_index name="reftabschema" direction="A"/>
+	<order_by_index name="tabschema" direction="A"/>
+	<order_by_index name="tabname" direction="A"/>
+	<order_by_index name="reftabname" direction="A"/>
+	<display_columns>
+		<col type="column" name="constname"/>
+		<col type="column" name="refkeyname"/>
+		<col type="column" name="reftabschema"/>
+		<col type="column" name="reftabname"/>
+		<col type="column" name="tabschema"/>
+		<col type="column" name="tabname"/>
+		<col type="column" name="colcount"/>
+		<col type="column" name="deleterule"/>
+		<col type="column" name="updaterule"/>
+		<col type="column" name="fk_colnames"/>
+		<col type="column" name="pk_colnames"/>
+		<col type="column" name="owner"/>
+		<col type="column" name="ownertype"/>
+		<col type="column" name="create_time"/>
+		<col type="column" name="definer"/>
+	</display_columns>
+	<disable_edit/>
+	<column name="constname">
+		<c_sql_name>CONSTNAME</c_sql_name>
+		<title>Constraint</title>
+		<type>s</type>
+		<c_drill>y</c_drill>
+		<c_pkey>p</c_pkey>			
+	</column>
+	<column name="tabschema">
+		<c_sql_name>TABSCHEMA</c_sql_name>
+		<title>Child Schema</title>
+		<type>s</type>
+		<c_drill>y</c_drill>
+		<c_pkey>p</c_pkey>			
+		<c_prefill>
+			<table>schema</table>
+			<column>SCHEMANAME</column>
+		</c_prefill>
+	</column>
+	<column name="tabname">
+		<c_sql_name>TABNAME</c_sql_name>
+		<title>Child Table</title>
+		<type>s</type>
+		<c_pkey>p</c_pkey>			
+		<c_prefill>
+			<table>tablecat</table>
+			<column>TABNAME</column>
+		</c_prefill>
+		<c_reference name="tab">
+			<title>Tables</title>
+			<reftype>table</reftype>
+			<refvalue>tablecat</refvalue>
+			<icon>images/icon-link-calendar.gif</icon>		
+			<ref foreign_column_name="tabschema">
+				<local_column_name>tabschema</local_column_name>
+			</ref>
+			<ref foreign_column_name="tabname">
+				<local_column_name>tabname</local_column_name>
+			</ref>
+		</c_reference>
+	</column>
+	<column name="owner">
+		<c_sql_name>OWNER</c_sql_name>
+		<title>Owner</title>
+		<type>s</type>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="ownertype">
+		<c_sql_name>OWNERTYPE</c_sql_name>
+		<title>Type</title>
+		<type>s</type>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="refkeyname">
+		<c_sql_name>REFKEYNAME</c_sql_name>
+		<title>Parent Key Name</title>
+		<type>s</type>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="reftabschema">
+		<c_sql_name>REFTABSCHEMA</c_sql_name>
+		<title>Parent Schema</title>
+		<type>s</type>
+		<c_pkey>p</c_pkey>			
+		<c_drill>y</c_drill>
+		<c_prefill>
+			<table>schema</table>
+			<column>SCHEMANAME</column>
+		</c_prefill>
+	</column>
+	<column name="reftabname">
+		<c_sql_name>REFTABNAME</c_sql_name>
+		<title>Parent table</title>
+		<type>s</type>
+		<c_pkey>p</c_pkey>			
+		<c_prefill>
+			<table>tablecat</table>
+			<column>TABNAME</column>
+		</c_prefill>
+		<c_reference name="tab">
+			<title>Tables</title>
+			<reftype>table</reftype>
+			<refvalue>tablecat</refvalue>
+			<icon>images/icon-link-calendar.gif</icon>		
+			<ref foreign_column_name="tabschema">
+				<local_column_name>reftabschema</local_column_name>
+			</ref>
+			<ref foreign_column_name="tabname">
+				<local_column_name>reftabname</local_column_name>
+			</ref>
+		</c_reference>
+
+	</column>
+	<column name="colcount">
+		<c_sql_name>COLCOUNT</c_sql_name>
+		<title>Col. No.</title>
+		<type>n</type>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="deleterule">
+		<c_sql_name>DELETERULE</c_sql_name>
+		<title>Delete</title>
+		<type>s</type>
+		<c_drill>y</c_drill>
+		<c_column_mask>
+			<value_mask value="A"><mask>No Action</mask></value_mask>
+			<value_mask value="C"><mask>Cascade</mask></value_mask>
+			<value_mask value="N"><mask>Set Null</mask></value_mask>
+			<value_mask value="R"><mask>Restict</mask></value_mask>
+		</c_column_mask>
+	</column>
+	<column name="updaterule">
+		<c_sql_name>UPDATERULE</c_sql_name>
+		<title>Update</title>
+		<type>s</type>
+		<c_drill>y</c_drill>
+		<c_column_mask>
+			<value_mask value="A"><mask>No Action</mask></value_mask>
+			<value_mask value="R"><mask>Restict</mask></value_mask>
+		</c_column_mask>
+	</column>
+	<column name="create_time">
+		<c_sql_name>CREATE_TIME</c_sql_name>
+		<title>Created</title>
+		<type>n</type>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="fk_colnames">
+		<c_sql_name>FK_COLNAMES</c_sql_name>
+		<title>FK Columns</title>
+		<type>s</type>
+	</column>
+	<column name="pk_colnames">
+		<c_sql_name>PK_COLNAMES</c_sql_name>
+		<title>PK Columns</title>
+		<type>s</type>
+	</column>
+	<column name="definer">
+		<c_sql_name>DEFINER</c_sql_name>
+		<title>Definer</title>
+		<type>s</type>
+		<c_drill>y</c_drill>
+	</column>
+</table>

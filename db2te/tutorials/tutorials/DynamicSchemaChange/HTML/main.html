@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-us" xml:lang="en-us">
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+<meta name="security" content="public" />
+<meta name="Robots" content="index,follow" />
+<meta http-equiv="PICS-Label" content='(PICS-1.1 "http://www.icra.org/ratingsv02.html" l gen true r (cz 1 lz 1 nz 1 oz 1 vz 1) "http://www.rsac.org/ratingsv01.html" l gen true r (n 0 s 0 v 0 l 0) "http://www.classify.org/safesurf/" l gen true r (SS~~000 1))' />
+<meta name="DC.Type" content="concept" />
+<meta name="DC.Title" content="Application development enhancements" />
+<meta name="abstract" content="Application development improvements include new features and enhancements that simplify database application development, improve application portability, and ease application deployment." />
+<meta name="description" content="Application development improvements include new features and enhancements that simplify database application development, improve application portability, and ease application deployment." />
+<meta name="DC.subject" content="application development, enhancements summary" />
+<meta name="keywords" content="application development, enhancements summary" />
+<meta name="DC.Relation" scheme="URI" content="../doc/c0052035.html" />
+<meta name="DC.Relation" scheme="URI" content="../doc/c0051511.html" />
+<meta name="DC.Relation" scheme="URI" content="../doc/c0054793.html" />
+<meta name="DC.Relation" scheme="URI" content="../doc/c0054496.html" />
+<meta name="DC.Relation" scheme="URI" content="../doc/c0053498.html" />
+<meta name="DC.Relation" scheme="URI" content="../doc/c0053706.html" />
+<meta name="DC.Relation" scheme="URI" content="../doc/c0053519.html" />
+<meta name="DC.Relation" scheme="URI" content="../doc/c0054146.html" />
+<meta name="DC.Relation" scheme="URI" content="../doc/c0053707.html" />
+<meta name="DC.Relation" scheme="URI" content="../doc/c0053506.html" />
+<meta name="DC.Relation" scheme="URI" content="../doc/c0053723.html" />
+<meta name="DC.Relation" scheme="URI" content="../doc/c0053724.html" />
+<meta name="DC.Relation" scheme="URI" content="../doc/c0053725.html" />
+<meta name="DC.Relation" scheme="URI" content="../doc/c0053726.html" />
+<meta name="DC.Relation" scheme="URI" content="../doc/c0054175.html" />
+<meta name="DC.Relation" scheme="URI" content="../doc/c0054186.html" />
+<meta name="DC.Relation" scheme="URI" content="../doc/c0053985.html" />
+<meta name="DC.Relation" scheme="URI" content="../doc/c0054543.html" />
+<meta name="DC.Relation" scheme="URI" content="../doc/c0054717.html" />
+<meta name="DC.Relation" scheme="URI" content="../doc/c0054720.html" />
+<meta name="DC.Relation" scheme="URI" content="../doc/c0054575.html" />
+<meta name="DC.Relation" scheme="URI" content="../doc/c0054585.html" />
+<meta name="DC.Relation" scheme="URI" content="../doc/c0054927.html" />
+<meta name="copyright" content="© Copyright IBM Corporation 1993, 2009" />
+<meta name="DC.Rights.Owner" content="© Copyright IBM Corporation 1993, 2009" />
+<meta name="DC.Format" content="XHTML" />
+<meta name="DC.Identifier" content="c0023230.dita" />
+<meta name="DC.Language" content="en-us" />
+<!-- Licensed Materials Property of IBM -->
+<!-- US Government Users Restricted Rights -->
+<!-- Use, duplication or disclosure restricted by -->
+<!-- GSA ADP Schedule Contract with IBM Corp. -->
+<link rel="stylesheet" type="text/css" href="../../com.ibm.help.doc/ibmdita.css" />
+<link rel="stylesheet" type="text/css" href="../../com.ibm.help.doc/swg_info_common.css" />
+<link rel="Start" href="../doc/c0052035.html" />
+<title>What's new in DB2 V9.7: Application development enhancements</title>
+<!-- NLS_CHARSET=UTF-8 -->
+	<script type="text/javascript" src="../../com.ibm.db2.luw.libinfo.doc/doc/luw-footer-text.js"><!-- --></script>
+	<script type="text/javascript" src="../../com.ibm.db2.luw.libinfo.doc/doc/luw-footer.js"><!--  --></script>
+</head>
+<body id="c0023230.dita"><a name="c0023230.dita"><!-- --></a>
+	<div id="title">Information Center</div>
+<!-- NLS_CHARSET=UTF-8 --><div>
+<!-- DB2 topics header v1.5 -->
+<span class="runningheader"><img src="IC-im-sm.gif" width="13" height="13" border="0" alt="" align="top" />
+<strong>DB2 Version 9.7 for Linux, UNIX, and Windows</strong></span>
+
+<hr style="width: 100%" />
+<script type="text/javascript">checkUpdate();</script>
+<!-- End of DB2 topics header -->
+</div>
+<h1 class="topictitle1">Application development enhancements</h1>
+<div><p>Application development improvements include new features
+and enhancements that simplify database application development, improve
+application portability, and ease application deployment.</p>
+</div>
+<div>
+<ul class="ullinks">
+<li class="ulchildlink"><strong><a href="../doc/c0053723.html">RENAME COLUMN clause has been added to the ALTER TABLE statement</a></strong><br />
+The RENAME COLUMN clause is a new option on the ALTER TABLE statement.
+You can now rename an existing column in a base table to a new name without
+losing stored data or affecting any privileges or label-based access control
+(LBAC) policies that are associated with the table.</li>
+<li class="ulchildlink"><strong><a href="../doc/c0053724.html">REPLACE added as an option on several CREATE statements</a></strong><br />
+The OR REPLACE clause is a new option on the CREATE statement for
+several objects, including aliases, functions, modules, nicknames, procedures
+(including federated procedures), sequences, triggers, variables, and views.
+The object is replaced if it already exists; otherwise, it is created. This
+enhancement significantly reduces the effort required to change a database
+schema.</li>
+<li class="ulchildlink"><strong><a href="../doc/c0053725.html">Soft invalidation and automatic revalidation support added</a></strong><br />
+Soft invalidation is a process whereby access to an object
+being invalidated is allowed to continue.</li>
+<li class="ulchildlink"><strong><a href="../doc/c0053726.html">Alter table set data type support has been extended</a></strong><br />
+The ALTER COLUMN SET DATA TYPE option on the ALTER TABLE
+statement has been extended to support all compatible 
+types.</li>
+<li class="ulchildlink"><strong><a href="../doc/c0054175.html">Unlimited REORG-recommended operations can now be performed within a single transaction</a></strong><br />
+Any ALTER TABLE operation that changes the format of data
+on disk requires a new version of the table descriptor, and is called
+a <dfn class="term">REORG-recommended operation</dfn>.</li>
+<li class="ulchildlink"><strong><a href="../doc/c0054186.html">CREATE with errors support added for certain database objects</a></strong><br />
+Certain objects can now be created even if errors occur
+during the compilation of their bodies; for example, creating a view
+when the table to which it refers does not exist.</li>
+</ul>
+
+</body>
+</html>

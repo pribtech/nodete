@@ -1,0 +1,91 @@
+<!--
+  Peter Prib, Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2012 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<table name="error">
+	<sqlName>DBA_ERRORS</sqlName>
+	<singularName>Error</singularName>
+	<pluralName>Errors</pluralName>
+	<description></description>
+	<orderBy name="OWNER" direction="A"/>
+	<orderBy name="NAME" direction="A"/>
+	<orderBy name="SEQUENCE" direction="A"/>
+	<disable_edit/>
+	<displayColumns>
+		<col type="column" name="OWNER"/>
+		<col type="column" name="NAME"/>
+		<col type="column" name="TYPE"/>
+		<col type="column" name="SEQUENCE"/>
+		<col type="column" name="LINE"/>
+		<col type="column" name="POSITION"/>
+		<col type="column" name="TEXT"/>
+		<col type="column" name="ATTRIBUTE"/>
+		<col type="column" name="MESSAGE_NUMBER"/>
+	</displayColumns>
+	<column name="OWNER">
+		<sqlName>OWNER</sqlName>
+		<title>Owner</title>
+		<type>s</type>
+		<primaryKey/>
+		<prefill>
+			<table>Oracle/schema</table>
+			<column>OWNER</column>
+		</prefill>
+	</column>
+	<column name="NAME">
+		<sqlName>NAME</sqlName>
+		<title>Name</title>
+		<type>s</type>
+		<primaryKey/>
+	</column>
+	<column name="TYPE">
+		<sqlName>TYPE</sqlName>
+		<title>Type</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="SEQUENCE">
+		<sqlName>SEQUENCE</sqlName>
+		<title>Sequence</title>
+		<type>n</type>
+		<primaryKey/>
+	</column>
+	<column name="LINE">
+		<sqlName>LINE</sqlName>
+		<title>Line</title>
+		<type>n</type>
+	</column>
+	<column name="POSITION">
+		<sqlName>POSITION</sqlName>
+		<title>Position</title>
+		<type>n</type>
+	</column>
+	<column name="TEXT">
+		<sqlName>TEXT</sqlName>
+		<title>Text</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="ATTRIBUTE">
+		<sqlName>ATTRIBUTE</sqlName>
+		<title>Attribute</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="MESSAGE_NUMBER">
+		<sqlName>MESSAGE_NUMBER</sqlName>
+		<title>Message Number</title>
+		<type>n</type>
+	</column>
+</table>

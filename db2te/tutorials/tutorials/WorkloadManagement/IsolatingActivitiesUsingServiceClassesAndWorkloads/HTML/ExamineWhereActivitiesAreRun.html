@@ -1,0 +1,33 @@
+ <p>First examine where activities are executed if there is no
+  user defined service class or workload. All activities in
+  DB2 are assigned to a workload and run in a service class.
+  If no user defined service classes are created, activities
+  run in the default subclass (SYSDEFAULTSUBCLASS) under the
+  default user service class (SYSDEFAULTUSERCLASS) and if no
+  user defined workloads are created, activities run under the
+  default user workload (SYSDEFAULTUSERWORKLOAD).
+  </p><p>
+  Run the statement to the right and then examine the
+  in-memory statistics for the SYSDEFAULTSUBCLASS of
+  SYSDEFAULTUSERCLASS using the <a onclick="OpenURLInFloatingWindow
+('http://publib.boulder.ibm.com/infocenter/db2luw/v9r7/topic/com.ibm.db2.luw.sql.rtn.doc/doc/r0053580.html?noframes=true');">WLM_GET_SERVICE_SUBCLASS_STATS_V97</a>table function.
+  </p>
+  <p>
+If you are using a 9.5 database, you will need to run the 
+<a onclick="OpenURLInFloatingWindow
+('http://publib.boulder.ibm.com/infocenter/db2luw/v9r7/topic/com.ibm.db2.luw.sql.rtn.doc/doc/r0052917.html?noframes=true');">WLM_GET_SERVICE_SUBCLASS_STATS</a> table function instead.  Since DB2 9.7, this table function has been deprecated and replaced by the WLM_GET_SERVICE_SUBCLASS_STATS_V97 table function.  
+Click on the 'Edit mode' button in the top right panel, and edit the SQL before clicking on 'Run.'
+</p>
+  <p>
+  Notice all the activities are run in the SYSDEFAULTUSERCLASS
+  service super class. 
+  </p>
+  <p>  
+  Additional Information: There are 2 other service classes as
+  well, SYSDEFAULTSYSTEMCLASS and SYSDEFAULTMAINTENANCECLASS.
+  These service classes are used for internal maintenance and
+  system level tasks. User activities will not run in these
+  service classes. You may notice nonzero activity counts in
+  these service classes as well if DB2 has issued any internal
+  activities.  
+  </p>

@@ -1,0 +1,153 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2009 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<command name="createBufferPool" title="Create Buffer Pool">
+<![CDATA[
+                                       .-IMMEDIATE-.   
+>>-CREATE BUFFERPOOL--bufferpool-name--+-----------+------------>
+                                       '-DEFERRED--'   
+]]>
+	<text>CREATE BUFFERPOOL</text>
+	<clauseReference name="bufferpool-name"/>
+	<select>
+		<option><text>IMMEDIATE</text></option> 
+		<option default="true"><note>IMMEDIATE</note></option> 
+		<option><text>DEFERRED</text></option> 
+	</select>
+	<br/>
+<![CDATA[
+   .-ALL DBPARTITIONNUMS-----------------------------------.   
+>--+-------------------------------------------------------+---->
+   |                           .-,-----------------------. |   
+   |                           V                         | |   
+   '-DATABASE PARTITION GROUP----db-partition-group-name-+-'   
+]]>
+	<select>
+		<option><text>DATABASE PARTITION GROUP</text></option> 
+		<option default="true"><note>DATABASE PARTITION GROUP</note></option> 
+		<option>
+			<text>DATABASE PARTITION GROUP</text>
+			<repeatable>
+				<clauseReference name="db-partition-group-name"/>
+			</repeatable>
+		</option> 
+	</select>
+	<br/>
+<![CDATA[
+   .-SIZE--1000--AUTOMATIC----------------.      
+>--+--------------------------------------+--●------------------>
+   +-SIZE--number-of-pages----------------+      
+   |       .-1000------------.            |      
+   '-SIZE--+-----------------+--AUTOMATIC-'      
+           '-number-of-pages-'                   
+]]>
+	<select>
+		<option><text>SIZE 1000 AUTOMATIC</text></option> 
+		<option default="true"><note>SIZE 1000 AUTOMATIC</note></option> 
+		<option>
+			<text>SIZE</text>
+			<clauseReference name="number-of-pages"/>
+		</option> 
+		<option>
+			<text>SIZE</text>
+			<select>
+				<option><text>1000</text></option> 
+				<option default="true"><note>1000</note></option> 
+				<option><clauseReference name="number-of-pages"/></option> 
+			</select>
+			<text>AUTOMATIC</text>
+		</option> 
+	</select>
+	<br/>
+<![CDATA[
+
+>--+------------------------------------+--●-------------------->
+   '-| except-on-db-partitions-clause |-'      
+]]>
+	<select>
+		<option default="true"><note>no except db partition</note></option> 
+		<option><clauseReference name="except-on-db-partitions-clause"/></option> 
+	</select>
+	<br/>
+<![CDATA[
+   .-NUMBLOCKPAGES 0------------------------------------------------.   
+>--+----------------------------------------------------------------+-->
+   '-NUMBLOCKPAGES--number-of-pages--+----------------------------+-'   
+                                     '-BLOCKSIZE--number-of-pages-'     
+]]>
+	<select>
+		<option><text>NUMBLOCKPAGES 0</text></option> 
+		<option default="true"><note>NUMBLOCKPAGES 0</note></option> 
+		<option>
+			<text>NUMBLOCKPAGES</text>
+			<clauseReference name="number-of-pages"/>
+			<select>
+				<option default="true"><note>block size</note></option> 
+				<option><text>BLOCKSIZE</text><clauseReference name="number-of-pages"/></option> 
+			</select>
+		</option> 
+	</select>
+	<br/>
+<![CDATA[
+>--●--+--------------------------+--●--------------------------><
+      '-PAGESIZE--integer--+---+-'      
+                           '-K-'        
+]]>
+	<select>
+		<option default="true"><note>page size</note></option> 
+		<option>
+			<text>PAGESIZE</text>
+			<input type="int" size="5"/>
+			<select>
+				<option default="true"><note>units</note></option> 
+				<option><text>K</text></option> 
+			</select>
+		</option> 
+	</select>
+
+	<clause name="except-on-db-partitions-clause" title="except on db partitions clause">
+<![CDATA[
+|--EXCEPT ON--+-DBPARTITIONNUM--+------------------------------->
+              '-DBPARTITIONNUMS-'   
+
+      .-,-------------------------------------------------------------------------.      
+      V                                                                           |      
+>--(----db-partition-number1--+--------------------------+--SIZE--number-of-pages-+--)--|
+                              '-TO--db-partition-number2-'                               
+ ]]>
+		<text>EXCEPT ON</text>
+		<select>
+			<option default="true"><text>DBPARTITIONNUM</text></option> 
+			<option><text>DBPARTITIONNUMS</text></option>
+		</select>
+		<br/>
+	
+		<text>(</text>
+		<repeatable>
+			<clauseReference name="db-partition-number"/>
+			<select>
+				<option default="true"><note>to</note></option> 
+				<option><text>TO</text><clauseReference name="db-partition-number"/></option> 
+			</select>
+			<text>SIZE</text>
+			<clauseReference name="number-of-pages"/>
+		</repeatable>
+		<text>)</text>
+	</clause>
+
+</command>
+        

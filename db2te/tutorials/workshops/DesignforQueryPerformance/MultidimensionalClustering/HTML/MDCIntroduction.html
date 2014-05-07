@@ -1,0 +1,31 @@
+<BR><H2><B>Problem Statement</B></H2><HR>
+<p>Data Warehouse queries normally address many columns. The key challenges in optimizing query performance in such a scenario include</p>
+<ol>
+<li>Data that is physically clustered along one dimension</li>
+<li>Space is filled up on data pages over time, clustering is not guaranteed. An insert operation will attempt to add a record to a page nearby to those having the same or similar clustering key values, but if no space can be found in the ideal location, it will be inserted elsewhere in the table. Therefore, periodic table reorganizations may be necessary to re-cluster the table and to setup pages with additional free space to accommodate future clustered insert requests</li>
+<li>Record-based indexes contain a pointer for every single record in the table, they can be very large in size</li>
+</ol>
+
+<BR><H2><B>Solution : <a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v9r7/topic/com.ibm.db2.luw.admin.partition.doc/doc/c0007201.html');">Multi-Dimensional Clustering</B></H2><HR></a>
+
+<BR>
+<h4>What is Multi-Dimensional Clustering ?</h4>
+<p>Multi-Dimensional Clustering (MDC) is a unique feature of IBM DB2 for Linux, UNIX and Windows (DB2 LUW) that allows physically clustering the data in a table along multiple dimensions. MDC can significantly improve query performance.</p>
+
+<H2><B>Operation</B></H2><HR>
+<p>This tutorial demonstrates clustering of data on multiple dimensions and highlights the best practices to do 
+the same. The need for creating MDCs and their advantages are analysed. A graph comparing the query execution 
+time against the tables with and without MDC is generated and the steps to create an explain snapshot displaying 
+the use of the MDC block indexes during query processing are indicated.</p>
+
+<H2><B>Benefits of Multi-Dimensional Clustering</B></H2><HR>
+<p>
+<ol>
+<li>MDC enables a table to be physically clustered on more than one key, or dimension, simultaneously. With MDC, the benefits of single-dimensional clustering are therefore extended to multiple dimensions. Query performance is improved as the queries access only those pages having records with the correct dimension values, the qualifying pages being grouped into blocks, or extents.</li>
+<li>Block Indexes are drastically smaller than regular record-based indexes, so take up much less disk space and are faster to scan, contributing to increased query performance</li>
+<li>MDC table is able to maintain and guarantee its clustering over all dimensions automatically and continuously. This eliminates the need to reorganize MDC tables.</li>
+<li>MDC allows the ability to co-exist with existing database features such as row based indexes, table constraints, materialized views, etc.</li>
+</ol>
+</p>
+
+

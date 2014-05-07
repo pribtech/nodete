@@ -1,0 +1,14 @@
+<p>If you want to perform a particular action on all activities of a
+  specific type (such as apply a threshold or collect activity
+  information), use a database work action set.  This is done with the <a onclick="OpenURLInFloatingWindow
+('http://publib.boulder.ibm.com/infocenter/db2luw/v9r7/topic/com.ibm.db2.luw.sql.ref.doc/doc/r0050576.html;">
+CREATE WORK ACTION SET</a> statement.  
+ </p> <p>
+  Create a work action set at the database level that contains work
+  actions for the specific work class representing the type of
+  activities you want isolated.  For this example, assume we want to
+  collect activity data for all DDL, READ and LOAD activities that run
+  on the system and we also want to stop any large read activity from
+  running.  For this task, a large read activity is any select statement
+  that has an estimated cost (in timerons) of greater than 10000.
+  </p>

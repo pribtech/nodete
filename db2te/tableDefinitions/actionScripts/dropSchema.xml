@@ -1,0 +1,354 @@
+<action  name="dropSchemaConfirm" type="form">
+<!-- 
+This action is used to drop a schema or the schema and all associated object from the DB2 database  
+The user has three options:
+
+Drop schema
+Drop all schema object
+Cancel
+-->
+	<message><![CDATA[
+<div style='width:500px'>
+<p>You are about to drop the schema '?SCHEMA_NAME?' and all object contained within. If any object can not be dropped an error log will be written to the following table: <br/>'?ERRORSCHEMA?'.''?SCHEMA_NAME?''.</p>
+</div>
+]]>
+    </message>
+    <parameterList>
+        <parameter name="SCHEMA_NAME" type="blockValue">
+			<value>schemaname</value>
+		</parameter>
+    	<parameter name="ERRORSCHEMA" type="raw">
+    		<value>ERRORSCHEMA</value>
+    		<check>
+    			<onMatch condition="schemaname" conditionType="blockValue" conditionCompairType="istr">
+    				<task>
+			        	<assignSharedConstant name="ERRORSCHEMA" type="raw">
+			        		<value>ERRORSCHEMA2</value>
+			        	</assignSharedConstant>
+    				</task>
+    			</onMatch>
+    		</check>
+    	</parameter>
+		<parameter name="buttonOK" type="raw">
+			<value>Drop schema</value>
+		</parameter>
+		<parameter name="button_dropAll" type="raw">
+			<value>Drop all objects within the schema</value>
+		</parameter>
+	</parameterList>
+	<if condition="dropAll">
+		<task>
+<action  name="dropSchemaConfirm" type="form">
+<!-- 
+This action is used to drop a schema and all containing objects from a db2 database. Due to the way the drop schema
+was implemented we need to be able to create an error table if anything goes wrong. So first this
+action will confirm with the user that they would like to drop the schema and use the default error table
+
+The user has three options:
+
+Drop the schema using the default error table
+Change the error table
+Cancel the operation
+-->
+	<message><![CDATA[
+<div style='width:500px'>
+<p>You are about to drop the schema '?SCHEMA_NAME?' and all object contained within. If any object can not be dropped an error log will be written to the following table: <br/>'?ERRORSCHEMA?'.''?SCHEMA_NAME?''.</p>
+</div>
+]]>
+    </message>
+    <parameterList>
+        <parameter name="SCHEMA_NAME" type="blockValue">
+			<value>schemaname</value>
+		</parameter>
+    	<parameter name="ERRORSCHEMA" type="raw">
+    		<value>ERRORSCHEMA</value>
+    		<check>
+    			<onMatch condition="schemaname" conditionType="blockValue" conditionCompairType="istr">
+    				<task>
+			        	<assignSharedConstant name="ERRORSCHEMA" type="raw">
+			        		<value>ERRORSCHEMA2</value>
+			        	</assignSharedConstant>
+    				</task>
+    			</onMatch>
+    		</check>
+    	</parameter>
+		<parameter name="buttonOK" type="raw">
+			<value>Drop schema</value>
+		</parameter>
+		<parameter name="button_change" type="raw">
+			<value>Change error schema</value>
+		</parameter>
+	</parameterList>
+	
+	<!--
+		No mater what happens we will need to set the error table and schema in to the shared variables
+		so that they can be accessed throughout the rest of the action. A blank error message is also set
+		so that some components can be reused if an error occures.
+	-->
+	<if condition="true" compareOn="true" compareOnType="raw">
+		<task>
+        	<assignSharedConstant name="ERROR_TABLE" type="blockValue">
+        		<value>schemaname</value>
+        	</assignSharedConstant>
+        	<assignSharedConstant name="ERROR_SCHEMA" type="raw">
+        		<value>ERRORSCHEMA</value>
+        		<check>
+        			<onMatch condition="schemaname" conditionType="blockValue" conditionCompairType="istr">
+        				<task>
+				        	<assignSharedConstant name="ERROR_SCHEMA" type="raw">
+				        		<value>ERRORSCHEMA2</value>
+				        	</assignSharedConstant>
+        				</task>
+        			</onMatch>
+        		</check>
+        	</assignSharedConstant>
+        	<assignSharedConstant name="ERROR_MESSAGE" type="raw">
+        		<value></value>
+        	</assignSharedConstant>
+        </task>
+	</if>
+	
+	<!--
+		If the user wishes to change the error schema a form will need to be created so that they can enter the new names.
+		At this point the user can:
+		
+		Drop the schema with the new error table and schema
+		Cancel the operation 
+	-->
+    <if condition="change">
+        <task>
+            <action name="changeErrorTable" type="form">
+   				 <message><![CDATA[
+<div style='width:500px'>
+?ERROR_MESSAGE?
+<p>Please enter the table and schema to save the error information</p>
+<table>
+<tr><td>Schema</td><td>:</td><td><input type="text" name='ERROR_SCHEMA' value="?ERROR_SCHEMA?" style="width:300px"/></td></tr>
+<tr><td>Table</td><td>:</td><td><input type="text" name='ERROR_TABLE' value="?ERROR_TABLE?" style="width:300px"/></td></tr>
+</table>
+</div>
+]]>
+		        </message>
+		        <parameterList>
+					<parameter name="buttonOK" type="raw">
+						<value>Drop schema</value>
+					</parameter>
+				</parameterList>
+	            <!--
+	            	On form submit the table need to be check to ensure it does not exist.
+	            -->
+	            <if condition="true">
+	        		<task>
+	        			<gotoAction name="checkForErrorTable"/>
+		            </task>
+		        </if>
+	         </action>
+        </task>
+    </if>
+    <!--
+    	Confirmation that the schema is to be dropped is received.
+    -->
+    <if condition="true">
+        <task>
+        	<!--
+        		This action uses the server action check for object to ensure that the error schema.table does not exist.
+        	-->
+            <action name="checkForErrorTable" type="serverAction">
+                <parameterList>
+					<parameter name="action" type="fixed">
+						<value>checkForObject</value>
+					</parameter>
+					<parameter name="objectType" type="fixed">
+						<value>table</value>
+					</parameter>
+					<parameter name="object[schema]" type="constant">
+						<value>ERROR_SCHEMA</value>
+					</parameter>
+					<parameter name="object[table]" type="constant">
+						<value>ERROR_TABLE</value>
+					</parameter>
+                </parameterList>
+                <!--
+                	If the table exists the user must change the error table and schema or abort the operation.
+                -->
+                <if  condition="true">
+            		<task>
+            			<gotoAction name="changeErrorTable"/>
+            		</task>
+            	</if>
+            	<!--
+            		If the table does not exist the schema can now be tried to drop.
+            	-->
+                <if  condition="false">
+            		<task>
+            			<!--
+            				To drop the schema the server action executeSQL will be used to call the
+            				Admin stored procedure SYSPROC.ADMIN_DROP_SCHEMA to drop the schema.
+            			-->
+		                <action name="dropSchema" type="serverAction">
+		                    <parameterList>
+		                        <parameter name="action" type="raw">
+		                            <value>executeSQL</value>
+		                        </parameter>
+		                        <parameter name="SQL" type="raw">
+		                            <value>CALL SYSPROC.ADMIN_DROP_SCHEMA( '?SCHEMA?', NULL, ?, ? )</value>
+		                        </parameter>
+		                        <parameter name="parameter[SCHEMA]" type="blockValue">
+		                            <value>schemaname</value>
+		                        </parameter>
+		                        <parameter name="bindParameters[1][name]" type="raw">
+		                            <value>SCHEMA</value>
+		                        </parameter>
+		                        <parameter name="bindParameters[1][value]" type="constant">
+		                            <value>ERROR_SCHEMA</value>
+		                        </parameter>
+		                        <parameter name="bindParameters[1][type]" type="type">
+		                            <value>DB2_PARAM_IN</value>
+		                        </parameter>
+		                        <parameter name="bindParameters[2][name]" type="raw">
+		                            <value>tableName</value>
+		                        </parameter>
+		                        <parameter name="bindParameters[2][value]" type="constant">
+		                            <value>ERROR_TABLE</value>
+		                        </parameter>
+		                        <parameter name="bindParameters[2][type]" type="raw">
+		                            <value>DB2_PARAM_IN</value>
+		                        </parameter>
+		                    </parameterList>
+		                    <!-- 
+		                    	If an error occurs the user is notified 
+		                    -->
+		                    <if condition="false">
+		                        <task>
+		                        	<assignLocalParameter name="ERROR_MSG" type="returnObject">
+		                        		<value>dropSchema.returnValue.STMTMSG</value>
+		                        	</assignLocalParameter>
+		                        	<alert>An error has occurred: ?ERROR_MSG?</alert>
+		                        </task>
+		                    </if>
+		                    <!--
+		                    	if no error occurs, the existents of the error schema.table must be checked to know if the
+		                    	schema was successfully dropped or not.
+		                    -->
+		                    <if condition="true">
+		                        <task>
+		                            <action name="checkForError" type="serverAction">
+		                                <parameterList>
+											<parameter name="action" type="fixed">
+												<value>checkForObject</value>
+											</parameter>
+											<parameter name="objectType" type="fixed">
+												<value>table</value>
+											</parameter>
+											<parameter name="object[schema]" type="constant">
+												<value>ERROR_SCHEMA</value>
+											</parameter>
+											<parameter name="object[table]" type="constant">
+												<value>ERROR_TABLE</value>
+											</parameter>
+		                                </parameterList>
+		                                <!-- if the table does not exist the schema has been dropped -->
+		                                <if condition="false">
+		                                    <task>
+		                                    	<assignSharedConstant name="SCHEMA_NAME" type="blockValue">
+									        		<value>schemaname</value>
+			        							</assignSharedConstant>
+												<alert>Schema '?SCHEMA_NAME?' and all associated objects dropped</alert>
+		                                    </task>
+											<task>
+												<panelReload/>
+											</task>
+		                                </if>
+		                                <!-- 
+		                                	if the schema does exist then an error has occurred, the user should be notified 
+		                                	and asked if they would like to view the error table 
+		                                -->
+		                                <if condition="true">
+											<task>
+												<action  name="dropSchemaConfirm" type="form">
+    												<message><![CDATA[
+<div style='width:500px'>
+<p>The schema '?SCHEMA_NAME?' could not be dropped</p>
+<p>The table ?ERROR_SCHEMA?.'?ERROR_TABLE?' contains error information for objects that could not be dropped.</p>
+</div>
+]]>
+												    </message>
+												    <parameterList>
+														<parameter name="buttonOK" type="raw">
+															<value>View error table</value>
+														</parameter>
+														<parameter name="buttonCancel" type="raw">
+															<value>Ok</value>
+														</parameter>
+													</parameterList>
+													<!-- 
+														If the user choses to view the table it will now be oppend.
+													-->
+													<if condition="true">
+														<task>
+												          <loadPage>
+															<pageWindow target="_blank">
+																<panel name="main" PrimaryContainer="true">
+													              <link type="action" target="_self" window="_self" connectionRequired="y">
+													                <parameterList>
+													                  <parameter name="table">?ERROR_SCHEMA?.'?ERROR_TABLE?'</parameter>
+													                  <parameter name="action">list_table</parameter>
+													                </parameterList>
+													              </link>
+																</panel>
+															</pageWindow>
+												          </loadPage>
+														</task>
+													</if>
+												</action>
+		                                    </task>
+		                                </if>
+		                            </action>
+		                        </task>
+		                    </if>
+		                </action>
+                    </task>
+                </if>
+            </action>
+        </task>
+    </if>
+</action>
+</task>
+	</if>
+	<if condition="true">
+		<task>
+			<action name="dropSchemaOnly" type="serverAction">
+				<parameterList>
+					<parameter name="action" type="fixed">
+						<value>executeSQL</value>
+					</parameter>
+					<parameter name="SQL" type="fixed">
+						<value>drop schema ?SCHEMA_NAME? RESTRICT</value>
+					</parameter>
+					<parameter name="parameter[SCHEMA_NAME]" type="blockValue">
+						<value>schemaname</value>
+					</parameter>
+				</parameterList>
+				<if condition="true" negCondition="true">
+					<task>
+						<assignSharedConstant name="ERROR_MESSAGE" type="returnObject">
+							<value>dropSchemaOnly.returnValue.STMTMSG</value>
+						</assignSharedConstant>
+						<alert>Failed to drop the schema: ?ERROR_MESSAGE?</alert>
+					</task>
+				</if>
+				<if condition="true">
+					<task>
+						<assignSharedConstant name="SCHEMA_NAME" type="blockValue">
+			        		<value>schemaname</value>
+			        	</assignSharedConstant>
+						<alert>Schema '?SCHEMA_NAME?' dropped</alert>
+					</task>
+					<task>
+						<panelReload/>
+					</task>
+				</if>
+			</action>
+		</task>
+	</if>
+</action>

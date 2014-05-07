@@ -1,0 +1,126 @@
+<!--
+  Peter Prib, Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2012 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<table name="process">
+	<sqlName>V$PROCESS</sqlName>
+	<singularName>Process</singularName>
+	<pluralName>Processes</pluralName>
+	<description></description>
+	<disableEdit/>
+	<output>
+		<type name="DDL" destination="" title="" generator=""/>
+	</output>	<orderBy name="PID" direction="A"/> 
+	<displayColumns>
+		<col type="column" name="PID"/>
+		<col type="column" name="SPID"/>
+		<col type="column" name="USERNAME"/>
+		<col type="column" name="SERIAL#"/>
+		<col type="column" name="TERMINAL"/>
+		<col type="column" name="PROGRAM"/>
+		<col type="column" name="BACKGROUND"/>
+		<col type="column" name="LATCHWAIT"/>
+		<col type="column" name="LATCHSPIN"/>
+		<col type="column" name="PGA_USED_MEM"/>
+		<col type="column" name="PGA_ALLOC_MEM"/>
+		<col type="column" name="PGA_FREEABLE_MEM"/>
+		<col type="column" name="PGA_MAX_MEM"/>
+	</displayColumns>
+	<column name="PID">
+		<sqlName>PID</sqlName>
+		<title>PID</title>
+		<type>n</type>
+	</column>
+	<column name="SPID">
+		<sqlName>SPID</sqlName>
+		<title>SPID</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="USERNAME">
+		<sqlName>USERNAME</sqlName>
+		<title>User</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="SERIAL#">
+		<sqlName>SERIAL#</sqlName>
+		<title>Serial No.</title>
+		<type>n</type>
+	</column>
+	<column name="TERMINAL">
+		<sqlName>TERMINAL</sqlName>
+		<title>Terminal</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="PROGRAM">
+		<sqlName>PROGRAM</sqlName>
+		<title>Program</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="TRACEID">
+		<sqlName>TRACEID</sqlName>
+		<title>Traceid</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="TRACEFILE">
+		<sqlName>TRACEFILE</sqlName>
+		<title>Tracefile</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="BACKGROUND">
+		<sqlName>BACKGROUND</sqlName>
+		<title>Background</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="LATCHWAIT">
+		<sqlName>LATCHWAIT</sqlName>
+		<title>Latch Wait</title>
+		<type>s</type>
+	</column>
+	<column name="LATCHSPIN">
+		<sqlName>LATCHSPIN</sqlName>
+		<title>Latch Spin</title>
+		<type>s</type>
+	</column>
+	<column name="PGA_USED_MEM">
+		<sqlName>PGA_USED_MEM</sqlName>
+		<title>PGA Used</title>
+		<type>n</type>
+		<formatNumber toAbbreviated="4"/> 
+	</column>
+	<column name="PGA_ALLOC_MEM">
+		<sqlName>PGA_ALLOC_MEM</sqlName>
+		<title>PGA Alloc.</title>
+		<type>n</type>
+		<formatNumber toAbbreviated="4"/> 
+	</column>
+	<column name="PGA_FREEABLE_MEM">
+		<sqlName>PGA_FREEABLE_MEM</sqlName>
+		<title>PGA Freeable</title>
+		<type>n</type>
+		<formatNumber toAbbreviated="4"/> 
+	</column>
+	<column name="PGA_MAX_MEM">
+		<sqlName>PGA_MAX_MEM</sqlName>
+		<title>PGA Max</title>
+		<type>n</type>
+		<formatNumber toAbbreviated="4"/> 
+	</column>
+</table>

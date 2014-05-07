@@ -1,0 +1,27 @@
+<tutorial name="About table joins"> 
+	<globalCodeHighlightOptions highlightCode="true"/>
+	<pageList>
+		<page name="Why compression means faster performance" type="intro"> 
+			<contentFile>introduction.html</contentFile> 
+			<autoLoadLink> 
+				<pageWindow target="informationWindow"> 
+					<title>Table joins</title>
+					<panel name="main"> 
+						<URL>
+http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.datatools.datamining.doc/c_dp_table_joins.html?noframes=true 
+						</URL> 
+					</panel> 
+				</pageWindow> 
+			</autoLoadLink> 
+		</page>
+		<page name="Setting up tables" type="intro"> 
+			<contentFile> tableSetup.html </contentFile> 
+			<SQLFile>tableSetup.sql </SQLFile> 
+		</page>
+		<page name="Looking at joins" type="intro"> 
+			<contentFile> joinBasics.html </contentFile> 
+			<SQLFile>joinBasics.sql</SQLFile> 
+			<SQLExecutionOptions xml="false" clob="false" xmlinline="false" clobinline="false" blob="false" dbclob="false" termChar=";" commitPerStmt="true" numRowReturned="200"/>
+		</page>
+	</pageList> 
+</tutorial>

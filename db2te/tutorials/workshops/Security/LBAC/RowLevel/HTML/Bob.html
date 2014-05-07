@@ -1,0 +1,22 @@
+<BR><BR><H2><B>Access to table by employee Bob</B></H2><HR><P>
+<?php
+  $baseDIR = $_POST["BASE_DIR"];
+?>
+
+<img src="?BASE_DIRECTORY?HTML/bob.png" />
+
+<p><b>You must log into the database as Bob before proceeding with this page.</b></p>
+<p>Bob is an employee of customer service department of SOUTH region. He is granted with security label 'SOUTH' with ALL ACCESS. <br><br>
+<b>Check which records of <font face="courier">'dailysales'</font> table
+will Bob be able to access.</b></p>
+
+<br><h4>Operation</h4><br>
+Execute the SELECT statement on the right pane. <br><br><b>SECLABEL_TO_CHAR</b> function returns a string representation of values that make up a security
+label. This is useful when we want to display user-friendly output of the DB2SECURITYLABEL columns.
+
+<br><br><h4>Solution</h4><br>
+<p>Since Bob is granted with security label 'SOUTH', he will be able to access all records associated with security label is 'SOUTH'. Thus Bob can only see south region sales information.  </p>
+
+
+
+

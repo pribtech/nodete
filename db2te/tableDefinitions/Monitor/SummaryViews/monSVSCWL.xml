@@ -1,0 +1,131 @@
+
+	<!--
+
+
+		Copyright Independent Systems Integrators Pty Ltd 2008 All rights
+		reserved. Updated by Author: Peter Kohlmann Copyright IBM Canada Ltd
+		2008 All rights reserved. Licensed under the Apache License, Version
+		2.0 (the "License"); you may not use this file except in compliance
+		with the License. You may obtain a copy of the License at
+
+		http://www.apache.org/licenses/LICENSE-2.0 Unless required by
+		applicable law or agreed to in writing, software distributed under the
+		License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+		CONDITIONS OF ANY KIND, either express or implied. See the License for
+		the specific language governing permissions and limitations under the
+		License.
+	-->
+<table name="monWorkload">
+	<sql_name>monTest</sql_name>
+	<singular_name>Service Class Activities</singular_name>
+	<plural_name>Service Class Activities</plural_name>
+	<inlinequery>
+<![CDATA[
+SELECT SERVICE_SUPERCLASS_NAME, SERVICE_SUBCLASS_NAME, DBPARTITIONNUM, WORKLOAD_NAME , WORKLOAD_OCCURRENCE_STATE, UOW_ID, APPLICATION_HANDLE 
+FROM TABLE(WLM_GET_SERVICE_CLASS_WORKLOAD_OCCURRENCES_V97(CAST(NULL AS VARCHAR(128)), CAST(NULL AS VARCHAR(128)), -2)) AS SCINFO
+  ORDER BY SERVICE_SUPERCLASS_NAME, SERVICE_SUBCLASS_NAME, WORKLOAD_NAME
+]]>
+	</inlinequery>
+	<messages><SQL0551N>Security issue. Please install "Monitoring Switches/Security" in Tools -> Installed Components</SQL0551N></messages>
+	<description></description>
+	<order_by_index />
+	<display_columns>
+		<col type="column" name="SERVICE_SUPERCLASS_NAME" />
+		<col type="column" name="SERVICE_SUBCLASS_NAME" />
+		<col type="column" name="DBPARTITIONNUM" />
+		<col type="column" name="WORKLOAD_NAME" />
+		<col type="column" name="WORKLOAD_OCCURRENCE_STATE" />
+		<col type="column" name="UOW_ID" />
+		<col type="column" name="APPLICATION_HANDLE" />
+	</display_columns>
+	<column name="SERVICE_SUPERCLASS_NAME">
+		<c_sql_name>SERVICE_SUPERCLASS_NAME</c_sql_name>
+		<c_title>Service Class</c_title>
+		<c_drill>n</c_drill>
+		<c_reference name="instance">
+			<reftype>table</reftype>
+			<refvalue>Monitor/monServiceSubclass</refvalue>
+			<icon>images/sout.gif</icon>
+			<ref foreign_column_name="SERVICE_SUPERCLASS_NAME">
+				<local_column_name>SERVICE_SUPERCLASS_NAME</local_column_name>
+			</ref>
+		</c_reference>
+
+		<c_column_mask_file>masks/skipNulls.xml</c_column_mask_file>
+	</column>
+	<column name="SERVICE_SUBCLASS_NAME">
+		<c_sql_name>SERVICE_SUBCLASS_NAME</c_sql_name>
+		<c_title>Service Subclass</c_title>
+		<c_drill>n</c_drill>
+		<c_pkey>p</c_pkey>
+		<c_reference name="instance">
+			<reftype>table</reftype>
+			<refvalue>Monitor/monServiceSubclass</refvalue>
+			<icon>images/sout.gif</icon>
+			<ref foreign_column_name="SERVICE_SUBCLASS_NAME">
+				<local_column_name>SERVICE_SUBCLASS_NAME</local_column_name>
+			</ref>
+		</c_reference>
+		<c_column_mask_file>masks/skipNulls.xml</c_column_mask_file>
+	</column>
+	<column name="DBPARTITIONNUM">
+		<c_sql_name>DBPARTITIONNUM</c_sql_name>
+		<c_title>DBpartition Num</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+		<c_column_mask_file>masks/skipNulls.xml</c_column_mask_file>
+	</column>
+	<column name="WORKLOAD_NAME">
+		<c_sql_name>WORKLOAD_NAME</c_sql_name>
+		<c_title>Workload</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+		<c_reference name="instance">
+			<reftype>table</reftype>
+			<refvalue>Monitor/monWorkLoad</refvalue>
+			<icon>images/sout.gif</icon>
+			<ref foreign_column_name="WORKLOAD_NAME">
+				<local_column_name>WORKLOAD_NAME</local_column_name>
+			</ref>
+		</c_reference>
+		<c_column_mask_file>masks/skipNulls.xml</c_column_mask_file>
+	</column>
+	<column name="WORKLOAD_OCCURRENCE_STATE">
+		<c_sql_name>WORKLOAD_OCCURRENCE_STATE</c_sql_name>
+		<c_title>Workload State</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+
+		<c_column_mask_file>masks/skipNulls.xml</c_column_mask_file>
+	</column>
+	<column name="UOW_ID">
+		<c_sql_name>UOW_ID</c_sql_name>
+		<c_title>UOW ID</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+		<c_reference name="instance">
+			<reftype>table</reftype>
+			<refvalue>Monitor/monUOW</refvalue>
+			<icon>images/sout.gif</icon>
+			<ref foreign_column_name="UOW_ID">
+				<local_column_name>UOW_ID</local_column_name>
+			</ref>
+		</c_reference>
+		<c_column_mask_file>masks/skipNulls.xml</c_column_mask_file>
+	</column>
+	<column name="APPLICATION_HANDLE">
+		<c_sql_name>APPLICATION_HANDLE</c_sql_name>
+		<c_title>Application Handle</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+		<c_reference name="instance">
+			<reftype>table</reftype>
+			<refvalue>Monitor/monConnection</refvalue>
+			<icon>images/sout.gif</icon>
+			<ref foreign_column_name="APPLICATION_HANDLE">
+				<local_column_name>APPLICATION_HANDLE</local_column_name>
+			</ref>
+		</c_reference>
+		<c_column_mask_file>masks/skipNulls.xml</c_column_mask_file>
+	</column>
+</table>

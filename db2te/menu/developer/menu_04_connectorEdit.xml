@@ -1,0 +1,49 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2009 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+
+<menu type="leaf" branchDirectory="">
+	<description>Connector Management</description>
+	<pageWindow target="_active">
+				<panel name="main" PrimaryContainer="true">
+					<link type="action" target="_self" window="_self" connectionRequired="y">
+						<parameterList>
+							<parameter name="action">chartNodal</parameter>
+							<parameter name="$chartTitle">Table</parameter>
+							<parameter name="$sourceType">JSON</parameter>
+							<parameter name="$source">getConnectionProfile</parameter>
+							<parameter name="$nodeControl">
+<![CDATA[
+<nodeControl>
+	<node name='default' textSizeAttribute='5'/>
+	<node name='table' colour='#99CCFF' shape='table'/>
+	<node name='column' colour='#CC66FF' shape='operator' hideAble='true'/>	
+</nodeControl>
+]]>
+							</parameter>
+							<parameter name="$show">Report</parameter>
+							<parameter name="$report">XSL/chartNodalDefaultEdit.xsl</parameter>
+							<parameter name="$editMode">true</parameter>
+							<parameter name="$newRoot">connectionManagerNodes</parameter>
+							<parameter name="$definition">XSD/connectManager.xsd</parameter>
+							<parameter name="$save">updateConnectionProfile</parameter>
+							<parameter name="$transform">XSL/removerEmptyOrNewLineTextNodes.xsl</parameter>
+						</parameterList>
+					</link>				
+				</panel>
+	</pageWindow>
+</menu>

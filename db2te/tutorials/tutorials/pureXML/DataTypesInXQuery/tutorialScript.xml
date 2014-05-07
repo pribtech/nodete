@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tutorial name="Data Types in XQuery" autoCloseWindowsInRightStage="true" autoClearAdhocResults="true">
+    <flowRestriction>Free</flowRestriction>
+    <closeAction/>
+    <openAction />
+    <globalCodeHighlightOptions highlightCode = "true" />
+    <pageList>
+    	<page name="Data Types in XQuery" type="intro">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>01_DataTypesInXQuery.html</contentFile>
+            <autoLoadLink>
+    	        <pageWindow target="informationWindow">
+    	            <panel name="main">
+    	                <URL>http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.xml.doc/doc/xqrtypesys.html?noframes=true</URL>
+    	            </panel>
+    	        </pageWindow>
+    	      </autoLoadLink>
+        </page>
+        
+    <page name="Standard Numeric Datatypes" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>02_StandardNumericDatatypes.html</contentFile>
+            <SQLFile>01_StandardNumericDatatypes.sql</SQLFile>
+            <SQLExecutionOptions xmlinline="true" xml="true" clob="false" blob="false" dbclob="false" termChar=";" cursor="forward" commitPerStmt="true" numRowReturned="100" />
+        </page><page name="Casting of a datatype" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>03_CastingOfADatatype.html</contentFile>
+            <SQLFile>02_CastingOfADatatype.sql</SQLFile>
+            <SQLExecutionOptions xmlinline="true" xml="true" clob="false" blob="false" dbclob="false" termChar=";" cursor="forward" commitPerStmt="true" numRowReturned="100" />
+        </page><page name="Integer datatypes" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>04_IntegerDatatypes.html</contentFile>
+            <SQLFile>03_IntegerDatatypes.sql</SQLFile>
+            <SQLExecutionOptions xmlinline="true" xml="true" clob="false" blob="false" dbclob="false" termChar=";" cursor="forward" commitPerStmt="true" numRowReturned="100" />
+        </page><page name="Unsigned Integer datatypes" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>05_UnsignedIntegerDatatypes.html</contentFile>
+            <SQLFile>04_UnsignedIntegerDatatypes.sql</SQLFile>
+            <SQLExecutionOptions xmlinline="true" xml="true" clob="false" blob="false" dbclob="false" termChar=";" cursor="forward" commitPerStmt="true" numRowReturned="100" />
+        </page><page name="Floating Point datatypes" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>06_FloatingPointDatatypes.html</contentFile>
+            <SQLFile>05_FloatingPointDatatypes.sql</SQLFile>
+            <SQLExecutionOptions xmlinline="true" xml="true" clob="false" blob="false" dbclob="false" termChar=";" cursor="forward" commitPerStmt="true" numRowReturned="100" />
+        </page><page name="Decimal datatype" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>07_DecimalDatatype.html</contentFile>
+            <SQLFile>06_DecimalDatatype.sql</SQLFile>
+            <SQLExecutionOptions xmlinline="true" xml="true" clob="false" blob="false" dbclob="false" termChar=";" cursor="forward" commitPerStmt="true" numRowReturned="100" />
+        </page><page name="String Constants" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>08_StringConstants.html</contentFile>
+            <SQLFile>07_StringConstants.sql</SQLFile>
+            <SQLExecutionOptions xmlinline="true" xml="true" clob="false" blob="false" dbclob="false" termChar=";" cursor="forward" commitPerStmt="true" numRowReturned="100" />
+        </page><page name="Quotes need to be delimited properly" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>09_QuotesNeedToBeDelimitedProperly.html</contentFile>
+            <SQLFile>08_QuotesNeedToBeDelimitedProperly.sql</SQLFile>
+            <SQLExecutionOptions xmlinline="true" xml="true" clob="false" blob="false" dbclob="false" termChar=";" cursor="forward" commitPerStmt="true" numRowReturned="100" />
+        </page><page name="Strings can contain special characters" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>10_StringsCanContainSpecialCharacters.html</contentFile>
+            <SQLFile>09_StringsCanContainSpecialCharacters.sql</SQLFile>
+            <SQLExecutionOptions xmlinline="true" xml="true" clob="false" blob="false" dbclob="false" termChar=";" cursor="forward" commitPerStmt="true" numRowReturned="100" />
+        </page><page name="Strings require quotes to be properly used" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>11_StringsRequireQuotesToBeProperlyUsed.html</contentFile>
+            <SQLFile>10_StringsRequireQuotesToBeProperlyUsed.sql</SQLFile>
+            <SQLExecutionOptions xmlinline="true" xml="true" clob="false" blob="false" dbclob="false" termChar=";" cursor="forward" commitPerStmt="true" numRowReturned="100" />
+        </page><page name="XML Tags are valid values" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>12_XMLTagsAreValidValues.html</contentFile>
+            <SQLFile>11_XMLTagsAreValidValues.sql</SQLFile>
+            <SQLExecutionOptions xmlinline="true" xml="true" clob="false" blob="false" dbclob="false" termChar=";" cursor="forward" commitPerStmt="true" numRowReturned="100" />
+        </page>
+<page name="Alternate String Formats" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>13_AlternateStringFormats.html</contentFile>
+            <SQLFile>12_AlternateStringFormats.sql</SQLFile>
+            <SQLExecutionOptions xmlinline="true" xml="true" clob="false" blob="false" dbclob="false" termChar=";" cursor="forward" commitPerStmt="true" numRowReturned="100" />
+        </page><page name="Boolean datatype" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>14_BooleanDatatype.html</contentFile>
+            <SQLFile>13_BooleanDatatype.sql</SQLFile>
+            <SQLExecutionOptions xmlinline="true" xml="true" clob="false" blob="false" dbclob="false" termChar=";" cursor="forward" commitPerStmt="true" numRowReturned="100" />
+        </page><page name="Hex Binary Data type" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>15_HexBinaryDataType.html</contentFile>
+            <SQLFile>14_HexBinaryDataType.sql</SQLFile>
+            <SQLExecutionOptions xmlinline="true" xml="true" clob="false" blob="false" dbclob="false" termChar=";" cursor="forward" commitPerStmt="true" numRowReturned="100" />
+        </page><page name="base64Binary data type" type="last">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>16_Base64BinaryDataType.html</contentFile>
+            <SQLFile>15_Base64BinaryDataType.sql</SQLFile>
+            <SQLExecutionOptions xmlinline="true" xml="true" clob="false" blob="false" dbclob="false" termChar=";" cursor="forward" commitPerStmt="true" numRowReturned="100" />
+        </page></pageList>
+</tutorial>

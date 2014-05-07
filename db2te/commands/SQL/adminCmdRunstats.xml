@@ -1,0 +1,347 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2009 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<command name="adminCmdRunstats" title="Runstats">
+<![CDATA[
+>>-RUNSTATS--ON TABLE--object-name------------------------------>
+
+>--+------------------------+----------------------------------->
+   +-USE PROFILE------------+   
+   +-UNSET PROFILE----------+   
+   '-| Statistics Options |-'   
+
+>--+------------------------------------+----------------------><
+   '-UTIL_IMPACT_PRIORITY--+----------+-'   
+                           '-priority-'     
+]]>
+	<text spacepad="false">CALL SYSPROC.ADMIN_CMD ('</text>
+	<text>RUNSTATS ON TABLE</text>
+	<input size="18" title="Schema" name="schema" spacepad="false"/>
+	<text spacepad="false">.</text>
+	<input size="18" title="table/view" name="name"/>
+	<select>
+		<option default="true"><note>basic</note></option>
+		<option><text>USE PROFILE</text></option>
+		<option><text>UNSET PROFILE</text></option>
+		<option><clauseReference name="Statistics Options"/></option>
+	</select>
+	<select>
+		<option default="true"><note>default priority</note></option>
+		<option><text>UTIL_IMPACT_PRIORITY</text><clauseReference name="priority"/></option>
+	</select>
+    <text>')</text>
+
+	<clause name="Statistics Options" title="Statistics Options">
+<![CDATA[
+                                 .-ALLOW WRITE ACCESS-.   
+|--+--------------------------+--+--------------------+--------->
+   '-| Table Object Options |-'  '-ALLOW READ ACCESS--'   
+
+>--+----------------------------+--+---------------------+------|
+   '-| Table Sampling Options |-'  '-| Profile Options |-'   
+]]>
+		<select>
+			<option default="true"><note>no options</note></option>
+			<option><clauseReference name="Table Object Options"/></option>
+		</select>
+		<select>
+			<option><text>ALLOW WRITE ACCESS</text></option>
+			<option default="true"><note>ALLOW WRITE ACCESS</note></option>
+			<option><text>ALLOW READ ACCESS</text></option>
+		</select>
+		<select>
+			<option default="true"><note>no sampling</note></option>
+			<option><clauseReference name="Table Sampling Options"/></option>
+		</select>
+		<select>
+			<option default="true"><note>no profiling</note></option>
+			<option><clauseReference name="Profile Options"/></option>
+		</select>
+	</clause>
+
+	<clause name="Table Object Options" title="Table Object Options">
+<![CDATA[
+|--+-FOR--| Index Clause |--+-----------------------+----------------------------------+--|
+   |                        '-EXCLUDING XML COLUMNS-'                                  |   
+   '-+-------------------------+--+-----------------------+--+-----------------------+-'   
+     '-| Column Stats Clause |-'  '-EXCLUDING XML COLUMNS-'  '-AND--| Index Clause |-'     
+]]>
+		<select>
+			<option default="true">
+				<text>FOR</text>
+				<clauseReference name="Index Clause"/>
+				<select>
+					<option default="true"><note>no exclusion</note></option>
+					<option><text>EXCLUDING XML COLUMNS</text></option>
+				</select>
+			</option>
+			<option>
+				<select>
+					<option default="true"><note>no col. stats.</note></option>
+					<option><clauseReference name="Column Stats Clause"/></option>
+				</select>
+				<select>
+					<option default="true"><note>no exclusion</note></option>
+					<option><text>EXCLUDING XML COLUMNS</text></option>
+				</select>
+				<select>
+					<option default="true"><note>no index</note></option>
+					<option><text>AND</text><clauseReference name="Index Clause"/></option>
+				</select>
+			</option>
+		</select>
+	</clause>
+	
+	<clause name="Table Sampling Options" title="Table Sampling Options">
+<![CDATA[
+|--TABLESAMPLE--+-BERNOULLI-+--(--numeric-literal--)------------>
+                '-SYSTEM----'                          
+
+>--+-----------------------------------+------------------------|
+   '-REPEATABLE--(--integer-literal--)-'   
+]]>
+		<text>TABLESAMPLE</text>
+		<select>
+			<option default="true"><text>BERNOULLI</text></option>
+			<option><text>SYSTEM</text></option>
+		</select>
+		<text>(</text>
+		<input size="8" title="percentage"/>
+		<text>)</text>
+		<select>
+			<option default="true"><note>not repeatable</note></option>
+			<option><text>REPEATABLE (</text><input size="8" title="percentage"/><text>)</text></option>
+		</select>
+	</clause>
+	
+	<clause name="Profile Options" title="Profile Options">
+<![CDATA[
+   .-SET PROFILE NONE--------------.   
+|--+-------------------------------+----------------------------|
+   '-+-SET----+--PROFILE--+------+-'   
+     '-UPDATE-'           '-ONLY-'     
+]]>
+		<select>
+			<option><text>SET PROFILE NONE</text></option>
+			<option default="true"><note>SET PROFILE NONE</note></option>
+			<option>
+				<select>
+					<option default="true"><text>SET</text></option>
+					<option><text>UPDATE</text></option>
+				</select>
+				<text>PROFILE</text>
+				<select>
+					<option default="true"><note></note></option>
+					<option><text>ONLY</text></option>
+				</select>
+			</option>
+		</select>
+	</clause>
+	
+	<clause name="Index Clause" title="Index Clause">
+<![CDATA[
+                                             .-,----------.     
+                                             V            |     
+|--+-----------------------+--+-INDEXES-+--+---index-name-+-+---|
+   '-+---------+--DETAILED-'  '-INDEX---'  '-ALL------------'   
+     '-SAMPLED-'                                                
+]]>
+		<select>
+			<option default="true"><note>not detailed</note></option>
+			<option>
+				<select>
+					<option default="true"><note>not sampled</note></option>
+					<option><text>SAMPLED</text></option>
+				</select>
+				<text>DETAILED</text>
+			</option>
+		</select>
+		<select>
+			<option default="true"><text>INDEXES</text></option>
+			<option><text>INDEX</text></option>
+		</select>
+		<select>
+			<option default="true"><repeatable><clauseReference name="index-name"/></repeatable></option>
+			<option><text>ALL</text></option>
+		</select>
+	</clause>
+
+	<clause name="Column Stats Clause" title="Column Stats Clause">
+<![CDATA[
+|--+-ON--| Cols Clause |------------------------------+---------|
+   '-+---------------------+--| Distribution Clause |-'   
+     '-ON--| Cols Clause |-'                              
+]]>
+		<select>
+			<option default="true"><clauseReference name="On Cols Clause"/></option>
+			<option>
+				<select>
+					<option default="true"><note>not on</note></option>
+					<option><clauseReference name="On Cols Clause"/></option>
+				</select>
+				<clauseReference name="Distribution Clause"/>
+			</option>
+		</select>
+	</clause>
+	
+	<clause name="Distribution Clause" title="Distribution Clause">
+<![CDATA[
+|--WITH DISTRIBUTION--+-------------------------+--------------->
+                      '-| On Dist Cols Clause |-'   
+
+>--+--------------------------+---------------------------------|
+   '-| Default Dist Options |-'   
+]]>
+		<text>WITH DISTRIBUTION</text>
+		<select>
+			<option default="true"><note>no dist. cols.</note></option>
+			<option><clauseReference name="On Dist Cols Clause"/></option>
+		</select>
+		<select>
+			<option default="true"><note>no dist. cols.</note></option>
+			<option><clauseReference name="Default Dist Options"/></option>
+		</select>
+	</clause>
+	
+	<clause name="On Cols Clause" title="On Cols Clause">
+<![CDATA[
+   .-ON ALL COLUMNS-----------------------------------------------------.   
+   |                                           .-,-----------------.    |   
+   |                                           V                   |    |   
+|--+-ON--+----------------------+--COLUMNS--(----| Column Option |-+--)-+--|
+   |     '-+-ALL-+--COLUMNS AND-'                                       |   
+   |       '-KEY-'                                                      |   
+   '-ON KEY COLUMNS-----------------------------------------------------'   
+]]>
+		<text>ON</text>
+		<select>
+			<option default="true"><text>ALL COLUMNS</text></option>
+			<option>
+				<select>
+					<option default="true"><note></note></option>
+					<option>
+						<select>
+							<option default="true"><text>ALL</text></option>
+							<option><text>KEY</text></option>
+						</select>
+						<text>COLUMNS AND</text>
+					</option>
+				</select>
+				<text>COLUMNS (</text>
+				<repeatable><clauseReference name="Column Option"/></repeatable>
+				<text>)</text>
+			</option>
+			<option><text>KEY COLUMNS</text></option>
+		</select>
+	</clause>
+	
+	<clause name="On Dist Cols Clause" title="On Dist Cols Clause">
+<![CDATA[
+   .-ON ALL COLUMNS-----------------------------------------------------------------------------------.   
+   |                                           .-,-----------------------------------------------.    |   
+   |                                           |                    .--------------------------. |    |   
+   |                                           V                    V                          | |    |   
+|--+-ON--+----------------------+--COLUMNS--(----| Column Option |----+----------------------+-+-+--)-+--|
+   |     '-+-ALL-+--COLUMNS AND-'                                     +-| Frequency Option |-+        |   
+   |       '-KEY-'                                                    '-| Quantile Option |--'        |   
+   '-ON KEY COLUMNS-----------------------------------------------------------------------------------'   
+]]>
+		<text>ON</text>
+		<select>
+			<option default="true"><text>ALL COLUMNS</text></option>
+			<option>
+				<select>
+					<option default="true"><note></note></option>
+					<option>
+						<select>
+							<option default="true"><text>ALL</text></option>
+							<option><text>KEY</text></option>
+						</select>
+						<text>COLUMNS AND</text>
+					</option>
+				</select>
+				<text>COLUMNS (</text>
+				<repeatable>
+					<clauseReference name="Column Option"/>
+					<repeatable separator="">
+						<select>
+							<option default="true"><note>no options</note></option>
+							<option><clauseReference name="Frequency Option"/></option>
+							<option><clauseReference name="Quantile Option"/></option>
+						</select>
+					</repeatable>
+				</repeatable>
+				<text>)</text>
+			</option>
+			<option><text>KEY COLUMNS</text></option>
+		</select>
+	</clause>
+
+	<clause name="Default Dist Options" title="Default Dist Options">
+<![CDATA[
+            .--------------------------.   
+            V                          |   
+|--DEFAULT----+-| Frequency Option |-+-+------------------------|
+              '-| Quantile Option |--'     
+]]>
+	<text>DEFAULT</text>
+	<repeatable separator="">
+		<select>
+			<option default="true"><clauseReference name="Frequency Option"/></option>
+			<option><clauseReference name="Quantile Option"/></option>
+		</select>
+	</repeatable>
+	</clause>
+	
+	<clause name="Frequency Option" title="Frequency Option">
+<![CDATA[
+|--NUM_FREQVALUES--integer--------------------------------------|
+]]>
+	<text>NUM_FREQVALUES</text><input type="int" size="8"/>
+	</clause>
+	
+	<clause name="Quantile Option" title="Quantile Option">
+<![CDATA[
+|--NUM_QUANTILES--integer---------------------------------------|
+]]>
+	<text>NUM_QUANTILES</text><input type="int" size="8"/>
+	</clause>
+	
+	<clause name="Column Option" title="Column Option">
+<![CDATA[
+|--+-column-name--+-----------------+-+-------------------------|
+   |              '-LIKE STATISTICS-' |   
+   |    .-,-----------.               |   
+   |    V             |               |   
+   '-(----column-name-+--)------------'   
+]]>
+		<select>
+			<option default="true">
+				<clauseReference name="column-name"/>
+				<select>
+					<option default="true"><note>no like</note></option>
+					<option><text>LIKE STATISTICS</text></option>
+				</select>
+			</option>
+			<option>
+				<text>(</text>
+				<clauseReference name="column-name"/>
+				<text>)</text>
+			</option>
+		</select>
+	</clause>
+</command>

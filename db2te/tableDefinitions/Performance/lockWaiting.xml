@@ -1,0 +1,168 @@
+<!--
+  Author: Peter Prib
+  
+  Copyright Independent Systems Integrators Pty Ltd 2008 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+
+<table name="waitlock">
+	<sql_name>LOCK_WAIT_VIEW</sql_name>
+	<singular_name>Waiting Lock</singular_name>
+	<plural_name>Waiting Locks</plural_name>
+	<queryfile>predefined/LockWait.SQL</queryfile>
+		<description>The data server uses 
+		&lt;a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.admin.dbobj.doc/doc/c0005266.html?noframes=true');"&gt;locks to control concurrency&lt;/a&gt;.
+		and prevent uncontrolled data access. The database manager places locks on buffer pools, tables, data partitions, table blocks, or table rows. 
+		A lock associates a database manager resource with an application, called the lock owner, to control how other applications access the same resource.		
+		This table is based on the &lt;a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.admin.dbobj.doc/doc/r0021992.html?noframes=true');"&gt;SNAP_GET_LOCK&lt;/a&gt; table function.
+		This table is based on the &lt;a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.admin.dbobj.doc/doc/r0021993.html?noframes=true');"&gt;SNAP_GET_LOCKWAIT&lt;/a&gt; table function.		
+		</description>	
+	<rows_per_page>50</rows_per_page>
+	<order_by_index name="locks_held" direction="D"/>
+	
+	<display_columns>
+		<col type="column" name="AGENT_ID"/>
+		<col type="action" name="lockChain"/>
+		<col type="column" name="appl_name"/>
+		<col type="column" name="appl_status"/>		
+		<col type="column" name="locks_held"/>
+		<col type="column" name="lock_count"/>
+		<col type="column" name="lock_mode"/>
+		<col type="column" name="lock_name"/>
+		<col type="column" name="lock_status"/>
+		<col type="column" name="lock_object_type"/>		
+		<col type="column" name="agent_id_holding_lk"/>
+		<col type="column" name="tbsp_name"/>
+	</display_columns>
+ <!-- added peter prib, Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2009 All rights reserved. -->
+	<action name="lockChain">
+		<c_title>Lock Chain</c_title>
+		<icon>images/icon-workload.gif</icon>  
+		<actionScript name="lockChainChart" type="blank">
+			<task>
+				<assignLocalParameter name="agent_id" type="blockValue">
+					<value>AGENT_ID</value>
+				</assignLocalParameter>
+				<loadPage>
+					<linkList>
+						<link type="action" target="detail" window="_self" connectionRequired="y">
+							<parameterList>
+								<parameter name="action">chartNodal</parameter>
+								<parameter name="$chartTitle">Lock Chain</parameter>
+								<parameter name="$sourceType">SQL</parameter>
+								<parameter name="$source">
+<![CDATA[
+values("s#db2mc".lockTreeNodes(?AGENT_ID?,cast(null as int)))
+]]>
+								</parameter>
+							</parameterList>
+						</link>
+					</linkList>
+				</loadPage>
+			</task>
+		</actionScript>
+	</action>
+<!-- end added -->
+	<column name="AGENT_ID">
+		<c_sql_name>AGENT_ID</c_sql_name>
+		<c_title>Agent</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>y</c_drill>
+		<c_reference name="stmt">
+			<c_title/>
+			<reftype>table</reftype>
+			<refvalue>Performance/snapStmt</refvalue>
+			<icon>images/icon-application.gif</icon>
+			<ref foreign_column_name="AGENT_ID">
+				<local_column_name>AGENT_ID</local_column_name>
+			</ref>
+		</c_reference>   
+	</column>
+	<column name="agent_id_holding_lk">
+		<c_sql_name>AGENT_ID_HOLDING_LK</c_sql_name>
+		<c_title>Agent Holding Lock</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+		<c_reference name="stmtHold">
+			<c_title/>
+			<reftype>table</reftype>
+			<refvalue>Performance/snapStmt</refvalue>
+			<icon>images/icon-application.gif</icon>
+			<ref foreign_column_name="AGENT_ID">
+				<local_column_name>agent_id_holding_lk</local_column_name>
+			</ref>
+		</c_reference>   
+	</column>
+	<column name="appl_name">
+		<c_sql_name>APPL_NAME</c_sql_name>
+		<c_title>Application</c_title>
+		<c_presentation>s</c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="appl_status">
+		<c_sql_name>APPL_STATUS</c_sql_name>
+		<c_title>App Status</c_title>
+		<c_presentation>s</c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="locks_held">
+		<c_sql_name>LOCKS_HELD</c_sql_name>
+		<c_title>Lock Held</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="lock_count">
+		<c_sql_name>LOCK_COUNT</c_sql_name>
+		<c_title>Lock Count</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="lock_mode">
+		<c_sql_name>LOCK_MODE</c_sql_name>
+		<c_title>Lock Mode</c_title>
+		<c_presentation>s</c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="lock_name">
+		<c_sql_name>LOCK_NAME</c_sql_name>
+		<c_title>Lock Name</c_title>
+		<c_presentation>s</c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="lock_object_type">
+		<c_sql_name>LOCK_OBJECT_TYPE</c_sql_name>
+		<c_title>Lock Object Type</c_title>
+		<c_presentation>s</c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="lock_status">
+		<c_sql_name>LOCK_STATUS</c_sql_name>
+		<c_title>Lock Status</c_title>
+		<c_presentation>s</c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="snapshot_timestamp">
+		<c_sql_name>SNAPSHOT_TIMESTAMP</c_sql_name>
+		<c_title>Timestamp</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="tbsp_name">
+		<c_sql_name>TBSP_NAME</c_sql_name>
+		<c_title>Tablespace</c_title>
+		<c_presentation>s</c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+</table>

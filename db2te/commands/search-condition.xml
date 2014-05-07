@@ -1,0 +1,72 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2009 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<clause name="search-condition"  title="search condition">
+<![CDATA[
+|--+-----+--+-predicate--+-------------------------------+-+---->
+   '-NOT-'  |            '-SELECTIVITY--numeric-constant-' |   
+            '-(search-condition)---------------------------'   
+
+   .------------------------------------------------------------------------.   
+   V                                                                        |   
+>----+--------------------------------------------------------------------+-+--|
+     '-+-AND-+--+-----+--+-predicate--+-------------------------------+-+-'     
+       '-OR--'  '-NOT-'  |            '-SELECTIVITY--numeric-constant-' |       
+                         '-(search-condition)---------------------------'       
+]]>
+	<select>
+		<option default="true"><text></text></option>
+		<option><text>NOT</text></option>
+	</select>
+	<select>
+		<option default="true">
+				<clauseReference name="predicate"/>
+			<select>
+				<option default="true"><text></text></option>
+				<option><text>SELECTIVITY</text><clauseReference name="numeric-constant"/></option>
+			</select>
+		</option>
+		<option><text>(</text><clauseReference name="search-condition"/><text>)</text></option>
+	</select>
+	<br/>
+	<repeatable>
+		<select>
+			<option default="true"><text></text></option>
+			<option>
+				<select>
+					<option default="true"><text>AND</text></option>
+					<option><text>OR</text></option>
+				</select>
+				<select>
+					<option default="true"><text></text></option>
+					<option><text>NOT</text></option>
+				</select>
+				<select>
+					<option default="true">
+						<clauseReference name="predicate"/>
+						<select>
+							<option default="true"><text></text></option>
+							<option><text>SELECTIVITY</text><clauseReference name="numeric-constant"/></option>
+						</select>
+					</option>
+					<option><text>(</text><clauseReference name="search-condition"/><text>)</text></option>
+				</select>
+			</option>
+		</select>
+	</repeatable>
+</clause>
+

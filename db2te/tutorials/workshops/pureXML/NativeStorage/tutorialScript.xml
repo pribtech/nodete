@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tutorial name="pureXML Deep Dive - Native XML Storage">
+	<flowRestriction>forwardExploration</flowRestriction>
+	<globalCodeHighlightOptions  highlightCode="true" />
+	<closeAction/>
+	<openAction/>
+	<pageList>
+		<page name="Introduction" type="intro">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>Introduction.html</contentFile>
+			<autoLoadLink>
+				<pageWindow target="tabledef" raiseToTop="y">
+					<panel name="top" PrimaryContainer="true">
+		   				<link type="other" target="_self" window="_self" connectionRequired="y">
+							<address>
+								?BASE_DIRECTORY?/HTML/NativeXMLIntro.php
+							</address>
+							<parameterList>
+								<parameter name="BASE_DIR">
+									?BASE_DIRECTORY?
+								</parameter>
+							</parameterList>
+						</link>
+					</panel>
+				</pageWindow>
+			</autoLoadLink>
+		</page>
+		<page name="XML document tree storage" type="general">
+			<entryAction />
+			<exitAction />
+			<contentFile>
+				XMLtree.html
+			</contentFile>
+			<!-- 
+			<SQLFile>
+				XMLtree.sql
+			</SQLFile>
+			-->
+			<autoLoadLink>
+				<pageWindow target="informationWindow">
+					<panel name="main" PrimaryContainer="true">
+						<raw><![CDATA[<div id='tutorial name'> Example of XML document storage </div><img src='?BASE_DIRECTORY?/HTML/Storage.png'/>]]></raw>
+					</panel>
+				</pageWindow>
+			</autoLoadLink>
+			<SQLExecutionOptions commitPerStmt="true"/>
+		</page>		
+		<page name="XML and relational data in same table space" type="general">
+			<entryAction />
+			<exitAction />
+			<contentFile>
+				XMLnRelinSameTBSpace.html
+			</contentFile>
+			<SQLFile>
+				XMLnRelinSameTBSpace.sql
+			</SQLFile>
+			<codeHighlightOptions highlightCode="true">
+				<changedHighlightTokens>
+					<text>CREATE BUFFERPOOL</text>
+					<text>CREATE TABLESPACE</text>
+					<text>BUFFERPOOL</text>
+					<text>CREATE TABLE</text>
+					<text>IN CommonTBSpace_PDD1</text>					
+				</changedHighlightTokens>
+			</codeHighlightOptions>			
+			<SQLExecutionOptions commitPerStmt="true"/>
+		</page>
+		<page name="XML and relational data in separate table space" type="general">
+			<entryAction />
+			<exitAction />
+			<contentFile>
+				XMLnRelinDiffTBSpace.html
+			</contentFile>
+			<SQLFile>
+				XMLnRelinDiffTBSpace.sql
+			</SQLFile>
+			<codeHighlightOptions highlightCode="true">
+				<changedHighlightTokens>
+					<text>CREATE BUFFERPOOL</text>
+					<text>CREATE TABLESPACE</text>
+					<text>BUFFERPOOL</text>
+					<text>CREATE TABLE</text>
+					<text>IN relData_PDD2</text>					
+					<text>LONG IN xmlData_PDD2</text>										
+				</changedHighlightTokens>
+			</codeHighlightOptions>				
+			<SQLExecutionOptions commitPerStmt="true"/>
+		</page>
+		<page name="Inline and Compress" type="general">
+			<entryAction />
+			<exitAction />
+			<contentFile>
+				InlineNCompress.html
+			</contentFile>
+			<SQLFile>
+				InlineNCompress.sql
+			</SQLFile>
+			<codeHighlightOptions highlightCode="true">
+				<changedHighlightTokens>
+					<text>XML  INLINE LENGTH 3000</text>
+					<text>COMPRESS YES</text>
+				</changedHighlightTokens>
+			</codeHighlightOptions>					
+			<SQLExecutionOptions commitPerStmt="true"/>
+		</page>
+		<page name="Storing XML as CLOB" type="general">
+			<entryAction />
+			<exitAction />
+			<contentFile>
+				XMLCLOB.html
+			</contentFile>
+			<SQLFile>
+				XMLCLOB.sql
+			</SQLFile>
+			<codeHighlightOptions highlightCode="true">
+				<changedHighlightTokens>
+					<text>XML  INLINE LENGTH 3000</text>
+					<text>COMPRESS YES</text>
+				</changedHighlightTokens>
+			</codeHighlightOptions>					
+			<SQLExecutionOptions commitPerStmt="true"/>
+		</page>
+		<page name="XML document inserts into XML columns vs CLOB columns" type="general">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>
+				XMLclobINSERT.html
+			</contentFile>
+			<loadActionScriptFile>
+				PerformanceINSERT.xml
+			</loadActionScriptFile>
+			<SQLExecutionOptions xmlinline="true" xml="true" clob="false" blob="false"
+				dbclob="false" termChar=";" cursor="forward" commitPerStmt="true"
+				numRowReturned="100"/>
+		</page>	
+		<page name="Seed XML data for query performance comparison" type="general">
+			<entryAction />
+			<exitAction />
+			<contentFile>
+				BulkInsert.html
+			</contentFile>
+			<SQLFile>
+				BulkInsert.sql
+			</SQLFile>
+			<SQLExecutionOptions termChar="@" commitPerStmt="true"/>
+		</page>
+		
+		<page name="XML node queries on XML columns vs CLOB columns" type="general">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>
+				XMLclobQUERY.html
+			</contentFile>
+			<loadActionScriptFile>
+				PerformanceQUERY.xml
+			</loadActionScriptFile>
+			<SQLExecutionOptions xmlinline="true" xml="true" clob="false" blob="false"
+				dbclob="false" termChar=";" cursor="forward" commitPerStmt="true"
+				numRowReturned="100"/>
+		</page>
+				<page name="Cleanup Script" type="general">
+			<entryAction />
+			<exitAction />
+			<contentFile>
+				Cleanup.html
+			</contentFile>
+			<SQLFile>
+				Cleanup.sql
+			</SQLFile>
+			<SQLExecutionOptions termChar="@" commitPerStmt="true"/>
+		</page>
+		</pageList>
+</tutorial>

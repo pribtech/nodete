@@ -1,0 +1,14 @@
+<p>
+  From the output, we can see what application handle (call this A)
+  transaction handle Z corresponds to. Referring back to our results from table
+  function <a onclick="OpenURLInFloatingWindow
+('http://publib.boulder.ibm.com/infocenter/db2luw/v9r7/topic/com.ibm.db2.luw.sql.rtn.doc/doc/r0054685.html?noframes=true');">
+WLM_GET_SERVICE_CLASS_WORKLOAD_OCCURRENCES_V97</a> (or <a onclick="OpenURLInFloatingWindow
+('http://publib.boulder.ibm.com/infocenter/db2luw/v9r7/topic/com.ibm.db2.luw.sql.rtn.doc/doc/r0052916.html?noframes=true');">
+WLM_GET_SERVICE_CLASS_WORKLOAD_OCCURRENCES</a> if you are on a DB2 9.5 database), we can see
+  which application number refers to 'WLM_tut_app1' (let's call this A).  This application is holding a row
+  lock that is needed by 'WLM_tut_app2'.  To make 'WLM_tut_app2' proceed, you may
+  issue db2 commit, db2 rollback or db2 terminate from the window
+  running 'WLM_tut_app1'.  </p>
+  <p>For this tutorial, we will stop the application by clicking on the red button in the 'Workload Driver' tab.</p>
+  <p>Run the statement in the 'Ad-Hoc SQL' tab to verify that WLM_tut_1 has stopped.</p>

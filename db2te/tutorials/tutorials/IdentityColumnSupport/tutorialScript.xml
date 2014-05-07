@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Copyright IBM Corp. 2007 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<tutorial name="Identity Column Support">
+	<flowRestriction>forwardexploration</flowRestriction>
+	<closeAction/>
+	<openAction/>
+	<pageList>
+		<page name="Introduction" type="intro">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>IdentityColumnSupport.html</contentFile>
+			<autoLoadLink>
+				<pageWindow target="informationWindow">
+					<panel name="main" PrimaryContainer="true">
+						<URL>http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.admin.dbobj.doc/doc/c0007010.html?noframes=true</URL>
+					</panel>
+				</pageWindow>
+			</autoLoadLink>
+		</page>
+
+		<page name="Create Identity Column Table" type="general">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>CreateIdentityColumnTable.html</contentFile>
+			<SQLFile>CreateIdentityColumnTable.sql</SQLFile>
+		</page>
+
+		<page name="Create table accounts with mandatory generated columns and increments"
+			type="general">
+			<entryAction name="checkForFirstCreation" type="serverAction">
+				<parameterList>
+					<parameter name="action" type="serverAction">
+						<value>checkForObject</value>
+					</parameter>
+					<parameter name="objectType" type="raw">
+						<value>table</value>
+					</parameter>
+					<parameter name="object[schema]" type="constant">
+						<value>SCHEMA</value>
+					</parameter>
+					<parameter name="object[table]" type="fixed">
+						<value>accounts</value>
+					</parameter>
+				</parameterList>
+				<followOnAction condition="false">
+					<task>
+						<action name="displayMsgForFailedCreation" type="alert">
+							<message>Table required hasn't been created. Please execute this step
+								again.</message>
+						</action>
+					</task>
+					<task>
+						<setActionReturn>false</setActionReturn>
+					</task>
+				</followOnAction>
+				<followOnAction condition="true">
+					<task>
+						<action name="checkForInsert" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="fixed">
+									<value>checkForRow</value>
+								</parameter>
+								<parameter name="schema" type="constant">
+									<value>SCHEMA</value>
+								</parameter>
+								<parameter name="name" type="fixed">
+									<value>accounts</value>
+								</parameter>
+							</parameterList>
+							<followOnAction condition="true" negCondition="true">
+								<task>
+									<action name="displayMsgForFailedInsert" type="alert">
+										<message>Data hasn't been inserted in the table. Please try
+											this step again.</message>
+									</action>
+								</task>
+								<task>
+									<setActionReturn>false</setActionReturn>
+								</task>
+							</followOnAction>
+						</action>
+					</task>
+				</followOnAction>
+			</entryAction>
+			<exitAction/>
+			<contentFile>CreateTableAccountsWithManditoryGeneratedColumnsAndIncrements.html</contentFile>
+			<SQLFile>CreateTableAccountsWithManditoryGeneratedColumnsAndIncrements.sql</SQLFile>
+		</page>
+
+		<page name="Create table accounts with default generated columns" type="general">
+			<entryAction name="checkForSecondCreation" type="serverAction">
+				<parameterList>
+					<parameter name="action" type="serverAction">
+						<value>checkForObject</value>
+					</parameter>
+					<parameter name="objectType" type="raw">
+						<value>table</value>
+					</parameter>
+					<parameter name="object[schema]" type="constant">
+						<value>SCHEMA</value>
+					</parameter>
+					<parameter name="object[table]" type="fixed">
+						<value>accounts_second</value>
+					</parameter>
+				</parameterList>
+				<followOnAction condition="false">
+					<task>
+						<action name="displayMsgForFailedCreation" type="alert">
+							<message>Table required hasn't been created. Please execute this step
+								again.</message>
+						</action>
+					</task>
+					<task>
+						<setActionReturn>false</setActionReturn>
+					</task>
+				</followOnAction>
+				<followOnAction condition="true">
+					<task>
+						<action name="checkForSecondInsert" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="fixed">
+									<value>checkForRow</value>
+								</parameter>
+								<parameter name="schema" type="constant">
+									<value>SCHEMA</value>
+								</parameter>
+								<parameter name="name" type="fixed">
+									<value>accounts_second</value>
+								</parameter>
+							</parameterList>
+							<followOnAction condition="true" negCondition="true">
+								<task>
+									<action name="displayMsgForFailedInsert" type="alert">
+										<message>Data hasn't been inserted in the table. Please try
+											this step again.</message>
+									</action>
+								</task>
+								<task>
+									<setActionReturn>false</setActionReturn>
+								</task>
+							</followOnAction>
+						</action>
+					</task>
+				</followOnAction>
+			</entryAction>
+			<exitAction/>
+			<contentFile>CreateTableAccountsWithDefaultGeneratedColumns.html</contentFile>
+			<SQLFile>CreateTableAccountsWithDefaultGeneratedColumns.sql</SQLFile>
+		</page>
+
+		<page name="Retrieving the Last Generated Value" type="last">
+			<entryAction name="checkForThirdCreation" type="serverAction">
+				<parameterList>
+					<parameter name="action" type="serverAction">
+						<value>checkForObject</value>
+					</parameter>
+					<parameter name="objectType" type="raw">
+						<value>table</value>
+					</parameter>
+					<parameter name="object[schema]" type="constant">
+						<value>SCHEMA</value>
+					</parameter>
+					<parameter name="object[table]" type="fixed">
+						<value>accounts_third</value>
+					</parameter>
+				</parameterList>
+				<followOnAction condition="false">
+					<task>
+						<action name="displayMsgForFailedCreation" type="alert">
+							<message>Table required hasn't been created. Please execute this step
+								again.</message>
+						</action>
+					</task>
+					<task>
+						<setActionReturn>false</setActionReturn>
+					</task>
+				</followOnAction>
+				<followOnAction condition="true">
+					<task>
+						<action name="checkForThirdInsert" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="fixed">
+									<value>checkForRow</value>
+								</parameter>
+								<parameter name="schema" type="constant">
+									<value>SCHEMA</value>
+								</parameter>
+								<parameter name="name" type="fixed">
+									<value>accounts_third</value>
+								</parameter>
+							</parameterList>
+							<followOnAction condition="true" negCondition="true">
+								<task>
+									<action name="displayMsgForFailedInsert" type="alert">
+										<message>Data hasn't been inserted in the table. Please try
+											this step again.</message>
+									</action>
+								</task>
+								<task>
+									<setActionReturn>false</setActionReturn>
+								</task>
+							</followOnAction>
+						</action>
+					</task>
+				</followOnAction>
+			</entryAction>
+			<exitAction/>
+			<contentFile>RetrievingTheLastGeneratedValue.html</contentFile>
+			<SQLFile>RetrievingTheLastGeneratedValue.sql</SQLFile>
+			<SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar=";"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+		</page>
+	</pageList>
+</tutorial>

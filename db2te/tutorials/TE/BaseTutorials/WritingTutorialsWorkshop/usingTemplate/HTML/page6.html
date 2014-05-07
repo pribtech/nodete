@@ -1,0 +1,49 @@
+<p><h3> Tutorial Setup: </h3>
+The tutorial is controlled via the <i>tutorialScript.xml</i> file. New steps can be added to the tutorial by adding 'page' elements to the script.
+</p>
+
+<p><h3> Flow Restriction </h3>
+Flow restriction dictates how the user is allowed to move through a tutorial.
+	These are the possible flow restriction values:
+    <ul>
+      <li> 'free' - no error checking done between pages.  Free to go to any page </li>
+      <li> 'freewithchecks' - checks will be done when user exits and enters any page.  Free to go to any page. </li>
+      <li> 'forwardexploration' - checks done each step forward first time only.  Can only progress one step at a time unless step has been completed </li>
+      <li> 'forwardsequential' - checks done each step forward.  If user jumps back, checks will be done again moving forward. </li>
+      <li> 'strictsequential' - checks are done always.  User can only move to the next step or previous step. </li>
+    </ul>
+</p>
+
+<p><h3> Required File Structure: </h3>
+This is an example of the required file structure for the 'Tutorial Template' tutorial: </p>
+
+<p>
+&#151;&#151;tutorials<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&#151;&#151;TE<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&#151;&#151;<i>menu_03_template.xml</i><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&#151;&#151;tutorialTemplate<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&#151;&#151;<i>tutorialScript.xml</i><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&#151;&#151;actionScript<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&#151;&#151;<i>graph.xml</i><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&#151;&#151;HTML<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&#151;&#151;<i>page1.html</i><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&#151;&#151;<i>page2.html</i><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&#151;&#151;<i>page3.html</i><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&#151;&#151;<i>page4.html</i><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&#151;&#151;<i>page5.html</i><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&#151;&#151;SQL<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&#151;&#151;<i>page2.sql</i><br/>
+</p>
+
+<p><h3> Right Panel Tabs: </h3>
+HTML files can be displayed in new tabs in the right panel using the 'autoLoadLink' element.  For more information see the fourth tutorial of this workshop: 4. Integrating Outside Information.
+</p>
+
+<p><h3> SQL: </h3>
+The SQL content visible in the tab in the right panel of the tutorial is generated from <i>.sql</i> files contained within the folder 'SQL'.  The file used is set via the 'sqlFile' element in <i>tutorialScript.xml</i>.  For more information see the tutorial page on SQL in the Writing Tutorials Workshop: Tutorial Template.
+</p>
+
+<p><h3> Graphing: </h3>
+The graphing functionality is generated from <i>.xml</i> files contained within the folder 'actionScript'.  The file used is set via the 'loadActionScriptFile' element in <i>tutorialScript.xml</i>.  For more information see the Actions tutorial in the TE workshop: Extending the TE, and Graphing tutorial page in the Writing Tutorials Workshop: Tutorial Template.
+</p>
+<p>&nbsp;</p>

@@ -1,0 +1,22 @@
+<H3>Preparing the DB2 Instance</H3><hr>
+<p>Now we need to configure the database so that the plug-in can work with it.  This requires coping some files from the plug-in's folder to the necessary SQLLIB locations.  
+<br/>We also need to change SYSADM_GROUP configuration parameter to use your choice of the SYSADM group name as the SYSADM group for this DB2 instance. 
+
+<H2>Steps:</H2><p>
+<ol>
+<li>Issue the following comand:
+<br/><i>db2auth_prepareinst > out.txt</i>
+<ul><li>This copies the plug-in files to necessary SQLLIB locations, and prepares the local DB2 instance.</li></ul>
+</li><br/>
+<li>Issue the following command:
+<br/><i>configure_db2auth_plugin.bat (your SYSADM group name here)</i>
+<ul><li>This updates the DB2 server instance to use the db2auth security plug-in binaries.
+</li><li>It also changes the SYSADM_GROUP configuration parameter to use your choice of the SYSADM group name as the SYSADM group for this DB2 instance:</li></ul>
+</li>
+<br/><li>Re-start the DB2 instance:
+<br/><i>db2stop</i>
+<br/><i>db2start</i>
+</li></ol><br/>
+</p>
+<p>You have now finished installing and configuring the plug-in.</p>
+<p>For further information or trouble-shooting, please refer to the README documentation provided in the plug-in package.</p>

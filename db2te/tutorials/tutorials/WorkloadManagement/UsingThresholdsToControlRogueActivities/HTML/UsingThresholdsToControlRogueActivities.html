@@ -1,0 +1,29 @@
+You can use thresholds to detect resource misuse or the
+  beginning of system overload by establishing limits over the
+  consumption of a specific resource.  If a threshold is
+  violated, a specified action can be triggered.  The
+  supported actions are:
+  <ul>
+  <li>STOP EXECUTION  Stop processing the activity that
+      caused the threshold to be violated. </li>
+  <li>CONTINUE  Continue processing </li>
+  <li>Collect information about the activity that violated
+      the threshold.  This action can be specified in conjunction
+      with the CONTINUE or STOP EXECUTION action. </li>
+  </ul>
+  <p>
+  Regardless of whether an activity that violates a threshold
+  is stopped or allowed to continue running, a record of the
+  violation is written to an active THRESHOLD VIOLATIONS even
+  monitor (assuming one is defined in advance) each time a
+  threshold is violated.  The record contains information such
+  as which threshold was violated, the time of the violation,
+  and the threshold action. </p>
+  <p>
+  This task demonstrates how thresholds can be used to detect
+  or prevent rogue activities from running on your system and
+  using up system resources.  A rogue activity is any activity
+  that uses an unexpectedly high amount of resources. For
+  example, a query that runs for an abnormally long time, or
+  returns an unexpectedly large result set.
+  </p>

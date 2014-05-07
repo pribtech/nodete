@@ -1,0 +1,15 @@
+This section deals with the use of Temporary Tables.  Temporary tables are available during the
+  duration of your session, or typically between the start of the transaction and the commit point.
+  When a temporary table is created, any rows that are inserted or deleted from it are not logged.
+  This results in much less overhead than when using regular database tables.
+  <p>
+  Each temporary table is unique per user.  This means that although the program may be shared amoung many
+  users, the tables that are generated are UNIQUE for each user.  In order to specify that this 
+  is a temporary table, the qualifer called SESSION is assigned to the particular table that is 
+  being generated.
+  </p>
+  <p>
+<b>Note:</b> The
+  database must have a tablespace set up specifically for temporary tables.
+  If this is not done prior to running this SQL, an error will occur.
+  </p>

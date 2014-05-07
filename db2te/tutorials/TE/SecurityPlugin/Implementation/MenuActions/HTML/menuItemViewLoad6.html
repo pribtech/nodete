@@ -1,0 +1,28 @@
+<h3>Checking For Number of Rows Returned by an SQL Query</h3><hr/>
+<p>First, we will implement the check for the number of stored procedures that there are under the 'DB2AUTH' schema.  To do this, we need to look at the SYSCAT.PROCEDURES table, to see how many rows have 'DB2AUTH' in the 'PROCSCHEMA' column.
+</p>
+
+<p>We need an actionScript to perform this check.  While we perform the action, we don't want the user to click any other buttons.  So, we set the attribute 'lockScreen' to 'true.  To review actionScripts, refer back to '5. actions' of this tutorial.
+</p>
+<p><h2>Steps:</h2>
+<ol>
+  <li>Open the file 'menu_30_Db2authLab.xml' in an editor</li>
+  <li>Copy or enter the text from the right into the file</li>
+  <li><b>Don't forget the closing actionScript</b> tag at the end of the page!</li>
+  <li>Keep the file open</li>
+</ol>
+</p><br/>
+<p>You will notice that there are four parameters:
+<ul>
+  <li>The action is to check for the number of rows, 'rowCount'</li>
+  <li>The parameter, 'schema' is set to 'SYSCAT' because the table 'PROCEDURES' is under that schema</li>
+  <li>The parameter, 'name' is usually where the table name goes, but we are altering it so that we can perform a more detailed query</li>
+  <li>The parameter, 'minRows' sets the minimum number of rows in order fo the check to pass.  We set this to 7, because the db2auth plug-in creates 7 upon installation.</li>
+</ul>
+</p>
+
+<p>This action performs the query, 'SELECT COUNT(*) FROM SYSCAT.PROCEDURES WHERE PROCSCHEMA = 'DB2AUTH'
+<br>The action will return true if there are 7 or more rows returned, and false otherwise.</p>
+
+
+<br/>

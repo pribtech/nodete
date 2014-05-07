@@ -1,0 +1,200 @@
+<!--
+  Copyright IBM Corp. 2007 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+	<table name="authids">
+		<sqlName>SYSIBMADM.AUTHORIZATIONIDS</sqlName>
+		<singularName>Authorization ID</singularName>
+		<pluralName>Authorization IDs</pluralName>
+		<description>The Authorization ID page returns a list of 
+		&lt;a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.admin.dbobj.doc/doc/c0006307.html?noframes=true');"&gt;authorization&lt;/a&gt;
+		IDs that have been granted privileges or authorities, along with their types, for all authorization IDs defined in the system catalogs from the currently connected database. 
+		If privileges or authorities have been granted to groups, only the group names are returned.
+		This list is generated from the &lt;a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.admin.dbobj.doc/doc/r0021977.html?noframes=true');"&gt;SYSIBMADM.AUTHORIZATIONIDS&lt;/a&gt; view.
+		</description>
+		<displayColumns>
+			<col type="column" name="authid"/>
+			<col type="column" name="authidtype"/>
+			<col type="reference" name="auths"/>			
+			<col type="reference" name="detail"/>									
+			<col type="reference" name="privilege"/>												
+			<col type="reference" name="group"/>			
+			<col type="reference" name="role"/>						
+			<col type="reference" name="column"/>									
+			<col type="reference" name="database"/>									
+			<col type="reference" name="index"/>									
+			<col type="reference" name="package"/>									
+			<col type="reference" name="routine"/>									
+			<col type="reference" name="schema"/>									
+			<col type="reference" name="sequence"/>
+			<col type="reference" name="table"/>									
+			<col type="reference" name="tablespace"/>									
+			<col type="reference" name="workload"/>																																	
+		</displayColumns>
+		<disableEdit/>
+		<reference name="auths">
+			<title>Authorities</title>
+			<reftype>table</reftype>
+			<refvalue>Authority/authsummary</refvalue>
+			<icon>images/icon-document-locked.gif</icon>			
+			<ref foreignColumnName="authid">
+				<localColumnName>authid</localColumnName>
+			</ref>
+		</reference>		
+		<reference name="column">
+			<title>Column</title>
+			<reftype>table</reftype>
+			<refvalue>Authority/colauth</refvalue>
+			<icon>images/icon-column.gif</icon>						
+			<ref foreignColumnName="grantee">
+				<localColumnName>authid</localColumnName>
+			</ref>
+		</reference>		
+		<reference name="database">
+			<title>Database</title>
+			<reftype>table</reftype>
+			<refvalue>Authority/dbauth</refvalue>
+			<icon>images/icon-database.gif</icon>						
+			<ref foreignColumnName="grantee">
+				<localColumnName>authid</localColumnName>
+			</ref>
+		</reference>		
+		<reference name="detail">
+			<title>Detail</title>
+			<reftype>table</reftype>
+			<refvalue>Authority/auths</refvalue>
+			<icon>images/icon-document.gif</icon>									
+			<ref foreignColumnName="authid">
+				<localColumnName>authid</localColumnName>
+			</ref>
+		</reference>	
+		<reference name="group">
+			<title>Groups</title>
+			<reftype>table</reftype>
+			<refvalue>Authority/groupsauth</refvalue>
+			<icon>images/group.gif</icon>						
+			<ref foreignColumnName="authidparm">
+				<localColumnName>authid</localColumnName>
+			</ref>
+		</reference>
+		<reference name="index">
+			<title>Index</title>
+			<reftype>table</reftype>
+			<refvalue>Authority/indexauth</refvalue>
+			<icon>images/icon-index.gif</icon>						
+			<ref foreignColumnName="grantee">
+				<localColumnName>authid</localColumnName>
+			</ref>
+		</reference>		
+		<reference name="package">
+			<title>Package</title>
+			<reftype>table</reftype>
+			<refvalue>Authority/packageauth</refvalue>
+			<icon>images/icon-package.gif</icon>						
+			<ref foreignColumnName="grantee">
+				<localColumnName>authid</localColumnName>
+			</ref>
+		</reference>		
+		<reference name="privilege">
+			<title>Privleges</title>
+			<reftype>table</reftype>
+			<refvalue>Authority/privileges</refvalue>
+			<icon>images/icon-privilege.gif</icon>									
+			<ref foreignColumnName="authid">
+				<localColumnName>authid</localColumnName>
+			</ref>
+		</reference>
+		<reference name="role">
+			<title>Roles</title>
+			<reftype>table</reftype>
+			<refvalue>Authority/roleauth</refvalue>
+			<icon>images/icon-role.gif</icon>						
+			<ref foreignColumnName="grantee">
+				<localColumnName>authid</localColumnName>
+			</ref>
+		</reference>
+		<reference name="routine">
+			<title>Routine</title>
+			<reftype>table</reftype>
+			<refvalue>Authority/routineauth</refvalue>
+			<icon>images/icon-procedure.gif</icon>						
+			<ref foreignColumnName="grantee">
+				<localColumnName>authid</localColumnName>
+			</ref>
+		</reference>		
+		<reference name="schema">
+			<title>Schema</title>
+			<reftype>table</reftype>
+			<refvalue>Authority/schemaauth</refvalue>
+			<icon>images/icon-schema.gif</icon>						
+			<ref foreignColumnName="grantee">
+				<localColumnName>authid</localColumnName>
+			</ref>
+		</reference>		
+		<reference name="sequence">
+			<title>Sequence</title>
+			<reftype>table</reftype>
+			<refvalue>Authority/sequenceAuth</refvalue>
+			<icon>images/icon-privilege.gif</icon>
+			<ref foreignColumnName="grantee">
+				<localColumnName>authid</localColumnName>
+			</ref>
+			<ref foreignColumnName="granteetype">
+				<localColumnName>authidtype</localColumnName>
+			</ref>
+		</reference>				
+		<reference name="table">
+			<title>Table</title>
+			<reftype>table</reftype>
+			<refvalue>Authority/tabauth</refvalue>
+			<icon>images/icon-link-calendar.gif</icon>						
+			<ref foreignColumnName="grantee">
+				<localColumnName>authid</localColumnName>
+			</ref>
+		</reference>		
+		<reference name="tablespace">
+			<title>Tablespace</title>
+			<reftype>table</reftype>
+			<refvalue>Authority/tbspauth</refvalue>
+			<icon>images/icon-tbs.gif</icon>						
+			<ref foreignColumnName="grantee">
+				<localColumnName>authid</localColumnName>
+			</ref>
+		</reference>		
+		<reference name="workload">
+			<title>Workload</title>
+			<reftype>table</reftype>
+			<refvalue>Authority/workloadauth</refvalue>
+			<icon>images/icon-workload.gif</icon>						
+			<ref foreignColumnName="grantee">
+				<localColumnName>authid</localColumnName>
+			</ref>
+		</reference>		
+		<column name="authid">
+			<sqlName>AUTHID</sqlName>
+			<title>Authorization ID</title>
+			<primaryKey/>
+		</column>
+		<column name="authidtype">
+			<sqlName>AUTHIDTYPE</sqlName>
+			<title>Type</title>
+			<prefillnabled/>						
+			<drillEnabled/>
+	   	<columnMask>
+				<value_mask value="G"><mask>Group</mask></value_mask>
+				<value_mask value="R"><mask>Role</mask></value_mask>
+				<value_mask value="U"><mask>User</mask></value_mask>
+	   	</columnMask>						
+		</column>
+	</table>

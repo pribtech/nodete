@@ -1,0 +1,30 @@
+<nodeControl>
+
+ <!--
+  Controls shaping and colours of nodes for explain in chartNodal
+
+  Author: Peter Prib
+  
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2009 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+	<node name='default' textSizeAttribute='5'/>
+	<node name='select' colour='#FF6666' shape='stream'/>
+	<node name='table' colour='#99CCFF' shape='table'/>
+	<node name='join' colour='#FF99CC' shape='operator'/>
+	<node name='on' colour='yellow' shape='index'/>
+	<node name='matchPair' colour='#FFCC33' shape='index'/>
+	<node name='column' colour='#CC66FF' shape='operator'/>
+</nodeControl>

@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tutorial name="DB2 Security: Introduction">
+	<flowRestriction>freewithchecks</flowRestriction>
+	<pageList>
+		<page name="Security Challenges and Standards" type="general">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>SecurityStandards.html</contentFile>
+			<autoLoadLink>
+				<pageWindow target="tabledef" raiseToTop="y">
+					<panel name="top" PrimaryContainer="true">
+		   				<link type="other" target="_self" window="_self" connectionRequired="y">
+							<address>
+								?BASE_DIRECTORY?/other/SecurityChallenges.php								
+							</address>
+							<parameterList>
+								<parameter name="BASE_DIR">
+									?BASE_DIRECTORY?
+								</parameter>
+							</parameterList>
+						</link>
+					</panel>
+				</pageWindow>
+			</autoLoadLink>
+		</page>
+
+
+		<page name="Usage Scenario" type="general">
+			<entryAction/>
+			<contentFile>UsageScenario.html</contentFile>
+			<autoLoadLink>
+				<pageWindow target="tabledef" raiseToTop="y">
+					<panel name="top" PrimaryContainer="true">
+		   				<link type="other" target="_self" window="_self" connectionRequired="y">
+							<address>
+								?BASE_DIRECTORY?/other/SecurityFeatures.html						
+							</address>
+						</link>
+					</panel>
+				</pageWindow>
+			</autoLoadLink>
+		</page>
+		
+		<page name="Setup users for the workshop" type="general">
+			<contentFile>users.html</contentFile>
+			<autoLoadLink>
+				<pageWindow target="tabledef" raiseToTop="y">
+					<panel name="top" PrimaryContainer="true">
+		   				<link type="other" target="_self" window="_self" connectionRequired="y">
+							<address>
+								?BASE_DIRECTORY?/other/users.php
+							</address>
+							<parameterList>
+								<parameter name="BASE_DIR">
+									?BASE_DIRECTORY?
+								</parameter>
+							</parameterList>
+						</link>
+					</panel>
+				</pageWindow>
+			</autoLoadLink>
+		</page>
+		
+		<page name="DB2 authorities of current OS user" type="general">
+			<contentFile>currentUser.html</contentFile>
+			<autoLoadLink>
+				<pageWindow target="tabledef" raiseToTop="y">
+					<panel name="top" PrimaryContainer="true">
+		   				<link type="other" target="_self" window="_self" connectionRequired="y">
+		   					
+							<address>
+								?BASE_DIRECTORY?/other/currentUser.php
+							</address>
+							
+							<parameterList>
+								<parameter name="BASE_DIR">
+									?BASE_DIRECTORY?
+								</parameter>
+							</parameterList>
+						</link>
+					</panel>
+				</pageWindow>
+			</autoLoadLink>
+		</page>		
+		
+		<page name="Understanding SYS groups" type="general">
+			<contentFile>checkdbmcfg.html</contentFile>
+			<autoLoadLink>
+				<pageWindow target="tabledef" raiseToTop="y">
+					<panel name="top" PrimaryContainer="true">
+		   				<link type="other" target="_self" window="_self" connectionRequired="y">
+		   					
+							<address>
+								?BASE_DIRECTORY?/other/configDbmCfg.php
+							</address>
+							
+							<parameterList>
+								<parameter name="BASE_DIR">
+									?BASE_DIRECTORY?
+								</parameter>
+							</parameterList>
+						</link>
+					</panel>
+				</pageWindow>
+			</autoLoadLink>
+		</page>		
+		
+			<page name="Update values for SYS Groups" type="general">
+			<contentFile>updatedbmcfg.html</contentFile>
+			<autoLoadLink>
+				<pageWindow target="tabledef" raiseToTop="y">
+					<panel name="top" PrimaryContainer="true">
+		   				<link type="other" target="_self" window="_self" connectionRequired="y">
+		   					
+							<address>
+								?BASE_DIRECTORY?/other/updateDbmCfg.php
+							</address>
+							
+							<parameterList>
+								<parameter name="BASE_DIR">
+									?BASE_DIRECTORY?
+								</parameter>
+							</parameterList>
+						</link>
+					</panel>
+				</pageWindow>
+			</autoLoadLink>
+		</page>		
+		
+		<page name="Create database for the workshop" type="general">
+			<contentFile>administrator2.html</contentFile>
+			<autoLoadLink>
+				<pageWindow target="tabledef" raiseToTop="y">
+					<panel name="top" PrimaryContainer="true">
+		   				<link type="other" target="_self" window="_self" connectionRequired="y">
+							<address>
+								?BASE_DIRECTORY?/other/sampledb.php
+							</address>
+							<parameterList>
+								<parameter name="BASE_DIR">
+									?BASE_DIRECTORY?
+								</parameter>
+							</parameterList>
+						</link>
+					</panel>
+				</pageWindow>
+			</autoLoadLink>
+		</page>
+
+	</pageList>
+</tutorial>

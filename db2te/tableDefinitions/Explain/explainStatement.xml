@@ -1,0 +1,179 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2009 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<table name="explainStatement">
+	<sql_name>explainStatement</sql_name>
+	<singular_name>Explain Statement</singular_name>
+	<plural_name>Explain Statements</plural_name>
+	<inlinequery>SELECT	'?' as tabschema ,e.* FROM "?".EXPLAIN_STATEMENT e</inlinequery>
+	<parameters>
+		<parm name="tabSchema">
+			<title>Schema</title>
+			<value>no schema</value>
+			<type>n</type>
+		</parm>
+		<parm name="tabSchema">
+			<title>Schema</title>
+			<value>no schema</value>
+			<type>n</type>
+		</parm>
+	</parameters>
+	<description></description>
+	<rows_per_page>50</rows_per_page>
+	<order_by_index name="EXPLAIN_TIME" direction="D"/>
+	<order_by_index name="EXPLAIN_REQUESTER" direction="A"/>
+	<display_columns>
+		<col type="column" name="EXPLAIN_REQUESTER"/>
+		<col type="column" name="EXPLAIN_TIME"/>
+		<col type="column" name="SOURCE_NAME"/>
+		<col type="column" name="SOURCE_SCHEMA"/>
+		<col type="column" name="SOURCE_VERSION"/>
+		<col type="column" name="EXPLAIN_LEVEL"/>
+		<col type="column" name="STMTNO"/>
+		<col type="column" name="SECTNO"/>
+		<col type="column" name="QUERYNO"/>
+		<col type="column" name="QUERYTAG"/>
+		<col type="column" name="STATEMENT_TYPE"/>
+		<col type="column" name="UPDATABLE"/>
+		<col type="column" name="DELETABLE"/>
+		<col type="column" name="TOTAL_COST"/>
+		<col type="column" name="SNAPSHOT"/>
+		<col type="column" name="QUERY_DEGREE"/>
+		<col type="column" name="STATEMENT_TEXT"/>
+	</display_columns>
+	<reference name="statement">
+		<title>Statement</title>
+		<reftype>table</reftype>
+		<refvalue>Explain/explainStatementSummary</refvalue>
+		<icon>images/icon-histo.gif</icon>
+		<ref foreign_column_name="tabSchema">
+			<local_column_name>tabSchema</local_column_name>
+		</ref>
+	</reference>
+	<reference name="adviseIndex">
+		<title>Advise Indices</title>
+		<reftype>table</reftype>
+		<refvalue>Explain/adviseIndex</refvalue>
+		<icon>images/icon-histo.gif</icon>
+		<ref foreign_column_name="tabSchema">
+			<local_column_name>tabSchema</local_column_name>
+		</ref>
+		<ref foreign_column_name="EXPLAIN_REQUESTER">
+			<local_column_name>EXPLAIN_REQUESTER</local_column_name>
+		</ref>
+		<ref foreign_column_name="EXPLAIN_TIME">
+			<local_column_name>EXPLAIN_TIME</local_column_name>
+		</ref>
+	</reference>
+	<column name="EXPLAIN_REQUESTER">
+		<sqlName>EXPLAIN_REQUESTER</sqlName>
+		<title>Requestor</title>
+		<primaryKey/>			
+	</column>
+	<column name="EXPLAIN_TIME">
+		<sqlName>EXPLAIN_TIME</sqlName>
+		<title>Time</title>
+		<type>s</type>
+		<primaryKey/>			
+	</column>
+	<column name="SOURCE_NAME">
+		<sqlName>SOURCE_NAME</sqlName>
+		<title>Name</title>
+		<primaryKey/>			
+	</column>
+	<column name="SOURCE_SCHEMA">
+		<sqlName>SOURCE_SCHEMA</sqlName>
+		<title>Schema</title>
+		<primaryKey/>			
+	</column>
+	<column name="SOURCE_VERSION">
+		<sqlName>SOURCE_VERSION</sqlName>
+		<title>Version</title>
+		<primaryKey/>			
+	</column>
+	<column name="EXPLAIN_LEVEL">
+		<sqlName>EXPLAIN_LEVEL</sqlName>
+		<title>Level</title>
+		<primaryKey/>			
+   		<column_mask>
+			<value_mask value="O"><mask>Orginal</mask></value_mask>
+			<value_mask value="P"><mask>Plan Selection</mask></value_mask>
+			<value_mask value="E"><mask>Effective</mask></value_mask>
+   		</column_mask>		
+	</column>
+	<column name="STMTNO">
+		<sqlName>STMTNO</sqlName>
+		<title>Stmt No.</title>
+		<primaryKey/>			
+	</column>
+	<column name="SECTNO">
+		<sqlName>SECTNO</sqlName>
+		<title>Sect. No.</title>
+		<primaryKey/>			
+	</column>
+	<column name="QUERYNO">
+		<sqlName>QUERYNO</sqlName>
+		<title>Query No.</title>
+		<primaryKey/>			
+	</column>
+	<column name="QUERYTAG">
+		<sqlName>QUERYTAG</sqlName>
+		<title>Query Tag</title>
+	</column>
+	<column name="STATEMENT_TYPE">
+		<sqlName>STATEMENT_TYPE</sqlName>
+		<title>Type</title>
+   		<column_mask>
+			<value_mask value="CL"><mask>Call</mask></value_mask>
+			<value_mask value="CP"><mask>Compound SQL (Dynamic)</mask></value_mask>
+			<value_mask value="D"><mask>Delete</mask></value_mask>
+			<value_mask value="DC"><mask>Delete where current of cursor</mask></value_mask>
+			<value_mask value="I"><mask>Insert</mask></value_mask>
+			<value_mask value="M"><mask>Merge</mask></value_mask>
+			<value_mask value="S"><mask>Select</mask></value_mask>
+			<value_mask value="SI"><mask>Set Integrity or Refresh Table</mask></value_mask>
+			<value_mask value="U"><mask>Update</mask></value_mask>
+			<value_mask value="UC"><mask>Update where current of cursor</mask></value_mask> 
+   		</column_mask>		
+	</column>
+	<column name="UPDATABLE">
+		<sqlName>UPDATABLE</sqlName>
+		<title>Updatable</title>
+	</column>
+	<column name="DELETABLE">
+		<sqlName>DELETABLE</sqlName>
+		<title>Deletable</title>
+	</column>
+	<column name="TOTAL_COST">
+		<sqlName>TOTAL_COST</sqlName>
+		<title>Cost</title>
+	</column>
+	<column name="STATEMENT_TEXT">
+		<sqlName>STATEMENT_TEXT</sqlName>
+		<title>Statement</title>
+		<type>s</type>
+	</column>
+	<column name="SNAPSHOT">
+		<sqlName>SNAPSHOT</sqlName>
+		<title>Snapshot</title>
+		<type>l</type>
+	</column>
+	<column name="QUERY_DEGREE">
+		<sqlName>QUERY_DEGREE</sqlName>
+		<title>Degree</title>
+	</column>
+</table>

@@ -1,0 +1,19 @@
+<p>The <a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v9r7/topic/com.ibm.db2.luw.sql.ref.doc/doc/r0022190.html?noframes=true');">XMLNAMESPACES</a> function constructs XML namespace declarations from the arguments.</p>
+
+<p>You can use the predefined namespace prefix, without explicitly defining it. The XML prefix cannot be redefined.</p>
+
+<ul> 
+    <li>namespace-uri</li>
+    <p>The namespace universal resource identifier (URI) is a character string constant. This character string constant cannot be empty.</p>
+
+    <li>namespace-prefix </li>
+    <p>The namespace prefix is an SQL identifier. It must be of the form of an XML NCName (SQLSTATE 42635). See the W3C XML namespace specifications for more details on valid names.
+    Theprefix cannot be xml or xmlns. The prefix must be unique within the list of namespace declarations.</p>
+
+    <li>DEFAULT namespace-uri </li>
+    <p>Specifies the default namespace to use for this XML element, and for all XML elements that are contained in this XML element, except for those xmlnamespaces-functions that specify
+    NO DEFAULT for the namespace.</p>
+
+    <li>NO DEFAULT </li><p>Specifies that no default namespace is to be used for this XML element, and for all XML elements that are contained in this XML element, except for those
+    xmlnamespaces-functions that specify a DEFAULT for the namespace.</p>
+</ul>

@@ -1,0 +1,35 @@
+<!--
+  Copyright IBM Corp. 2010 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+  Author: Michael Man
+  
+-->
+<table name="lockWaitTimePercent">
+  <sql_name>LOCK_WAIT_TIME_PERCENT</sql_name>
+  <inlinequery>
+SELECT LOCK_WAIT_TIME_PERCENT from SYSIBMADM.MON_DB_SUMMARY
+</inlinequery>
+  <singular_name>Lock Wait Time Percentage</singular_name>
+  <plural_name>Lock Wait Time Percentage</plural_name>
+  <description>This is the lock wait time percentage</description>
+  <rows_per_page>1</rows_per_page>
+  <display_columns>
+    <col type="column" name="percent"/>
+  </display_columns>
+   <column name="percent">
+    <c_sql_name>LOCK_WAIT_TIME_PERCENT</c_sql_name>
+    <c_title>lock wait time percentage</c_title>
+  </column>
+</table>

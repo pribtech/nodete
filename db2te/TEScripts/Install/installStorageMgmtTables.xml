@@ -1,0 +1,137 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2009-2014 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+<tutorial name="Install Storage Management Objects"  autoPlayTime="5">
+	<flowRestriction>forwardexploration</flowRestriction>
+    <closeAction />
+    <openAction />
+    <pageList>
+    	 <page name="Introduction" type="intro" clearAdhocText="true">
+            <contentText>
+<![CDATA[
+<h1>Install Storage Management</h1>
+Installs the object required for storage management.
+The tutorial will prompt for target tablespace.
+]]>
+ 			</contentText>
+	    	<exitAction name="getSetupInfo" type="form" title="Setup Information">
+	    		<schema>
+<![CDATA[
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+ xmlns:db2mc="http://www.w3.org/2001/XMLSchema">
+
+<xsd:element name="tablespace" db2mc:title="Select Tablespace">
+  <xsd:complexType>
+    <xsd:attribute name="name" type="db2mc:sql" use="required">
+		<db2mc:sql>select TBSPACE from syscat.tablespaces</db2mc:sql>
+    </xsd:attribute>
+  </xsd:complexType>
+</xsd:element>
+
+</xsd:schema>
+
+]]>
+	    		</schema>
+				<message>
+<![CDATA[
+<h3>Storage Tables Setup Values</h3>
+<table>
+	<tr><td nowrap="nowrap">Tablespace:</td>
+		<td><input id="TABLESPACE" type="text" size="128" maxlength="256" name="TABLESPACE"  value="SYSTOOLSPACE"/></td>
+	</tr>
+</table>
+]]>
+				</message>
+				<if condition="true">
+					<task>
+						<assignSharedConstant name="TABLESPACE" type="returnObject" transform="xpath" xpath="//tablespace/@name">
+							<value>getSetupInfo.returnValue</value> 	 
+						</assignSharedConstant>	
+						<setActionReturn value="true"/>    		
+					</task>
+				</if>
+				<ifNot condition="true">
+					<task>
+						<setActionReturn value="false"/>
+					</task>
+				</ifNot>     
+	    	</exitAction>		
+        </page>
+       	<page name="Install" type="general">
+            <contentText>
+<![CDATA[
+<h1>Create Objects</h1>
+<p>The task to create the tables may take a while.</p>
+]]>
+ 			</contentText>
+            <SQLText>
+<![CDATA[
+CALL CREATE_STORAGEMGMT_TABLES ('?TABLESPACE?')
+@
+]]>
+			</SQLText>
+			<SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar="@"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+		</page>
+       	<page name="Schedule" type="general">
+            <contentText>
+<![CDATA[
+<h1>Schedule Collection</h1>
+<p/>
+Scheduled a task that runs once a day at 6am.
+]]>
+ 			</contentText>
+            <SQLText>
+<![CDATA[
+CALL ADMIN_TASK_ADD('Storage Capture Details' 
+                    ,cast(NULL as TIMESTAMP)
+                    ,cast(NULL as TIMESTAMP)
+                    ,cast(NULL as INTEGER)
+                    ,'0 6 * * *' 
+                    ,'SYSPROC'
+                    ,'CAPTURE_STORAGEMGMT_INFO' 
+                    ,cast('values(0,'''','''')' as CLOB(100))
+                    ,cast(null as VARCHAR(512))
+					,'')
+]]>
+			</SQLText>
+			<SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar="@"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+		</page>
+    	<page name="Uninstall" type="last"  autoPlay="false">
+			<contentText>
+<![CDATA[
+<h1>Uninstall Storage Management</h1>
+<p>Drop the objects required for Storage Management</p>
+<p>The task to drop the objects may take a while.</p>
+]]>
+			</contentText>
+ 			<SQLText>
+<![CDATA[
+call ADMIN_TASK_REMOVE('Storage Capture Details',NULL)
+@
+CALL DROP_STORAGEMGMT_TABLES (0)
+@
+CALL SYSPROC.SYSINSTALLOBJECTS('STMG_DBSIZE_INFO', 'D', CAST (null AS VARCHAR(128)),   CAST (null AS VARCHAR(128)))
+@
+]]>
+ 			</SQLText>
+ 			<SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar="@"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+		</page>
+    </pageList>
+</tutorial>

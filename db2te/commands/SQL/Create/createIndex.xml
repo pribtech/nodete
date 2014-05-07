@@ -1,0 +1,376 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2009 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<command name="createIndex" title="Create Index">
+<![CDATA[
+>>-CREATE--+--------+--INDEX--index-name------------------------>
+           '-UNIQUE-'                      
+]]>
+	<text>CREATE</text>
+	<select>
+		<option default="true"><note>not unique</note></option>
+		<option><text>UNIQUE</text></option>
+	</select>
+	<text>INDEX</text>
+	<clauseReference name="index-name"/>
+	<br/>
+<![CDATA[
+                              .-,---------------------.      
+                    (1)       V              .-ASC--. |      
+>--ON--+-table-name-----+--(----column-name--+------+-+--)------>
+       |          (2)   |                    '-DESC-'        
+       '-nickname-------'                                    
+]]>
+	<select>
+		<option default="true"><clauseReference name="table-name"/></option>
+		<option><clauseReference name="nickname"/></option>
+	</select>
+	<text>(</text>
+	<repeatable>
+		<clauseReference name="column-name"/>
+		<select>
+			<option><text>ASC</text></option>
+			<option default="true"><note>ASC</note></option>
+			<option><text>DESC</text></option>
+		</select>
+	</repeatable>
+	<text>)</text>
+	<br/>
+<![CDATA[
+>--+-----------------+--●--+---------------------+--●----------->
+   +-PARTITIONED-----+     '-IN--tablespace-name-'      
+   '-NOT PARTITIONED-'                                  
+]]>
+	<select>
+		<option default="true"><note>partitioning</note></option>
+		<option><text>PARTITIONED</text></option>
+		<option><text>NOT PARTITIONED</text></option>
+	</select>
+	<select>
+		<option default="true"><note>default tablespace</note></option>
+		<option><text>IN</text><clauseReference name="tablespace-name"/></option>
+	</select>
+	<br/>
+<![CDATA[
+>--+--------------------+--●------------------------------------>
+   '-SPECIFICATION ONLY-'      
+]]>
+	<select>
+		<option default="true"><note>no include</note></option>
+		<option><text>SPECIFICATION ONLY</text></option>
+	</select>
+	<br/>
+<![CDATA[
+>--+------------------------------------+--●-------------------->
+   |                 .-,-----------.    |      
+   |         (3)     V             |    |      
+   '-INCLUDE------(----column-name-+--)-'      
+]]>
+	<select>
+		<option default="true"><note>no include</note></option>
+		<option>
+			<text>INCLUDE (</text>
+			<repeatable><clauseReference name="column-name"/></repeatable>
+			<text>)</text>
+		</option>
+	</select>
+	<br/>
+<![CDATA[
+>--+-----------------------------------------------------------------------+--●-->
+   |                             (4)                                       |      
+   +-| xml-index-specification |-------------------------------------------+      
+   +-CLUSTER---------------------------------------------------------------+      
+   '-EXTEND USING--index-extension-name--+-------------------------------+-'      
+                                         |    .-,-------------------.    |        
+                                         |    V                     |    |        
+                                         '-(----constant-expression-+--)-'        
+]]>
+	<select>
+		<option default="true"><note>PCTFREE</note></option>
+		<option><clauseReference name="xml-index-specification"/></option>
+		<option><text>CLUSTER</text></option>
+		<option>
+			<text>EXTEND USING</text>
+			<clauseReference name="index-extension-name"/>
+			<select>
+				<option default="true"><note></note></option>
+				<option>
+					<text>(</text>
+					<repeatable><clauseReference name="constant-expression"/></repeatable>
+					<text>)</text>
+				</option>
+			</select>
+		</option>
+	</select>
+	<br/>
+<![CDATA[
+   .-PCTFREE 10-------.                                      
+>--+------------------+--●--+-------------------------+--●------>
+   '-PCTFREE--integer-'     '-LEVEL2 PCTFREE--integer-'      
+]]>
+	<select>
+		<option><text>PCTFREE 10</text></option>
+		<option default="true"><note>PCTFREE</note></option> 
+		<option><text>PCTFREE</text><input type="int" size="3"/></option>
+	</select>
+	<select>
+		<option default="true"><note>level2</note></option> 
+		<option><text>LEVEL2 PCTFREE</text><input type="int" size="3"/></option>
+	</select>
+	<br/>
+<![CDATA[
+                               .-ALLOW REVERSE SCANS----.      
+>--+---------------------+--●--+------------------------+--●---->
+   '-MINPCTUSED--integer-'     '-DISALLOW REVERSE SCANS-'      
+]]>
+	<select>
+		<option default="true"><note>minpctused</note></option> 
+		<option><text>MINPCTUSED</text><input type="int" size="3"/></option>
+	</select>
+	<select>
+		<option><text>ALLOW REVERSE SCANS</text></option>
+		<option default="true"><note>ALLOW REVERSE SCANS</note></option> 
+		<option><text>DISALLOW REVERSE SCANS</text></option>
+	</select>
+	<br/>
+<![CDATA[
+   .-PAGE SPLIT SYMMETRIC-.      
+>--+----------------------+--●---------------------------------->
+   '-PAGE SPLIT--+-HIGH-+-'      
+                 '-LOW--'        
+]]>
+	<select>
+		<option><text>PAGE SPLIT SYMMETRIC</text></option>
+		<option default="true"><note>PAGE SPLIT SYMMETRIC</note></option> 
+		<option>
+			<text>PAGE SPLIT</text>
+			<select>
+				<option default="true"><text>HIGH</text></option>
+				<option><text>LOW</text></option>
+			</select>
+		</option>
+	</select>
+	<br/>
+<![CDATA[
+>--+------------------------------------------------+--●-------->
+   '-COLLECT--+-----------------------+--STATISTICS-'      
+              '-+---------+--DETAILED-'                    
+                '-SAMPLED-'                                
+]]>
+	<select>
+		<option default="true"><note>no collect</note></option> 
+		<option>
+			<text>COLLECT</text> 
+			<select>
+				<option default="true"><note>no detail</note></option> 
+				<option>
+					<select>
+						<option default="true"><note>no sampled</note></option> 
+						<option><text>SAMPLED</text></option>
+					</select>
+					<text>DETAILED</text>
+				</option> 
+			</select>
+			<text>STATISTICS</text> 
+		</option>
+	</select>
+	<br/>
+<![CDATA[
+>--+-------------------+---------------------------------------><
+   '-COMPRESS--+-NO--+-'   
+               '-YES-'     
+]]>
+	<select>
+		<option default="true"><note>compress</note></option> 
+		<option>
+			<text>COMPRESS</text>
+			<select>
+				<option default="true"><text>NO</text></option> 
+				<option><text>YES</text></option> 
+			</select>
+		</option>
+	</select>
+	
+	<clause name="xml-index-specification" title="xml index specification">
+<![CDATA[
+|--GENERATE KEY USING XMLPATTERN------| xmlpattern-clause |----->
+
+>--| xmltype-clause |-------------------------------------------|
+]]>
+		<text>GENERATE KEY USING XMLPATTERN</text><clauseReference name="xmlpattern-clause"/>
+		<br/>
+		<clauseReference name="xmltype-clause"/>
+	</clause>
+
+	<clause name="xmlpattern-clause" title="xmlpattern clause">
+<![CDATA[
+|--'--+---------------------------+--| pattern-expression |--'--|
+      '-| namespace-declaration |-'                              
+]]>
+		<select>
+			<option default="true"><note>default namespace</note></option> 
+			<option><clauseReference name="namespace-declaration"/></option>
+		</select>
+		<clauseReference name="pattern-expression"/>
+	</clause>
+
+
+	<clause name="namespace-declaration" title="namespace declaration">
+<![CDATA[
+   .----------------------------------------------------------.   
+   V                                                          |   
+|----+-DECLARE NAMESPACE--namespace-prefix=namespace-uri-+--;-+--|
+     '-DECLARE DEFAULT ELEMENT NAMESPACE--namespace-uri--'        
+]]>
+		<repeatable separator="">
+			<select>
+				<option default="true"><text>DECLARE NAMESPACE</text><input size="8" title="namespace" spacepad="false"/><text spacepad="false">=</text><input size="32" title="namespace-uri"/></option> 
+				<option><text>DECLARE DEFAULT ELEMENT NAMESPACE</text><input size="32" title="namespace-uri"/></option>
+			</select>
+		</repeatable>
+	</clause>
+
+	<clause name="pattern-expression" title="pattern expression">
+<![CDATA[
+   .----------------------------------------------.   
+   V                                              |   
+|----+-/--+-| forward-axis |-+-| xmlname-test |-+-+-------------|
+     '-//-'                  '-| xmlkind-test |-'     
+]]>
+		<repeatable separator="">
+			<select>
+				<option default="true"><text>/</text></option> 
+				<option><text>//</text></option>
+			</select>
+			<clauseReference name="forward-axis"/>
+			<select>
+				<option default="true"><clauseReference name="xmlname-test"/></option> 
+				<option><clauseReference name="xmlkind-test"/></option>
+			</select>
+		</repeatable>
+	</clause>
+
+	<clause name="forward-axis" title="forward axis">
+<![CDATA[
+   .-child::--------------.   
+|--+----------------------+-------------------------------------|
+   +-@--------------------+   
+   +-attribute::----------+   
+   +-descendant::---------+   
+   +-self::---------------+   
+   '-descendant-or-self::-'   
+]]>
+		<select>
+			<option><text>child::</text></option>
+			<option default="true"><note>child::</note></option> 
+			<option><text>@</text></option>
+			<option><text>attribute::</text></option>
+			<option><text>descendant::</text></option>
+			<option><text>self::</text></option>
+			<option><text>descendant-or-self::</text></option>
+		</select>
+	</clause>
+
+	<clause name="xmlname-test" title="xmlname test">
+<![CDATA[
+|--+-xml-qname--------+-----------------------------------------|
+   '-| xml-wildcard |-'   
+]]>
+		<select>
+			<option default="true"><input size="16" title="xml-qname"/></option> 
+			<option><input size="16" title="xml-wildcard"/></option>
+		</select>
+	</clause>
+
+	<clause name="xml-wildcard" title="xml wildcard">
+<![CDATA[
+|--+-*--------------+-------------------------------------------|
+   +-xml-nsprefix:*-+   
+   '-*:xml-ncname---'   
+]]>
+		<select>
+			<option default="true"><text>*</text></option> 
+			<option><input size="12" title="xml-nsprefix" spacepad="false"/><text>:*</text></option>
+			<option><text spacepad="false">*:</text><input size="12" title="xml ncname"/></option>
+		</select>
+	</clause>
+
+	<clause name="xmlkind-test" title="xmlkind test">
+<![CDATA[
+|--+-node()-------------------+---------------------------------|
+   +-text()-------------------+   
+   +-comment()----------------+   
+   '-processing instruction()-'   
+]]>
+		<select>
+			<option default="true"><text>*node()</text></option> 
+			<option><text>text()</text></option>
+			<option><text>comment()</text></option>
+			<option><text>processing instruction()</text></option>
+		</select>
+	</clause>
+
+	<clause name="xmltype-clause" title="xmltype clause">
+<![CDATA[
+                      .-IGNORE INVALID VALUES-.   
+|--AS--| data-type |--+-----------------------+-----------------|
+                      '-REJECT INVALID VALUES-'   
+]]>
+		<text>AS</text>
+		<clauseReference name="data-type"/>
+		<select>
+			<option><text>IGNORE INVALID VALUES</text></option>
+			<option default="true"><note>IGNORE INVALID VALUES</note></option> 
+			<option><text>REJECT INVALID VALUES</text></option>
+		</select>
+	</clause>
+
+	<clause name="data-type" title="data type">
+<![CDATA[
+|--| sql-data-type |--------------------------------------------|
+]]>
+		<clauseReference name="sql-data-type"/>
+	</clause>
+
+	<clause name="sql-data-type" title="sql data type">
+<![CDATA[
+|--SQL--+-VARCHAR--+-(--integer--)-+-+--------------------------|
+        |          '-HASHED--------' |   
+        +-DOUBLE---------------------+   
+        +-DATE-----------------------+   
+        '-TIMESTAMP------------------'   
+]]>
+		<text>SQL</text>
+		<select>
+			<option default="true">
+				<text>VARCHAR</text>
+				<select>
+					<option default="true"><text>(</text><input size="5" type="int"/><text>)</text></option>
+					<option><text>HASH</text></option>
+				</select>
+			</option> 
+			<option><text>DOUBLE</text></option>
+			<option><text>DATE</text></option>
+			<option><text>TIMESTAMP</text></option>
+		</select>
+	</clause>
+	
+	<clause name="constant-expression">
+		<text>*** constant-expression - to be done ***</text>
+	</clause>
+</command>
+        

@@ -1,0 +1,88 @@
+<table name="monConnectionNN">
+         <sql_name>monConnectionNN</sql_name>
+         <singular_name>Monitored Connection</singular_name>
+         <plural_name>Monitored Connections</plural_name>
+         <inlinequery>
+<![CDATA[
+SELECT APPLICATION_HANDLE, 
+       APPLICATION_NAME,
+            TOTAL_CPU_TIME * 10000 as TOTAL_CPU_TIME, 
+            TOTAL_ACT_TIME, 
+            ACT_COMPLETED_TOTAL, 
+            TOTAL_WAIT_TIME, 
+            CLIENT_IDLE_WAIT_TIME
+         FROM TABLE(MON_GET_CONNECTION(NULL, -1)) as t
+]]>
+         </inlinequery>
+         <description>This pane gives the information about all the applications currently connected to the database</description>
+         <order_by_index/>
+         <display_columns>
+                  <col type="column" name="APPLICATION_HANDLE"/>
+                  <col type="column" name="APPLICATION_NAME"/>
+                  <!-- <col type="column" name="TOTAL_CPU_TIME"/>   -->
+                 <col type="dynamiccolumn" name="totalCPURate"/>
+                  <col type="column" name="TOTAL_ACT_TIME"/>
+                  <col type="column" name="ACT_COMPLETED_TOTAL"/>
+                  <col type="column" name="TOTAL_WAIT_TIME"/>
+                  <col type="column" name="CLIENT_IDLE_WAIT_TIME"/>
+         </display_columns>
+         <column name="APPLICATION_HANDLE">
+                  <c_sql_name>APPLICATION_HANDLE</c_sql_name>
+                  <c_title>Application Handle</c_title>
+                  <c_presentation>n</c_presentation>
+                  <c_drill>n</c_drill>
+                  <c_pkey>p</c_pkey>
+                  <c_reference name="instance">
+                           <reftype>table</reftype>
+                           <refvalue>Monitor/monConnection</refvalue>
+                           <icon>images/sout.gif</icon>
+                           <ref foreign_column_name="APPLICATION_HANDLE">
+                                    <local_column_name>APPLICATION_HANDLE</local_column_name>
+                           </ref>
+                  </c_reference>
+         </column>
+         <column name="APPLICATION_NAME">
+                  <c_sql_name>APPLICATION_NAME</c_sql_name>
+                  <c_title>Application Name</c_title>
+                  <c_presentation>n</c_presentation>
+                  <c_drill>n</c_drill>
+                  <c_reference name="instance">
+                           <reftype>table</reftype>
+                           <refvalue>Monitor/monConnection</refvalue>
+                           <icon>images/sout.gif</icon>
+                           <ref foreign_column_name="APPLICATION_HANDLE">
+                                    <local_column_name>APPLICATION_HANDLE</local_column_name>
+                           </ref>
+                  </c_reference>
+         </column>
+         <column name="TOTAL_CPU_TIME">
+                  <c_sql_name>TOTAL_CPU_TIME</c_sql_name>
+                  <c_title>Total CPU Time</c_title>
+                  <c_drill>n</c_drill>
+         </column>
+		 <dynamicColumn name="totalCPURate" type="FROM_POINT" column="TOTAL_CPU_TIME" title="Total CPU Rate"/>  
+         <column name="TOTAL_ACT_TIME">
+                  <c_sql_name>TOTAL_ACT_TIME</c_sql_name>
+                  <c_title>TOTAL_ACT_TIME</c_title>
+                  <c_drill>n</c_drill>
+         </column>
+         <column name="ACT_COMPLETED_TOTAL">
+                  <c_sql_name>ACT_COMPLETED_TOTAL</c_sql_name>
+                  <c_title>Activities Completed Total</c_title>
+                  <c_presentation>n</c_presentation>
+                  <c_drill>n</c_drill>
+         </column>
+         <column name="TOTAL_WAIT_TIME">
+                  <c_sql_name>TOTAL_WAIT_TIME</c_sql_name>
+                  <c_title>TOTAL_WAIT_TIME</c_title>
+                  <c_presentation>n</c_presentation>
+                  <c_drill>n</c_drill>
+         </column>
+         <column name="CLIENT_IDLE_WAIT_TIME">
+                  <c_sql_name>CLIENT_IDLE_WAIT_TIME</c_sql_name>
+                  <c_title>CLIENT_IDLE_WAIT_TIME</c_title>
+                  <c_presentation>n</c_presentation>
+                  <c_drill>n</c_drill>
+         </column>
+         
+</table>

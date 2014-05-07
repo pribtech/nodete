@@ -1,0 +1,102 @@
+<!--
+  
+  Updated by Author: Peter Kohlmann
+  Copyright IBM Canada Ltd 2008 All rights reserved.
+
+  Updated by Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2010 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+ -->
+<table name="monWorkload">
+	<sql_name>monTest</sql_name>
+	<singular_name>CPU Consumption</singular_name>
+	<plural_name>CPU Consumption</plural_name>
+	<messages><SQL0440N>Available DB2 version 9.7 and above</SQL0440N></messages>
+	<inlinequery>
+<![CDATA[
+SELECT appl_name, application_handle, 
+       uow_id, 
+       total_cpu_time, 
+       app_rqsts_completed_total, 
+       rqsts_completed_total  
+FROM TABLE(MON_GET_UNIT_OF_WORK(cast(NULL as bigint),-1)) AS t , SYSIBMADM.APPLICATIONS t1 
+where t.application_handle = t1.agent_id  
+ORDER BY total_cpu_time DESC
+]]>
+	</inlinequery>
+	<messages><SQL0551N>Security issue. Please install "Monitoring Switches/Security" in Tools -> Installed Components</SQL0551N></messages>
+	<description>This pane gives the inforamtion of all the applications that are consuming most of the CPU</description>
+	<order_by_index/>
+	<display_columns>
+		<col type="column" name="APPLICATION_HANDLE"/>
+		<col type="column" name="uow_id"/>
+		<col type="dynamiccolumn" name="CPUUsageRate"/>
+		<col type="column" name="app_rqsts_completed_total"/>
+		<col type="column" name="rqsts_completed_total"/>
+	</display_columns>
+	<column name="appl_name">
+		<c_sql_name>appl_name</c_sql_name>
+		<c_title>Application</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+		<c_reference name="instance">
+			<reftype>table</reftype>
+			<refvalue>Monitor/monConnection</refvalue>
+			<icon>images/sout.gif</icon>
+			<ref foreign_column_name="APPLICATION_HANDLE">
+				<local_column_name>APPLICATION_HANDLE</local_column_name>
+			</ref>
+		</c_reference>
+	</column>
+	<column name="APPLICATION_HANDLE">
+		<c_sql_name>application_handle</c_sql_name>
+		<c_title>Agent</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+		<c_pkey>p</c_pkey>
+		<c_column_mask_file>masks/skipNulls.xml</c_column_mask_file>
+	</column>
+	<column name="uow_id">
+		<c_sql_name>uow_id</c_sql_name>
+		<c_title>UOW ID</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+		<c_column_mask_file>masks/skipNulls.xml</c_column_mask_file>
+	</column>
+	<column name="total_cpu_time">
+		<c_sql_name>total_cpu_time</c_sql_name>
+		<c_title>Total CPU time</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>		
+		<c_column_mask_file>masks/skipNulls.xml</c_column_mask_file>
+	</column>
+	<dynamicColumn name="CPUUsageRate" type="DELTA" column="total_cpu_time" title="CPU Rate"/>
+	<column name="app_rqsts_completed_total">
+		<c_sql_name>app_rqsts_completed_total</c_sql_name>
+		<c_title>Application requests completed</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+		
+		<c_column_mask_file>masks/skipNulls.xml</c_column_mask_file>
+	</column>
+	<column name="rqsts_completed_total">
+		<c_sql_name>rqsts_completed_total</c_sql_name>
+		<c_title>Requests completed</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+		
+		<c_column_mask_file>masks/skipNulls.xml</c_column_mask_file>
+	</column>
+
+</table>

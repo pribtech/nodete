@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xx="menu.xsd">
+    <xs:include schemaLocation="menu.xsd"/>
+        <xs:element name="tutorial">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="flowRestriction" type="tutorialFlowType" nillable="false"/>
+                <xs:element name="closeAction" type="action"/>
+                <xs:element name="openAction" type="action"/>
+                <xs:element name="pageList">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="page" maxOccurs="unbounded" minOccurs="1">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="entryAction" type="action"/>
+                                        <xs:element name="exitAction" type="action"/>
+                                        <xs:element name="contentFile" type="xs:string"></xs:element>
+                                        <xs:element name="contentURL"  minOccurs="0">
+                                            <xs:complexType>
+                                                <xs:attribute name="URL" type="xs:string"></xs:attribute>
+                                            </xs:complexType>
+                                        </xs:element>
+                                        <xs:element name="SQLFile">
+                                            
+                                        </xs:element>
+                                        <xs:element name="SQLText">
+                                            
+                                        </xs:element>
+                                        <xs:element name="HTMLSQLFile">
+                                            
+                                        </xs:element>
+                                        <xs:element name="HTMLSQLText">
+                                            
+                                        </xs:element>
+                                        <xs:element name="autoLoadLink">
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                    <xs:element ref="menu" />
+                                                </xs:sequence>
+                                            </xs:complexType>
+                                        </xs:element>
+                                        <xs:element name="pageTransitionsDescription">
+                                            
+                                        </xs:element>
+                                        <xs:element name="loadActionScriptFile">
+                                            
+                                        </xs:element>
+                                        <xs:element name="SQLExecutionOptions">
+                                            <xs:complexType>
+                                                <xs:attribute name="xml">
+                                                    
+                                                </xs:attribute>
+                                                <xs:attribute name="clob">
+                                                    
+                                                </xs:attribute>
+                                                <xs:attribute xmlinline="" name="xmlinline">
+                                                    
+                                                </xs:attribute>
+                                                <xs:attribute name="clobinline">
+                                                    
+                                                </xs:attribute>
+                                                <xs:attribute name="blob">
+                                                    
+                                                </xs:attribute>
+                                                <xs:attribute name="dbclob">
+                                                    
+                                                </xs:attribute>
+                                                <xs:attribute name="tremChar">
+                                                    
+                                                </xs:attribute>
+                                                <xs:attribute name="commitPerStmt">
+                                                    
+                                                </xs:attribute>
+                                                <xs:attribute name="numRowReturned">
+                                                    
+                                                </xs:attribute>
+                                                <xs:attribute name="scriptMode">
+                                                    
+                                                </xs:attribute>
+                                                <xs:attribute name="shellMaxRunTime">
+                                                    
+                                                </xs:attribute>
+                                                <xs:attribute name="shellTermChar">
+                                                    
+                                                </xs:attribute>
+                                            </xs:complexType>
+                                        </xs:element>                                        
+                                    </xs:sequence>
+                                    <xs:attribute name="name" use="required" type="xs:string"/>
+                                    <xs:attribute name="type" use="required" type="pagetypes"/>
+                                    <xs:attribute name="closeWindowsInRightStage">
+                                        
+                                    </xs:attribute>
+                                    <xs:attribute name="clearAdhocResults">
+                                        
+                                    </xs:attribute>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+            <xs:attribute name="name" use="required" type="xs:string"/>
+            <xs:attribute name="useLongAdhoc">
+                
+            </xs:attribute>
+            <xs:attribute name="autoCloseWindowsInRightStage">
+                
+            </xs:attribute>
+            <xs:attribute name="autoClearAdhocResults" use="optional">
+                
+            </xs:attribute>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:simpleType name="tutorialFlowType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="yes"/>
+            <xs:enumeration value="no"/>
+        </xs:restriction>
+    </xs:simpleType>
+    
+    <!-- definition of pagetypes -->
+    <xs:simpleType name="pagetypes">
+        <xs:annotation>
+            <xs:documentation>The type of pages allowed.</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="intro"/>
+            <xs:enumeration value="general"/>
+            <xs:enumeration value="last"/>
+        </xs:restriction>
+    </xs:simpleType>
+    
+    
+    <!-- action element definition -->
+    <xs:complexType name="action">
+        <xs:annotation>
+            <xs:documentation> Definition of the "Action" element</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="parameterList" minOccurs="0">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="parameter" maxOccurs="unbounded">
+                                   <xs:complexType>
+                                       <xs:simpleContent>
+                                           <xs:extension base="xs:string">
+                                               <xs:attribute name="name" type="xs:string" use="required"></xs:attribute>
+                                               <xs:attribute name="fillWithReturnCode" type="xs:boolean" use="optional"></xs:attribute>        </xs:extension>
+                                       </xs:simpleContent>
+                                   </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>  
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="taskCompletionList" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="taskCompletion" maxOccurs="unbounded"  minOccurs="0">
+                            <xs:complexType>
+                                <xs:sequence>
+                                    <xs:element name="action" type="action" minOccurs="0" />
+                                    <xs:element name="message" type="xs:string" minOccurs="0" />
+                                    <xs:element name="contentFile"  minOccurs="0">
+                                        <xs:complexType>
+                                            <xs:sequence>
+                                                <xs:element name="ParameterList">
+                                                    <xs:complexType>
+                                                        <xs:sequence>
+                                                            <xs:element name="parameter" maxOccurs="unbounded">
+                                                                <xs:complexType>
+                                                                    <xs:simpleContent>
+                                                                        <xs:extension base="xs:string">
+                                                                            <xs:attribute name="name" type="xs:string" use="required"></xs:attribute>
+                                                                            <xs:attribute name="fillWithReturnCode" type="xs:boolean" use="optional"></xs:attribute>        </xs:extension>
+                                                                    </xs:simpleContent>
+                                                                </xs:complexType>
+                                                            </xs:element>
+                                                        </xs:sequence>
+                                                    </xs:complexType>
+                                                </xs:element>
+                                            </xs:sequence>
+                                        </xs:complexType>
+                                    </xs:element>
+                                    <xs:element name="contentURL"  minOccurs="0">
+                                        <xs:complexType>
+                                            <xs:attribute name="URL" type="xs:string"></xs:attribute>
+                                        </xs:complexType>
+                                    </xs:element>
+                                </xs:sequence>
+                                <xs:attribute name="type" type="xs:string" use="required"></xs:attribute>
+                            </xs:complexType>
+                        </xs:element> 
+                    </xs:sequence>
+                    <xs:attribute name="condition" type="xs:string" use="required"></xs:attribute>
+                    <xs:attribute name="negCondition" default="false" type="xs:boolean" use="optional"></xs:attribute>
+                    <xs:attribute name="haltOn" default="false" use="optional" type="xs:boolean"></xs:attribute>
+                    <xs:attribute name="name" type="xs:string" use="required"></xs:attribute>
+                </xs:complexType>
+            </xs:element> 
+        </xs:sequence>
+        <xs:attribute name="name" type="xs:string" use="optional"></xs:attribute>
+    </xs:complexType>
+</xs:schema>

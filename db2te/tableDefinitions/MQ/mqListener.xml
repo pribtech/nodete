@@ -1,0 +1,161 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2012 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+<table name="MQ Listener">
+	<sqlName>SYSMQL.Listeners</sqlName>
+	<singularName>MQ Listener</singularName>
+	<pluralName>MQ Listeners</pluralName>
+	<description></description>
+	<disableEdit/>
+	<output>
+		<type name="DDL" destination="" title="" generator=""/>
+	</output>
+	<orderBy name="CONFIGURATIONNAME" direction="A"/>
+	<displayColumns>
+		<col type="column" name="CONFIGURATIONNAME"/>
+		<col type="column" name="QUEUEMANAGER"/>
+		<col type="column" name="INPUTQUEUE"/>
+		<col type="column" name="DBNAME"/>
+		<col type="column" name="DBUSERID"/>
+		<col type="column" name="PROCSCHEMA"/>
+		<col type="column" name="PROCNAME"/>
+		<col type="column" name="MQCOORDINATED"/>
+		<col type="column" name="NUMINSTANCES"/>
+		<col type="column" name="WAITMILLIS"/>
+	</displayColumns>
+	<column name="CONFIGURATIONNAME">
+		<sqlName>CONFIGURATIONNAME</sqlName>
+		<title>Configuration Name</title>
+		<type>s</type>
+		<primaryKey/>
+	</column>
+	<column name="QUEUEMANAGER">
+		<sqlName>QUEUEMANAGER</sqlName>
+		<title>Queue Manager</title>
+		<type>s</type>
+		<drillEnable/>
+		<primaryKey/>
+	</column>
+	<column name="INPUTQUEUE">
+		<sqlName>INPUTQUEUE</sqlName>
+		<title>Input Queue</title>
+		<primaryKey/>
+	<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="DBNAME">
+		<sqlName>DBNAME</sqlName>
+		<title>Database</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="DBUSERID">
+		<sqlName>DBUSERID</sqlName>
+		<title>DB Userid</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="PROCNODE">
+		<sqlName>PROCNODE</sqlName>
+		<title>Proc. Node (not used)</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="PROCSCHEMA">
+		<sqlName>PROCSCHEMA</sqlName>
+		<title>Proc. Schema</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="PROCNAME">
+		<sqlName>PROCNAME</sqlName>
+		<title>Procedure</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="PROCTYPE">
+		<sqlName>PROCTYPE</sqlName>
+		<title>Proc. Type (not used)</title>
+		<type>n</type>
+	</column>
+	<column name="MQCOORDINATED">
+		<sqlName>MQCOORDINATED</sqlName>
+		<title>MQ Coordinated</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="NUMINSTANCES">
+		<sqlName>NUMINSTANCES</sqlName>
+		<title>No. Instances</title>
+		<type>n</type>
+	</column>
+	<column name="WAITMILLIS">
+		<sqlName>WAITMILLIS</sqlName>
+		<title>Wait (ms)</title>
+		<type>n</type>
+	</column>
+	<column name="MINQUEUEDEPTH">
+		<sqlName>MINQUEUEDEPTH</sqlName>
+		<title>Min. Queue Depth (not used)</title>
+		<type>n</type>
+	</column>
+	<action name="Drop">
+		<title>Drop</title>
+		<icon>images/trash.gif</icon>   
+    	<actionScript>
+    		<task>
+				<assignSharedConstant name="sql" type="fixed">
+					<value>
+<![CDATA[
+db2mqlsn remove -configDB ?ACTIVE_DATABASE? -config ?CONFIGURATIONNAME? -queueManager ?QUEUEMANAGER? -inputQueue ?INPUTQUEUE?
+]]>
+					</value>
+				</assignSharedConstant>
+		   		<callGlobalAction name="sqlExecution"/>
+	   		</task>
+    	</actionScript>
+    </action>
+	<action name="update">
+		<title>Update</title>
+    	<actionScript>
+    		<task>
+				<assignSharedConstant name="sql" type="fixed">
+					<value>
+<![CDATA[
+UPDATE SYSMQL.Listeners
+  SET NUMINSTANCES = ?newNUMINSTANCES?
+WHERE CONFIGURATIONNAME='?CONFIGURATIONNAME?'
+  AND QUEUEMANAGER='?QUEUEMANAGER?'
+  AND INPUTQUEUE='?INPUTQUEUE?'
+]]>
+					</value>
+				</assignSharedConstant>
+				<assignSharedConstant name="form" type="fixed">
+					<value>
+<![CDATA[
+<table>
+<tr><td>Connections</td><td><input type="text" size="8" id="newNUMINSTANCES" name="newNUMINSTANCES" value="?NUMINSTANCES?"/></td></tr>
+</table>
+<note>Need to restart listener</note>
+]]>
+					</value>
+				</assignSharedConstant>				
+		   		<callGlobalAction name="sqlExecutionForm"/>
+	   		</task>
+    	</actionScript>
+    </action>
+</table>

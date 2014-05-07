@@ -1,0 +1,35 @@
+<p><b>Scenario</b></p>
+<p>
+	As part of customer relationship building the hospital decides to send information about upcoming health events to its patients.  
+	On further analysis the hospital realizes that address information for many patients is inaccurate or incomplete.
+</p>
+<p>
+The patient information along with the address is captured by the healthcare application. 
+There has not been any validation to the address XML document as there has been for PMD. 
+The address XML also needs to be validated without any alteration to the application in the present situation.
+</p>
+<p><b>Operation</b></p>
+<p>
+	Triggers are the best option when an operation needs to be done without modifying the existing application architecture. 
+	The patient information and address XML might be inserted through a stored procedure. 
+	A trigger can be fired if any of the three DML (Data manipulation language) like insert, update or delete happens. 
+	The following trigger fires before the insert of patient details and checks for schema validation and allows only if 
+	the address XML is valid according to the schema.
+<ul>
+<li><b><code>CREATE TRIGGER</code></b> -- creates a trigger which fires if any of the DML statements are issued to the 
+particular table to which the trigger is bind. Trigger is fired as specified in its definition as BEFORE or AFTER.</li>
+<li><b><code>XMLVALIDATE</code></b> -- To validate the XML document that is inserted. This will be fired by the trigger when a row is inserted in Patient_details table</li>
+
+</ul></br>
+<p>The patient detials for the first insert succeeds while the second insert fails since it does not comply with the 
+schema that the trigger is validating.
+</p>
+
+</p>
+<p><b>Solution</b></p>
+<p>
+	The address XML of the patient is validated for correctness before feeding it into the application.
+</p>
+<p><b></b></p>
+<p>
+</p>

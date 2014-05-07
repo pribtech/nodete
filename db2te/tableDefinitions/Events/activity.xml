@@ -1,0 +1,437 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2011 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+<table name="activities">
+	<sql_name>Activities</sql_name>
+	<singular_name>Activity</singular_name>
+	<plural_name>Activity</plural_name>
+	<inlinequery>SELECT	* FROM "?"."?"</inlinequery>
+	<parameters>
+		<parm name="tabschema">
+			<title>tabschema</title>
+			<value>no schema</value>
+			<type>n</type>
+		</parm>
+		<parm name="tabname">
+			<title>tabname</title>
+			<value>no table</value>
+			<type>n</type>
+		</parm>
+	</parameters>
+	<description />
+	<order_by_index name="ACTIVATE_TIMESTAMP" direction="D"/>
+	<order_by_index name="AGENT_ID" direction="A"/>
+	<display_columns>
+		<col type="column" name="PARTITION_KEY"/>
+		<col type="column" name="ACT_EXEC_TIME"/>
+		<col type="column" name="ACTIVATE_TIMESTAMP"/>
+		<col type="column" name="ACTIVITY_ID"/>
+		<col type="column" name="ACTIVITY_SECONDARY_ID"/>
+		<col type="column" name="ACTIVITY_TYPE"/>
+		<col type="column" name="ADDRESS"/>
+		<col type="column" name="AGENT_ID"/>
+		<col type="column" name="APPL_ID"/>
+		<col type="column" name="APPL_NAME"/>
+		<col type="column" name="COORD_PARTITION_NUM"/>
+		<col type="column" name="DB_WORK_ACTION_SET_ID"/>
+		<col type="column" name="DB_WORK_CLASS_ID"/>
+		<col type="column" name="NUM_REMAPS"/>
+		<col type="column" name="PARENT_ACTIVITY_ID"/>
+		<col type="column" name="PARENT_UOW_ID"/>
+		<col type="column" name="PARTIAL_RECORD"/>
+		<col type="column" name="PARTITION_NUMBER"/>
+		<col type="column" name="POOL_DATA_L_READS"/>
+		<col type="column" name="POOL_DATA_P_READS"/>
+		<col type="column" name="POOL_INDEX_L_READS"/>
+		<col type="column" name="POOL_INDEX_P_READS"/>
+		<col type="column" name="POOL_TEMP_DATA_L_READS"/>
+		<col type="column" name="POOL_TEMP_DATA_P_READS"/>
+		<col type="column" name="POOL_TEMP_INDEX_L_READS"/>
+		<col type="column" name="POOL_TEMP_INDEX_P_READS"/>
+		<col type="column" name="POOL_TEMP_XDA_L_READS"/>
+		<col type="column" name="POOL_TEMP_XDA_P_READS"/>
+		<col type="column" name="POOL_XDA_L_READS"/>
+		<col type="column" name="POOL_XDA_P_READS"/>
+		<col type="column" name="PREP_TIME"/>
+		<col type="column" name="QUERY_CARD_ESTIMATE"/>
+		<col type="column" name="QUERY_COST_ESTIMATE"/>
+		<col type="column" name="ROWS_FETCHED"/>
+		<col type="column" name="ROWS_MODIFIED"/>
+		<col type="column" name="ROWS_RETURNED"/>
+		<col type="column" name="SC_WORK_ACTION_SET_ID"/>
+		<col type="column" name="SC_WORK_CLASS_ID"/>
+		<col type="column" name="SERVICE_SUBCLASS_NAME"/>
+		<col type="column" name="SERVICE_SUPERCLASS_NAME"/>
+		<col type="column" name="SESSION_AUTH_ID"/>
+		<col type="column" name="SORT_OVERFLOWS"/>
+		<col type="column" name="SQLCABC"/>
+		<col type="column" name="SQLCAID"/>
+		<col type="column" name="SQLCODE"/>
+		<col type="column" name="SQLERRD1"/>
+		<col type="column" name="SQLERRD2"/>
+		<col type="column" name="SQLERRD3"/>
+		<col type="column" name="SQLERRD4"/>
+		<col type="column" name="SQLERRD5"/>
+		<col type="column" name="SQLERRD6"/>
+		<col type="column" name="SQLERRM"/>
+		<col type="column" name="SQLERRP"/>
+		<col type="column" name="SQLSTATE"/>
+		<col type="column" name="SQLWARN"/>
+		<col type="column" name="SYSTEM_CPU_TIME"/>
+		<col type="column" name="TIME_COMPLETED"/>
+		<col type="column" name="TIME_CREATED"/>
+		<col type="column" name="TIME_STARTED"/>
+		<col type="column" name="TOTAL_SORT_TIME"/>
+		<col type="column" name="TOTAL_SORTS"/>
+		<col type="column" name="TPMON_ACC_STR"/>
+		<col type="column" name="TPMON_CLIENT_APP"/>
+		<col type="column" name="TPMON_CLIENT_USERID"/>
+		<col type="column" name="TPMON_CLIENT_WKSTN"/>
+		<col type="column" name="UOW_ID"/>
+		<col type="column" name="USER_CPU_TIME"/>
+		<col type="column" name="WORKLOAD_ID"/>
+		<col type="column" name="WORKLOAD_OCCURRENCE_ID"/>
+	</display_columns>
+	<column name="PARTITION_KEY" minVersion="9.7">
+		<sql_name>PARTITION_KEY</sql_name>
+		<title>Partition Key</title>
+	</column>
+	<column name="ACT_EXEC_TIME">
+		<sql_name>ACT_EXEC_TIME</sql_name>
+		<title>Exec. Time</title>
+		<type>n</type>
+	</column>
+	<column name="ACTIVATE_TIMESTAMP">
+		<sql_name>ACTIVATE_TIMESTAMP</sql_name>
+		<title>Activated</title>
+		<c_pkey>p</c_pkey>
+	</column>
+	<column name="ACTIVITY_ID">
+		<sql_name>ACTIVITY_ID</sql_name>
+		<title>Activity Id.</title>
+		<c_pkey>p</c_pkey>
+	</column>
+	<column name="ACTIVITY_SECONDARY_ID">
+		<sql_name>ACTIVITY_SECONDARY_ID</sql_name>
+		<title>Secondary Id.</title>
+	</column>
+	<column name="ACTIVITY_TYPE">
+		<sql_name>ACTIVITY_TYPE</sql_name>
+		<title>Type</title>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="ADDRESS" minVersion="9.7">
+		<sql_name>ADDRESS</sql_name>
+		<title>Address</title>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="AGENT_ID">
+		<sql_name>AGENT_ID</sql_name>
+		<title>Agent Id.</title>
+		<c_pkey>p</c_pkey>
+	</column>
+	<column name="APPL_ID">
+		<sql_name>APPL_ID</sql_name>
+		<title>Appl. Id.</title>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="APPL_NAME">
+		<sql_name>APPL_NAME</sql_name>
+		<title>Appl. Name</title>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="ARM_CORRELATOR">
+		<sql_name>ARM_CORRELATOR</sql_name>
+		<title>ARM Correlator</title>
+	</column>
+	<column name="COORD_PARTITION_NUM">
+		<sql_name>COORD_PARTITION_NUM</sql_name>
+		<title>Co-od. Partition</title>
+	</column>
+	<column name="DB_WORK_ACTION_SET_ID">
+		<sql_name>DB_WORK_ACTION_SET_ID</sql_name>
+		<title>DB Work Action Set</title>
+	</column>
+	<column name="DB_WORK_CLASS_ID">
+		<sql_name>DB_WORK_CLASS_ID</sql_name>
+		<title>DB Work Class</title>
+	</column>
+	<column name="DETAILS_XML" minVersion="9.7">
+		<sql_name>DETAILS_XML</sql_name>
+		<title>Details</title>
+		<type>n</type>
+	</column>
+	<column name="NUM_REMAPS" minVersion="9.7">
+		<sql_name>NUM_REMAPS</sql_name>
+		<title>No. Remaps</title>
+		<type>n</type>
+	</column>
+	<column name="PARENT_ACTIVITY_ID">
+		<sql_name>PARENT_ACTIVITY_ID</sql_name>
+		<title>Parent Activity</title>
+	</column>
+	<column name="PARENT_UOW_ID">
+		<sql_name>PARENT_UOW_ID</sql_name>
+		<title>Parent UOW</title>
+	</column>
+	<column name="PARTIAL_RECORD">
+		<sql_name>PARTIAL_RECORD</sql_name>
+		<title>Partial Record</title>
+	</column>
+	<column name="PARTITION_NUMBER" minVersion="9.7">
+		<sql_name>PARTITION_NUMBER</sql_name>
+		<title>Partition</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_DATA_L_READS">
+		<sql_name>POOL_DATA_L_READS</sql_name>
+		<title>Pool Data Logical Reads</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_DATA_P_READS">
+		<sql_name>POOL_DATA_P_READS</sql_name>
+		<title>Pool Data Physical Reads</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_INDEX_L_READS">
+		<sql_name>POOL_INDEX_L_READS</sql_name>
+		<title>Pool Index Logical Reads</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_INDEX_P_READS">
+		<sql_name>POOL_INDEX_P_READS</sql_name>
+		<title>Pool Index Physical Reads</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_TEMP_DATA_L_READS">
+		<sql_name>POOL_TEMP_DATA_L_READS</sql_name>
+		<title>Pool Temp. Data Logical Reads</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_TEMP_DATA_P_READS">
+		<sql_name>POOL_TEMP_DATA_P_READS</sql_name>
+		<title>Pool Temp. Data Physical Reads</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_TEMP_INDEX_L_READS">
+		<sql_name>POOL_TEMP_INDEX_L_READS</sql_name>
+		<title>Pool Temp. Index Logical Reads</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_TEMP_INDEX_P_READS">
+		<sql_name>POOL_TEMP_INDEX_P_READS</sql_name>
+		<title>Pool Temp. Index Physical Reads</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_TEMP_XDA_L_READS">
+		<sql_name>POOL_TEMP_XDA_L_READS</sql_name>
+		<title>Pool Temp. XDA Logical Reads</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_TEMP_XDA_P_READS">
+		<sql_name>POOL_TEMP_XDA_P_READS</sql_name>
+		<title>Pool Temp. XDA Physical Reads</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_XDA_L_READS">
+		<sql_name>POOL_XDA_L_READS</sql_name>
+		<title>Pool XDA Logical Reads</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_XDA_P_READS">
+		<sql_name>POOL_XDA_P_READS</sql_name>
+		<title>Pool XDA Physical Reads</title>
+		<type>n</type>
+	</column>
+	<column name="PREP_TIME">
+		<sql_name>PREP_TIME</sql_name>
+		<title>PREP_TIME</title>
+		<type>n</type>
+	</column>
+	<column name="QUERY_CARD_ESTIMATE">
+		<sql_name>QUERY_CARD_ESTIMATE</sql_name>
+		<title>Card. Estimate</title>
+		<type>n</type>
+	</column>
+	<column name="QUERY_COST_ESTIMATE">
+		<sql_name>QUERY_COST_ESTIMATE</sql_name>
+		<title>Cost Estimate</title>
+		<type>n</type>
+	</column>
+	<column name="ROWS_FETCHED">
+		<sql_name>ROWS_FETCHED</sql_name>
+		<title>Rows Fetched</title>
+		<type>n</type>
+	</column>
+	<column name="ROWS_MODIFIED">
+		<sql_name>ROWS_MODIFIED</sql_name>
+		<title>Rows Modified</title>
+		<type>n</type>
+	</column>
+	<column name="ROWS_RETURNED">
+		<sql_name>ROWS_RETURNED</sql_name>
+		<title>Rowa Returned</title>
+		<type>n</type>
+	</column>
+	<column name="SC_WORK_ACTION_SET_ID">
+		<sql_name>SC_WORK_ACTION_SET_ID</sql_name>
+		<title>Service Class Work Action Set</title>
+	</column>
+	<column name="SC_WORK_CLASS_ID">
+		<sql_name>SC_WORK_CLASS_ID</sql_name>
+		<title>Service Class Work Class</title>
+	</column>
+	<column name="SERVICE_SUBCLASS_NAME">
+		<sql_name>SERVICE_SUBCLASS_NAME</sql_name>
+		<title>Service Sub Class</title>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="SERVICE_SUPERCLASS_NAME">
+		<sql_name>SERVICE_SUPERCLASS_NAME</sql_name>
+		<title>Service Super Class</title>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="SESSION_AUTH_ID">
+		<sql_name>SESSION_AUTH_ID</sql_name>
+		<title>Auth. Id.</title>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="SORT_OVERFLOWS">
+		<sql_name>SORT_OVERFLOWS</sql_name>
+		<title>Sort Overflows</title>
+	</column>
+	<column name="SQLCABC">
+		<sql_name>SQLCABC</sql_name>
+		<title>SQLCABC</title>
+	</column>
+	<column name="SQLCAID">
+		<sql_name>SQLCAID</sql_name>
+		<title>SQLCAID</title>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="SQLCODE">
+		<sql_name>SQLCODE</sql_name>
+		<title>SQLCODE</title>
+	</column>
+	<column name="SQLERRD1">
+		<sql_name>SQLERRD1</sql_name>
+		<title>SQLERRD1</title>
+	</column>
+	<column name="SQLERRD2">
+		<sql_name>SQLERRD2</sql_name>
+		<title>SQLERRD2</title>
+	</column>
+	<column name="SQLERRD3">
+		<sql_name>SQLERRD3</sql_name>
+		<title>SQLERRD3</title>
+	</column>
+	<column name="SQLERRD4">
+		<sql_name>SQLERRD4</sql_name>
+		<title>SQLERRD4</title>
+	</column>
+	<column name="SQLERRD5">
+		<sql_name>SQLERRD5</sql_name>
+		<title>SQLERRD5</title>
+	</column>
+	<column name="SQLERRD6">
+		<sql_name>SQLERRD6</sql_name>
+		<title>SQLERRD6</title>
+	</column>
+	<column name="SQLERRM">
+		<sql_name>SQLERRM</sql_name>
+		<title>SQLERRM</title>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="SQLERRP">
+		<sql_name>SQLERRP</sql_name>
+		<title>SQLERRP</title>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="SQLSTATE">
+		<sql_name>SQLSTATE</sql_name>
+		<title>SQLSTATE</title>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="SQLWARN">
+		<sql_name>SQLWARN</sql_name>
+		<title>SQLWARN</title>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="SYSTEM_CPU_TIME">
+		<sql_name>SYSTEM_CPU_TIME</sql_name>
+		<title>System CPU</title>
+		<type>n</type>
+	</column>
+	<column name="TIME_COMPLETED">
+		<sql_name>TIME_COMPLETED</sql_name>
+		<title>Time Completed</title>
+	</column>
+	<column name="TIME_CREATED">
+		<sql_name>TIME_CREATED</sql_name>
+		<title>Time Created</title>
+	</column>
+	<column name="TIME_STARTED">
+		<sql_name>TIME_STARTED</sql_name>
+		<title>Time Started</title>
+	</column>
+	<column name="TOTAL_SORT_TIME">
+		<sql_name>TOTAL_SORT_TIME</sql_name>
+		<title>Sort Time</title>
+		<type>n</type>
+	</column>
+	<column name="TOTAL_SORTS">
+		<sql_name>TOTAL_SORTS</sql_name>
+		<title>Sorts</title>
+		<type>n</type>
+	</column>
+	<column name="TPMON_ACC_STR">
+		<sql_name>TPMON_ACC_STR</sql_name>
+		<title>Accounting String</title>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="TPMON_CLIENT_APP">
+		<sql_name>TPMON_CLIENT_APP</sql_name>
+		<title>Client Appl.</title>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="TPMON_CLIENT_USERID">
+		<sql_name>TPMON_CLIENT_USERID</sql_name>
+		<title>Client Userid</title>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="TPMON_CLIENT_WKSTN">
+		<sql_name>TPMON_CLIENT_WKSTN</sql_name>
+		<title>Client Workstation</title>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="UOW_ID">
+		<sql_name>UOW_ID</sql_name>
+		<title>UOW</title>
+	</column>
+	<column name="USER_CPU_TIME">
+		<sql_name>USER_CPU_TIME</sql_name>
+		<title>User CPU</title>
+	</column>
+	<column name="WORKLOAD_ID">
+		<sql_name>WORKLOAD_ID</sql_name>
+		<title>Workload</title>
+	</column>
+	<column name="WORKLOAD_OCCURRENCE_ID">
+		<sql_name>WORKLOAD_OCCURRENCE_ID</sql_name>
+		<title>Workload Occurrence</title>
+	</column>
+</table>

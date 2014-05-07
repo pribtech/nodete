@@ -1,0 +1,1307 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2009 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<command name="createTable" title="Create Table">
+<![CDATA[
+>>-CREATE TABLE--table-name------------------------------------->
+]]>
+	<text>CREATE TABLE</text>
+	<clauseReference name="table-name"/>
+	<br/>
+<![CDATA[
+>--+-| element-list |----------------------------+--●----------->
+   +-OF--type-name1--+-------------------------+-+      
+   |                 '-| typed-table-options |-' |      
+   +-LIKE--+-table-name1-+--+------------------+-+      
+   |       +-view-name---+  '-| copy-options |-' |      
+   |       '-nickname----'                       |      
+   +-| as-result-table |--+------------------+---+      
+   |                      '-| copy-options |-'   |      
+   +-| materialized-query-definition |-----------+      
+   '-| staging-table-definition |----------------'      
+]]>
+	<select>
+		<option default="true"><clauseReference name="element-list"/></option> 
+		<option>
+			<text>OF</text>
+			<clauseReference name="type-name"/>
+			<select>
+				<option default="true"><note>type table options</note></option> 
+				<option>
+					<clauseReference name="typed-table-options"/>
+				</option> 
+			</select>
+		</option> 
+		<option>
+			<text>LIKE</text>
+			<select>
+				<option default="true"><clauseReference name="table-name"/></option> 
+				<option><clauseReference name="view-name"/></option> 
+				<option><clauseReference name="nickname"/></option> 
+			</select>
+			<select>
+				<option default="true"></option> 
+				<option><clauseReference name="copy-options"/></option> 
+			</select>
+		</option> 
+		<option>
+			<clauseReference name="as-result-table"/>
+			<select>
+				<option default="true"><note>copy options</note></option> 
+				<option>
+					<clauseReference name="copy-options"/>
+				</option> 
+			</select>
+		</option> 
+		<option><clauseReference name="materialized-query-definition"/></option> 
+		<option><clauseReference name="staging-table-definition"/></option> 
+	</select>
+	<br/>
+<![CDATA[
+>--+----------------------------------------------------------------------+-->
+   |                                   .-,-------------------------.      |   
+   |                .-DIMENSIONS-.     V                           |      |   
+   '-ORGANIZE BY--+-+------------+--(----+-column-name-----------+-+--)-+-'   
+                  |                      |    .-,-----------.    |      |     
+                  |                      |    V             |    |      |     
+                  |                      '-(----column-name-+--)-'      |     
+                  '-KEY SEQUENCE--| sequence-key-spec |-----------------'     
+]]>
+	<select>
+		<option default="true"><note>organize</note></option> 
+		<option>
+			<text>ORGANIZE BY</text>
+			<select>
+				<option default="true">
+					<select>
+						<option><text>DIMENSIONS</text></option> 
+						<option default="true"><note>DIMENSIONS</note></option>
+					</select>
+					<text>(</text>
+					<repeatable>
+						<select>
+							<option default="true"><clauseReference name="column-name"/></option>
+							<option>
+								<text>)</text>
+								<repeatable>
+									<clauseReference name="column-name"/>
+								</repeatable>
+								<text>)</text>
+							</option>
+						</select>
+					</repeatable>
+					<text>)</text>
+				</option> 
+				<option>
+					<text>KEY SEQUENCE</text>
+					<clauseReference name="sequence-key-spec"/>
+				</option> 
+			</select>
+		</option>
+	</select>
+	<br/>
+<![CDATA[
+      .-DATA CAPTURE NONE----.                                  
+>--●--+----------------------+--●--+------------------------+--->
+      '-DATA CAPTURE CHANGES-'     '-| tablespace-clauses |-'   
+]]>
+	<select>
+		<option><text>DATA CAPTURE NONE</text></option>
+		<option default="true"><note>DATA CAPTURE NONE</note></option> 
+		<option><text>DATA CAPTURE CHANGES</text></option>
+	</select>
+	<select>
+		<option default="true"><note>default tablespace</note></option> 
+		<option><clauseReference name="tablespace-clauses"/></option>
+	</select>
+	<br/>
+<![CDATA[
+>--●--+-------------------------+--●---------------------------->
+      '-| distribution-clause |-'      
+]]>
+	<select>
+		<option default="true"><note>distribution</note></option> 
+		<option><clauseReference name="distribution-clause"/></option>
+	</select>
+	<br/>
+<![CDATA[
+                                   .-COMPRESS NO--.   
+>--+-------------------------+--●--+--------------+------------->
+   '-| partitioning-clause |-'     '-COMPRESS YES-'   
+]]>
+	<select>
+		<option default="true"><note>partitioning</note></option> 
+		<option><clauseReference name="partitioning-clause"/></option>
+	</select>
+	<select>
+		<option><text>COMPRESS NO</text></option>
+		<option default="true"><note>COMPRESS NO</note></option> 
+		<option><text>COMPRESS YES</text></option>
+	</select>
+	<br/>
+<![CDATA[
+>--●--+-------------------+--●--+-----------------------+------->
+      '-VALUE COMPRESSION-'     '-WITH RESTRICT ON DROP-'   
+]]>
+	<select>
+		<option default="true"><note>no value compression</note></option> 
+		<option><text>VALUE COMPRESSION</text></option>
+	</select>
+	<select>
+		<option default="true"><note>no restrict on drop</note></option> 
+		<option><text>WITH RESTRICT ON DROP</text></option>
+	</select>
+	<br/>
+<![CDATA[
+>--●--+----------------------+--●--+--------------------+------->
+      '-NOT LOGGED INITIALLY-'     '-CCSID--+-ASCII---+-'   
+                                            '-UNICODE-'     
+]]>
+	<select>
+		<option default="true"><note>logging</note></option> 
+		<option><text>NOT LOGGED INITIALLY</text></option>
+	</select>
+	<select>
+		<option default="true"><note>ccsid ascii</note></option> 
+		<option>
+			<text>CCSID</text>
+			<select>
+				<option default="true"><text>ASCII</text></option> 
+				<option><text>UNICODE</text></option> 
+			</select>
+		</option>
+	</select>
+	<br/>
+<![CDATA[
+>--●--+------------------------------+--●----------------------->
+      '-SECURITY POLICY--policy name-'      
+]]>
+	<select>
+		<option default="true"><note>no security policy</note></option> 
+		<option>
+			<text>SECURITY POLICY</text>
+			<clauseReference name="policy-name"/>
+		</option>
+	</select>
+	<br/>
+<![CDATA[
+>--+----------------------------------------------------------------+-><
+   |             .-,-------------------------------------------.    |   
+   |             V .-ADD-.                                     |    |   
+   '-OPTIONS--(----+-----+--table-option-name--string-constant-+--)-'   
+]]>
+	<select>
+		<option default="true"><note>no optionsy</note></option> 
+		<option>
+			<text>OPTIONS (</text>
+			<repeatable>
+				<select>
+					<option><text>ADD</text></option> 
+					<option default="true"><note>ADD</note></option> 
+				</select>
+				<clauseReference name="table-option-name"/>
+				<clauseReference name="string-constant"/>
+			</repeatable>
+			<text>)</text>
+		</option>
+	</select>
+
+	<clause name="element-list" title="element list">
+<![CDATA[
+      .-,------------------------------.      
+      V                                |      
+|--(----+-| column-definition |------+-+--)---------------------|
+        +-| unique-constraint |------+        
+        +-| referential-constraint |-+        
+        '-| check-constraint |-------'        
+]]>
+		<text>(</text>
+			<repeatable>
+				<select>
+					<option default="true"><clauseReference name="column-definition"/></option> 
+					<option><clauseReference name="unique-constraint"/></option>
+					<option><clauseReference name="referential-constraint"/></option>
+					<option><clauseReference name="check-constraint"/></option>
+				</select>
+			</repeatable>
+		<text>)</text>
+	</clause>
+
+	<clause name="column-definition" title="column definition">
+<![CDATA[
+|--column-name--+-------------------+--+--------------------+---|
+                |               (1) |  '-| column-options |-'   
+                '-| data-type |-----'                           
+]]>
+		<clauseReference name="column-name"/>
+		<select>
+			<option default="true"><note>typing</note></option> 
+			<option><clauseReference name="data-type"/></option>
+		</select>
+		<select>
+			<option default="true"><note>options</note></option> 
+			<option><clauseReference name="column-options"/></option>
+		</select>
+	</clause>
+
+	<clause name="column-options" title="column options">
+<![CDATA[
+   .--------------------------------------------------------------------------------------------------.   
+   V                                                                                                  |   
+|----+----------------------------------------------------------------------------------------------+-+--|
+     +-NOT NULL-------------------------------------------------------------------------------------+     
+     |                 (5)                                                                          |     
+     +-| lob-options |------------------------------------------------------------------------------+     
+     |                             (6)                                                              |     
+     +-SCOPE--+-typed-table-name-+------------------------------------------------------------------+     
+     |        '-typed-view-name--'                                                                  |     
+     +-+-----------------------------+--+-+-PRIMARY KEY-+-----------------------------------------+-+     
+     | '-CONSTRAINT--constraint-name-'  | '-UNIQUE------'                                         | |     
+     |                                  +-| references-clause |-----------------------------------+ |     
+     |                                  '-CHECK--(--check-condition--)--| constraint-attributes |-' |     
+     +-| generated-column-definition |--------------------------------------------------------------+     
+     |                        (7)                                                                   |     
+     +-INLINE LENGTH--integer-----------------------------------------------------------------------+     
+     +-COMPRESS SYSTEM DEFAULT----------------------------------------------------------------------+     
+     | .-COLUMN-.                                                                                   |     
+     +-+--------+--SECURED WITH--security-label-name------------------------------------------------+     
+     | .-NOT HIDDEN------------.                                                                    |     
+     | |                   (8) |                                                                    |     
+     '-+-IMPLICITLY HIDDEN-----+--------------------------------------------------------------------'     
+]]>
+		<repeatable separator=" ">
+			<select>
+				<option default="true"></option> 
+				<option><text>NOT NULL</text></option>
+				<option><clauseReference name="lob-options"/></option> 
+				<option>
+					<text>SCOPE</text>
+					<select>
+						<option default="true"><clauseReference name="typed-table-name"/></option> 
+						<option><clauseReference name="typed-view-name"/></option>
+					</select>
+				</option>
+				<option>
+					<select>
+						<option default="true"><note>default name</note></option> 
+						<option>
+							<text>CONSTRAINT</text>
+							<clauseReference name="constraint-name"/>
+						</option>
+					</select>
+					<select>
+						<option default="true"> 
+							<select>
+								<option default="true"><text>PRIMARY KEY</text></option> 
+								<option><text>UNIQUE</text></option> 
+							</select>
+						</option>
+						<option>
+							<select>
+								<option default="true"><clauseReference name="references-clause"/></option> 
+								<option>
+									<text>CHECK (</text>
+									<clauseReference name="check-condition"/>
+									<text>)</text>
+									<clauseReference name="constraint-attributes"/>
+								</option>
+							</select>
+						</option>
+					</select>
+				</option>
+				<option><clauseReference name="generated-column-definition"/></option>
+				<option><text>INLINE LENGTH</text><input type="int" size="6"/></option>
+				<option><text>COMPRESS SYSTEM DEFAULT</text></option>
+				<option>
+					<select>
+						<option><text>COLUMN</text></option>
+						<option default="true"><note>COLUMN</note></option>
+					</select>
+					<text>SECURED WITH</text>
+					<clauseReference name="security-label-name"/>
+				</option>
+				<option>
+					<select>
+						<option default="true"><text>NOT HIDDEN</text></option>
+						<option><text>IMPLICITLY HIDDEN</text></option>
+					</select>
+				</option>
+			</select>
+		</repeatable>
+	</clause>
+
+	<clause name="lob-options" title="lob options">
+<![CDATA[
+      .-LOGGED-----.     .-NOT COMPACT-.      
+|--●--+------------+--●--+-------------+--●---------------------|
+      '-NOT LOGGED-'     '-COMPACT-----'      
+]]>
+		<select>
+			<option><text>LOGGED</text></option>
+			<option default="true"><note>LOGGED</note></option> 
+			<option><text>NOT LOGGED</text></option>
+		</select>
+		<select>
+			<option><text>NOT COMPACT</text></option>
+			<option default="true"><note>NOT COMPACT</note></option> 
+			<option><text>COMPACT</text></option>
+		</select>
+	</clause>
+
+	<clause name="references-clause" title="references clause">
+<![CDATA[
+|--REFERENCES--+-table-name-+--+-----------------------+-------->
+               '-nickname---'  |    .-,-----------.    |   
+                               |    V             |    |   
+                               '-(----column-name-+--)-'   
+
+>--| rule-clause |--| constraint-attributes |-------------------|
+]]>
+		<text>REFERENCES</text>
+		<select>
+			<option default="true"><clauseReference name="table-name"/></option> 
+			<option><clauseReference name="nickname"/></option>
+		</select>
+		<select>
+			<option default="true"><note>all columns</note></option>
+			<option> 
+				<text>(</text>
+				<repeatable>
+					<clauseReference name="column-name"/>
+				</repeatable>
+				<text>)</text>
+			</option>
+		</select>
+		<br/>
+		<clauseReference name="rule-clause"/>
+		<clauseReference name="constraint-attributes"/>
+	</clause>
+	
+	<clause name="rule-clause" title="rule clause">
+<![CDATA[
+      .-ON DELETE NO ACTION-----.     .-ON UPDATE NO ACTION-.      
+|--●--+-------------------------+--●--+---------------------+--●--|
+      '-ON DELETE--+-RESTRICT-+-'     '-ON UPDATE RESTRICT--'      
+                   +-CASCADE--+                                    
+                   '-SET NULL-'                                    
+]]>
+		<select>
+			<option><text>ON DELETE NO ACTION</text></option>
+			<option default="true"><note>ON DELETE NO ACTION</note></option> 
+			<option>
+				<text>ON DELETE</text>
+				<select>
+					<option default="true"><text>RESTRICT</text></option> 
+					<option><text>CASCADE</text></option>
+					<option><text>SET NULL</text></option>
+				</select>
+			</option>
+		</select>
+		<select>
+			<option><text>ON UPDATE NO ACTION</text></option>
+			<option default="true"><note>ON UPDATE NO ACTION</note></option> 
+			<option><text>ON UPDATE RESTRICT</text></option>
+		</select>
+	</clause>
+	
+	<clause name="constraint-attributes" title="constraint attributes">
+<![CDATA[
+      .-ENFORCED-----.     .-ENABLE QUERY OPTIMIZATION--.      
+|--●--+--------------+--●--+----------------------------+--●----|
+      '-NOT ENFORCED-'     '-DISABLE QUERY OPTIMIZATION-'      
+]]>
+		<select>
+			<option><text>ENFORCED</text></option>
+			<option default="true"><note>ENFORCED</note></option> 
+			<option><text>NOT ENFORCED</text></option>
+		</select>
+		<select>
+			<option><text>ENABLE QUERY OPTIMIZATION</text></option>
+			<option default="true"><note>ENABLE QUERY OPTIMIZATION</note></option> 
+			<option><text>DISABLE QUERY OPTIMIZATION</text></option>
+		</select>
+	</clause>
+
+	<clause name="generated-column-definition" title="generated column definition">
+<![CDATA[
+|--+-| default-clause |------------------------------------------------+--|
+   |            .-ALWAYS-----.                                         |   
+   +-GENERATED--+------------+--+-| identity-options |---------------+-+   
+   |            '-BY DEFAULT-'  '-| as-row-change-timestamp-clause |-' |   
+   |            .-ALWAYS-.                                             |   
+   '-GENERATED--+--------+--AS--(--generation-expression--)------------'   
+]]>
+		<select>
+			<option default="true"><clauseReference name="default-clause"/></option> 
+			<option>
+				<text>GENERATED</text>
+				<select>
+					<option><text>ALWAYS</text></option>
+					<option default="true"><note>ALWAYS</note></option> 
+					<option><text>BY DEFAULT</text></option>
+				</select>
+				<select>
+					<option default="true"><clauseReference name="identity-options"/></option> 
+					<option><clauseReference name="as-row-change-timestamp-clause"/></option> 
+				</select>
+			</option>
+			<option>
+				<text>GENERATED</text>
+				<select>
+					<option><text>ALWAYS</text></option>
+					<option default="true"><note>ALWAYS</note></option> 
+				</select>
+				<text>AS (</text>
+				<input size="64" title="generation-expression"/>
+				<text>)</text>
+			</option>
+		</select>
+	</clause>
+
+	<clause name="default-clause" title="default clause">
+<![CDATA[
+   .-WITH-.                                    
+|--+------+--DEFAULT--+--------------------+--------------------|
+                      '-| default-values |-'   
+]]>
+		<select>
+			<option><text>WITH</text></option>
+			<option default="true"><note>WITH</note></option>
+		</select>
+		<text>DEFAULT</text>
+		<select>
+			<option default="true"><note>default</note></option>
+			<option><clauseReference name="default-values"/></option>
+		</select>
+	</clause>
+
+	<clause name="default-values" title="default values">
+<![CDATA[
+|--+-constant-------------------------------------------+-------|
+   +-datetime-special-register--------------------------+   
+   +-user-special-register------------------------------+   
+   +-CURRENT SCHEMA-------------------------------------+   
+   +-NULL-----------------------------------------------+   
+   +-cast-function--(--+-constant------------------+--)-+   
+   |                   +-datetime-special-register-+    |   
+   |                   +-user-special-register-----+    |   
+   |                   '-CURRENT SCHEMA------------'    |   
+   +-EMPTY_CLOB()---------------------------------------+   
+   +-EMPTY_DBCLOB()-------------------------------------+   
+   '-EMPTY_BLOB()---------------------------------------'   
+]]>
+		<select>
+			<option default="true"><clauseReference name="constant"/></option>
+			<option><clauseReference name="datetime-special-register"/></option>
+			<option><clauseReference name="user-special-register"/></option>
+			<option><text>CURRENT SCHEMA</text></option>
+			<option><text>NULL</text></option>
+			<option>
+				<clauseReference name="cast-function"/>
+				<text>(</text>
+				<select>
+					<option default="true"><clauseReference name="constant"/></option>
+					<option><clauseReference name="datetime-special-register"/></option>
+					<option><clauseReference name="user-special-register"/></option>
+					<option><text>CURRENT SCHEMA</text></option>
+				</select>
+				<text>)</text>
+			</option>
+			<option><text>EMPTY_CLOB()</text></option>
+			<option><text>EMPTY_DBLOB()</text></option>
+			<option><text>EMPTY_BLOB()</text></option>
+		</select>
+	</clause>
+	
+	<clause name="identity-options" title="identity options">
+<![CDATA[
+|--AS IDENTITY--+----------------------------------------------------------+--|
+                |      .--------------------------------------------.      |   
+                |      V  (9)              .-1----------------.     |      |   
+                '-(----------+-START WITH--+-numeric-constant-+---+-+----)-'   
+                             |               .-1----------------. |            
+                             +-INCREMENT BY--+-numeric-constant-+-+            
+                             | .-NO MINVALUE----------------.     |            
+                             +-+-MINVALUE--numeric-constant-+-----+            
+                             | .-NO MAXVALUE----------------.     |            
+                             +-+-MAXVALUE--numeric-constant-+-----+            
+                             | .-NO CYCLE-.                       |            
+                             +-+-CYCLE----+-----------------------+            
+                             | .-CACHE 20----------------.        |            
+                             +-+-NO CACHE----------------+--------+            
+                             | '-CACHE--integer-constant-'        |            
+                             | .-NO ORDER-.                       |            
+                             '-+-ORDER----+-----------------------'            
+]]>
+		<text>AS IDENTITY</text>
+		<select>
+			<option default="true"><note>default</note></option>
+			<option>
+				<text>(</text>
+				<repeatable>
+					<select>
+						<option default="true">
+							<text>START WITH</text>
+							<select>
+								<option default="true"><text>1</text></option>
+								<option><clauseReference name="numeric-constant"/></option>
+							</select>
+						</option>
+						<option default="true">
+							<text>INCREMENT BY</text>
+							<select>
+								<option default="true"><text>1</text></option>
+								<option><clauseReference name="numeric-constant"/></option>
+							</select>
+						</option>
+						<option>
+							<select>
+								<option default="true"><text>NO MINVALUE</text></option>
+								<option><text>MINVALUE</text><clauseReference name="numeric-constant"/></option>
+							</select>
+						</option>
+						<option>
+							<select>
+								<option default="true"><text>NO MAXVALUE</text></option>
+								<option><text>MAXVALUE</text><clauseReference name="numeric-constant"/></option>
+							</select>
+						</option>
+						<option>
+							<select>
+								<option default="true"><text>NO CYCLE</text></option>
+								<option><text>CYCLE</text></option>
+							</select>
+						</option>
+						<option>
+							<select>
+								<option default="true"><text>CACHE 20</text></option>
+								<option><text>NO CACHE</text></option>
+								<option><text>CACHE</text><clauseReference name="integer-constant"/></option>
+							</select>
+						</option>
+						<option>
+							<select>
+								<option default="true"><text>NO ORDER</text></option>
+								<option><text>ORDER</text></option>
+							</select>
+						</option>
+					</select>
+				</repeatable>
+				<text>)</text>
+			</option>
+		</select>
+	</clause>
+
+	<clause name="as-row-change-timestamp-clause" title="as row change timestamp clause">
+<![CDATA[
+|---------FOR EACH ROW ON UPDATE AS ROW CHANGE TIMESTAMP--------|
+]]>
+		<text>FOR EACH ROW ON UPDATE AS ROW CHANGE TIMESTAMP</text>
+	</clause>
+	
+	<clause name="unique-constraint" title="unique constraint">
+<![CDATA[
+|--+-----------------------------+--+-UNIQUE------+------------->
+   '-CONSTRAINT--constraint-name-'  '-PRIMARY KEY-'   
+
+      .-,-----------.      
+      V             |      
+>--(----column-name-+--)----------------------------------------|
+]]>
+		<select>
+			<option default="true"><note>default constraint name</note></option>
+			<option><text>CONSTRAINT</text><clauseReference name="constraint-name"/></option>
+		</select>
+		<select>
+			<option default="true"><text>UNIQUE</text></option>
+			<option><text>PRIMARY KEY</text></option>
+		</select>
+		<br/>
+		<text>(</text>
+		<repeatable>
+			<clauseReference name="column-name"/>
+		</repeatable>
+		<text>)</text>
+	</clause>
+	
+	<clause name="referential-constraint" title="referential constraint">
+<![CDATA[
+|--+-----------------------------+--FOREIGN KEY----------------->
+   '-CONSTRAINT--constraint-name-'                
+
+      .-,-----------.                             
+      V             |                             
+>--(----column-name-+--)--| references-clause |-----------------|
+]]>
+		<select>
+			<option default="true"><note>default constraint name</note></option>
+			<option><text>CONSTRAINT</text><clauseReference name="constraint-name"/></option>
+		</select>
+		<text>FOREIGN KEY</text>
+		<br/>
+		<text>(</text>
+		<repeatable>
+			<clauseReference name="column-name"/>
+		</repeatable>
+		<text>)</text>
+			<clauseReference name="references-clause"/>
+	</clause>
+	
+	<clause name="check-constraint" title="check constraint">
+<![CDATA[
+|--+-----------------------------+------------------------------>
+   '-CONSTRAINT--constraint-name-'   
+
+>--CHECK--(--| check-condition |--)----------------------------->
+
+>--| constraint-attributes |------------------------------------|
+]]>
+		<select>
+			<option default="true"><note>default constraint name</note></option>
+			<option><text>CONSTRAINT</text><clauseReference name="constraint-name"/></option>
+		</select>
+		<br/>
+		<text>CHECK (</text>
+		<clauseReference name="check-condition"/>
+		<text>)</text>
+		<br/>
+		<clauseReference name="constraint-attributes"/>
+	</clause>
+
+	<clause name="check-condition" title="check condition">
+<![CDATA[
+|--+-search-condition----------+--------------------------------|
+   '-| functional-dependency |-'   
+]]>
+		<select>
+			<option default="true"><clauseReference name="search-condition"/></option>
+			<option><clauseReference name="functional-dependency"/></option>
+		</select>
+	</clause>
+
+	<clause name="functional-dependency" title="functional dependency">
+<![CDATA[
+|--+-column-name-----------+--DETERMINED BY--+-column-name-----------+--|
+   |    .-,-----------.    |                 |    .-,-----------.    |   
+   |    V             |    |                 |    V             |    |   
+   '-(----column-name-+--)-'                 '-(----column-name-+--)-'   
+]]>
+		<select>
+			<option default="true"><clauseReference name="column-name"/></option>
+			<option>
+				<text>(</text>
+				<repeatable>
+					<clauseReference name="column-name"/>
+				</repeatable>
+				<text>)</text>
+			</option>
+		</select>
+		<text>DETERMINED BY</text>
+		<select>
+			<option default="true"><clauseReference name="column-name"/></option>
+			<option>
+				<text>(</text>
+				<repeatable>
+					<clauseReference name="column-name"/>
+				</repeatable>
+				<text>)</text>
+			</option>
+		</select>
+	</clause>
+
+	<clause name="typed-table-options" title="typed table options">
+<![CDATA[
+|--+---------------------------+--+------------------------+----|
+   +-HIERARCHY--hierarchy-name-+  '-| typed-element-list |-'   
+   '-| under-clause |----------'                               
+]]>
+		<select>
+			<option default="true"><note>no hierarchy</note></option>
+			<option>
+				<text>HIERARCHY</text>
+				<clauseReference name="hierarchy-name"/>
+			</option>
+			<option>
+				<clauseReference name="under-clause"/>
+			</option>
+		</select>
+		<select>
+			<option default="true"><note>no typed element</note></option>
+			<option>
+				<clauseReference name="typed-element-list"/>
+			</option>
+		</select>
+	</clause>
+
+	<clause name="under-clause" title="under-clause">
+<![CDATA[
+|--UNDER--supertable-name--INHERIT SELECT PRIVILEGES------------|
+]]>
+		<text>UNDER</text>
+		<clauseReference name="supertable-name"/>
+		<text>INHERIT SELECT PRIVILEGES</text>
+	</clause>
+
+	<clause name="typed-element-list" title="typed element list">
+<![CDATA[
+      .-,-----------------------------.      
+      V                               |      
+|--(----+-| OID-column-definition |-+-+--)----------------------|
+        +-| with-options |----------+        
+        +-| unique-constraint |-----+        
+        '-| check-constraint |------'        
+]]>
+		<text>(</text>
+		<repeatable>
+			<select>
+				<option default="true"><clauseReference name="OID-column-definition"/></option>
+				<option><clauseReference name="with-options"/></option>
+				<option><clauseReference name="unique-constraint"/></option>
+				<option><clauseReference name="check-constraint"/></option>
+			</select>
+		</repeatable>
+		<text>)</text>
+	</clause>
+
+	<clause name="OID-column-definition" title="OID column definition">
+<![CDATA[
+|--REF IS--OID-column-name--USER GENERATED----------------------|
+]]>
+		<text>REF IS OID</text>
+		<clauseReference name="column-name"/>
+		<text>USER GENERATED</text>
+	</clause>
+
+	<clause name="with-options" title="with options">
+<![CDATA[
+|--column-name--WITH OPTIONS--| column-options |----------------|
+]]>
+		<clauseReference name="column-name"/>
+		<text>WITH OPTIONS</text>
+		<clauseReference name="column-options"/>
+	</clause>
+
+	<clause name="as-result-table" title="as result table">
+<![CDATA[
+|--+-----------------------+--AS--(--fullselect--)-------------->
+   |    .-,-----------.    |                         
+   |    V             |    |                         
+   '-(----column-name-+--)-'                         
+
+>--WITH NO DATA-------------------------------------------------|
+]]>
+		<select>
+			<option default="true"><clauseReference name="column-name"/></option>
+			<option>
+				<text>(</text>
+				<repeatable>
+					<clauseReference name="column-name"/>
+				</repeatable>
+				<text>)</text>
+			</option>
+		</select>
+		<text>AS (</text>
+		<clauseReference name="fullSelect"/>
+		<text>)</text>
+		<br/>
+		<text>WITH NO DATA</text>
+	</clause>
+
+	<clause name="materialized-query-definition" title="materialized-query-definition">
+<![CDATA[
+|--+-----------------------+--AS--(--fullselect--)-------------->
+   |    .-,-----------.    |                         
+   |    V             |    |                         
+   '-(----column-name-+--)-'                         
+
+>--| refreshable-table-options |--------------------------------|
+]]>
+		<select>
+			<option default="true"><clauseReference name="column-name"/></option>
+			<option>
+				<text>(</text>
+				<repeatable>
+					<clauseReference name="column-name"/>
+				</repeatable>
+				<text>)</text>
+			</option>
+		</select>
+		<text>AS (</text>
+		<clauseReference name="fullSelect"/>
+		<text>)</text>
+		<br/>
+		<clauseReference name="refreshable-table-options"/>
+	</clause>
+
+	<clause name="copy-options" title="copy options">
+<![CDATA[
+|--●--+-------------------------------------+--●---------------->
+      |                .-COLUMN-.           |      
+      '-+-INCLUDING-+--+--------+--DEFAULTS-'      
+        '-EXCLUDING-'                              
+
+                         .-COLUMN ATTRIBUTES-.        
+   .-EXCLUDING IDENTITY--+-------------------+-.      
+>--+-------------------------------------------+--●-------------|
+   |                     .-COLUMN ATTRIBUTES-. |      
+   '-INCLUDING IDENTITY--+-------------------+-'      
+]]>
+		<select>
+			<option default="true"><note>no include/exclude</note></option>
+			<option>
+				<select>
+					<option default="true"><text>INCLUDING</text></option>
+					<option><text>EXCLUDING</text></option>
+				</select>
+				<select>
+					<option><text>COLUMN</text></option>
+					<option default="true"><note>COLUMN</note></option>
+				</select>
+				<text>DEFAULTS</text>
+			</option>
+		</select>
+		<br/>
+		<select>
+			<option>
+				<text>EXCLUDING IDENTITY</text>
+				<select>
+					<option><text>COLUMN ATTRIBUTES</text></option>
+					<option default="true"><note>COLUMN ATTRIBUTES</note></option>
+				</select>
+			</option>
+			<option default="true"><note>EXCLUDING IDENTITY</note></option>
+			<option>
+				<text>INCLUDING IDENTITY</text>
+				<select>
+					<option><text>COLUMN ATTRIBUTES</text></option>
+					<option default="true"><note>COLUMN ATTRIBUTES</note></option>
+				</select>
+			</option>
+		</select>
+	</clause>
+
+	<clause name="refreshable-table-options" title="refreshable table options">
+<![CDATA[
+|--●--DATA INITIALLY DEFERRED--●--REFRESH--+-DEFERRED--+--●----->
+                                           '-IMMEDIATE-'      
+
+   .-ENABLE QUERY OPTIMIZATION--.      
+>--+----------------------------+--●---------------------------->
+   '-DISABLE QUERY OPTIMIZATION-'      
+
+>--+-----------------------------------+--●---------------------|
+   '-MAINTAINED BY--+-SYSTEM---------+-'      
+                    +-USER-----------+        
+                    '-FEDERATED_TOOL-'        
+]]>
+		<text>DATA INITIALLY DEFERRED REFRESH</text>
+		<select>
+			<option default="true"><text>DEFERRED</text></option>
+			<option><text>IMMEDIATE</text></option>
+		</select>
+		<br/>
+		<select>
+			<option><text>ENABLE QUERY OPTIMIZATION</text></option>
+			<option default="true"><note>ENABLE QUERY OPTIMIZATION</note></option>
+			<option><text>DISABLE QUERY OPTIMIZATION</text></option>
+		</select>
+		<br/>
+		<select>
+			<option default="true"><note></note></option>
+			<option>
+				<select>
+					<option default="true"><text>SYSTEM</text></option>
+					<option><text>USER</text></option>
+					<option><text>FEDERATED_TOOL</text></option>
+				</select>
+			</option>
+		</select>
+	</clause>
+
+	<clause name="staging-table-definition" title="staging table definition">
+<![CDATA[
+|--+-------------------------------+--FOR--table-name2---------->
+   |    .-,-------------------.    |                     
+   |    V                     |    |                     
+   '-(----staging-column-name-+--)-'                     
+
+>--PROPAGATE IMMEDIATE------------------------------------------|
+]]>
+		<select>
+			<option default="true"><note></note></option>
+			<option>
+				<text>(</text>
+				<repeatable>
+					<clauseReference name="column-name"/>
+				</repeatable>
+				<text>)</text>
+			</option>
+		</select>
+		<text>FOR</text>
+		<clauseReference name="table-name"/>
+		<br/>
+		<text>PROPAGATE IMMEDIATE</text>
+	</clause>
+
+	<clause name="sequence-key-spec" title="sequence key spec">
+<![CDATA[
+      .-,-----------------------------------------------------------------------.      
+      V                                                        .-AT-.           |      
+|--(----column-name--+------------------------------+--ENDING--+----+--constant-+--)-->
+                     |           .-FROM-.           |                                  
+                     '-STARTING--+------+--constant-'                                  
+
+>--+-ALLOW OVERFLOW----+--+------------------+------------------|
+   '-DISALLOW OVERFLOW-'  '-PCTFREE--integer-'   
+]]>
+		<text>(</text>
+		<repeatable>
+			<clauseReference name="column-name"/>
+			<select>
+				<option default="true"><note></note></option>
+				<option>
+					<text>STARTING</text>
+					<select>
+						<option><text>FROM</text></option>
+						<option default="true"><note>FROM</note></option>
+					</select>
+					<clauseReference name="constant"/>
+				</option>
+			</select>
+			<text>ENDING</text>
+			<select>
+				<option><text>AT</text></option>
+				<option default="true"><note>AT</note></option>
+			</select>
+			<clauseReference name="constant"/>
+		</repeatable>
+		<text>)</text>
+		<select>
+			<option default="true"><text>ALLOW OVERFLOW</text></option>
+			<option><text>DISALLOW OVERFLOW</text></option>
+		</select>
+		<select>
+			<option default="true"><note>pctfree</note></option>
+			<option>
+				<text>PCTFREE</text>
+				<input type="int" size="3"/>
+			</option>
+		</select>
+	</clause>
+
+	<clause name="tablespace-clauses" title="tablespace clauses">
+<![CDATA[
+|--+---------------------------------------+--●----------------->
+   |     .-,---------------.               |      
+   |     V                 |  .-CYCLE----. |      
+   '-IN----tablespace-name-+--+----------+-'      
+                              '-NO CYCLE-'        
+
+>--+--------------------------------+--------------------------->
+   |                           (11) |   
+   '-INDEX IN--tablespace-name------'   
+
+>--+------------------------------+-----------------------------|
+   |          .-,---------------. |   
+   |          V                 | |   
+   '-LONG IN----tablespace-name-+-'   
+]]>
+		<select>
+			<option default="true"><note>tablespace</note></option>
+			<option>
+				<text>IN</text>
+				<repeatable>
+					<clauseReference name="tablespace-name"/>
+				</repeatable>
+				<select>
+					<option><text>CYCLE</text></option> 
+					<option default="true"><note>CYCLE</note></option>
+					<option><text>NO CYCLE</text></option> 
+				</select>
+			</option>
+		</select>
+		<br/>
+		<select>
+			<option default="true"><note>index</note></option>
+			<option>
+				<text>INDEX IN</text>
+				<clauseReference name="tablespace-name"/>
+			</option>
+		</select>
+		<br/>
+		<select>
+			<option default="true"><note>long</note></option>
+			<option>
+				<text>LONG IN</text>
+				<repeatable>
+					<clauseReference name="tablespace-name"/>
+				</repeatable>
+			</option>
+		</select>
+	</clause>
+
+	<clause name="distribution-clause" title="distribution clause">
+<![CDATA[
+                                 .-,-----------.        
+                    .-HASH-.     V             |        
+|--DISTRIBUTE BY--+-+------+--(----column-name-+--)-+-----------|
+                  '-REPLICATION---------------------'   
+]]>
+		<text>DISTRIBUTE BY</text>
+		<select>
+			<option default="true">
+				<select>
+					<option><text>HASH</text></option> 
+					<option default="true"><note>HASH</note></option>
+				</select>
+				<text>(</text>
+				<repeatable>
+					<clauseReference name="column-name"/>
+				</repeatable>
+				<text>)</text>
+			</option>
+			<option><text>REPLICATION</text></option>
+		</select>
+	</clause>
+
+	<clause name="partitioning-clause" title="partitioning clause">
+<![CDATA[
+                 .-RANGE-.                             
+|--PARTITION BY--+-------+--| range-partition-spec |------------|
+]]>
+		<text>PARTITION BY</text>
+		<select>
+			<option><text>RANGE</text></option> 
+			<option default="true"><note>RANGE</note></option> 
+		</select>
+		<clauseReference name="range-partition-spec"/>
+	</clause>
+
+	<clause name="range-partition-spec" title="range partition spec">
+<![CDATA[
+      .-,------------------------.      
+      V                          |      
+|--(----| partition-expression |-+--)--------------------------->
+
+      .-,---------------------.      
+      V                       |      
+>--(----| partition-element |-+--)------------------------------|
+]]>
+		<text>(</text>
+		<repeatable>
+			<clauseReference name="partition-expression"/>
+		</repeatable>
+		<text>)</text>
+		<br/>
+		<text>(</text>
+		<repeatable>
+			<clauseReference name="partition-element"/>
+		</repeatable>
+		<text>)</text>
+	</clause>
+
+	<clause name="partition-expression" title="partition expression">
+<![CDATA[
+                .-NULLS LAST--.   
+|--column-name--+-------------+---------------------------------|
+                '-NULLS FIRST-'   
+]]>
+		<clauseReference name="column-name"/>
+		<select>
+			<option><text>NULLS LAST</text></option> 
+			<option default="true"><note>NULLS LAST</note></option> 
+			<option><text>NULLS FIRST</text></option> 
+		</select>
+	</clause>
+
+	<clause name="partition-element" title="partition element">
+<![CDATA[
+|--+-+---------------------------+--| boundary-spec |--| partition-tablespace-options |-+--|
+   | '-PARTITION--partition-name-'                                                      |   
+   '-| boundary-spec |--EVERY--+-(--constant--+-------------------------+--)-+----------'   
+                               |              |                    (12) |    |              
+                               |              '-| duration-label |------'    |              
+                               '-constant--+-------------------------+-------'              
+                                           |                    (12) |                      
+                                           '-| duration-label |------'                      
+]]>
+		<select>
+			<option default="true">
+				<clauseReference name="boundary-spec"/>
+				<clauseReference name="partition-tablespace-options"/>
+			</option> 
+			<option><text>PARTITION</text><clauseReference name="partition-name"/></option> 
+			<option>
+				<clauseReference name="boundary-spec"/>
+				<text>EVERY</text>
+				<select>
+					<option default="true">
+						<text>(</text>
+						<clauseReference name="constant"/>
+						<select>
+							<option default="true"></option>
+							<option><clauseReference name="duration-label"/></option> 
+						</select>
+						<text>)</text>
+					</option> 
+					<option> 
+						<clauseReference name="constant"/>
+						<select>
+							<option default="true"></option>
+							<option><clauseReference name="duration-label"/></option> 
+						</select>
+					</option> 
+				</select>
+			</option> 
+		</select>
+	</clause>
+
+	<clause name="boundary-spec" title="boundary spec">
+<![CDATA[
+|--+-| starting-clause |-------| ending-clause |-+--------------|
+   '-| ending-clause |---------------------------'   
+]]>
+		<select>
+			<option default="true"><clauseReference name="starting-clause"/><clauseReference name="ending-clause"/></option> 
+			<option><clauseReference name="ending-clause"/></option> 
+		</select>
+	</clause>
+
+	<clause name="starting-clause" title="starting clause">
+<![CDATA[
+                            .-,------------.        
+             .-FROM-.       V              |        
+|--STARTING--+------+--+-(----+-constant-+-+--)-+--------------->
+                       |      +-MINVALUE-+      |   
+                       |      '-MAXVALUE-'      |   
+                       '-+-constant-+-----------'   
+                         +-MINVALUE-+               
+                         '-MAXVALUE-'               
+
+   .-INCLUSIVE-.   
+>--+-----------+------------------------------------------------|
+   '-EXCLUSIVE-'   
+]]>
+		<text>STARTING</text>
+		<select>
+			<option><text>FROM</text></option> 
+			<option default="true"><note>FROM</note></option> 
+		</select>
+		<select>
+			<option default="true">
+				<text>(</text>
+				<repeatable>
+					<select>
+						<option default="true"><clauseReference name="constant"/></option>
+						<option><text>MINVALUE</text></option> 
+						<option><text>MAXVALUE</text></option> 
+					</select>
+				</repeatable>
+				<text>)</text>
+			</option> 
+			<option>
+				<select>
+					<option default="true"><clauseReference name="constant"/></option>
+					<option><text>MINVALUE</text></option> 
+					<option><text>MAXVALUE</text></option> 
+				</select>
+			</option> 
+		</select>
+		<br/>
+		<select>
+			<option><text>INCLUSIVE</text></option> 
+			<option default="true"><note>INCLUSIVE</note></option> 
+			<option><text>EXCLUSIVE</text></option> 
+		</select>
+	</clause>
+
+	<clause name="ending-clause" title="ending clause">
+<![CDATA[
+                        .-,------------.                       
+           .-AT-.       V              |       .-INCLUSIVE-.   
+|--ENDING--+----+--+-(----+-constant-+-+--)-+--+-----------+----|
+                   |      +-MINVALUE-+      |  '-EXCLUSIVE-'   
+                   |      '-MAXVALUE-'      |                  
+                   '-+-constant-+-----------'                  
+                     +-MINVALUE-+                              
+                     '-MAXVALUE-'                              
+]]>
+		<text>ENDING</text>
+		<select>
+			<option><text>AT</text></option> 
+			<option default="true"><note>AT</note></option> 
+		</select>
+		<select>
+			<option default="true">
+				<text>(</text>
+				<repeatable>
+					<select>
+						<option default="true"><clauseReference name="constant"/></option>
+						<option><text>MINVALUE</text></option> 
+						<option><text>MAXVALUE</text></option> 
+					</select>
+				</repeatable>
+				<text>)</text>
+			</option> 
+			<option>
+				<select>
+					<option default="true"><clauseReference name="constant"/></option>
+					<option><text>MINVALUE</text></option> 
+					<option><text>MAXVALUE</text></option> 
+				</select>
+			</option> 
+		</select>
+		<select>
+			<option><text>INCLUSIVE</text></option> 
+			<option default="true"><note>INCLUSIVE</note></option> 
+			<option><text>EXCLUSIVE</text></option> 
+		</select>
+	</clause>
+
+	<clause name="partition-tablespace-options" title="partition tablespace options">
+<![CDATA[
+|--+---------------------+--+---------------------------+------->
+   '-IN--tablespace-name-'  '-INDEX IN--tablespace-name-'   
+
+>--+--------------------------+---------------------------------|
+   '-LONG IN--tablespace-name-'   
+]]>
+		<select>
+			<option default="true"><note>default tablespace</note></option> 
+			<option>
+				<text>IN</text>
+				<clauseReference name="tablespace-name"/>
+			</option>
+		</select>
+		<select>
+			<option default="true"><note>index</note></option> 
+			<option>
+				<text>INDEX IN</text>
+				<clauseReference name="tablespace-name"/>
+			</option>
+		</select>
+		<br/>
+		<select>
+			<option default="true"><note>long</note></option> 
+			<option>
+				<text>LONG IN</text>
+				<clauseReference name="tablespace-name"/>
+			</option>
+		</select>
+	</clause>
+
+</command>

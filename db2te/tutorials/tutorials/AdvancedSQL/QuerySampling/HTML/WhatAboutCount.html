@@ -1,0 +1,5 @@
+Any function that uses the records retrieved from the tablesample clause will
+  only have a percentage of the total table. For instance, using a BERNOULLI sampling of 
+  10% means that only 10% of the total table will be used for a function (or SELECT statement).
+  The results of a function will only apply to these sets of records, and not the total table
+  as one might normally expect.

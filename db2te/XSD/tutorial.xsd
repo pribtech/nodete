@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xa="menu.xsd" xmlns:xb="action.xsd">
+    <xs:include schemaLocation="menu.xsd"/>
+    <xs:include schemaLocation="action.xsd"/>
+    <xs:element name="tutorial">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="flowRestriction"/>
+                <xs:element name="closeAction" type="action"/>
+                <xs:element name="openAction" type="action"/>
+                <xs:element name="pageList">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="page" maxOccurs="unbounded" minOccurs="1">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="entryAction" type="action"/>
+                                        <xs:element name="exitAction" type="action"/>
+                                        <xs:element name="contentFile" type="xs:string"/>
+                                        <xs:element name="contentURL" type="xs:string"/>
+                                        <xs:element name="SQLFile" type="xs:string"/>
+                                        <xs:element name="SQLText" type="xs:string"/>
+                                        <xs:element name="HTMLSQLFile" type="xs:string"/>
+                                        <xs:element name="HTMLSQLText" type="xs:string"/>
+                                        <xs:element name="autoLoadLink" type="menu"/>
+                                        <xs:element name="pageTransitionsDescription" type="xs:string"/>
+                                        <xs:element name="loadActionScriptFile" type="xs:string"/>
+                                        <xs:element name="SQLExecutionOptions">
+                                            <xs:complexType>
+                                                <xs:attribute name="xml"/>
+                                                <xs:attribute name="clob"/>
+                                                <xs:attribute name="xmlinline"/>
+                                                <xs:attribute name="clobinline"/>
+                                                <xs:attribute name="blob"/>
+                                                <xs:attribute name="dbclob"/>
+                                                <xs:attribute name="cursor"/>
+                                                <xs:attribute name="tremChar"/>
+                                                <xs:attribute name="commitPerStmt"/>
+                                                <xs:attribute name="numRowReturned"/>
+                                                <xs:attribute name="scriptMode"/>
+                                                <xs:attribute name="shellMaxRunTime"/>
+                                                <xs:attribute name="shellTermChar"/>
+                                                <xs:attribute name="saveResultIn"/>
+                                            </xs:complexType>
+                                        </xs:element>                                        
+                                    </xs:sequence>
+                                    <xs:attribute name="name" use="required" type="xs:string"/>
+                                    <xs:attribute name="type" use="required" type="xs:string"/>
+                                    <xs:attribute name="closeWindowsInRightStage"/>
+                                    <xs:attribute name="clearAdhocResults"/>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+            <xs:attribute name="name" use="required" type="xs:string"/>
+            <xs:attribute name="useLongAdhoc"/>
+            <xs:attribute name="autoCloseWindowsInRightStage"/>
+            <xs:attribute name="autoClearAdhocResults" use="optional"/>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

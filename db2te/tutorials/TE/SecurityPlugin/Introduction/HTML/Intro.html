@@ -1,0 +1,11 @@
+<H3>What Does the Db2auth Plug-in Do?</H3><hr>
+DB2 is designed to separate authentication from authorization, and relies on a third party authentication mechanism.
+This could pose as an inconvenience when migrating from other databases such as MySQL, which stores authentication information within the database.
+The db2auth plug-in, written by Gene Kligerman, allows for authentication to DB2 without such external sources, by providing the means to store the information directly in the database.
+It also allows for external modules, such as the Technology Explorer, to control users, groups and memberships.
+<br><br><a href="http://www.ibm.com/developerworks/data/library/techarticle/dm-0802kligerman/" target="_blank">To read Gene Kligerman's article on the db2auth plug-in, click here...</a>
+</p>
+<p>It should be noted however, that this limits the security initially provided by DB2.
+Users of this plug-in should consider the degree of security their database needs prior to installing the plug-in, or should only use this as a temporary migration step from other database software.
+</p>
+

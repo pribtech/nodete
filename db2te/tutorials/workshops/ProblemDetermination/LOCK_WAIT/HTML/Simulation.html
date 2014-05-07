@@ -1,0 +1,25 @@
+<p> 
+	On the right, you will see the WMD panel (bottom) and the sever monitoring dashboard panel (top). The dashboard panel shows a real-time view of the LOCK_WAITS and LOCK_WAIT_TIME_PERCENT values.
+</p>
+<p>
+  In this step, we will use the WMD to simulate a problematic workload that would trigger the lock wait problem. Before we do that, we will first run a typical workload to get some baseline metrics. Follow these steps:
+  <ol>
+    <li>Select "Control" from the list of available workloads.</li>
+    <li>Start the workload by clicking the green button.</li>
+    <li>Increase the number of simultaneous gradually in steps of 10 to observe the changes in the metric values.</li>
+    <li>Stop the workload by press the red button.</li>
+  </ol>
+</p>
+<p>
+  Now that you have an idea of how the metric values respond to a typical workload, let's run the problematic workload to see the differences. The workload uses the same query in step 4 to update the counter value for a particular page. Follow these steps:
+  <ol>
+    <li>Select "Lock Waits" from the list of available workloads.</li> 
+    <li>Start the workload by clicking the green button.</li> 
+    <li>Increase the number of simultaneous gradually in steps of 5 to observe the changes in the metric values.</li>
+    <li>Observe that the values of the two monitor increases as you increase the number of connections.</li> 
+    <li>Stop the workload by pressing the red button.</li> 
+  </ol> 
+</p> 
+<p> 
+  When you are running the problematic workload, you should be able to observe that both LOCK_WAITS and LOCK_WAIT_TIME_PERCENT increases rapidly as the number of connections increases.
+</p> 

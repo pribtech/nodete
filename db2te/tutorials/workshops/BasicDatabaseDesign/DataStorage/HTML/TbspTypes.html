@@ -1,0 +1,18 @@
+<p>This page describes the different types of tablespaces</p>
+
+<H2><B>Problem Description</B></H2><HR>
+<p>With the knowledge of different storage object types, its important to determine the type of space to allocate to store the data.</p>
+
+<H2><B>Operation</B></H2><HR>
+<p>Different <b>tablespaces</b> for specific storage requirements are present in DB2. An appropriate tablespace design is chosen for best database performance.</p>
+
+<H2><B>Solution</B></H2><HR>
+<p>Table spaces are the logical layer between the database and the tables stored in that database. Table spaces are created within a database and tables are created within table spaces. DB2 supports three kinds of table spaces :
+<ol>
+<li><b><u>System Managed Space (SMS):</u></b> Here, the operating system's file system manager allocates and manages the space. SMS table spaces require very little maintenance. However, SMS table spaces offer
+fewer optimization options and may not perform as well as DMS table spaces</li>
+<li><b><u>Database Managed Space (DMS):</u></b> Here, the database manager controls the storage space. This table space is, essentially, an implementation of a special purpose file system designed to best meet the needs of the
+database manager</li>
+<li><b><u>Automatic Storage With DMS:</u></b>Automated storage is not really a separate type of table space, but a different way of handling DMS storage. DMS containers require more maintenance and Automatic Storage was introduced as a way of simplifying space management</li>
+
+

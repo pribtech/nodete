@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tutorial name="Leveraging TE Reports" autoCloseWindowsInRightStage="true" autoClearAdhocResults="true">
+	
+	<globalCodeHighlightOptions  highlightCode="true">
+	</globalCodeHighlightOptions>	
+	<closeAction/>
+	<openAction />
+	<pageList>
+
+		<page name="Introduction" type="general">
+			<contentFile>
+				Introduction.html
+			</contentFile>
+			<autoLoadLink>
+				<pageWindow target="informationWindow">
+					<panel name="main" PrimaryContainer="true">
+					<raw><![CDATA[<div id='tutorial name'><Ttile of </div><img src='?BASE_DIRECTORY?/Others/Overview.PNG'/>]]></raw>
+					</panel>
+				</pageWindow>
+			</autoLoadLink>
+		</page>
+
+		<page name="Views in Technology Explorer" type="general">
+			<contentFile>
+				ViewsInTechnologyExplorer.html
+			</contentFile>
+			<autoLoadLink>
+				<pageWindow target="informationWindow" raiseToTop="y">
+					<panelHeaders refreshEnabled="true"/>
+					<splitPane direction="h">
+						<topPane>
+							<panel name="DBM">
+								<panelHeaders refreshEnabled="true"/>
+									<link type="action" target="_self" window="_self" connectionRequired="y">
+										<parameterList>
+											<parameter name="table">Performance/monSVConnDynamic</parameter>
+											<parameter name="action">list_table</parameter>
+										</parameterList>
+									</link>				
+								</panel>
+						</topPane>
+						<bottomPane>
+							<panel name="detail"/>
+						</bottomPane>
+					</splitPane>
+				</pageWindow>
+			</autoLoadLink>
+		</page>
+				
+		<page name="Sample AdHoc SQL" type="general">
+			<contentFile>
+				SampleAdHocSQL.html
+			</contentFile>
+			<SQLFile>
+				SampleAdHocSQL.sql
+			</SQLFile>
+		</page>
+		
+
+		<page name="Run Sample Workload" type="general">
+			<contentFile>
+				RunSampleWorkload.html
+			</contentFile>
+			<SQLExecutionOptions commitPerStmt="true" />
+			<SQLFile>
+				RunSampleWorkload.sql
+			</SQLFile>
+		</page>
+		
+		<page name="Review Results" type="general">
+			<contentFile>
+				ReviewResults.html
+			</contentFile>
+			<SQLFile>
+				SampleAdHocSQL.sql
+			</SQLFile>
+		</page>
+		
+		<page name="View XML Profile for sample SQL" type="general">
+			<contentFile>
+				viewXMLProfile.html
+			</contentFile>
+			<SQLFile>
+				SampleAdHocSQL.sql
+			</SQLFile>
+		</page>
+		
+		
+		
+		<page name="Create Menu in TE" type="general">
+			<contentFile>
+				CreateMenuInTE.html
+			</contentFile>
+			<autoLoadLink>
+				<pageWindow target="informationWindow">
+					<panel name="main" PrimaryContainer="true">
+						<URL>?BASE_DIRECTORY?/Others/sampleMenuProfile.html</URL>
+					</panel>
+				</pageWindow>
+			</autoLoadLink>
+		</page>
+		
+		
+		<page name="Dynamic Columns" type="general">
+			<contentFile>
+				DynamicColumns.html
+			</contentFile>
+			<autoLoadLink>
+				<pageWindow target="informationWindow">
+					<panel name="main" PrimaryContainer="true">
+						<URL>?BASE_DIRECTORY?/Others/testTabDef.html</URL>
+					</panel>
+				</pageWindow>
+			</autoLoadLink>
+		</page>
+		
+		
+		<page name="Dynamic Columns in action" type="general">
+			<contentFile>
+				ViewWithDynamicColumns.html
+			</contentFile>
+			<autoLoadLink>
+				<pageWindow target="informationWindow" raiseToTop="y">
+					<panelHeaders refreshEnabled="true"/>
+					<splitPane direction="h">
+						<topPane>
+							<panel name="DBM">
+								<panelHeaders refreshEnabled="true"/>
+									<link type="action" target="_self" window="_self" connectionRequired="y">
+										<parameterList>
+											<parameter name="table">Performance/monSVConnDynamic</parameter>
+											<parameter name="action">list_table</parameter>
+										</parameterList>
+									</link>				
+								</panel>
+						</topPane>
+						<bottomPane>
+							<panel name="detail"/>
+						</bottomPane>
+					</splitPane>
+				</pageWindow>
+			</autoLoadLink>
+		</page>
+		
+		<page name="Creating Dashboards" type="general">
+			<contentFile>
+				CreatingDashboards.html
+			</contentFile>
+			<autoLoadLink>
+				<pageWindow target="informationWindow">
+					<panel name="main" PrimaryContainer="true">
+					<raw><![CDATA[<div id='tutorial name'><Ttile of </div><img src='?BASE_DIRECTORY?/Others/SampleDashboard.PNG'/>]]></raw>
+					</panel>
+				</pageWindow>
+			</autoLoadLink>
+		</page>
+
+	</pageList>
+</tutorial>

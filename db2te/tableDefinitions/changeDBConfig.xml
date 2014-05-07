@@ -1,0 +1,37 @@
+<!--
+  Copyright IBM Corp. 2007 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<table name="changeConfig">
+	<sql_name>SYSIBMADM.DBCFG</sql_name>
+    <singular_name>Change Database Configuration Parameter</singular_name>
+    <plural_name>Change Database Configuration Parameters</plural_name>
+    <description></description>
+	
+	<disableEdit/>
+	<output>
+		<type name="DDL" destination="" title="" generator=""/>
+	</output>
+    <order_by_index name="name" direction="A"/>
+		<column name="parameter">
+			<c_sql_name>NAME</c_sql_name>
+			<c_title>Parameter</c_title>
+			<c_pkey>p</c_pkey>			
+		</column>
+		<column name="value">
+			<c_sql_name>VALUE</c_sql_name>
+			<c_title>Value</c_title>
+			<c_drill>n</c_drill>
+		</column> 
+</table>

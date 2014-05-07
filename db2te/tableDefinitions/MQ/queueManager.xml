@@ -1,0 +1,476 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2013 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+<table name="queueManager">
+	<sqlName>queueManager</sqlName>
+	<singularName>Queue Manager</singularName>
+	<pluralName>Queue Manager</pluralName>
+	<inlinequery>
+<![CDATA[
+MQCMD_INQUIRE_Q_MGR
+]]>
+	</inlinequery>
+	<description></description>
+	<displayColumns>
+		<col type="column" name="MQCA_Q_MGR_NAME"/>
+		<col type="column" name="MQIA_ACCOUNTING_CONN_OVERRIDE"/>
+		<col type="column" name="MQIA_ACCOUNTING_INTERVAL"/>
+		<col type="column" name="MQIA_ACCOUNTING_MQI"/>
+		<col type="column" name="MQIA_ACCOUNTING_Q"/>
+		<col type="column" name="MQIA_ACTIVITY_RECORDING"/>
+		<col type="column" name="MQIA_ACTIVITY_CONN_OVERRIDE"/>
+		<col type="column" name="MQIA_ACTIVITY_TRACE"/>
+		<col type="column" name="MQCA_ALTERATION_DATE"/>
+		<col type="column" name="MQCA_ALTERATION_TIME"/>
+		<col type="column" name="MQIA_AUTHORITY_EVENT"/>
+		<col type="column" name="MQIA_CODED_CHAR_SET_ID"/>
+		<col type="column" name="MQIA_CHANNEL_AUTO_DEF"/>
+		<col type="column" name="MQIA_CHANNEL_AUTO_DEF_EVENT"/>
+		<col type="column" name="MQCA_CHANNEL_AUTO_DEF_EXIT"/>
+		<col type="column" name="MQIA_CHANNEL_EVENT"/>
+		<col type="column" name="MQIA_CHLAUTH_RECORDS"/>
+		<col type="column" name="MQCA_CLUSTER_WORKLOAD_DATA"/>
+		<col type="column" name="MQCA_CLUSTER_WORKLOAD_EXIT"/>
+		<col type="column" name="MQIA_CLUSTER_WORKLOAD_LENGTH"/>
+		<col type="column" name="MQIA_CLWL_MRU_CHANNELS"/>
+		<col type="column" name="MQIA_CLWL_USEQ"/>
+		<col type="column" name="MQIA_COMMAND_EVENT"/>
+		<col type="column" name="MQIA_COMMAND_LEVEL"/>
+		<col type="column" name="MQCA_COMMAND_INPUT_Q_NAME"/>
+		<col type="column" name="MQIA_CONFIGURATION_EVENT"/>
+		<col type="column" name="MQCA_CREATION_DATE"/>
+		<col type="column" name="MQCA_CREATION_TIME"/>
+		<col type="column" name="MQCA_CUSTOM"/>
+		<col type="column" name="MQCA_DEAD_LETTER_Q_NAME"/>
+		<col type="column" name="MQCA_DEF_XMIT_Q_NAME"/>
+		<col type="column" name="MQCA_Q_MGR_DESC"/>
+		<col type="column" name="MQIA_DIST_LISTS"/>
+		<col type="column" name="MQIA_INHIBIT_EVENT"/>
+		<col type="column" name="MQIA_IP_ADDRESS_VERSION"/>
+		<col type="column" name="MQIA_LOCAL_EVENT"/>
+		<col type="column" name="MQIA_LOGGER_EVENT"/>
+		<col type="column" name="MQIA_MSG_MARK_BROWSE_INTERVAL"/>
+		<col type="column" name="MQIA_MAX_HANDLES"/>
+		<col type="column" name="MQIA_MAX_MSG_LENGTH"/>
+		<col type="column" name="MQIA_MAX_PROPERTIES_LENGTH"/>
+		<col type="column" name="MQIA_MAX_PRIORITY"/>
+		<col type="column" name="MQIA_MAX_UNCOMMITTED_MSGS"/>
+		<col type="column" name="MQIA_MONITORING_AUTO_CLUSSDR"/>
+		<col type="column" name="MQIA_MONITORING_CHANNEL"/>
+		<col type="column" name="MQIA_MONITORING_Q"/>
+		<col type="column" name="MQCA_PARENT"/>
+		<col type="column" name="MQIA_PERFORMANCE_EVENT"/>
+		<col type="column" name="MQIA_PLATFORM"/>
+		<col type="column" name="MQIA_PUBSUB_MODE"/>
+		<col type="column" name="MQIA_PUBSUB_CLUSTER"/>
+		<col type="column" name="MQIA_PUBSUB_NP_MSG"/>
+		<col type="column" name="MQIA_PUBSUB_NP_RESP"/>
+		<col type="column" name="MQIA_PUBSUB_MAXMSG_RETRY_COUNT"/>
+		<col type="column" name="MQIA_PUBSUB_SYNC_PT"/>
+		<col type="column" name="MQCA_Q_MGR_IDENTIFIER"/>
+		<col type="column" name="MQIA_REMOTE_EVENT"/>
+		<col type="column" name="MQCA_REPOSITORY_NAME"/>
+		<col type="column" name="MQCA_REPOSITORY_NAMELIST"/>
+		<col type="column" name="MQIA_TRACE_ROUTE_RECORDING"/>
+		<col type="column" name="MQIA_CHINIT_CONTROL"/>
+		<col type="column" name="MQIA_CMD_SERVER_CONTROL"/>
+		<col type="column" name="MQCA_SSL_CRL_NAMELIST"/>
+		<col type="column" name="MQCA_SSL_CRYPTO_HARDWARE"/>
+		<col type="column" name="MQIA_SSL_EVENT"/>
+		<col type="column" name="MQIA_SSL_FIPS_REQUIRED"/>
+		<col type="column" name="MQCA_SSL_KEY_REPOSITORY"/>
+		<col type="column" name="MQIA_SSL_RESET_COUNT"/>
+		<col type="column" name="MQIA_STATISTICS_AUTO_CLUSSDR"/>
+		<col type="column" name="MQIA_STATISTICS_CHANNEL"/>
+		<col type="column" name="MQIA_STATISTICS_INTERVAL"/>
+		<col type="column" name="MQIA_STATISTICS_MQI"/>
+		<col type="column" name="MQIA_STATISTICS_Q"/>
+		<col type="column" name="MQIA_START_STOP_EVENT"/>
+		<col type="column" name="MQIA_SUITE_B_STRENGTH"/>
+		<col type="column" name="MQIA_SYNCPOINT"/>
+		<col type="column" name="MQIA_TREE_LIFE_TIME"/>
+		<col type="column" name="MQIA_TRIGGER_INTERVAL"/>
+		<col type="column" name="MQCA_VERSION"/>
+		<col type="column" name="MQIA_XR_CAPABILITY"/>
+	</displayColumns>
+	<column name="MQCA_Q_MGR_NAME">
+		<sqlName>MQCA_Q_MGR_NAME</sqlName>
+		<title>Name</title>
+	</column>
+	<column name="MQIA_ACCOUNTING_CONN_OVERRIDE">
+		<sqlName>MQIA_ACCOUNTING_CONN_OVERRIDE</sqlName>
+		<title>Accounting Conn Override</title>
+	</column>
+	<column name="MQIA_ACCOUNTING_INTERVAL">
+		<sqlName>MQIA_ACCOUNTING_INTERVAL</sqlName>
+		<title>Accounting Interval</title>
+		<type>n</type>
+	</column>
+	<column name="MQIA_ACCOUNTING_MQI">
+		<sqlName>MQIA_ACCOUNTING_MQI</sqlName>
+		<title>Accounting MQI</title>
+		<type>n</type>
+	</column>
+	<column name="MQIA_ACCOUNTING_Q">
+		<sqlName>MQIA_ACCOUNTING_Q</sqlName>
+		<title>Accounting Q</title>
+	</column>
+	<column name="MQIA_ACTIVITY_RECORDING">
+		<sqlName>MQIA_ACTIVITY_RECORDING</sqlName>
+		<title>Activity Recording</title>
+		<type>n</type>
+	</column>
+	<column name="MQIA_ACTIVITY_CONN_OVERRIDE">
+		<sqlName>MQIA_ACTIVITY_CONN_OVERRIDE</sqlName>
+		<title>Activity Conn Override</title>
+		<type>n</type>
+	</column>
+	<column name="MQIA_ACTIVITY_TRACE">
+		<sqlName>MQIA_ACTIVITY_TRACE</sqlName>
+		<title>Activity Trace</title>
+		<type>n</type>
+	</column>
+	<column name="MQCA_ALTERATION_DATE">
+		<sqlName>MQCA_ALTERATION_DATE</sqlName>
+		<title>Alteration Date</title>
+	</column>
+	<column name="MQCA_ALTERATION_TIME">
+		<sqlName>MQCA_ALTERATION_TIME</sqlName>
+		<title>Alteration Time</title>
+	</column>
+	<column name="MQIA_AUTHORITY_EVENT">
+		<sqlName>MQIA_AUTHORITY_EVENT</sqlName>
+		<title>Authority Event</title>
+	</column>
+	<column name="MQIA_CODED_CHAR_SET_ID">
+		<sqlName>MQIA_CODED_CHAR_SET_ID</sqlName>
+		<title>Coded Char Set Id</title>
+		<type>n</type>
+	</column>
+	<column name="MQIA_CHANNEL_AUTO_DEF">
+		<sqlName>MQIA_CHANNEL_AUTO_DEF</sqlName>
+		<title>Channel Auto Def</title>
+		<type>n</type>
+	</column>
+	<column name="MQIA_CHANNEL_AUTO_DEF_EVENT">
+		<sqlName>MQIA_CHANNEL_AUTO_DEF_EVENT</sqlName>
+		<title>Channel Auto Def Event</title>
+		<type>n</type>
+	</column>
+	<column name="MQCA_CHANNEL_AUTO_DEF_EXIT">
+		<sqlName>MQCA_CHANNEL_AUTO_DEF_EXIT</sqlName>
+		<title>Channel Auto Def Exit</title>
+	</column>
+	<column name="MQIA_CHANNEL_EVENT">
+		<sqlName>MQIA_CHANNEL_EVENT</sqlName>
+		<title>Channel Event</title>
+		<type>n</type>
+	</column>
+	<column name="MQIA_CHLAUTH_RECORDS">
+		<sqlName>MQIA_CHLAUTH_RECORDS</sqlName>
+		<title>Chl Auth Records</title>
+		<type>n</type>
+	</column>
+	<column name="MQCA_CLUSTER_WORKLOAD_DATA">
+		<sqlName>MQCA_CLUSTER_WORKLOAD_DATA</sqlName>
+		<title>Cluster Workload Data</title>
+	</column>
+	<column name="MQCA_CLUSTER_WORKLOAD_EXIT">
+		<sqlName>MQCA_CLUSTER_WORKLOAD_EXIT</sqlName>
+		<title>Cluster Workload Exit</title>
+	</column>
+	<column name="MQIA_CLUSTER_WORKLOAD_LENGTH">
+		<sqlName>MQIA_CLUSTER_WORKLOAD_LENGTH</sqlName>
+		<title>Cluster Workload Length</title>
+	</column>
+	<column name="MQIA_CLWL_MRU_CHANNELS">
+		<sqlName>MQIA_CLWL_MRU_CHANNELS</sqlName>
+		<title>CLWL MRU Channels</title>
+	</column>
+	<column name="MQIA_CLWL_USEQ">
+		<sqlName>MQIA_CLWL_USEQ</sqlName>
+		<title>CLWL USeq</title>
+		<type>n</type>
+	</column>
+	<column name="MQIA_COMMAND_EVENT">
+		<sqlName>MQIA_COMMAND_EVENT</sqlName>
+		<title>Command Event</title>
+		<type>n</type>
+	</column>
+	<column name="MQIA_COMMAND_LEVEL">
+		<sqlName>MQIA_COMMAND_LEVEL</sqlName>
+		<title>Command Level</title>
+		<type>n</type>
+	</column>
+	<column name="MQCA_COMMAND_INPUT_Q_NAME">
+		<sqlName>MQCA_COMMAND_INPUT_Q_NAME</sqlName>
+		<title>Command Input Q Name</title>
+	</column>
+	<column name="MQIA_CONFIGURATION_EVENT">
+		<sqlName>MQIA_CONFIGURATION_EVENT</sqlName>
+		<title>Configuration Event</title>
+		<type>n</type>
+	</column>
+	<column name="MQCA_CREATION_DATE">
+		<sqlName>MQCA_CREATION_DATE</sqlName>
+		<title>Creation Date</title>
+	</column>
+	<column name="MQCA_CREATION_TIME">
+		<sqlName>MQCA_CREATION_TIME</sqlName>
+		<title>Creation Time</title>
+	</column>
+	<column name="MQCA_CUSTOM">
+		<sqlName>MQCA_CUSTOM</sqlName>
+		<title>Custom</title>
+	</column>
+	<column name="MQCA_DEAD_LETTER_Q_NAME">
+		<sqlName>MQCA_DEAD_LETTER_Q_NAME</sqlName>
+		<title>Dead Letter Q Name</title>
+	</column>
+	<column name="MQCA_DEF_XMIT_Q_NAME">
+		<sqlName>MQCA_DEF_XMIT_Q_NAME</sqlName>
+		<title>Def Xmit Q Name</title>
+	</column>
+	<column name="MQCA_Q_MGR_DESC">
+		<sqlName>MQCA_Q_MGR_DESC</sqlName>
+		<title>Description</title>
+	</column>
+	<column name="MQIA_DIST_LISTS">
+		<sqlName>MQIA_DIST_LISTS</sqlName>
+		<title>Dist Lists</title>
+	</column>
+	<column name="MQIA_INHIBIT_EVENT">
+		<sqlName>MQIA_INHIBIT_EVENT</sqlName>
+		<title>Inhibit Event</title>
+		<type>n</type>
+	</column>
+	<column name="MQIA_IP_ADDRESS_VERSION">
+		<sqlName>MQIA_IP_ADDRESS_VERSION</sqlName>
+		<title>Ip Address Version</title>
+		<type>n</type>
+	</column>
+	<column name="MQIA_LOCAL_EVENT">
+		<sqlName>MQIA_LOCAL_EVENT</sqlName>
+		<title>Local Event</title>
+		<type>n</type>
+	</column>
+	<column name="MQIA_LOGGER_EVENT">
+		<sqlName>MQIA_LOGGER_EVENT</sqlName>
+		<title>Logger Event</title>
+		<type>n</type>
+	</column>
+	<column name="MQIA_MSG_MARK_BROWSE_INTERVAL">
+		<sqlName>MQIA_MSG_MARK_BROWSE_INTERVAL</sqlName>
+		<title>Msg Mark Browse Interval</title>
+		<type>n</type>
+	</column>
+	<column name="MQIA_MAX_HANDLES">
+		<sqlName>MQIA_MAX_HANDLES</sqlName>
+		<title>Max Handles</title>
+		<type>n</type>
+	</column>
+	<column name="MQIA_MAX_MSG_LENGTH">
+		<sqlName>MQIA_MAX_MSG_LENGTH</sqlName>
+		<title>Max Msg Length</title>
+		<type>n</type>
+	</column>
+	<column name="MQIA_MAX_PROPERTIES_LENGTH">
+		<sqlName>MQIA_MAX_PROPERTIES_LENGTH</sqlName>
+		<title>Max Properties Length</title>
+		<type>n</type>
+	</column>
+	<column name="MQIA_MAX_PRIORITY">
+		<sqlName>MQIA_MAX_PRIORITY</sqlName>
+		<title>Max Priority</title>
+		<type>n</type>
+	</column>
+	<column name="MQIA_MAX_UNCOMMITTED_MSGS">
+		<sqlName>MQIA_MAX_UNCOMMITTED_MSGS</sqlName>
+		<title>Max Uncommitted Msgs</title>
+		<type>n</type>
+	</column>
+	<column name="MQIA_MONITORING_AUTO_CLUSSDR">
+		<sqlName>MQIA_MONITORING_AUTO_CLUSSDR</sqlName>
+		<title>Monitoring Auto Clussdr</title>
+		<type>n</type>
+	</column>
+	<column name="MQIA_MONITORING_CHANNEL">
+		<sqlName>MQIA_MONITORING_CHANNEL</sqlName>
+		<title>Monitoring Channel</title>
+	</column>
+	<column name="MQIA_MONITORING_Q">
+		<sqlName>MQIA_MONITORING_Q</sqlName>
+		<title>Monitoring Q</title>
+	</column>
+	<column name="MQCA_PARENT">
+		<sqlName>MQCA_PARENT</sqlName>
+		<title>Parent</title>
+		<type>n</type>
+	</column>
+	<column name="MQIA_PERFORMANCE_EVENT">
+		<sqlName>MQIA_PERFORMANCE_EVENT</sqlName>
+		<title>Performance Event</title>
+		<type>n</type>
+	</column>
+	<column name="MQIA_PLATFORM">
+		<sqlName>MQIA_PLATFORM</sqlName>
+		<title>Platform</title>
+	</column>
+	<column name="MQIA_PUBSUB_MODE">
+		<sqlName>MQIA_PUBSUB_MODE</sqlName>
+		<title>Pubsub Mode</title>
+		<type>n</type>
+	</column>
+	<column name="MQIA_PUBSUB_CLUSTER">
+		<sqlName>MQIA_PUBSUB_CLUSTER</sqlName>
+		<title>Pubsub Cluster</title>
+	</column>
+	<column name="MQIA_PUBSUB_NP_MSG">
+		<sqlName>MQIA_PUBSUB_NP_MSG</sqlName>
+		<title>Pubsub NP Msg</title>
+	</column>
+	<column name="MQIA_PUBSUB_NP_RESP">
+		<sqlName>MQIA_PUBSUB_NP_RESP</sqlName>
+		<title>Pubsub NP Resp</title>
+		<type>n</type>
+	</column>
+	<column name="MQIA_PUBSUB_MAXMSG_RETRY_COUNT">
+		<sqlName>MQIA_PUBSUB_MAXMSG_RETRY_COUNT</sqlName>
+		<title>Pubsub Max Msg Retry Count</title>
+		<type>n</type>
+	</column>
+	<column name="MQIA_PUBSUB_SYNC_PT">
+		<sqlName>MQIA_PUBSUB_SYNC_PT</sqlName>
+		<title>Pubsub Sync Pt</title>
+	</column>
+	<column name="MQCA_Q_MGR_IDENTIFIER">
+		<sqlName>MQCA_Q_MGR_IDENTIFIER</sqlName>
+		<title>Q Mgr Identifier</title>
+	</column>
+	<column name="MQIA_REMOTE_EVENT">
+		<sqlName>MQIA_REMOTE_EVENT</sqlName>
+		<title>Remote Event</title>
+		<type>n</type>
+	</column>
+	<column name="MQCA_REPOSITORY_NAME">
+		<sqlName>MQCA_REPOSITORY_NAME</sqlName>
+		<title>Repository Name</title>
+	</column>
+	<column name="MQCA_REPOSITORY_NAMELIST">
+		<sqlName>MQCA_REPOSITORY_NAMELIST</sqlName>
+		<title>Repository Namelist</title>
+	</column>
+	<column name="MQIA_TRACE_ROUTE_RECORDING">
+		<sqlName>MQIA_TRACE_ROUTE_RECORDING</sqlName>
+		<title>Trace Route Recording</title>
+		<type>n</type>
+	</column>
+	<column name="MQIA_CHINIT_CONTROL">
+		<sqlName>MQIA_CHINIT_CONTROL</sqlName>
+		<title>Chl Init Control</title>
+		<type>n</type>
+	</column>
+	<column name="MQIA_CMD_SERVER_CONTROL">
+		<sqlName>MQIA_CMD_SERVER_CONTROL</sqlName>
+		<title>Cmd Server Control</title>
+		<type>n</type>
+	</column>
+	<column name="MQCA_SSL_CRL_NAMELIST">
+		<sqlName>MQCA_SSL_CRL_NAMELIST</sqlName>
+		<title>ssl CRL Namelist</title>
+	</column>
+	<column name="MQCA_SSL_CRYPTO_HARDWARE">
+		<sqlName>MQCA_SSL_CRYPTO_HARDWARE</sqlName>
+		<title>Ssl Crypto Hardware</title>
+	</column>
+	<column name="MQIA_SSL_EVENT">
+		<sqlName>MQIA_SSL_EVENT</sqlName>
+		<title>ssl Event</title>
+		<type>n</type>
+	</column>
+	<column name="MQIA_SSL_FIPS_REQUIRED">
+		<sqlName>MQIA_SSL_FIPS_REQUIRED</sqlName>
+		<title>ssl FIPS Required</title>
+		<type>n</type>
+	</column>
+	<column name="MQCA_SSL_KEY_REPOSITORY">
+		<sqlName>MQCA_SSL_KEY_REPOSITORY</sqlName>
+		<title>ssl Key Repository</title>
+	</column>
+	<column name="MQIA_SSL_RESET_COUNT">
+		<sqlName>MQIA_SSL_RESET_COUNT</sqlName>
+		<title>ssl Reset Count</title>
+		<type>n</type>
+	</column>
+	<column name="MQIA_STATISTICS_AUTO_CLUSSDR">
+		<sqlName>MQIA_STATISTICS_AUTO_CLUSSDR</sqlName>
+		<title>Statistics Auto Clussdr</title>
+		<type>n</type>
+	</column>
+	<column name="MQIA_STATISTICS_CHANNEL">
+		<sqlName>MQIA_STATISTICS_CHANNEL</sqlName>
+		<title>Statistics Channel</title>
+	</column>
+	<column name="MQIA_STATISTICS_INTERVAL">
+		<sqlName>MQIA_STATISTICS_INTERVAL</sqlName>
+		<title>Statistics Interval</title>
+		<type>n</type>
+	</column>
+	<column name="MQIA_STATISTICS_MQI">
+		<sqlName>MQIA_STATISTICS_MQI</sqlName>
+		<title>Statistics MQI</title>
+		<type>n</type>
+	</column>
+	<column name="MQIA_STATISTICS_Q">
+		<sqlName>MQIA_STATISTICS_Q</sqlName>
+		<title>Statistics Q</title>
+	</column>
+	<column name="MQIA_START_STOP_EVENT">
+		<sqlName>MQIA_START_STOP_EVENT</sqlName>
+		<title>Start Stop Event</title>
+		<type>n</type>
+	</column>
+	<column name="MQIA_SUITE_B_STRENGTH">
+		<sqlName>MQIA_SUITE_B_STRENGTH</sqlName>
+		<title>Suite B Strength</title>
+		<type>n</type>
+	</column>
+	<column name="MQIA_SYNCPOINT">
+		<sqlName>MQIA_SYNCPOINT</sqlName>
+		<title>Syncpoint</title>
+	</column>
+	<column name="MQIA_TREE_LIFE_TIME">
+		<sqlName>MQIA_TREE_LIFE_TIME</sqlName>
+		<title>Tree Life Time</title>
+		<type>n</type>
+	</column>
+	<column name="MQIA_TRIGGER_INTERVAL">
+		<sqlName>MQIA_TRIGGER_INTERVAL</sqlName>
+		<title>Trigger Interval</title>
+		<type>n</type>
+	</column>
+	<column name="MQCA_VERSION">
+		<sqlName>MQCA_VERSION</sqlName>
+		<title>Version</title>
+		<type>n</type>
+	</column>
+	<column name="MQIA_XR_CAPABILITY">
+		<sqlName>MQIA_XR_CAPABILITY</sqlName>
+		<title>XR Capability</title>
+		<type>n</type>
+	</column>
+</table>

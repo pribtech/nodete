@@ -1,0 +1,36 @@
+<p>This tutorial introduces <b>indexes</b>, different types of indexes and demonstrates creation of such indexes and their performance impact. It highlights the best practices for creation of indexes.</p>
+
+<H2><B>Problem Description</B></H2><HR>
+<p>With data being distributed across different tables, efficient retrieval of such data is a challenge. Some concerns include :
+<ol>
+<li>High query processing time</li>
+<li>Increased I/O in full table scans</li>
+<li>Repeated sorting of data for each query</li>
+</ol>
+</p>
+
+<BR><H2><B>Operation</B></H2><HR>
+<p>In order to enable efficient data retrieval with minimal table scans hence improving query execution time, <b>indexes</b> are created on the tables.</p>
+
+<H2><B>Solution</B></H2><HR>
+<p>An index is a database object created on frequently accessed columns of a table. Indexes contain keys that point to the physical location of where the data is being stored. Indexes are used to:
+<ol>
+<li>Improve performance. In most cases, access to data is faster with an index</li>
+<li>Ensure uniqueness. A table with a unique index cannot have rows with identical keys</li>
+</ol>
+</p><br>
+
+</p>Indexes can be created using one or more columns of a table, providing the basis for both rapid random look ups and efficient access of ordered records. The disk space required to store the index is typically less than that required by the table since indexes usually contain only the key-fields according to which the table is to be arranged.</p>
+
+<p>There are different types of indexes that can be created for different purposes :
+<ol>
+<li>Unique and Non-Unique Indexes </li>
+<li>Composite Indexes</li>
+<li>Clustered and Non-clustered Indexes </li>
+<li>Bidirectional Indexes </li>
+<li>Partitioned and Non Partitioned Indexes </li>
+</ol>
+</p>
+
+
+

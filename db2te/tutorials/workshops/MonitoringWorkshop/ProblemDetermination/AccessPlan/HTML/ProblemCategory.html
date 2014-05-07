@@ -1,0 +1,27 @@
+<h2>Tutorial Flow:</h2><hr>
+<BR>
+<ul>
+<li class="sourceCopiedFrom">Determining the problem category</li>
+<li>Performing detailed diagnosis of the problem</li>
+<li>Identifying the scope of the SQL statements involved</li>
+</ul>
+<BR>
+<H2>Determining the problem category<HR></H2>
+<BR>
+<P align=justify>
+<a class="sourceAdd">As part of the initial diagnosis, the database administrator looks for familiar
+patterns of symptoms to categorize the problem at a high level. The database administrator 
+views the report to identify abnormal values. The database administrator focuses on key 
+indicators that can rule-in or rule-out common, general problems.</a>
+<BR>
+<H2>Few metrics that indicate some general problem categories<HR></H2>
+
+<BR>
+<ul>
+<li><B>TOTAL_CPU_TIME <I>(Higher than normal)</I></B> :: High processor usage is a good indicator that the slowdown is located within data server processing. The data server is working harder than normal to handle application requests.<BR></li><BR>
+<li><B>CLIENT_IDLE_WAIT_TIME <I>(Normal)</I></B> :: The slowdown is NOT located in the client.<BR></li><BR>
+<li><B>TOTAL_WAIT_TIME <I>(Normal)</I></B> :: Requests are NOT spending more time waiting for resources needed such as locks or for input and output.<BR></li><BR>
+<li><B>TOTAL_SECTION_PROC_TIME <I>(Higher than normal)</I></B> :: The cost of SQL statements (access plan sections) has increased.<BR></li><BR>
+</ul>
+<BR>
+<a class="sourceChange">From this evidence, the database administrator concludes that slowdown is localized in statement processing. </a>

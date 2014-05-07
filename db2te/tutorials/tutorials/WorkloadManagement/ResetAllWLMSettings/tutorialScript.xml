@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tutorial name="Reset all WLM Settings">
+	<FlowRestriction>forwardExploration</FlowRestriction>
+	<openAction />
+    <globalCodeHighlightOptions highlightCode = "true" />
+    <pageList>
+      
+    <page name="Reset all WLM Settings" type="last">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>ResetAllWLMSettings.html</contentFile>
+            <SQLFile>ResetAllWLMSettings.sql</SQLFile>
+            <SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar="#"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+        </page></pageList>
+</tutorial>

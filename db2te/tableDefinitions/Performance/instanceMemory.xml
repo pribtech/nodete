@@ -1,0 +1,111 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2010 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+<table name="instanceMemory">
+  <sql_name>INSTANCE_MEMORY_POOL</sql_name>
+  <inlinequery>
+<![CDATA[
+  SELECT DBPARTITIONNUM, DB_NAME, DECIMAL((POOL_CONFIG_SIZE/1024.0/1024.0),10,2) AS CONFIG_MB, DECIMAL((POOL_CUR_SIZE/1024.0/1024.0),10,2) AS CUR_MB, POOL_ID, POOL_SECONDARY_ID, DECIMAL((POOL_WATERMARK/1024.0/1024.0),10,2) AS HIGH_MB, SNAPSHOT_TIMESTAMP 
+  FROM table(SNAP_GET_DB_MEMORY_POOL(cast(null as varchar(128)),-1)) AS T
+]]>
+  </inlinequery>
+  <singular_name>Database Memory Pool</singular_name>
+  <plural_name>Database Memory Pools</plural_name>
+  <description>Each row represents a pool of memory 
+&lt;a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.admin.dbobj.doc/doc/c0005383.html?noframes=true');"&gt;allocated&lt;/a&gt; to the database.
+This list is generated from the &lt;a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.admin.dbobj.doc/doc/r0021983.html?noframes=true');"&gt;SNAPDB_MEMORY_POOL&lt;/a&gt; administration view.
+  </description>
+  <rows_per_page>50</rows_per_page>
+  <order_by_index name="pool_cur_size" direction="D"/>
+  <display_columns>
+    <col type="column" name="db_name"/>
+    <col type="column" name="pool_id"/>
+    <col type="column" name="pool_secondary_id"/>
+    <col type="column" name="pool_cur_size"/>
+    <col type="column" name="pool_cur_size_bar"/>    
+    <col type="column" name="pool_watermark"/>    
+    <col type="column" name="pool_watermark_size_bar"/>        
+    <col type="column" name="pool_config_size"/>
+  </display_columns>
+  <column name="dbpartitionnum">
+    <c_sql_name>DBPARTITIONNUM</c_sql_name>
+    <c_title>DB Partition Number</c_title>
+    <c_presentation>n</c_presentation>
+    <c_sort>n</c_sort>
+  </column>
+  <column name="db_name">
+    <c_sql_name>DB_NAME</c_sql_name>
+    <c_title>Database</c_title>
+    <c_presentation>s</c_presentation>
+    <c_sort>y</c_sort>
+  </column>
+  <column name="pool_config_size">
+    <c_sql_name>CONFIG_MB</c_sql_name>
+    <c_title>Configuration Size (MB)</c_title>
+    <c_presentation>n</c_presentation>
+    <c_sort>y</c_sort>
+  </column>
+  <column name="pool_cur_size_bar">
+    <c_sql_name>CUR_MB</c_sql_name>
+    <c_title>Current Percent of Total</c_title>
+	<c_presentation>bg</c_presentation>    
+	<graphattributes flipColor="n">					
+	<inlinequery><![CDATA[SELECT sum(pool_cur_size)/1024.0/1024.0 FROM table(SNAP_GET_DB_MEMORY_POOL(cast(null as varchar(128)),-1)) t  ]]></inlinequery>
+			<value>320</value>
+	</graphattributes>	
+    <c_sort>y</c_sort>
+  </column>
+<column name="pool_cur_size">
+    <c_sql_name>CUR_MB</c_sql_name>
+    <c_title>Current Size (MB)</c_title>
+    <c_sort>y</c_sort>
+  </column>
+  <column name="pool_watermark_size_bar">
+    <c_sql_name>HIGH_MB</c_sql_name>
+    <c_title>Watermark Percent of Total</c_title>
+	<c_presentation>bg</c_presentation>    
+	<graphattributes flipColor="n">					
+	<inlinequery><![CDATA[SELECT sum(pool_cur_size)/1024.0/1024.0 FROM table(SNAP_GET_DB_MEMORY_POOL(cast(null as varchar(128)),-1)) t ]]></inlinequery>
+			<value>320</value>
+	</graphattributes>	
+    <c_sort>y</c_sort>
+  </column>    
+  <column name="pool_id">
+    <c_sql_name>POOL_ID</c_sql_name>
+    <c_title>ID</c_title>
+    <c_presentation>s</c_presentation>
+    <c_sort>y</c_sort>
+  </column>
+  <column name="pool_secondary_id">
+    <c_sql_name>POOL_SECONDARY_ID</c_sql_name>
+    <c_title>Secondary ID</c_title>
+    <c_presentation>s</c_presentation>
+    <c_sort>y</c_sort>
+  </column>
+  <column name="pool_watermark">
+    <c_sql_name>HIGH_MB</c_sql_name>
+    <c_title>High Watermark (MB)</c_title>
+    <c_presentation>n</c_presentation>
+    <c_sort>y</c_sort>
+  </column>
+  <column name="snapshot_timestamp">
+    <c_sql_name>SNAPSHOT_TIMESTAMP</c_sql_name>
+    <c_title>Timestamp</c_title>
+    <c_presentation>n</c_presentation>
+    <c_sort>n</c_sort>
+  </column>
+</table>

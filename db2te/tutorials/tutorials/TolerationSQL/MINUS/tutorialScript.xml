@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tutorial name="MINUS">
+    <flowRestriction>forwardExploration</flowRestriction>
+    <closeAction/>
+    <openAction />
+    <globalCodeHighlightOptions highlightCode = "true" />
+    <pageList>
+    	<page name="MINUS" type="intro">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>MINUS.html</contentFile>
+    	    <autoLoadLink>
+    	        <pageWindow target="informationWindow">
+    	            <panel name="main">
+    	                <URL>http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.dwe.sqw.doc/designing/data_flow/copunion.html?noframes=true</URL>
+    	            </panel>
+    	        </pageWindow>
+    	    </autoLoadLink>
+        </page>
+        
+    <page name="Create two tables for testing the MINUS operator" type="general">
+        <entryAction name="createEmployeeTable" type="serverAction">
+            <parameterList>
+                <parameter name="action" type="fixed">
+                    <value>createTablesFromSampleDatabase</value>
+                </parameter>
+                <parameter name="schema" type="constant">
+                    <value>SCHEMA</value>
+                </parameter>
+                <parameter name="table" type="fixed">
+                    <value>EMPLOYEE</value>
+                </parameter>
+            </parameterList>
+            <followOnAction condition="false"   >
+                <task>
+                    <action name="" type="alert">
+                        <message>Failed to create base tables for initial setup of tutorial. Cannot proceed further with tutorial.</message>
+                    </action>
+                </task>
+                <task>
+                    <setActionReturn>false</setActionReturn>
+                </task>
+            </followOnAction>
+            <followOnAction condition="[0-9][0-9]*"   >
+                <task>
+                    <assignLocalParameter name="ERROR_MESSAGE" type="returnObject">
+                        <value>createEmployeeTable.returnValue</value>
+                    </assignLocalParameter>
+                    <alert>Failed to create base tables for initial setup of tutorial. Cannot proceed further with tutorial.  
+                        SQLMSG: ?ERROR_MESSAGE?</alert>
+                </task>
+                <task>
+                    <setActionReturn>false</setActionReturn>
+                </task>
+            </followOnAction>
+        </entryAction>
+        
+            <exitAction/>
+            <contentFile>CreateTwoTablesForTestingTheMINUSOperator.html</contentFile>
+        <SQLFile>CreateTwoTablesForTestingTheMINUSOperator.sql</SQLFile>
+        </page><page name="Populate the EMP_ONLY and MGR_ONLY tables" type="general">
+            <entryAction name="checkForTable" type="serverAction">
+                <parameterList>
+                    <parameter name="action" type="serverAction">
+                        <value>checkForObject</value>
+                    </parameter>
+                    <parameter name="objectType" type="raw">
+                        <value>table</value>
+                    </parameter>
+                    <parameter name="object[schema]" type="constant">
+                        <value>SCHEMA</value>
+                    </parameter>
+                    <parameter name="object[table]" type="fixed">
+                        <value>emp_only</value>
+                    </parameter>
+                </parameterList>
+                <followOnAction condition="false">
+                    <task>
+                        <action name="displayMsg" type="alert">
+                            <message>Required Table hasn't been created. Please execute this step again.</message>
+                        </action>
+                    </task>
+                    <task>
+                        <setActionReturn>false</setActionReturn>
+                    </task>
+                </followOnAction>
+                <followOnAction condition="true">
+                    <task>
+                        <action name="checkForTrigger" type="serverAction">
+                            <parameterList>
+                                <parameter name="action" type="serverAction">
+                                    <value>CheckForObject</value>
+                                </parameter>
+                                <parameter name="objectType" type="raw">
+                                    <value>table</value>
+                                </parameter>
+                                <parameter name="object[schema]" type="constant">
+                                    <value>SCHEMA</value>
+                                </parameter>
+                                <parameter name="object[table]" type="fixed">
+                                    <value>mgr_only</value>
+                                </parameter>
+                            </parameterList>
+                            <followOnAction condition="false">
+                                <task>
+                                    <action name="displayMsg" type="alert">
+                                        <message>Required table hasn't been created. Please execute this step again.</message>
+                                    </action>
+                                </task>
+                                <task>
+                                    <setActionReturn>false</setActionReturn>
+                                </task>
+                            </followOnAction>
+                        </action>
+                    </task>
+                </followOnAction>
+            </entryAction>
+            <exitAction/>
+            <contentFile>PopulateTheEMP_ONLYAndMGR_ONLYTables.html</contentFile>
+            <SQLFile>PopulateTheEMP_ONLYAndMGR_ONLYTables.sql</SQLFile>
+        </page><page name="Retrieve those employees who make greater than 60000 but aren't managers" type="general">
+            <entryAction name="checkForInsert" type="serverAction">
+                <parameterList>
+                    <parameter name="action" type="fixed">
+                        <value>checkForRow</value>
+                    </parameter>
+                    <parameter name="schema" type="constant">
+                        <value>SCHEMA</value>
+                    </parameter>
+                    <parameter name="name" type="fixed">
+                        <value>emp_only</value>
+                    </parameter>
+                </parameterList>
+                <followOnAction condition="true"  negCondition="true">
+                    <task>
+                        <action name="displayMsgForFailedInsert" type="alert">
+                            <message>Data hasn't been inserted in the table. Please try this step again.</message>
+                        </action>
+                    </task>
+                    <task>
+                        <setActionReturn>false</setActionReturn>
+                    </task>
+                </followOnAction>
+                <followOnAction condition="true">
+                    <task>
+                        <action name="checkForSecondInsert" type="serverAction">
+                            <parameterList>
+                                <parameter name="action" type="fixed">
+                                    <value>checkForRow</value>
+                                </parameter>
+                                <parameter name="schema" type="constant">
+                                    <value>SCHEMA</value>
+                                </parameter>
+                                <parameter name="name" type="fixed">
+                                    <value>mgr_only</value>
+                                </parameter>
+                            </parameterList>
+                            <followOnAction condition="true"  negCondition="true">
+                                <task>
+                                    <action name="displayMsgForFailedInsert" type="alert">
+                                        <message>Data hasn't been inserted in the table. Please try this step again.</message>
+                                    </action>
+                                </task>
+                                <task>
+                                    <setActionReturn>false</setActionReturn>
+                                </task>
+                            </followOnAction>
+                            </action>            
+                    </task>
+                </followOnAction>
+            </entryAction> 
+            <exitAction/>
+            <contentFile>RetrieveThoseEmployeesWhoMakeGreaterThan60000ButArenotManagers.html</contentFile>
+            <SQLFile>RetrieveThoseEmployeesWhoMakeGreaterThan60000ButAren'tManagers.sql</SQLFile>
+        </page><page name="Same example but using the MINUS operator" type="last">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>SameExampleButUsingTheMINUSOperator.html</contentFile>
+            <SQLFile>SameExampleButUsingTheMINUSOperator.sql</SQLFile>
+        </page></pageList>
+</tutorial>

@@ -1,0 +1,115 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2013 All rights reserved.
+  
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+<table name="StatsIOtables">
+	<sqlName>pg_statio_all_tables</sqlName>
+	<singularName>Stats IO Table</singularName>
+	<pluralName>Stats IO Table</pluralName>
+	<description>
+	For each table in the current database (including TOAST tables), the table OID, schema and table name, number of disk blocks read from that table, number of buffer hits, numbers of disk blocks read and buffer hits in all indexes of that table, numbers of disk blocks read and buffer hits from that table's auxiliary TOAST table (if any), and numbers of disk blocks read and buffer hits for the TOAST table's index.
+	</description>
+	<orderBy name="total_blks_read" direction="D"/>
+	<disableEdit/>
+	<output>
+		<type name="DDL" destination="" title="" generator=""/>
+	</output>
+	<displayColumns titleDepth="2">
+		<col type="column" name="relid"/>
+		<col type="column" name="schemaname"/>
+		<col type="column" name="relname"/>
+		<col type="column" name="total_blks_read"/>
+		<col type="column" name="total_blks_hit"/>
+		<col type="column" name="heap_blks_read"/>
+		<col type="column" name="heap_blks_hit"/>
+		<col type="column" name="idx_blks_read"/>
+		<col type="column" name="idx_blks_hit"/>
+		<col type="column" name="toast_blks_read"/>
+		<col type="column" name="toast_blks_hit"/>
+		<col type="column" name="tidx_blks_read"/>
+		<col type="column" name="tidx_blks_hit"/>
+	</displayColumns>
+	<history depth="10" time="SAMPLE_TS"/>
+	<column name="SAMPLE_TS">
+		<generated>timestamp</generated>
+		<title>Time</title>
+		<type>s</type>
+	</column>
+	<column name="relid">
+		<sqlName>relid</sqlName>
+		<title>Relid</title>
+		<type>n</type>
+		<primaryKey/>
+	</column>
+	<column name="schemaname">
+		<sqlName>schemaname</sqlName>
+		<title>Schemaname</title>
+	</column>
+	<column name="relname">
+		<sqlName>relname</sqlName>
+		<title>Relname</title>
+	</column>
+	<column name="total_blks_read" accumulation="y">
+		<sqlName>coalesce(heap_blks_read,0)+coalesce(idx_blks_read,0)+coalesce(toast_blks_read,0)+coalesce(tidx_blks_read,0)</sqlName>
+		<title>Total Reads</title>
+		<type>n</type>
+	</column>
+	<column name="total_blks_hit" accumulation="y">
+		<sqlName>coalesce(heap_blks_hit,0)+coalesce(idx_blks_hit,0)+coalesce(toast_blks_hit,0)+coalesce(tidx_blks_hit,0)</sqlName>
+		<title>Total Hits</title>
+		<type>n</type>
+	</column>
+	<column name="heap_blks_read" accumulation="y">
+		<sqlName>heap_blks_read</sqlName>
+		<title>Heap Reads</title>
+		<type>n</type>
+	</column>
+	<column name="heap_blks_hit" accumulation="y">
+		<sqlName>heap_blks_hit</sqlName>
+		<title>Heap Hits</title>
+		<type>n</type>
+	</column>
+	<column name="idx_blks_read" accumulation="y">
+		<sqlName>idx_blks_read</sqlName>
+		<title>Index Reads</title>
+		<type>n</type>
+	</column>
+	<column name="idx_blks_hit" accumulation="y">
+		<sqlName>idx_blks_hit</sqlName>
+		<title>Index Hits</title>
+		<type>n</type>
+	</column>
+	<column name="toast_blks_read" accumulation="y">
+		<sqlName>toast_blks_read</sqlName>
+		<title>Toast Reads</title>
+		<type>n</type>
+	</column>
+	<column name="toast_blks_hit" accumulation="y">
+		<sqlName>toast_blks_hit</sqlName>
+		<title>Toast Hits</title>
+		<type>n</type>
+	</column>
+	<column name="tidx_blks_read" accumulation="y">
+		<sqlName>tidx_blks_read</sqlName>
+		<title>Toast Index Reads</title>
+		<type>n</type>
+	</column>
+	<column name="tidx_blks_hit" accumulation="y">
+		<sqlName>tidx_blks_hit</sqlName>
+		<title>Toast Index Hits</title>
+		<type>n</type>
+	</column>
+</table>

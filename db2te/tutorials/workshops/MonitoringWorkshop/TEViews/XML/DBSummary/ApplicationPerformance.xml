@@ -1,0 +1,88 @@
+<!--
+  Author: Sanjay Kumar
+  
+  Copyright Independent Systems Integrators Pty Ltd 2008 All rights reserved.
+  
+  Updated by Author: Peter Kohlmann
+  Copyright IBM Canada Ltd 2008 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+<table name="ApplicationPerformance">
+	<sql_name>ApplicationPerformance</sql_name>
+	<singular_name>Application performance by connection</singular_name>
+	<plural_name>Application performance by connection</plural_name>
+	<inlinequery>
+<![CDATA[
+SELECT APPLICATION_HANDLE,
+       TOTAL_CPU_TIME,
+       TOTAL_WAIT_TIME,
+	   TOTAL_APP_COMMITS,
+	   ROWS_READ, 
+	   ROWS_MODIFIED
+	FROM TABLE(MON_GET_CONNECTION(cast(NULL as bigint), -2)) as METRICS
+]]>
+	</inlinequery>
+	<description>
+	</description>
+	<order_by_index/>
+	<display_columns>
+		<col type="column" name="APPLICATION_HANDLE"/>
+		<col type="column" name="TOTAL_APP_COMMITS"/>
+		<col type="column" name="TOTAL_WAIT_TIME"/>
+		<col type="column" name="TOTAL_CPU_TIME"/>
+		<col type="column" name="ROWS_READ"/>
+		<col type="column" name="ROWS_MODIFIED"/>
+	</display_columns>
+	<column name="APPLICATION_HANDLE">
+		<c_sql_name>APPLICATION_HANDLE</c_sql_name>
+		<c_title>Application Handle</c_title>
+		<c_presentation/>
+		<c_drill>y</c_drill>
+		<c_pkey>p</c_pkey>
+	</column>
+	<column name="TOTAL_APP_COMMITS">
+		<c_sql_name>TOTAL_APP_COMMITS</c_sql_name>
+		<c_title>Total App COmmits</c_title>
+		<c_presentation/>
+		<c_drill>y</c_drill>
+		<c_pkey>p</c_pkey>
+	</column>
+	<column name="TOTAL_WAIT_TIME">
+		<c_sql_name>TOTAL_WAIT_TIME</c_sql_name>
+		<c_title>Total wait time</c_title>
+		<c_presentation/>
+		<c_drill>y</c_drill>
+		<c_pkey>p</c_pkey>
+	</column>
+	<column name="TOTAL_CPU_TIME">
+		<c_sql_name>TOTAL_CPU_TIME</c_sql_name>
+		<c_title>Total CPU Time</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+		<c_pkey>p</c_pkey>
+	</column>
+	<column name="ROWS_READ">
+		<c_sql_name>ROWS_READ</c_sql_name>
+		<c_title>Rows Read</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="ROWS_MODIFIED">
+		<c_sql_name>ROWS_MODIFIED</c_sql_name>
+		<c_title>Rows Modified</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+</table>

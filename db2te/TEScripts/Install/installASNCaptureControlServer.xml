@@ -1,0 +1,373 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2011 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+<tutorial name="Install ASN SQL Capture Control Server">
+    <closeAction />
+    <openAction />
+    <globalCodeHighlightOptions highlightCode = "true" />
+    <WMDConfig/>
+    <pageList>
+    	 <page name="Create ASN Capture Control Server" type="general">
+    	 	<entryAction/>
+    	 	<exitAction/>
+            <contentText>Run script to install SQL Replication capture control server</contentText>
+            <SQLText><![CDATA[
+CREATE BUFFERPOOL ASNCD32K1
+	SIZE 200
+	PAGESIZE 32768
+;
+
+CREATE  TABLESPACE TSASNCD
+ IN NODEGROUP IBMCATGROUP
+ PAGESIZE 32768
+ MANAGED BY DATABASE
+ USING 
+(
+ FILE 'TSASNCD' 10M
+)
+ bufferpool ASNCD32K1
+ AUTORESIZE YES   
+ INCREASESIZE 10 M
+ MAXSIZE NONE 
+ ;
+
+CREATE  TABLESPACE TSASNCA
+ IN NODEGROUP IBMCATGROUP
+ PAGESIZE 4096
+ MANAGED BY DATABASE
+ USING 
+(
+ FILE 'TSASNCA' 10M
+)
+ AUTORESIZE YES   
+ INCREASESIZE 10 M
+ MAXSIZE NONE 
+ ;
+
+CREATE  TABLESPACE TSASNUOW
+ IN NODEGROUP IBMCATGROUP
+ MANAGED BY DATABASE
+ USING 
+(
+ FILE 'TSASNUOW' 10M
+)
+ AUTORESIZE YES   
+ INCREASESIZE 10 M
+ MAXSIZE NONE 
+;
+
+CREATE LARGE TABLE ASN.IBMSNAP_REGISTER(
+SOURCE_OWNER                    VARCHAR(30) NOT NULL,
+SOURCE_TABLE                    VARCHAR(128) NOT NULL,
+SOURCE_VIEW_QUAL                SMALLINT NOT NULL,
+GLOBAL_RECORD                   CHAR( 1) NOT NULL,
+SOURCE_STRUCTURE                SMALLINT NOT NULL,
+SOURCE_CONDENSED                CHAR( 1) NOT NULL,
+SOURCE_COMPLETE                 CHAR(  1) NOT NULL,
+CD_OWNER                        VARCHAR(30),
+CD_TABLE                        VARCHAR(128),
+PHYS_CHANGE_OWNER               VARCHAR(30),
+PHYS_CHANGE_TABLE               VARCHAR(128),
+CD_OLD_SYNCHPOINT               CHAR( 10) FOR BIT DATA,
+CD_NEW_SYNCHPOINT               CHAR( 10) FOR BIT DATA,
+DISABLE_REFRESH                 SMALLINT NOT NULL,
+CCD_OWNER                       VARCHAR(30),
+CCD_TABLE                       VARCHAR(128),
+CCD_OLD_SYNCHPOINT              CHAR( 10) FOR BIT DATA,
+SYNCHPOINT                      CHAR( 10) FOR BIT DATA,
+SYNCHTIME                       TIMESTAMP,
+CCD_CONDENSED                   CHAR(  1),
+CCD_COMPLETE                    CHAR(  1),
+ARCH_LEVEL                      CHAR(  4) NOT NULL,
+DESCRIPTION                     CHAR(254),
+BEFORE_IMG_PREFIX               VARCHAR(   4),
+CONFLICT_LEVEL                  CHAR(   1),
+CHG_UPD_TO_DEL_INS              CHAR(   1),
+CHGONLY                         CHAR(   1),
+RECAPTURE                       CHAR(   1),
+OPTION_FLAGS                    CHAR(   4) NOT NULL,
+STOP_ON_ERROR                   CHAR(  1) WITH DEFAULT 'Y',
+STATE                           CHAR(  1) WITH DEFAULT 'I',
+STATE_INFO                      CHAR(  8))
+IN TSASNCA;
+
+CREATE UNIQUE INDEX ASN.IBMSNAP_REGISTERX
+ON ASN.IBMSNAP_REGISTER(
+SOURCE_OWNER                    ASC,
+SOURCE_TABLE                    ASC,
+SOURCE_VIEW_QUAL                ASC);
+
+CREATE  INDEX ASN.IBMSNAP_REGISTERX1
+ON ASN.IBMSNAP_REGISTER(
+PHYS_CHANGE_OWNER               ASC,
+PHYS_CHANGE_TABLE               ASC);
+
+CREATE  INDEX ASN.IBMSNAP_REGISTERX2
+ON ASN.IBMSNAP_REGISTER(
+GLOBAL_RECORD                   ASC);
+
+ALTER TABLE ASN.IBMSNAP_REGISTER VOLATILE CARDINALITY;
+
+CREATE TABLE ASN.IBMSNAP_PRUNCNTL(
+TARGET_SERVER                   CHAR(18) NOT NULL,
+TARGET_OWNER                    VARCHAR(30) NOT NULL,
+TARGET_TABLE                    VARCHAR(128) NOT NULL,
+SYNCHTIME                       TIMESTAMP,
+SYNCHPOINT                      CHAR( 10) FOR BIT DATA,
+SOURCE_OWNER                    VARCHAR(30) NOT NULL,
+SOURCE_TABLE                    VARCHAR(128) NOT NULL,
+SOURCE_VIEW_QUAL                SMALLINT NOT NULL,
+APPLY_QUAL                      CHAR( 18) NOT NULL,
+SET_NAME                        CHAR( 18) NOT NULL,
+CNTL_SERVER                     CHAR( 18) NOT NULL,
+TARGET_STRUCTURE                SMALLINT NOT NULL,
+CNTL_ALIAS                      CHAR( 8),
+PHYS_CHANGE_OWNER               VARCHAR(30),
+PHYS_CHANGE_TABLE               VARCHAR(128),
+MAP_ID                          VARCHAR(10) NOT NULL)
+IN TSASNCA;
+
+CREATE UNIQUE INDEX ASN.IBMSNAP_PRUNCNTLX
+ON ASN.IBMSNAP_PRUNCNTL(
+SOURCE_OWNER                    ASC,
+SOURCE_TABLE                    ASC,
+SOURCE_VIEW_QUAL                ASC,
+APPLY_QUAL                      ASC,
+SET_NAME                        ASC,
+TARGET_SERVER                   ASC,
+TARGET_TABLE                    ASC,
+TARGET_OWNER                    ASC);
+
+CREATE UNIQUE INDEX ASN.IBMSNAP_PRUNCNTLX1
+ON ASN.IBMSNAP_PRUNCNTL(
+MAP_ID                          ASC);
+
+CREATE  INDEX ASN.IBMSNAP_PRUNCNTLX2
+ON ASN.IBMSNAP_PRUNCNTL(
+PHYS_CHANGE_OWNER               ASC,
+PHYS_CHANGE_TABLE               ASC);
+
+CREATE  INDEX ASN.IBMSNAP_PRUNCNTLX3
+ON ASN.IBMSNAP_PRUNCNTL(
+APPLY_QUAL                      ASC,
+SET_NAME                        ASC,
+TARGET_SERVER                   ASC);
+
+ALTER TABLE ASN.IBMSNAP_PRUNCNTL VOLATILE CARDINALITY;
+
+CREATE TABLE ASN.IBMSNAP_PRUNE_SET(
+TARGET_SERVER                   CHAR( 18) NOT NULL,
+APPLY_QUAL                      CHAR( 18) NOT NULL,
+SET_NAME                        CHAR( 18) NOT NULL,
+SYNCHTIME                       TIMESTAMP,
+SYNCHPOINT                      CHAR( 10) FOR BIT DATA NOT NULL)
+IN TSASNCA;
+
+CREATE UNIQUE INDEX ASN.IBMSNAP_PRUNE_SETX
+ON ASN.IBMSNAP_PRUNE_SET(
+TARGET_SERVER                   ASC,
+APPLY_QUAL                      ASC,
+SET_NAME                        ASC);
+
+ALTER TABLE ASN.IBMSNAP_PRUNE_SET VOLATILE CARDINALITY;
+
+CREATE TABLE ASN.IBMSNAP_SIGNAL(
+SIGNAL_TIME                     TIMESTAMP NOT NULL WITH DEFAULT ,
+SIGNAL_TYPE                     VARCHAR( 30) NOT NULL,
+SIGNAL_SUBTYPE                  VARCHAR( 30),
+SIGNAL_INPUT_IN                 VARCHAR(500),
+SIGNAL_STATE                    CHAR( 1) NOT NULL,
+SIGNAL_LSN                      CHAR( 10) FOR BIT DATA)
+IN TSASNCA
+DATA CAPTURE CHANGES;
+
+ALTER TABLE ASN.IBMSNAP_SIGNAL VOLATILE CARDINALITY;
+
+CREATE TABLE ASN.IBMSNAP_CAPTRACE(
+OPERATION                       CHAR( 8) NOT NULL,
+TRACE_TIME                      TIMESTAMP NOT NULL,
+DESCRIPTION                     VARCHAR(1024) NOT NULL)
+IN TSASNCA;
+
+CREATE  INDEX ASN.IBMSNAP_CAPTRACEX
+ON ASN.IBMSNAP_CAPTRACE(
+TRACE_TIME                      ASC);
+
+ALTER TABLE ASN.IBMSNAP_CAPTRACE VOLATILE CARDINALITY;
+
+CREATE TABLE ASN.IBMSNAP_RESTART(
+MAX_COMMITSEQ                   CHAR( 10) FOR BIT DATA NOT NULL,
+MAX_COMMIT_TIME                 TIMESTAMP NOT NULL,
+MIN_INFLIGHTSEQ                 CHAR( 10) FOR BIT DATA NOT NULL,
+CURR_COMMIT_TIME                TIMESTAMP NOT NULL,
+CAPTURE_FIRST_SEQ               CHAR( 10) FOR BIT DATA NOT NULL)
+IN TSASNCA;
+
+CREATE TABLE ASN.IBMSNAP_CAPPARMS(
+RETENTION_LIMIT                 INT,
+LAG_LIMIT                       INT,
+COMMIT_INTERVAL                 INT,
+PRUNE_INTERVAL                  INT,
+TRACE_LIMIT                     INT,
+MONITOR_LIMIT                   INT,
+MONITOR_INTERVAL                INT,
+MEMORY_LIMIT                    SMALLINT,
+REMOTE_SRC_SERVER               CHAR( 18),
+AUTOPRUNE                       CHAR(  1),
+TERM                            CHAR(  1),
+AUTOSTOP                        CHAR(  1),
+LOGREUSE                        CHAR(  1),
+LOGSTDOUT                       CHAR(  1),
+SLEEP_INTERVAL                  SMALLINT,
+CAPTURE_PATH                    VARCHAR(1040),
+STARTMODE                       VARCHAR( 10))
+IN TSASNCA;
+
+CREATE TABLE ASN.IBMSNAP_CAPENQ(
+LOCK_NAME                       CHAR(  9))
+IN TSASNCA;
+
+CREATE TABLE ASN.IBMSNAP_CAPSCHEMAS(
+CAP_SCHEMA_NAME                 VARCHAR(128))
+IN TSASNCA;
+
+CREATE UNIQUE INDEX ASN.IBMSNAP_CAPSCHEMAX
+ON ASN.IBMSNAP_CAPSCHEMAS(
+CAP_SCHEMA_NAME                 ASC);
+
+ALTER TABLE ASN.IBMSNAP_CAPSCHEMAS VOLATILE CARDINALITY;
+
+INSERT INTO ASN.IBMSNAP_CAPSCHEMAS(CAP_SCHEMA_NAME) VALUES (
+'ASN');
+
+CREATE TABLE ASN.IBMSNAP_CAPMON(
+MONITOR_TIME                    TIMESTAMP NOT NULL,
+RESTART_TIME                    TIMESTAMP NOT NULL,
+CURRENT_MEMORY                  INT NOT NULL,
+CD_ROWS_INSERTED                INT NOT NULL,
+RECAP_ROWS_SKIPPED              INT NOT NULL,
+TRIGR_ROWS_SKIPPED              INT NOT NULL,
+CHG_ROWS_SKIPPED                INT NOT NULL,
+TRANS_PROCESSED                 INT NOT NULL,
+TRANS_SPILLED                   INT NOT NULL,
+MAX_TRANS_SIZE                  INT NOT NULL,
+LOCKING_RETRIES                 INT NOT NULL,
+JRN_LIB                         CHAR( 10),
+JRN_NAME                        CHAR( 10),
+LOGREADLIMIT                    INT NOT NULL,
+CAPTURE_IDLE                    INT NOT NULL,
+SYNCHTIME                       TIMESTAMP NOT NULL,
+CURRENT_LOG_TIME                TIMESTAMP NOT NULL WITH DEFAULT ,
+RESTART_SEQ                     CHAR( 10) FOR BIT DATA NOT NULL WITH DEFAULT ,
+CURRENT_SEQ                     CHAR( 10) FOR BIT DATA NOT NULL WITH DEFAULT ,
+LAST_EOL_TIME                   TIMESTAMP)
+IN TSASNCA;
+
+CREATE UNIQUE INDEX ASN.IBMSNAP_CAPMONX
+ON ASN.IBMSNAP_CAPMON(
+MONITOR_TIME                    ASC);
+
+ALTER TABLE ASN.IBMSNAP_CAPMON VOLATILE CARDINALITY;
+
+CREATE TABLE ASN.IBMSNAP_PRUNE_LOCK(
+DUMMY                           CHAR( 1))
+IN TSASNCA;
+
+
+CREATE TABLE ASN.IBMSNAP_UOW(
+IBMSNAP_UOWID                   CHAR( 10) FOR BIT DATA NOT NULL,
+IBMSNAP_COMMITSEQ               CHAR( 10) FOR BIT DATA NOT NULL,
+IBMSNAP_LOGMARKER               TIMESTAMP NOT NULL,
+IBMSNAP_AUTHTKN                 VARCHAR(30) NOT NULL,
+IBMSNAP_AUTHID                  VARCHAR(30) NOT NULL,
+IBMSNAP_REJ_CODE                CHAR(  1) NOT NULL WITH DEFAULT ,
+IBMSNAP_APPLY_QUAL              CHAR( 18) NOT NULL WITH DEFAULT )
+IN TSASNUOW;
+
+CREATE UNIQUE INDEX ASN.IBMSNAP_UOWX
+ON ASN.IBMSNAP_UOW(
+IBMSNAP_COMMITSEQ               ASC,
+IBMSNAP_LOGMARKER               ASC);
+
+ALTER TABLE ASN.IBMSNAP_UOW VOLATILE CARDINALITY;
+
+INSERT INTO ASN.IBMSNAP_CAPPARMS(
+RETENTION_LIMIT,
+LAG_LIMIT,
+COMMIT_INTERVAL,
+PRUNE_INTERVAL,
+TRACE_LIMIT,
+MONITOR_LIMIT,
+MONITOR_INTERVAL,
+MEMORY_LIMIT,
+SLEEP_INTERVAL,
+AUTOPRUNE,
+TERM,
+AUTOSTOP,
+LOGREUSE,
+LOGSTDOUT,
+CAPTURE_PATH,
+STARTMODE)
+VALUES (
+10080,
+10080,
+30,
+300,
+10080,
+10080,
+300,
+32,
+5,
+'Y',
+'Y',
+'N',
+'N',
+'N',
+NULL,
+'WARMSI'
+);
+]]></SQLText>
+            <SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar=";"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+        </page>
+    	 <page name="Add Start ASN Capture Control Server" type="general">
+            <contentText><![CDATA[
+<p/>
+In the scripts below:
+<ul>
+<li>Change "db2inst1" to instance name</li>
+<li>Change "DATABASE" to database name</li>
+</ul>
+<p/>
+Create /home/db2inst1/asn 
+<p/>
+Create /home/db2inst1/asn/asn.DATABASE
+<p/>
+For Linux/Unix/AIX add following to crontab or add in rc.init :
+<p/><textarea>
+0,5,10,15,20,25,30,35,40,45,50,55 * * * * (. /home/db2inst1/.bashrc ; cd /home/db2inst1/asn ;export TMPDIR=/home/db2inst1/asn/asn.DATABASE ; asncap capture_server=<database> capture_schema=ASN) >> /home/db2inst1/asn/asncap.crontab.log 2>&1
+</textarea>
+]]></contentText>
+            <SQLText><![CDATA[
+]]></SQLText>
+            <SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar=";"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+        </page>
+
+    </pageList>
+</tutorial>

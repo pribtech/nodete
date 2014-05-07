@@ -1,0 +1,89 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2011 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+<table name="synonym">
+	<sql_name>SYSCAT.SYSSYNONYMS</sql_name>
+	<singular_name>Synonym</singular_name>
+	<plural_name>Synonyms</plural_name>
+	<description/>
+	<order_by_index name="CREATOR" direction="A"/>
+	<order_by_index name="NAME" direction="A"/>
+	<display_columns>
+		<col type="column" name="CREATOR"/>
+		<col type="column" name="NAME"/>
+		<col type="column" name="TBCREATOR"/>
+		<col type="column" name="TBNAME"/>
+		<col type="reference" name="Table"/>
+		<col type="column" name="CREATEDBY"/>
+		<col type="column" name="CREATEDTS"/>
+	</display_columns>
+	
+	<reference name="Table">
+		<c_title>Table</c_title>
+		<reftype>displayRow</reftype>
+		<refvalue>tableOnlyCat</refvalue>
+		<icon>images/icon-link-calendar.gif</icon>
+		<ref foreign_column_name="tabschema">
+			<local_column_name>TBCREATOR</local_column_name>
+		</ref>
+		<ref foreign_column_name="tabname">
+			<local_column_name>TBNAME</local_column_name>
+		</ref>
+	</reference>
+	<column name="NAME">
+		<c_sql_name>NAME</c_sql_name>
+		<title>Name</title>
+		<type>s</type>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="CREATOR">
+		<c_sql_name>CREATOR</c_sql_name>
+		<title>Creator</title>
+		<type>s</type>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="TBNAME">
+		<c_sql_name>TBNAME</c_sql_name>
+		<title>Table Name</title>
+		<type>s</type>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="TBCREATOR">
+		<c_sql_name>TBCREATOR</c_sql_name>
+		<title>Table Creator</title>
+		<type>s</type>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="IBMREQD">
+		<c_sql_name>IBMREQD</c_sql_name>
+		<title>ibmreqd</title>
+		<type>s</type>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="CREATEDBY">
+		<c_sql_name>CREATEDBY</c_sql_name>
+		<title>Created By</title>
+		<type>s</type>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="CREATEDTS">
+		<c_sql_name>CREATEDTS</c_sql_name>
+		<title>Created</title>
+		<type>n</type>
+		<c_drill>n</c_drill>
+	</column>
+</table>

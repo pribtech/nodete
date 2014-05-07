@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tutorial name="Customizing the Technology Explorer" autoCloseWindowsInRightStage="true" autoClearAdhocResults="true">
+	<!--flowRestriction>forwardexploration</flowRestriction-->
+	<pageList>
+	    <page name="Customizing the Technology Explorer" type="intro">
+			<contentFile>intro.html</contentFile>
+			<autoLoadLink>
+				<pageWindow target="informationWindow">
+					<panel name="main" PrimaryContainer="true">
+					<URL>http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.sql.ref.doc/doc/r0001067.html?noframes=true</URL>
+					</panel>
+				</pageWindow>
+			</autoLoadLink>			
+		</page>	
+	    <page name="Table dependencies" type="general">
+			<contentFile>page1.html</contentFile>
+			<SQLFile>tabdep.sql</SQLFile>
+		</page>
+	    <page name="Using the Tables page" type="general">
+			<contentFile>page4.html</contentFile>
+			<autoLoadLink>
+				<pageWindow target="tableview">
+					<splitPane direction="h">
+						<topPane>
+							<panel name="main" PrimaryContainer="true">
+								<link type="action" target="_self" window="_self" connectionRequired="y">
+									<parameterList>
+										<parameter name="table">tablecat</parameter>
+										<parameter name="action">list_table</parameter>
+									</parameterList>
+								</link>				
+							</panel>
+						</topPane>
+						<bottomPane>
+							<panel name="detail"/>
+						</bottomPane>
+					</splitPane>
+				</pageWindow>
+			</autoLoadLink>
+		</page>
+	    <page name="Add a reference to the Tables page" type="general">
+			<contentFile>page5.html</contentFile>
+			<autoLoadLink>
+				<pageWindow target="tabledef" raiseToTop="y">
+					<panel name="top" PrimaryContainer="true">
+		   				<link type="other" target="_self" window="_self" connectionRequired="y">
+							<address>
+								?BASE_DIRECTORY?/other/tablecat1.html
+							</address>
+						</link>
+					</panel>
+				</pageWindow>
+			</autoLoadLink>
+		</page>
+	    <page name="Look at your work" type="general">
+			<contentFile>page6.html</contentFile>
+			<autoLoadLink>
+				<pageWindow target="tableview">
+					<splitPane direction="h">
+						<topPane>
+							<panel name="main" PrimaryContainer="true">
+								<link type="action" target="_self" window="_self" connectionRequired="y">
+									<parameterList>
+										<parameter name="table">tablecat</parameter>
+										<parameter name="action">list_table</parameter>
+									</parameterList>
+								</link>				
+							</panel>
+						</topPane>
+						<bottomPane>
+							<panel name="detail"/>
+						</bottomPane>
+					</splitPane>
+				</pageWindow>
+			</autoLoadLink>
+		</page>
+	    <page name="Find &amp; save the XML definition" type="general">
+			<contentFile>page8.html</contentFile>
+			<autoLoadLink>
+				<pageWindow target="tableview">
+					<splitPane direction="h">
+						<topPane>
+							<panel name="main" PrimaryContainer="true">
+								<link type="action" target="_self" window="_self" connectionRequired="y">
+									<parameterList>
+										<parameter name="table">tablecat</parameter>
+										<parameter name="action">list_table</parameter>
+									</parameterList>
+								</link>				
+							</panel>
+						</topPane>
+						<bottomPane>
+							<panel name="detail"/>
+						</bottomPane>
+					</splitPane>
+				</pageWindow>
+			</autoLoadLink>
+		</page>
+	    <page name="Change the reference" type="general">
+			<contentFile>page9.html</contentFile>
+			<autoLoadLink>
+				<pageWindow target="tabledef" raiseToTop="y">
+					<panel name="top" PrimaryContainer="true">
+		   				<link type="other" target="_self" window="_self" connectionRequired="y">
+							<address>
+								?BASE_DIRECTORY?/other/tablecat2.html
+							</address>
+						</link>
+					</panel>
+				</pageWindow>
+			</autoLoadLink>
+		</page>
+	    <page name="Look at your work" type="general">
+			<contentFile>page10.html</contentFile>
+			<autoLoadLink>
+				<pageWindow target="tableview">
+					<splitPane direction="h">
+						<topPane>
+							<panel name="main" PrimaryContainer="true">
+								<link type="action" target="_self" window="_self" connectionRequired="y">
+									<parameterList>
+										<parameter name="table">tablecat</parameter>
+										<parameter name="action">list_table</parameter>
+									</parameterList>
+								</link>				
+							</panel>
+						</topPane>
+						<bottomPane>
+							<panel name="detail"/>
+						</bottomPane>
+					</splitPane>
+				</pageWindow>
+			</autoLoadLink>
+		</page>
+	    <page name="Cleaning up the columns" type="general">
+			<contentFile>page11.html</contentFile>
+			<autoLoadLink>
+				<pageWindow target="tabledef" raiseToTop="y">
+					<panel name="top" PrimaryContainer="true">
+		   				<link type="other" target="_self" window="_self" connectionRequired="y">
+							<address>
+								?BASE_DIRECTORY?/other/tableDependCat1.html
+							</address>
+						</link>
+					</panel>
+				</pageWindow>
+			</autoLoadLink>
+		</page>
+	    <page name="Look at your work" type="general">
+			<contentFile>page12.html</contentFile>
+			<autoLoadLink>
+				<pageWindow target="tableview">
+					<splitPane direction="h">
+						<topPane>
+							<panel name="main" PrimaryContainer="true">
+								<link type="action" target="_self" window="_self" connectionRequired="y">
+									<parameterList>
+										<parameter name="table">tablecat</parameter>
+										<parameter name="action">list_table</parameter>
+									</parameterList>
+								</link>				
+							</panel>
+						</topPane>
+						<bottomPane>
+							<panel name="detail"/>
+						</bottomPane>
+					</splitPane>
+				</pageWindow>
+			</autoLoadLink>
+		</page>
+	    <page name="Masking columns" type="general">
+			<contentFile>page13.html</contentFile>
+			<autoLoadLink>
+				<pageWindow target="tabledef" raiseToTop="y">
+					<panel name="top" PrimaryContainer="true">
+		   				<link type="other" target="_self" window="_self" connectionRequired="y">
+							<address>
+								?BASE_DIRECTORY?/other/tableDependCat2.html
+							</address>
+						</link>
+					</panel>
+				</pageWindow>
+			</autoLoadLink>
+		</page>
+	    <page name="Look at your work" type="general">
+			<contentFile>page14.html</contentFile>
+			<autoLoadLink>
+				<pageWindow target="tableview">
+					<splitPane direction="h">
+						<topPane>
+							<panel name="main" PrimaryContainer="true">
+								<link type="action" target="_self" window="_self" connectionRequired="y">
+									<parameterList>
+										<parameter name="table">tablecat</parameter>
+										<parameter name="action">list_table</parameter>
+									</parameterList>
+								</link>				
+							</panel>
+						</topPane>
+						<bottomPane>
+							<panel name="detail"/>
+						</bottomPane>
+					</splitPane>
+				</pageWindow>
+			</autoLoadLink>
+		</page>
+	    <page name="Adding table references" type="general">
+			<contentFile>page15.html</contentFile><autoLoadLink>
+				<pageWindow target="tabledef" raiseToTop="y">
+					<panel name="top" PrimaryContainer="true">
+		   				<link type="other" target="_self" window="_self" connectionRequired="y">
+							<address>
+								?BASE_DIRECTORY?/other/tableDependCat3.html
+							</address>
+						</link>
+					</panel>
+				</pageWindow>
+			</autoLoadLink>
+		</page>
+	    <page name="Look at your work" type="general">
+			<contentFile>page16.html</contentFile>
+			<autoLoadLink>
+				<pageWindow target="tableview">
+					<splitPane direction="h">
+						<topPane>
+							<panel name="main" PrimaryContainer="true">
+								<link type="action" target="_self" window="_self" connectionRequired="y">
+									<parameterList>
+										<parameter name="table">tablecat</parameter>
+										<parameter name="action">list_table</parameter>
+									</parameterList>
+								</link>				
+							</panel>
+						</topPane>
+						<bottomPane>
+							<panel name="detail"/>
+						</bottomPane>
+					</splitPane>
+				</pageWindow>
+			</autoLoadLink>
+		</page>
+	</pageList>	
+</tutorial>

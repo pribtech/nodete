@@ -1,0 +1,139 @@
+<!--
+  Copyright IBM Corp. 2007 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<table name="schema">
+	<sqlName>SYSCAT.SCHEMATA</sqlName>
+	<htmlName>schema</htmlName>
+	<singularName>Schema</singularName>
+	<pluralName>Schemas</pluralName>
+	<description>Each row represents a 
+	    &lt;a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.admin.dbobj.doc/doc/c0004105.html?noframes=true');"&gt;schema&lt;/a&gt;
+		This list is generated from the &lt;a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.sql.ref.doc/doc/r0001059.html?noframes=true');"&gt;SYSCAT.SCHEMATA&lt;/a&gt; catalog view.
+	</description>		
+	<disableEdit/>
+	<output>
+		<type name="DDL" destination="" title="" generator=""/>
+	</output>
+	<orderByIndex name="schemaname" direction="A"/>
+	<displayColumns>
+		<col type="action" name="dropschema"/>
+		<col type="column" name="schemaname"/>
+		<col type="column" name="owner"/>
+		<col type="column" name="ownertype"/>		
+		<col type="column" name="definer"/>
+		<col type="column" name="definertype"/>		
+		<col type="column" name="remarks"/>
+   		<col type="reference" name="auth"/>	
+		<col type="reference" name="compestimate"/>                    	
+	</displayColumns>
+	<action name="dropschema">
+		<title>Drop</title>
+		<icon>images/cancel.gif</icon>
+		<actionScriptFile fileName="actionScripts/dropSchema.xml"/>
+	</action>
+    <action name="db2look">
+		<title>Generate DDL</title>
+    		<actionScript>
+    		<task>
+    			<lock/>
+    				<action name="getSession" type="serverAction" >
+					<parameterList>
+						<parameter name="action" type="raw">
+							<value>getSessionVariable</value>
+						</parameter>
+						<parameter name="name[database]" type="fixed">
+							<value>Connections.USE_DATABASE_CONNECTION.database</value>
+						</parameter>
+					</parameterList>
+				</action>
+			    <assignSharedConstant name="database-name" type="returnObject">
+					<value>getSession.returnValue.database</value>
+				</assignSharedConstant>
+			    	<assignSharedConstant name="schema-name" type="blockValue">
+					<value>schemaname</value>
+				</assignSharedConstant>
+		   		<assignSharedConstant name="command" type="raw">
+					<value>System/db2look</value>
+				</assignSharedConstant>
+	   			<callGlobalAction name="systemCommandExecution"/>				
+    			<unlock/>
+	   		</task>
+    	</actionScript>
+    </action>	
+	<reference name="tables">
+		<title>Tables</title>
+		<reftype>table</reftype>
+		<refvalue>tablecat</refvalue>
+		<icon>images/icon-tbs.gif</icon>
+		<ref foreignColumnName="tabschema">
+			<localColumnName>schemaname</localColumnName>
+		</ref>
+	</reference>	
+	<reference name="auth">
+		<title>Privileges</title>
+		<reftype>table</reftype>
+		<refvalue>Authority/schemaauth</refvalue>
+		<icon>images/icon-privilege.gif</icon>
+		<ref foreignColumnName="schemaname">
+			<localColumnName>schemaname</localColumnName>
+		</ref>
+	</reference>	
+ 	<reference name="compestimate">
+			<title>Estimate Compression</title>
+			<reftype>table</reftype>
+			<refvalue>Performance/compressionestimate</refvalue>
+			<icon>images/icon-dictionary.gif</icon>
+			<ref foreignColumnName="tabschema">
+				<localColumnName>schemaname</localColumnName>
+			</ref>
+	</reference>  		
+	<column name="schemaname">
+		<sqlName>schemaname</sqlName>
+		<title>Schema Name</title>
+		<primaryKey/>		
+		<lookup table="tablecat" column="tabschema"></lookup>
+	</column>
+	<column name="definer" DBMS="DB2">
+		<sqlName>DEFINER</sqlName>
+		<title>Definer</title>
+		<prefillEnable/>					
+	</column>
+	<column name="definertype" DBMS="DB2">
+		<sqlName>DEFINERTYPE</sqlName>
+		<title>Definer Type</title>
+		<columnMaskFile>masks/SchemaOwnerType.xml</columnMaskFile>	
+		<prefillEnable/>					
+	</column>
+	<column name="owner">
+		<sqlName>OWNER</sqlName>
+		<title>Owner</title>
+		<prefillEnable/>					
+	</column>
+	<column name="ownertype" DBMS="DB2">
+		<sqlName>OWNERTYPE</sqlName>
+		<title>Owner Type</title>
+		<columnMaskFile>masks/SchemaOwnerType.xml</columnMaskFile>	
+		<prefillEnable/>					
+	</column>
+	<column name="create_time">
+		<sqlName>CREATE_TIME</sqlName>
+		<title>Creation Time</title>
+		<type>n</type>
+	</column>
+	<column name="remarks">
+		<sqlName>REMARKS</sqlName>
+		<title>Remarks</title>
+	</column>
+</table>

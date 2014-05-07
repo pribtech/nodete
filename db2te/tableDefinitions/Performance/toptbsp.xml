@@ -1,0 +1,388 @@
+<!--
+  Copyright IBM Corp. 2007 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<table name="toptbsp">
+	<sql_name>TOP_TBSP_VIEW</sql_name>
+	<singular_name>Table Space IO</singular_name>
+	<plural_name>Table Space IO</plural_name>
+	<queryfile>predefined/Tablespace.SQL</queryfile>
+	<description>Each row represents a
+		&lt;a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.admin.dbobj.doc/doc/c0021378.html?noframes=true');"&gt;table space&lt;/a&gt;.
+		This table is based on the &lt;a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.admin.dbobj.doc/doc/r0022008.html?noframes=true');"&gt;SNAP_GET_TBSP_V91&lt;/a&gt; table function.
+		and the &lt;a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.admin.dbobj.doc/doc/r0022009.html?noframes=true');"&gt;SNAP_GET_TBSP_PART_V91&lt;/a&gt; table function.		
+	</description>		
+	<order_by_index name="tbsp_current_size" direction="D"/>
+	<history depth="10" time="snapshot_timestamp"/>
+	<display_columns>
+		<col type="reference" name="tablespace"/>
+		<col type="column" name="tbsp_name"/>
+		<col type="column" name="tbsp_state"/>
+		<col type="column" name="tbsp_type"/>
+		<col type="column" name="tbsp_content_type"/>
+		<col type="column" name="tbsp_current_size"/>
+		<col type="column" name="tbsp_total_pages"/>
+		<col type="column" name="tbsp_used_pages"/>
+		<col type="column" name="tbsp_page_size"/>
+		<col type="column" name="tbsp_extent_size"/>
+		<col type="column" name="tbsp_page_top"/>
+		<col type="column" name="direct_reads"/>
+		<col type="column" name="direct_read_reqs"/>
+		<col type="column" name="direct_writes"/>
+		<col type="column" name="direct_write_time"/>
+		<col type="column" name="files_closed"/>
+		<col type="column" name="fs_caching"/>
+		<col type="column" name="pool_async_data_reads"/>
+		<col type="column" name="pool_async_data_read_reqs"/>
+		<col type="column" name="pool_async_data_writes"/>
+		<col type="column" name="pool_async_index_reads"/>
+		<col type="column" name="pool_async_index_read_reqs"/>
+		<col type="column" name="pool_async_index_writes"/>
+		<col type="column" name="pool_data_l_reads"/>
+		<col type="column" name="pool_data_p_reads"/>
+		<col type="column" name="pool_data_writes"/>
+		<col type="column" name="pool_index_l_reads"/>
+		<col type="column" name="pool_index_p_reads"/>
+		<col type="column" name="pool_index_writes"/>
+		<col type="column" name="pool_no_victim_buffer"/>
+		<col type="column" name="pool_temp_data_l_reads"/>
+		<col type="column" name="pool_temp_data_p_reads"/>
+		<col type="column" name="pool_temp_index_l_reads"/>
+		<col type="column" name="pool_temp_index_p_reads"/>
+		<col type="column" name="tbsp_auto_resize_enabled"/>
+		<col type="column" name="tbsp_last_resize_failed"/>
+		<col type="column" name="tbsp_last_resize_time"/>
+		<col type="column" name="tbsp_max_size"/>
+		<col type="column" name="unread_prefetch_pages"/>
+	</display_columns>
+	<reference name="tablespace">
+		<title/>
+		<reftype>table</reftype>
+		<refvalue>tablespaces</refvalue>
+		<icon>images/icon-tbs.gif</icon>
+		<ref foreign_column_name="tbspace">
+			<local_column_name>tbsp_name</local_column_name>
+		</ref>
+	</reference>
+
+	<reference name="containers">
+		<title>Containers</title>
+		<reftype>table</reftype>
+		<refvalue>container</refvalue>
+		<ref foreign_column_name="TBSP_NAME">
+			<local_column_name>tbsp_name</local_column_name>
+		</ref>
+	</reference> 
+	
+	<reference name="tabref">
+		<title>Tables</title>
+		<reftype>table</reftype>
+		<refvalue>tablecat</refvalue>
+		<icon>images/icon-link-calendar.gif</icon>
+		<ref foreign_column_name="tbspace">
+			<local_column_name>tbsp_name</local_column_name>
+		</ref>
+	</reference>
+
+	<reference name="indref">
+		<title>Indexes</title>
+		<reftype>table</reftype>
+		<refvalue>indexcat</refvalue>
+		<icon>images/icon-index.gif</icon>
+		<ref foreign_column_name="tbspaceid">
+			<local_column_name>tbsp_id</local_column_name>
+		</ref>
+	</reference>
+	
+		<reference name="tableActivity">
+		<title>Table Activity</title>
+		<reftype>table</reftype>
+		<refvalue>Performance/toptable</refvalue>
+		<icon>images/icon-link-calendar.gif</icon>
+		<ref foreign_column_name="tbsp_id">
+			<local_column_name>tbsp_id</local_column_name>
+		</ref>
+	</reference> 
+<!-- added peter prib, Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2009 All rights reserved. -->
+	<action name="dropTableSpace">
+		<title>Drop</title>
+		<icon>images/trash.gif</icon>   
+    	<actionScript>
+    		<task>
+		    	<assignSharedConstant name="objectType" type="raw">
+					<value>TABLESPACE</value>
+				</assignSharedConstant>
+				<assignSharedConstant name="objectName" type="fixed">
+					<value>?tbsp_name?</value>
+				</assignSharedConstant>
+		   		<callGlobalAction name="dropSQLObject"/>
+	   		</task>
+    	</actionScript>
+    </action>
+    
+	<action name="renameTableSpace">
+		<title>Rename</title>
+    	<actionScript>
+    		<task>
+		    	<assignSharedConstant name="tablespace-name" type="fixed">
+					<value>?tbsp_name?</value>
+				</assignSharedConstant>
+		    	<assignSharedConstant name="command" type="raw">
+					<value>SQL/renameTableSpace</value>
+				</assignSharedConstant>
+		   		<callGlobalAction name="commandExecution"/>
+	   		</task>
+    	</actionScript>
+    </action>
+
+	<action name="alterTableSpace">
+		<title>Alter</title>
+    	<actionScript>
+    		<task>
+		    	<assignSharedConstant name="tablespace-name" type="fixed">
+					<value>?tbsp_name?</value>
+				</assignSharedConstant>
+		    	<assignSharedConstant name="command" type="raw">
+					<value>SQL/Alter/alterTablespace</value>
+				</assignSharedConstant>
+		   		<callGlobalAction name="commandExecution"/>
+	   		</task>
+    	</actionScript>
+    </action>
+
+<!-- added end -->  
+
+	<column name="direct_reads" accumulation="y">
+		<sql_name>DIRECT_READS</sql_name>
+		<title>Direct Reads</title>
+		<type>n</type>
+	</column>
+	<column name="direct_read_reqs" accumulation="y">
+		<sql_name>DIRECT_READ_REQS</sql_name>
+		<title>Direct Read Requests</title>
+		<type>n</type>
+	</column>
+	<column name="direct_writes" accumulation="y">
+		<sql_name>DIRECT_WRITES</sql_name>
+		<title>Direct Writes</title>
+		<type>n</type>
+	</column>
+	<column name="direct_write_time" accumulation="y">
+		<sql_name>DIRECT_WRITE_TIME</sql_name>
+		<title>Direct Write Time</title>
+		<type>n</type>
+	</column>
+	<column name="files_closed" accumulation="y">
+		<sql_name>FILES_CLOSED</sql_name>
+		<title>Files Closed</title>
+		<type>n</type>
+	</column>
+	<column name="fs_caching">
+		<sql_name>FS_CACHING</sql_name>
+		<title>File System Caching</title>
+		<type>n</type>
+   		<column_mask>
+			<value_mask value="0"><mask>Yes</mask></value_mask>
+			<value_mask value="1"><mask>No</mask></value_mask>				
+   		</column_mask>
+	</column>
+	<column name="pool_async_data_reads" accumulation="y">
+		<sql_name>POOL_ASYNC_DATA_READS</sql_name>
+		<title>Async Data Reads</title>
+		<type>n</type>
+	</column>
+	<column name="pool_async_data_read_reqs" accumulation="y">
+		<sql_name>POOL_ASYNC_DATA_READ_REQS</sql_name>
+		<title>Async Data Read Requests</title>
+		<type>n</type>
+	</column>
+	<column name="pool_async_data_writes" accumulation="y">
+		<sql_name>POOL_ASYNC_DATA_WRITES</sql_name>
+		<title>Async Data Writes</title>
+		<type>n</type>
+	</column>
+	<column name="pool_async_index_reads" accumulation="y">
+		<sql_name>POOL_ASYNC_INDEX_READS</sql_name>
+		<title>Async Index Reads</title>
+		<type>n</type>
+	</column>
+	<column name="pool_async_index_read_reqs" accumulation="y">
+		<sql_name>POOL_ASYNC_INDEX_READ_REQS</sql_name>
+		<title>Asynch Index Read Requests</title>
+		<type>n</type>
+	</column>
+	<column name="pool_async_index_writes" accumulation="y">
+		<sql_name>POOL_ASYNC_INDEX_WRITES</sql_name>
+		<title>Async Index Writes</title>
+		<type>n</type>
+	</column>
+	<column name="pool_data_l_reads" accumulation="y">
+		<sql_name>POOL_DATA_L_READS</sql_name>
+		<title>Data Logical Reads</title>
+		<type>n</type>
+	</column>
+	<column name="pool_data_p_reads" accumulation="y">
+		<sql_name>POOL_DATA_P_READS</sql_name>
+		<title>Data Physical Reads</title>
+		<type>n</type>
+	</column>
+	<column name="pool_data_writes" accumulation="y">
+		<sql_name>POOL_DATA_WRITES</sql_name>
+		<title>Data Writes</title>
+		<type>n</type>
+	</column>
+	<column name="pool_index_l_reads" accumulation="y">
+		<sql_name>POOL_INDEX_L_READS</sql_name>
+		<title>Index Logical Reads</title>
+		<type>n</type>
+	</column>
+	<column name="pool_index_p_reads" accumulation="y">
+		<sql_name>POOL_INDEX_P_READS</sql_name>
+		<title>Index Physical Reads</title>
+		<type>n</type>
+	</column>
+	<column name="pool_index_writes" accumulation="y">
+		<sql_name>POOL_INDEX_WRITES</sql_name>
+		<title>Index Writes</title>
+		<type>n</type>
+	</column>
+	<column name="pool_no_victim_buffer" accumulation="y">
+		<sql_name>POOL_NO_VICTIM_BUFFER</sql_name>
+		<title>No Victim Buffer</title>
+		<type>n</type>
+	</column>
+	<column name="pool_temp_data_l_reads" accumulation="y">
+		<sql_name>POOL_TEMP_DATA_L_READS</sql_name>
+		<title>Temp Data Logical Reads</title>
+		<type>n</type>
+	</column>
+	<column name="pool_temp_data_p_reads" accumulation="y">
+		<sql_name>POOL_TEMP_DATA_P_READS</sql_name>
+		<title>Temp Data Physical Reads</title>
+		<type>n</type>
+	</column>
+	<column name="pool_temp_index_l_reads" accumulation="y">
+		<sql_name>POOL_TEMP_INDEX_L_READS</sql_name>
+		<title>Temp Index Logical Reads</title>
+		<type>n</type>
+	</column>
+	<column name="pool_temp_index_p_reads" accumulation="y">
+		<sql_name>POOL_TEMP_INDEX_P_READS</sql_name>
+		<title>Temp Index Physical Reads</title>
+		<type>n</type>
+	</column>
+	<column name="snapshot_timestamp">
+		<sql_name>SNAPSHOT_TIMESTAMP</sql_name>
+		<title>Timestamp</title>
+		<type>n</type>
+	</column>
+	<column name="tbsp_auto_resize_enabled">
+		<sql_name>TBSP_AUTO_RESIZE_ENABLED</sql_name>
+		<title>Auto Resize</title>
+		<c_prefill>y</c_prefill>		
+		<type>n</type>
+   		<c_column_mask>
+			<value_mask value="1"><mask>Enabled</mask></value_mask>
+			<value_mask value="0"><mask>Disabled</mask></value_mask>				
+   		</c_column_mask>			
+	</column>
+	<column name="tbsp_content_type">
+		<sql_name>TBSP_CONTENT_TYPE</sql_name>
+		<title>Content Type</title>
+		<type>s</type>
+		<sort>y</sort>
+		<column_mask_file>masks/tablespaceDataType.xml</column_mask_file>
+	</column>
+	<column name="tbsp_current_size">
+		<sql_name>CURRENT_SIZE_MB</sql_name>
+		<title>Current Size (MB)</title>
+		<type>n</type>
+		<formatNumber toAbbreviated="4"/> 
+	</column>
+	<column name="tbsp_extent_size">
+		<sql_name>TBSP_EXTENT_SIZE</sql_name>
+		<title>Extent Size</title>
+		<type>n</type>
+	</column>
+	<column name="tbsp_last_resize_failed">
+		<sql_name>TBSP_LAST_RESIZE_FAILED</sql_name>
+		<title>Last Resize</title>
+		<type>n</type>
+  		<column_mask>
+			<value_mask value="1"><mask>Failed</mask></value_mask>
+			<value_mask value="0"><mask>Succeeded</mask></value_mask>				
+   		</column_mask>			
+	</column>
+	<column name="tbsp_max_size">
+		<sql_name>TBSP_MAX_SIZE</sql_name>
+		<title>Max Size</title>
+		<type>n</type>
+   		<column_mask>
+			<value_mask value="-1"><mask>Unlimited</mask></value_mask>
+   		</column_mask>			
+	</column>
+	<column name="tbsp_last_resize_time">
+		<sql_name>TBSP_LAST_RESIZE_TIME</sql_name>
+		<title>Last Resize Time</title>
+		<type>n</type>
+	</column>
+	<column name="tbsp_name">
+		<sql_name>TBSP_NAME</sql_name>
+		<title>Name</title>
+		<c_pkey>p</c_pkey>						
+		<type>s</type>
+		<sort>y</sort>
+	</column>
+	<column name="tbsp_page_size">
+		<sql_name>TBSP_PAGE_SIZE</sql_name>
+		<title>Page Size</title>
+		<type>n</type>
+	</column>
+	<column name="tbsp_page_top">
+		<sql_name>TBSP_PAGE_TOP</sql_name>
+		<title>Page Top</title>
+		<type>n</type>
+	</column>
+	<column name="tbsp_state">
+		<sql_name>TBSP_STATE</sql_name>
+		<title>State</title>
+		<type>s</type>
+		<sort>y</sort>
+		<column_mask_file>masks/tablespaceState.xml</column_mask_file>
+	</column>
+	<column name="tbsp_total_pages">
+		<sql_name>TBSP_TOTAL_PAGES</sql_name>
+		<title>Total Pages</title>
+		<type>n</type>
+		<formatNumber toAbbreviated="4"/> 
+	</column>
+	<column name="tbsp_type">
+		<sql_name>TBSP_TYPE</sql_name>
+		<title>Type</title>
+		<type>s</type>
+		<sort>y</sort>
+		<column_mask_file>masks/tablespaceType.xml</column_mask_file>
+	</column>
+	<column name="tbsp_used_pages">
+		<sql_name>TBSP_USED_PAGES</sql_name>
+		<title>Used Pages</title>
+		<type>n</type>
+		<formatNumber toAbbreviated="4"/> 
+	</column>
+	<column name="unread_prefetch_pages">
+		<sql_name>UNREAD_PREFETCH_PAGES</sql_name>
+		<title>Unread Prefetch Pages</title>
+		<type>n</type>
+	</column>
+</table>

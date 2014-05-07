@@ -1,0 +1,131 @@
+<!--
+  Peter Prib, Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2011 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<table name="bufferpool">
+	<sqlName>V$BUFFER_POOL</sqlName>
+	<singularName>Bufferpools</singularName>
+	<pluralName>Bufferpool</pluralName>
+	<description></description>
+	<orderBy name="name" direction="A"/>
+	<disable_edit/>
+	<output>
+		<type name="DDL" destination="" title="" generator=""/>
+	</output>
+	<displayColumns>
+		<col type="column" name="ID"/>
+		<col type="column" name="NAME"/>
+		<col type="column" name="BLOCK_SIZE"/>
+		<col type="column" name="RESIZE_STATE"/>
+		<col type="column" name="CURRENT_SIZE"/>
+		<col type="column" name="BUFFERS"/>
+		<col type="column" name="TARGET_SIZE"/>
+		<col type="column" name="TARGET_BUFFERS"/>
+		<col type="column" name="PREV_SIZE"/>
+		<col type="column" name="PREV_BUFFERS"/>
+		<col type="column" name="LO_BNUM"/>
+		<col type="column" name="HI_BNUM"/>
+		<col type="column" name="LO_SETID"/>
+		<col type="column" name="HI_SETID"/>
+		<col type="column" name="SET_COUNT"/>
+	</displayColumns>
+	<reference name="io">
+		<title>IO</title>
+		<reftype>table</reftype>
+		<refvalue>Oracle/Monitor/bufferpoolStatistics</refvalue>
+		<icon>images/icon-column.gif</icon>
+		<ref foreign_column_name="NAME">
+			<local_column_name>NAME</local_column_name>
+		</ref>
+	</reference>
+	<column name="ID">
+		<sqlName>ID</sqlName>
+		<title>Id</title>
+		<type>n</type>
+		<primaryKey/>
+	</column>
+	<column name="NAME">
+		<sqlName>NAME</sqlName>
+		<title>Name</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="BLOCK_SIZE">
+		<sqlName>BLOCK_SIZE</sqlName>
+		<title>Block Size</title>
+		<type>n</type>
+	</column>
+	<column name="RESIZE_STATE">
+		<sqlName>RESIZE_STATE</sqlName>
+		<title>Resize State</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="CURRENT_SIZE">
+		<sqlName>CURRENT_SIZE</sqlName>
+		<title>Current Size</title>
+		<type>n</type>
+	</column>
+	<column name="BUFFERS">
+		<sqlName>BUFFERS</sqlName>
+		<title>Buffers</title>
+		<type>n</type>
+	</column>
+	<column name="TARGET_SIZE">
+		<sqlName>TARGET_SIZE</sqlName>
+		<title>Target Size</title>
+		<type>n</type>
+	</column>
+	<column name="TARGET_BUFFERS">
+		<sqlName>TARGET_BUFFERS</sqlName>
+		<title>Target Buffers</title>
+		<type>n</type>
+	</column>
+	<column name="PREV_SIZE">
+		<sqlName>PREV_SIZE</sqlName>
+		<title>Prev. Size</title>
+		<type>n</type>
+	</column>
+	<column name="PREV_BUFFERS">
+		<sqlName>PREV_BUFFERS</sqlName>
+		<title>Prev. Buffers</title>
+		<type>n</type>
+	</column>
+	<column name="LO_BNUM">
+		<sqlName>LO_BNUM</sqlName>
+		<title>Low Buffer No.</title>
+		<type>n</type>
+
+	</column>
+	<column name="HI_BNUM">
+		<sqlName>HI_BNUM</sqlName>
+		<title>High Buffer No.</title>
+		<type>n</type>
+	</column>
+	<column name="LO_SETID">
+		<sqlName>LO_SETID</sqlName>
+		<title>Low Set Id</title>
+		<type>n</type>
+	</column>
+	<column name="HI_SETID">
+		<sqlName>HI_SETID</sqlName>
+		<title>Hi Setid</title>
+		<type>n</type>
+	</column>
+	<column name="SET_COUNT">
+		<sqlName>SET_COUNT</sqlName>
+		<title>Set Count</title>
+		<type>n</type>
+	</column>
+</table>

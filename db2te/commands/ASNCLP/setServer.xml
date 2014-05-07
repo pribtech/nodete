@@ -1,0 +1,83 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2010 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<command name="setServer" title="Set Server">
+<![CDATA[
+Read syntax diagramSkip visual syntax diagram
+>>-SET SERVER--+-ALL-----------+-------------------------------->
+               +-REMOTE SOURCE-+   
+               +-CAPTURE-------+   
+               +-CONTROL-------+   
+               '-TARGET--------'   
+
+>--TO--+-NULLS-----------------------------------------------------------------+-><
+       '-+-DB--dbalias--------+--+------------------------+--| other-options |-'   
+         '-DBALIAS--aliasname-'  +-DBNAME--dbname---------+                        
+                                 '-NONIBM SERVER--remsrvr-'                        
+
+other-options
+
+|--+----------------------------+------------------------------->
+   '-AS400 HOSTNAME--"hostname"-'   
+
+>--+-------------------------------+----------------------------|
+   '-ID--userid--+---------------+-'   
+                 '-PASSWORD--pwd-'     
+
+ime-'   
+]]>
+	<text>SET SERVER</text>
+	<select>
+		<option default="true"><text>ALL</text></option>
+		<option><text>REMOTE SOURCE</text></option>
+		<option><text>CAPTURE</text></option>
+		<option><text>CONTROL</text></option>
+		<option><text>TARGET</text></option>
+	</select>
+	<br statement='false'/>
+	<text>TO </text>
+	<select>
+		<option default="true"><text>NULLS</text></option>
+		<option>
+			<select>
+				<option><text>DB</text><clauseReference name="alias-name"/></option>
+				<option><text>DBALIAS</text><clauseReference name="alias-name"/>		</option>
+			</select>
+			<select>
+				<option><text>DBNAME</text><clauseReference name="database-name"/></option>
+				<option><text>NONIBM SERVER</text><input size="32" name="remote server"/></option>
+			</select>
+		</option>
+	</select>
+	<select>
+		<option default="true"></option>
+		<option><text>AS400 HOSTNAME</text><clauseReference name="hostname"/></option>
+	</select>
+	<select>
+		<option default="true"></option>
+		<option>
+			<text>ID</text>
+			<clauseReference name="username"/>
+			<select>
+				<option default="true"></option>
+				<option><text>PASSWORD</text><clauseReference name="password"/></option>
+			</select>
+		</option>
+	</select>
+
+</command>
+        

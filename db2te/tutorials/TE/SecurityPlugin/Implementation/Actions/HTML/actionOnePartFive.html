@@ -1,0 +1,16 @@
+<h3>Confirming a Delete</h3><hr/>
+<p>It is always good practice to confirm with the user when he/she is trying to execute a destructive action. In such situations, the action of type 'confirm' becomes handy. It raises a confirmation dialog to the user.</p>
+
+<p><h2>Steps:</h2>
+<ol>
+  <li>Make the changes to your document as indicated on the right</li>
+  <li>Check your work, then reload the panel containing the Db2auth Custom Master View or open it again from your menu item, at this point you can try the delete action and see the confirmation box</li>
+</ol>
+</p>
+<br/>
+<p>Within the actions of type 'alert', 'confirm' and 'prompt' an element of name 'message' is used to define the message that the user will be prompted with. A substitution parameter of '?USERID?' and/or '?GROUPID?' are used to substitute in the name of the task. The return code for actions of these types is 'true' for an 'OK' button click and 'false' wither for a click on the 'Cancel' button or the user hitting the window close.</p>
+
+<p>As an action will only occur on 'OK' being clicked, a follow-on action will execute on the return code of this action containing the value 'true'.</p>
+
+<br/>
+

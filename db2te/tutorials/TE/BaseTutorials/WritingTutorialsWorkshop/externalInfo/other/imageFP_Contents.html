@@ -1,0 +1,20 @@
+<div id="title">imageFP.php</div>
+<pre><table><tbody><pre><tt>
+<tr><td class="sourceAdd"><font color="#990000">&lt;?php</font>
+  <font color="#009900">$baseDIR</font> <font color="#990000">=</font> <font color="#009900">$_GET</font><font color="#990000">[</font><font color="#FF0000">"BASE_DIR"</font><font color="#990000">];</font>
+  <font color="#009900">$imageName</font> <font color="#990000">=</font> <font color="#009900">$_GET</font><font color="#990000">[</font><font color="#FF0000">"IMAGE_NAME"</font><font color="#990000">];</font>
+<font color="#990000">?&gt;</font>
+
+<font color="#990000">&lt;</font>div id<font color="#990000">=</font><font color="#FF0000">"title"</font><font color="#990000">&gt;&lt;?php</font> <b><font color="#0000FF">echo</font></b> <font color="#009900">$imageName</font><font color="#990000">;?&gt;&lt;/</font>div<font color="#990000">&gt;</font>
+<font color="#990000">&lt;</font>p<font color="#990000">&gt;</font>
+  <font color="#990000">&lt;</font>table cellspacing<font color="#990000">=</font><font color="#FF0000">"0"</font> cellpadding<font color="#990000">=</font><font color="#FF0000">"0"</font><font color="#990000">&gt;</font>
+    <font color="#990000">&lt;</font>tr<font color="#990000">&gt;</font>
+      <font color="#990000">&lt;</font>td width<font color="#990000">=</font><font color="#FF0000">'30'</font><font color="#990000">&gt;</font>
+        <font color="#990000">&lt;</font>img src<font color="#990000">=</font><font color="#FF0000">"&lt;?php echo $baseDIR;?&gt;/images/&lt;?php echo $imageName;?&gt;"</font> 
+          border<font color="#990000">=</font><font color="#FF0000">"0"</font> alt<font color="#990000">=</font><font color="#FF0000">"&lt;?php echo $imageName;?&gt;"</font><font color="#990000">&gt;</font>
+      <font color="#990000">&lt;/</font>td<font color="#990000">&gt;</font>
+    <font color="#990000">&lt;/</font>tr<font color="#990000">&gt;</font>
+  <font color="#990000">&lt;/</font>table<font color="#990000">&gt;</font>
+<font color="#990000">&lt;/</font>p<font color="#990000">&gt;</font>
+</td></tr>
+</tt></pre>

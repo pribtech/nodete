@@ -1,0 +1,53 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2010 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<command name="createMonitorSuspension" title="Create Monitor Suspension">
+<![CDATA[
+>>-CREATE MONITOR SUSPENSION--name--FOR--+-SERVER--server_name-+-->
+                                         '-ALIAS--server_alias-'   
+
+>--STARTING DATE--date--+-------------------------------+------->
+                        +-USING TEMPLATE--template_name-+   
+                        '-STARTING TIME--starting_time--'   
+
+>--ENDING DATE--date--+--------------------------+-------------><
+                      '-ENDING TIME--ending_time-'   
+]]>
+	<text>CREATE MONITOR SUSPENSION</text>
+	<input size="32" title="name"/>
+	<text>FOR</text>
+	<select>
+		<option default="true"><text>SERVER</text><input size="32"/></option>
+		<option><text>ALIAS</text><input size="32"/></option>
+	<select>
+	<br/>
+	<text>STARTING DATE</text>
+	<input size="32" title="name"/>
+	<select>
+		<option default="true"></option>
+		<option><text>USING TEMPLATE</text><clauseReference name="template_name"/></option>
+		<option><text>STARTING TIME</text><input size="10"/></option>
+	<select>
+	<br/>
+	<text>ENDING DATE</text>
+	<input size="32" title="name"/>
+	<select>
+		<option default="true"></option>
+		<option><text>ENDING TIME</text><input size="10"/></option>
+	<select>
+</command>
+        

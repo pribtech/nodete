@@ -1,0 +1,114 @@
+<!-- XML table definition was generated from the table: ASN.IBMSNAP_SUBS_COLS -->
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2011 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+
+<table name="ASN.IBMSNAP_SUBS_COLS">
+	<sql_name>ASN.IBMSNAP_SUBS_COLS</sql_name>
+	<singular_name>Subscription Column</singular_name>
+	<plural_name>Subscription Column</plural_name>
+	<description/>
+	<disable_edit/>
+	<messages><SQL0204N>Apply replication not installed or its schema is not the default ASN</SQL0204N></messages>
+	<rows_per_page>50</rows_per_page>
+	<order_by_index name="apply_qual" direction="A"/>   
+	<order_by_index name="set_name" direction="A"/>   
+	<order_by_index name="whos_on_first" direction="A"/>
+	<order_by_index name="target_owner" direction="A"/>
+	<order_by_index name="target_table" direction="A"/>
+	<order_by_index name="target_name" direction="A"/>
+	<display_columns>
+		<col type="column" name="apply_qual"/>
+		<col type="column" name="set_name"/>
+		<col type="column" name="whos_on_first"/>
+		<col type="column" name="target_owner"/>
+		<col type="column" name="target_table"/>
+		<col type="column" name="col_type"/>
+		<col type="column" name="target_name"/>
+		<col type="column" name="is_key"/>
+		<col type="column" name="colno"/>
+		<col type="column" name="expression"/>
+	</display_columns>
+	<column name="apply_qual">
+		<c_sql_name>APPLY_QUAL</c_sql_name>
+		<c_title>Apply Qual</c_title>
+		<c_presentation>s</c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="set_name">
+		<c_sql_name>SET_NAME</c_sql_name>
+		<c_title>Set Name</c_title>
+		<c_presentation>s</c_presentation>
+	</column>
+	<column name="whos_on_first">
+		<c_sql_name>WHOS_ON_FIRST</c_sql_name>
+		<c_title>Whos On First</c_title>
+		<c_presentation>s</c_presentation>
+   		<c_column_mask>
+			<value_mask value="F"><mask>First</mask></value_mask>
+			<value_mask value="S"><mask>Second</mask></value_mask>
+   		</c_column_mask>	
+	</column>
+	<column name="target_owner">
+		<c_sql_name>TARGET_OWNER</c_sql_name>
+		<c_title>Target Owner</c_title>
+		<c_presentation>s</c_presentation>
+		<c_prefill>
+			<table>schema</table>
+			<column>SCHEMANAME</column>
+		</c_prefill>
+	</column>
+	<column name="target_table">
+		<c_sql_name>TARGET_TABLE</c_sql_name>
+		<c_title>Target Table</c_title>
+		<c_presentation>s</c_presentation>
+	</column>
+	<column name="col_type">
+		<c_sql_name>COL_TYPE</c_sql_name>
+		<c_title>Col Type</c_title>
+		<c_presentation>s</c_presentation>
+   		<c_column_mask>
+			<value_mask value="A"><mask>After</mask></value_mask>
+			<value_mask value="B"><mask>Before</mask></value_mask>
+			<value_mask value="C"><mask>Computed - scalar</mask></value_mask>
+			<value_mask value="F"><mask>Computed - function</mask></value_mask>
+			<value_mask value="L"><mask>LOB</mask></value_mask>
+			<value_mask value="P"><mask>Predicate</mask></value_mask>
+			<value_mask value="R"><mask>Relative</mask></value_mask>
+   		</c_column_mask>	
+	</column>
+	<column name="target_name">
+		<c_sql_name>TARGET_NAME</c_sql_name>
+		<c_title>Target Name</c_title>
+		<c_presentation>s</c_presentation>
+	</column>
+	<column name="is_key">
+		<c_sql_name>IS_KEY</c_sql_name>
+		<c_title>Is Key</c_title>
+		<c_presentation>s</c_presentation>
+	</column>
+	<column name="colno">
+		<c_sql_name>COLNO</c_sql_name>
+		<c_title>Column No.</c_title>
+		<c_presentation>n</c_presentation>
+	</column>
+	<column name="expression">
+		<c_sql_name>EXPRESSION</c_sql_name>
+		<c_title>Expression</c_title>
+		<c_presentation>s</c_presentation>
+	</column>
+</table>

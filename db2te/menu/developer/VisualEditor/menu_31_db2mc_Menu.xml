@@ -1,0 +1,37 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2009 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+
+<menu type="leaf" branchDirectory="">
+	<description>Visual db2mc Menu</description>
+	<pageWindow target="_active">
+		<panel name="main" PrimaryContainer="true">
+			<link type="action" target="_self" window="_self" connectionRequired="y">
+				<parameterList>
+					<parameter name="action">chartNodal</parameter>
+					<parameter name="$chartTitle">Visual db2mc Menu</parameter>
+					<parameter name="$sourceType">xmlData</parameter>
+					<parameter name="$editMode">true</parameter>
+					<parameter name="$newRoot">menu</parameter>
+					<parameter name="$definition">XSD/menu.xsd</parameter>
+					<parameter name="$report">XSL/chartNodalDefaultReport.xsl</parameter>
+					<!-- parameter name="$nodeControl"></parameter --> 
+				</parameterList>
+			</link>				
+		</panel>
+	</pageWindow>
+</menu>

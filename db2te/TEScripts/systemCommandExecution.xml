@@ -1,0 +1,183 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2009 All rights reserved.
+  
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<actionScript name="systemCommandExecution" type="serverAction" lockScreen="true">
+	<parameterList>
+		<parameter name="action" type="fixed">
+			<value>processCommand</value>
+		</parameter>
+		<parameter name="command" type="fixed">
+			<value>?command?</value>
+		</parameter>
+		<parameter name="function" type="fixed">
+			<value>getObjectFromFile</value>
+		</parameter>
+	</parameterList>
+	<if condition="true" negCondition="true">
+		<task>
+			<assignSharedConstant name="error" type="returnObject">
+				<value>systemCommandExecution.returnValue</value>
+			</assignSharedConstant>
+			<alert>XML command load failed : ?error?</alert>
+		</task>
+	</if>
+	<if condition="true">
+		<task>
+			<action name="getForm" type="serverAction" >
+				<parameterList>
+					<parameter name="action" type="fixed">
+						<value>processCommand</value>
+					</parameter>
+					<parameter name="function" type="fixed">
+						<value>getForm</value>
+					</parameter>
+					<parameter name="command" type="returnObject">
+						<value>systemCommandExecution.returnValue</value>
+					</parameter>
+				</parameterList>
+			</action>
+			<assignSharedConstant name="commandForm" type="returnObject">
+				<value>getForm.returnValue</value>
+			</assignSharedConstant>
+			<action name="createCommand" type="form" >
+			    <message>?commandForm?</message>
+				<parameterList>
+					<parameter name="exitScript" type="raw">
+						<value>if(!commandCheckCompleted ()) return;</value>
+					</parameter>
+					<parameter name="buttonOK" type="raw">
+						<value>Execute</value>
+					</parameter>
+					<parameter name="button_ShowSQL" type="raw">
+						<value>Show Command</value>
+					</parameter>
+					<parameter name="button_AdHoc" type="raw">
+						<value>Ad Hoc Panel</value>
+					</parameter>
+					<parameter name="parameter[commandForm]" type="blockValue">
+						<value>commandForm</value>
+					</parameter>
+				</parameterList>
+			</action>
+			<if condition="false" compareOn="createCommand.returnCode" compareOnType="returnObject">
+				<task>
+					<exit/>
+				</task>
+			</if>
+			<action name="getCommand" type="serverAction" >
+				<parameterList>
+					<parameter name="action" type="fixed">
+						<value>processCommand</value>
+					</parameter>
+					<parameter name="function" type="fixed">
+						<value>getStatement</value>
+					</parameter>
+					<parameter name="command" type="returnObject">
+						<value>systemCommandExecution.returnValue</value>
+					</parameter>
+				</parameterList>
+			</action>
+			<assignSharedConstant name="systemCommand" type="returnObject">
+				<value>getCommand.returnValue</value>
+			</assignSharedConstant>
+			<if condition="true" negCondition="true">
+				<task>
+					<alert>Generate Statement Failed : ?systemCommand?</alert>
+					<exit/>
+				</task>
+			</if>
+			<if condition="AdHoc" compareOn="createCommand.returnCode" compareOnType="returnObject">
+				<task>
+					<loadPage>
+						<pageWindow target="adhocWindow">
+								<panel name="main" PrimaryContainer="true">
+									<link type="action" target="adhoc" window="_self" connectionRequired="y">
+									<parameterList>
+										<parameter name="action">ADHOC</parameter>
+										<parameter name="LoadSQLData" type="fixed">?systemCommand?</parameter>
+										<parameter name="scriptMode" type="raw">SHELL</parameter>
+									</parameterList>
+								</link>
+							</panel>
+						</pageWindow>
+					</loadPage>
+					<exit/>
+				</task>
+			</if>
+			<if condition="ShowSQL" compareOn="createCommand.returnCode" compareOnType="returnObject">
+				<task>
+					<action name="showCommand" type="form" >
+			    		<message><![CDATA[
+			    				<div><pre>?systemCommand?</pre></div>
+							]]>
+						</message>
+						<parameterList>
+							<parameter name="buttonOK" type="raw">
+								<value>Execute</value>
+							</parameter>
+							<parameter name="parameter[systemCommand]" type="returnObject">
+								<value>getCommand.returnValue</value>
+							</parameter>
+						</parameterList>
+					</action>
+					<if condition="false" compareOn="showCommand.returnCode" compareOnType="returnObject">
+						<task>
+								<exit/>
+						</task>
+					</if>
+				</task>
+			</if>
+			<action name="executeShell" type="serverAction" >
+				<parameterList>
+					<parameter name="action" type="fixed">
+						<value>executeShellNew</value>
+					</parameter>
+					<parameter name="SHELL" type="returnObject">
+						<value>getCommand.returnValue</value>
+					</parameter>
+					<parameter name="outputType" type="raw">
+						<value>stream</value>
+					</parameter>
+					<parameter name="format" type="raw">
+						<value>no</value>
+					</parameter>
+				</parameterList>
+			</action>
+			<if condition="true" negCondition="true">
+				<task>
+					<assignSharedConstant name="ERROR_MESSAGE" type="returnObject">
+						<value>executeShell.returnValue</value>
+					</assignSharedConstant>
+					<alert>Failed: ?ERROR_MESSAGE?</alert>
+					<exit/>
+				</task>
+			</if>
+			<assignSharedConstant name="output" type="returnObject">
+				<value>executeShell.returnValue</value>
+			</assignSharedConstant>
+			<action name="showOutput" type="form" >
+			    <message>
+<![CDATA[       
+<textarea style="font-family:Console,'Courier New',Lucida" rows="30" cols="80" wrap="off">
+?output?
+</textarea>
+]]>			    
+			    </message>
+			</action>
+		</task>
+	</if>
+</actionScript>

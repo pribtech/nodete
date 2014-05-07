@@ -1,0 +1,44 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2009 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<command name="AUTOMAINT_GET_POLICY" title="AUTOMAINT_GET_POLICY">
+<![CDATA[
+>>-AUTOMAINT_GET_POLICY--(--policy_type--,--policy--)----------><
+]]>
+	<text>CALL AUTOMAINT_GET_POLICY (</text>
+	<br/><text spacepad="false">'</text>
+	<input spacepad="false" type="list" help="policy_type">
+		<option>AUTO_BACKUP</option>
+		<option>AUTO_REORG</option>
+		<option>AUTO_RUNSTATS</option>
+		<option>MAINTENANCE_WINDOW</option>
+	</input> 
+	<text>' , ? )</text>
+	
+	<help name='policy_type'>
+		<![CDATA[
+			<table>
+				<tr><td>'AUTO_BACKUP' </td><td>automatic backup</td></tr>
+				<tr><td>'AUTO_REORG'</td><td>automatic table and index reorganization</td></tr>
+				<tr><td>'AUTO_RUNSTATS' </td><td>automatic table runstats operations</td></tr>
+				<tr><td>'MAINTENANCE_WINDOW'</td><td>maintenance window </td></tr>
+
+			</table>
+		]]>
+	</help>
+</command>
+        

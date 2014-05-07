@@ -1,0 +1,667 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2009 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+
+<clause name="subSelect" title="sub select">
+<![CDATA[
+>>-select-clause--from-clause--+--------------+----------------->
+                               '-where-clause-'   
+]]>
+	<clauseReference name="select-clause"/>
+	<br/>
+	<clauseReference name="from-clause"/>
+	<br/>
+	<select>
+		<option default="true"><note>no where</note></option>
+		<option><clauseReference name="where-clause"/></option>
+	</select>
+	<br/>
+
+<![CDATA[
+>--+-----------------+--+---------------+----------------------->
+   '-group-by-clause-'  '-having-clause-'   
+]]>
+	<select>
+		<option default="true"><note>no grouping</note></option>
+		<option><clauseReference name="group-by-clause"/></option>
+	</select>
+	<br/>
+	<select>
+		<option default="true"><note>no having</note></option>
+		<option><clauseReference name="having-clause"/></option>
+	</select>
+	<br/>
+
+<![CDATA[
+>--+-----------------+--+--------------------+-----------------><
+   '-order-by-clause-'  '-fetch-first-clause-'   
+]]>
+	<select>
+		<option default="true"><note>no order</note></option>
+		<option><clauseReference name="order-by-clause"/></option>
+	</select>
+	<br/>
+	<select>
+		<option default="true"><note>fetch all</note></option>
+		<option><clauseReference name="fetch-first-clause"/></option>
+	</select>
+	<br/>
+
+	<clause name="select-clause">
+<![CDATA[
+           .-ALL------.   
+>>-SELECT--+----------+----------------------------------------->
+           '-DISTINCT-'   
+]]>
+		<text>SELECT</text>
+		<select>
+			<option><text>ALL</text></option>
+			<option default="true"><note>all</note></option>
+			<option><text>DISTINCT</text></option>
+		</select>
+		<br/>
+<![CDATA[
+>--+-*-----------------------------------------------+---------><
+   | .-,-------------------------------------------. |   
+   | V                                             | |   
+   '---+-expression--+-------------------------+-+-+-'   
+       |             | .-AS-.                  | |       
+       |             '-+----+--new-column-name-' |       
+       '-exposed-name.*--------------------------'       
+]]>
+		<select>
+			<option default="true"><text>*</text></option>
+			<option>
+				<repeatable>
+					<select>
+						<option>
+							<clauseReference name="expression"/>
+							<select>
+								<option default="true"><note>default name</note></option>
+								<option>
+									<select>
+										<option><text>AS</text></option>
+										<option default="true"><note>AS</note></option>
+									</select>
+									<input size="30" />
+								</option>
+							</select>
+						</option>
+						<option>
+							<input size="30" />
+							<text>.*</text>
+						</option>
+					</select>
+				</repeatable>
+			</option>
+		</select>
+	</clause>
+
+	<clause name="from-clause">
+<![CDATA[
+         .-,---------------.   
+         V                 |   
+>>-FROM----table-reference-+-----------------------------------><
+]]>
+		<text>FROM</text>
+		<repeatable>
+			<clauseReference name="table-reference"/>
+		</repeatable>
+	</clause>
+	
+	<clause name="table-reference" title="table reference">
+<![CDATA[
+>>-+-table-name--+------------------------+--+------------------------+---------------+-><
+   |             '-| correlation-clause |-'  '-| tablesample-clause |-'               |   
+   +-+-+-nickname--+-------------------+--+------------------------+------------------+   
+   | | '-view-name-'                   |  '-| correlation-clause |-'                  |   
+   | '-+-ONLY--+--(--+-table-name-+--)-'                                              |   
+   |   '-OUTER-'     '-view-name--'                                                   |   
+   +-TABLE--(--function-name--(--+----------------+--)--)--+------------------------+-+   
+   |                             | .-,----------. |        '-| correlation-clause |-' |   
+   |                             | V            | |                                   |   
+   |                             '---expression-+-'                                   |   
+   |                     (1)                                                          |   
+   +-xmltable-expression------+------------------------+------------------------------+   
+   |                          '-| correlation-clause |-'                              |   
+   +-| nested-table-expression |--+------------------------+--------------------------+   
+   |                              '-| correlation-clause |-'                          |   
+   +-| data-change-table-reference |--+------------------------+----------------------+   
+   |                                  '-| correlation-clause |-'                      |   
+   +-| collection-derived-table |-----------------------------------------------------+   
+   '-joined-table---------------------------------------------------------------------'   
+]]>
+		<select>
+			<option default="true">
+				<clauseReference name="table-name"/>
+				<select>
+					<option default="true"><note>no correlation</note></option>
+					<option><clauseReference name="correlation-clause"/></option>
+				</select>
+				<select>
+					<option default="true"><note>no sampling</note></option>
+					<option><clauseReference name="tablesample-clause"/></option>
+				</select>
+			</option>
+			<option >
+				<select>
+					<option default="true">
+						<select>
+							<option default="true"><clauseReference name="nickname"/></option>
+							<option><clauseReference name="view-name"/></option>
+						</select>
+					</option>
+					<option>
+						<select>
+							<option default="true"><text>ONLY</text></option>
+							<option><text>OUTER</text></option>
+						</select>
+						<text>(</text>
+						<select>
+							<option default="true"><clauseReference name="table-name"/></option>
+							<option><clauseReference name="view-name"/></option>
+						</select>
+						<text>)</text>
+					</option>
+				</select>
+				<select>
+					<option default="true"><note>no correlation</note></option>
+					<option><clauseReference name="correlation-clause"/></option>
+				</select>
+			</option>
+			<option>
+				<text>TABLE (</text>
+				<clauseReference name="function-name"/>
+				<text>(</text>
+				<select>
+					<option default="true"><note>no expression</note></option>
+					<option>
+						<repeatable>	
+							<clauseReference name="expression"/>
+						</repeatable>	
+					</option>
+				</select>
+				<text>) )</text>
+				<select>
+					<option default="true"><note>no correlation</note></option>
+					<option><clauseReference name="correlation-clause"/></option>
+				</select>
+			</option>
+			<option>
+				<clauseReference name="xmltable-expression"/>
+				<select>
+					<option default="true"><note>no correlation</note></option>
+					<option><clauseReference name="correlation-clause"/></option>
+				</select>
+			</option>
+			<option>
+				<clauseReference name="nested-table-expression"/>
+				<select>
+					<option default="true"><note>no correlation</note></option>
+					<option><clauseReference name="correlation-clause"/></option>
+				</select>
+			</option>
+			<option>
+				<clauseReference name="data-change-table-reference"/>
+				<select>
+					<option default="true"><note>no correlation</note></option>
+					<option><clauseReference name="correlation-clause"/></option>
+				</select>
+			</option>
+			<option>
+				<clauseReference name="collection-derived-table"/>
+			</option>
+			<option>
+				<clauseReference name="joined-table"/>
+			</option>
+		</select>
+	</clause>
+
+	<clause name="correlation-clause" title="correlation clause">
+<![CDATA[
+   .-AS-.                                                
+|--+----+--correlation-name--+-----------------------+----------|
+                             |    .-,-----------.    |   
+                             |    V             |    |   
+                             '-(----column-name-+--)-'   
+]]>
+		<select>
+			<option><text>AS</text></option>
+			<option default="true"><note>AS</note></option>
+		</select>
+		<input size="18"/>
+		<select>
+			<option default="true"><note>no column naming</note></option>
+			<option>
+				<text>(</text>
+				<repeatable>
+					<clauseReference name="column-name"/>
+				</repeatable>
+				<text>)</text>
+			</option>
+		</select>
+	</clause>
+
+	<clause name="tablesample-clause" title="table sample">
+<![CDATA[
+|----+-BERNOULLI-+--(--numeric-expression1--)-------->
+     '-SYSTEM----'                              
+
+>--+---------------------------------------+--------------------|
+   '-REPEATABLE--(--numeric-expression2--)-'   
+]]>
+		<select>
+			<option default="true"><text>BERNOULLI</text></option>
+			<option><text>SYSTEM</text></option>
+		</select>
+		<text>(</text>
+		<input type='int' size='12'/>
+		<text>)</text>
+		<select>
+			<option default="true"><note>not repeatable</note></option>
+			<option>
+				<text>REPEATABLE (</text>
+					<input type='int' size='12'/>
+					<text>)</text>
+			</option>
+		</select>
+	</clause>
+
+	<clause name="nested-table-expression">
+<![CDATA[
+|--+-----------------------------------------------+--(fullselect)--|
+   |         (2)                                   |                 
+   '-LATERAL------+------------------------------+-'                 
+                  '-| continue-handler |--WITHIN-'                   
+]]>
+		<select>
+			<option default="true"><note>no lateral</note></option>
+			<option>
+				<text>LATERAL</text>
+				<select>
+					<option default="true"><note>no within</note></option>
+					<option>
+						<clauseReference name="continue-handler"/>
+						<text>WITHIN</text>
+					</option>
+				</select>
+			</option>
+		</select>
+		<text> (</text>
+			<clauseReference name="fullSelect"/>
+		<text> )</text>
+	</clause>
+
+	<clause name="continue-handler">
+<![CDATA[
+                      .-,----------------------------.   
+                      V                              |   
+|--RETURN DATA UNTIL----| specific-condition-value |-+----------|
+]]>
+		<text>RETURN DATA UNTIL</text>
+		<repeatable>
+			<clauseReference name="specific-condition-value"/>
+		</repeatable>
+	</clause>
+
+	<clause name="specific-condition-value" title="specific condition value">
+<![CDATA[
+                        .-VALUE-.                                                       
+|--FEDERATED--SQLSTATE--+-------+--string-constant--+-------------------------------+--|
+                                                    |          .-,----------------. |   
+                                                    |          V                  | |   
+                                                    '-SQLCODE----integer-constant-+-'   
+]]>
+		<text>FEDERATED SQLSTATE</text>
+		<select>
+			<option><text>VALUE</text></option>
+			<option default="true"><note>VALUE</note></option>
+		</select>
+		<input size="10"/>
+		<select>
+			<option default="true"><note>no SQLCODEs</note></option>
+			<option>
+				<text>SQLCODE</text>
+				<repeatable>
+					<input type="int" size="8"/>
+				</repeatable>
+			</option>
+		</select>
+	</clause>
+
+	<clause name="data-change-table-reference" title="data change table reference">
+<![CDATA[
+|--+-+-FINAL-+--TABLE--(--insert-statement--)----------+--------|
+   | '-NEW---'                                         |   
+   +-+-FINAL-+--TABLE--(--searched-update-statement--)-+   
+   | +-NEW---+                                         |   
+   | '-OLD---'                                         |   
+   '-OLD TABLE--(--searched-delete-statement--)--------'   
+]]>
+		<select>
+			<option default="true">
+				<select>
+					<option default="true"><text>FINAL</text></option>
+					<option><text>NEW</text></option>
+				</select>
+				<text>TABLE (</text>
+				<clauseReference name="insertStatement"/>
+				<text> )</text>
+			</option>
+			<option>
+				<select>
+					<option default="true"><text>FINAL</text></option>
+					<option><text>NEW</text></option>
+					<option><text>OLD</text></option>
+				</select>
+				<text>TABLE (</text>
+				<clauseReference name="searched-delete-statement" />
+				<text> )</text>
+			</option>
+			<option>
+				<text>OLD TABLE (</text>
+				<clauseReference name="searched-update-statement" />
+				<text> )</text>
+			</option>
+		</select>
+	</clause>
+
+	<clause name="collection-derived-table" title="collection derived table">
+<![CDATA[
+              .-,-----------------------------------------------.      
+              V                                                 |      
+|--UNNEST--(----+-array-variable-name-------------------------+-+--)-->
+                '-CAST--(--parameter-marker--)--AS--data-type-'        
+
+>--+-----------------+--| correlation-clause |------------------|
+   '-WITH ORDINALITY-'                           
+]]>
+		<text>UNNEST (</text>
+		<repeatable>
+			<select>
+				<option default="true">
+					<clauseReference name="array-variable-name"/>
+				</option>
+				<option>
+					<text>CAST (</text>
+					<clauseReference name="parameter-marker"/>
+					<text>) AS</text>
+					<clauseReference name="data-type"/>
+				</option>
+			</select>
+		</repeatable>
+		<text>)</text>
+		<select>
+			<option default="true"><note>no ordinality</note></option>
+			<option><text>WITH ORDINALITY</text></option>
+		</select>
+		<clauseReference name="correlation-clause" />
+	</clause>
+
+	<clause name="joined-table" title="joined table">
+<![CDATA[
+                      .-INNER-----.                                                
+>>-+-table-reference--+-----------+--JOIN--table-reference--ON--join-condition-+-><
+   |                  '-| outer |-'                                            |   
+   +-table-reference--CROSS JOIN--table-reference------------------------------+   
+   '-(--joined-table--)--------------------------------------------------------'   
+]]>
+		<select>
+			<option>
+				<clauseReference name="table-reference"/>
+				<select>
+					<option><text>INNER</text></option>
+					<option default="true"><note>INNER</note></option>
+					<option><clauseReference name="outer"/></option>
+				</select>
+				<text>JOIN</text>
+				<clauseReference name="table-reference"/>
+				<text>ON</text>
+				<clauseReference name="join-condition"/>
+			</option>
+			<option>
+				<clauseReference name="table-reference"/>
+				<text>CROSS JOIN</text>
+				<clauseReference name="table-reference"/>
+			</option>
+			<option>
+				<text>(</text>
+				<clauseReference name="joined-table"/>
+				<text>)</text>
+			</option>
+		</select>
+	</clause>
+
+	<clause name="outer" title="outer">
+<![CDATA[
+              .-OUTER-.   
+|--+-LEFT--+--+-------+-----------------------------------------|
+   +-RIGHT-+              
+   '-FULL--'      
+]]>
+		<select>
+			<option default="true"><text>LEFT</text></option>
+			<option><text>RIGHT</text></option>
+			<option><text>FULL</text></option>
+		</select>
+		<select>
+			<option><text>OUTER</text></option>
+			<option default="true"><note>outer</note></option>
+		</select>
+	</clause>
+
+	<clause name="where-clause">
+<![CDATA[
+>>-WHERE--search-condition-------------------------------------><
+]]>
+		<text>WHERE</text><clauseReference name="search-condition"/>
+	</clause>
+
+	<clause name="group-by-clause" title="group by clause">
+<![CDATA[
+             .-,-----------------------.   
+             V                         |   
+>>-GROUP BY----+-grouping-expression-+-+-----------------------><
+               +-grouping-sets-------+     
+               '-super-groups--------'    
+]]>
+		<text>GROUP BY</text>
+		<repeatable>
+			<select>
+				<option default="true"><clauseReference name="grouping-expression"/></option>
+				<option><clauseReference name="grouping-sets"/></option>
+				<option><clauseReference name="super-groups"/></option>
+			</select>
+		</repeatable>
+	</clause>
+
+	<clause name="grouping-sets"  title="grouping sets">
+<![CDATA[
+                     .-,-------------------------------------.      
+                     V                                       |      
+>>-GROUPING SETS--(----+-+-grouping-expression-+-----------+-+--)-><
+                       | '-super-groups--------'           |        
+                       |    .-,-----------------------.    |        
+                       |    V                         |    |        
+                       '-(----+-grouping-expression-+-+--)-'        
+                              '-super-groups--------'   
+]]>
+		<text>GROUPING SETS (</text>
+		<repeatable>
+			<select>
+				<option default="true">
+					<select>
+						<option default="true"><clauseReference name="grouping-expression"/></option>
+						<option><clauseReference name="super-groups"/></option>
+					</select>
+				</option>
+				<option>
+					<text> (</text>
+					<repeatable>
+						<select>
+							<option default="true"><clauseReference name="grouping-expression"/></option>
+							<option><clauseReference name="super-groups"/></option>
+						</select>
+					</repeatable>
+					<text> )</text>
+				</option>
+			</select>
+		</repeatable>
+		<text>)</text>
+	</clause>
+
+	<clause name="super-groups"  title="super groups">
+<![CDATA[
+>>-+-ROLLUP--(--grouping-expression-list--)-----+--------------><
+   |                                      (2)   |   
+   +-CUBE--(--grouping-expression-list--)-------+   
+   '-| grand-total |----------------------------'   
+]]>
+		<select>
+			<option default="true">
+				<text>ROLLUP (</text>
+				<clauseReference name="grouping-expression-list"/>
+				<text>)</text>
+			</option>
+			<option>
+				<text>CUBE (</text>
+				<clauseReference name="grouping-expression-list"/>
+				<text>)</text>
+			</option>
+			<option><clauseReference name="grand-total" /></option>
+		</select>
+	</clause>
+	
+	<clause name="grouping-expression-list" title="grouping expression list">
+<![CDATA[
+   .-,---------------------------------.   
+   V                                   |   
+|----+-grouping-expression-----------+-+------------------------|
+     |    .-,-------------------.    |     
+     |    V                     |    |     
+     '-(----grouping-expression-+--)-'     
+]]>
+		<select>
+			<option default="true">
+				<clauseReference name="grouping-expression"/>
+			</option>
+			<option>
+				<text>(</text>
+				<repeatable>
+					<clauseReference name="grouping-expression"/>
+				</repeatable>
+				<text>)</text>
+			</option>
+		</select>
+	</clause>
+
+	<clause name="grand-total"  title="grand total">
+<![CDATA[
+|--(--)---------------------------------------------------------|
+]]>
+		<text>( )</text>
+	</clause>
+
+	<clause name="having-clause">
+<![CDATA[
+>>-HAVING--search-condition------------------------------------><
+]]>
+		<text>HAVING</text><clauseReference name="search-condition"/>
+	</clause>
+
+	<clause name="order-by-clause">
+<![CDATA[
+               .-,------------------------------.     
+               V                 .-ASC--.       |     
+>>-ORDER BY--+---+-| sort-key |--+------+-----+-+-+------------><
+             |   |               '-DESC-'     |   |   
+             |   '-ORDER OF--table-designator-'   |   
+             '-INPUT SEQUENCE---------------------'   
+]]>
+		<text>ORDER BY</text>
+		<select>
+			<option default="true">
+				<repeatable>
+					<select>
+						<option default="true">
+							<clauseReference name="sort-key" title="sort key"/>
+							<select>
+								<option><text>ASC</text></option>
+								<option default="true"><text></text></option>
+								<option><text>DESC</text></option>
+							</select>
+						</option>
+						<option>
+							<text>ORDER OF</text>
+							<clauseReference name="table-designator"/>
+						</option>
+					</select>
+				</repeatable>
+			</option>
+			<option><text>INPUT SEQUENCE</text></option>
+		</select>
+	</clause>
+
+	<clause name="sort-key" title="sort key">
+<![CDATA[
+|--+-simple-column-name--+--------------------------------------|
+   +-simple-integer------+   
+   '-sort-key-expression-'   
+]]>
+		<select>
+			<option default="true"><input size="32"/></option>
+			<option><input type="int" size="2"/></option>
+			<option><clauseReference name="sort-key-expression"/></option>
+		</select>
+	</clause>
+
+	<clause name="fetch-first-clause">
+<![CDATA[
+                .-1-------.                   
+>>-FETCH FIRST--+---------+--+-ROW--+--ONLY--------------------><
+                '-integer-'  '-ROWS-'         
+]]>
+		<text>FETCH FIRST</text>
+		<select>
+			<option><text>1</text></option>
+			<option default="true"><text></text></option>
+			<option><input type="int" size="12"/></option>
+		</select>
+		<select>
+			<option default="true"><text>ROW</text></option>
+			<option><text>ROWS</text></option>
+		</select>
+		<text>ONLY</text>
+	</clause>
+
+	<clause name="searched-update-statement" >
+		<text>searched-update-statement *** to be done ***</text>
+	</clause>
+	<clause name="searched-delete-statement">
+		<text>searched-update-statement *** to be done ***</text>
+	</clause>
+	<clause name="grouping-expression">
+		<text>grouping-expression *** to be done ***</text>
+	</clause>
+	<clause name="xmltable-expression">
+		<text>xmltable-expression  *** to be done ***</text>
+	</clause>
+	<clause name="join-condition">
+		<text>join-condition  *** to be done ***</text>
+	</clause>
+
+</clause>

@@ -1,0 +1,296 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2011 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+
+<table name="overviewdatabases">
+	<sql_name>OverviewDatabases</sql_name>
+	<inlinequery>
+<![CDATA[
+SELECT * FROM table(SNAP_GET_DB('', -2) ) a
+]]>
+	</inlinequery>
+	<singular_name>Overview Database Detail</singular_name>
+	<plural_name>Overview Databases Detail</plural_name>
+	<description/>
+	<output>
+		<type name="DDL" destination="" title="" generator=""/>
+		<type name="PDF" destination="fo2pdf" title="PDF" generator="XSL/compareTable2FO.xsl"/>
+	</output>
+	<display_columns>
+		<col type="column" name="connection"/>
+		<col type="column" name="DB_NAME"/>
+		<col type="column" name="CPU"/>
+		<col type="column" name="UOWs"/>
+		<col type="column" name="maxTimeUOW"/>
+		<col type="column" name="lockWaits"/>
+		<col type="column" name="logUse"/>
+		<col type="column" name="lastBackupAge" title="Backup"/>
+		<col type="column" name="db2diag" />
+		<col type="column" name="tablespace" />
+		<col type="column" name="tableInvalid" />
+		<col type="column" name="objectInvalid" />
+		<col type="column" name="catInvalid" />
+	</display_columns>
+	<column name="SNAPSHOT_TIMESTAMP">
+		<sql_name>SNAPSHOT_TIMESTAMP</sql_name>
+		<title>Timestamp</title>
+	</column>
+	<column name="DB_NAME">
+		<sql_name>DB_NAME</sql_name>
+		<title>Name</title>
+		<primary_key/>
+		<type>s</type>
+	</column>
+	<column name="CPU" minVersion="9.5">
+		<sql_name>
+<![CDATA[
+(select value from sysibmadm.env_sys_resources as s where name='CPU_USAGE_TOTAL')
+]]>		
+   		</sql_name>
+		<title>CPU</title>
+		<type>bg</type>
+	</column>
+	<column name="UOWs" minVersion="9.5">
+		<sql_name>
+<![CDATA[
+(select count(*) from SYSIBMADM.SNAPAPPL  where uow_stop_time is null)
+]]>		
+   		</sql_name>
+		<title>UOWs</title>
+		<type>n</type>
+		<style>
+			<option gt='10' style='ERROR'/>
+			<option gt='4' style='WARNING'/>
+		</style>
+		<reference name="col">
+			<title>UOWs</title>
+			<reftype>table</reftype>
+			<refvalue>Performance/applicationsActive</refvalue>
+			<icon>images/fw_bold.gif</icon>								
+			<ref foreign_column_name="useConnection">
+				<local_column_name>connection</local_column_name>
+			</ref>		
+		</reference>
+	</column>
+	<column name="MaxTimeUOW" minVersion="9.5">
+		<sql_name>
+<![CDATA[
+(select max(case when UOW_START_TIME <= SNAPSHOT_TIMESTAMP - 30 minutes then double(TIMESTAMPDIFF(2,CHAR(SNAPSHOT_TIMESTAMP - UOW_START_TIME))) 
+		else double(TIMESTAMPDIFF(1,CHAR(SNAPSHOT_TIMESTAMP - UOW_START_TIME)))/1000000 end) 
+from SYSIBMADM.SNAPAPPL  where uow_stop_time is null)
+]]>		
+   		</sql_name>
+		<title>Max. UOW</title>
+		<type>n</type>
+		<formatNumber toDuration="ss"/>
+		<style>
+			<option gt='10' style='ERROR'/>
+			<option gt='1' style='WARNING'/>
+		</style>
+	</column>
+	<column name="lockWaits" minVersion="9.5">
+		<sql_name>
+<![CDATA[
+(select count(*) from  SYSIBMADM.APPLICATIONS  where APPL_STATUS='UOWLOCK')
+]]>		
+   		</sql_name>
+		<title>Lock</title>
+		<type>n</type>
+		<style>
+			<option gt='0' style='ERROR'/>
+		</style>
+		<reference name="col">
+			<title>Locks</title>
+			<reftype>table</reftype>
+			<refvalue>Performance/lockActiveSQL</refvalue>
+			<icon>images/fw_bold.gif</icon>								
+			<ref foreign_column_name="useConnection">
+				<local_column_name>connection</local_column_name>
+			</ref>		
+		</reference>
+	</column>
+	<column name="logUse" minVersion="9.5">
+		<sql_name>
+<![CDATA[
+(SELECT LOG_UTILIZATION_PERCENT FROM SYSIBMADM.LOG_UTILIZATION)
+]]>		
+   		</sql_name>
+		<title>Log %</title>
+		<type>bg</type>
+	</column>
+	<column name="lastBackupAge">
+		<sql_name>coalesce(TIMESTAMPDIFF(16,CHAR(current timestamp - LAST_BACKUP)),9999)</sql_name>
+		<title>Last Backup Age (days)</title>
+		<type>n</type>
+		<reference name="col">
+			<title>History</title>
+			<reftype>table</reftype>
+			<refvalue>dbhist</refvalue>
+			<icon>images/fw_bold.gif</icon>								
+			<ref foreign_column_name="useConnection">
+				<local_column_name>connection</local_column_name>
+			</ref>		
+		</reference>
+		<style>
+			<option gt='4' style='ERROR'/>
+			<option gt='2' style='WARNING'/>
+		</style>
+	</column>
+	<column name="db2diag">
+		<sql_name>(select max(level) FROM TABLE ( PD_GET_LOG_MSGS( CURRENT_TIMESTAMP - 3 HOURS )) AS T, (values(8,'E'),(12,'S'),(16,'C')) as l(level,MSGSEVERITY) where t.MSGSEVERITY=l.MSGSEVERITY )</sql_name>
+		<title>DB2Diag</title>
+		<type>n</type>
+		<column_mask_file>masks/messageLevel.xml</column_mask_file>
+		<reference name="log">
+			<title>Logs</title>
+			<reftype>table</reftype>
+			<refvalue>pdlog</refvalue>
+			<icon>images/fw_bold.gif</icon>								
+			<ref foreign_column_name="useConnection">
+				<local_column_name>connection</local_column_name>
+			</ref>		
+		</reference>
+	</column>
+	<column name="tablespace" maxVersion="9.8">
+		<sql_name>
+<![CDATA[
+(select count(*) FROM TABLE(SNAP_GET_TBSP_PART(CAST('' AS VARCHAR(128)),-1)) as a where  TBSP_STATE <> 'NORMAL')
+]]>		
+		</sql_name>
+		<title>Tablespace</title>
+		<type>n</type>
+		<reference name="tablespace">
+			<title>Tablespace</title>
+			<reftype>table</reftype>
+			<refvalue>Monitor/snapTablespacePart</refvalue>
+			<icon>images/fw_bold.gif</icon>								
+			<ref foreign_column_name="useConnection">
+				<local_column_name>connection</local_column_name>
+			</ref>		
+		</reference>
+		<style>
+			<option gt='0' style='ERROR'/>
+		</style>
+	</column>
+	<column name="tablespace" minVersion="10.0">
+		<sql_name>
+<![CDATA[
+(select count(*) FROM TABLE(SNAP_GET_TBSP_PART(CAST('' AS VARCHAR(128)),-1)) as a where  TBSP_STATE <> 'NORMAL')
+]]>		
+		</sql_name>
+		<title>Tablespace</title>
+		<type>n</type>
+		<reference name="tablespace">
+			<title>Tablespace</title>
+			<reftype>table</reftype>
+			<refvalue>Monitor/snapTablespacePart.10</refvalue>
+			<icon>images/fw_bold.gif</icon>								
+			<ref foreign_column_name="useConnection">
+				<local_column_name>connection</local_column_name>
+			</ref>		
+		</reference>
+		<style>
+			<option gt='0' style='ERROR'/>
+		</style>
+	</column>
+	<column name="tableInvalid">
+		<sql_name>
+<![CDATA[
+(SELECT count(*)
+FROM SYSCAT.TABLES t
+LEFT JOIN ( select * from SYSIBMADM.ADMINTABINFO WHERE REORG_PENDING = 'Y') a
+ on (a.TABSCHEMA,a.TABNAME)=(t.TABSCHEMA,t.TABNAME)
+ and t.type='T'
+where t.CONST_CHECKED like '%N%'
+   or t.CONST_CHECKED like '%F%'
+   or t.CONST_CHECKED like '%W%'
+   or t.access_mode <> 'F'
+   or t.status <> 'N'
+   )
+]]>		
+		</sql_name>
+		<title>Tables Invalid</title>
+		<type>n</type>
+		<reference name="tableInvalid">
+			<title>Table Invalid</title>
+			<reftype>table</reftype>
+			<refvalue>Performance/TableInvalidState</refvalue>
+			<icon>images/fw_bold.gif</icon>								
+			<ref foreign_column_name="useConnection">
+				<local_column_name>connection</local_column_name>
+			</ref>		
+		</reference>
+		<style>
+			<option gt='0' style='ERROR'/>
+		</style>
+	</column>
+	<column name="objectInvalid" minVersion="9.7">
+		<sql_name>
+<![CDATA[
+(select count(*) from SYSCAT.INVALIDOBJECTS)
+]]>		
+   		</sql_name>
+		<title>Objects Invalid</title>
+		<type>n</type>
+		<reference name="objectsInvalid">
+			<title>Object Invalid</title>
+			<reftype>table</reftype>
+			<refvalue>DB2Catalog/invalidObjects</refvalue>
+			<icon>images/fw_bold.gif</icon>								
+			<ref foreign_column_name="useConnection">
+				<local_column_name>connection</local_column_name>
+			</ref>		
+		</reference>
+		<style>
+			<option gt='0' style='ERROR'/>
+		</style>
+	</column>
+	<column name="catInvalid" minVersion="9.7">
+		<sql_name>
+<![CDATA[
+(select sum(cnt) from (
+select count(*) as cnt from SYSCAT.DATATYPES where valid NOT IN ('Y',' ')
+union select count(*) from SYSCAT.PACKAGES where valid NOT IN ('Y',' ')
+union select count(*) from SYSCAT.PROCEDURES where valid NOT IN ('Y',' ')
+union select count(*) from SYSCAT.ROUTINES where valid NOT IN ('Y',' ')
+union select count(*) from SYSCAT.TRIGGERS where valid NOT IN ('Y',' ')
+union select count(*) from SYSCAT.VARIABLES where valid NOT IN ('Y',' ')
+union select count(*) from SYSCAT.VIEWS where valid NOT IN ('Y',' ')
+))
+]]>		
+		</sql_name>
+		<title>Cat Invalid</title>
+		<type>n</type>
+		<reference name="invalid">
+			<title>Cat Invalid</title>
+			<reftype>table</reftype>
+			<refvalue>DB2Catalog/Invalid</refvalue>
+			<icon>images/fw_bold.gif</icon>								
+			<ref foreign_column_name="useConnection">
+				<local_column_name>connection</local_column_name>
+			</ref>		
+		</reference>
+		<style>
+			<option gt='0' style='ERROR'/>
+		</style>
+	</column>
+	<column name="connection">
+		<generated>connection</generated>
+		<title>Connection</title>
+		<type>s</type>
+	</column>
+</table>

@@ -1,0 +1,197 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2009 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<clause name="startDBM-common">
+<![CDATA[
+>--+--------------------------------------------------------+--->
+   '-REMOTE--+----------+--instancename--| remote options |-'   
+             '-INSTANCE-'                                       
+]]>
+	<select>
+		<option default="true"><note>local</note></option> 
+		<option>
+			<text>REMOTE</text>
+			<select>
+				<option default="true"><text></text></option> 
+				<option><text>INSTANCE</text></option> 
+			</select>
+			<input size="8" title="instance"/>
+			<clauseReference name="remote options"/>
+		</option> 
+	</select>
+	<br/>
+<![CDATA[
+>--+----------------------------------+--+------------------+--->
+   '-ADMIN MODE--+------------------+-'  '-PROFILE--profile-'   
+                 +-USER--username---+                           
+                 '-GROUP--groupname-'                           
+]]>
+	<select>
+		<option default="true"><note>db instance</note></option> 
+		<option>
+			<text>ADMIN MODE</text>
+			<select>
+				<option default="true"><note>db instance</note></option> 
+				<option><text>USER</text><input size="8"/></option> 
+				<option><text>GROUP</text><input size="8"/></option> 
+			</select>
+		</option> 
+	</select>
+	<select>
+		<option default="true"><note>no PROFILE</note></option> 
+		<option><text>PROFILE</text><input size="8" title="profile"/></option> 
+	</select>
+	<br/>
+<![CDATA[
+>--+--------------------------------------------------------+--><
+   '-DBPARTITIONNUM--db-partition-number--| start options |-'   
+]]>
+	<select>
+		<option default="true"><note>no PROFILE</note></option> 
+		<option><text>DBPARTITIONNUM</text><input size="3" type="int"/><clauseReference name="start options"/></option> 
+	</select>
+	
+	<clause name="remote options" title="remote options">
+<![CDATA[
+|--+-ADMINNODE--nodename-+--USER--username--USING--password-----|
+   '-HOSTNAME--hostname--'                                    
+]]>
+		<select>
+			<option default="true">
+				<text>ADMINNODE</text><input size="8" title="nodename"/>
+			</option> 
+			<option>
+				<text>HOSTNAME</text><input size="32" title="hostname"/>
+			</option> 
+		</select>
+		<text>USER</text><input size="8" title="username"/>
+		<text>USING</text><input size="8" title="password"/>
+	</clause>
+
+	<clause name="start options" title="start options">
+<![CDATA[
+|--+----------------------------------------------------+-------|
+   +-ADD DBPARTITIONNUM--| add dbpartitionnum options |-+   
+   +-STANDALONE-----------------------------------------+   
+   '-RESTART--| restart options |-----------------------'   
+]]>
+		<select>
+			<option default="true"><text></text></option> 
+			<option>
+				<text>ADD DBPARTITIONNUM</text><clauseReference name="add dbpartitionnum options"/>
+			</option> 
+			<option>
+				<text>STANDALONE</text>
+			</option> 
+			<option>
+				<text>RESTART</text><clauseReference name="restart options"/>
+			</option> 
+		</select>
+	</clause>
+	
+	<clause name="add dbpartitionnum options" title="add dbpartitionnum options">
+<![CDATA[
+|--DBPARTITIONNUM--db-partition-number--HOSTNAME--hostname------>
+
+>--PORT--logical-port--+-------------------------+-------------->
+                       '-COMPUTER--computer-name-'   
+
+>--+----------------+--+--------------------+------------------->
+   '-USER--username-'  '-PASSWORD--password-'   
+
+>--+------------------+----------------------------------------->
+   '-NETNAME--netname-'   
+
+>--+------------------------------------------+-----------------|
+   +-LIKE DBPARTITIONNUM--db-partition-number-+   
+   '-WITHOUT TABLESPACES----------------------'   
+]]>
+		<text>DBPARTITIONNUM</text><input size="3" type="int"/>
+		<text>HOSTNAME</text><input size="32" title="hostname"/>
+		<text>PORT</text><input size="16" title="logical port"/>
+		<select>
+			<option default="true"><text></text></option> 
+			<option><text>COMPUTER</text><input size="16" title="computer-name"/></option>
+		</select>
+		<select>
+			<option default="true"><text></text></option> 
+			<option><text>USER</text><input size="8" title="username"/></option>
+		</select>
+		<select>
+			<option default="true"><text></text></option> 
+			<option><text>PASSWORD</text><input size="8" title="password"/></option>
+		</select>
+		<br/>
+		<select>
+			<option default="true"><text></text></option> 
+			<option><text>NETNAME</text><input size="8" title="netname"/></option>
+		</select>
+		<br/>
+		<select>
+			<option default="true"><text></text></option> 
+			<option><text>LIKE DBPARTITIONNUM</text><input size="4" type="int"/></option>
+			<option><text>WITHOUT TABLESPACES</text></option>
+		</select>
+	</clause>
+
+	<clause name="restart options" title="restart options">
+<![CDATA[
+|--+--------------------+--+--------------------+--------------->
+   '-HOSTNAME--hostname-'  '-PORT--logical-port-'   
+
+>--+------------------------+--+----------------+--------------->
+   '-COMPUTER--computername-'  '-USER--username-'   
+
+>--+--------------------+--+------------------+----------------->
+   '-PASSWORD--password-'  '-NETNAME--netname-'   
+
+>--+-------------+----------------------------------------------|
+   '-IN PARALLEL-'   
+]]>
+		<select>
+			<option default="true"><text></text></option> 
+			<option><text>HOSTNAME</text><input size="32" title="hostname"/></option>
+		</select>
+		<select>
+			<option default="true"><text></text></option> 
+			<option><text>PORT</text><input size="32" title="logical port"/></option>
+		</select>
+		<br/>
+		<select>
+			<option default="true"><text></text></option> 
+			<option><text>COMPUTER</text><input size="32" title="computer name"/></option>
+		</select>
+		<select>
+			<option default="true"><text></text></option> 
+			<option><text>USER</text><input size="8" title="user name"/></option>
+		</select>
+		<select>
+			<option default="true"><text></text></option> 
+			<option><text>PASSWORD</text><input size="8" title="password"/></option>
+		</select>
+		<select>
+			<option default="true"><text></text></option> 
+			<option><text>NETNAME</text><input size="8" title="net name"/></option>
+		</select>
+		<br/>
+		<select>
+			<option default="true"><text></text></option> 
+			<option><text>IN PARALLEL</text>></option>
+		</select>
+	</clause>
+</clause>
+        

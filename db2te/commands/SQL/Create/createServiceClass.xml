@@ -1,0 +1,298 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2009 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<command name="createServiceClass" title="Create Service Class">
+<![CDATA[
+Read syntax diagramSkip visual syntax diagram
+>>-CREATE SERVICE CLASS--service-class-name--------------------->
+]]>
+	<text>CREATE SERVICE CLASS</text><clauseReference name="service-class-name"/>
+	<br/>
+<![CDATA[
+>--+--------------------------------+--------------------------->
+   '-UNDER--service-superclass-name-'   
+]]>
+	<select>
+		<option default="true"><note>under</note></option> 
+		<option><text>UNDER</text><clauseReference name="service-superclass-name"/></option> 
+	</select>
+	<br/>
+<![CDATA[
+   .-AGENT PRIORITY DEFAULT-----------.   
+>--+----------------------------------+------------------------->
+   '-AGENT PRIORITY--integer-constant-'   
+]]>
+	<select>
+		<option><text>AGENT PRIORITY DEFAULT</text></option> 
+		<option default="true"><note>AGENT PRIORITY DEFAULT</note></option> 
+		<option><text>AGENT PRIORITY</text><clauseReference name="integer-constant"/></option> 
+	</select>
+	<br/>
+<![CDATA[
+   .-PREFETCH PRIORITY DEFAULT-----.   
+>--+-------------------------------+---------------------------->
+   '-PREFETCH PRIORITY--+-HIGH---+-'   
+                        +-MEDIUM-+     
+                        '-LOW----'     
+]]>
+	<select>
+		<option><text>PREFETCH PRIORITY DEFAULT</text></option> 
+		<option default="true"><note>PREFETCH PRIORITY DEFAULT</note></option> 
+		<option>
+			<text>PREFETCH PRIORITY</text>
+			<select>
+				<option default="true"><text>HIGH</text></option> 
+				<option><text>MEDIUM</text></option> 
+				<option><text>LOW</text></option> 
+			</select>
+		</option> 
+	</select>
+	<br/>
+<![CDATA[
+   .-OUTBOUND CORRELATOR NONE-------------.   
+>--+--------------------------------------+--------------------->
+   '-OUTBOUND CORRELATOR--string-constant-'   
+]]>
+	<select>
+		<option><text>OUTBOUND CORRELATOR NONE</text></option> 
+		<option default="true"><note>OUTBOUND CORRELATOR NONE</note></option> 
+		<option><text>OUTBOUND CORRELATOR</text><clauseReference name="string-constant"/></option> 
+	</select>
+	<br/>
+<![CDATA[
+   .-BUFFERPOOL PRIORITY DEFAULT-----.   
+>--+---------------------------------+-------------------------->
+   '-BUFFERPOOL PRIORITY--+-HIGH---+-'   
+                          +-MEDIUM-+     
+                          '-LOW----'     
+]]>
+	<select>
+		<option><text>BUFFERPOOL PRIORITY DEFAULT</text></option> 
+		<option default="true"><note>BUFFERPOOL PRIORITY DEFAULT</note></option> 
+		<option>
+			<text>BUFFERPOOL PRIORITY</text>
+			<select>
+				<option default="true"><text>HIGH</text></option> 
+				<option><text>MEDIUM</text></option> 
+				<option><text>LOW</text></option> 
+			</select>
+		</option> 
+	</select>
+	<br/>
+<![CDATA[
+    (1)  .-COLLECT ACTIVITY DATA--NONE-----------------------------.   
+>--------+---------------------------------------------------------+-->
+         '-COLLECT ACTIVITY DATA--| collect-activity-data-clause |-'   
+]]>
+	<select>
+		<option><text>COLLECT ACTIVITY DATA NONE</text></option> 
+		<option default="true"><note>COLLECT ACTIVITY DATA NONE</note></option> 
+		<option><text>COLLECT ACTIVITY DATA</text><clauseReference name="collect-activity-data-clause"/></option> 
+	</select>
+	<br/>
+<![CDATA[
+   .-COLLECT AGGREGATE ACTIVITY DATA NONE----------.   
+>--+-----------------------------------------------+------------>
+   |                                  .-BASE-----. |   
+   '-COLLECT AGGREGATE ACTIVITY DATA--+----------+-'   
+                                      '-EXTENDED-'     
+]]>
+	<select>
+		<option><text>COLLECT AGGREGATE ACTIVITY DATA NONE</text></option> 
+		<option default="true"><note>COLLECT AGGREGATE ACTIVITY DATA NONE</note></option> 
+		<option>
+			<text>COLLECT AGGREGATE ACTIVITY DATA</text>
+			<select>
+				<option><text>BASE</text></option> 
+				<option default="true"><note>BASE</note></option> 
+				<option><text>EXTENDED</text></option> 
+			</select>
+		</option> 
+	</select>
+	<br/>
+<![CDATA[
+   .-COLLECT AGGREGATE REQUEST DATA NONE------.   
+>--+------------------------------------------+----------------->
+   |                                 .-BASE-. |   
+   '-COLLECT AGGREGATE REQUEST DATA--+------+-'   
+]]>
+	<select>
+		<option><text>COLLECT AGGREGATE REQUEST DATA NONE</text></option> 
+		<option default="true"><note>COLLECT AGGREGATE REQUEST DATA NONE</note></option> 
+		<option>
+			<text>COLLECT AGGREGATE REQUEST DATA</text>
+			<select>
+				<option><text>BASE</text></option> 
+				<option default="true"><note>BASE</note></option> 
+			</select>
+		</option> 
+	</select>
+	<br/>
+<![CDATA[
+   .-COLLECT REQUEST METRICS--NONE---------------.   
+>--+---------------------------------------------+-------------->
+   |  (2)                                        |   
+   '-------COLLECT REQUEST METRICS--+-BASE-----+-'   
+                                    '-EXTENDED-'     
+]]>
+	<select>
+		<option><text>COLLECT REQUEST METRICS NONE</text></option> 
+		<option default="true"><note>COLLECT REQUEST METRICS NONE</note></option> 
+		<option>
+			<text>COLLECT REQUEST METRICS</text>
+			<select>
+				<option default="true"><text>BASE</text></option> 
+				<option><text>EXTENDED</text></option> 
+			</select>
+		</option> 
+	</select>
+	<br/>
+<![CDATA[
+    (3)                                 .-ENABLE--.   
+>--------| histogram-template-clause |--+---------+------------><
+                                        '-DISABLE-'   
+]]>
+	<clauseReference name="histogram-template-clause"/>
+	<select>
+		<option><text>ENABLE</text></option> 
+		<option default="true"><note>ENABLE</note></option> 
+		<option><text>DISABLE</text></option> 
+	</select>
+
+	<clause name="collect-activity-data-clause" title="collect activity data clause">
+<![CDATA[
+                     .-DATABASE PARTITION-.     
+   .-ON COORDINATOR--+--------------------+-.   
+|--+----------------------------------------+------------------->
+   |         .-DATABASE PARTITIONS-.        |   
+   '-ON ALL--+---------------------+--------'   
+]]>
+		<select>
+			<option>
+				<text>ON COORDINATOR</text>
+				<select>
+					<option><text>DATABASE PARTITIONS</text></option>
+					<option default="true"><note>DATABASE PARTITIONS</note></option>
+				</select>
+			</option> 
+			<option default="true"><note>ON COORDINATOR</note></option> 
+			<option>
+				<text>ON ALL</text>
+				<select>
+					<option><text>DATABASE PARTITIONS</text></option>
+					<option default="true"><note>DATABASE PARTITIONS</note></option>
+				</select>
+			</option> 
+		</select>
+		<br/>
+<![CDATA[
+   .-WITHOUT DETAILS---------------------------.   
+>--+-------------------------------------------+----------------|
+   |       .-,---------------.                 |   
+   |       V           (4)   |                 |   
+   '-WITH----+-DETAILS-----+-+--+------------+-'   
+             '-SECTION-----'    '-AND VALUES-'     
+]]>
+		<select>
+			<option><text>WITHOUT DETAILS</text></option> 
+			<option default="true"><note>WITHOUT DETAILS</note></option> 
+			<option>
+				<text>WITH</text>
+				<repeatable>
+					<select>
+						<option default="true"><text>DETAILS</text></option>
+						<option><text>SECTION</text></option>
+					</select>
+				</repeatable>
+				<select>
+					<option default="true"><note>no values</note></option>
+					<option><text>AND VALUES</text></option>
+				</select>
+			</option> 
+		</select>
+	</clause>
+	
+	<clause name="histogram-template-clause" title="histogram template clause">
+<![CDATA[
+      .-ACTIVITY LIFETIME HISTOGRAM TEMPLATE SYSDEFAULTHISTOGRAM-.   
+|--●--+----------------------------------------------------------+-->
+      '-ACTIVITY LIFETIME HISTOGRAM TEMPLATE--template-name------'   
+]]>
+		<select>
+			<option><text>ACTIVITY LIFETIME HISTOGRAM TEMPLATE SYSDEFAULTHISTOGRAM</text></option> 
+			<option default="true"><note>ACTIVITY LIFETIME HISTOGRAM TEMPLATE SYSDEFAULTHISTOGRAM</note></option> 
+			<option><text>ACTIVITY LIFETIME  HISTOGRAM TEMPLATE</text><clauseReference name="template-name"/></option> 
+		</select>
+		<br/>
+<![CDATA[
+      .-ACTIVITY QUEUETIME HISTOGRAM TEMPLATE SYSDEFAULTHISTOGRAM-.   
+>--●--+-----------------------------------------------------------+-->
+      '-ACTIVITY QUEUETIME HISTOGRAM TEMPLATE--template-name------'   
+]]>
+		<select>
+			<option><text>ACTIVITY QUEUETIME HISTOGRAM TEMPLATE SYSDEFAULTHISTOGRAM</text></option> 
+			<option default="true"><note>ACTIVITY QUEUETIME HISTOGRAM TEMPLATE SYSDEFAULTHISTOGRAM</note></option> 
+			<option><text>ACTIVITY QUEUETIME  HISTOGRAM TEMPLATE</text><clauseReference name="template-name"/></option> 
+		</select>
+		<br/>
+<![CDATA[
+      .-ACTIVITY EXECUTETIME HISTOGRAM TEMPLATE SYSDEFAULTHISTOGRAM-.   
+>--●--+-------------------------------------------------------------+-->
+      '-ACTIVITY EXECUTETIME HISTOGRAM TEMPLATE--template-name------'   
+]]>
+		<select>
+			<option><text>ACTIVITY EXECUTETIME HISTOGRAM TEMPLATE SYSDEFAULTHISTOGRAM</text></option> 
+			<option default="true"><note>ACTIVITY EXECUTETIME HISTOGRAM TEMPLATE SYSDEFAULTHISTOGRAM</note></option> 
+			<option><text>ACTIVITY EXECUTETIME  HISTOGRAM TEMPLATE</text><clauseReference name="template-name"/></option> 
+		</select>
+		<br/>
+<![CDATA[
+      .-REQUEST EXECUTETIME HISTOGRAM TEMPLATE SYSDEFAULTHISTOGRAM-.   
+>--●--+------------------------------------------------------------+-->
+      '-REQUEST EXECUTETIME HISTOGRAM TEMPLATE--template-name------'   
+]]>
+		<select>
+			<option><text>REQUEST EXECUTETIME HISTOGRAM TEMPLATE SYSDEFAULTHISTOGRAM</text></option> 
+			<option default="true"><note>REQUEST EXECUTETIME HISTOGRAM TEMPLATE SYSDEFAULTHISTOGRAM</note></option> 
+			<option><text>REQUEST EXECUTETIME  HISTOGRAM TEMPLATE</text><clauseReference name="template-name"/></option> 
+		</select>
+		<br/>
+<![CDATA[
+      .-ACTIVITY ESTIMATEDCOST HISTOGRAM TEMPLATE SYSDEFAULTHISTOGRAM-.   
+>--●--+---------------------------------------------------------------+-->
+      '-ACTIVITY ESTIMATEDCOST HISTOGRAM TEMPLATE--template-name------'   
+]]>
+		<select>
+			<option><text>ACTIVITY ESTIMATEDCOST HISTOGRAM TEMPLATE SYSDEFAULTHISTOGRAM</text></option> 
+			<option default="true"><note>ACTIVITY ESTIMATEDCOST HISTOGRAM TEMPLATE SYSDEFAULTHISTOGRAM</note></option> 
+			<option><text>ACTIVITY ESTIMATEDCOST  HISTOGRAM TEMPLATE</text><clauseReference name="template-name"/></option> 
+		</select>
+		<br/>
+<![CDATA[
+      .-ACTIVITY INTERARRIVALTIME HISTOGRAM TEMPLATE SYSDEFAULTHISTOGRAM-.   
+>--●--+------------------------------------------------------------------+--|
+      '-ACTIVITY INTERARRIVALTIME  HISTOGRAM TEMPLATE--template-name-----'   
+]]>
+		<select>
+			<option><text>ACTIVITY INTERARRIVALTIME HISTOGRAM TEMPLATE SYSDEFAULTHISTOGRAM</text></option> 
+			<option default="true"><note>ACTIVITY INTERARRIVALTIME HISTOGRAM TEMPLATE SYSDEFAULTHISTOGRAM</note></option> 
+			<option><text>ACTIVITY INTERARRIVALTIME  HISTOGRAM TEMPLATE</text><clauseReference name="template-name"/></option> 
+		</select>
+	</clause>
+
+</command>
+        

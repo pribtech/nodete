@@ -1,0 +1,13 @@
+<br><h2>Grant security label to Pat</h2><hr><br>
+
+<p><b>You must log into the database as the database creator before proceeding with this page.</b></p>
+
+<p>In previous page, the security policies and security labels are created. These security labels should be granted to users to provide
+restricted access to columns of the <font face="courier">'credit_card'</font> table.
+
+<br><h4>Operation</h4><br>
+<p>SECADM Pat is granted with 'TOP_SECRET' security label so that he can setup column level LBAC on the <font face="courier">'credit_card'</font> table.
+Since Pat cannot grant security label to himself, the database creator (who by default holds SECADM) grants him the 'TOP_SECRET' security label.</p>
+
+<br><h4>Solution</h4><br>
+Now Pat will be able to setup column level LBAC on the <font face="courier">'credit_card'</font> table.

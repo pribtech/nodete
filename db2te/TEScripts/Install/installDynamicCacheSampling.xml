@@ -1,0 +1,348 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2010 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+<actionScript name="installDynamicCacheSampling" type="form">
+	<message><![CDATA[
+		<div style=width:500px>
+			<p>Setup the environment for the db2mc Dynamic Cache Sampling</p>
+			<table>
+				<tr><td>Tablespace</td><td>:</td><td><input type="text" name=TABLESPACE value="SYSTOOLSPACE" style="width:300px"/></td></tr>
+			</table>
+			<p>This requires a task to be schedule that run "s#db2mc"."gatherDynSQL" () </p>
+			<p>For example in Linux the following crontab entry
+			</p>
+			<p>
+			0,30 * * * * (. /home/db2inst1/.bashrc ; db2 connect to SAMPLE ; db2 "call \"s#db2mc\".\"gatherDynSQL\"()" ; db2 connect reset )  
+			</p>
+			<p>In db2 V95 ATS is be used </p>
+		</div>
+	]]></message>
+    <parameterList>
+        <parameter name="TABLESPACE" type="blockValue">
+			<value>TABLESPACE</value>
+		</parameter>
+		<parameter name="buttonOK" type="raw">
+			<value>Setup</value>
+		</parameter>
+	</parameterList>
+	<ifNot condition="true">
+		<exit/>
+	</ifNot>
+	<task>
+		<action name="setup" type="serverAction">
+			<parameterList>
+				<parameter name="action" type="raw">
+					<value>executeSQL</value>
+				</parameter>
+				<parameter name="commitPerSTMT" type="raw">
+					<value>true</value>
+				</parameter>
+				<parameter name="abortOnFailure" type="raw">
+					<value>true</value>
+				</parameter>
+				<parameter name="SQL[0]" type="fixed">
+					<value>
+<![CDATA[
+create table "s#db2mc".hist_SNAP_GET_DYN_SQL
+	as (select
+		  	current timestamp as sample_ts,cast(' ' as varchar(128)) as database,cast(0 as double) as stmt_hash,
+	   		NUM_EXECUTIONS, 
+			decimal(TOTAL_EXEC_TIME,31,6) + decimal(TOTAL_EXEC_TIME_MS,31,6)/1000000 as TOTAL_EXEC_TIME,
+			decimal(TOTAL_USR_TIME,31,6) + decimal(TOTAL_USR_TIME_MS,31,6)/1000000 as TOTAL_USR_TIME,
+			decimal(TOTAL_SYS_TIME,31,6) + decimal(TOTAL_SYS_TIME_MS,31,6)/1000000 as TOTAL_SYS_TIME,
+			STMT_TEXT,
+	    	NUM_COMPILATIONS,
+			PREP_TIME_WORST,
+			PREP_TIME_BEST,
+			INT_ROWS_DELETED,
+			INT_ROWS_INSERTED,
+			INT_ROWS_UPDATED,
+			ROWS_READ,
+			ROWS_WRITTEN,
+			STMT_SORTS,
+			SORT_OVERFLOWS,
+			TOTAL_SORT_TIME,
+			POOL_DATA_L_READS,
+			POOL_DATA_P_READS,
+			POOL_TEMP_DATA_L_READS,
+			POOL_TEMP_DATA_P_READS,
+			POOL_INDEX_L_READS,
+			POOL_INDEX_P_READS,
+			POOL_TEMP_INDEX_L_READS,
+			POOL_TEMP_INDEX_P_READS
+	 from TABLE(SNAP_GET_DYN_SQL('',-1)) as s) with no data
+	in "?TABLESPACE?" 
+]]>
+					</value>
+				</parameter>
+				<parameter name="SQL[1]" type="fixed">
+					<value>
+<![CDATA[
+create index "s#db2mc".hist_SNAP_GET_DYN_SQL_s1
+	on "s#db2mc".hist_SNAP_GET_DYN_SQL (sample_ts desc,database,stmt_hash)
+	allow reverse scans
+]]>
+					</value>
+				</parameter>
+				<parameter name="SQL[2]" type="fixed">
+					<value>
+<![CDATA[
+create table "s#db2mc".hist_SNAP_GET_DYN_SQL_DELTA like "s#db2mc".hist_SNAP_GET_DYN_SQL
+  in "?TABLESPACE?" 
+]]>
+					</value>
+				</parameter>
+				<parameter name="SQL[3]" type="fixed">
+					<value>
+<![CDATA[
+create index "s#db2mc".hist_SNAP_GET_DYN_SQL_DELTA_s1
+	on "s#db2mc".hist_SNAP_GET_DYN_SQL_DELTA (sample_ts desc,database,stmt_hash)
+	allow reverse scans
+]]>
+					</value>
+				</parameter>
+				<parameter name="SQL[4]" type="fixed">
+					<value>
+<![CDATA[
+CREATE FUNCTION "s#db2mc".Hashstring(str clob(1M))
+RETURNS double
+SPECIFIC "s#db2mc".HashString
+DETERMINISTIC NO EXTERNAL ACTION CONTAINS SQL
+BEGIN ATOMIC
+	DECLARE hash double  DEFAULT 0;--
+	DECLARE pos INTEGER DEFAULT 1;--
+	DECLARE c char(1) DEFAULT ' ';--
+	WHILE pos <= LENGTH(str) DO
+		set c =SUBSTR(str, pos, 1);--
+		SET hash = hash + 67*pos  
+				* (CASE upper(c)
+					WHEN ' ' THEN 0
+					WHEN 'A' THEN 11
+					WHEN 'B' THEN 12
+					WHEN 'C' THEN 13
+					WHEN 'D' THEN 14
+					WHEN 'E' THEN 15
+					WHEN 'F' THEN 16
+					WHEN 'G' THEN 17
+					WHEN 'H' THEN 18
+					WHEN 'I' THEN 19
+					WHEN 'J' THEN 20
+					WHEN 'K' THEN 21
+					WHEN 'L' THEN 22
+					WHEN 'M' THEN 23
+					WHEN 'N' THEN 24
+					WHEN 'O' THEN 25
+					WHEN 'P' THEN 26
+					WHEN 'Q' THEN 27
+					WHEN 'R' THEN 28
+					WHEN 'S' THEN 29
+					WHEN 'T' THEN 30
+					WHEN 'U' THEN 31
+					WHEN 'V' THEN 32
+					WHEN 'W' THEN 33
+					WHEN 'X' THEN 34
+					WHEN 'Y' THEN 35
+					WHEN 'Z' THEN 36
+					WHEN 'a' THEN 41
+					WHEN 'b' THEN 42
+					WHEN 'c' THEN 43
+					WHEN 'd' THEN 44
+					WHEN 'e' THEN 45
+					WHEN 'f' THEN 46
+					WHEN 'g' THEN 47
+					WHEN 'h' THEN 48
+					WHEN 'i' THEN 49
+					WHEN 'j' THEN 50
+					WHEN 'k' THEN 51
+					WHEN 'l' THEN 52
+					WHEN 'm' THEN 53
+					WHEN 'n' THEN 54
+					WHEN 'o' THEN 55
+					WHEN 'p' THEN 56
+					WHEN 'q' THEN 57
+					WHEN 'r' THEN 58
+					WHEN 's' THEN 59
+					WHEN 't' THEN 60
+					WHEN 'u' THEN 61
+					WHEN 'v' THEN 62
+					WHEN 'w' THEN 63
+					WHEN 'x' THEN 64
+					WHEN 'y' THEN 65
+					WHEN 'z' THEN 66
+					WHEN '1' THEN 1
+					WHEN '2' THEN 2
+					WHEN '3' THEN 3
+					WHEN '4' THEN 4
+					WHEN '5' THEN 5
+					WHEN '6' THEN 6
+					WHEN '7' THEN 7
+					WHEN '8' THEN 8
+					WHEN '9' THEN 9
+					WHEN '0' THEN 10
+					WHEN '+' THEN 37
+					WHEN '-' THEN 38
+					WHEN '*' THEN 39
+					WHEN '/' THEN 40
+					WHEN ')' THEN 41
+					ELSE 0
+			END )
+			;--
+		SET pos = pos + 1;--
+	END WHILE;--
+	RETURN hash;--
+END
+]]>
+					</value>
+				</parameter>
+				<parameter name="SQL[5]" type="fixed">
+					<value>
+<![CDATA[
+CREATE PROCEDURE "s#db2mc"."gatherDynSQL" ()
+  SPECIFIC "s#db2mc.gatherDynSQL"
+  DYNAMIC RESULT SETS 0
+  LANGUAGE SQL
+  BEGIN
+--/******************************************************************************	
+--  Author: Peter Prib
+--  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2010 All rights reserved.
+--
+--  Licensed under the Apache License, Version 2.0 (the "License");
+--  you may not use this file except in compliance with the License.
+--  You may obtain a copy of the License at
+--
+--      http://www.apache.org/licenses/LICENSE-2.0
+--
+--  Unless required by applicable law or agreed to in writing, software
+--  distributed under the License is distributed on an "AS IS" BASIS,
+--  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+--  See the License for the specific language governing permissions and
+--  limitations under the License.
+--******************************************************************************/
+	DECLARE stmt varchar(32000);--
+	DECLARE sample_ts timestamp;--
+	set sample_ts = current timestamp;--
+	set stmt = '
+		insert into "s#db2mc".hist_SNAP_GET_DYN_SQL
+		(select
+		 	cast(? as timestamp) as sample_ts,cast(? as varchar(128)) as database, "s#db2mc".Hashstring(stmt_text) ,
+	   		NUM_EXECUTIONS, 
+			decimal(TOTAL_EXEC_TIME,31,6) + decimal(TOTAL_EXEC_TIME_MS,31,6)/1000000 as TOTAL_EXEC_TIME,
+			decimal(TOTAL_USR_TIME,31,6) + decimal(TOTAL_USR_TIME_MS,31,6)/1000000 as TOTAL_USR_TIME,
+			decimal(TOTAL_SYS_TIME,31,6) + decimal(TOTAL_SYS_TIME_MS,31,6)/1000000 as TOTAL_SYS_TIME,
+			STMT_TEXT,
+	    	NUM_COMPILATIONS,
+			PREP_TIME_WORST,
+			PREP_TIME_BEST,
+			INT_ROWS_DELETED,
+			INT_ROWS_INSERTED,
+			INT_ROWS_UPDATED,
+			ROWS_READ,
+			ROWS_WRITTEN,
+			STMT_SORTS,
+			SORT_OVERFLOWS,
+			TOTAL_SORT_TIME,
+			POOL_DATA_L_READS,
+			POOL_DATA_P_READS,
+			POOL_TEMP_DATA_L_READS,
+			POOL_TEMP_DATA_P_READS,
+			POOL_INDEX_L_READS,
+			POOL_INDEX_P_READS,
+			POOL_TEMP_INDEX_L_READS,
+			POOL_TEMP_INDEX_P_READS 
+		 from TABLE(SNAP_GET_DYN_SQL(cast(? as varchar(128)),-1)) as s )
+		';
+	prepare s1 from stmt;--
+	for db_list as
+		select db_name from table(SNAP_GET_DB(cast(null as varchar(128)),0)) as s
+	do
+		execute s1 using sample_ts, db_name, db_name ;--
+	end for;--
+	commit;--
+	set stmt = 'insert into "s#db2mc".hist_SNAP_GET_DYN_SQL_delta
+		select c.sample_ts,c.database,c.stmt_hash,
+	   		c.NUM_EXECUTIONS-coalesce(l.NUM_EXECUTIONS,0), 
+			c.TOTAL_EXEC_TIME-coalesce(l.TOTAL_EXEC_TIME,0),
+			c.TOTAL_USR_TIME-coalesce(l.TOTAL_USR_TIME,0),
+			c.TOTAL_SYS_TIME-coalesce(l.TOTAL_SYS_TIME,0),
+			c.STMT_TEXT,
+	    	c.NUM_COMPILATIONS-coalesce(l.NUM_COMPILATIONS,0),
+			c.PREP_TIME_WORST,
+			c.PREP_TIME_BEST,
+			c.INT_ROWS_DELETED-coalesce(l.INT_ROWS_DELETED,0),
+			c.INT_ROWS_INSERTED-coalesce(l.INT_ROWS_INSERTED,0),
+			c.INT_ROWS_UPDATED-coalesce(l.INT_ROWS_UPDATED,0),
+			c.ROWS_READ-coalesce(l.ROWS_READ,0),
+			c.ROWS_WRITTEN-coalesce(l.ROWS_WRITTEN,0),
+			c.STMT_SORTS-coalesce(l.STMT_SORTS,0),
+			c.SORT_OVERFLOWS-coalesce(l.SORT_OVERFLOWS,0),
+			c.TOTAL_SORT_TIME-coalesce(l.TOTAL_SORT_TIME,0),
+			c.POOL_DATA_L_READS-coalesce(l.POOL_DATA_L_READS,0),
+			c.POOL_DATA_P_READS-coalesce(l.POOL_DATA_P_READS,0),
+			c.POOL_TEMP_DATA_L_READS-coalesce(l.POOL_TEMP_DATA_L_READS,0),
+			c.POOL_TEMP_DATA_P_READS-coalesce(l.POOL_TEMP_DATA_P_READS,0),
+			c.POOL_INDEX_L_READS-coalesce(l.POOL_INDEX_L_READS,0),
+			c.POOL_INDEX_P_READS-coalesce(l.POOL_INDEX_P_READS,0),
+			c.POOL_TEMP_INDEX_L_READS-coalesce(l.POOL_TEMP_INDEX_L_READS,0),
+			c.POOL_TEMP_INDEX_P_READS-coalesce(l.POOL_TEMP_INDEX_P_READS,0) 
+		from (values((select max(sample_ts) from "s#db2mc".hist_SNAP_GET_DYN_SQL)
+					,(select max(sample_ts) from "s#db2mc".hist_SNAP_GET_DYN_SQL where sample_ts < (select max(sample_ts) from "s#db2mc".hist_SNAP_GET_DYN_SQL))
+					)) as t(current_ts,last_ts)
+		join "s#db2mc".hist_SNAP_GET_DYN_SQL c
+		  on c.sample_ts=t.current_ts
+		left join "s#db2mc".hist_SNAP_GET_DYN_SQL l
+		   on (c.database,c.stmt_hash)=(l.database,l.stmt_hash)
+		   and l.sample_ts=t.last_ts
+		where l.NUM_EXECUTIONS is null or c.NUM_EXECUTIONS <> l.NUM_EXECUTIONS
+		   and c.NUM_EXECUTIONS > coalesce(l.NUM_EXECUTIONS,0)
+		';--
+	prepare s1 from stmt;--
+	execute s1;--
+end
+]]>
+					</value>
+				</parameter>
+				<parameter name="parameter[TABLESPACE]" type="blockValue">
+					<value>TABLESPACE</value>
+					</parameter>
+			</parameterList>
+			<if condition="true" negCondition="true">
+				<task>
+					<assignSharedConstant name="STMTRun" type="returnObject">
+						<value>setup.returnValue.STMTRun</value>
+					</assignSharedConstant>
+					<assignSharedConstant name="STMT" type="returnObject">
+						<value>setup.returnValue.STMT</value>
+					</assignSharedConstant>
+					<assignSharedConstant name="STMTMSG" type="returnObject">
+						<value>setup.returnValue.STMTMSG</value>
+					</assignSharedConstant>
+					<alert>Failed to setup Dynamic Cache Sampling, statement ?STMTRun? 
+					
+					?STMTMSG?
+					
+					?STMT?
+					</alert>
+				</task>
+			</if>
+			<if condition="true">
+				<task>
+					<alert>Setup Dynamic Cache Sampling completed successfully</alert>
+				</task>
+			</if>
+		</action>
+	</task>
+</actionScript>

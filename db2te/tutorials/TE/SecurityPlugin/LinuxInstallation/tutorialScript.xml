@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tutorial name="Db2auth Installation on Linux">
+	<globalCodeHighlightOptions highlightCode = "true" />
+	<pageList>
+	<page name="Pre-requisite Libraries" type="intro">
+            <contentFile>PartOne.html</contentFile>
+            <SQLFile>blank.sql</SQLFile>
+    </page>
+    
+    <page name="Download the Plug-in" type="intro">
+            <contentFile>PartOneA.html</contentFile>
+            <SQLFile>blank.sql</SQLFile>
+    </page>
+
+    
+    <page name="Check Your Privileges" type="intro">
+            <contentFile>PartOneB.html</contentFile>
+            <SQLFile>
+               ViewAuthorities.SQL
+            </SQLFile>
+            <SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar=";"
+                cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+            <autoLoadLink>
+                <pageWindow target="connectionLoader" raiseToTop="true">
+                    <splitPane direction="h" splitPercent="0.8" allowResize="false">
+                        <topPane>
+                            <panel name="main" PrimaryContainer="true">
+                                <RAW><![CDATA[
+<div id="title">Connection Manager</div>
+Connect to the database where you want authorization data to be stored, then check your privileges in the 'Ad hoc SQL' tab.
+                                ]]></RAW>
+                            </panel>
+                        </topPane>
+                        <bottomPane>
+                            <panel name="connection" PrimaryContainer="false">
+                                <link type="action" target="_self" window="_self" connectionRequired="y">
+                                    <parameterList>
+                                        <parameter name="action">connectionManager</parameter>
+                                    </parameterList>
+                                </link>             
+                            </panel>
+                        </bottomPane>
+                    </splitPane>
+                </pageWindow>
+            </autoLoadLink>
+
+    </page>
+    
+    <page name="Using the All-in-One Interactive Installation Program" type="general">
+            <contentFile>PartTwo.html</contentFile>
+            <SQLFile>blank.sql</SQLFile>
+    </page>
+
+    <page name="Manual Installation" type="general">
+            <contentFile>PartThree.html</contentFile>
+            <SQLFile>blank.sql</SQLFile>
+    </page>
+
+    <page name="Manual Installation: Configuring the db2auth_key.txt" type="general">
+            <contentFile>PartThreeB.html</contentFile>
+            <SQLFile>blank.sql</SQLFile>
+    </page>
+
+    <page name="Manual Installation: Preparing the Database" type="general">
+            <contentFile>PartFour.html</contentFile>
+            <SQLFile>blank.sql</SQLFile>
+    </page>
+
+    <page name="Manul Installation: Setting the Administrator User and Group" type="general">
+            <contentFile>PartFive.html</contentFile>
+            <autoLoadLink>
+                <pageWindow target="tabledef" raiseToTop="y">
+                    <panel name="top" PrimaryContainer="true">
+                        <link type="other" target="_self" window="_self" connectionRequired="y">
+                            <address>
+                                ?BASE_DIRECTORY?/other/Interaction.php                               
+                            </address>
+                            <parameterList>
+                                <parameter name="BASE_DIR">
+                                    ?BASE_DIRECTORY?
+                                </parameter>
+                            </parameterList>
+                        </link>
+                    </panel>
+                </pageWindow>
+            </autoLoadLink>
+    </page>
+    
+    <page name="Manul Installation: Preparing the DB2 Instance" type="general">
+            <contentFile>PartSix.html</contentFile>
+            <SQLFile>blank.sql</SQLFile>
+    </page>    
+
+	</pageList>
+</tutorial>

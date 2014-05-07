@@ -1,0 +1,64 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2009 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+
+<menu type="leaf" branchDirectory="" maxVersion="9.1">
+	<pageWindow target="_active">
+		<title>Memory Usage Overview</title> <info>Monitoring overview</info>
+		<panelHeaders refreshEnabled="true"/>
+				<splitPane direction="v" splitPercent="0.5">
+					<leftPane>
+						<panel name="database" >
+							<panelHeaders refreshEnabled="true"/>
+							<link type="action" target="_self" window="_self" connectionRequired="y">
+								<parameterList>
+									<parameter name="table">Monitor/histDbMemoryAll</parameter>
+									<parameter name="action">chart</parameter>
+									<parameter name="$chartName">Database Memory</parameter>
+									<parameter name="$type">line</parameter>
+									<parameter name="$xAxis">SNAPSHOT_TIMESTAMP</parameter>
+									<parameter name="$yAxis">POOL_CUR_SIZE</parameter>
+									<parameter name="$grouping">DB_NAME,DBPARTITIONNUM</parameter>
+									<parameter name="$yScale">EXPONENTIAL</parameter>
+									<parameter name="POOL_ID">DATABASE</parameter>
+									<parameter name="maxResultsToFetch">10000</parameter>
+								</parameterList>
+							</link>				
+						</panel>
+					</leftPane>
+					<rightPane>
+						<panel name="databaseStack" >
+							<panelHeaders refreshEnabled="true"/>
+							<link type="action" target="_self" window="_self" connectionRequired="y">
+								<parameterList>
+									<parameter name="table">Monitor/histDbMemoryAll</parameter>
+									<parameter name="action">chart</parameter>
+									<parameter name="$chartName">Database Memory Stack</parameter>
+									<parameter name="$type">stack</parameter>
+									<parameter name="$xAxis">SNAPSHOT_TIMESTAMP</parameter>
+									<parameter name="$yAxis">POOL_CUR_SIZE</parameter>
+									<parameter name="$grouping">DB_NAME,DBPARTITIONNUM</parameter>
+									<parameter name="POOL_ID">DATABASE</parameter>
+									<parameter name="maxResultsToFetch">10000</parameter>
+								</parameterList>
+							</link>				
+						</panel>
+					</rightPane>
+				</splitPane>
+	</pageWindow>
+	<description>System/Instance Memory Graph</description>
+</menu>

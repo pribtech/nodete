@@ -1,0 +1,44 @@
+<H2>Deployment Planning</H2><HR>
+<p>
+The second step in planning is selecting the right installation method. After installation the next step is to apply the DB2 licenses.
+</p>
+
+<H2>Installation Methods</H2><HR><BR>
+<p>
+	You can install Data Server products non-interactively in a number of ways. 
+	Which method you choose depends on your preference, platform, and in some cases, 
+	product. You can use all methods interchangeably. That is, you can use one installation 
+	method now and then later use a different installation method on the same computer. 
+	Choosing one method does not commit you to the continued use of that method.
+</p>	
+
+<ol>
+<li><b class="sourceCopiedFrom">Unattended installation using a response file:-</b></li>
+This method involves creating a response file and then running the <a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v9r7/topic/com.ibm.db2.luw.admin.cmd.doc/doc/r0008889.html');"><b>db2setup</b></a>
+or <a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v9r7/topic/com.ibm.db2.luw.admin.cmd.doc/doc/r0011768.html');"><b>setup</b></a> command using that response file.
+
+<br><br><li><b class="sourceCopiedFrom">Unattended installation using the db2_install script:-</b></li>
+The <a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v9r7/topic/com.ibm.db2.luw.admin.cmd.doc/doc/r0023669.html');"><b>db2_install</b></a> script is a thin, coarse wrapper that calls the response 
+file installer to install the entire product. 
+Compared to a response file installation, this method has some limitations.
+
+<br><br><li><b class="sourceCopiedFrom">Payload file deployment:-</b></li>
+A payload file is a compressed tar archive that contains all of the files and
+metadata for an installable component. This method extracts component files
+from the payload file, directly saves them into the target path, then uses db2chgpath
+to update the embedded runtime path. This deployment method is for the
+advanced user only and is not a recommended installation method.
+<a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v9r7/topic/com.ibm.db2.luw.qb.server.doc/doc/t0023683.html');"><b>Click here</b></a> for more details the payload file deployment.
+</ol>
+<br>
+<span style="background-color: green"><b>Note:</b></span> You can also use the <a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v9r7/topic/com.ibm.db2.luw.admin.cmd.doc/doc/r0025270.html');"><b>db2iprune</b></a> 
+command to reduce the size of a DB2 database product installation image. Refer to <B> Reduce Installation Image Size </B> section for more details.
+
+<BR><BR><H2>Applying DB2 license files to images</H2><HR><BR>
+To use DB2 server products you must obtain the appropriate licenses 
+for each computer you will deploy it on. You might also have to obtain a license 
+for a particular feature that you wish to use.<br>
+When the image is installed, the licenses are automatically installed. To verify that a license has been installed, 
+you can run <a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v9r7/topic/com.ibm.db2.luw.admin.cmd.doc/doc/r0002451.html');"><b>db2licm -l</b></a> and review the output.
+
+

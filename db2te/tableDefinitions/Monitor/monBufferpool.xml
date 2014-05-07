@@ -1,0 +1,473 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2009-2011 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+<table name="monBufferpool">
+	<sql_name>monBufferpool</sql_name>
+	<singular_name>Monitored Bufferpool</singular_name>
+	<plural_name>Monitored Bufferpools</plural_name>
+	<inlinequery>
+<![CDATA[
+select
+    CASE WHEN logical_reads > 0
+     THEN DEC((1 - (FLOAT(physical_reads) / FLOAT(logical_reads))) * 100,5,2)
+     ELSE NULL
+    END AS HIT_RATIO
+    ,a.*
+    ,BUFFERPOOLID
+from (
+SELECT 
+    pool_data_l_reads + pool_temp_data_l_reads +
+    pool_index_l_reads + pool_temp_index_l_reads +
+    pool_xda_l_reads + pool_temp_xda_l_reads as logical_reads
+    ,pool_data_p_reads + pool_temp_data_p_reads +
+    pool_index_p_reads + pool_temp_index_p_reads +
+    pool_xda_p_reads + pool_temp_xda_p_reads as physical_reads
+    ,b.*
+FROM TABLE(MON_GET_BUFFERPOOL('',-2)) as b
+) as a
+left join syscat.bufferpools s
+on a.bp_name=s.BPNAME
+]]>
+	</inlinequery>
+	<messages><SQL0551N>Security issue. Please install "Monitoring Switches/Security" in Tools -> Installed Components</SQL0551N></messages>
+	<description>
+	You can use this view to 
+	&lt;a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.admin.mon.doc/doc/c0001138.html?noframes=true');"&gt;monitor&lt;/a&gt;
+	active bufferpools.
+	The view retrieves information using a 	
+  &lt;a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.sql.rtn.doc/doc/c0053963.html?noframes=true');"&gt;monitor table function&lt;/a&gt;
+  introduced in DB2 9.7.
+  Each row displays metrics for a bufferpool returned by the
+	&lt;a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.sql.rtn.doc/doc/r0053942.html?noframes=true');"&gt;MON_GET_BUFFERPOOL&lt;/a&gt;		
+	table function.
+	This view is not available for databases prior to DB2 9.7.
+	</description>	
+	<order_by_index name="HIT_RATIO" direction="A"/>
+	<history depth="1"/>
+	<display_columns>
+		<col type="reference" name="monTablespace"/>
+		<col type="reference" name="histBufferpoolDelta"/>
+		<col type="reference" name="graphBufferpoolDelta"/>
+		<col type="column" name="HIT_RATIO"/>
+		<col type="column" name="LOGICAL_READS"/>
+		<col type="column" name="PHYSICAL_READS"/>
+		<col type="column" name="BP_NAME"/>
+		<col type="column" name="MEMBER"/>
+		<col type="column" name="AUTOMATIC"/>
+		<col type="column" name="DIRECT_READS"/>
+		<col type="column" name="DIRECT_READ_REQS"/>
+		<col type="column" name="DIRECT_WRITES"/>
+		<col type="column" name="DIRECT_WRITE_REQS"/>
+		<col type="column" name="POOL_DATA_L_READS"/>
+		<col type="column" name="POOL_TEMP_DATA_L_READS"/>
+		<col type="column" name="POOL_XDA_L_READS"/>
+		<col type="column" name="POOL_TEMP_XDA_L_READS"/>
+		<col type="column" name="POOL_INDEX_L_READS"/>
+		<col type="column" name="POOL_TEMP_INDEX_L_READS"/>
+		<col type="column" name="POOL_DATA_P_READS"/>
+		<col type="column" name="POOL_TEMP_DATA_P_READS"/>
+		<col type="column" name="POOL_XDA_P_READS"/>
+		<col type="column" name="POOL_TEMP_XDA_P_READS"/>
+		<col type="column" name="POOL_INDEX_P_READS"/>
+		<col type="column" name="POOL_TEMP_INDEX_P_READS"/>
+		<col type="column" name="POOL_DATA_WRITES"/>
+		<col type="column" name="POOL_XDA_WRITES"/>
+		<col type="column" name="POOL_INDEX_WRITES"/>
+		<col type="column" name="DIRECT_READ_TIME"/>
+		<col type="column" name="DIRECT_WRITE_TIME"/>
+		<col type="column" name="POOL_READ_TIME"/>
+		<col type="column" name="POOL_WRITE_TIME"/>
+		<col type="column" name="POOL_ASYNC_DATA_READS"/>
+		<col type="column" name="POOL_ASYNC_DATA_READ_REQS"/>
+		<col type="column" name="POOL_ASYNC_DATA_WRITES"/>
+		<col type="column" name="POOL_ASYNC_INDEX_READS"/>
+		<col type="column" name="POOL_ASYNC_INDEX_READ_REQS"/>
+		<col type="column" name="POOL_ASYNC_INDEX_WRITES"/>
+		<col type="column" name="POOL_ASYNC_XDA_READS"/>
+		<col type="column" name="POOL_ASYNC_XDA_READ_REQS"/>
+		<col type="column" name="POOL_ASYNC_XDA_WRITES"/>
+		<col type="column" name="POOL_NO_VICTIM_BUFFER"/>
+		<col type="column" name="POOL_LSN_GAP_CLNS"/>
+		<col type="column" name="POOL_DRTY_PG_STEAL_CLNS"/>
+		<col type="column" name="POOL_DRTY_PG_THRSH_CLNS"/>
+		<col type="column" name="VECTORED_IOS"/>
+		<col type="column" name="PAGES_FROM_VECTORED_IOS"/>
+		<col type="column" name="BLOCK_IOS"/>
+		<col type="column" name="PAGES_FROM_BLOCK_IOS"/>
+		<col type="column" name="UNREAD_PREFETCH_PAGES"/>
+		<col type="column" name="FILES_CLOSED"/>
+	</display_columns>
+	<display_columns name="delta">
+		<col type="column" name="BP_NAME"/>
+		<col type="reference" name="monTablespace"/>
+		<col type="column" name="LOGICAL_READS" transform="delta"/>
+		<col type="column" name="PHYSICAL_READS" transform="delta"/>
+		<col type="column" name="MEMBER" transform="delta"/>
+		<col type="column" name="AUTOMATIC" transform="delta"/>
+		<col type="column" name="DIRECT_READS" transform="delta"/>
+		<col type="column" name="DIRECT_READ_REQS" transform="delta"/>
+		<col type="column" name="DIRECT_WRITES" transform="delta"/>
+		<col type="column" name="DIRECT_WRITE_REQS" transform="delta"/>
+		<col type="column" name="POOL_DATA_L_READS" transform="delta"/>
+		<col type="column" name="POOL_TEMP_DATA_L_READS" transform="delta"/>
+		<col type="column" name="POOL_XDA_L_READS" transform="delta"/>
+		<col type="column" name="POOL_TEMP_XDA_L_READS" transform="delta"/>
+		<col type="column" name="POOL_INDEX_L_READS" transform="delta"/>
+		<col type="column" name="POOL_TEMP_INDEX_L_READS" transform="delta"/>
+		<col type="column" name="POOL_DATA_P_READS" transform="delta"/>
+		<col type="column" name="POOL_TEMP_DATA_P_READS" transform="delta"/>
+		<col type="column" name="POOL_XDA_P_READS" transform="delta"/>
+		<col type="column" name="POOL_TEMP_XDA_P_READS" transform="delta"/>
+		<col type="column" name="POOL_INDEX_P_READS" transform="delta"/>
+		<col type="column" name="POOL_TEMP_INDEX_P_READS" transform="delta"/>
+		<col type="column" name="POOL_DATA_WRITES" transform="delta"/>
+		<col type="column" name="POOL_XDA_WRITES" transform="delta"/>
+		<col type="column" name="POOL_INDEX_WRITES" transform="delta"/>
+		<col type="column" name="DIRECT_READ_TIME" transform="delta"/>
+		<col type="column" name="DIRECT_WRITE_TIME" transform="delta"/>
+		<col type="column" name="POOL_READ_TIME" transform="delta"/>
+		<col type="column" name="POOL_WRITE_TIME" transform="delta"/>
+		<col type="column" name="POOL_ASYNC_DATA_READS" transform="delta"/>
+		<col type="column" name="POOL_ASYNC_DATA_READ_REQS" transform="delta"/>
+		<col type="column" name="POOL_ASYNC_DATA_WRITES" transform="delta"/>
+		<col type="column" name="POOL_ASYNC_INDEX_READS" transform="delta"/>
+		<col type="column" name="POOL_ASYNC_INDEX_READ_REQS" transform="delta"/>
+		<col type="column" name="POOL_ASYNC_INDEX_WRITES" transform="delta"/>
+		<col type="column" name="POOL_ASYNC_XDA_READS" transform="delta"/>
+		<col type="column" name="POOL_ASYNC_XDA_READ_REQS" transform="delta"/>
+		<col type="column" name="POOL_ASYNC_XDA_WRITES" transform="delta"/>
+		<col type="column" name="POOL_NO_VICTIM_BUFFER" transform="delta"/>
+		<col type="column" name="POOL_LSN_GAP_CLNS" transform="delta"/>
+		<col type="column" name="POOL_DRTY_PG_STEAL_CLNS" transform="delta"/>
+		<col type="column" name="POOL_DRTY_PG_THRSH_CLNS" transform="delta"/>
+		<col type="column" name="VECTORED_IOS" transform="delta"/>
+		<col type="column" name="PAGES_FROM_VECTORED_IOS" transform="delta"/>
+		<col type="column" name="BLOCK_IOS" transform="delta"/>
+		<col type="column" name="PAGES_FROM_BLOCK_IOS"/>
+		<col type="column" name="UNREAD_PREFETCH_PAGES" transform="delta"/>
+		<col type="column" name="FILES_CLOSED" transform="delta"/>
+	</display_columns>
+	<reference name="monTablespace">
+		<title>Monitored Table Spaces</title>
+		<reftype>table</reftype>
+		<refvalue>Monitor/monTablespace</refvalue>
+		<icon>images/icon-link-calendar.gif</icon>
+		<ref foreign_column_name="TBSP_CUR_POOL_ID">
+			<local_column_name>BUFFERPOOLID</local_column_name>
+		</ref>
+	</reference>
+	<reference name="histBufferpoolDelta">
+		<title>History</title>
+		<reftype>table</reftype>
+		<refvalue>Monitor/histBufferpoolDelta</refvalue>
+		<icon>images/icon-histo.gif</icon>
+		<ref foreign_column_name="BP_NAME">
+			<local_column_name>BP_NAME</local_column_name>
+		</ref>
+	</reference>
+<!--  replaced with new technique
+	<reference name="graphBufferpoolDelta">
+		<title>Graph</title>
+		<reftype>graph</reftype>
+		<refvalue>Monitor/histBufferpoolDelta</refvalue>
+		<icon>images/icon-histo.gif</icon>
+		<ref foreign_column_name="BP_NAME">
+			<local_column_name>BP_NAME</local_column_name>
+		</ref>
+	</reference>
+-->
+	<reference name="graphBufferpoolDelta">
+		<title>Graph</title>
+		<reftype>action</reftype>
+		<refvalue>chart</refvalue>
+		<icon>images/icon-histo.gif</icon>
+		<ref foreign_column_name="table"><value>Monitor/histBufferpoolDelta</value></ref>
+		<ref foreign_column_name="$chartName"><value>BP_NAME</value></ref>
+		<ref foreign_column_name="$type"><value>line</value></ref>
+		<ref foreign_column_name="$xAxis"><value>SNAPSHOT_TIMESTAMP</value></ref>
+		<ref foreign_column_name="$yScale"><value>EXPONENTIAL</value></ref>
+		<ref foreign_column_name="$yAxis"><value>HIT_RATIO,LOGICAL_READS,PHYSICAL_READS,DIRECT_READS,DIRECT_READ_REQS,DIRECT_WRITES,DIRECT_WRITE_REQS</value></ref>
+		<ref foreign_column_name="$maxResultsToFetch"><value>600</value></ref>
+		<ref foreign_column_name="BP_NAME">
+			<local_column_name>BP_NAME</local_column_name>
+		</ref>
+	</reference>
+
+	<column name="HIT_RATIO">
+		<sql_name>HIT_RATIO</sql_name>
+		<title>Hit Ratio</title>
+		<type>bg</type>
+		<graphattributes flipColor="y"/>
+	</column>
+	<column name="LOGICAL_READS">
+		<sql_name>LOGICAL_READS</sql_name>
+		<title>Logical Reads</title>
+		<type>n</type>
+	</column>
+	<column name="PHYSICAL_READS">
+		<sql_name>PHYSICAL_READS</sql_name>
+		<title>Physical Reads</title>
+		<type>n</type>
+	</column>
+	<column name="BUFFERPOOLID">
+		<sql_name>BUFFERPOOLID</sql_name>
+		<title>Buffer Pool Id.</title>
+		<type>n</type>
+	</column>
+	<column name="BP_NAME">
+		<sql_name>BP_NAME</sql_name>
+		<title>Name</title>
+		<type/>
+		<drillEnabled/>
+		<primaryKey/>
+		<reference name="buffpool">
+			<title>Bufferpool</title>
+			<reftype>displayRow</reftype>
+			<refvalue>bufferpool</refvalue>
+			<icon>images/icon-buffer.gif</icon>								
+			<ref foreign_column_name="bpname">
+				<local_column_name>BP_NAME</local_column_name>
+			</ref>
+		</reference>
+	</column>
+	<column name="MEMBER"  minVersion="9.8">
+		<sql_name>MEMBER</sql_name>
+		<title>Member</title>
+		<type>n</type>
+		<primaryKey/>
+	</column>
+	<column name="AUTOMATIC">
+		<sql_name>AUTOMATIC</sql_name>
+		<title>Automatic</title>
+		<type/>
+	</column>
+	<column name="DIRECT_READS">
+		<sql_name>DIRECT_READS</sql_name>
+		<title>Direct Reads</title>
+		<type>n</type>
+	</column>
+	<column name="DIRECT_READ_REQS">
+		<sql_name>DIRECT_READ_REQS</sql_name>
+		<title>Direct Read Requests</title>
+		<type>n</type>
+	</column>
+	<column name="DIRECT_WRITES">
+		<sql_name>DIRECT_WRITES</sql_name>
+		<title>Direct Writes</title>
+		<type>n</type>
+	</column>
+	<column name="DIRECT_WRITE_REQS">
+		<sql_name>DIRECT_WRITE_REQS</sql_name>
+		<title>Direct Write Requests</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_DATA_L_READS">
+		<sql_name>POOL_DATA_L_READS</sql_name>
+		<title>Pool Data Logical Reads</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_TEMP_DATA_L_READS">
+		<sql_name>POOL_TEMP_DATA_L_READS</sql_name>
+		<title>Pool Temp Data Logical Reads</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_XDA_L_READS">
+		<sql_name>POOL_XDA_L_READS</sql_name>
+		<title>Pool XDA Logical Reads</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_TEMP_XDA_L_READS">
+		<sql_name>POOL_TEMP_XDA_L_READS</sql_name>
+		<title>Pool Temp. XDA Logical Reads</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_INDEX_L_READS">
+		<sql_name>POOL_INDEX_L_READS</sql_name>
+		<title>Pool Index Logical Reads</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_TEMP_INDEX_L_READS">
+		<sql_name>POOL_TEMP_INDEX_L_READS</sql_name>
+		<title>Pool Temp Index Logical Reads</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_DATA_P_READS">
+		<sql_name>POOL_DATA_P_READS</sql_name>
+		<title>Pool Data Physical Reads</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_TEMP_DATA_P_READS">
+		<sql_name>POOL_TEMP_DATA_P_READS</sql_name>
+		<title>Pool Temp. Data Physical Reads</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_XDA_P_READS">
+		<sql_name>POOL_XDA_P_READS</sql_name>
+		<title>Pool XDA Physical Reads</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_TEMP_XDA_P_READS">
+		<sql_name>POOL_TEMP_XDA_P_READS</sql_name>
+		<title>Pool Temp XDA Physical Reads</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_INDEX_P_READS">
+		<sql_name>POOL_INDEX_P_READS</sql_name>
+		<title>Pool Index Physical Reads</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_TEMP_INDEX_P_READS">
+		<sql_name>POOL_TEMP_INDEX_P_READS</sql_name>
+		<title>Pool Temp. Index Physical Reads</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_DATA_WRITES">
+		<sql_name>POOL_DATA_WRITES</sql_name>
+		<title>Pool Data Writes</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_XDA_WRITES">
+		<sql_name>POOL_XDA_WRITES</sql_name>
+		<title>Pool XDA Writes</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_INDEX_WRITES">
+		<sql_name>POOL_INDEX_WRITES</sql_name>
+		<title>Pool Index Writes</title>
+		<type>n</type>
+	</column>
+	<column name="DIRECT_READ_TIME">
+		<sql_name>DIRECT_READ_TIME</sql_name>
+		<title>Direct Read Time</title>
+		<type>n</type>
+	</column>
+	<column name="DIRECT_WRITE_TIME">
+		<sql_name>DIRECT_WRITE_TIME</sql_name>
+		<title>Direct Write Time</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_READ_TIME">
+		<sql_name>POOL_READ_TIME</sql_name>
+		<title>Pool Read Time</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_WRITE_TIME">
+		<sql_name>POOL_WRITE_TIME</sql_name>
+		<title>Pool Write Time</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_ASYNC_DATA_READS">
+		<sql_name>POOL_ASYNC_DATA_READS</sql_name>
+		<title>Pool Async Data Reads</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_ASYNC_DATA_READ_REQS">
+		<sql_name>POOL_ASYNC_DATA_READ_REQS</sql_name>
+		<title>Pool Async Data Read Requests</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_ASYNC_DATA_WRITES">
+		<sql_name>POOL_ASYNC_DATA_WRITES</sql_name>
+		<title>Pool Async Data Writes</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_ASYNC_INDEX_READS">
+		<sql_name>POOL_ASYNC_INDEX_READS</sql_name>
+		<title>Pool Async Index Reads</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_ASYNC_INDEX_READ_REQS">
+		<sql_name>POOL_ASYNC_INDEX_READ_REQS</sql_name>
+		<title>Pool Async Index Read Requests</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_ASYNC_INDEX_WRITES">
+		<sql_name>POOL_ASYNC_INDEX_WRITES</sql_name>
+		<title>Pool Async Index Writes</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_ASYNC_XDA_READS">
+		<sql_name>POOL_ASYNC_XDA_READS</sql_name>
+		<title>Pool Async XDA Reads</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_ASYNC_XDA_READ_REQS">
+		<sql_name>POOL_ASYNC_XDA_READ_REQS</sql_name>
+		<title>Pool Async XDA Read Requests</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_ASYNC_XDA_WRITES">
+		<sql_name>POOL_ASYNC_XDA_WRITES</sql_name>
+		<title>Pool Async XDA Writes</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_NO_VICTIM_BUFFER">
+		<sql_name>POOL_NO_VICTIM_BUFFER</sql_name>
+		<title>Pool No Victim Buffer</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_LSN_GAP_CLNS">
+		<sql_name>POOL_LSN_GAP_CLNS</sql_name>
+		<title>Pool LSN Gap Cleaners</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_DRTY_PG_STEAL_CLNS">
+		<sql_name>POOL_DRTY_PG_STEAL_CLNS</sql_name>
+		<title>Pool Dirty Page Steal Cleaners</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_DRTY_PG_THRSH_CLNS">
+		<sql_name>POOL_DRTY_PG_THRSH_CLNS</sql_name>
+		<title>Pool Dirty Page Threshold Cleaners</title>
+		<type>n</type>
+	</column>
+	<column name="VECTORED_IOS">
+		<sql_name>VECTORED_IOS</sql_name>
+		<title>Vectored IOs</title>
+		<type>n</type>
+	</column>
+	<column name="PAGES_FROM_VECTORED_IOS">
+		<sql_name>PAGES_FROM_VECTORED_IOS</sql_name>
+		<title>Pages From Vectored IOs</title>
+		<type>n</type>
+	</column>
+	<column name="BLOCK_IOS">
+		<sql_name>BLOCK_IOS</sql_name>
+		<title>Block IOs</title>
+		<type>n</type>
+	</column>
+	<column name="PAGES_FROM_BLOCK_IOS">
+		<sql_name>PAGES_FROM_BLOCK_IOS</sql_name>
+		<title>Pages From Block IOs</title>
+		<type>n</type>
+	</column>
+	<column name="UNREAD_PREFETCH_PAGES">
+		<sql_name>UNREAD_PREFETCH_PAGES</sql_name>
+		<title>Unread Fetch Pages</title>
+		<type>n</type>
+	</column>
+	<column name="FILES_CLOSED">
+		<sql_name>FILES_CLOSED</sql_name>
+		<title>Files Closed</title>
+		<type>n</type>
+	</column>
+	<column name="ADDITIONAL_DETAILS">
+		<sql_name>'ADDITIONAL_DETAILS reserved for future use'</sql_name>
+		<title>Additional Detail</title>
+		<type>l</type>
+	</column>
+</table>

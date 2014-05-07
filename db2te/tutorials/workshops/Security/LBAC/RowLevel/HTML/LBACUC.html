@@ -1,0 +1,35 @@
+<BR><H2><B>LBAC Scenario</B></H2><HR>
+
+<p>J.K.Avro superstore has branches in four regions - North, South, East, West. Table <font face="courier">'dailysales'</font> contains sales data of all regions.
+The company would like to protect data of one region from another.</p>
+
+<p>Not all employees of the organization need to have access to all table data. Staff should be granted to access data as required.
+To protect access to daily sales data of different regions from employees in other regions, J.K.Avro superstore decides to implement Row Level LBAC.</p>
+
+<h4>Operation</h4><br>
+SECADM of J.K.Avro superstore, Pat, sets up the row level LBAC policies as below.</p>
+<img src="?BASE_DIRECTORY?HTML/tree.png" /><br><br><br><br><br><br><br><br><br><br><br>
+1. Creates security label component to restrict access to specific regional data by corresponding regional managers.<br>
+2. Creates security policy which defines who can access which rows of <font face="courier">'dailysales'</font> table.<br>
+3. Creates security labels and grants them to different users with different access rules.<ul>
+<li>Security label 'NORTH' is granted to Betcy, employee of customer service department.</li>
+<li>Security label 'SOUTH' is granted to Bob, employee of customer service department.</li>
+<li>Security label 'EAST' is granted to Sam, employee of customer service department.</li>
+<li>Security label 'WEST' is granted to Nick, employee of customer service department.</li>
+<li>Security label 'CENTRAL' is granted to Joe, general manager for NORTH and SOUTH regions.</li>
+<li>Security label 'COASTAL' is granted to Sue, general manager for EAST and WEST regions.</li>
+<li>Security label 'SALES_ORGANIZATION' is granted to the Mark, Vice President of J.K.Avro superstore.</li>
+</ul>
+4. Alter table <font face="courier">'dailysales'</font> to add security labels to all the rows of the table.<br>
+</p><br>
+
+<h4>Solution</h4>
+
+<br><p>Pat sets up LBAC policies on <font face="courier">'dailysales'</font> table so that staff will only access data they only need to know.</p><br><br>
+
+
+
+
+
+
+

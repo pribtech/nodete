@@ -1,0 +1,140 @@
+<table name="SYSCAT.ROUTINEAUTH">
+    <sql_name>SYSCAT.ROUTINEAUTH</sql_name>
+    <singular_name>Routine Privilege</singular_name>
+    <plural_name>Routine Privileges</plural_name>
+     <description>
+    	Each row represents a user, group or role that has been granted EXECUTE 
+		&lt;a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.admin.sec.doc/doc/c0005478.html?noframes=true');"&gt;privilege&lt;/a&gt;
+		on a particular routine (function, method, or procedure), or on all routines in a particular schema in the database.		
+		This list is generated from the &lt;a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.sql.ref.doc/doc/r0007491.html?noframes=true');"&gt;SYSCAT.ROUTINEAUTH&lt;/a&gt; view.
+    </description>
+    <rows_per_page>50</rows_per_page>
+    <order_by_index></order_by_index>
+    <display_columns>
+        <col type="column" name="schema"></col>
+        <col type="column" name="specificname"></col>    
+			  <col type="reference" name="granteelink"/>
+			  <col type="column" name="grantee"/>
+			  <col type="column" name="granteetype"/>
+			  <col type="reference" name="grantorlink"/>			
+			  <col type="column" name="grantor"/>
+			  <!--<col type="column" name="grantortype"/>-->
+			  <col type="column" name="typeschema"></col>
+        <col type="column" name="typename"></col>
+        <col type="column" name="routinetype"></col>
+        <col type="column" name="executeauth"></col>
+    </display_columns>
+	<disable_edit/>
+		<order_by_index name="schema" direction="A"/>    		
+		<order_by_index name="specificname" direction="A"/>    	
+		<reference name="granteelink">
+			<title>Grantee</title>
+			<reftype>displayRow</reftype>
+			<refvalue>Authority/authids</refvalue>
+			<icon>images/icon-user.gif</icon>						
+			<ref foreign_column_name="authid">
+				<local_column_name>grantee</local_column_name>
+			</ref>
+		</reference>			
+		<reference name="grantorlink">
+			<title>Grantor</title>
+			<reftype>displayRow</reftype>
+			<refvalue>Authority/authids</refvalue>
+			<icon>images/icon-user.gif</icon>						
+			<ref foreign_column_name="authid">
+				<local_column_name>grantor</local_column_name>
+			</ref>
+		</reference>			
+    <column name="grantor">
+        <c_sql_name>GRANTOR</c_sql_name>
+        <c_title>Grantor</c_title>
+        <c_presentation>s</c_presentation>
+        <c_drill>y</c_drill>
+    </column>
+    <!--<column name="grantortype">
+        <c_sql_name>GRANTORTYPE</c_sql_name>
+        <c_title>Type</c_title>
+        <c_presentation>s</c_presentation>
+        <c_drill>y</c_drill>
+	   	  <c_column_mask>
+				  <value_mask value="S"><mask>System</mask></value_mask>
+				  <value_mask value="U"><mask>User</mask></value_mask>
+	   	  </c_column_mask>						                
+    </column>-->
+    <column name="grantee">
+        <c_sql_name>GRANTEE</c_sql_name>
+        <c_title>Grantee</c_title>
+        <c_pkey>p</c_pkey>
+        <c_presentation>s</c_presentation>
+        <c_drill>y</c_drill>
+    </column>
+    <column name="granteetype">
+        <c_sql_name>GRANTEETYPE</c_sql_name>
+        <c_title>Type</c_title>
+        <c_pkey>p</c_pkey>
+        <c_presentation>s</c_presentation>
+        <c_drill>y</c_drill>
+	   	  <c_column_mask>
+				  <value_mask value="G"><mask>Group</mask></value_mask>
+				  <value_mask value="R"><mask>Role</mask></value_mask>
+				  <value_mask value="U"><mask>User</mask></value_mask>
+	   	  </c_column_mask>						                
+    </column>
+    <column name="schema">
+        <c_sql_name>SCHEMA</c_sql_name>
+        <c_title>Schema</c_title>
+        <c_pkey>p</c_pkey>
+        <c_presentation>s</c_presentation>
+        <c_drill>y</c_drill>
+		<c_prefill>
+			<table>schema</table>
+			<column>SCHEMANAME</column>
+		</c_prefill>                        
+    </column>
+    <column name="specificname">
+        <c_sql_name>SPECIFICNAME</c_sql_name>
+        <c_title>Specific Name</c_title>
+        <c_pkey>p</c_pkey>
+        <c_presentation>s</c_presentation>
+        <c_drill>y</c_drill>
+    </column>
+    <column name="typeschema">
+        <c_sql_name>TYPESCHEMA</c_sql_name>
+        <c_title>Type Schema</c_title>
+        <c_presentation>s</c_presentation>
+        <c_drill>y</c_drill>
+		<c_prefill>
+			<table>schema</table>
+			<column>SCHEMANAME</column>
+		</c_prefill>                        
+    </column>
+    <column name="typename">
+        <c_sql_name>TYPENAME</c_sql_name>
+        <c_title>Type Name</c_title>
+        <c_presentation>s</c_presentation>
+        <c_drill>y</c_drill>
+    </column>
+    <column name="routinetype">
+        <c_sql_name>ROUTINETYPE</c_sql_name>
+        <c_title>Routine Type</c_title>
+        <c_presentation>s</c_presentation>
+        <c_drill>y</c_drill>
+	   	  <c_column_mask>
+				  <value_mask value="F"><mask>function</mask></value_mask>
+				  <value_mask value="M"><mask>method</mask></value_mask>
+				  <value_mask value="P"><mask>procedure</mask></value_mask>
+	   	  </c_column_mask>						                        
+    </column>
+    <column name="executeauth">
+        <c_sql_name>EXECUTEAUTH</c_sql_name>
+        <c_title>Execute</c_title>
+        <c_presentation>s</c_presentation>
+        <c_drill>y</c_drill>
+    </column>
+    <column name="grant_time">
+        <c_sql_name>GRANT_TIME</c_sql_name>
+        <c_title>Grant Time</c_title>
+        <c_presentation>n</c_presentation>
+        <c_drill>n</c_drill>
+    </column>
+</table>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xx="action.xsd">
+    <xs:include schemaLocation="action.xsd"/>
+    <xs:element name="actionPanel">
+        <xs:annotation>
+            <xs:documentation><![CDATA[
+                    . 
+                    ]]></xs:documentation>
+        </xs:annotation>
+    <xs:complexType>
+        <xs:sequence>
+            <xs:element name="flow" type="xs:string">
+                <xs:annotation>
+                    <xs:documentation><![CDATA[
+                    . 
+                    ]]></xs:documentation>
+                </xs:annotation></xs:element>
+            <xs:element name="useConsole" type="xs:string">
+                <xs:annotation>
+                    <xs:documentation><![CDATA[
+                    . 
+                    ]]></xs:documentation>
+                </xs:annotation></xs:element>
+            <xs:element name="overview" type="xs:string">
+                <xs:annotation>
+                    <xs:documentation><![CDATA[
+                    . 
+                    ]]></xs:documentation>
+                </xs:annotation></xs:element>
+            <xs:element name="taskList">
+                <xs:annotation>
+                    <xs:documentation><![CDATA[
+                    . 
+                    ]]></xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="task" maxOccurs="unbounded" minOccurs="1">
+                            <xs:annotation>
+                                <xs:documentation><![CDATA[
+                    . 
+                    ]]></xs:documentation>
+                            </xs:annotation>
+                            <xs:complexType>
+                                <xs:sequence>
+                                    <xs:element name="discription" type="xs:string">
+                                        <xs:annotation>
+                                            <xs:documentation><![CDATA[
+                    . 
+                    ]]></xs:documentation>
+                                        </xs:annotation></xs:element>
+                                    <xs:element name="action" type="action">
+                                        <xs:annotation>
+                                            <xs:documentation><![CDATA[
+                    . 
+                    ]]></xs:documentation>
+                                        </xs:annotation></xs:element>
+                                </xs:sequence>
+                                <xs:attribute name="name" type="xs:string">
+                                    <xs:annotation>
+                                        <xs:documentation><![CDATA[
+                    . 
+                    ]]></xs:documentation>
+                                    </xs:annotation></xs:attribute>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+</xs:element>
+</xs:schema>

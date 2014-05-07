@@ -1,0 +1,90 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2013 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+<table name="findList">
+	<sqlName>findList</sqlName>
+	<singularName>File</singularName>
+	<pluralName>Files</pluralName>
+	<inlinequery>
+<![CDATA[
+find ? -name "?" -type f -printf "%k %A+ %p \\\\n"
+]]>
+	</inlinequery>
+	<parameters>
+		<parm name="base">
+			<title>Base</title>
+			<value>/NoFile</value>
+		</parm>
+		<parm name="pattern">
+			<title>Base</title>
+			<value>*</value>
+		</parm>
+	</parameters>
+	<filters>
+		<column name="Line" operator="is empty"/>
+		<column name="Line" operator="contains" value="Permission denied" />
+		<column name="Line" operator="contains" value="No such file or directory" />
+	</filters>
+	<output>
+		<type name="DDL" destination="" title="" generator=""/>
+	</output>
+	<description></description>
+	<displayColumns>
+		<col type="column" name="file" maxSize="140"/>
+		<col type="column" name="size"/>
+		<col type="column" name="modified"/>
+	</displayColumns>
+	<column name="Line">
+		<sqlName>Line</sqlName>
+		<title>Line</title>
+		<sortDisable/>
+	</column>
+	<column name="size">
+		<generated>word,Line,1</generated>
+		<title>Size (k)</title>
+		<sortDisable/>
+		<type>n</type>
+	</column>
+	<column name="modified">
+		<generated>word,Line,2</generated>
+		<title>Modified</title>
+		<sortDisable/>
+	</column>
+	<column name="file">
+		<generated>getStringAfterDelimiter,Line,2</generated>
+		<title>File</title>
+		<sortDisable/>
+	</column>
+	<reference name="browse">
+		<title>Content</title>
+		<reftype>table</reftype>
+		<refvalue>ssh/cat</refvalue>
+		<icon>images/icon-link-calendar.gif</icon>								
+		<ref foreign_column_name="File">
+			<localColumnName>file</localColumnName>
+		</ref>
+	</reference>
+	<reference name="tail">
+		<title>Tail</title>
+		<reftype>table</reftype>
+		<refvalue>ssh/tail</refvalue>
+		<icon>images/icon-link-calendar.gif</icon>								
+		<ref foreign_column_name="File">
+			<localColumnName>file</localColumnName>
+		</ref>
+	</reference>
+</table>

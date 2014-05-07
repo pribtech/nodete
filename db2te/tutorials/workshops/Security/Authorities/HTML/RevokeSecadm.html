@@ -1,0 +1,16 @@
+<br><h2>Revoke SECADM authority from database creator</h2><hr><br>
+
+<p><b>You must log into the database as Pat before proceeding with this page.</b></p>
+<p>The CEO of J.K. Avro Superstore wants to separate duties between database administration and security administration. Hence
+he would like to revoke SECADM authorities from the database creator.</p>
+
+
+<br><h4>Operation</h4><hr><br>
+<p>Starting from DB2 9.7, only SECADM has authority to revoke SECADM and DBADM authorities.</p>
+
+<p> Pat who holds SECADM authority revokes SECADM authority from the database creator.</p>
+<p> <FONT style="BACKGROUND-COLOR: yellow">On the right pane, click Edit Query. Replace ~~~~DATABASE_CREATOR~~~~ with the username used to create the SECURITY database.</FONT></p>
+
+<br><h4>Solution</h4><hr><br>
+<p>The REVOKE command in the right pane show that Pat revokes SECADM authority from the database creator who now holds only SYSADM, DBADM, DATAACCESS, and ACCESSCTRL authorities.</p>
+

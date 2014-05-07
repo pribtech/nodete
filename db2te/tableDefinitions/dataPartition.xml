@@ -1,0 +1,192 @@
+<!--
+  Author: Peter Prib
+  
+  Copyright Independent Systems Integrators Pty Ltd 2008 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+<table name="dataPartition">
+	<sql_name>dataPartition</sql_name>
+	<singular_name>Data Partition</singular_name>
+	<plural_name>Data Partitions</plural_name>
+	<inlinequery>
+<![CDATA[
+select s.tbspace
+  ,p.*
+  ,case when LONG_TBSPACEID is not null then
+    (select s.tbspace from sysibm.systablespaces sl
+     where sl.tbspaceid=p.long_tbspaceid)
+   end as LONG_TBSPACE 
+from sysibm.SYSDATAPARTITIONS p 
+join sysibm.systablespaces s
+  on p.tbspaceid=s.tbspaceid
+]]>
+	</inlinequery>
+	<description>&lt;a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/index.jsp?topic=/com.ibm.db2.luw.admin.partition.doc/doc/c0021556.html');"&gt;Table data partition&lt;/a&gt; information</description>
+	<disableEdit/>
+	<output>
+		<type name="DDL" destination="" title="" generator=""/>
+	</output>
+	<order_by_index/>
+	<display_columns>
+		<col type="column" name="TBSPACE"/>
+		<col type="column" name="DATAPARTITIONNAME"/>
+		<col type="column" name="TABSCHEMA"/>
+		<col type="column" name="TABNAME"/>
+		<col type="column" name="PARTITIONOBJECTID"/>
+		<col type="column" name="LONG_TBSPACE"/>
+		<col type="column" name="ACCESS_MODE"/>
+		<col type="column" name="STATUS"/>
+		<col type="column" name="SEQNO"/>
+		<col type="column" name="LOWINCLUSIVE"/>
+		<col type="column" name="LOWVALUE"/>
+		<col type="column" name="HIGHINCLUSIVE"/>
+		<col type="column" name="HIGHVALUE"/>
+		<col type="column" name="ROWFORMATVERSION"/>
+	</display_columns>
+	<column name="TBSPACE">
+		<c_sql_name>TBSPACE</c_sql_name>
+		<c_title>Tablespace</c_title>
+		<c_presentation/>
+        <c_drill>n</c_drill>
+		<c_reference name="tablespace">
+			<c_title/>
+			<reftype>displayRow</reftype>
+			<refvalue>tablespaces</refvalue>
+			<icon>images/icon-tbs.gif</icon>
+			<ref foreign_column_name="tbspace">
+				<local_column_name>TBSPACE</local_column_name>
+			</ref>
+		</c_reference>
+	</column>
+	<column name="TBSPACEID">
+		<c_sql_name>TBSPACEID</c_sql_name>
+		<c_title>Tablespace Id.</c_title>
+        <c_presentation>n</c_presentation>
+        <c_drill>n</c_drill>
+		<c_pkey>p</c_pkey>
+	</column>
+	<column name="DATAPARTITIONNAME">
+		<c_sql_name>DATAPARTITIONNAME</c_sql_name>
+		<c_title>Data Partition</c_title>
+		<c_presentation/>
+        <c_drill>n</c_drill>
+	</column>
+	<column name="TABSCHEMA">
+		<c_sql_name>TABSCHEMA</c_sql_name>
+		<c_title>Table Schema</c_title>
+		<c_presentation/>
+        <c_drill>n</c_drill>
+	</column>
+	<column name="TABNAME">
+		<c_sql_name>TABNAME</c_sql_name>
+		<c_title>Table Name</c_title>
+		<c_presentation/>
+        <c_drill>n</c_drill>
+        <c_reference name="tablecat">
+			<c_title/>
+			<reftype>displayRow</reftype>
+			<refvalue>tablecat</refvalue>
+			<icon>images/icon-link-calendar.gif</icon>
+			<ref foreign_column_name="tabname">
+				<local_column_name>TABSCHEMA</local_column_name>
+			</ref>
+			<ref foreign_column_name="tabname">
+				<local_column_name>TABNAME</local_column_name>
+			</ref>
+		</c_reference>
+	</column>
+	<column name="PARTITIONOBJECTID">
+		<c_sql_name>PARTITIONOBJECTID</c_sql_name>
+		<c_title>Partition Obect Id.</c_title>
+        <c_presentation>n</c_presentation>
+		<c_drill>y</c_drill>
+		<c_pkey>p</c_pkey>
+	</column>
+	<column name="LONG_TBSPACE">
+		<c_sql_name>LONG_TBSPACE</c_sql_name>
+		<c_title>Long Tablespace</c_title>
+		<c_presentation/>
+        <c_drill>n</c_drill>
+		<c_reference name="tablespace">
+			<c_title/>
+			<reftype>displayRow</reftype>
+			<refvalue>tablespaces</refvalue>
+			<icon>images/icon-tbs.gif</icon>
+			<ref foreign_column_name="tbspace">
+				<local_column_name>LONG_TBSPACE</local_column_name>
+			</ref>
+		</c_reference>
+	</column>
+	<column name="LONG_TBSPACEID">
+		<c_sql_name>LONG_TBSPACEID</c_sql_name>
+		<c_title>Long Tablespace Id.</c_title>
+		<c_presentation>n</c_presentation>
+        <c_drill>n</c_drill>
+   	</column>
+	<column name="ACCESS_MODE">
+		<c_sql_name>ACCESS_MODE</c_sql_name>
+		<c_title>Access Mode</c_title>
+		<c_presentation/>
+        <c_drill>n</c_drill>
+        <c_column_mask_file>masks/tableAccessMode.xml</c_column_mask_file>
+	</column>
+	<column name="STATUS">
+		<c_sql_name>STATUS</c_sql_name>
+		<c_title>Status</c_title>
+		<c_presentation/>
+        <c_drill>n</c_drill>
+  		<c_column_mask>
+			<value_mask value="A"><mask>newly attached</mask></value_mask>
+			<value_mask value="D"><mask>Detached</mask></value_mask>
+			<value_mask value="I"><mask>Detached, awaiting asynchronous index cleanup</mask></value_mask>
+   		</c_column_mask>
+	</column>
+	<column name="SEQNO">
+		<c_sql_name>SEQNO</c_sql_name>
+		<c_title>Sequence No.</c_title>
+		<c_presentation>n</c_presentation>
+        <c_drill>n</c_drill>
+   	</column>
+	<column name="LOWINCLUSIVE">
+		<c_sql_name>LOWINCLUSIVE</c_sql_name>
+		<c_title>Low Inclusive</c_title>
+		<c_presentation/>
+        <c_drill>n</c_drill>
+	</column>
+	<column name="LOWVALUE">
+		<c_sql_name>LOWVALUE</c_sql_name>
+		<c_title>Low Value</c_title>
+		<c_presentation/>
+        <c_drill>n</c_drill>
+	</column>
+	<column name="HIGHINCLUSIVE">
+		<c_sql_name>HIGHINCLUSIVE</c_sql_name>
+		<c_title>High Inclusive</c_title>
+		<c_presentation/>
+        <c_drill>n</c_drill>
+	</column>
+	<column name="HIGHVALUE">
+		<c_sql_name>HIGHVALUE</c_sql_name>
+		<c_title>High Value</c_title>
+		<c_presentation/>
+        <c_drill>n</c_drill>
+	</column>
+	<column name="ROWFORMATVERSION">
+		<c_sql_name>ROWFORMATVERSION</c_sql_name>
+		<c_title>Row Format Version</c_title>
+		<c_presentation/>
+        <c_drill>n</c_drill>
+	</column>
+</table>

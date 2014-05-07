@@ -1,0 +1,47 @@
+<p>You can now create text indexes on text data types and XML data types. For each text index, a text search collection is created on the file system. A text search collection holds the significant terms that are extracted from the documents.</p>
+
+<p>Run the SQL in the Ad Hoc command window to the right. Note that case IS CASE SENSITIVE for the schema, index and table name used in the CALL commands.</p>
+<h4>Create a text index on column TITLE</h4>
+<pre><code>
+db2ts "CREATE INDEX mytitleidx FOR TEXT ON books(title)"
+</code></pre>
+<p>Here in the Technology Explorer, we create the index using the administrative SQL routine.</p>
+<pre><code>
+CALL SYSTS_CREATE('MYSCHEMA','MYTITLEIDX', 'MYSCHEMA.BOOKS(TITLE)', '','en_US', ?);
+</code></pre>
+
+<BR>
+<h4>Create a text index on column BOOKINFO</h4>
+<pre><code>
+db2ts "CREATE INDEX myxmlidx FOR TEXT ON books(bookinfo)"
+</code></pre>
+
+<p>Here in the Technology Explorer, we create the index using the administrative SQL routine.</p>
+<pre><code>
+CALL SYSTS_CREATE('MYSCHEMA','MYXMLIDX', 'MYSCHEMA.BOOKS(BOOKINFO)', '','en_US', ?);
+</code></pre>
+
+<p>Few objects are created as a result of the previous command:</p>
+<ul>
+<li>an empty text index</li>
+<li>INSERT, UPDATE, and DELETE triggers on the target data column to record changes to the base data</li>
+<li>an event table to hold informational and error messages about index management operations</li>
+<li>a staging table to hold change log for data updates which is used to synchronize base data in the table and the text index</li>
+</ul>
+
+<BR>
+<h4>Populate text indexes</h4>
+<p>After creating a text index, an empty index structure has been prepared. Updating the text index for the first time will load and index the data from the column for which the text index was created. DB2 Text Search uses linguistic processing to parse the texts and documents.</p>
+
+<pre><code>
+db2ts "UPDATE INDEX mytitleidx FOR TEXT"
+db2ts "UPDATE INDEX myxmlidx FOR TEXT"
+</code></pre>
+
+<p>Here in the Technology Explorer, we update the indexes using the administrative SQL routine.</p>
+<pre><code>
+CALL SYSTS_UPDATE('MYSCHEMA', 'MYTITLEIDX', '', 'en_US', ?);
+CALL SYSTS_UPDATE('MYSCHEMA', 'MYXMLIDX'  , '', 'en_US', ?);
+</code></pre>
+
+<p>Upon successful completion of every UPDATE INDEX command or CALL SYSTS_UPDATE statment, the text index is marked for incremental update. Changes are recorded in a staging table so that the text index will be synchronized with the base table rows.</p>

@@ -1,0 +1,20 @@
+<BR><H2><B>Lets try it !</B></H2><HR>
+<p>This page demonstrates creation of ranges on the <b>first fact table</b> to improve query processing by creating partitions
+to store different ranges of data.</p>
+
+<H2><B>Operation</B></H2><HR>
+<p>
+<h4><B><u><FONT style="COLOR: red">Note :</FONT></u>  If the tablespaces are already created, the SQLs may fail. Ignore the failed statements in this case.</B></h4><BR>
+<ol>
+<li>Create separate tablespaces to store different ranges of data and indexes. This has the following advantages :</li>
+<ul>
+<li>Reduce the possibility of data corruption in multiple partitions</li>
+<li>Back up and recover each partition independently</li>
+<li>Improve manageability, availability and performance</li>
+</ul>
+<li>Create table 'subscriber_rated_usage_range' enabled with range partitioning</li>
+<li>Populate data into the table. Data is stored in separate ranges based on the partitioning key specified</li>
+</ol>
+</p>
+
+

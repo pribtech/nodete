@@ -1,0 +1,271 @@
+<html>
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+</head>
+</br>
+<body>
+<p><font size="5" face="Verdana" color ="#CD5C5C">
+<b><u>XSLT stylesheet (PMD.xsl)</u></b></font></p>
+<pre><code>
+<p><b><i>
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+	version="1.0" &gt;
+	&lt;xsl:template match="/"&gt;
+		&lt;html&gt;
+			&lt;body&gt;
+				&lt;h3&gt;Patient Medical Document&lt;/h3&gt;
+				&lt;table width="80%"&gt;
+				&lt;tr&gt;
+				&lt;table border="2" width="100%" align ="center"&gt;
+					&lt;tr bgcolor="grey"&gt;
+						&lt;th&gt;Items&lt;/th&gt;
+						&lt;th&gt;value&lt;/th&gt;
+					&lt;/tr&gt;
+					
+					&lt;tr align ="center"&gt;
+							&lt;td&gt;Hospital Name&lt;/td&gt;
+							&lt;td&gt;&lt;xsl:value-of select="patient_document/patient/hospital_name"/&gt;&lt;/td&gt;
+							
+						&lt;/tr&gt;
+						&lt;tr align ="center"&gt;
+							&lt;td&gt;Patient Name&lt;/td&gt;
+							&lt;td&gt;&lt;xsl:value-of select="patient_document/patient/name/first"/&gt;
+							&lt;xsl:value-of select="patient_document/patient/name/last"/&gt;&lt;/td&gt;
+							
+						&lt;/tr&gt;
+						&lt;tr align ="center"&gt;
+							&lt;td&gt;Gender&lt;/td&gt;
+							&lt;td&gt;&lt;xsl:value-of select="patient_document/patient/gender"/&gt;&lt;/td&gt;
+							
+						&lt;/tr&gt;
+					&lt;tr align ="center"&gt;
+							&lt;td&gt;Address&lt;/td&gt;
+							&lt;td&gt;&lt;xsl:value-of select="patient_document/patient/address/residence_no"/&gt;&lt;br/&gt;
+							&lt;xsl:value-of select="patient_document/patient/address/street"/&gt;&lt;br/&gt;
+							&lt;xsl:value-of select="patient_document/patient/address/city"/&gt;&lt;br/&gt;
+							&lt;xsl:value-of select="patient_document/patient/address/state"/&gt;&lt;br/&gt;
+							&lt;xsl:value-of select="patient_document/patient/address/zip_code"/&gt;&lt;br/&gt;
+							&lt;/td&gt;
+							
+						&lt;/tr&gt;
+						&lt;tr align ="center"&gt;
+							&lt;td&gt;Gender&lt;/td&gt;
+							&lt;td&gt;&lt;xsl:value-of select="patient_document/patient/gender"/&gt;&lt;/td&gt;
+							
+						&lt;/tr&gt;
+						&lt;tr align ="center"&gt;
+							&lt;td&gt;Email&lt;/td&gt;
+							&lt;td&gt;&lt;xsl:value-of select="patient_document/patient/email"/&gt;&lt;/td&gt;
+							
+						&lt;/tr&gt;
+						&lt;tr align ="center"&gt;
+							&lt;td&gt;Phone&lt;/td&gt;
+							&lt;td&gt;&lt;xsl:value-of select="patient_document/patient/phone"/&gt;&lt;/td&gt;							
+						&lt;/tr&gt;
+				&lt;/table&gt;
+				&lt;/tr&gt;
+				&lt;br/&gt;
+				
+				&lt;tr width="80%"&gt;&lt;table width="80%"&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Medical Information&lt;/b&gt;&lt;/td&gt;&lt;td align ="left"&gt;&lt;b&gt;Specialist Info&lt;/b&gt;&lt;/td&gt;&lt;td align ="center"&gt;&lt;b&gt;Medicines Prescribed&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/tr&gt;
+				&lt;tr&gt;
+					&lt;table width ="80%"&gt;&lt;tr&gt;
+						&lt;td&gt;
+						&lt;table border="2"&gt;
+							&lt;tr bgcolor="grey"&gt;
+								&lt;th&gt;Items&lt;/th&gt;
+								&lt;th&gt;value&lt;/th&gt;
+							&lt;/tr&gt;
+							
+							&lt;tr&gt;
+									&lt;td&gt;Visited Date&lt;/td&gt;
+									&lt;td&gt;&lt;xsl:value-of select="patient_document/patient/visit_info/visited_date/@date"/&gt;&lt;/td&gt;
+									
+								&lt;/tr&gt;
+								&lt;tr&gt;
+									&lt;td&gt;Doctor Name&lt;/td&gt;
+									&lt;td&gt;&lt;xsl:value-of select="patient_document/patient/visit_info/visited_date/doctor_details/doctor_name/first"/&gt;
+									&lt;xsl:value-of select="patient_document/patient/visit_info/visited_date/doctor_details/doctor_name/last"/&gt;
+									&lt;/td&gt;
+									
+								&lt;/tr&gt;
+						&lt;/table&gt;
+						&lt;/td&gt;
+						&lt;td&gt;
+						&lt;table border="2"&gt;
+						&lt;tr bgcolor="grey"&gt;
+								&lt;th&gt;Items&lt;/th&gt;
+								&lt;th&gt;value&lt;/th&gt;
+							&lt;/tr&gt;
+							
+							&lt;tr&gt;
+									&lt;td&gt;Specialist Name&lt;/td&gt;
+									&lt;td&gt;&lt;xsl:value-of select="patient_document/patient/visit_info/visited_date/checkup_details/specialist_ref/specialist/name/first"/&gt;
+									&lt;xsl:value-of select="patient_document/patient/visit_info/visited_date/checkup_details/specialist_ref/specialist/name/last"/&gt;
+									&lt;/td&gt;
+									
+								&lt;/tr&gt;
+								&lt;tr&gt;
+									&lt;td&gt;Referral Reason&lt;/td&gt;
+									&lt;td&gt;&lt;xsl:value-of select="patient_document/patient/visit_info/visited_date/checkup_details/specialist_ref/specialist/ref_reason"/&gt;&lt;/td&gt;
+								&lt;/tr&gt;
+								&lt;tr&gt;
+									&lt;td&gt;Observation&lt;/td&gt;
+									&lt;td&gt;&lt;xsl:value-of select="patient_document/patient/visit_info/visited_date/checkup_details/specialist_ref/specialist/observation"/&gt;&lt;/td&gt;
+								&lt;/tr&gt;
+						&lt;/table&gt;
+						&lt;/td&gt;
+						
+						&lt;td&gt;
+						&lt;table border="2"&gt;
+							&lt;tr bgcolor="grey"&gt;
+								&lt;th&gt;Items&lt;/th&gt;
+								&lt;th&gt;value&lt;/th&gt;
+							&lt;/tr&gt;
+							&lt;xsl:for-each select="patient_document/patient/visit_info/visited_date/checkup_details/medicines"&gt;
+							&lt;tr&gt;
+									&lt;td&gt;Medicines&lt;/td&gt;
+									&lt;td&gt;&lt;xsl:value-of select="name"/&gt;&lt;/td&gt;
+									
+								&lt;/tr&gt;
+							&lt;/xsl:for-each&gt;	
+						&lt;/table&gt;
+						&lt;/td&gt;
+						&lt;/tr&gt;
+						&lt;/table&gt;
+				&lt;/tr&gt;
+				&lt;br/&gt;
+				
+				&lt;tr width="80%"&gt;&lt;table width="80%"&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Patient Symptoms&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/tr&gt;
+								
+					&lt;table width ="80%"&gt;&lt;tr&gt;
+						&lt;td&gt;
+						&lt;table border="2"&gt;
+							&lt;tr bgcolor="grey"&gt;
+								&lt;th&gt;Items&lt;/th&gt;
+								&lt;th&gt;value&lt;/th&gt;
+							&lt;/tr&gt;
+							
+							&lt;xsl:for-each select="patient_document/patient/visit_info/visited_date/checkup_details/symptoms"&gt;
+							&lt;tr&gt;
+									&lt;td&gt;Symptoms&lt;/td&gt;
+									&lt;td&gt;&lt;xsl:value-of select="text"/&gt;&lt;/td&gt;
+							&lt;/tr&gt;
+							&lt;/xsl:for-each&gt;	
+						&lt;/table&gt;
+						&lt;/td&gt;&lt;/tr&gt;
+					&lt;/table&gt;
+					&lt;/table&gt;
+			&lt;/body&gt;
+		&lt;/html&gt;
+	&lt;/xsl:template&gt;
+&lt;/xsl:stylesheet&gt;
+</i></b></p>
+</br>
+<p><font size="5" face="Verdana" color ="#CD5C5C"><b><u>XML document using the XSLT stylesheet (PMD.xml)</u></b></font></p>
+</br>
+<p><b><i>
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;<font size ="4" face="Verdana" color ="#1E90FF">?xml-stylesheet type="text/xsl" href="PMD.xsl"?</font>&gt;
+&lt;patient_document&gt;
+&lt;document id ="PMD10001" version="1"/&gt;
+&lt;patient ID="10001" &gt;    
+    &lt;hospital_name&gt;New Care Hospital&lt;/hospital_name&gt;
+    &lt;name&gt;
+		&lt;first&gt;Edward&lt;/first&gt;
+		&lt;last&gt;Jhonson&lt;/last&gt;
+	&lt;prefix&gt;&lt;/prefix&gt;l
+	&lt;/name&gt;
+	 &lt;address&gt;
+       &lt;residence_no&gt;553&lt;/residence_no&gt;
+       &lt;street&gt;Milk Street&lt;/street&gt;
+       &lt;city&gt;Earth City&lt;/city&gt;
+       &lt;state&gt;NewState&lt;/state&gt;
+       &lt;zip_code&gt;10101&lt;/zip_code&gt;
+    &lt;/address&gt;
+    &lt;email&gt;akdk@good.com&lt;/email&gt;
+    &lt;phone&gt;+11-324-2345&lt;/phone&gt;
+    &lt;date_of_birth&gt;197608161435&lt;/date_of_birth&gt;
+    &lt;gender&gt;M&lt;/gender&gt;
+	&lt;visit_info&gt;
+    &lt;visited_date date="200703210000"&gt;
+         &lt;doctor_details&gt;
+              &lt;type&gt;DUTY&lt;/type&gt;
+             &lt;doctor_name&gt;
+				&lt;first&gt;Durenda&lt;/first&gt;
+				&lt;last&gt;Flor&lt;/last&gt;
+				&lt;prefix&gt;M.D&lt;/prefix&gt;
+			 &lt;/doctor_name&gt;
+         &lt;/doctor_details&gt;
+       	&lt;checkup_details&gt;
+			&lt;weight&gt;75&lt;/weight&gt;
+    	   	&lt;symptoms&gt;The patient indicated severe head ache for past four days, he says that the pain is permanent and the intensity varies
+			from severe to light headache. the patient also indicated symptoms of chest pain and body ache. this causes to have sleeplessness.
+			&lt;/symptoms&gt;
+			&lt;symptoms&gt;The patient explains his work habits to be very stressful with 14 hours of work on an average.&lt;/symptoms&gt;
+			&lt;symptoms&gt;the patient approached with symptoms of influenza.&lt;/symptoms&gt;		
+			&lt;specialist_ref status="yes"&gt;
+				&lt;specialist&gt;
+					&lt;name&gt;
+						&lt;first&gt;Henry&lt;/first&gt;
+						&lt;last&gt;Mathew&lt;/last&gt;
+					&lt;/name&gt;
+					&lt;address&gt;
+						&lt;street&gt;Big street&lt;/street&gt;
+						&lt;city&gt;One City&lt;/city&gt;
+						&lt;state&gt;Good state&lt;/state&gt;
+						&lt;zip_code&gt;43020&lt;/zip_code&gt;
+					&lt;/address&gt;
+					&lt;ref_reason&gt;Nuero scan verification to neuro surgen.&lt;/ref_reason&gt;
+					&lt;observation&gt;The brain scan of the patient seems to be normal.&lt;/observation&gt;
+				&lt;/specialist&gt;
+			&lt;/specialist_ref&gt;			
+			&lt;labtests_suggested&gt;
+			   &lt;test&gt;Brain Scan&lt;/test&gt;
+			   &lt;test&gt;Blood Test before breakfast&lt;/test&gt;
+			&lt;/labtests_suggested&gt;
+			&lt;test_report&gt;
+                &lt;test_results&gt;No issues found&lt;/test_results&gt;			
+                &lt;test_results&gt;Viral Infection - Viral flu&lt;/test_results&gt;
+			&lt;/test_report&gt;
+			&lt;medicines&gt;Norfloxacin 400 mg I.P&lt;/medicines&gt;
+			&lt;medicines&gt;Ibuprofen 200 mg I.P&lt;/medicines&gt;
+			&lt;medicines&gt;Cetirizine Hydrochloride 10mg I.P&lt;/medicines&gt;
+			&lt;doctor_advice&gt;
+				&lt;result_diagnosis&gt;
+					The patient is having viral infection and needs medical attention. 
+					Also needs to admitted and needs to take complete rest.
+				&lt;/result_diagnosis&gt;
+			&lt;/doctor_advice&gt;			
+		&lt;/checkup_details&gt;
+    	&lt;admitted status ="yes"&gt;&lt;/admitted&gt;
+		&lt;admitted_date&gt;199603210000&lt;/admitted_date&gt;
+		&lt;ward_no&gt;21&lt;/ward_no&gt;
+		&lt;discharge_summary&gt;
+            &lt;description&gt;The patient is normal and all test regarding his illness has tested negative. the patient can be discharged.&lt;/description&gt;  
+            &lt;discharge_date&gt;199603250000&lt;/discharge_date&gt; 
+		&lt;payment_mode&gt;
+			&lt;cash&gt;
+			   &lt;amount_paid&gt;300&lt;/amount_paid&gt;   
+			&lt;/cash&gt;
+			&lt;card&gt;
+			   &lt;card_no&gt;&lt;/card_no&gt;
+			   &lt;cardholder_name&gt;&lt;/cardholder_name&gt;
+			   &lt;amount_paid&gt;&lt;/amount_paid&gt;
+			&lt;/card&gt;
+			&lt;Insuranceclaim&gt;
+			   &lt;claim_no&gt;&lt;/claim_no&gt;
+			   &lt;amount_paid&gt;&lt;/amount_paid&gt;
+			&lt;/Insuranceclaim&gt;   			
+			&lt;anyothermode&gt;&lt;/anyothermode&gt;    
+		&lt;/payment_mode&gt;			
+	&lt;/discharge_summary&gt;		
+    &lt;/visited_date&gt;    
+   	&lt;/visit_info&gt;	
+&lt;/patient&gt;
+&lt;/patient_document&gt;
+
+</i></b></p>
+</body>
+</html>
+</code></pre>

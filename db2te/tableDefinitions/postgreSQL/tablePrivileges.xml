@@ -1,0 +1,87 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2013 All rights reserved.
+  
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+<table name="tablePrivileges">
+	<sqlName>information_schema.table_privileges</sqlName>
+	<singularName>Table Privileges</singularName>
+	<pluralName>Table Privileges</pluralName>
+	<description/>
+	<orderBy name="table_catalog" direction="A"/>
+	<orderBy name="table_schema" direction="A"/>
+	<orderBy name="table_name" direction="A"/>
+	<disableEdit/>
+	<output>
+		<type name="DDL" destination="" title="" generator=""/>
+	</output>
+	<displayColumns>
+		<col type="column" name="tablecatalog"/>
+		<col type="column" name="tableschema"/>
+		<col type="column" name="tablename"/>
+		<col type="column" name="grantee"/>
+		<col type="column" name="privilegetype"/>
+		<col type="column" name="isgrantable"/>
+		<col type="column" name="withhierarchy"/>
+		<col type="column" name="grantor"/>
+	</displayColumns>
+	<displayColumns name="Specific Table">
+		<col type="column" name="grantee"/>
+		<col type="column" name="privilegetype"/>
+		<col type="column" name="isgrantable"/>
+		<col type="column" name="withhierarchy"/>
+		<col type="column" name="grantor"/>
+	</displayColumns>
+	<column name="grantor">
+		<sqlName>grantor</sqlName>
+		<title>Grantor</title>
+		<type>s</type>
+	</column>
+	<column name="grantee">
+		<sqlName>grantee</sqlName>
+		<title>Grantee</title>
+		<type>s</type>
+	</column>
+	<column name="tablecatalog">
+		<sqlName>table_catalog</sqlName>
+		<title>Table Catalog</title>
+		<type>s</type>
+	</column>
+	<column name="tableschema">
+		<sqlName>table_schema</sqlName>
+		<title>Table Schema</title>
+		<type>s</type>
+	</column>
+	<column name="tablename">
+		<sqlName>table_name</sqlName>
+		<title>Table Name</title>
+		<type>s</type>
+	</column>
+	<column name="privilegetype">
+		<sqlName>privilege_type</sqlName>
+		<title>Privilege Type</title>
+		<type>s</type>
+	</column>
+	<column name="isgrantable">
+		<sqlName>is_grantable</sqlName>
+		<title>Grantable</title>
+		<type>s</type>
+	</column>
+	<column name="withhierarchy">
+		<sqlName>with_hierarchy</sqlName>
+		<title>With Hierarchy</title>
+		<type>s</type>
+	</column>
+</table>

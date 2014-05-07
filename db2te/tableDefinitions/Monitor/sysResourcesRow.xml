@@ -1,0 +1,89 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2010 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+
+<table name="sysResourcesRow">
+	<sql_name>sysResourcesRow</sql_name>
+	<singular_name></singular_name>
+	<plural_name>Unknown</plural_name>
+	<messages><SQL0204N>Available DB2 version 9.5 and above</SQL0204N></messages>
+	<inlinequery>
+<![CDATA[
+select current timestamp as sample_ts
+	,sum(cast((case when name='CPU_TOTAL' then value end) as decimal(11,4))) as CPU_TOTAL
+	,sum(cast((case when name='CPU_ONLINE' then value end) as decimal(11,4))) as CPU_ONLINE
+	,sum(cast((case when name='CPU_LOAD_SHORT' then value end) as decimal(11,4))) as CPU_LOAD_SHORT
+	,sum(cast((case when name='CPU_LOAD_MEDIUM' then value end) as decimal(11,4))) as CPU_LOAD_MEDIUM
+	,sum(cast((case when name='CPU_LOAD_LONG' then value end) as decimal(11,4))) as CPU_LOAD_LONG
+	,sum(cast((case when name='CPU_USAGE_TOTAL' then value end) as decimal(11,4))) as CPU_USAGE_TOTAL
+from sysibmadm.env_sys_resources as s
+]]>
+	</inlinequery>
+	<messages><SQL0551N>Security issue. Please install "Monitoring Switches/Security" in Tools -> Installed Components</SQL0551N></messages>
+	<description>System Resources</description>
+	<display_columns>
+		<col type="column" name="SAMPLE_TS"/>
+		<col type="column" name="CPU_TOTAL"/>
+		<col type="column" name="CPU_ONLINE"/>
+		<col type="column" name="CPU_LOAD_SHORT"/>
+		<col type="column" name="CPU_LOAD_MEDIUM"/>
+		<col type="column" name="CPU_LOAD_LONG"/>
+		<col type="column" name="CPU_USAGE_TOTAL"/>
+	</display_columns>
+	<column name="SAMPLE_TS">
+		<c_sql_name>SAMPLE_TS</c_sql_name>
+		<c_title>Timstamp</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="CPU_TOTAL">
+		<c_sql_name>CPU_TOTAL</c_sql_name>
+		<c_title>CPU Total</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="CPU_ONLINE">
+		<c_sql_name>CPU_ONLINE</c_sql_name>
+		<c_title>CPUs Online</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="CPU_LOAD_SHORT">
+		<c_sql_name>CPU_LOAD_SHORT</c_sql_name>
+		<c_title>CPU Load Short</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="CPU_LOAD_MEDIUM">
+		<c_sql_name>CPU_LOAD_MEDIUM</c_sql_name>
+		<c_title>CPU_Load Medium</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="CPU_LOAD_LONG">
+		<c_sql_name>CPU_LOAD_LONG</c_sql_name>
+		<c_title>CPU Load Long</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="CPU_USAGE_TOTAL">
+		<c_sql_name>CPU_USAGE_TOTAL</c_sql_name>
+		<c_title>CPU Usages</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+</table>

@@ -1,0 +1,80 @@
+
+create table ?SCHEMA?.table1k
+  (
+  zipcode varchar(5),
+  custno int,
+  custname varchar(10)
+  )#
+
+INSERT INTO ?SCHEMA?.table1k (zipcode, custno, custname)
+WITH EMP_IDS(zipcode) AS
+( VALUES(1) UNION ALL
+  SELECT zipcode+1 FROM EMP_IDS WHERE zipcode < 1000 )
+SELECT CHAR(INT(RAND()*(99999))),
+	   zipcode,
+       TRANSLATE ( CHAR(BIGINT(RAND() * 1000000000 )), 'ANDESTINGOURARTEDLILOPTISTANDORLOVWERTHEMASTESTIG', '9204528117209336273810987635281029836100288736466' )
+FROM EMP_IDS#
+
+create table ?SCHEMA?.table5k
+  (
+  zipcode varchar(5),
+  custno int,
+  custname varchar(10)
+  )#
+
+INSERT INTO ?SCHEMA?.table5k (zipcode, custno, custname)
+WITH EMP_IDS(zipcode) AS
+( VALUES(1) UNION ALL
+  SELECT zipcode+1 FROM EMP_IDS WHERE zipcode < 5000 )
+SELECT CHAR(INT(RAND()*(99999))),
+	   zipcode,
+       TRANSLATE ( CHAR(BIGINT(RAND() * 1000000000 )), 'ANDESTINGOURARTEDLILOPTISTANDORLOVWERTHEMASTESTIG', '9204528117209336273810987635281029836100288736466' )
+FROM EMP_IDS#
+
+create table ?SCHEMA?.table10k
+  (
+  zipcode varchar(5),
+  custno int,
+  custname varchar(10)
+  )#
+
+INSERT INTO ?SCHEMA?.table10k (zipcode, custno, custname)
+WITH EMP_IDS(zipcode) AS
+( VALUES(1) UNION ALL
+  SELECT zipcode+1 FROM EMP_IDS WHERE zipcode < 10000 )
+SELECT CHAR(INT(RAND()*(99999))),
+	   zipcode,
+       TRANSLATE ( CHAR(BIGINT(RAND() * 1000000000 )), 'ANDESTINGOURARTEDLILOPTISTANDORLOVWERTHEMASTESTIG', '9204528117209336273810987635281029836100288736466' )
+FROM EMP_IDS#
+
+create table ?SCHEMA?.table50k
+  (
+  zipcode varchar(5),
+  custno int,
+  custname varchar(10)
+  )#
+
+INSERT INTO ?SCHEMA?.table50k (zipcode, custno, custname)
+WITH EMP_IDS(zipcode) AS
+( VALUES(1) UNION ALL
+  SELECT zipcode+1 FROM EMP_IDS WHERE zipcode < 50000 )
+SELECT CHAR(INT(RAND()*(99999))),
+	   zipcode,
+       TRANSLATE ( CHAR(BIGINT(RAND() * 1000000000 )), 'ANDESTINGOURARTEDLILOPTISTANDORLOVWERTHEMASTESTIG', '9204528117209336273810987635281029836100288736466' )
+FROM EMP_IDS#
+
+create table ?SCHEMA?.table100k
+  (
+  zipcode varchar(5),
+  custno int,
+  custname varchar(10)
+  )#
+
+INSERT INTO ?SCHEMA?.table100k (zipcode, custno, custname)
+WITH EMP_IDS(zipcode) AS
+( VALUES(1) UNION ALL
+  SELECT zipcode+1 FROM EMP_IDS WHERE zipcode < 100000 )
+SELECT CHAR(INT(RAND()*(99999))),
+	   zipcode,
+       TRANSLATE ( CHAR(BIGINT(RAND() * 1000000000 )), 'ANDESTINGOURARTEDLILOPTISTANDORLOVWERTHEMASTESTIG', '9204528117209336273810987635281029836100288736466' )
+FROM EMP_IDS#

@@ -1,0 +1,1240 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2012 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+
+<tutorial name="Install MQ" schema="DB2MQ" dropSchema="false">
+	<flowRestriction>forwardexploration</flowRestriction>
+    <closeAction />
+    <openAction  name="getInfo" type="form" >
+		<message><![CDATA[
+			<h3>Common Data</h3>
+			This installation requires certain values set before commencing:
+			<table><tr><td>
+				<tr><td nowrap="nowrap">Default Queue Manage:</td>
+					<td>DB2MQ_DEFAULT_MQM</td>
+				</tr>
+				<tr><td nowrap="nowrap">Queue Manager (Real):</td>
+					<td><input id="QUEUE_MANAGER" type="text" size="48" maxlength="48"  name="QUEUE_MANAGER"  value="?ACTIVE_DATABASE?.queue.manager"/></td>
+				</tr>
+				<tr><td nowrap="nowrap">Queue Manager (Logical):</td>
+					<td><input id="QUEUE_MANAGER_LOGICAL" type="text" size="8" maxlength="18" name="QUEUE_MANAGER_LOGICAL"  value="?ACTIVE_DATABASE?"/></td>
+				</tr>
+				<tr><td nowrap="nowrap">User MQM Password:</td>
+					<td><input id="MQM_PASSWORD" type="text" size="8" maxlength="18" name="MQM_PASSWORD"  value=""/></td>
+				</tr>
+				<tr><td nowrap="nowrap">Tablespace (control tables):</td>
+					<td><input id="SYSTOOLSPACE" type="text" size="128" maxlength="18" name="SYSTOOLSPACE"  value="SYSTOOLSPACE"/></td>
+				</tr>
+			</table>
+			<note>Installation process will auto generate DB2MQ_DEFAULT_MQM queue manager, the default queue manager.
+			It is a manditory requirement for the installation and/or upgrade.
+			</note>
+		]]></message>
+		<parameterList>
+		</parameterList>
+		<if condition="true">
+			<task>
+				<assignSharedConstant name="QUEUE_MANAGER" type="constant">
+					<value>QUEUE_MANAGER</value> 	 
+				</assignSharedConstant>				
+				<setActionReturn value="true"/>    		
+			</task>
+		</if>
+		<ifNot condition="true">
+			<task>
+				<setActionReturn value="false"/>
+			</task>
+		</ifNot>     
+    </openAction>
+    
+    <globalCodeHighlightOptions highlightCode = "true" />
+    <pageList>
+
+		<page name="Create MQ DB2 interface" type="intro">
+            <contentText>
+<![CDATA[
+<h2>Introduction</h2>
+<p/>
+This tutoral script installs (uninstalls) the DB2 commponents to use the MQ. It assumes:
+<p/>
+<ol>
+<li>MQ has been installed.  This is done via MQ Install processed as detailed in the MQ manuals.
+<li>The db2 instance and fenced user has been given MQ access.  
+For UNIX/AIX/Linux via group, that is, add the MQM group to both the db2instance and the fenced user.
+<li>If AIX 64 mode then see techenical note https://www-304.ibm.com/support/docview.wss?uid=swg21385641 (basically mq symbolic binaries need to be pointed to 64 bit binaries)
+<li>The table space SYSTOOLSPACE (or is override) already exists 
+</ol>
+<p/>
+<h3>Points to Ponder Before Commencing</h3>
+<p/>
+<ul>
+<li>There is only one instance on MQ per OS.
+<li>To install or upgrade db2 it requires the MQ manager DB2MQ_DEFAULT_MQM. This is auto created by the enablement script if it doesn't exist.
+<li>If you have multiple databases and/or instances are they going to share the same queue manager.  
+<li>Using separate queue managers makes the environment more complex to enable an upgrade.
+<li>For XA to work, a separate queue manager is required per environment and this must be started by the instance owner or have the DB2INSTANCE
+variable set by the starting user and the user must have connect authority to the database.
+<li>For XA to work, the QM.INI must specify a database for the queue manager, thus a separate queue manager may be required for each database 
+where it is intended for db2mqlsn to be used with the coordinated option (two phase commit)  
+</ul>
+<p/>
+<h3>Important Note</h3>
+In order to support the message size of 32,000 through SQL stored procedure (as a workaround),
+the following table space/buffer pool may need to be created (i.e. page size of 32 K, vs. the default 4K). 
+<p/>
+Bypass this step if these object already exist.  Tailor to suit the environment.
+]]>
+			</contentText>
+            <SQLText>
+<![CDATA[
+create bufferpool temp32k size 1000 pagesize 32k;
+create temporary tablespace temp_32k pagesize 32 k managed by system using ('temp_32kc1') bufferpool temp32k;
+]]>
+            </SQLText>
+            <SQLExecutionOptions  termChar=";"  commitPerStmt="true"/>
+        </page>
+
+		<page name="Create New Queue Manager" type="general">
+            <contentText>
+<![CDATA[
+<h2>Define Queue Manager</h2>
+<p/>
+If the default queue manage is to be used this step can be by-passed as the db2 mq enablement script 
+auto creates the queue manager DB2MQ_DEFAULT_MQM.  The default queue manager is a manditory item
+for the installation or upgrade (fixpak) process. 
+<p/>
+If you don't wish to use the default db2 queue manage for the operational environment, then in this step you both create the new queue manager and start the 
+new queue manage.  
+<p/>
+Th following commands are run under the db2instance OS conmmand process (i.e. command shell).  
+<h3>Create the message queue manager</h3>
+<p/>
+<pre>
+Usage: crtmqm [-z] [-q] [-c Text] [-d DefXmitQ] [-h MaxHandles]
+              [-md DataPath] [-g ApplicationGroup]
+              [-t TrigInt] [-u DeadQ] [-x MaxUMsgs] [-lp LogPri] [-ls LogSec]
+              [-lc | -ll] [-lf LogFileSize] [-ld LogPath] QMgrName
+</pre>  
+<p/>
+<h3>Start Queue Manager</h3>
+<p/>
+<pre>
+Usage: strmqm [-z] [-a | -c | -r | -x] [-d none|minimal|all] [-f]
+              [-ns] [QMgrName]
+</pre>  
+]]>
+			</contentText>
+            <SQLText>
+<![CDATA[
+crtmqm -c "?QUEUE_MANAGER?" ?QUEUE_MANAGER?; 
+
+strmqm ?QUEUE_MANAGER?;
+]]>
+			</SQLText>
+            <SQLExecutionOptions scriptMode="SHELL" />
+        </page>
+
+		<page name="Display Queue Managers" type="general">
+            <contentText>
+<![CDATA[
+<h3>Display queue managers</h3>
+<p/>
+The following command must be run on the OS command processor.
+<p/>
+Displays the defined queue managers.  If this is a first time enablement of the db2 mq interface then at this
+point the default queue DB2MQ_DEFAULT_MQM will not exists.
+<p/>
+<pre>
+Usage: dspmq [-n] [-m QMgrName] [-o status | -s] [-o default] [-o standby] [-x]
+</pre>
+]]>
+			</contentText>
+            <SQLText>
+<![CDATA[
+dspmq
+]]>
+            </SQLText>
+            <SQLExecutionOptions scriptMode="SHELL" />
+        </page>
+
+		<page name="Make MQM DB2 XA compliant" type="general">
+            <contentText>
+<![CDATA[
+<h2>Transaction Two Phase Commit</h2>
+<p/>
+DB2 and MQM both run separate logging systems. To provide ACID (atomicity, consistency, isolation, durability) support for the db2 listener process (db2mqlsn) then commit co-ordination
+must be enabled within MQ.  
+<note>Only the db2mqlsn process provides two phase commit between MQM and DB2 and then only if the co-ordinated option is selected.  
+The supporting functions (MQRECEIVE/MQSEND/MQPUBLISH) at most only provide one phase commit.  Thus this step can be bypassed if there is no intetention of
+using db2mqlsn with the coordinate option.
+<p/>
+<h3>Creating the DB2 switch load file</h6>
+<p/>
+A prerequisite of running this process is having access to a c compiler on the system.
+<p/>
+<h3>Creating the DB2 switch load file</h6>
+<p/>
+The easiest way to create the DB2® switch load file is to use the sample file xaswit.mak, which WebSphere® MQ provides to build the switch load files for a variety of database products.
+On Windows systems, you can find xaswit.mak in the directory C:\Program Files\IBM\WebSphere MQ\tools\c\samples\xatm. To create the DB2 switch load file with Microsoft Visual C++, use:
+<p/>
+<pre>
+	nmake /f xaswit.mak db2swit.dll
+</pre>
+<p/>
+The generated switch file is placed in c:\Program Files\IBM\WebSphere MQ\exits.
+<p/>
+On AIX®, you can find xaswit.mak in the directory /usr/mqm/samp/xatm; on other UNIX systems, you can find it in the directory /opt/mqm/samp/xatm.
+Edit xaswit.mak to uncomment the lines appropriate to the version of DB2 you are using. Then execute the makefile using the command:
+<p/>
+<pre>
+	make -f xaswit.mak db2swit
+</pre>
+<p/>
+
+The generated 32-bit switch load file is placed in /var/mqm/exits.
+<p/>
+The generated 64-bit switch load file is placed in /var/mqm/exits64.
+
+<p/>
+<pre>
+http://publib.boulder.ibm.com/infocenter/db2luw/v8/index.jsp?topic=/com.ibm.db2.udb.doc/admin/r0005080.htm
+
+AXLIB=mqmax 
+7 (for Windows)
+7      =/usr/mqm/lib/libmqmax_r.a 
+7 (for AIX threaded applications)
+7      =/usr/mqm/lib/libmqmax.a 
+7 (for AIX non-threaded applications)
+7      =/opt/mqm/lib/libmqmax.so 
+7 (for Solaris)
+7      =/opt/mqm/lib/libmqmax_r.sl 
+7 (for HP threaded applications)
+7      =/opt/mqm/lib/libmqmax.sl 
+7 (for HP non-threaded applications)
+7      =/opt/mqm/lib/libmqmax_r.so 
+7 (for Linux threaded applications)
+7      =/opt/mqm/lib/libmqmax.so 
+7 (for Linux non-threaded applications)
+7 HOLD_CURSOR=F
+7 CHAIN_END=F
+7 SUSPEND_CURSOR=F 
+</pre>
+<h3>Updating the QM.INI File</h3>
+<p/>
+The QM.INI file must be updated with the following lines.  
+<p/>
+<pre>
+XAResourceManager:
+  Name=mydb2
+  SwitchFile=db2swit
+  XAOpenString=mydbname,myuser,mypasswd,toc=t
+  ThreadOfControl=THREAD
+</pre>
+<p/>
+<dl>
+<dt>mydb2</dt><dd>Can be called anything.  Can be consistent beween QM.INI</dd>
+<dt>mydbname</dt><dd>The database on which db2mqlsn is active</dd>
+<dt>myuser</dt><dd>User with appropriate access to the db2 environment.  Suggest using instance owner to minimise issues</dd>
+<dt>mypasswd</dt><dd>Password to the </dd>
+</dl>
+<p/>
+<h3>MQ Manager Requirements</h3>
+<p/>
+In order for two phase commit to work the MQ manager must be started by instance owner.
+<p/>
+An alternative is using MQM however before the queue manager is started it must have DB2INSTANCE set 
+and MQM must be approriate authorites to the database, e.g connect authority.
+]]>
+			</contentText>
+            <SQLText>
+<![CDATA[
+nmake /f xaswit.mak db2swit.dll
+
+]]>
+            </SQLText>
+            <SQLExecutionOptions scriptMode="SHELL" />
+        </page>
+        
+		<page name="Define DB2 Objects Required for MQ Functions" type="general">
+            <contentText>
+<![CDATA[
+<h2>Setup DB2 MQ/AMI MQ Service</h2>
+<p/>
+<h3>Warning</h3>
+Run this script only if you are setting up/configuring your database for MQ UDFs for the first time.
+Otherwise, you may need to adjust the scripts that follow if you already have these database objects in your database;
+<p/>
+Do not edit/update this script in a way that will cause the table structure to be modified.  Such changes may cause the system to crash.
+<p/>
+All table objects a re created in SYSTOOLSPACE.  This can be tailored to suit the installation needs.  It must already exists.
+<p/>
+<h3>Tables Created</h3>
+<ul>
+<li>MQHost</li>
+<li>MQService</li>
+<li>MQPubSub</li>
+<li>MQPolicy</li>
+<li>MQUpdated</li>
+</ul>
+]]>
+			</contentText>
+            <SQLText>
+<![CDATA[
+-- Schema is ?SCHEMA?
+
+create table DB2MQ.MQHost (
+    connectionName varchar(48) not null unique,
+    queueMgrName varchar(48) not null default ''
+  )
+  IN ?SYSTOOLSPACE?
+;
+
+create table DB2MQ.MQService (
+	serviceName varchar(48) not null, 
+		-- the following is kept in the table but is not currently supported 
+	serviceType varchar(48) CHECK (serviceType IN ('Native','MQSeries_Integrator_V2','MQSeries_Integrator_V1','MQRFH2','MQRFH')) default 'Native' NOT NULL,
+	queueName varchar(48) NOT NULL, 
+	queueMgrName varchar(48) default '' NOT NULL,
+		-- the following is kept in the table but is not currently supported
+	defaultFormat varchar(8) default '' NOT NULL,
+	ccsid varchar(6) default '' NOT NULL, 
+	Description varchar(400) default '',
+	primary key(serviceName) 
+  )
+  IN ?SYSTOOLSPACE?
+;
+
+create table DB2MQ.MQPubSub (
+	PubSubName varchar(48) not null unique,
+	broker varchar(48) not null,
+	receiver varchar(48) default '' NOT NULL,
+		-- 'P' for Publisher, 'S' for Subscriber
+	type char(1) CHECK (type IN ('P', 'S')) NOT NULL,
+	description varchar(400) default '',
+	constraint fk_MQService foreign key (broker) references MQService (ServiceName) on delete restrict,
+	constraint ck_receiver check (receiver is not null OR type = 'P')
+  )
+  IN ?SYSTOOLSPACE?
+;
+
+create table DB2MQ.MQPolicy (
+    policyName     varchar(48) not null, 
+    connectionName varchar(48) default '' NOT NULL, 
+
+		-- name above must be NOT NULL only if mode below is 'Logic' (see constraint at the end of this statement)
+		-- 'R' for Real, 'L' for Logical
+    connectionMode char(1) CHECK (connectionMode IN ('R', 'L')) default 'L' NOT NULL,
+
+        -- send (13 from 20)
+        -- 'T' for 'AsTransport' below
+    snd_priority char(1) check (snd_priority IN ('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'T')) default 'T' NOT NULL,
+    snd_persistent char(1) check (snd_persistent IN ('Y', 'N', 'T')) default 'T' NOT NULL,
+        -- number 0 to indicate 'Unlimited'
+    snd_expiry integer check (snd_expiry >= 0) default 0  NOT NULL,
+
+	    --  testing binding with C type for Integer column now!!!
+    snd_retrycount integer check (snd_retrycount >= 0) default 0 NOT NULL,
+    snd_retry_interval integer check (snd_retry_interval >= 0 ) default 1000 NOT NULL,
+
+    snd_newCorrelID char(1) check (snd_newCorrelID IN ('Y', 'N')) default 'N' NOT NULL,
+        -- 'M' for 'MessageID' and 'C' for CorrelID'
+    snd_responseCorrelID char(1) check (snd_responseCorrelID IN ('M', 'C')) default 'M' NOT NULL,
+       -- 'Q' for 'DLQ' and 'D' for 'Discard'
+    snd_exceptionAction char(1) check (snd_exceptionAction IN ('Q', 'D')) default 'D' NOT NULL,
+       -- 'R' for 'Report', 'D' for 'Report_With_Data',  and 'F' for 'Report_With_Full_Data'
+    snd_reportData char(1) check (snd_reportData IN ('R', 'D', 'F')) default 'R' NOT NULL,
+    snd_rtException char(1) check (snd_rtException IN ('Y', 'N')) default 'N' NOT NULL,
+    snd_rtCOA char(1) check (snd_rtCOA IN ('Y', 'N')) default 'N' NOT NULL,
+    snd_rtCOD char(1) check (snd_rtCOD IN ('Y', 'N')) default 'N' NOT NULL,
+    snd_rtExpiry char(1) check (snd_rtExpiry IN ('Y', 'N')) default 'N' NOT NULL,
+
+        -- receive (5 from 11)
+        -- a value of -1 indicates 'Unlimited' here
+    rcv_waitInterval integer check (rcv_waitInterval >= -1 ) default 30 NOT NULL,
+    rcv_convert char(1) check (rcv_convert IN ('Y', 'N')) default 'Y' NOT NULL,
+    rcv_handlePoisonMsg char(1) check (rcv_handlePoisonMsg IN ('Y', 'N')) default 'Y' NOT NULL,
+    rcv_rcvTruncatedMsg char(1) check (rcv_rcvTruncatedMsg IN ('Y', 'N')) default 'N' NOT NULL,
+    rcv_openShared  char(1) check (rcv_openShared IN ('Y', 'N')) default 'Y' NOT NULL,
+
+         -- publish (7)
+    pub_retain  char(1) check (pub_retain IN ('Y', 'N')) default 'N' NOT NULL,
+    pub_othersOnly char(1) check (pub_othersOnly IN ('Y', 'N')) default 'N' NOT NULL,
+    pub_suppressReg char(1) check (pub_suppressReg IN ('Y', 'N')) default 'Y' NOT NULL,
+    pub_pubLocal char(1) check (pub_pubLocal IN ('Y', 'N')) default 'N' NOT NULL,
+    pub_direct char(1) check (pub_direct IN ('Y', 'N')) default 'N' NOT NULL, 
+    pub_anonymous char(1) check (pub_anonymous IN ('Y', 'N')) default 'N' NOT NULL,
+    pub_correlasID char(1) check (pub_correlasID IN ('Y', 'N')) default 'N' NOT NULL,
+
+         -- subscribe (7 from 9)
+    sub_subLocal char(1) check (sub_subLocal IN ('Y', 'N')) default 'N' NOT NULL,
+    sub_NewPubsOnly char(1) check (sub_NewPubsOnly IN ('Y', 'N')) default 'N' NOT NULL,
+    sub_PubOnReqOnly char(1) check (sub_PubOnReqOnly IN ('Y', 'N')) default 'N' NOT NULL,
+    sub_informIfRet char(1) check (sub_informIfRet IN ('Y', 'N')) default 'Y' NOT NULL,
+    sub_unsubAll char(1) check (sub_unsubAll IN ('Y', 'N')) default 'N' NOT NULL,
+    sub_anonymous char(1) check (sub_anonymous IN ('Y', 'N')) default 'N' NOT NULL,
+    sub_correlAsID char(1) check (sub_correlAsID IN ('Y', 'N')) default 'N' NOT NULL,
+
+         -- others (not including Policy Handler features)
+    Description varchar(400) default '',
+    constraint cross_edit_conn check (connectionName <> '' OR connectionMode = 'R'),
+    primary key (policyName)
+  )
+  IN ?SYSTOOLSPACE?
+;
+
+create table DB2MQ.MQUpdated (
+    update_time timestamp
+  )
+  IN ?SYSTOOLSPACE?
+;
+insert into MQUpdated values (current timestamp);
+
+CREATE TRIGGER SPInsert AFTER INSERT ON db2mq.MQService FOR EACH ROW MODE DB2SQL UPDATE MQUpdated SET update_time = current timestamp;
+CREATE TRIGGER SPDelete AFTER DELETE ON db2mq.MQService FOR EACH ROW MODE DB2SQL UPDATE MQUpdated SET update_time = current timestamp;
+CREATE TRIGGER SPUpdate AFTER UPDATE ON db2mq.MQService FOR EACH ROW MODE DB2SQL UPDATE MQUpdated SET update_time = current timestamp;
+
+CREATE TRIGGER PSubInsert AFTER INSERT ON db2mq.MQPubSub FOR EACH ROW MODE DB2SQL UPDATE MQUpdated SET update_time = current timestamp;
+CREATE TRIGGER PSubDelete AFTER DELETE ON db2mq.MQPubSub FOR EACH ROW MODE DB2SQL UPDATE MQUpdated SET update_time = current timestamp;
+CREATE TRIGGER PSubUpdate AFTER UPDATE ON db2mq.MQPubSub FOR EACH ROW MODE DB2SQL UPDATE MQUpdated SET update_time = current timestamp;
+
+CREATE TRIGGER PolInsert AFTER INSERT ON db2mq.MQPolicy FOR EACH ROW MODE DB2SQL UPDATE MQUpdated SET update_time = current timestamp;
+CREATE TRIGGER PolDelete AFTER DELETE ON db2mq.MQPolicy FOR EACH ROW MODE DB2SQL UPDATE MQUpdated SET update_time = current timestamp;
+CREATE TRIGGER PolUpdate AFTER UPDATE ON db2mq.MQPolicy FOR EACH ROW MODE DB2SQL UPDATE MQUpdated SET update_time = current timestamp;
+]]>
+            </SQLText>
+            <SQLExecutionOptions  termChar=";"  commitPerStmt="true"/>
+        </page>
+        
+		<page name="Grant access" type="general">
+            <contentText>
+<![CDATA[
+Review your security requirements.  To have access to the functions, then access is required to the controlling tables. 
+<p/>
+To limit access to the queues, access is limited to the tables rows.
+<h1>Important Note</h1>
+The following gives access to all features.  That is anyone who had access to receive can destructively read a queue.  
+Any one with mqsend/mqpublish can send a message to any queue that has a service or topioc.  Anyone with mqpublish can route published message to  
+any sub/pub queue.  This is level of access is clearly not advisablein a sensitive environment.
+]]>
+			</contentText>
+            <SQLText>
+<![CDATA[
+grant select on table DB2MQ.MQHost to public;
+grant select on table DB2MQ.MQService to public;
+grant select on table DB2MQ.MQPubSub to public;
+grant select on table DB2MQ.MQPolicy to public;
+]]>
+            </SQLText>
+            <SQLExecutionOptions  termChar=";"  commitPerStmt="true"/>
+        </page>
+        
+		<page name="Define Host and Set Defaults" type="general">
+            <contentText>
+<![CDATA[
+Specify the Queue Managers.  The entries default ccnnection and db2mqConnection must point to DB2MQ_DEFAULT_MQM.  
+The step that enables the MQ functiosn will automatically create the queue manager if it does not exists.  
+It will produce errors if any of these inserts are changed or deleted.  Extra lines can be added.
+]]>
+			</contentText>
+            <SQLText>
+<![CDATA[
+insert into db2mq.MQHost 
+        (connectionName      , queueMgrName)
+  values('defaultConnection' , 'DB2MQ_DEFAULT_MQM')
+       ,('db2mqConnection'   , 'DB2MQ_DEFAULT_MQM')
+;
+
+insert into db2mq.MQPolicy 
+        ( policyName                 ,  connectionName   , CONNECTIONMODE  ,  Description) 
+  values('DB2.DEFAULT.POLICY'        , 'db2mqConnection' , 'L'             , 'DB2 UDF Default Connection')
+;
+
+insert into db2mq.MQService 
+       (ServiceName                       , queueName                            ,  queueMgrName       ,  Description) 
+ values('DB2.ADMIN.ACCOUNTING.QUEUE'      , 'SYSTEM.ADMIN.ACCOUNTING.QUEUE'      , 'DB2MQ_DEFAULT_MQM' , 'DB2 accounting monitoring data')
+	  ,('DB2.ADMIN.CHANNEL.EVENT'         , 'SYSTEM.ADMIN.CHANNEL.EVENT'         , 'DB2MQ_DEFAULT_MQM' , 'DB2 Event queue for channels')
+	  ,('DB2.ADMIN.COMMAND.QUEUE'         , 'SYSTEM.ADMIN.COMMAND.QUEUE'         , 'DB2MQ_DEFAULT_MQM' , 'DB2 Administration command queue. Used for remote MQSC commands and PCF commands')
+	  ,('DB2.ADMIN.CONFIG.EVENT'          , 'SYSTEM.ADMIN.CONFIG.EVENT'          , 'DB2MQ_DEFAULT_MQM' , 'DB2 Event queue for configuration events')
+	  ,('DB2.ADMIN.PERFM.EVENT'           , 'SYSTEM.ADMIN.PERFM.EVENT'           , 'DB2MQ_DEFAULT_MQM' , 'DB2 performance events')
+	  ,('DB2.ADMIN.QMGR.EVENT'            , 'SYSTEM.ADMIN.QMGR.EVENT'            , 'DB2MQ_DEFAULT_MQM' , 'DB2 queue manager events')
+	  ,('DB2.ADMIN.STATISTICS.QUEUE'      , 'SYSTEM.ADMIN.STATISTICS.QUEUE'      , 'DB2MQ_DEFAULT_MQM' , 'DB2 statistics monitoring data')
+	  ,('DB2.ADMIN.TRACE.ROUTE.QUEUE'     , 'SYSTEM.ADMIN.TRACE.ROUTE.QUEUE'     , 'DB2MQ_DEFAULT_MQM' , 'DB2 trace-route reply messages')
+	  ,('DB2.AUTH.DATA.QUEUE'             , 'SYSTEM.AUTH.DATA.QUEUE'             , 'DB2MQ_DEFAULT_MQM' , 'DB2 access control lists for the queue manager')
+	  ,('DB2.BROKER.DEFAULT.STREAM'       , 'SYSTEM.BROKER.DEFAULT.STREAM'       , 'DB2MQ_DEFAULT_MQM' , 'DB2 Publisher Service')
+	  ,('DB2.CHANNEL.INITQ'               , 'SYSTEM.CHANNEL.INITQ'               , 'DB2MQ_DEFAULT_MQM' , 'DB2 Channel initiation queue')
+	  ,('DB2.CHANNEL.SYNCQ'               , 'SYSTEM.CHANNEL.SYNCQ'               , 'DB2MQ_DEFAULT_MQM' , 'DB2 synchronization data for channels')
+	  ,('DB2.CICS.INITIATION.QUEUE'       , 'SYSTEM.CICS.INITIATION.QUEUE'       , 'DB2MQ_DEFAULT_MQM' , 'DB2 Default CICS® initiation queue')
+	  ,('DB2.CLUSTER.COMMAND.QUEUE'       , 'SYSTEM.CLUSTER.COMMAND.QUEUE'       , 'DB2MQ_DEFAULT_MQM' , 'DB2 carry messages to the repository queue manager')
+	  ,('DB2.CLUSTER.REPOSITORY.QUEUE'    , 'SYSTEM.CLUSTER.REPOSITORY.QUEUE'    , 'DB2MQ_DEFAULT_MQM' , 'DB2 all repository information')
+	  ,('DB2.CLUSTER.TRANSMIT.QUEUE'      , 'SYSTEM.CLUSTER.TRANSMIT.QUEUE'      , 'DB2MQ_DEFAULT_MQM' , 'DB2 The transmission queue for all messages to all clusters')
+	  ,('DB2.DEAD.LETTER.QUEUE'           , 'SYSTEM.DEAD.LETTER.QUEUE'           , 'DB2MQ_DEFAULT_MQM' , 'DB2 Dead-letter (undelivered-message) queue')
+      ,('DB2.DEFAULT.ADMIN'               , 'SYSTEM.ADMIN.COMMAND.QUEUE'         , 'DB2MQ_DEFAULT_MQM' , 'DB2 MQ UDFs default admin Service')
+	  ,('DB2.DEFAULT.ALIAS.QUEUE'         , 'SYSTEM.DEFAULT.ALIAS.QUEUE'         , 'DB2MQ_DEFAULT_MQM' , 'DB2 Default alias queue')
+	  ,('DB2.DEFAULT.PUBLISHER'           , 'SYSTEM.DEFAULT.PUBLISHER'	         , 'DB2MQ_DEFAULT_MQM' , 'DB2 DEFAULT PUBLISHER')
+      ,('DB2.DEFAULT.RECEIVER'            , 'SYSTEM.DEFAULT.RECEIVER' 	         , 'DB2MQ_DEFAULT_MQM' , 'DB2 DEFAULT RECEIVER')
+      ,('DB2.DEFAULT.SERVICE'             , 'DB2MQ_DEFAULT_Q'                    , 'DB2MQ_DEFAULT_MQM' , 'DB2 MQ UDFs default service')
+	  ,('DB2.DEFAULT.SENDER'              , 'SYSTEM.DEFAULT.SENDER'	             , 'DB2MQ_DEFAULT_MQM' , 'DB2 DEFAULT SENDER')
+	  ,('DB2.DEFAULT.SUBSCRIBER'          , 'SYSTEM.DEFAULT.SUBSCRIBER'	         , 'DB2MQ_DEFAULT_MQM' , 'DB2 DEFAULT SUBSCRIBER')
+	  ,('DB2.DEFAULT.SUBSCRIBER.RECEIVER' , 'SYSTEM.DEFAULT.SUBSCRIBER.RECEIVER' , 'DB2MQ_DEFAULT_MQM' , 'DB2 DEFAULT SUBSCRIBER.RECEIVER')
+	  ,('DB2.DEFAULT.INITIATION.QUEUE'    , 'SYSTEM.DEFAULT.INITIATION.QUEUE'    , 'DB2MQ_DEFAULT_MQM' , 'DB2 Default initiation queue')
+	  ,('DB2.DEFAULT.LOCAL.QUEUE'         , 'SYSTEM.DEFAULT.LOCAL.QUEUE'         , 'DB2MQ_DEFAULT_MQM' , 'DB2 Default local queue')
+	  ,('DB2.DEFAULT.MODEL.QUEUE'         , 'SYSTEM.DEFAULT.MODEL.QUEUE'         , 'DB2MQ_DEFAULT_MQM' , 'DB2 Default model queue')
+	  ,('DB2.DEFAULT.REMOTE.QUEUE'        , 'SYSTEM.DEFAULT.REMOTE.QUEUE'        , 'DB2MQ_DEFAULT_MQM' , 'DB2 Default remote queue')
+	  ,('DB2.MQEXPLORER.REPLY.MODEL'      , 'SYSTEM.MQEXPLORER.REPLY.MODEL'      , 'DB2MQ_DEFAULT_MQM' , 'DB2 The WebSphere MQ Explorer reply-to queue. This is a model queue that creates a temporary dynamic queue for replies to the WebSphere MQ Explorer')
+	  ,('DB2.MQSC.REPLY.QUEUE'            , 'SYSTEM.MQSC.REPLY.QUEUE'            , 'DB2MQ_DEFAULT_MQM' , 'DB2 MQSC command reply-to queue. This is a model queue that creates a temporary dynamic queue for replies to remote MQSC commands')
+	  ,('DB2.PENDING.DATA.QUEUE'          , 'SYSTEM.PENDING.DATA.QUEUE'          , 'DB2MQ_DEFAULT_MQM' , 'DB2 PENDING.DATA.QUEUE')
+;
+]]>
+            </SQLText>
+            <SQLExecutionOptions  termChar=";"  commitPerStmt="true" edit="true"/>
+        </page>
+
+		<page name="Define Host and Set Defaults for Own Queue Manager" type="general">
+            <contentText>
+<![CDATA[
+Bypass this step if you don't intend having your own queue manager, otherwise tailor to suit your needs
+<p/>
+<h6>Sender service</h6>
+Represents a destination such as a WebSphere MQ queue to which messages are sent.
+<h6>Receiver service</h6>
+Represents a source from which messages are received.
+<h6>Publisher</h6>
+Contains a sender service where the destination is a publish/subscribe broker. 
+<h6>Subscriber</h6>
+Contains a sender service to send subscribe and unsubscribe messages to a publish/subscribe broker and a receiver service to receive publications from the broker.
+<h6>Policy</h6>
+Defines how to handle the message, including items such as priority, persistence, and whether it is included in a unit of work.
+]]>
+			</contentText>
+            <SQLText>
+<![CDATA[
+insert into db2mq.MQHost 
+        (connectionName      , queueMgrName)
+  values('?QUEUE_MANAGER?'    , '?QUEUE_MANAGER?')
+;
+
+update db2mq.MQHost set queueMgrName = '?QUEUE_MANAGER?' where connectionName in ('defaultConnection' 'db2mqConnection');
+
+insert into db2mq.MQPolicy 
+        ( policyName                                   ,  connectionName           , CONNECTIONMODE ,  Description) 
+  values('?QUEUE_MANAGER_LOGICAL?.DEFAULT.POLICY'      , '?QUEUE_MANAGER_LOGICAL?' , 'L'            , 'DB2 UDF Default Connection')
+  values('?QUEUE_MANAGER_LOGICAL?.DEFAULT.POLICY.REAL' , '?QUEUE_MANAGER?'         , 'R'            , 'DB2 UDF Default Connection')
+;
+
+insert into db2mq.MQService 
+       (ServiceName                                           , queueName                            ,  queueMgrName    ,  Description) 
+ values('?QUEUE_MANAGER_LOGICAL?.ADMIN.ACCOUNTING.QUEUE'      , 'SYSTEM.ADMIN.ACCOUNTING.QUEUE'      , '?QUEUE_MANAGER?' , '?QUEUE_MANAGER_LOGICAL? accounting monitoring data')
+	  ,('?QUEUE_MANAGER_LOGICAL?.ADMIN.CHANNEL.EVENT'         , 'SYSTEM.ADMIN.CHANNEL.EVENT'         , '?QUEUE_MANAGER?' , '?QUEUE_MANAGER_LOGICAL? Event queue for channels')
+	  ,('?QUEUE_MANAGER_LOGICAL?.ADMIN.COMMAND.QUEUE'         , 'SYSTEM.ADMIN.COMMAND.QUEUE'         , '?QUEUE_MANAGER?' , '?QUEUE_MANAGER_LOGICAL? Administration command queue. Used for remote MQSC commands and PCF commands')
+	  ,('?QUEUE_MANAGER_LOGICAL?.ADMIN.CONFIG.EVENT'          , 'SYSTEM.ADMIN.CONFIG.EVENT'          , '?QUEUE_MANAGER?' , '?QUEUE_MANAGER_LOGICAL? Event queue for configuration events')
+	  ,('?QUEUE_MANAGER_LOGICAL?.ADMIN.PERFM.EVENT'           , 'SYSTEM.ADMIN.PERFM.EVENT'           , '?QUEUE_MANAGER?' , '?QUEUE_MANAGER_LOGICAL? performance events')
+	  ,('?QUEUE_MANAGER_LOGICAL?.ADMIN.QMGR.EVENT'            , 'SYSTEM.ADMIN.QMGR.EVENT'            , '?QUEUE_MANAGER?' , '?QUEUE_MANAGER_LOGICAL? queue manager events')
+	  ,('?QUEUE_MANAGER_LOGICAL?.ADMIN.STATISTICS.QUEUE'      , 'SYSTEM.ADMIN.STATISTICS.QUEUE'      , '?QUEUE_MANAGER?' , '?QUEUE_MANAGER_LOGICAL? statistics monitoring data')
+	  ,('?QUEUE_MANAGER_LOGICAL?.ADMIN.TRACE.ROUTE.QUEUE'     , 'SYSTEM.ADMIN.TRACE.ROUTE.QUEUE'     , '?QUEUE_MANAGER?' , '?QUEUE_MANAGER_LOGICAL? trace-route reply messages')
+	  ,('?QUEUE_MANAGER_LOGICAL?.AUTH.DATA.QUEUE'             , 'SYSTEM.AUTH.DATA.QUEUE'             , '?QUEUE_MANAGER?' , '?QUEUE_MANAGER_LOGICAL? access control lists for the queue manager')
+      ,('?QUEUE_MANAGER_LOGICAL?.BROKER.DEFAULT.STREAM'       , 'SYSTEM.BROKER.DEFAULT.STREAM' 	     , '?QUEUE_MANAGER?' , '?QUEUE_MANAGER_LOGICAL? Publisher Service')
+	  ,('?QUEUE_MANAGER_LOGICAL?.CHANNEL.INITQ'               , 'SYSTEM.CHANNEL.INITQ'               , '?QUEUE_MANAGER?' , '?QUEUE_MANAGER_LOGICAL? Channel initiation queue')
+	  ,('?QUEUE_MANAGER_LOGICAL?.CHANNEL.SYNCQ'               , 'SYSTEM.CHANNEL.SYNCQ'               , '?QUEUE_MANAGER?' , '?QUEUE_MANAGER_LOGICAL? synchronization data for channels')
+	  ,('?QUEUE_MANAGER_LOGICAL?.CICS.INITIATION.QUEUE'       , 'SYSTEM.CICS.INITIATION.QUEUE'       , '?QUEUE_MANAGER?' , '?QUEUE_MANAGER_LOGICAL? Default CICS® initiation queue')
+	  ,('?QUEUE_MANAGER_LOGICAL?.CLUSTER.COMMAND.QUEUE'       , 'SYSTEM.CLUSTER.COMMAND.QUEUE'       , '?QUEUE_MANAGER?' , '?QUEUE_MANAGER_LOGICAL? carry messages to the repository queue manager')
+	  ,('?QUEUE_MANAGER_LOGICAL?.CLUSTER.REPOSITORY.QUEUE'    , 'SYSTEM.CLUSTER.REPOSITORY.QUEUE'    , '?QUEUE_MANAGER?' , '?QUEUE_MANAGER_LOGICAL? all repository information')
+	  ,('?QUEUE_MANAGER_LOGICAL?.CLUSTER.TRANSMIT.QUEUE'      , 'SYSTEM.CLUSTER.TRANSMIT.QUEUE'      , '?QUEUE_MANAGER?' , '?QUEUE_MANAGER_LOGICAL? The transmission queue for all messages to all clusters')
+	  ,('?QUEUE_MANAGER_LOGICAL?.DEAD.LETTER.QUEUE'           , 'SYSTEM.DEAD.LETTER.QUEUE'           , '?QUEUE_MANAGER?' , '?QUEUE_MANAGER_LOGICAL? Dead-letter (undelivered-message) queue')
+	  ,('?QUEUE_MANAGER_LOGICAL?.DEFAULT.ALIAS.QUEUE'         , 'SYSTEM.DEFAULT.ALIAS.QUEUE'         , '?QUEUE_MANAGER?' , '?QUEUE_MANAGER_LOGICAL? Default alias queue')
+	  ,('?QUEUE_MANAGER_LOGICAL?.DEFAULT.INITIATION.QUEUE'    , 'SYSTEM.DEFAULT.INITIATION.QUEUE'    , '?QUEUE_MANAGER?' , '?QUEUE_MANAGER_LOGICAL? Default initiation queue')
+	  ,('?QUEUE_MANAGER_LOGICAL?.DEFAULT.LOCAL.QUEUE'         , 'SYSTEM.DEFAULT.LOCAL.QUEUE'         , '?QUEUE_MANAGER?' , '?QUEUE_MANAGER_LOGICAL? Default local queue')
+	  ,('?QUEUE_MANAGER_LOGICAL?.DEFAULT.MODEL.QUEUE'         , 'SYSTEM.DEFAULT.MODEL.QUEUE'         , '?QUEUE_MANAGER?' , '?QUEUE_MANAGER_LOGICAL? Default model queue')
+	  ,('?QUEUE_MANAGER_LOGICAL?.DEFAULT.REMOTE.QUEUE'        , 'SYSTEM.DEFAULT.REMOTE.QUEUE'        , '?QUEUE_MANAGER?' , '?QUEUE_MANAGER_LOGICAL? Default remote queue')
+      ,('?QUEUE_MANAGER_LOGICAL?.DEFAULT.RECEIVER'            , 'SYSTEM.DEFAULT.RECEIVER' 	         , '?QUEUE_MANAGER?' , '?QUEUE_MANAGER_LOGICAL? DEFAULT RECEIVER')
+	  ,('?QUEUE_MANAGER_LOGICAL?.DEFAULT.SENDER'              , 'SYSTEM.DEFAULT.SENDER'	             , '?QUEUE_MANAGER?' , '?QUEUE_MANAGER_LOGICAL? DEFAULT SENDER')
+	  ,('?QUEUE_MANAGER_LOGICAL?.DEFAULT.PUBLISHER'           , 'SYSTEM.DEFAULT.PUBLISHER'	         , '?QUEUE_MANAGER?' , '?QUEUE_MANAGER_LOGICAL? DEFAULT PUBLISHER')
+	  ,('?QUEUE_MANAGER_LOGICAL?.DEFAULT.SUBSCRIBER'          , 'SYSTEM.DEFAULT.SUBSCRIBER'	         , '?QUEUE_MANAGER?' , '?QUEUE_MANAGER_LOGICAL? DEFAULT SUBSCRIBER')
+	  ,('?QUEUE_MANAGER_LOGICAL?.DEFAULT.SUBSCRIBER.RECEIVER' , 'SYSTEM.DEFAULT.SUBSCRIBER.RECEIVER' , '?QUEUE_MANAGER?' , '?QUEUE_MANAGER_LOGICAL? DEFAULT SUBSCRIBER.RECEIVER')
+	  ,('?QUEUE_MANAGER_LOGICAL?.MQEXPLORER.REPLY.MODEL'      , 'SYSTEM.MQEXPLORER.REPLY.MODEL'      , '?QUEUE_MANAGER?' , '?QUEUE_MANAGER_LOGICAL? The WebSphere MQ Explorer reply-to queue. This is a model queue that creates a temporary dynamic queue for replies to the WebSphere MQ Explorer')
+	  ,('?QUEUE_MANAGER_LOGICAL?.MQSC.REPLY.QUEUE'            , 'SYSTEM.MQSC.REPLY.QUEUE'            , '?QUEUE_MANAGER?' , '?QUEUE_MANAGER_LOGICAL? MQSC command reply-to queue. This is a model queue that creates a temporary dynamic queue for replies to remote MQSC commands')
+	  ,('?QUEUE_MANAGER_LOGICAL?.PENDING.DATA.QUEUE'          , 'SYSTEM.PENDING.DATA.QUEUE'          , '?QUEUE_MANAGER?' , '?QUEUE_MANAGER_LOGICAL? PENDING.DATA.QUEUE')
+;
+]]>
+            </SQLText>
+            <SQLExecutionOptions termChar=";" commitPerStmt="true" edit="false"/>
+        </page>
+
+		<page name="Add Functions" type="general">
+            <contentText>
+<![CDATA[
+<h1>Add Useful function</h1>
+<ol>
+<li>Count of messages in a queue</li> 
+<li>Create sequence and the stored procedure to populated the table by a listening stored procedure</li>
+<ol/>
+]]>
+			</contentText>
+            <SQLText>
+<![CDATA[
+CREATE FUNCTION "s#db2mc".mq_message_count (service varchar(128))
+	RETURNS INTEGER
+	NO EXTERNAL ACTION
+--/******************************************************************************	
+--  Author: Peter Prib
+--  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2012 All rights reserved.
+--
+--  Licensed under the Apache License, Version 2.0 (the "License");
+--  you may not use this file except in compliance with the License.
+--  You may obtain a copy of the License at
+--
+--      http://www.apache.org/licenses/LICENSE-2.0
+--
+--  Unless required by applicable law or agreed to in writing, software
+--  distributed under the License is distributed on an "AS IS" BASIS,
+--  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+--  See the License for the specific language governing permissions and
+--  limitations under the License.
+--******************************************************************************/ 
+F1: BEGIN ATOMIC
+    DECLARE EXIT HANDLER FOR NOT FOUND do 
+      return 0;
+    end;
+	RETURN (select count(*) from TABLE(db2mq.MQREADALL(service)) as mqReadAll);
+END
+@
+
+create sequence "s#db2mc".mq_admincmd AS SMALLINT CYCLE@
+
+create function "s#db2mc".mq_admincmd
+	(queueManagerIn varchar(48),command varchar(1024))
+	RETURNS CLOB(1M)
+	EXTERNAL ACTION
+--/******************************************************************************	
+--  Author: Peter Prib
+--  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2012 All rights reserved.
+--
+--  Licensed under the Apache License, Version 2.0 (the "License");
+--  you may not use this file except in compliance with the License.
+--  You may obtain a copy of the License at
+--
+--      http://www.apache.org/licenses/LICENSE-2.0
+--
+--  Unless required by applicable law or agreed to in writing, software
+--  distributed under the License is distributed on an "AS IS" BASIS,
+--  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+--  See the License for the specific language governing permissions and
+--  limitations under the License.
+--******************************************************************************/ 
+BEGIN
+    DECLARE corrid   VARCHAR(24);
+	DECLARE policy   VARCHAR(48);
+	DECLARE service  VARCHAR(48);
+	DECLARE response CHAR(1);
+	
+	SET corrid = CAST( next value for "s#db2mc".mq_admincmd as varchar(24));
+	
+	SELECT DB2MQ.MQSEND(ServiceName,policyName,command,corrid)	,ServiceName	,policyName
+	  INTO response 											,service 		,policy 
+		FROM db2mq.mqService s
+		    ,db2mq.mqHost h
+		    ,db2mq.mqPolicy p 
+		WHERE QUEUENAME='SYSTEM.ADMIN.COMMAND.QUEUE'
+		  AND s.queueMgrName=queueManagerIn
+		  AND s.queueMgrName=h.queueMgrName
+		  AND (     CONNECTIONMODE='L' AND h.connectionName=p.connectionName
+		  		OR  CONNECTIONMODE='R' AND h.connectionName=h.queueMgrName
+		  	  )
+		 AND p.policyName like '%.DEFAULT.POLICY'
+		;
+	IF NOT response = '1' THEN
+		SIGNAL SQLSTATE '75001'
+           SET MESSAGE_TEXT = 'MQSEND failed';
+
+	END IF;
+	RETURN DB2MQ.MQRECEIVECLOB(service,policy,corrid); 
+END
+@
+]]>
+            </SQLText>
+            <SQLExecutionOptions termChar="@"/>
+        </page>
+
+		<page name="Enable MQFunctions" type="general">
+            <contentText>
+<![CDATA[
+<h2>Environment Settings on AIX/Linux/Unix</h2>
+<h3>USERPROFILE</h3>
+Edit "$HOME/sqllib/userprofile" and add new line “export AMT_DATA_PATH=$HOME/sqllib/cfg”
+<h2>db2set</h2>
+<pre>
+db2set DB2ENVLIST=AMT_DATA_PATH
+DB2_DJ_INI=$HOME/sqllib/cfg/db2dj.ini
+</pre>
+<p/>
+<h2>Recycle Instance</h2>
+<pre>
+db2stop 
+db2start
+</pre>
+<p/>
+<h2>Enable DB2 database for a queue manager</h2>
+<p/>
+Enable DB2 database for a queue manager.  Default is DB2MQ_DEFAULT_MQM or the name specified in MqHost table.
+<p/>
+<pre>
+Usage: enable_MQFunctions -n dbName -u uID -p password
+                    [-q queuemanager] [-v 0pc|1pc|all]
+                    [-novalidate] [-echo] [-force]
+                    [-c clobSize]
+
+</pre>
+The MQ queue manager DB2MQ_DEFAULT_MQM and the default queue DB2MQ_DEFAULT_Q will be created. 
+]]>
+			</contentText>
+            <SQLText>
+<![CDATA[
+db2set DB2ENVLIST=AMT_DATA_PATH
+DB2_DJ_INI=$HOME/sqllib/cfg/db2dj.ini
+
+db2stop 
+
+db2start
+
+enable_MQFunctions -n ?ACTIVE_DATABASE? -u mqm -p ?MQM_PASSWORD? -v all -xml <xmlSize>  
+]]>
+            </SQLText>
+            <SQLExecutionOptions scriptMode="SHELL" />
+        </page>
+
+		<page name="MQ Default Definitions" type="general">
+            <contentText>
+<![CDATA[
+Creates MQSeries queues required by the AMI system default objects.
+<p/>
+Can be processed when the MQM is started - it creates the objects if missing, or resets 
+their attributes to the prescribed values
+<p/>
+To enable these definitions to operate locally with the  
+sample programs provided, sender services are defined to 
+have queues of type QLOCAL (rather than QREMOTE) and all 
+queue are defined with both PUT and GET ENABLED. 
+]]>
+			</contentText>
+            <SQLText>
+<![CDATA[
+runmqsc ?QUEUE_MANAGER?
+DEFINE QLOCAL('SYSTEM.DEFAULT.RECEIVER')            REPLACE DESCR('Input-Output') PUT(ENABLED) DEFPRTY(0) DEFPSIST(NO) GET(ENABLED)
+DEFINE QALIAS('SYSTEM.DEFAULT.SENDER')              REPLACE TARGQ('SYSTEM.DEFAULT.RECEIVER') DESCR('Input-Output') PUT(ENABLED) DEFPRTY(0) DEFPSIST(NO) GET(ENABLED)
+DEFINE QLOCAL('SYSTEM.DEFAULT.PUBLISHER')           REPLACE DESCR('Input-Output') PUT(ENABLED) DEFPRTY(0) DEFPSIST(NO) GET(ENABLED)
+DEFINE QLOCAL('SYSTEM.DEFAULT.SUBSCRIBER')          REPLACE DESCR('Input-Output') PUT(ENABLED) DEFPRTY(0) DEFPSIST(NO) GET(ENABLED)
+DEFINE QLOCAL('SYSTEM.DEFAULT.SUBSCRIBER.RECEIVER') REPLACE DESCR('Input-Output') PUT(ENABLED) DEFPRTY(0) DEFPSIST(NO) GET(ENABLED)
+DEFINE QLOCAL('SYSTEM.DEAD.LETTER.QUEUE') 
+ALTER  QMGR DEADQ('SYSTEM.DEAD.LETTER.QUEUE') 
+END
+]]>
+            </SQLText>
+            <SQLExecutionOptions scriptMode="SHELL" />
+        </page>
+
+		<page name="Test Send/Receive Message" type="general">
+            <contentText>
+<![CDATA[
+Quick test to see if it is working.
+<p/>
+Insert a message and read the message.
+]]>
+			</contentText>
+            <SQLText>
+<![CDATA[
+values DB2MQ.MQSEND('a test') ;
+
+values DB2MQ.MQRECEIVE(); 
+]]>
+            </SQLText>
+            <SQLExecutionOptions termChar=";" commitPerStmt="true"/>
+        </page>
+
+		<page name="Install DB2 MQ Listener - Table " type="general">
+            <contentText>
+<![CDATA[
+Install DB2 MQListener.
+]]>
+			</contentText>
+            <SQLText>
+<![CDATA[
+CREATE TABLE SYSMQL.Listeners (
+		configurationName VARCHAR(18) NOT NULL DEFAULT '',
+    	queueManager VARCHAR(48) NOT NULL DEFAULT '',
+ 	   	inputQueue VARCHAR(48) NOT NULL,
+   	 	dbName VARCHAR(8) NOT NULL,
+    	dbUserID VARCHAR(30) NOT NULL DEFAULT '',
+   		dbPassword VARCHAR(40) FOR BIT DATA NOT NULL DEFAULT '',
+    	procNode VARCHAR(30) NOT NULL DEFAULT '',
+    	procSchema VARCHAR(30) NOT NULL,
+    	procName VARCHAR(128) NOT NULL,
+    	procType INTEGER NOT NULL DEFAULT 1,
+    	mqCoordinated CHAR NOT NULL CHECK(mqCoordinated = 'T' OR mqCoordinated = 'F') DEFAULT 'F',
+    	numInstances INTEGER NOT NULL CONSTRAINT posNumInstances CHECK (numInstances > 0  AND numInstances <= 128) DEFAULT 1,
+    	waitMillis INTEGER NOT NULL CONSTRAINT posWaitMillis CHECK (waitMillis >= 0) DEFAULT 0,
+    	minQueueDepth INTEGER NOT NULL CONSTRAINT posMinQueueDepth CHECK (minQueueDepth >= 1) DEFAULT 1,
+    	UNIQUE (configurationName, queueManager, inputQueue) 
+	)
+	IN ?SYSTOOLSPACE?
+;
+]]>
+            </SQLText>
+            <SQLExecutionOptions scriptMode="SHELL" />
+        </page>
+
+		<page name="Install DB2 MQ Listener - Packages " type="general">
+            <contentText>
+<![CDATA[
+Second part of installing DB2 MQListener.  Bind the applications and grant access.
+<p/>
+Review the access level given to the listener to ensure it meets your sites security requirements.  The stored procedures executed will have access to any queue. 
+<p/>
+for co-ordinated need to update qm.in, see http://publib.boulder.ibm.com/infocenter/wmqv7/v7r0/index.jsp?topic=%2Fcom.ibm.mq.amqzag.doc%2Ffa13570_.htm
+<pre>
+
+XAResourceManager:
+  Name=mydb2
+  SwitchFile=db2swit
+  XAOpenString=mydbname,myuser,mypasswd,toc=t
+  ThreadOfControl=THREAD
+</pre>
+and need to
+<pre>
+Creating the DB2 switch load file
+The easiest way to create the DB2® switch load file is to use the sample file xaswit.mak, which WebSphere® MQ provides to build the switch load files for a variety of database products.
+
+On Windows systems, you can find xaswit.mak in the directory C:\Program Files\IBM\WebSphere MQ\tools\c\samples\xatm. To create the DB2 switch load file with Microsoft Visual C++, use:
+nmake /f xaswit.mak db2swit.dll
+The generated switch file is placed in c:\Program Files\IBM\WebSphere MQ\exits.
+On AIX®, you can find xaswit.mak in the directory /usr/mqm/samp/xatm; on other UNIX systems, you can find it in the directory /opt/mqm/samp/xatm.
+
+Edit xaswit.mak to uncomment the lines appropriate to the version of DB2 you are using. Then execute the makefile using the command:
+make -f xaswit.mak db2swit
+The generated 32-bit switch load file is placed in /var/mqm/exits.
+
+The generated 64-bit switch load file is placed in /var/mqm/exits64.
+</pre>
+db2 grant connect on database to user mqm 
+]]>
+			</contentText>
+            <SQLText>
+<![CDATA[
+cd ~/sqllib/bnd
+db2 connect to ?ACTIVE_DATABASE?
+db2 BIND mqlConfig.bnd;
+db2 BIND mqlRun.bnd;
+db2 GRANT EXECUTE ON PACKAGE nullid.mqlConfi TO PUBLIC;
+db2 GRANT EXECUTE ON PACKAGE nullid.mqlRun    TO PUBLIC;
+db2 connect reset;
+]]>
+            </SQLText>
+            <SQLExecutionOptions  scriptMode="SHELL" termChar=";"/>
+        </page>
+
+		<page name="Listener - Verify Test - Define Queues" type="general">
+            <contentText>
+<![CDATA[
+Define the queues required for the listener to work.
+<p/>
+<h6>Deadletter queue</h6>
+    The deadletter queue (DLQ) in WebSphere MQ holds messages that cannot be processed. MQListener uses this queue to hold replies that cannot be delivered, for example, because the queue to which the replies should be sent is full. A deadletter queue is useful in any MQ installation especially for recovering messages that are not sent.
+<h6>Backout queue</h6>
+    For MQListener tasks in which WebSphere MQ is the transaction coordinator, the Backout queue serves a similar purpose to the deadletter queue. MQListener places the original request in the Backout queue after the request is rolled back a specified number of times (called the backout threshold).
+<h6>Administration queue</h6>
+    The administration queue is used for routing control messages such as shutdown and restart to MQListener. If you do not supply an administration queue, then the only way to shut down MQListener is to issue a kill command.
+<h6>Application input and output queues</h6>
+    The application uses input queues and output queues. The application receives messages from the input queue. The application sends replies and exceptions to the output queue. For example, SYSTEM.SAMPLE.REPLY is used in the WebSphere MQ sample program amqsreq. 
+]]>
+			</contentText>
+            <SQLText>
+<![CDATA[
+runmqsc  ?QUEUE_MANAGER?
+;
+define qlocal('Listener.test.Backout') 
+;
+define qlocal('Listener.test.Admin') 
+;
+define qlocal('Listener.test.In') boqname('Listener.test.Backout') bothresh(3) 
+;
+define qlocal('SYSTEM.SAMPLE.REPLY')
+;
+end
+]]>
+            </SQLText>
+            <SQLExecutionOptions scriptMode="SHELL" />
+        </page>
+
+		<page name="Listener - Verify Test - Create test DB2 objects" type="general">
+            <contentText>
+<![CDATA[
+Create table and the stored procedure to populated the table by a listening stored procedure. 
+]]>
+			</contentText>
+            <SQLText>
+<![CDATA[
+CREATE TABLE test.aTable (val VARCHAR(25) CHECK (val NOT LIKE 'fail%'))
+@
+CREATE PROCEDURE test.aProc (IN pin VARCHAR(25), OUT pout VARCHAR(2))     
+BEGIN
+         INSERT INTO test.aTable VALUES(pin);
+         SET pout = 'OK';
+END
+@
+]]>
+            </SQLText>
+            <SQLExecutionOptions />
+        </page>
+
+		<page name="Listener - Verify Test - Add Listener" type="general">
+            <contentText>
+<![CDATA[
+Add a new listener and start the listener
+<p/>
+The parameters that you can use in the MQListener configuration.
+
+<h6>ConfigDB</h6>
+The configuration database, which can be any valid DB2® database, contains an MQListener configuration table. 
+The configuration table contains information about the queues to which MQListener should listen 
+and the stored procedures MQListener should call.
+<h6>ConfigUser</h6>
+The user ID in whose name you access the configuration database. 
+The configuration user does not need to be a database administrator. 
+You can specify the configuration user and password in the MQListener command. 
+If you do not specify a configuration user and password, 
+and your database installation supports implicit connections,
+by default the configuration user is the user under whose account the MQListener is running.
+<h6>ConfigUserPwd</h6>
+The password that is used with the configuration user ID.
+<h6>RunDB</h6>
+The run database is the database that contains the stored procedures that are run when a message arrives. 
+The stored procedures can be in different databases from the configuration database.
+<h6>RunUser</h6>
+The user in whose name you access the run database to run the stored procedure. 
+The run user does not need any privilege except the ability to connect to the run database and run the stored procedure.
+<h6>RunUserPwd</h6>
+The password that is associated with the run user.
+<pre>
+Usage: db2mqlsn add <options>.
+
+-configDB <configuration database>
+[-configUser <configDB user ID> -configPwd <configDB password>]
+        Database in which configuration information is stored.  Authorization
+        information is optional.  If none is supplied, an implicit connection
+        will be attempted.
+
+[-config <configuration name>]
+        Individual tasks are grouped in configurations, which allows them
+        to be run together.  If no configuration name is specified, the
+        default configuration is used.
+
+-inputQueue <input queue name> [-queueManager <queue manager name>]
+        Queue on which this task will listen for messages.  If no queue
+        manager is specified, the default queue manager will be used.
+        (The combination of an input queue and queue manager must be unique
+        within a configuration.)
+
+-procSchema <stored procedure schema> -procName <stored procedure name>
+-dbName <stored procedure database>
+-dbUser <dbName user ID> -dbPwd <dbName password>
+        Information required to specify the stored procedure to which messages
+        from the specified queue will be passed.  This information includes
+        the schema and name of the stored procedure and the database in which
+        to find it, as well as the user on whose behalf to execute the stored
+        procedure, and authorization for that user.
+
+[-mqCoordinated]
+        Integrate message reading/writing into the stored procedure
+        transaction, coordinated by MQ.  By default, message manipulations
+        are not executed transactionally.
+
+[-numInstances <number of instances to run>]
+        The number of duplicate instances of this task to run in this
+        configuration.  If no value is specified, only one instance is run.
+</pre>
+<p/>
+<h3>Important Note</h3>
+<p/>
+For option mqCoordinated to work db2 and MQ must be established for two phase commit;
+]]>
+			</contentText>
+            <SQLText>
+<![CDATA[
+db2mqlsn add  -configdb ?ACTIVE_DATABASE? -config test -inputqueue Listener.test.In -procschema test -procname mq_test -dbname ?ACTIVE_DATABASE? 
+;
+db2mqlsn show -configDB ?ACTIVE_DATABASE? -config test 
+;
+nohup db2mqlsn run -configDB ?ACTIVE_DATABASE? -config test -adminQueue Listener.test.admin -adminQMgr ?QUEUE_MANAGER? &
+;
+runmqsc  ?QUEUE_MANAGER?
+;
+delete qlocal('Listener.test.Admin') purge
+;
+delete qlocal('Listener.test.In')  purge
+;
+delete qlocal('Listener.test.Backout') purge 
+;
+delete qlocal('SYSTEM.SAMPLE.REPLY') purge
+;
+end
+]]>
+            </SQLText>
+            <SQLExecutionOptions scriptMode="SHELL" />
+        </page>
+
+		<page name="Listener - Verify Test - Remove Listener" type="general">
+            <contentText>
+<![CDATA[
+To remove the 
+<h3>db2mqlsn admin</h3>
+<pre>
+Usage: db2mqlsn admin <options>.
+
+-adminQueue <admin queue name>
+-adminQueueList <namelist of admin queue names>
+[-adminQMgr <admin queue manager>]
+        The queue or list of queues on which to send admin commands.
+        Only one of -adminQueue or -adminQueueList may be given.
+        If no queue mnager is given, the configured default queue manager
+        will be used.
+
+-adminCommand <admin command>
+      One of shutdown, restart.
+      Shutdown exits a running listener when it has finished processing
+      the current message.
+      Restart performs a shutdown, then re-reads its configuration and restarts.
+
+</pre>
+<h3>db2mqlsn remove</h3>
+<pre>
+Usage: db2mqlsn remove <options>.
+
+-configDB <configuration database>
+[-configUser <configDB user ID> -configPwd <configDB password>]
+        Database in which configuration information is stored.  Authorization
+        information is optional.  If none is supplied, an implicit connection
+        will be attempted.
+
+[-config <configuration name>]
+        Individual tasks are grouped in configurations, which allows them
+        to be run together.  If no configuration name is specified, the
+        default configuration is used.
+
+-inputQueue <input_queue name> [-queueManager <queue manager name>]
+        The task to remove from this configuration.  (The combination of input
+        queue and queue manager are unique within a configuration.)
+</pre>
+]]>
+			</contentText>
+            <SQLText>
+<![CDATA[
+db2mqlsn admin  -adminQueue Listener.test.admin -adminQMgr ?QUEUE_MANAGER? -adminCommand shutdown 
+;
+db2mqlsn remove -configDB ?ACTIVE_DATABASE? -config test -queueManager ?QUEUE_MANAGER? -inputQueue  Listener.test.In  
+;
+db2mqlsn show -configDB ?ACTIVE_DATABASE? -config test
+;
+]]>
+            </SQLText>
+            <SQLExecutionOptions scriptMode="SHELL" />
+        </page>
+
+		<page name="Example - Define Services" type="general">
+            <contentText>
+<![CDATA[
+Initialize the tables with pre-defined Service Points (notice that most of the columns are using default) for default configuration
+]]>
+			</contentText>
+            <SQLText>
+<![CDATA[
+
+insert into db2mq.MQService 
+        ( ServiceName         ,  queueName                 , queueMgrName)
+  values('AMT.SAMPLE.SERVICE' , 'AMT.SAMPLE.REQUEST.QUEUE' , ' ')
+;
+insert into db2mq.MQService 
+        ( ServiceName                    ,  queueName) 
+  values('AMT.SAMPLE.PUBLISHER'          , 'SYSTEM.BROKER.DEFAULT.STREAM')
+       ,('AMT.SAMPLE.SUBSCRIBER'         , 'SYSTEM.BROKER.CONTROL.QUEUE')
+       ,('AMT.SAMPLE.SUBSCRIBER.RECEIVER', 'AMT.SAMPLE.SUBSCRIBER.RECEIVER.QUEUE')
+       ,('AMT.SAMPLE.RESPONSE.RECEIVER'  , 'AMT.SAMPLE.RESPONSE.QUEUE');
+]]>
+            </SQLText>
+            <SQLExecutionOptions  termChar=";"  commitPerStmt="true"/>
+        </page>
+
+		<page name="Example - MQ Definitions" type="general">
+            <contentText>
+<![CDATA[
+Create or reset the MQSeries queues required by the AMI samples.
+]]>
+			</contentText>
+            <SQLText>
+<![CDATA[
+runmqsc ?QUEUE_MANAGER?
+; 
+DEFINE QLOCAL('AMT.SAMPLE.REQUEST.QUEUE') REPLACE 
+           DESCR('Input-Output')   
+           PUT(ENABLED)     
+           DEFPRTY(0)       
+           DEFPSIST(NO)     
+           GET(ENABLED)
+;
+DEFINE QLOCAL('AMT.SAMPLE.RESPONSE.QUEUE') REPLACE     
+           DESCR('Input-Output for receiving responses')   
+           PUT(ENABLED)     
+           DEFPRTY(0)       
+           DEFPSIST(NO)     
+           GET(ENABLED)
+;
+DEFINE QLOCAL('AMT.SAMPLE.SUBSCRIBER.RECEIVER.QUEUE') REPLACE  
+           DESCR('For receiving publications')                     
+           PUT(ENABLED)     
+           DEFPRTY(0)       
+           DEFPSIST(NO)     
+           GET(ENABLED)
+;
+DEFINE QLOCAL('AMT.SAMPLE.SIMULATED.GROUP.QUEUE') REPLACE 
+           DESCR('Simulated Group Messages Input-Output')   
+           PUT(ENABLED)     
+           DEFPRTY(0)       
+           DEFPSIST(NO)     
+           GET(ENABLED)
+;
+END;
+]]>
+            </SQLText>
+            <SQLExecutionOptions scriptMode="SHELL" />
+        </page>
+		
+		<page name="Example - Publish/Service Service Points" type="general">
+            <contentText>
+<![CDATA[
+Add publish and service points testing defaults
+]]>
+			</contentText>
+            <SQLText>
+<![CDATA[
+insert into MQPubSub 
+	     (PubSubName              ,  broker                 , receiver                         , type , description) 
+  values('DB2.DEFAULT.SUBSCRIBER' , 'AMT.SAMPLE.SUBSCRIBER' , 'AMT.SAMPLE.SUBSCRIBER.RECEIVER' , 'S'  , 'DB2 MQPublish default Publisher service')
+       ,('AMT.SAMPLE.SUBSCRIBER'  , 'AMT.SAMPLE.SUBSCRIBER' , 'AMT.SAMPLE.SUBSCRIBER.RECEIVER' , 'S'  , 'AMT Sample Subscriber')
+       ,('DB2.DEFAULT.PUBLISHER'  , 'AMT.SAMPLE.PUBLISHER'  , ''                               , 'P'  , 'DB2 MQSubscribe default Subscriber service')
+       ,('AMT.SAMPLE.PUBLISHER'   , 'AMT.SAMPLE.PUBLISHER'  , ''                               , 'P'  , 'AMY Sample publisher ')
+  ;
+]]>
+            </SQLText>
+            <SQLExecutionOptions  termChar=";"  commitPerStmt="true"/>
+        </page>
+		
+		<page name="Test Connections" type="general">
+            <contentText>
+<![CDATA[
+This is for test purpose only show difference between using the 'Real' vs. 'Logical' connection mode
+]]>
+			</contentText>
+            <SQLText>
+<![CDATA[
+insert into MQPolicy 
+       ( policyName        ,  connectionName     , connectionMode, Description)
+ values('TEST.REAL.POLICY' , '?QUEUE_MANAGER?'  , 'R'           , 'Testing Real Connection Mode')
+;
+]]>
+            </SQLText>
+            <SQLExecutionOptions  termChar=";"  commitPerStmt="true"/>
+        </page>
+		
+
+		<page name="Uninstall" type="last">
+            <contentText>
+<![CDATA[
+Disable MQ functions.  This is the first step in the process.
+<pre>
+ Usage: disable_MQFunctions -n dbName -u uID -p password
+                    [-v 0pc | 1pc | all]
+
+</pre>
+]]>
+			</contentText>
+            <SQLText>
+<![CDATA[
+disable_MQFunctions -n ?ACTIVE_DATABASE? -u <db2instance> -p <password>
+]]>
+            </SQLText>
+            <SQLExecutionOptions scriptMode="SHELL"/>
+        </page>
+
+		<page name="Uninstall - Delete Queue Managers" type="last">
+            <contentText>
+<![CDATA[
+Modify to delete queue managers not required.
+]]>
+			</contentText>
+            <SQLText>
+<![CDATA[
+echo display queue managers 
+;
+dspmq
+;
+echo issue end/stop queue manager 
+;
+endmqm ?QUEUE_MANAGER?    
+;
+echo issue delete queue manager 
+;
+dltmqm ?QUEUE_MANAGER?
+;  
+echo display queue managers 
+;
+dspmq
+;
+]]>
+            </SQLText>
+            <SQLExecutionOptions scriptMode="SHELL"/>
+        </page>
+
+		<page name="Uninstall - DB2 objects" type="last">
+            <contentText>
+<![CDATA[
+Uninstall db2 objects.
+]]>
+			</contentText>
+            <SQLText>
+<![CDATA[
+set current schema = 'DB2MQ';
+drop function "s#db2mc".mq_admincmd;
+drop sequence "s#db2mc".mq_admincmd;
+drop table SYSMQL.Listeners;
+drop trigger SPInsert;
+drop trigger SPDelete;
+drop trigger SPUpdate;
+drop trigger PSubInsert;
+drop trigger PSubDelete;
+drop trigger PSubUpdate;
+drop trigger PolInsert;
+drop trigger PolDelete;
+drop trigger PolUpdate;
+drop table MQUpdated;
+drop table db2mq.MQPolicy;
+drop table db2mq.MQPubSub;
+drop table db2mq.MQService;
+drop table MQHost;
+]]>
+            </SQLText>
+            <SQLExecutionOptions termChar=";" commitPerStmt="true"/>
+        </page>
+
+    </pageList>
+</tutorial>

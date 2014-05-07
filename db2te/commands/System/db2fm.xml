@@ -1,0 +1,109 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2009 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<command name="db2fm" title="db2 Fault Monitor">
+<![CDATA[
+ >-db2fm--+- -t--service--+-- -m--module path------------------->
+          '- -i--instance-'                     
+note manual wrong as -m is optional
+]]>
+	<text>db2fm</text>
+	<select>
+		<option default="true"><text>-t</text><input size="18" title="service"/></option> 
+		<option><text>-i</text><input size="18" title="instance"/></option> 
+	</select>
+	<select>
+		<option default="true"><note><![CDATA[-m $INSTANCEHOME/sqllib/lib/libdb2gcf]]></note></option> 
+		<option><text>-m</text><input size="32" title="module path"/></option> 
+	</select>
+	<br statement='false'/>
+
+<![CDATA[
+>--+--------------+--------------------------------------------><
+   +- -u----------+   
+   +- -d----------+   
+   +- -s----------+   
+   +- -k----------+   
+   +- -U----------+   
+   +- -D----------+   
+   +- -S----------+   
+   +- -K----------+   
+   +- -f--+-on--+-+   
+   |      '-off-' |   
+   +- -a--+-on--+-+   
+   |      '-off-' |   
+   +- -T--T1/T2---+   
+   +- -l--I1/I2---+   
+   +- -R--R1/R2---+   
+   +- -n--email---+   
+   +- -h----------+   
+   '- -?----------'  
+]]>
+	<select>
+		<option default="true"><note></note></option> 
+		<option><text>-u</text><note>Brings the service up.</note></option>
+		<option><text>-U</text><note>Brings the fault monitor daemon up.</note></option>
+		<option><text>-d</text><note>Brings the instance down.</note></option>
+		<option><text>-D</text><note>Brings the fault monitor daemon down.</note></option>
+		<option><text>-k</text><note>Kills the service.</note></option>
+		<option><text>-K</text><note>Kills the fault monitor daemon.</note></option>
+		<option><text>-s</text><note>Returns the status of the service.</note></option>
+		<option><text>-S</text><note>Returns the status of the fault monitor daemon.</note></option> 
+		<option>
+			<text>-f</text>
+			<input type="list"><option>on</option><option>off</option></input>
+    		<note>Turns fault monitor ON or OFF. If this option is set off, the fault monitor daemon will not be started, or the daemon will exit if it was running.</note>
+		</option>
+		<option>
+			<text>-a</text>
+			<input type="list"><option>on</option><option>off</option></input>
+    		<note>Activates or deactivates fault monitoring. If this option if set to OFF, the fault monitor will not be actively monitoring, which means if the service goes down it will not try to bring it back.</note>
+		</option>
+		<option><text>-T</text><input size="8" help="T1/T2"/><note>Overwrites the start and stop time-out</note></option>
+		<option><text>-I</text><input size="8" help="I1/I2"/><note>Sets the status interval and time-out respectively</note></option>
+		<option><text>-R</text><input size="8" help="I1/I2"/><note>Sets the number of retries for the status method and action before giving up</note></option>
+		<option><text>-n</text><input size="64" title="email"/><note>Sets the email address for notification of events</note></option>
+	</select>
+
+	<help name='T1/T2'>
+		<![CDATA[
+		<ul>
+        	<li>15/10 updates the two time-outs respectively</li>
+        	<li>15 updates the start time-out to 15 secs</li>
+        	<li>/10 updates the stop time-out to 10 secs</li>
+		</ul>
+		]]>
+	</help>
+	<help name='I1/I2'>
+		<![CDATA[
+		<ul>
+        	<li>15/10 updates the two time-outs respectively</li>
+        	<li>15 updates the status interval to 15 secs</li>
+        	<li>/10 updates the time-out to 10 secs</li>
+		</ul>
+		]]>
+	</help>
+	<help name='R1/R2'>
+		<![CDATA[
+		<ul>
+        	<li>15/10 updates retries for the status method and action before giving up</li>
+        	<li>15 updates the retries for the status method</li>
+        	<li>/10 updates retries for  action before giving up</li>
+		</ul>
+		]]>
+	</help>
+</command>

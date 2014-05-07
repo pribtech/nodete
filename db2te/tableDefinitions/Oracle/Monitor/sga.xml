@@ -1,0 +1,50 @@
+<!--
+  Peter Prib, Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2012 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<table name="sgastat">
+	<sqlName>v$sgastat</sqlName>
+	<singularName>SGA Pool</singularName>
+	<pluralName>SGA Pools</pluralName>
+	<description></description>
+	<disable_edit/>
+	<output>
+		<type name="DDL" destination="" title="" generator=""/>
+	</output>
+	<orderBy name="POOL" direction="A"/>
+	<orderBy name="NAME" direction="A"/>
+	<displayColumns>
+		<col type="column" name="POOL"/>
+		<col type="column" name="NAME"/>
+		<col type="column" name="BYTES"/>
+	</displayColumns>
+	<column name="POOL">
+		<sqlName>POOL</sqlName>
+		<title>Pool</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="NAME">
+		<sqlName>NAME</sqlName>
+		<title>Name</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="BYTES">
+		<sqlName>BYTES</sqlName>
+		<title>Bytes)</title>
+		<type>n</type>
+		<formatNumber toAbbreviated="4"/> 
+	</column>
+</table>

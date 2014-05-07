@@ -1,0 +1,1 @@
+select * from table(reg_list_variables()) as registry;

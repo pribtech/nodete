@@ -1,0 +1,22 @@
+<h2>Tutorial Flow:</h2><hr>
+<BR>
+<ul>
+<li>Determining the problem category (completed)</li>
+<li>Performing detailed diagnosis appropriate locking problems</li>
+<li class="sourceCopiedFrom">Identifying the scope of the SQL statements involved</li>
+</ul>
+<BR>
+<H2>Detailed Analysis<HR></H2>
+<BR>
+<P align=justify>
+The detailed diagnosis of the problem suggests that a larger portion of SQL statements are 
+being compiled rather than retrieving their access plans from the package cache. To analyse the problem further 
+database administrator monitors elements for SQL compilation.
+<BR>
+<H2>Metrics related to SQL compilation<HR></H2>
+<BR>
+<ul>
+<li>TOTAL_COMPILATIONS </li>
+<li>PKG_CACHE_INSERTS </li>
+<li>PKG_CACHE_LOOKUPS </li>
+</ul>

@@ -1,0 +1,6 @@
+System sampling only looks at pages of data, rather than individual rows. While this
+  will be more efficient in determining the answer set, it may produce more 
+  variable results. This is particularly true if you are doing a calculation on a column
+  which might be part of a clustering index. In this case, you may get a skew in results
+  because pages that are matched will have the same clustered values on that page rather
+  than a normal distribution.

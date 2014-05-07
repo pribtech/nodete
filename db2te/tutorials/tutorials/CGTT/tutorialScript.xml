@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tutorial name="Global Temporary Table" >
+	<flowRestriction>forwardexploration</flowRestriction>
+	<globalCodeHighlightOptions  highlightCode="true" />
+	<closeAction/>
+	<openAction/>
+	<pageList>
+		<page name="Introduction" type="intro">
+			<entryAction/>
+			<exitAction name="createEmployeeTable" type="serverAction">
+				<parameterList>
+					<parameter name="action" type="fixed">
+						<value>createTablesFromSampleDatabase</value>
+					</parameter>
+					<parameter name="schema" type="constant">
+						<value>SCHEMA</value>
+					</parameter>
+					<parameter name="table" type="fixed">
+						<value>EMPLOYEE</value>
+					</parameter>
+				</parameterList>
+				<followOnAction condition="false">
+					<task>
+						<action name="" type="alert">
+							<message>Failed to create base tables for initial setup of tutorial. Cannot proceed further with tutorial.</message>
+						</action>
+					</task>
+					<task>
+						<setActionReturn>false</setActionReturn>
+					</task>
+				</followOnAction>
+				<followOnAction condition="[0-9][0-9]*">
+					<task>
+						<assignLocalParameter name="ERROR_MESSAGE" type="returnObject">
+							<value>createEmployeeTable.returnValue</value>
+						</assignLocalParameter>
+						<alert>Failed to create base tables for initial setup of tutorial. Cannot proceed further with tutorial. SQLMSG: ?ERROR_MESSAGE?</alert>
+					</task>
+					<task>
+						<setActionReturn>false</setActionReturn>
+					</task>
+				</followOnAction>
+			</exitAction>
+			<contentFile>Intro.html</contentFile>
+			<autoLoadLink>
+				<pageWindow target="informationWindow">
+					<panel name="main">
+						<URL>http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.sql.ref.doc/doc/r0053719.html?noframes=true
+                        </URL>
+					</panel>
+				</pageWindow>
+			</autoLoadLink>
+		</page>
+		<page name="Create Payroll Table" type="general">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>CreatePayrollTable.html</contentFile>
+			<SQLFile>CreatePayrollTable.SQL</SQLFile>
+			<HTMLSQLFile>CreatePayrollTable.html</HTMLSQLFile>
+			<SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar=";"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+		</page>
+		<page name="Using a Regular Table" type="general">
+			<entryAction name="checkForTable5k" type="serverAction">
+				<parameterList>
+					<parameter name="action" type="fixed">
+						<value>checkForObject</value>
+					</parameter>
+					<parameter name="objectType" type="fixed">
+						<value>table</value>
+					</parameter>
+					<parameter name="object[schema]" type="constant">
+						<value>SCHEMA</value>
+					</parameter>
+					<parameter name="object[table]" type="raw">
+						<value>payroll</value>
+					</parameter>
+				</parameterList>
+				<followOnAction condition="false">
+					<task>
+						<action name="alertTablesNotCreated" type="alert">
+							<message>The required PAYROLL table must be created before proceeding with the tutorial.</message>
+						</action>
+						<setActionReturn value="false"/>
+					</task>
+				</followOnAction>
+			</entryAction>
+
+			<exitAction/>
+			<contentFile>CreateStaticTable.html</contentFile>
+			<SQLFile>CreateStaticTable.SQL</SQLFile>
+			<HTMLSQLFile>CreateStaticTable.html</HTMLSQLFile>
+			<SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar=";"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+		</page>
+		<page name="Using a Declared Global Temporary Table" type="general">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>DeclareGlobalTemp.html</contentFile>
+			<SQLFile>DeclareGlobalTemp.SQL</SQLFile>
+			<HTMLSQLFile>DeclareGlobalTemp.html</HTMLSQLFile>
+			<SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar=";"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+		</page>
+		<page name="Using a Created Global Temporary Table" type="general">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>CreateGlobalTemp.html</contentFile>
+			<SQLFile>CreateGlobalTemp.SQL</SQLFile>
+			<HTMLSQLFile>CreateGlobalTemp.html</HTMLSQLFile>
+			<SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar=";"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+		</page>
+		<page name="Data Isolation" type="general">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>RunCGTTInsert.html</contentFile>
+			<SQLFile>RunCGTTInsert.SQL</SQLFile>
+			<HTMLSQLFile>RunCGTTInsert.html</HTMLSQLFile>
+			<SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar=";"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+		</page>
+		<page name="Application Objects: Procedures and functions" type="general">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>CreateProcAndFunc.html</contentFile>
+			<SQLFile>CreateProcAndFunc.SQL</SQLFile>
+			<HTMLSQLFile>RunCGTTInsert.html</HTMLSQLFile>
+			<SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar="@"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+		</page>
+		<page name="Compute Tax" type="general">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>ComputeTax.html</contentFile>
+			<SQLFile>ComputeTax.SQL</SQLFile>
+			<HTMLSQLFile>ComputeTax.html</HTMLSQLFile>
+			<SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar=";"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+		</page>
+		<page name="Performance Comparison" type="general">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>Performance.html</contentFile>
+			<loadActionScriptFile>performanceCompare.xml</loadActionScriptFile>
+		</page>
+	</pageList>
+</tutorial>

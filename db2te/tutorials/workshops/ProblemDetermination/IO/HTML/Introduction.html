@@ -1,0 +1,34 @@
+<p>This tutorial demonstrates how to create input/output saturation problems in DB2 and how to diagnose such problems. I/O saturation can happen when reading LONG VARCHAR columns, reading LOB (large object) columns or performing a backup. The current tutorial will show you how to saturate the system by querying a LOB column. You can take a look at the page on your right for more information on large object columns.</p>
+
+<p>Databases are not only used to store text anymore. Businesses often need a way to keep large documents such as images and audio in an easily accessible way. For this purpose, DB2 has a special type for storing them. Large object columns, or LOB, are used to store those files on disk and every access to them has a direct impact on I/O. On systems with slow hard drives or frequent access to LOB, it quickly becomes an apparent problem when lots of queries are executed on this type of columns since the data they contain are never stored in the bufferpools.</p>
+
+<p>
+	<strong>In this tutorial, you will learn:</strong>
+	<ul>
+		<li>How to create a sample table that contains LOBs</li>
+		<li>How to find your system's I/O limit</li>
+		<li>How to simulate an I/O saturation problem</li>
+		<li>How to identify the symptoms of an I/O saturation problem by using the Server Monitoring Dashboard</li>
+	</ul>
+</p>
+
+<p>
+	<strong>This tutorial contains the following steps:</strong>
+	<ol>
+		<li>Create a table to contain large objects</li>
+		<li>Populate the newly created table by generating 10,000 LOBs from inline text</li>
+		<li>Explore the new data</li>
+		<li>Find the upperbound I/O limit of your system using basic benchmarks</li>
+		<li>Diagnose an I/O saturation problem using the Server Monitoring Dashboard</li>
+		<li>Conclusion</li>
+	</ol>
+</p>
+
+<p>
+	<strong>Prerequisites</strong>
+	<ul>
+		<li>Technology Explorer 4.0-dev</li>
+		<li>UCOSP Branch</li>
+		<li>Workload Multiuser Driver</li>
+	</ul>
+</p>

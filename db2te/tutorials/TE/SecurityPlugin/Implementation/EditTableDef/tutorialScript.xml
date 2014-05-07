@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tutorial name="Implementation: Edit a table definition" autoCloseWindowsInRightStage="true" autoClearAdhocResults="true">
+	<!--flowRestriction>forwardexploration</flowRestriction-->
+	<pageList>
+		
+		<page name="Edit a table definition: db2authCustomMasterView.xml" type="general">
+			<contentFile>editdb2authCustomMasterView.html</contentFile>
+            <SQLFile>blank.sql</SQLFile>
+		</page>
+		<page name="Edit a table definition: Basic display information" type="general">
+			<contentFile>editBasicdisplayInformation.html</contentFile>
+			<autoLoadLink>
+				<pageWindow target="tabledef" raiseToTop="y">
+					<panel name="top" PrimaryContainer="true">
+		   				<link type="other" target="_self" window="_self" connectionRequired="y">
+							<address>
+								?BASE_DIRECTORY?/other/db2authCustomMasterView4-1.html
+							</address>
+						</link>
+					</panel>
+				</pageWindow>
+			</autoLoadLink>
+		</page>
+		<page name="Edit a table definition: Column details" type="general">
+			<contentFile>editColumnDetails.html</contentFile>
+			<autoLoadLink>
+				<pageWindow target="tabledef" raiseToTop="y">
+					<panel name="top" PrimaryContainer="true">
+		   				<link type="other" target="_self" window="_self" connectionRequired="y">
+							<address>
+								?BASE_DIRECTORY?/other/db2authCustomMasterView4-2.html
+							</address>
+						</link>
+					</panel>
+				</pageWindow>
+			</autoLoadLink>
+		</page>
+        <page name="Edit a table definition: Referencing table definitions" type="general">
+            <contentFile>editReference.html</contentFile>
+            <autoLoadLink>
+                <pageWindow target="tabledef" raiseToTop="y">
+                    <panel name="top" PrimaryContainer="true">
+                        <link type="other" target="_self" window="_self" connectionRequired="y">
+                            <address>
+                                ?BASE_DIRECTORY?/other/db2authCustomMasterView4-3.html
+                            </address>
+                        </link>
+                    </panel>
+                </pageWindow>
+            </autoLoadLink>
+        </page>
+	</pageList>	
+</tutorial>

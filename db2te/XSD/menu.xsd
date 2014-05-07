@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xa="link.xsd" xmlns:xb="pageWindow.xsd"  xmlns:xc="action.xsd">
+    <xs:include schemaLocation="link.xsd"/>
+    <xs:include schemaLocation="action.xsd"/>
+    <xs:include schemaLocation="pageWindow.xsd"/>
+    <xs:element name="menu" type="menu"/>
+    <xs:complexType name="menu">
+        <xs:annotation>
+            <xs:documentation><![CDATA[
+                    . 
+                    ]]></xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="description" type="xs:string" maxOccurs="1" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation><![CDATA[
+                    . 
+                    ]]></xs:documentation>
+                </xs:annotation></xs:element>
+            <xs:element ref="pageWindow" minOccurs="0" maxOccurs="unbounded" >
+                <xs:annotation>
+                    <xs:documentation><![CDATA[
+                    . 
+                    ]]></xs:documentation>
+                </xs:annotation></xs:element>
+            <xs:element name="actionScript" type="action" minOccurs="0" maxOccurs="1" >
+                <xs:annotation>
+                    <xs:documentation><![CDATA[
+                    . 
+                    ]]></xs:documentation>
+                </xs:annotation></xs:element>
+            <xs:element name="linkList" maxOccurs="1" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation><![CDATA[
+                    . 
+                    ]]></xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element ref="link"  maxOccurs="unbounded" minOccurs="1" >
+                            <xs:annotation>
+                                <xs:documentation><![CDATA[
+                    . 
+                    ]]></xs:documentation>
+                            </xs:annotation></xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+        <xs:attribute name="type" use="required">
+            <xs:annotation>
+                <xs:documentation><![CDATA[
+                    . 
+                    ]]></xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:annotation>
+                        <xs:documentation><![CDATA[
+                    . 
+                    ]]></xs:documentation>
+                    </xs:annotation>
+                    <xs:enumeration value="branch">
+                        <xs:annotation>
+                            <xs:documentation><![CDATA[
+                    . 
+                    ]]></xs:documentation>
+                        </xs:annotation></xs:enumeration>
+                    <xs:enumeration value="leaf">
+                        <xs:annotation>
+                            <xs:documentation><![CDATA[
+                    . 
+                    ]]></xs:documentation>
+                        </xs:annotation></xs:enumeration>
+                    <xs:enumeration value="line">
+                        <xs:annotation>
+                            <xs:documentation><![CDATA[
+                    . 
+                    ]]></xs:documentation>
+                        </xs:annotation></xs:enumeration>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="lineThickness" type="xs:int" use="optional">
+            <xs:annotation>
+                <xs:documentation><![CDATA[
+                    . 
+                    ]]></xs:documentation>
+            </xs:annotation></xs:attribute>
+        <xs:attribute name="branchDirectory" type="xs:string" use="optional">
+            <xs:annotation>
+                <xs:documentation><![CDATA[
+                    . 
+                    ]]></xs:documentation>
+            </xs:annotation></xs:attribute>
+    </xs:complexType>
+</xs:schema>

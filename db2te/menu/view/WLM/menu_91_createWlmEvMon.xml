@@ -1,0 +1,194 @@
+<!--
+  Author: Peter Prib
+  
+  Copyright Independent Systems Integrators Pty Ltd 2008 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+<menu type="leaf" branchDirectory="">
+   <description>Create WLM Event Monitors</description>
+
+<actionScript name="wlmCreateEvMons" type="form" lockScreen="true">
+
+	<message>
+<![CDATA[
+<div style='width:500px'>
+<h1>Create three workload management Events</h1>
+<p>You are about to create the event WLM monitors required for work load manager.
+<p>
+<h1>USAGE</h1>
+<p>
+<table>
+<tr><td>Tables create in table space</td><td>:</td><td><input type="text" name='TABLESPACE' value="SYSTOOLSPACE" style="width:300px"/></td></tr>
+</table>
+
+<ul>
+<li>Any specified table spaces must exist prior to executing this script.
+ Furthermore they should reside across all partitions; otherwise
+ monitoring information may be lost.  Also, make sure they have space
+ to contain data from the event monitors.
+<li>If the target table spaces are DMS table spaces, the PCTDEACTIVATE parameter
+ specifies how full the table space must be before the event monitor
+ automatically deactivates.  Change the value if necessary. It is recommended
+ that when the target table space has auto-resize enabled the PCTDEACTIVATE
+ be set to 100. Remove PCTDEACTIVATE for any specified System Managed (SMS)
+ table spaces.
+<li>If AUTOSTART is specified, the event monitor will automatically
+ activate when the database activates.  If MANUALSTART is specified
+ instead, the event monitor must be explicitly activated through
+ a SET EVENT MONITOR statement after the database is activated.
+</div>
+]]>
+    </message>
+    <parameterList>
+        <parameter name="TABLESPACE" type="blockValue">
+			<value>TABLESPACE</value>
+		</parameter>
+		<parameter name="buttonOK" type="raw">
+			<value>Create WLM Event Monitors</value>
+		</parameter>
+	</parameterList>
+	<if condition="true">
+		<task>
+			<action name="createWlmEvMons" type="serverAction">
+				<parameterList>
+					<parameter name="action" type="fixed">
+						<value>executeSQL</value>
+					</parameter>
+					<parameter name="STMTermChar" type="fixed">
+						<value>@</value>
+					</parameter>
+					<parameter name="commitPerSTMT" type="fixed">
+						<value>true</value>
+					</parameter>
+					<parameter name="abortOnFailure" type="fixed">
+						<value>true</value>
+					</parameter>
+					<parameter name="SQL[0]" type="fixed">
+						<value>
+CREATE EVENT MONITOR DB2ACTIVITIES
+    FOR ACTIVITIES
+    WRITE TO TABLE
+    ACTIVITY (TABLE ACTIVITY_DB2ACTIVITIES
+              IN ?TABLESPACE?
+              PCTDEACTIVATE 100),
+    ACTIVITYSTMT (TABLE ACTIVITYSTMT_DB2ACTIVITIES
+                  IN ?TABLESPACE?
+                  PCTDEACTIVATE 100),
+    ACTIVITYVALS (TABLE ACTIVITYVALS_DB2ACTIVITIES
+                  IN ?TABLESPACE?
+                  PCTDEACTIVATE 100),
+    CONTROL (TABLE CONTROL_DB2ACTIVITIES
+             IN ?TABLESPACE?
+             PCTDEACTIVATE 100)
+    AUTOSTART
+						</value>
+					</parameter>
+					<parameter name="SQL[1]" type="fixed">
+						<value>
+CREATE EVENT MONITOR DB2STATISTICS
+    FOR STATISTICS
+    WRITE TO TABLE
+    SCSTATS (TABLE SCSTATS_DB2STATISTICS
+             IN ?TABLESPACE?
+             PCTDEACTIVATE 100),
+    WCSTATS (TABLE WCSTATS_DB2STATISTICS
+             IN ?TABLESPACE?
+             PCTDEACTIVATE 100),
+    WLSTATS (TABLE WLSTATS_DB2STATISTICS
+             IN ?TABLESPACE?
+             PCTDEACTIVATE 100),
+    QSTATS  (TABLE QSTATS_DB2STATISTICS
+             IN ?TABLESPACE?
+             PCTDEACTIVATE 100),
+    HISTOGRAMBIN (TABLE HISTOGRAMBIN_DB2STATISTICS
+                  IN ?TABLESPACE?
+                  PCTDEACTIVATE 100),
+    CONTROL (TABLE CONTROL_DB2STATISTICS
+             IN ?TABLESPACE?
+             PCTDEACTIVATE 100)
+    AUTOSTART
+						</value>
+					</parameter>
+					<parameter name="SQL[2]" type="fixed">
+						<value>
+CREATE EVENT MONITOR DB2THRESHOLDVIOLATIONS
+    FOR THRESHOLD VIOLATIONS
+    WRITE TO TABLE
+    THRESHOLDVIOLATIONS (TABLE THRESHOLDVIOLATIONS_DB2THRESHOLDVIOLATIONS
+                         IN ?TABLESPACE?
+                         PCTDEACTIVATE 100),
+    CONTROL (TABLE CONTROL_DB2THRESHOLDVIOLATIONS
+             IN ?TABLESPACE?
+             PCTDEACTIVATE 100)
+    AUTOSTART
+						</value>
+					</parameter>			
+					<parameter name="SQL[3]" type="fixed">
+						<value>
+SET EVENT MONITOR DB2ACTIVITIES STATE 1
+						</value>
+					</parameter>					
+					<parameter name="SQL[4]" type="fixed">
+						<value>
+SET EVENT MONITOR DB2STATISTICS STATE 1
+						</value>
+					</parameter>					
+					<parameter name="SQL[5]" type="fixed">
+						<value>
+SET EVENT MONITOR DB2THRESHOLDVIOLATIONS STATE 1
+						</value>
+					</parameter>					
+					<parameter name="SQL[6]" type="fixed">
+						<value>
+ALTER WORKLOAD SYSDEFAULTUSERWORKLOAD
+  COLLECT ACTIVITY DATA ON COORDINATOR WITH DETAILS
+						</value>
+					</parameter>
+					<parameter name="SQL[7]" type="fixed">
+						<value>
+ALTER SERVICE CLASS SYSDEFAULTSUBCLASS UNDER SYSDEFAULTUSERCLASS
+  COLLECT AGGREGATE ACTIVITY DATA BASE
+						</value>
+					</parameter>			
+				</parameterList>
+				<if condition="true" negCondition="true">
+					<task>
+						<assignSharedConstant name="STMTRun" type="returnObject">
+							<value>createWlmEvMons.returnValue.STMTRun</value>
+						</assignSharedConstant>
+						<assignSharedConstant name="STMT" type="returnObject">
+							<value>createWlmEvMons.returnValue.STMT</value>
+						</assignSharedConstant>
+						<assignSharedConstant name="STMTMSG" type="returnObject">
+							<value>createWlmEvMons.returnValue.STMTMSG</value>
+						</assignSharedConstant>
+						<alert>Failed to create WLM Event Monitors, statement ?STMTRun? 
+						
+						?STMTMSG?
+						
+						?STMT?
+						</alert>
+					</task>
+				</if>
+				<if condition="true">
+					<task>
+						<alert>WLM event monitors created</alert>
+					</task>
+				</if>
+			</action>
+		</task>
+	</if>
+</actionScript>
+</menu>

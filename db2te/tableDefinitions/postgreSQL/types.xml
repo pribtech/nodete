@@ -1,0 +1,228 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2013 All rights reserved.
+  
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+<table name="types">
+	<sqlName>pg_type</sqlName>
+	<singularName>Type</singularName>
+	<pluralName>Types</pluralName>
+	<description></description>
+	<orderBy name="typname" direction="A"/>
+	<disableEdit/>
+	<output>
+		<type name="DDL" destination="" title="" generator=""/>
+	</output>
+	<displayColumns>
+		<col type="column" name="typname"/>
+		<col type="column" name="schema"/>
+		<col type="column" name="owner"/>
+		<col type="column" name="typlen"/>
+		<col type="column" name="typbyval"/>
+		<col type="column" name="typtype"/>
+		<col type="column" name="typcategory"/>
+		<col type="column" name="typispreferred"/>
+		<col type="column" name="typisdefined"/>
+		<col type="column" name="typdelim"/>
+		<col type="column" name="typrelid"/>
+		<col type="column" name="typelem"/>
+		<col type="column" name="typarray"/>
+		<col type="column" name="typinput"/>
+		<col type="column" name="typoutput"/>
+		<col type="column" name="typreceive"/>
+		<col type="column" name="typsend"/>
+		<col type="column" name="typmodin"/>
+		<col type="column" name="typmodout"/>
+		<col type="column" name="typanalyze"/>
+		<col type="column" name="typalign"/>
+		<col type="column" name="typstorage"/>
+		<col type="column" name="typnotnull"/>
+		<col type="column" name="typbasetype"/>
+		<col type="column" name="typtypmod"/>
+		<col type="column" name="typndims"/>
+		<col type="column" name="typcollation"/>
+		<col type="column" name="typdefaultbin"/>
+		<col type="column" name="typdefault"/>
+		<col type="column" name="typacl"/>
+	</displayColumns>
+	<column name="typname">
+		<sqlName>typname</sqlName>
+		<title>Name</title>
+	</column>
+	<column name="typnamespace">
+		<sqlName>typnamespace</sqlName>
+		<title>Namespace ID</title>
+	</column>
+	<column name="schema">
+		<sqlName>(select nspname from pg_namespace t where t.oid=typnamespace)</sqlName>
+		<title>Schema</title>
+	</column>
+	<column name="typowner">
+		<sqlName>typowner</sqlName>
+		<title>Owner ID</title>
+	</column>
+	<column name="owner">
+		<sqlName>(select usename from pg_user t where t.usesysid=typowner)</sqlName>
+		<title>Owner</title>
+	</column>
+	<column name="typlen">
+		<sqlName>typlen</sqlName>
+		<title>Len</title>
+		<type>n</type>
+	</column>
+	<column name="typbyval">
+		<sqlName>typbyval</sqlName>
+		<title>By Value</title>
+		<type>boolean</type>
+	</column>
+	<column name="typtype">
+		<sqlName>typtype</sqlName>
+		<title>Type</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="typcategory">
+		<sqlName>typcategory</sqlName>
+		<title>Category</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="typispreferred">
+		<sqlName>typispreferred</sqlName>
+		<title>Preferred</title>
+		<type>boolean</type>
+	</column>
+	<column name="typisdefined">
+		<sqlName>typisdefined</sqlName>
+		<title>Defined</title>
+		<type>boolean</type>
+	</column>
+	<column name="typdelim">
+		<sqlName>typdelim</sqlName>
+		<title>Delim</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="typrelid">
+		<sqlName>typrelid</sqlName>
+		<title>Relid</title>
+		<type>n</type>
+	</column>
+	<column name="typelem">
+		<sqlName>typelem</sqlName>
+		<title>Elem</title>
+		<type>n</type>
+	</column>
+	<column name="typarray">
+		<sqlName>typarray</sqlName>
+		<title>Array</title>
+		<type>n</type>
+	</column>
+	<column name="typinput">
+		<sqlName>typinput</sqlName>
+		<title>Input</title>
+	</column>
+	<column name="typoutput">
+		<sqlName>typoutput</sqlName>
+		<title>Output</title>
+	</column>
+	<column name="typreceive">
+		<sqlName>typreceive</sqlName>
+		<title>Receive</title>
+</column>
+	<column name="typsend">
+		<sqlName>typsend</sqlName>
+		<title>Send</title>
+	</column>
+	<column name="typmodin">
+		<sqlName>typmodin</sqlName>
+		<title>Modin</title>
+		<type>n</type>
+	</column>
+	<column name="typmodout">
+		<sqlName>typmodout</sqlName>
+		<title>Modout</title>
+		<type>n</type>
+	</column>
+	<column name="typanalyze">
+		<sqlName>typanalyze</sqlName>
+		<title>Analyze</title>
+		<type>n</type>
+	</column>
+	<column name="typalign">
+		<sqlName>typalign</sqlName>
+		<title>Align</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="typstorage">
+		<sqlName>typstorage</sqlName>
+		<title>Storage</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="typnotnull">
+		<sqlName>typnotnull</sqlName>
+		<title>Not Null</title>
+		<type>n</type>
+	</column>
+	<column name="typbasetype">
+		<sqlName>typbasetype</sqlName>
+		<title>Base Type</title>
+		<type>n</type>
+	</column>
+	<column name="typtypmod">
+		<sqlName>typtypmod</sqlName>
+		<title>Type Mod</title>
+		<type>n</type>
+	</column>
+	<column name="typndims">
+		<sqlName>typndims</sqlName>
+		<title>Ndims</title>
+		<type>n</type>
+	</column>
+	<column name="typcollation">
+		<sqlName>typcollation</sqlName>
+		<title>Collation</title>
+		<type>n</type>
+	</column>
+	<column name="typdefaultbin">
+		<sqlName>typdefaultbin</sqlName>
+		<title>Default Bin</title>
+		<type>n</type>
+	</column>
+	<column name="typdefault">
+		<sqlName>typdefault</sqlName>
+		<title>Default</title>
+		<type>n</type>
+	</column>
+	<column name="typacl">
+		<sqlName>typacl</sqlName>
+		<title>ACL</title>
+		<type>n</type>
+	</column>
+	<reference name="columns">
+		<title>Columns</title>
+		<reftype>table</reftype>
+		<refvalue>postgreSQL/columnUDTUsage</refvalue>
+		<icon>images/icon-column.gif</icon>
+		<ref foreign_column_name="udt_schema">
+			<local_column_name>schema</local_column_name>
+		</ref>
+		<ref foreign_column_name="udt_name">
+			<local_column_name>typname</local_column_name>
+		</ref>
+	</reference>
+</table>

@@ -1,0 +1,4 @@
+Bernoulli sampling tells DB2 to sample each record, but only to use x% of the
+  rows for getting the result set. While this is still more efficient than retrieving all
+  of the rows of the table, it still requires that all records be analyzed to determine
+  whether or not they need to be included in the result set.

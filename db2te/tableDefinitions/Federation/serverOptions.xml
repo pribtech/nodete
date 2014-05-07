@@ -1,0 +1,149 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2009 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+
+<table name="serverOptions">
+	<sql_name>SYSCAT.SERVEROPTIONS</sql_name>
+	<singular_name>Server Option</singular_name>
+	<plural_name>Server Options</plural_name>
+	<description></description>
+	<inlinequery><![CDATA[ 
+select 
+	sa.SERVERNAME
+	,sa.SERVERTYPE
+	,sa.SERVERVERSION
+	,soa.CREATE_TIME
+	,p.OPTION
+	,soa.SETTING
+	,soa.SERVEROPTIONKEY
+	,soa.REMARKS
+	,p.defaultValue 
+from SYSCAT.SERVERS  sa
+ join (
+   select coalesce(actual.SERVERTYPE,options.SERVERTYPE) as SERVERTYPE
+         ,coalesce(actual.OPTION,options.OPTION) as OPTION
+         ,options.defaultValue 
+   from 
+   	(values('DB2/UDB','COLLATING_SEQUENCE','Y')
+		,('DB2/UDB','COMM_RATE','2')
+		,('DB2/UDB','CPU_RATIO','1.0')
+		,('DB2/UDB','DATE_COMPAT','N')
+		,('DB2/UDB','DBNAME',null)
+		,('DB2/UDB','DB2_MAXIMAL_PUSHDOWN','N')
+		,('DB2/UDB','DB2_MAX_ASYNC_REQUESTS_ PER_QUERY','1')
+		,(null,'DB2_TWO_PHASE_COMMIT','N')
+		,('DB2/UDB','DB2_UM_PLUGIN',null)
+		,('DB2/UDB','DB2_UM_PLUGIN_LANG',null)
+		,('DB2/UDB','FED_PROXY_USER',null)
+		,('DB2/UDB','FOLD_ID',null)
+		,('DB2/UDB','FOLD_PW',null)
+		,('DB2/UDB','IO_RATIO','1.0')
+		,('DB2/UDB','NO_EMPTY_STRING',null)
+		,('DB2/UDB','NUMBER_COMPAT','N')
+		,('DB2/UDB','OLD_NAME_GEN','N')
+		,('DB2/UDB','PUSHDOWN','Y')
+		,('DB2/UDB','SAME_DECFLT_ROUNDING','N')
+		,('DB2/UDB','VARCHAR2_COMPAT','N')
+		,('DB2/UDB','DB2_CON_UNREF_THRESHOLD',null)
+		,('DB2/UDB','NODE',null)
+		) as options(SERVERTYPE,OPTION,defaultValue)
+    full outer JOIN (
+      SELECT DISTINCT s.SERVERTYPE , so.OPTION , cast(null as varchar(1)) as defaultValue 
+      FROM SYSCAT.SERVEROPTIONS so JOIN SYSCAT.SERVERS  s on  s.SERVERNAME=so.SERVERNAME
+      ) actual
+      ON  actual.OPTION = options.OPTION
+        AND (  actual.SERVERTYPE = options.SERVERTYPE 
+            or actual.SERVERTYPE is null and options.SERVERTYPE is null
+            )		
+ ) p
+  on p.SERVERTYPE=sa.SERVERTYPE
+   or p.SERVERTYPE is null and sa.SERVERTYPE is null
+left join SYSCAT.SERVEROPTIONS  soa
+  on sa.SERVERNAME=soa.SERVERNAME
+  and ( p.SERVERTYPE is null and sa.SERVERTYPE is null
+       or p.SERVERTYPE = sa.SERVERTYPE)
+  and p.option = soa.option
+]]>
+	</inlinequery>
+	<output>
+		<type name="DDL" destination="" title="" generator=""/>
+	</output>
+	<order_by_index name="SERVERNAME" direction="A"/>
+	<order_by_index name="OPTION" direction="A"/>
+	<display_columns>
+		<col type="column" name="SERVERNAME"/>
+		<col type="column" name="SERVERTYPE"/>
+		<col type="column" name="SERVERVERSION"/>
+		<col type="column" name="OPTION"/>
+		<col type="column" name="SETTING"/>
+		<col type="column" name="DEFAULTVALUE"/>
+		<col type="column" name="SERVEROPTIONKEY"/>
+		<col type="column" name="CREATE_TIME"/>
+		<col type="column" name="REMARKS"/>
+	</display_columns>
+	<disable_edit/>
+	<column name="SERVERNAME">
+		<sqlName>SERVERNAME</sqlName>
+		<title>Server</title>
+		<type></type>
+		<primaryKey/>
+	</column>
+	<column name="SERVERTYPE">
+		<sqlName>SERVERTYPE</sqlName>
+		<title>Server Type</title>
+		<type></type>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="SERVERVERSION">
+		<sqlName>SERVERVERSION</sqlName>
+		<title>Server Version</title>
+		<type></type>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="CREATE_TIME">
+		<sqlName>CREATE_TIME</sqlName>
+		<title>Created</title>
+		<type></type>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="OPTION">
+		<sqlName>OPTION</sqlName>
+		<title>Option</title>
+		<type></type>
+		<primaryKey/>
+	</column>
+	<column name="SETTING">
+		<sqlName>SETTING</sqlName>
+		<title>Setting</title>
+		<type></type>
+	</column>
+	<column name="SERVEROPTIONKEY">
+		<sqlName>SERVEROPTIONKEY</sqlName>
+		<title>Option Key</title>
+		<type></type>
+	</column>
+	<column name="REMARKS">
+		<sqlName>REMARKS</sqlName>
+		<title>Remarks</title>
+		<type></type>
+	</column>
+	<column name="DEFAULTVALUE">
+		<sqlName>DEFAULTVALUE</sqlName>
+		<title>defaultvalue</title>
+		<type>s</type>
+	</column>
+</table>

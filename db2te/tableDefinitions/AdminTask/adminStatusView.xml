@@ -1,0 +1,96 @@
+<table name="SYSTOOLS.ADMIN_TASK_STATUS">
+    <sql_name>SYSTOOLS.ADMIN_TASK_STATUS</sql_name>
+    <singular_name>SYSTOOLS.ADMIN_TASK_STATUS</singular_name>
+    <plural_name>SYSTOOLS.ADMIN_TASK_STATUS</plural_name>
+    <description/>
+    <rows_per_page>50</rows_per_page>
+	<messages><SQL0204N>ATS Not installed.</SQL0204N></messages>
+	<output>
+		<type name="DDL" destination="" title="" generator=""/>
+		<type name="DELETE" destination="adhoc" title="Delete" generator="XSL/compareTableUpdates.xsl"/>
+	</output>
+    <order_by_index name="begin_time" direction="D"/>
+    <order_by_index name="end_time" direction="D"/>
+    <display_columns>
+        <col type="column" name="agent_id"/>
+        <col type="column" name="begin_time"/>
+        <col type="column" name="end_time"/>
+        <col type="column" name="invocation"/>
+        <col type="column" name="name"/>
+        <col type="column" name="rc"/>
+        <col type="column" name="sqlcode"/>
+        <col type="column" name="sqlerrmc"/>
+        <col type="column" name="sqlstate"/>
+        <col type="column" name="status"/>
+        <col type="column" name="taskid"/>
+    </display_columns>
+	<disable_edit/>
+    <column name="agent_id">
+        <sql_name>AGENT_ID</sql_name>
+        <title>AGENT_ID</title>
+        <type>n</type>
+        <c_drill>n</c_drill>
+        <primaryKey/>
+    </column>
+    <column name="begin_time">
+        <sql_name>BEGIN_TIME</sql_name>
+        <title>BEGIN_TIME</title>
+        <type>n</type>
+        <c_drill>n</c_drill>
+        <primaryKey/>
+    </column>
+    <column name="end_time">
+        <sql_name>END_TIME</sql_name>
+        <title>END_TIME</title>
+        <type>n</type>
+        <c_drill>n</c_drill>
+    </column>
+    <column name="invocation">
+        <sql_name>INVOCATION</sql_name>
+        <title>INVOCATION</title>
+        <type>n</type>
+        <c_drill>n</c_drill>
+    </column>
+    <column name="name">
+        <sql_name>NAME</sql_name>
+        <title>NAME</title>
+        <type>s</type>
+        <c_drill>y</c_drill>
+    </column>
+    <column name="rc">
+        <sql_name>RC</sql_name>
+        <title>RC</title>
+        <type>n</type>
+        <c_drill>n</c_drill>
+    </column>
+    <column name="sqlcode">
+        <sql_name>SQLCODE</sql_name>
+        <title>SQLCODE</title>
+        <type>n</type>
+        <c_drill>n</c_drill>
+    </column>
+    <column name="sqlerrmc">
+        <sql_name>SQLERRMC</sql_name>
+        <title>SQLERRMC</title>
+        <type>s</type>
+        <c_drill>y</c_drill>
+    </column>
+    <column name="sqlstate">
+        <sql_name>SQLSTATE</sql_name>
+        <title>SQLSTATE</title>
+        <type>s</type>
+        <c_drill>y</c_drill>
+    </column>
+    <column name="status">
+        <sql_name>STATUS</sql_name>
+        <title>STATUS</title>
+        <type>s</type>
+        <c_drill>y</c_drill>
+    </column>
+    <column name="taskid">
+        <sql_name>TASKID</sql_name>
+        <title>TASKID</title>
+        <type>n</type>
+        <c_drill>n</c_drill>
+    </column>
+</table>

@@ -1,0 +1,31 @@
+
+<H2>Conclusion<HR></H2>
+<BR>
+<P align=justify>
+
+<font color=grey><B>The database administrator has answered most of the questions posed at the start of this scenario. 
+The only unknown question is why the system suddenly encountered this slowdown after performing normally, 
+and what caused this problem. The database administrator contacts the application support team 
+and finds out that their test environment has a DEPT_ACCESS table that is much smaller than in production. 
+This explains why the lack of indexes did not cause an issue earlier.</B></font>
+
+<H4>Answers to the questions that the database administrator had for the problem:</H4>
+<BR><BR>
+<ul>
+<li><B>Q: What is the general nature of problem as determined by the initial diagnosis?</B><BR>
+    <B>A:</B> This is an access plan problem, statements are ran in a slow and costly manner.
+</li>	   
+<BR>
+<li><B>Q: What part of the user workload is impacted by the slowdown? What does this set of SQL statements have in common?</B><BR>
+    <B>A:</B> The problem is localized to statements from an application. Many of these statements access the DEPT_ACCESS table.
+</li>
+<BR>
+<li><B>Q: What is the detailed nature of the problem determined during the detailed diagnosis?</B><BR>
+    <B>A:</B> The access plan for the slow statements is scanning table rows rather than using an index, because no suitable indexes are available.
+</li>
+<BR>
+<li><B>Q: What sequence of events led to this problem?</B><BR>
+    <B>A:</B> The problem occurred several months after the application was promoted to production. During that period, the application was used more frequently and the size of tables grew significantly. Consequently, the queries from the application have become unacceptably slow and costly.
+</li>
+</ul>
+<BR><BR>

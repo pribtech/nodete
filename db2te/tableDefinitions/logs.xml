@@ -1,0 +1,90 @@
+<!--
+  Copyright IBM Corp. 2007 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+	<table name="logs">
+		<sqlName>LOGMESSAGES</sqlName>
+		<function>PD_GET_LOG_MSGS</function>
+		<singular_name>Log Message</singular_name>
+		<plural_name>Log Messages</plural_name>
+		<description>
+		The PD_GET_LOG_MSGS table function returns problem determination log messages that were logged in the DB2 
+	    &lt;a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.admin.dbobj.doc/doc/c0023140.html?noframes=true');"&gt;administration log&lt;/a&gt;.
+	    The table function accepts a parameter of the timestamp of the oldest record returned. 
+	    The default for this page is one year, which is expressed as CURRENT_TIMESTAMP - 365 DAYS.
+		This list is generated from the &lt;a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.admin.dbobj.doc/doc/r0021452.html?noframes=true');"&gt;PD_GET_LOG_MSGS&lt;/a&gt; administrative view.
+		</description>
+		<orderByIndex name="timestamp" direction="D"/>
+		<displayColumns>
+			<col type="column" name="timestamp"/>
+			<col type="column" name="instname"/>
+			<col type="column" name="dbname"/>
+			<col type="column" name="component"/>
+			<col type="column" name="function"/>
+			<col type="column" name="msgtype"/>
+			<col type="column" name="msgsev"/>
+			<col type="column" name="msgtxt"/>			
+		</displayColumns>	
+		<disableEdit/>
+		<output>
+			<type name="DDL" destination="" title="" generator=""/>
+		</output>
+		<parameters>
+			<parm name="tsparm">
+				<title>Earliest Timestamp</title>
+				<value>(CURRENT_TIMESTAMP - 365 DAYS)</value>
+				<type>timestamp</type>
+			</parm>
+		</parameters>
+		<column name="timestamp">
+			<sqlName>TIMESTAMP</sqlName>
+			<title>Time Stamp</title>
+			<primaryKey/>>			
+		</column>
+		<column name="instname">
+			<sqlName>INSTANCENAME</sqlName>
+			<title>Instance</title>
+			<enablePrefill/>
+		</column>
+		<column name="dbname">
+			<sqlName>DBNAME</sqlName>
+			<title>Database</title>
+			<enablePrefill/>
+		</column>
+		<column name="component">
+			<sqlName>COMPONENT</sqlName>
+			<title>Component</title>
+			<enablePrefill/>
+		</column>
+		<column name="function">
+			<sqlName>FUNCTION</sqlName>
+			<title>Function</title>
+			<enablePrefill/>
+		</column>
+		<column name="msgtype">
+			<sqlName>MSGTYPE</sqlName>
+			<title>Type</title>
+			<enablePrefill/>
+		</column>
+		<column name="msgsev">
+			<sqlName>MSGSEVERITY</sqlName>
+			<title>Severity</title>
+			<enablePrefill/>
+		</column>
+		<column name="msgtxt">
+			<sqlName>MSG</sqlName>
+			<title>Message Text</title>
+			<type>l</type>
+		</column>
+	</table>

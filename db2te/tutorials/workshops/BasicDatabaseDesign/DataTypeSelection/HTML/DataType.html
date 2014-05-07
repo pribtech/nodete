@@ -1,0 +1,38 @@
+<p>This tutorial describes the need for effective <b>data type selection</b> and advises some best practices for the same</p>
+
+<H2><B>Problem Description</B></H2><HR>
+<p>With a number of tables in the database, size of the tables and hence the database as well as performance in terms of retrieval of data is an important consideration. Some of the concerns that need to be addressed while creating the tables are :
+<ol>
+<li>Inappropriate usage of datatypes causes redundant unused memory leading to wastage of storage space</li>
+<li>Query performance is dependent on the type of data being queried</li>
+</ol>
+</p>
+
+<BR><H2><B>Operation</B></H2><HR>
+<p>Selection of appropriate datatypes is an important consideration when designing a physical database.</p> 
+<p>Using abbreviations for longer values is one of the ways that can improve the storage capacity.</p>
+<p>From the query processing perspective, numeric values can be processed more efficiently than character values, especially when joining values. Therefore, using a numeric datatype can provide a slight benefit.</p>
+<p>The following guidelines can be followed while creating tables and associating the datatype of the columns :
+<ol>
+<li>Use numeric datatype wherever possible and especially for the Primary Key taking the following considerations into account. This ensures quicker access for frequently accessed columns.</li>
+<ul>
+<li>When creating a column that will hold a Boolean value  ("YES" or "NO"), use a decimal (1,0) or similar datatype. Use 0 and 1 as values for the column rather than "N" or "Y"</li>
+<li>Use integers to represent codes</li>
+<li>If there will be less than 10 code values for a given column, decimal (1,0) datatype is appropriate. If there are more than 9 code values that will be stored in a given column, use smallint</li>
+</ul>
+<li>Store the definition of the values in a table in a database, where the definitions can be joined to the value to provide context, such as "text name" or "description"</li> 
+<li>For variable length strings  use varchar instead of having large char length</li>
+</ol>
+</p>
+
+<BR><H2><B>Solution</B></H2><HR>
+<p>Create the tables following the above guidelines as much as possible :</p>
+<ol>
+<li>The primary keys for all tables are created with a numeric datatype</li>
+<li>The 'order_status' column of the 'order_master' table stores Boolean values ( 0 refers to pending delivery and 1 refers to delivered ). The 'order_status' table serves as a reference table that stores the value description</li>
+<li>The 'product_ID' column of the table stores codes for representing some information. The codes are integer numbers and the 'product' tables serves as a reference table storing the description</li>
+<li>The VARCHAR columns specified provide appropriate character specification to avoid wastage of space</li>
+</ol>
+
+<BR><H2><B>Result</B></H2><HR>
+<p>The tables for the store are created with appropriate datatypes.</p>

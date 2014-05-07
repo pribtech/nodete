@@ -1,0 +1,104 @@
+<!--
+  Copyright IBM Corp. 2007 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+	<table name="servsupclass">
+		<sql_name>SERVICE_SUPERCLASS</sql_name>
+		<function>WLM_GET_SERVICE_SUPERCLASS_STATS('', -2)</function>
+		<singular_name>Service Class Statistics</singular_name>
+		<plural_name>Service Class Statistics</plural_name>	
+		<description>
+	&lt;a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.admin.wlm.doc/doc/c0052457.html?noframes=true');"&gt;Statistics for workload management&lt;/a&gt;
+	are maintained for service classes, work classes, workloads, and threshold queues. 
+	These statistics reside in memory and can be viewed in real-time using workload management statistics table functions,
+	or the statistics can be collected and sent to a statistics event monitor where they can be viewed later for historical analysis.		
+   	This list is generated from the &lt;a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.sql.rtn.doc/doc/r0052918.html?noframes=true');"&gt;WLM_GET_SERVICE_SUPERCLASS_STATS&lt;/a&gt; table function.
+		</description>		
+	<disableEdit/>
+	<output>
+		<type name="DDL" destination="" title="" generator=""/>
+	</output>
+		<order_by_index name="servsuperclassnm" direction="A"/>
+		<display_columns>
+			<col type="column" name="servsuperclassnm"/>
+			<col type="column" name="dbpart"/>
+			<col type="column" name="connhighwater"/>
+			<col type="reference" name="scdet"/>											
+			<col type="reference" name="wlocc"/>
+			<col type="reference" name="scagents"/>
+			<col type="column" name="lastreset"/>			
+		</display_columns>
+		<reference name="scdet">
+			<c_title>Details</c_title>		
+			<reftype>table</reftype>
+			<refvalue>WLM/scdetail</refvalue>
+			<ref foreign_column_name="SERVICE_SUPERCLASS_NAME">
+				<local_column_name>servsuperclassnm</local_column_name>	
+			</ref>			
+			<ref foreign_column_name="dbpartition">
+				<local_column_name>dbpart</local_column_name>	
+			</ref>			
+		</reference>
+		<reference name="wlocc">
+			<c_title>Workloads</c_title>		
+			<reftype>table</reftype>
+			<refvalue>WLM/scwlocc</refvalue>
+			<ref foreign_column_name="SERVICE_SUPERCLASS_NAME">
+				<local_column_name>servsuperclassnm</local_column_name>	
+			</ref>			
+			<ref foreign_column_name="dbpartition">
+				<local_column_name>dbpart</local_column_name>	
+			</ref>			
+		</reference>						
+		<reference name="scagents">
+			<c_title>Agents</c_title>		
+			<reftype>table</reftype>
+			<refvalue>WLM/scagents</refvalue>
+			<ref foreign_column_name="SERVICE_SUPERCLASS_NAME">
+				<local_column_name>servsuperclassnm</local_column_name>	
+			</ref>			
+			<ref foreign_column_name="dbpartition">
+				<local_column_name>dbpart</local_column_name>	
+			</ref>			
+		</reference>						
+		<column name="servsuperclassnm">
+			<c_sql_name>SERVICE_SUPERCLASS_NAME</c_sql_name>
+			<c_title>Service Superclass Name</c_title>
+			<c_pkey></c_pkey>
+			<c_presentation>s</c_presentation>
+			<c_drill>n</c_drill>
+		</column>	
+		<column name="dbpart">
+			<c_sql_name>DBPARTITIONNUM</c_sql_name>
+			<c_title>Partition</c_title>
+			<c_pkey></c_pkey>
+			<c_presentation>n</c_presentation>
+			<c_drill>y</c_drill>
+		</column>
+		<column name="lastreset">
+			<c_sql_name>LAST_RESET</c_sql_name>
+			<c_title>Last Reset</c_title>
+			<c_pkey></c_pkey>
+			<c_presentation>s</c_presentation>
+			<c_drill>n</c_drill>
+		</column>
+		<column name="connhighwater">
+			<c_sql_name>CONCURRENT_CONNECTION_TOP</c_sql_name>
+			<c_title>Max Connections</c_title>
+			<c_pkey></c_pkey>
+			<c_presentation>n</c_presentation>
+			<c_drill>n</c_drill>
+		</column>
+
+	</table>

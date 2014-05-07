@@ -1,0 +1,142 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2009 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<command name="grantTable" title="Grant Table">
+<![CDATA[
+                 .-PRIVILEGES-.                               
+>>-GRANT--+-ALL--+------------+---------------------------+----->
+          | .-,-----------------------------------------. |   
+          | V                                           | |   
+          '---+-ALTER---------------------------------+-+-'   
+              +-CONTROL-------------------------------+       
+              +-DELETE--------------------------------+       
+              +-INDEX---------------------------------+       
+              +-INSERT--------------------------------+       
+              +-REFERENCES--+-----------------------+-+       
+              |             |    .-,-----------.    | |       
+              |             |    V             |    | |       
+              |             '-(----column-name-+--)-' |       
+              +-SELECT--------------------------------+       
+              '-UPDATE--+-----------------------+-----'       
+                        |    .-,-----------.    |             
+                        |    V             |    |             
+                        '-(----column-name-+--)-'             
+]]>
+	<text>GRANT</text>
+	<select>
+		<option default="true">
+			<text>ALL</text>
+			<select>
+				<option><text>PRIVILEGES</text></option> 
+				<option default="true"><note>PRIVILEGES</note></option> 
+			</select>
+		</option>
+		<option>
+			<repeatable>
+				<select>
+					<option default="true"><text>ALTER</text></option> 
+					<option><text>CONTROL</text></option> 
+					<option><text>DELETE</text></option> 
+					<option><text>INDEX</text></option> 
+					<option><text>INSERT</text></option> 
+					<option><text>REFERENCES</text>
+						<select>
+							<option default="true"></option> 
+							<option>
+								<text>(</text>
+								<repeatable>
+									<clauseReference name="column-name"/>
+								</repeatable>
+								<text>)</text>
+							</option>
+						</select>
+					</option> 
+					<option><text>SELECT</text></option> 
+					<option><text>UPDATE</text>
+						<select>
+							<option default="true"></option> 
+							<option>
+								<text>(</text>
+								<repeatable>
+									<clauseReference name="column-name"/>
+								</repeatable>
+								<text>)</text>
+							</option>
+						</select>
+					</option> 
+				</select>
+			</repeatable>
+		</option> 
+	</select>
+	<br/>
+<![CDATA[
+       .-TABLE-.                      
+>--ON--+-------+--+-table-name----+----------------------------->
+                  |           (1) |   
+                  +-view-name-----+   
+                  '-nickname------'   
+]]>
+	<text>ON</text>
+	<select>
+		<option><text>TABLE</text></option> 
+		<option default="true"><note>TABLE</note></option> 
+	</select>
+	<select>
+		<option default="true"><clauseReference name="table-name"/></option> 
+		<option><clauseReference name="view-name"/></option> 
+		<option><clauseReference name="nickname"/></option> 
+	</select>
+	
+	<br/>
+<![CDATA[
+       .-,---------------------------------.   
+       V                                   |   
+>--TO----+-+-------+--authorization-name-+-+-------------------->
+         | +-USER--+                     |     
+         | +-GROUP-+                     |     
+         | '-ROLE--'                     |     
+         '-PUBLIC------------------------'     
+]]>
+	<text>TO</text>
+	<repeatable>
+		<select>
+			<option default="true">
+				<select>
+					<option default="true"><note></note></option> 
+					<option><text>USER</text></option> 
+					<option><text>GROUP</text></option> 
+					<option><text>ROLE</text></option> 
+				</select>
+				<clauseReference name="authorization-name"/>
+			</option> 
+			<option><text>PUBLIC</text></option> 
+		</select>
+	
+	</repeatable>
+	<br/>
+<![CDATA[
+>--+-------------------+---------------------------------------><
+   '-WITH GRANT OPTION-'   
+]]>
+	<select>
+		<option default="true"><note></note></option> 
+		<option><text>WITH GRANT OPTION</text></option> 
+	</select>
+
+
+</command>
+        

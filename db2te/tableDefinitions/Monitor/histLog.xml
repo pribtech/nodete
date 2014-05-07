@@ -1,0 +1,161 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2009-2012 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+
+<table name="historyLog">
+	<sql_name>historyLog</sql_name>
+	<singular_name>Log</singular_name>
+	<plural_name>History Log</plural_name>
+	<messages><SQL0204N>Not installed. Please install "DB2TE add monitoring tables V95" in Tools-> Installed Components</SQL0204N></messages>
+	<inlinequery>
+<![CDATA[
+SELECT * FROM "s#db2mc"."HIST_LOG_UTILIZATION"
+,(select case when upper(startTs) = 'CURRENT' then current timestamp else timestamp(startTs) end as startTS 
+	,duration
+	from (values(cast('?' as varchar(26)),cast(? as int))) as timePeriod(startTs,duration)
+ ) period
+where sample_ts between period.startTS - period.duration hours and period.startTS
+]]>
+	</inlinequery>
+	<parameters>
+		<parm name="start">
+			<title>Start</title>
+			<value>current</value>
+			<type>timestamp</type>
+		</parm>
+		<parm name="Period">
+			<title>Period (hours)</title>
+			<value>3</value>
+			<type>n</type>
+		</parm>
+	</parameters>
+	<description>Query from ad hoc</description>
+	<rows_per_page>50</rows_per_page>
+	<order_by_index name="SAMPLE_TS" direction="D"/>
+	<display_columns>
+		<col type="column" name="SAMPLE_TS"/>
+		<col type="column" name="LOG_UTILIZATION_PERCENT"/>
+		<col type="column" name="TOTAL_LOG_USED_KB"/>
+		<col type="column" name="TOTAL_LOG_AVAILABLE_KB"/>
+		<col type="column" name="TOTAL_LOG_USED_TOP_KB"/>
+		<col type="column" name="DBPARTITIONNUM"/>
+	</display_columns>
+	<charts>
+		<chart name="detail" historyInclude="true">
+			<highlight>first</highlight>
+			<type>line</type>
+			<title>Log History</title>
+			<axis>
+				<x><column name="SAMPLE_TS"/></x>
+				<y>
+					<column name="TOTAL_LOG_USED_KB"/>
+					<column name="TOTAL_LOG_AVAILABLE_KB"/>
+					<column name="TOTAL_LOG_USED_TOP_KB"/>
+				</y>
+			</axis>
+		</chart>
+	</charts>	
+	<graph>
+		<title>Log History</title>
+		<type>line</type>
+ 		<style>
+ 			<legend>
+ 			 	<display>right</display>
+ 			</legend>
+ 			<animationEnabled>false</animationEnabled>
+ 		</style>
+	</graph>	
+	
+	
+	<column name="SAMPLE_TS">
+		<c_sql_name>SAMPLE_TS</c_sql_name>
+		<c_title>Time</c_title>
+		<c_presentation/>
+		<c_drill>n</c_drill>
+		<c_pkey>p</c_pkey>
+		<c_graph>
+			<g_x_categories>y</g_x_categories>
+			<label>Time</label>
+		</c_graph>		
+	</column>
+	<column name="DB_NAME">
+		<c_sql_name>DB_NAME</c_sql_name>
+		<c_title>Database</c_title>
+		<c_presentation/>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="LOG_UTILIZATION_PERCENT">
+		<c_sql_name>LOG_UTILIZATION_PERCENT</c_sql_name>
+		<c_title>Utilisation %</c_title>
+        <c_presentation>bg</c_presentation>
+		<graphattributes flipColor="n">		
+			<value>100.0</value>
+	  	</graphattributes>	
+		<c_drill>n</c_drill>
+	</column>
+	<column name="TOTAL_LOG_USED_KB">
+		<c_sql_name>TOTAL_LOG_USED_KB</c_sql_name>
+		<c_title>Used KB</c_title>
+		<c_presentation/>
+		<c_drill>n</c_drill>
+		<c_graph>
+			<g_description>Used KB</g_description>
+			<datastyle>
+				<graph_type>line</graph_type>
+					<color>0x00FF00</color>
+					<size>2</size>
+					<lineSize>1</lineSize>
+				</datastyle>
+		</c_graph>
+	</column>
+	<column name="TOTAL_LOG_AVAILABLE_KB">
+		<c_sql_name>TOTAL_LOG_AVAILABLE_KB</c_sql_name>
+		<c_title>Available KB</c_title>
+		<c_presentation/>
+		<c_drill>n</c_drill>
+		<c_graph>
+			<g_description>Available KB</g_description>
+			<datastyle>
+				<graph_type>line</graph_type>
+					<color>0xFF0000</color>
+					<size>2</size>
+					<lineSize>1</lineSize>
+				</datastyle>
+		</c_graph>
+	</column>
+	<column name="TOTAL_LOG_USED_TOP_KB">
+		<c_sql_name>TOTAL_LOG_USED_TOP_KB</c_sql_name>
+		<c_title>Top Used KB</c_title>
+		<c_presentation/>
+		<c_drill>n</c_drill>
+		<c_graph>
+			<g_description>Top Used KB</g_description>
+			<datastyle>
+				<graph_type>line</graph_type>
+					<color>0x0000FF</color>
+					<size>2</size>
+					<lineSize>1</lineSize>
+				</datastyle>
+		</c_graph>
+	</column>
+	<column name="DBPARTITIONNUM">
+		<c_sql_name>DBPARTITIONNUM</c_sql_name>
+		<c_title>Partition</c_title>
+		<c_presentation/>
+		<c_drill>n</c_drill>
+	</column>
+</table>

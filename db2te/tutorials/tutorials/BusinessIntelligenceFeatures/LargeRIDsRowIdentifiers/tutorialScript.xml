@@ -1,0 +1,73 @@
+<tutorial name="Large RIDsRow Identifiers">
+    <globalCodeHighlightOptions highlightCode="true" /><enforceFlow>yes</enforceFlow>
+    <closeAction />
+    <openAction />
+    <pageList>
+    <page name="Create Tablespace with Large RID" type="intro">
+            <entryAction />
+            <exitAction />
+            <contentFile>02_CreateTablespaceWithLargeRID.html</contentFile>
+            <SQLFile>01_CreateTablespaceWithLargeRID.sql</SQLFile>
+        </page><page name="Create Tablespace with Regular RID" type="general">
+            <entryAction />
+            <exitAction />
+            <contentFile>03_CreateTablespaceWithRegularRID.html</contentFile>
+            <SQLFile>02_CreateTablespaceWithRegularRID.sql</SQLFile>
+        </page><page name="Create Table in each tablespace" type="general">
+            <entryAction />
+            <exitAction />
+            <contentFile>04_CreateTableInEachTablespace.html</contentFile>
+            <SQLFile>03_CreateTableInEachTablespace.sql</SQLFile>
+        </page><page name="Load rows into Both tables" type="general">
+            <entryAction />
+            <exitAction />
+            <contentFile>05_LoadRowsIntoBothTables.html</contentFile>
+            <SQLFile>04_LoadRowsIntoBothTables.sql</SQLFile>
+            <SQLExecutionOptions xmlinline="false" xml="false" clob="false" blob="false" dbclob="false" termChar="#" cursor="forward" commitPerStmt="true" numRowReturned="100" />
+        </page><page name="Update Statistics to Get up to date values" type="general">
+            <entryAction />
+            <exitAction />
+            <contentFile>06_UpdateStatisticsToGetUpToDateValues.html</contentFile>
+            <SQLFile>05_UpdateStatisticsToGetUpToDateValues.sql</SQLFile>
+        </page><page name="Check the catalog to find out the number of pages for the table" type="general">
+            <entryAction />
+            <exitAction />
+            <contentFile>07_CheckTheCatalogToFindOutTheNumberOfPagesForTheTable.html</contentFile>
+            <SQLFile>06_CheckTheCatalogToFindOutTheNumberOfPagesForTheTable.sql</SQLFile>
+        </page><page name="Check Catalog for table RID types" type="general">
+            <entryAction />
+            <exitAction />
+            <contentFile>08_CheckCatalogForTableRIDTypes.html</contentFile>
+            <SQLFile>07_CheckCatalogForTableRIDTypes.sql</SQLFile>
+        </page><page name="ALTER Table to LARGE Format" type="general">
+            <entryAction />
+            <exitAction />
+            <contentFile>09_ALTERTableToLARGEFormat.html</contentFile>
+            <SQLFile>08_ALTERTableToLARGEFormat.sql</SQLFile>
+        </page><page name="Check Catalog again to see what changed" type="general">
+            <entryAction />
+            <exitAction />
+            <contentFile>10_CheckCatalogAgainToSeeWhatChanged.html</contentFile>
+            <SQLFile>09_CheckCatalogAgainToSeeWhatChanged.sql</SQLFile>
+        </page><page name="Check the catalog to find out the number of pages for the table" type="general">
+            <entryAction />
+            <exitAction />
+            <contentFile>07_CheckTheCatalogToFindOutTheNumberOfPagesForTheTable.html</contentFile>
+            <SQLFile>06_CheckTheCatalogToFindOutTheNumberOfPagesForTheTable.sql</SQLFile>
+        </page><page name="Do a reorg on the table" type="general">
+            <entryAction />
+            <exitAction />
+            <contentFile>12_DoAReorgOnTheTable.html</contentFile>
+            <SQLFile>11_DoAReorgOnTheTable.sql</SQLFile>
+        </page><page name="REORG Failure because of Space" type="general">
+            <entryAction />
+            <exitAction />
+            <contentFile>13_REORGFailureBecauseOfSpace.html</contentFile>
+            <SQLFile>12_REORGFailureBecauseOfSpace.sql</SQLFile>
+        </page><page name="Check the catalog one more time" type="last">
+            <entryAction />
+            <exitAction />
+            <contentFile>14_CheckTheCatalogOneMoreTime.html</contentFile>
+            <SQLFile>13_CheckTheCatalogOneMoreTime.sql</SQLFile>
+        </page></pageList>
+</tutorial>

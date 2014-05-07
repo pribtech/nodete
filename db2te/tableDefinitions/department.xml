@@ -1,0 +1,63 @@
+<!--
+  Copyright IBM Corp. 2007 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+	<table name="department">
+		<sql_name>DEPARTMENT</sql_name>
+		<singular_name>Department</singular_name>
+		<plural_name>Departments</plural_name>
+		<description></description>
+		<edit>y</edit>
+		<new>y</new>	
+		<rows_per_page>100</rows_per_page>
+		<order_by_index name="DEPTNO" direction="A"/>
+		<display_columns>
+			<col type="column" name="deptno"/>
+			<col type="column" name="name"/>
+			<col type="column" name="man"/>
+			<col type="reference" name="emp"/>
+		</display_columns>
+		<disable_edit/>
+		<reference name="emp">
+			<c_title>Employees</c_title>
+			<reftype>table</reftype>
+			<refvalue>employee</refvalue>
+			<ref foreign_column_name="dept">
+				<local_column_name>deptno</local_column_name>
+			</ref>
+		</reference>
+		<column name="deptno">
+			<c_sql_name>DEPTNO</c_sql_name>
+			<c_title>Department Number</c_title>
+			<c_pkey>p</c_pkey>
+			<c_drill>n</c_drill>
+		</column>
+		<column name="name">
+			<c_sql_name>DEPTNAME</c_sql_name>
+			<c_title>Department Name</c_title>
+			<c_presentation>l</c_presentation>			
+		</column>
+		<column name="man">
+			<c_sql_name>MGRNO</c_sql_name>
+			<c_title>Manager Number</c_title>
+			<c_reference name="man">
+				<c_title>Manager</c_title>
+				<reftype>displayrow</reftype>
+				<refvalue>employee</refvalue>
+				<ref foreign_column_name="empno">
+					<local_column_name>manno</local_column_name>
+				</ref>
+			</c_reference>
+		</column>
+	</table>

@@ -1,0 +1,22 @@
+<H3>The optional AS clause</H3><hr><p>
+DB2 and the SQL Standard force naming of subqueries, but some databases do not require 
+  it. For instance, the following example will work in DB2, but not in other database
+  products:
+  <pre>
+SELECT * FROM T, (SELECT * FROM S) AS X 
+SELECT * FROM T, TABLE(FOO()) AS X 
+  </pre>
+  <p>The correlation names can now be removed from DB2 queries and will continue
+  to work:
+  <pre>
+SELECT * FROM T, (SELECT * FROM S)
+SELECT * FROM T, TABLE(FOO())
+  </pre>
+
+  <p>
+  Additionally, in the case of a table function reference,
+  the function name is implied as the name of the derived table to allow reference of 
+  columns returned by the function by function name.  The implicit name generated for a
+  table function includes the schema name used to create the function.  
+  Implicit names are resolved as if they were explicitly supplied.
+  </p>

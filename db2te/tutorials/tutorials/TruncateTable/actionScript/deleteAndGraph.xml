@@ -1,0 +1,254 @@
+<actionPanel>
+	<flow>free</flow>
+	<useConsole>yes</useConsole>
+	<overview>
+<![CDATA[
+<p><b>Delete & Graph</b></p>
+
+There are two actions  on this page which should be executed in order: 
+<ul>
+<li>The first will delete all rows from the five tables using the DELETE command.  Time required for each DELETE operation will be recorded.</li>
+<li>The second will plot the elapsed time for each DELETE operations on the graph.</li>
+</ul>
+]]>
+	</overview>
+	<taskList>
+		<task name="Run delete time test">
+			<discription>
+				Delete rows from the 1k, 5k, 10k, 50k and 100k tables and record the time required to perform each operation. 
+			</discription>
+			<action  name="runDeletemulty" type="blank">
+				<followOnAction condition="true" compareOn="true" compareOnType="raw">
+					<task>
+						<echo>Running statement: DELETE FROM ?SCHEMA?.table100k</echo>
+						<action  name="runDelete" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="fixed">
+									<value>run_workload</value>
+								</parameter>
+								<parameter name="SQL[1]" type="fixed">
+									<value>DELETE FROM ?SCHEMA?.table100k</value>
+								</parameter>
+								<parameter name="Repetition" type="fixed">
+									<value>1</value>
+								</parameter>
+								<parameter name="SampleRate" type="fixed">
+									<value>1</value>
+								</parameter>
+							</parameterList>
+							<followOnAction condition="true">
+								<task>
+									<assignSharedConstant name="DELETE_100k" type="returnObject">
+										<value>runDelete.returnValue.SQL.1</value>
+									</assignSharedConstant>
+									<echo>Running time: ?DELETE_100k?s</echo>
+								</task>
+							</followOnAction>
+							<followOnAction condition="false">
+								<task>
+									<echo>Error in run!</echo>
+								</task>
+							</followOnAction>
+						</action>
+						<echo>Running statement: DELETE FROM ?SCHEMA?.table50k</echo>
+						<action  name="runDelete" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="fixed">
+									<value>run_workload</value>
+								</parameter>
+								<parameter name="SQL[1]" type="fixed">
+									<value>DELETE FROM ?SCHEMA?.table50k</value>
+								</parameter>
+								<parameter name="Repetition" type="fixed">
+									<value>1</value>
+								</parameter>
+								<parameter name="SampleRate" type="fixed">
+									<value>1</value>
+								</parameter>
+							</parameterList>
+							<followOnAction condition="true">
+								<task>
+									<assignSharedConstant name="DELETE_50k" type="returnObject">
+										<value>runDelete.returnValue.SQL.1</value>
+									</assignSharedConstant>
+									<echo>Running time: ?DELETE_50k?s</echo>
+								</task>
+							</followOnAction>
+							<followOnAction condition="false">
+								<task>
+									<echo>Error in run!</echo>
+								</task>
+							</followOnAction>
+						</action>
+						<echo>Running statement: DELETE FROM ?SCHEMA?.table10k</echo>
+						<action  name="runDelete" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="fixed">
+									<value>run_workload</value>
+								</parameter>
+								<parameter name="SQL[1]" type="fixed">
+									<value>DELETE FROM ?SCHEMA?.table10k</value>
+								</parameter>
+								<parameter name="Repetition" type="fixed">
+									<value>1</value>
+								</parameter>
+								<parameter name="SampleRate" type="fixed">
+									<value>1</value>
+								</parameter>
+							</parameterList>
+							<followOnAction condition="true">
+								<task>
+									<assignSharedConstant name="DELETE_10k" type="returnObject">
+										<value>runDelete.returnValue.SQL.1</value>
+									</assignSharedConstant>
+									<echo>Running time: ?DELETE_10k?s</echo>
+								</task>
+							</followOnAction>
+							<followOnAction condition="false">
+								<task>
+									<echo>Error in run!</echo>
+								</task>
+							</followOnAction>
+						</action>
+						<echo>Running statement: DELETE FROM ?SCHEMA?.table5k</echo>
+						<action  name="runDelete" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="fixed">
+									<value>run_workload</value>
+								</parameter>
+								<parameter name="SQL[1]" type="fixed">
+									<value>DELETE FROM ?SCHEMA?.table5k</value>
+								</parameter>
+								<parameter name="Repetition" type="fixed">
+									<value>1</value>
+								</parameter>
+								<parameter name="SampleRate" type="fixed">
+									<value>1</value>
+								</parameter>
+							</parameterList>
+							<followOnAction condition="true">
+								<task>
+									<assignSharedConstant name="DELETE_5k" type="returnObject">
+										<value>runDelete.returnValue.SQL.1</value>
+									</assignSharedConstant>
+									<echo>Running time: ?DELETE_5k?s</echo>
+								</task>
+							</followOnAction>
+							<followOnAction condition="false">
+								<task>
+									<echo>Error in run!</echo>
+								</task>
+							</followOnAction>
+						</action>
+						<echo>Running statement: DELETE FROM ?SCHEMA?.table1k</echo>
+						<action  name="runDelete" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="fixed">
+									<value>run_workload</value>
+								</parameter>
+								<parameter name="SQL[1]" type="fixed">
+									<value>DELETE FROM ?SCHEMA?.table1k</value>
+								</parameter>
+								<parameter name="Repetition" type="fixed">
+									<value>1</value>
+								</parameter>
+								<parameter name="SampleRate" type="fixed">
+									<value>1</value>
+								</parameter>
+							</parameterList>
+							<followOnAction condition="true">
+								<task>
+									<assignSharedConstant name="DELETE_1k" type="returnObject">
+										<value>runDelete.returnValue.SQL.1</value>
+									</assignSharedConstant>
+									<echo>Running time: ?DELETE_1k?s</echo>
+								</task>
+							</followOnAction>
+							<followOnAction condition="false">
+								<task>
+									<echo>Error in run!</echo>
+								</task>
+							</followOnAction>
+						</action>
+					</task>
+				</followOnAction>
+			</action>
+		</task>
+<task name="Graph delete times">
+			<discription>
+				Plot the DELETE performance data on the graph.
+			</discription>
+			<action  name="runDelete" type="blank">
+				<followOnAction condition="true" compareOn="true" compareOnType="raw">
+					<task>
+						<echo>Graphing times</echo>
+						<loadPage>
+							<pageWindow target="informationWindow">
+						    	<panel name="main">
+						       		<link type="action" target="_self" window="_self" connectionRequired="y">
+						       			<parameterList>
+						       				<parameter name="action">graphYUI</parameter>
+						       				<parameter name="graph">	
+<![CDATA[					       				
+  {
+	"Graph": 
+	{
+		"title": "DELETE Performance",
+		"graphType": "line",
+		"xField": "row",
+		"dataSourceType": "data_from_raw",
+		"style":{	"legend": { "display": "right" }, "animationEnabled" : "false"},
+		"responseSchema": {"fields": ["row","value"]},
+		"seriesDef": [{"displayName": "DELETE time (s)", "yField": "value", "style": {"color": "0xFF0000"}}],
+		"datasets":
+			 [ 
+				    {"row": 1000, "value": ?DELETE_1k?},
+				    {"row": 5000, "value": ?DELETE_5k?},
+				    {"row": 10000, "value": ?DELETE_10k?},
+				    {"row": 50000, "value": ?DELETE_50k?},
+				    {"row": 100000, "value": ?DELETE_100k?}
+				]
+	}
+}
+
+]]>
+</parameter>
+<!--
+<parameter name="graph">	
+<![CDATA[					       				
+ {
+	"Graph": 
+	{
+		"prefix": "DELETE",
+		"title": "DELETE Performance",
+		"xTitle": "Number of Rows Deleted",
+		"forceXBaseline": "true",
+		"yTitleLeft": "Time (seconds)",
+		"forceYBaseline": "true",
+		"datasetType":"xyPlot",
+		"showGrid": "true",
+		"enableMarkers" : "true",
+		"datasets":
+		[ 
+			{
+				"description": "DELETE",
+				"color": "#00FF00",
+				"marker": "triangle",
+				"dataset": [[1000,?DELETE_1k?], [5000,?DELETE_5k?], [10000,?DELETE_10k?], [50000,?DELETE_50k?], [100000,?DELETE_100k?]]
+			}
+		]
+	}
+}
+]]>
+</parameter>-->
+						       			</parameterList>
+						       		</link>				
+						       	</panel>
+						      </pageWindow>
+						</loadPage>
+					</task>	
+				</followOnAction>
+			</action>
+		</task>
+	</taskList>
+</actionPanel>

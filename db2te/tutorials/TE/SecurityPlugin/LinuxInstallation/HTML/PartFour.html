@@ -1,0 +1,22 @@
+<H3>Preparing the Database</H3><hr>
+<p>Now we need to configure the database so that the plug-in can work with it.  This requires coping some files from the plug-in's folder to the necessary SQLLIB locations.  
+<br/>We also need to create the schema, tables, and stored procedures necessary to run the plug-in.</p>
+
+<H2>Steps:</H2><p>
+<ol><li>Open a terminal.
+</li><br/>
+<li>If DB2 has not been started yet, do so with the command, <i>db2start</i>.  Alternatively, you can also start DB2 from the control center.
+</li><br/>
+<li>If you have not yet created a database with the name that you specified in the db2auth_key.txt file, you can easily create one and issue it the name of your choice with the command:
+<br/><i>db2 create db (your database name here)</i>
+</li><br/>
+<li>Connect to the authentication database: 
+<br/><i>db2 connect to (your database name here)</i>
+</li><br/>
+<li>Next, type the command: 
+<br/><i>db2auth_preparedb.bat > out.txt 2 > &1</i>
+<br/>
+<br/>This will run the batch script that prepares the DB2 database for plug-in use.  
+It copies some plug-in files to the necessary SQLLIB locations.  It also creates a schema called DB2AUTH, tables (USERS, GROUPS, GROUP_MEMBERSHIPS), and stored procedures.
+</li><br/><li>Check the file, out.txt, to verify that the process completed successfully.
+</li><br/><li>Keep the terminal open</li></ol></p><br/>

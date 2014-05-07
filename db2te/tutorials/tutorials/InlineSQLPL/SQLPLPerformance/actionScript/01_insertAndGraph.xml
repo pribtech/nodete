@@ -1,0 +1,220 @@
+<actionPanel>
+    <flow>free</flow>
+    <useConsole>yes</useConsole>
+    <overview>
+    </overview>
+    <taskList>
+        <task name="Insert">
+            <discription>
+                This action is going to insert 20 rows in the employee_wages table and records the time it take to execute each statement. 
+            </discription>
+            <action  name="runMultiInsert" type="blank">
+                <followOnAction condition="true" compareOn="true" compareOnType="raw">
+                    <task>
+                        <echo>Running [10s]: INSERT INTO ?SCHEMA?.employee_wages_case1(empno, salary, taxes) VALUES(1, 60000, ?SCHEMA?.tax_payment(60000))</echo>
+                        <action  name="runInsert" type="serverAction">
+                            <parameterList>
+                                <parameter name="action" type="fixed">
+                                    <value>statementThroughput</value>
+                                </parameter>
+                                <parameter name="SQL" type="fixed">
+                                    <value>INSERT INTO ?SCHEMA?.employee_wages_case1(empno, salary, taxes) values(1, 60000, ?SCHEMA?.tax_payment(60000))</value>
+                                </parameter>
+                                <parameter name="Period" type="fixed">
+                                    <value>10</value>
+                                </parameter>
+                            </parameterList>
+                            <followOnAction condition="true">
+                                <task>
+                                    <assignSharedConstant name="INSERT_FUNCTION" type="returnObject">
+                                        <value>runInsert.returnValue.minRunTime</value>
+                                    </assignSharedConstant>
+                                    <echo>Average Running Time: ?INSERT_FUNCTION?s</echo>
+                                </task>
+                            </followOnAction>
+                            <followOnAction condition="false">
+                                <task>
+                                    <echo>Failed to run :[</echo>
+                                </task>
+                            </followOnAction>
+                        </action>
+                    </task>
+
+                    <task>
+                        <echo>Running [10s]: INSERT INTO ?SCHEMA?.employee_wages_case2(empno, salary) VALUES(1, 60000)</echo>
+                        <action  name="runInsert1" type="serverAction">
+                            <parameterList>
+                                <parameter name="action" type="fixed">
+                                    <value>statementThroughput</value>
+                                </parameter>
+                                <parameter name="SQL" type="fixed">
+                                    <value>INSERT INTO ?SCHEMA?.employee_wages_case2(empno, salary) VALUES(1, 60000)</value>
+                                </parameter>
+                                <parameter name="Period" type="fixed">
+                                    <value>10</value>
+                                </parameter>
+                            </parameterList>
+                            <followOnAction condition="true">
+                                <task>
+                                    <assignSharedConstant name="INSERT_TRIGGER_NO_FUNCTION" type="returnObject">
+                                        <value>runInsert1.returnValue.minRunTime</value>
+                                    </assignSharedConstant>
+                                    <echo>Average Running Time: ?INSERT_TRIGGER_NO_FUNCTION?s</echo>
+                                </task>
+                            </followOnAction>
+                            <followOnAction condition="false">
+                                <task>
+                                    <echo>Failed to run :[</echo>
+                                </task>
+                            </followOnAction>
+                        </action>
+                    </task>
+                    <task>
+                        <echo>Running [10s]: INSERT INTO ?SCHEMA?.employee_wages_case3(empno, salary) VALUES(1, 60000)</echo>
+                        <action  name="runInsert2" type="serverAction">
+                            <parameterList>
+                                <parameter name="action" type="fixed">
+                                    <value>statementThroughput</value>
+                                </parameter>
+                                <parameter name="SQL" type="fixed">
+                                    <value>INSERT INTO ?SCHEMA?.employee_wages_case3(empno, salary) VALUES(1, 60000)</value>
+                                </parameter>
+                                <parameter name="Period" type="fixed">
+                                    <value>10</value>
+                                </parameter>
+                            </parameterList>
+                            <followOnAction condition="true">
+                                <task>
+                                    <assignSharedConstant name="INSERT_TRIGGER_FUNCTION" type="returnObject">
+                                        <value>runInsert2.returnValue.minRunTime</value>
+                                    </assignSharedConstant>
+                                    <echo>Average Running Time: ?INSERT_TRIGGER_FUNCTION?s</echo>
+                                </task>
+                            </followOnAction>
+                            <followOnAction condition="false">
+                                <task>
+                                    <echo>Failed to run :[</echo>
+                                </task>
+                            </followOnAction>
+                        </action>
+                    </task>
+                    <task>
+                        <echo>Running [10s]: CALL ?SCHEMA?.check_taxes_no_external_functions_used(1, 60000)</echo>
+                        <action  name="runInsert3" type="serverAction">
+                            <parameterList>
+                                <parameter name="action" type="fixed">
+                                    <value>statementThroughput</value>
+                                </parameter>
+                                <parameter name="SQL" type="fixed">
+                                    <value>CALL ?SCHEMA?.check_taxes_no_external_functions_used(1, 60000)</value>
+                                </parameter>
+                                <parameter name="Period" type="fixed">
+                                    <value>10</value>
+                                </parameter>
+                            </parameterList>
+                            <followOnAction condition="true">
+                                <task>
+                                    <assignSharedConstant name="INSERT_PROCEDURE_NO_FUNCTION" type="returnObject">
+                                        <value>runInsert3.returnValue.minRunTime</value>
+                                    </assignSharedConstant>
+                                    <echo>Average Running Time: ?INSERT_PROCEDURE_NO_FUNCTION?s</echo>
+                                </task>
+                            </followOnAction>
+                            <followOnAction condition="false">
+                                <task>
+                                    <echo>Failed to run :[</echo>
+                                </task>
+                            </followOnAction>
+                        </action>
+                    </task>
+                    <task>
+                        <echo>Running [10s]: CALL ?SCHEMA?.check_taxes_use_external_function(1, 60000)</echo>
+                        <action  name="runInsert4" type="serverAction">
+                            <parameterList>
+                                <parameter name="action" type="fixed">
+                                    <value>statementThroughput</value>
+                                </parameter>
+                                <parameter name="SQL" type="fixed">
+                                    <value>CALL ?SCHEMA?.check_taxes_use_external_function(1, 60000)</value>
+                                </parameter>
+                                <parameter name="Period" type="fixed">
+                                    <value>10</value>
+                                </parameter>
+                            </parameterList>
+                            <followOnAction condition="true">
+                                <task>
+                                    <assignSharedConstant name="INSERT_PROCEDURE_FUNCTION" type="returnObject">
+                                        <value>runInsert4.returnValue.minRunTime</value>
+                                    </assignSharedConstant>
+                                    <echo>Running time: ?INSERT_PROCEDURE_FUNCTION?s</echo>
+                                </task>
+                            </followOnAction>
+                            <followOnAction condition="false">
+                                <task>
+                                    <echo>Failed to run :[</echo>
+                                </task>
+                            </followOnAction>
+                        </action>
+                    </task>
+                </followOnAction>
+            </action>
+            </task>
+                    
+                        
+                        
+        <task name="Visualize">
+            <discription>
+                We are now going to graph the data we just acquired.
+            </discription>
+            <action  name="runInsert" type="blank">
+                <followOnAction condition="true" compareOn="true" compareOnType="raw">
+                    <task>
+                        <echo>Graphing times</echo>
+                        <loadPage>
+                            <pageWindow target="informationWindow">
+                                <panel name="main">
+                                    <link type="action" target="_self" window="_self" connectionRequired="y">
+                                        <parameterList>
+                                            <parameter name="action">graphYUI</parameter>
+                                            <parameter name="graph">	
+                                                <![CDATA[					       				
+                                                  {
+	                                                "Graph": 
+	                                                {
+		                                                "title": "SELECT Performance",
+		                                                "graphType": "column",
+                                                        "xField": "average",
+		                                                "forceYBaseline": "true",
+		                                                "forceXBaseline": "true",
+		                                                "style":{	"legend": { "display": "right" }, "animationEnabled" : "false"},
+		                                                "responseSchema": {"fields": ["average", "r1", "r2", "r3", "r4", "r5"]},
+		                                                "seriesDef": [
+                                                                        {yField:"r1", displayName:"User Defined Function"},
+                                                                        {yField:"r2", displayName:"Trigger, internal logic"},
+                                                                        {yField:"r3", displayName:"Trigger, using a UDF"},
+                                                                        {yField:"r4", displayName:"Procedure, internal logic"},
+                                                                        {yField:"r5", displayName:"Procedure, using a UDF"}
+                                                                     ],
+		                                                "datasets":
+			                                                 [ 
+                                                                    
+				                                                    {"average": "Average Runtime in Seconds", "r1": ?INSERT_FUNCTION?, "r2": ?INSERT_TRIGGER_NO_FUNCTION?,
+                                                                                "r3": ?INSERT_TRIGGER_FUNCTION?, "r4": ?INSERT_PROCEDURE_NO_FUNCTION?, "r5": ?INSERT_PROCEDURE_FUNCTION?}
+		
+				                                                ]
+	                                                }
+                                                }
+
+                                                ]]>                          
+                                            </parameter>
+                                        </parameterList>
+                                    </link>				
+                                </panel>
+                            </pageWindow>
+                        </loadPage>
+                    </task>	
+                </followOnAction>
+            </action>
+        </task> 
+    </taskList>
+</actionPanel>

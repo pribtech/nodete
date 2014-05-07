@@ -1,0 +1,816 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2010 All rights reserved.
+  
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+
+<table name="ActiveUOWInstance">
+	<sql_name>ActiveUOWInstance</sql_name>
+	<html_name>active UOW Agent Instance</html_name>
+	<singular_name>Active UOW</singular_name>
+	<plural_name>Active UOWs Instance</plural_name>
+	<inlinequery>
+<![CDATA[
+select tmp.*, AGENT_USR_CPU_TIME+AGENT_SYS_CPU_TIME as total_cpu_time
+FROM (
+SELECT sa.*
+, Decimal(AGENT_USR_CPU_TIME_S,31,6) + Decimal(AGENT_USR_CPU_TIME_MS,31,6)/1000000 as AGENT_USR_CPU_TIME
+, Decimal(AGENT_SYS_CPU_TIME_S,31,6) + Decimal(AGENT_SYS_CPU_TIME_MS,31,6)/1000000 as AGENT_SYS_CPU_TIME
+, Decimal(UOW_ELAPSED_TIME_S,31,6)  + Decimal(UOW_ELAPSED_TIME_MS   ,31,6)/1000000 as LAST_UOW_ELAPSED_TIME 
+, Decimal(ELAPSED_EXEC_TIME_S,31,6) + Decimal(ELAPSED_EXEC_TIME_MS  ,31,6)/1000000 as ELAPSED_EXEC_TIME 
+, case when UOW_START_TIME <= SNAPSHOT_TIMESTAMP - 30 minutes then double(TIMESTAMPDIFF(2,CHAR(SNAPSHOT_TIMESTAMP - UOW_START_TIME))) else double(TIMESTAMPDIFF(1,CHAR(SNAPSHOT_TIMESTAMP - UOW_START_TIME)))/1000000 end as UOW_ELAPSE_TIME
+  FROM TABLE(SNAP_GET_APPL(CAST(NULL AS VARCHAR(128)), -1)) as t 
+where uow_stop_time is null
+) TMP
+]]>
+	</inlinequery>
+	<description>Active UOW for instance</description>
+	<disable_edit/>
+	<output>
+		<type name="DDL" destination="" title="" generator=""/>
+		<type name="ADHOC" destination="adhoc" title="Force" generator="XSL/compareForce.xsl"/>
+	</output>
+	<order_by_index name="UOW_ELAPSE_TIME" direction="D"/>
+	<rowStyle interfaceColumn='UOW_ELAPSE_TIME'>
+		<option gt='60' style='ERROR'/>
+		<option gt='1' style='WARNING'/>
+	</rowStyle>
+	<display_columns>
+		<col type="action" name="force"/>
+		<col type="column" name="DB_NAME"/>
+		<col type="column" name="AGENT_ID"/>
+		<col type="column" name="UOW_ELAPSE_TIME"/>
+		<col type="column" name="TOTAL_CPU_TIME"/>
+		<col type="column" name="UOW_LOG_SPACE_USED"/>
+		<col type="column" name="ROWS_READ"/>
+		<col type="column" name="ROWS_WRITTEN"/>
+		<col type="column" name="ROWS_DELETED"/>
+		<col type="column" name="ROWS_INSERTED"/>
+		<col type="column" name="ROWS_UPDATED"/>
+		<col type="column" name="ROWS_SELECTED"/>
+		<col type="column" name="POOL_DATA_L_READS"/>
+		<col type="column" name="POOL_DATA_P_READS"/>
+		<col type="column" name="POOL_DATA_WRITES"/>
+		<col type="column" name="POOL_INDEX_L_READS"/>
+		<col type="column" name="POOL_INDEX_P_READS"/>
+		<col type="column" name="POOL_INDEX_WRITES"/>
+		<col type="column" name="POOL_TEMP_DATA_L_READS"/>
+		<col type="column" name="POOL_TEMP_DATA_P_READS"/>
+		<col type="column" name="POOL_TEMP_INDEX_L_READS"/>
+		<col type="column" name="POOL_TEMP_INDEX_P_READS"/>
+		<col type="column" name="POOL_TEMP_XDA_L_READS"/>
+		<col type="column" name="POOL_TEMP_XDA_P_READS"/>
+		<col type="column" name="POOL_XDA_L_READS"/>
+		<col type="column" name="POOL_XDA_P_READS"/>
+		<col type="column" name="POOL_XDA_WRITES"/>
+		<col type="column" name="POOL_READ_TIME"/>
+		<col type="column" name="POOL_WRITE_TIME"/>
+		<col type="column" name="DIRECT_READS"/>
+		<col type="column" name="DIRECT_WRITES"/>
+		<col type="column" name="DIRECT_READ_REQS"/>
+		<col type="column" name="DIRECT_WRITE_REQS"/>
+		<col type="column" name="DIRECT_READ_TIME"/>
+		<col type="column" name="DIRECT_WRITE_TIME"/>
+		<col type="column" name="UNREAD_PREFETCH_PAGES"/>
+		<col type="column" name="LOCKS_HELD"/>
+		<col type="column" name="LOCK_WAITS"/>
+		<col type="column" name="LOCK_WAIT_TIME"/>
+		<col type="column" name="LOCK_ESCALS"/>
+		<col type="column" name="X_LOCK_ESCALS"/>
+		<col type="column" name="DEADLOCKS"/>
+		<col type="column" name="TOTAL_SORTS"/>
+		<col type="column" name="TOTAL_SORT_TIME"/>
+		<col type="column" name="SORT_OVERFLOWS"/>
+		<col type="column" name="COMMIT_SQL_STMTS"/>
+		<col type="column" name="ROLLBACK_SQL_STMTS"/>
+		<col type="column" name="DYNAMIC_SQL_STMTS"/>
+		<col type="column" name="STATIC_SQL_STMTS"/>
+		<col type="column" name="FAILED_SQL_STMTS"/>
+		<col type="column" name="SELECT_SQL_STMTS"/>
+		<col type="column" name="DDL_SQL_STMTS"/>
+		<col type="column" name="UID_SQL_STMTS"/>
+		<col type="column" name="INT_AUTO_REBINDS"/>
+		<col type="column" name="INT_ROWS_DELETED"/>
+		<col type="column" name="INT_ROWS_UPDATED"/>
+		<col type="column" name="INT_COMMITS"/>
+		<col type="column" name="INT_ROLLBACKS"/>
+		<col type="column" name="INT_DEADLOCK_ROLLBACKS"/>
+		<col type="column" name="BINDS_PRECOMPILES"/>
+		<col type="column" name="OPEN_REM_CURS"/>
+		<col type="column" name="OPEN_REM_CURS_BLK"/>
+		<col type="column" name="REJ_CURS_BLK"/>
+		<col type="column" name="ACC_CURS_BLK"/>
+		<col type="column" name="SQL_REQS_SINCE_COMMIT"/>
+		<col type="column" name="LOCK_TIMEOUTS"/>
+		<col type="column" name="INT_ROWS_INSERTED"/>
+		<col type="column" name="OPEN_LOC_CURS"/>
+		<col type="column" name="OPEN_LOC_CURS_BLK"/>
+		<col type="column" name="PKG_CACHE_LOOKUPS"/>
+		<col type="column" name="PKG_CACHE_INSERTS"/>
+		<col type="column" name="CAT_CACHE_LOOKUPS"/>
+		<col type="column" name="CAT_CACHE_INSERTS"/>
+		<col type="column" name="CAT_CACHE_OVERFLOWS"/>
+		<col type="column" name="NUM_AGENTS"/>
+		<col type="column" name="AGENTS_STOLEN"/>
+		<col type="column" name="ASSOCIATED_AGENTS_TOP"/>
+		<col type="column" name="APPL_PRIORITY"/>
+		<col type="column" name="APPL_PRIORITY_TYPE"/>
+		<col type="column" name="PREFETCH_WAIT_TIME"/>
+		<col type="column" name="APPL_SECTION_LOOKUPS"/>
+		<col type="column" name="APPL_SECTION_INSERTS"/>
+		<col type="column" name="LOCKS_WAITING"/>
+		<col type="column" name="TOTAL_HASH_JOINS"/>
+		<col type="column" name="TOTAL_HASH_LOOPS"/>
+		<col type="column" name="HASH_JOIN_OVERFLOWS"/>
+		<col type="column" name="HASH_JOIN_SMALL_OVERFLOWS"/>
+		<col type="column" name="APPL_IDLE_TIME"/>
+		<col type="column" name="UOW_LOCK_WAIT_TIME"/>
+		<col type="column" name="UOW_COMP_STATUS"/>
+		<col type="column" name="AGENT_USR_CPU_TIME"/>
+	 	<col type="column" name="AGENT_SYS_CPU_TIME"/>
+		<col type="column" name="APPL_CON_TIME"/>
+		<col type="column" name="CONN_COMPLETE_TIME"/>
+		<col type="column" name="LAST_RESET"/>
+		<col type="column" name="UOW_START_TIME"/>
+		<col type="column" name="PREV_UOW_STOP_TIME"/>
+		<col type="column" name="INBOUND_COMM_ADDRESS"/>
+		<col type="column" name="LOCK_TIMEOUT_VAL"/>
+		<col type="column" name="PRIV_WORKSPACE_NUM_OVERFLOWS"/>
+		<col type="column" name="PRIV_WORKSPACE_SECTION_INSERTS"/>
+		<col type="column" name="PRIV_WORKSPACE_SECTION_LOOKUPS"/>
+		<col type="column" name="PRIV_WORKSPACE_SIZE_TOP"/>
+		<col type="column" name="SHR_WORKSPACE_NUM_OVERFLOWS"/>
+		<col type="column" name="SHR_WORKSPACE_SECTION_INSERTS"/>
+		<col type="column" name="SHR_WORKSPACE_SECTION_LOOKUPS"/>
+		<col type="column" name="SHR_WORKSPACE_SIZE_TOP"/>
+		<col type="column" name="DBPARTITIONNUM"/>
+		<col type="column" name="CAT_CACHE_SIZE_TOP"/>
+	</display_columns>
+	
+	<action name="force">
+		<title>Force</title>
+		<icon>images/cancel.gif</icon>   
+    	<actionScript>
+    		<task>
+		    	<assignSharedConstant name="AGENT_ID" type="blockValue">
+					<value>AGENT_ID</value>
+				</assignSharedConstant>
+	   			<callGlobalAction name="forceAgent"/>
+	  			</task>
+    	</actionScript>
+    </action>
+
+	<column name="TOTAL_CPU_TIME">
+		<c_sql_name>TOTAL_CPU_TIME</c_sql_name>
+		<c_title>Total CPU Time</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="DB_NAME">
+		<sql_name>DB_NAME</sql_name>
+		<title>Database</title>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="AGENT_ID">
+		<sql_name>AGENT_ID</sql_name>
+		<title>Agent</title>
+		<type>n</type>
+	</column>
+	<column name="UOW_ELAPSE_TIME">
+		<c_sql_name>UOW_ELAPSE_TIME</c_sql_name>
+		<c_title>UOW Elapse time</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="LAST_UOW_ELAPSED_TIME">
+		<sql_name>LAST_UOW_ELAPSED_TIME</sql_name>
+		<title>Elapsed time of last completed UOW</title>
+		<type>n</type>
+		<formatNumber separator=","/> 
+	</column>
+	<column name="ELAPSED_EXEC_TIME">
+		<sql_name>ELAPSED_EXEC_TIME</sql_name>
+		<title>Elapsed Exec. Time</title>
+		<type>n</type>
+		<formatNumber separator=","/> 
+	</column>
+	<column name="UOW_LOG_SPACE_USED">
+		<sql_name>UOW_LOG_SPACE_USED</sql_name>
+		<title>Log Space Used</title>
+		<type>n</type>
+		<formatNumber separator=","/> 
+	</column>
+	<column name="ROWS_READ" accumulation="y">
+		<sql_name>ROWS_READ</sql_name>
+		<title>Rows Read</title>
+		<type>n</type>
+		<formatNumber separator=","/> 
+	</column>
+	<column name="ROWS_WRITTEN" accumulation="y">
+		<sql_name>ROWS_WRITTEN</sql_name>
+		<title>Rows Written</title>
+		<type>n</type>
+		<formatNumber separator=","/> 
+	</column>
+	<column name="INACT_STMTHIST_SZ">
+		<sql_name>INACT_STMTHIST_SZ</sql_name>
+		<title>Inactive Statement History Size</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_DATA_L_READS" accumulation="y">
+		<sql_name>POOL_DATA_L_READS</sql_name>
+		<title>Data Reads Logical</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_DATA_P_READS" accumulation="y">
+		<sql_name>POOL_DATA_P_READS</sql_name>
+		<title>Data Reads Physical</title>
+		<type>n</type>
+		<formatNumber separator=","/> 
+	</column>
+	<column name="POOL_DATA_WRITES" accumulation="y">
+		<sql_name>POOL_DATA_WRITES</sql_name>
+		<title>Data Writes</title>
+		<type>n</type>
+		<formatNumber separator=","/> 
+	</column>
+	<column name="POOL_INDEX_L_READS" accumulation="y">
+		<sql_name>POOL_INDEX_L_READS</sql_name>
+		<title>Index Reads Logical</title>
+		<type>n</type>
+		<formatNumber separator=","/> 
+	</column>
+	<column name="POOL_INDEX_P_READS" accumulation="y">
+		<sql_name>POOL_INDEX_P_READS</sql_name>
+		<title>Index Reads Physical</title>
+		<type>n</type>
+		<formatNumber separator=","/> 
+	</column>
+	<column name="POOL_INDEX_WRITES" accumulation="y">
+		<sql_name>POOL_INDEX_WRITES</sql_name>
+		<title>Index Writes</title>
+		<type>n</type>
+		<formatNumber separator=","/> 
+	</column>
+	<column name="POOL_TEMP_DATA_L_READS" accumulation="y">
+		<sql_name>POOL_TEMP_DATA_L_READS</sql_name>
+		<title>Temp Data Reads Logical</title>
+		<type>n</type>
+		<formatNumber separator=","/> 
+	</column>
+	<column name="POOL_TEMP_DATA_P_READS" accumulation="y">
+		<sql_name>POOL_TEMP_DATA_P_READS</sql_name>
+		<title>Temp Data Reads Physical</title>
+		<type>n</type>
+		<formatNumber separator=","/> 
+	</column>
+	<column name="POOL_TEMP_INDEX_L_READS" accumulation="y">
+		<sql_name>POOL_TEMP_INDEX_L_READS</sql_name>
+		<title>Temp Index Reads Logical</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_TEMP_INDEX_P_READS" accumulation="y">
+		<sql_name>POOL_TEMP_INDEX_P_READS</sql_name>
+		<title>Temp Index Reads Physical</title>
+		<type>n</type>
+		<formatNumber separator=","/> 
+	</column>
+	<column name="POOL_TEMP_XDA_L_READS" accumulation="y">
+		<sql_name>POOL_TEMP_XDA_L_READS</sql_name>
+		<title>Temp XDA Reads Logical</title>
+		<type>n</type>
+		<formatNumber separator=","/> 
+	</column>
+	<column name="POOL_TEMP_XDA_P_READS" accumulation="y">
+		<sql_name>POOL_TEMP_XDA_P_READS</sql_name>
+		<title>Temp XDA Reads Physical</title>
+		<type>n</type>
+		<formatNumber separator=","/> 
+	</column>
+	<column name="POOL_XDA_L_READS" accumulation="y">
+		<sql_name>POOL_XDA_L_READS</sql_name>
+		<title>XDA Reads Logical</title>
+		<type>n</type>
+		<formatNumber separator=","/> 
+	</column>
+	<column name="POOL_XDA_P_READS" accumulation="y">
+		<sql_name>POOL_XDA_P_READS</sql_name>
+		<title>Temp XDA Reads Physical</title>
+		<type>n</type>
+		<formatNumber separator=","/> 
+	</column>
+	<column name="POOL_XDA_WRITES" accumulation="y">
+		<sql_name>POOL_XDA_WRITES</sql_name>
+		<title>XDA Writes</title>
+		<type>n</type>
+		<formatNumber separator=","/> 
+	</column>
+	<column name="POOL_READ_TIME" accumulation="y">
+		<sql_name>POOL_READ_TIME</sql_name>
+		<title>Read Time</title>
+		<type>n</type>
+		<formatNumber separator=","/> 
+	</column>
+	<column name="POOL_WRITE_TIME" accumulation="y">
+		<sql_name>POOL_WRITE_TIME</sql_name>
+		<title>Write Time</title>
+		<type>n</type>
+		<formatNumber separator=","/> 
+	</column>
+	<column name="DIRECT_READS" accumulation="y">
+		<sql_name>DIRECT_READS</sql_name>
+		<title>Direct Reads</title>
+		<type>n</type>
+		<formatNumber separator=","/> 
+	</column>
+	<column name="DIRECT_WRITES" accumulation="y">
+		<sql_name>DIRECT_WRITES</sql_name>
+		<title>Direct Writes</title>
+		<type>n</type>
+		<formatNumber separator=","/> 
+	</column>
+	<column name="DIRECT_READ_REQS" accumulation="y">
+		<sql_name>DIRECT_READ_REQS</sql_name>
+		<title>Direct Reads Requests</title>
+		<type>n</type>
+		<formatNumber separator=","/> 
+	</column>
+	<column name="DIRECT_WRITE_REQS" accumulation="y">
+		<sql_name>DIRECT_WRITE_REQS</sql_name>
+		<title>Direct Write Requests</title>
+		<type>n</type>
+		<formatNumber separator=","/> 
+	</column>
+	<column name="DIRECT_READ_TIME" accumulation="y">
+		<sql_name>DIRECT_READ_TIME</sql_name>
+		<title>Direct Read Time</title>
+		<type>n</type>
+		<formatNumber separator=","/> 
+	</column>
+	<column name="DIRECT_WRITE_TIME" accumulation="y">
+		<sql_name>DIRECT_WRITE_TIME</sql_name>
+		<title>Direct Write Time</title>
+		<type>n</type>
+		<formatNumber separator=","/> 
+	</column>
+	<column name="UNREAD_PREFETCH_PAGES" accumulation="y">
+		<sql_name>UNREAD_PREFETCH_PAGES</sql_name>
+		<title>Unread Prefetch Pages</title>
+		<type>n</type>
+		<formatNumber separator=","/> 
+	</column>
+	<column name="LOCKS_HELD">
+		<sql_name>LOCKS_HELD</sql_name>
+		<title>Locks Held</title>
+		<type>n</type>
+		<formatNumber separator=","/> 
+	</column>
+	<column name="LOCK_WAITS" accumulation="y">
+		<sql_name>LOCK_WAITS</sql_name>
+		<title>Lock Waits</title>
+		<type>n</type>
+		<formatNumber separator=","/> 
+	</column>
+	<column name="LOCK_WAIT_TIME" accumulation="y">
+		<sql_name>LOCK_WAIT_TIME</sql_name>
+		<title>Lock Wait Time</title>
+		<type>n</type>>
+		<formatNumber separator=","/> 
+	</column>
+	<column name="LOCK_ESCALS" accumulation="y">
+		<sql_name>LOCK_ESCALS</sql_name>
+		<title>Lock Escalations</title>
+		<type>n</type>
+		<formatNumber separator=","/> 
+	</column>
+	<column name="X_LOCK_ESCALS" accumulation="y">
+		<sql_name>X_LOCK_ESCALS</sql_name>
+		<title>X Lock Escalations</title>
+		<type>n</type>>
+		<formatNumber separator=","/> 
+	</column>
+	<column name="DEADLOCKS" accumulation="y">
+		<sql_name>DEADLOCKS</sql_name>
+		<title>Deadlocks</title>
+		<type>n</type>
+		<formatNumber separator=","/> 
+	</column>
+	<column name="TOTAL_SORTS" accumulation="y">
+		<sql_name>TOTAL_SORTS</sql_name>
+		<title>Total Sorts</title>
+		<type>n</type>
+		<formatNumber separator=","/> 
+	</column>
+	<column name="TOTAL_SORT_TIME" accumulation="y">
+		<sql_name>TOTAL_SORT_TIME</sql_name>
+		<title>Total Sort Time</title>
+		<type>n</type>
+		<formatNumber separator=","/> 
+	</column>
+	<column name="SORT_OVERFLOWS" accumulation="y">
+		<sql_name>SORT_OVERFLOWS</sql_name>
+		<title>Sort Overflows</title>
+		<type>n</type>
+		<formatNumber separator=","/> 
+	</column>
+	<column name="COMMIT_SQL_STMTS" accumulation="y">
+		<sql_name>COMMIT_SQL_STMTS</sql_name>
+		<title>Commits</title>
+		<type>n</type>
+		<formatNumber separator=","/> 
+	</column>
+	<column name="ROLLBACK_SQL_STMTS" accumulation="y">
+		<sql_name>ROLLBACK_SQL_STMTS</sql_name>
+		<title>Rollbacks</title>
+		<type>n</type>
+		<formatNumber separator=","/> 
+	</column>
+	<column name="DYNAMIC_SQL_STMTS" accumulation="y">
+		<sql_name>DYNAMIC_SQL_STMTS</sql_name>
+		<title>Dynanmic SQL</title>
+		<type>n</type>
+		<formatNumber separator=","/> 
+	</column>
+	<column name="STATIC_SQL_STMTS" accumulation="y">
+		<sql_name>STATIC_SQL_STMTS</sql_name>
+		<title>Static SQL</title>
+		<type>n</type>
+		<formatNumber separator=","/> 
+	</column>
+	<column name="FAILED_SQL_STMTS" accumulation="y">
+		<sql_name>FAILED_SQL_STMTS</sql_name>
+		<title>Failed</title>
+		<type>n</type>
+		<formatNumber separator=","/> 
+	</column>
+	<column name="SELECT_SQL_STMTS" accumulation="y">
+		<sql_name>SELECT_SQL_STMTS</sql_name>
+		<title>Selects</title>
+		<type>n</type>
+		<formatNumber separator=","/> 
+	</column>
+	<column name="DDL_SQL_STMTS" accumulation="y">
+		<sql_name>DDL_SQL_STMTS</sql_name>
+		<title>DDL</title>
+		<type>n</type>
+		<formatNumber separator=","/> 
+	</column>
+	<column name="UID_SQL_STMTS" accumulation="y">
+		<sql_name>UID_SQL_STMTS</sql_name>
+		<title>UID SQL</title>
+		<type>n</type>
+		<formatNumber separator=","/> 
+	</column>
+	<column name="INT_AUTO_REBINDS" accumulation="y">
+		<sql_name>INT_AUTO_REBINDS</sql_name>
+		<title>Internal Auto Rebinds</title>
+		<type>n</type>
+		<formatNumber separator=","/> 
+	</column>
+	<column name="INT_ROWS_DELETED" accumulation="y">
+		<sql_name>INT_ROWS_DELETED</sql_name>
+		<title>Internal Rows Deleted</title>
+		<type>n</type>
+		<formatNumber separator=","/> 
+	</column>
+	<column name="INT_ROWS_UPDATED" accumulation="y">
+		<sql_name>INT_ROWS_UPDATED</sql_name>
+		<title>Internal Rows Updated</title>
+		<type>n</type>
+		<formatNumber separator=","/> 
+	</column>
+	<column name="INT_COMMITS" accumulation="y">
+		<sql_name>INT_COMMITS</sql_name>
+		<title>Internal Commits</title>
+		<type>n</type>
+		<formatNumber separator=","/> 
+	</column>
+	<column name="INT_ROLLBACKS" accumulation="y">
+		<sql_name>INT_ROLLBACKS</sql_name>
+		<title>Internal Rollbacks</title>
+		<type>n</type>
+		<formatNumber separator=","/> 
+	</column>
+	<column name="INT_DEADLOCK_ROLLBACKS" accumulation="y">
+		<sql_name>INT_DEADLOCK_ROLLBACKS</sql_name>
+		<title>Internal Deadlock Rollbacks</title>
+		<type>n</type>
+		<formatNumber separator=","/> 
+	</column>
+	<column name="ROWS_DELETED" accumulation="y">
+		<sql_name>ROWS_DELETED</sql_name>
+		<title>Rows Deleted</title>
+		<type>n</type>
+		<formatNumber separator=","/> 
+	</column>
+	<column name="ROWS_INSERTED" accumulation="y">
+		<sql_name>ROWS_INSERTED</sql_name>
+		<title>Rows Inserted</title>
+		<type>n</type>
+		<formatNumber separator=","/> 
+	</column>
+	<column name="ROWS_UPDATED" accumulation="y">
+		<sql_name>ROWS_UPDATED</sql_name>
+		<title>Rows Updated</title>
+		<type>n</type>
+		<formatNumber separator=","/> 
+	</column>
+	<column name="ROWS_SELECTED" accumulation="y">
+		<sql_name>ROWS_SELECTED</sql_name>
+		<title>Row Selected</title>
+		<type>n</type>
+		<formatNumber separator=","/> 
+	</column>
+	<column name="BINDS_PRECOMPILES" accumulation="y">
+		<sql_name>BINDS_PRECOMPILES</sql_name>
+		<title>Bind Precompiles</title>
+		<type>n</type>
+		<formatNumber separator=","/> 
+	</column>
+	<column name="OPEN_REM_CURS" accumulation="y">
+		<sql_name>OPEN_REM_CURS</sql_name>
+		<title>Open Remote Cursors</title>
+		<type>n</type>
+		<formatNumber separator=","/> 
+	</column>
+	<column name="OPEN_REM_CURS_BLK" accumulation="y">
+		<sql_name>OPEN_REM_CURS_BLK</sql_name>
+		<title>Open Remote Blocked Cursor</title>
+		<type>n</type>
+		<formatNumber separator=","/> 
+	</column>
+	<column name="REJ_CURS_BLK" accumulation="y">
+		<sql_name>REJ_CURS_BLK</sql_name>
+		<title>Rejected Blocked Cursors</title>
+		<type>n</type>
+		<formatNumber separator=","/> 
+	</column>
+	<column name="ACC_CURS_BLK" accumulation="y">
+		<sql_name>ACC_CURS_BLK</sql_name>
+		<title>Accepted Blocked Cursors</title>
+		<type>n</type>
+		<formatNumber separator=","/> 
+	</column>
+	<column name="SQL_REQS_SINCE_COMMIT">
+		<sql_name>SQL_REQS_SINCE_COMMIT</sql_name>
+		<title>SQL Requests Since Commit</title>
+		<type>n</type>
+		<formatNumber separator=","/> 
+	</column>
+	<column name="LOCK_TIMEOUTS">
+		<sql_name>LOCK_TIMEOUTS</sql_name>
+		<title>Lock Timeouts</title>
+		<type>n</type>
+		<formatNumber separator=","/> 
+	</column>
+	<column name="INT_ROWS_INSERTED" accumulation="y">
+		<sql_name>INT_ROWS_INSERTED</sql_name>
+		<title>Internal Rows Inserted</title>
+		<type>n</type>
+		<formatNumber separator=","/> 
+	</column>
+	<column name="OPEN_LOC_CURS" accumulation="y">
+		<sql_name>OPEN_LOC_CURS</sql_name>
+		<title>Open Local Cursors</title>
+		<type>n</type>
+		<formatNumber separator=","/> 
+	</column>
+	<column name="OPEN_LOC_CURS_BLK" accumulation="y">
+		<sql_name>OPEN_LOC_CURS_BLK</sql_name>
+		<title>Open Local Blocked Cursors</title>
+		<type>n</type>
+		<formatNumber separator=","/> 
+	</column>
+	<column name="PKG_CACHE_LOOKUPS" accumulation="y">
+		<sql_name>PKG_CACHE_LOOKUPS</sql_name>
+		<title>Package Cache Lookups</title>
+		<type>n</type>
+		<formatNumber separator=","/> 
+	</column>
+	<column name="PKG_CACHE_INSERTS" accumulation="y">
+		<sql_name>PKG_CACHE_INSERTS</sql_name>
+		<title>Package Cache Inserts</title>
+		<type>n</type>
+		<formatNumber separator=","/> 
+	</column>
+	<column name="CAT_CACHE_LOOKUPS" accumulation="y">
+		<sql_name>CAT_CACHE_LOOKUPS</sql_name>
+		<title>Catalog Cache Lookups</title>
+		<type>n</type>
+		<formatNumber separator=","/> 
+	</column>
+	<column name="CAT_CACHE_INSERTS" accumulation="y">
+		<sql_name>CAT_CACHE_INSERTS</sql_name>
+		<title>Catalog Cache Inserts</title>
+		<type>n</type>
+		<formatNumber separator=","/> 
+	</column>
+	<column name="CAT_CACHE_OVERFLOWS" accumulation="y">
+		<sql_name>CAT_CACHE_OVERFLOWS</sql_name>
+		<title>Catalog Cache Overflows</title>
+		<type>n</type>
+		<formatNumber separator=","/> 
+	</column>
+	<column name="NUM_AGENTS">
+		<sql_name>NUM_AGENTS</sql_name>
+		<title>Agent No.</title>
+		<type>n</type>
+		<formatNumber separator=","/> 
+	</column>
+	<column name="AGENTS_STOLEN" accumulation="y">
+		<sql_name>AGENTS_STOLEN</sql_name>
+		<title>Agents Stolen</title>
+		<type>n</type>
+		<formatNumber separator=","/> 
+	</column>
+	<column name="ASSOCIATED_AGENTS_TOP">
+		<sql_name>ASSOCIATED_AGENTS_TOP</sql_name>
+		<title>Associated Agents Top</title>
+		<type>n</type>
+		<formatNumber separator=","/> 
+	</column>
+	<column name="APPL_PRIORITY">
+		<sql_name>APPL_PRIORITY</sql_name>
+		<title>Application Priority</title>
+	</column>
+	<column name="APPL_PRIORITY_TYPE">
+		<sql_name>APPL_PRIORITY_TYPE</sql_name>
+		<title>Application Priority Type</title>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="PREFETCH_WAIT_TIME" accumulation="y">
+		<sql_name>PREFETCH_WAIT_TIME</sql_name>
+		<title>Prefetch Wait Time</title>
+		<type>n</type>
+		<formatNumber separator=","/> 
+	</column>
+	<column name="APPL_SECTION_LOOKUPS" accumulation="y">
+		<sql_name>APPL_SECTION_LOOKUPS</sql_name>
+		<title>Application Section Lookups</title>
+		<type>n</type>
+		<formatNumber separator=","/> 
+	</column>
+	<column name="APPL_SECTION_INSERTS" accumulation="y">
+		<sql_name>APPL_SECTION_INSERTS</sql_name>
+		<title>Application Section Inserts</title>
+		<type>n</type>
+		<formatNumber separator=","/> 
+	</column>
+	<column name="LOCKS_WAITING" accumulation="y">
+		<sql_name>LOCKS_WAITING</sql_name>
+		<title>Locks Waiting</title>
+		<type>n</type>
+		<formatNumber separator=","/> 
+	</column>
+	<column name="TOTAL_HASH_JOINS" accumulation="y">
+		<sql_name>TOTAL_HASH_JOINS</sql_name>
+		<title>Total Hash Joins</title>
+		<type>n</type>
+		<formatNumber separator=","/> 
+	</column>
+	<column name="TOTAL_HASH_LOOPS" accumulation="y">
+		<sql_name>TOTAL_HASH_LOOPS</sql_name>
+		<title>Total Hash Loops</title>
+		<type>n</type>
+		<formatNumber separator=","/> 
+	</column>
+	<column name="HASH_JOIN_OVERFLOWS" accumulation="y">
+		<sql_name>HASH_JOIN_OVERFLOWS</sql_name>
+		<title>Hash Join Overflows</title>
+		<type>n</type>
+		<formatNumber separator=","/> 
+	</column>
+	<column name="HASH_JOIN_SMALL_OVERFLOWS" accumulation="y">
+		<sql_name>HASH_JOIN_SMALL_OVERFLOWS</sql_name>
+		<title>Hash Join Overflows Small</title>
+		<type>n</type>
+		<formatNumber separator=","/> 
+	</column>
+	<column name="APPL_IDLE_TIME" accumulation="y">
+		<sql_name>APPL_IDLE_TIME</sql_name>
+		<title>Idle Time</title>
+		<formatNumber separator=","/> 
+	</column>
+	<column name="UOW_LOCK_WAIT_TIME">
+		<sql_name>UOW_LOCK_WAIT_TIME</sql_name>
+		<title>UOW Lock Wait Time</title>
+		<formatNumber separator=","/> 
+	</column>
+	<column name="UOW_COMP_STATUS">
+		<sql_name>UOW_COMP_STATUS</sql_name>
+		<title>UOW Completion Status</title>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="AGENT_USR_CPU_TIME" accumulation="y">
+		<sql_name>AGENT_USR_CPU_TIME</sql_name>
+		<title>User CPU</title>
+		<type>n</type>
+		<formatNumber separator=","/> 
+	</column>
+	<column name="AGENT_SYS_CPU_TIME" accumulation="y">
+		<sql_name>AGENT_SYS_CPU_TIME</sql_name>
+		<title>System CPU</title>
+		<type>n</type>
+		<formatNumber separator=","/> 
+	</column>
+	<column name="APPL_CON_TIME" accumulation="y">
+		<sql_name>APPL_CON_TIME</sql_name>
+		<title>Connection Time</title>
+	</column>
+	<column name="CONN_COMPLETE_TIME">
+		<sql_name>CONN_COMPLETE_TIME</sql_name>
+		<title>Connection Complete Time</title>
+	</column>
+	<column name="LAST_RESET">
+		<sql_name>LAST_RESET</sql_name>
+		<title>Last Reset</title>
+	</column>
+	<column name="UOW_START_TIME">
+		<sql_name>UOW_START_TIME</sql_name>
+		<title>UOW Start Time</title>
+	</column>
+	<column name="PREV_UOW_STOP_TIME">
+		<sql_name>PREV_UOW_STOP_TIME</sql_name>
+		<title>Previous UOW Stop Time</title>
+	</column>
+	<column name="INBOUND_COMM_ADDRESS">
+		<sql_name>INBOUND_COMM_ADDRESS</sql_name>
+		<title>Inbound Comm. Address</title>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="LOCK_TIMEOUT_VAL">
+		<sql_name>LOCK_TIMEOUT_VAL</sql_name>
+		<title>Lock Timeout Value</title>
+	</column>
+	<column name="PRIV_WORKSPACE_NUM_OVERFLOWS" accumulation="y">
+		<sql_name>PRIV_WORKSPACE_NUM_OVERFLOWS</sql_name>
+		<title>Private Workspace Overflows</title>
+		<type>n</type>
+		<formatNumber separator=","/> 
+	</column>
+	<column name="PRIV_WORKSPACE_SECTION_INSERTS" accumulation="y">
+		<sql_name>PRIV_WORKSPACE_SECTION_INSERTS</sql_name>
+		<title>Private Workspace Section Inserts</title>
+		<type>n</type>
+		<formatNumber separator=","/> 
+	</column>
+	<column name="PRIV_WORKSPACE_SECTION_LOOKUPS" accumulation="y">
+		<sql_name>PRIV_WORKSPACE_SECTION_LOOKUPS</sql_name>
+		<title>Private Workspace Section Lookups</title>
+		<type>n</type>
+		<formatNumber separator=","/> 
+	</column>
+	<column name="PRIV_WORKSPACE_SIZE_TOP">
+		<sql_name>PRIV_WORKSPACE_SIZE_TOP</sql_name>
+		<title>Private Workspace Size Top</title>
+		<type>n</type>
+		<formatNumber separator=","/> 
+	</column>
+	<column name="SHR_WORKSPACE_NUM_OVERFLOWS" accumulation="y">
+		<sql_name>SHR_WORKSPACE_NUM_OVERFLOWS</sql_name>
+		<title>Share Workspace Overflows</title>
+		<type>n</type>
+		<formatNumber separator=","/> 
+	</column>
+	<column name="SHR_WORKSPACE_SECTION_INSERTS" accumulation="y">
+		<sql_name>SHR_WORKSPACE_SECTION_INSERTS</sql_name>
+		<title>Share Workspace Section Inserts</title>
+		<type>n</type>
+		<formatNumber separator=","/> 
+	</column>
+	<column name="SHR_WORKSPACE_SECTION_LOOKUPS" accumulation="y">
+		<sql_name>SHR_WORKSPACE_SECTION_LOOKUPS</sql_name>
+		<title>Share Workspace Section Lookups</title>
+		<type>n</type>
+		<formatNumber separator=","/> 
+	</column>
+	<column name="SHR_WORKSPACE_SIZE_TOP">
+		<sql_name>SHR_WORKSPACE_SIZE_TOP</sql_name>
+		<title>Share Workspace Size Top</title>
+		<type>n</type>
+		<formatNumber separator=","/> 
+	</column>
+	<column name="DBPARTITIONNUM">
+		<sql_name>DBPARTITIONNUM</sql_name>
+		<title>DB Part No.</title>
+		<type>n</type>
+	</column>
+	<column name="CAT_CACHE_SIZE_TOP">
+		<sql_name>CAT_CACHE_SIZE_TOP</sql_name>
+		<title>Cat Cache Size Top</title>
+		<type>n</type>
+		<formatNumber separator=","/> 
+	</column>
+</table>

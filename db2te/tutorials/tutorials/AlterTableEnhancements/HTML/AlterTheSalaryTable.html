@@ -1,0 +1,18 @@
+<p>
+	Run the statements in the right panel.
+</p>
+<p>
+	The <a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v9r5/topic/com.ibm.db2.luw.sql.ref.doc/doc/r0000888.html?noframes=true');"> ALTER TABLE </a> statement is used to alter the pay column. 
+	The column will be redefined as salary + 2 * bonus. Note that existing records are not changed.
+</p>
+<p>
+	The integrity checking is turned on, and the generated columns are now computed with 
+  the new calculation. There are two ways of doing this. If the integrity is turned back on,
+  the previously generated columns are not recalculated if you use the unchecked 
+  option.
+</p>
+<p>
+	The commands in the editor add some new records to the table and run a select
+	to show that the pay for the new values is calculated using the new definition
+	for that column, but the old columns are unchanged.
+</p>

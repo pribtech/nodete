@@ -1,0 +1,40 @@
+<BR><H2><B>Scenario</B></H2><HR>
+<p>The scenario represents a section of the data warehouse environment pertaining to the telecommunication domain. The database contains three fact tables and one dimension table to keep customers' cell phone usage information of four different states. Daily reports are generated against these tables. This tutorial highlights the best practices for good physical database design in order to improve the performance and manageability of the data warehouse.
+</p>
+
+<H2><B>Tables and Data</B></H2><HR>
+<p>A multiple partition environment consisting of four nodes is created. <b>Two partition groups</b> are created in the database, one to host the fact tables and their associated objects and the other to host the dimension table and its objects. Two tablespaces <b>'Factspace'</b> and <b>'Indspace1'</b> are created in the <b>first partition group</b>. The fact tables are spread across three nodes in the factspace and the indexes reside in indspace1. Two tablespaces <b>'Dimspace'</b> and <b>'Indspace2'</b> are created in the <b>second partition group</b>. The dimension table is spread across one node in the dimspace and its index resides in indspace2.</p>
+
+<p><b><u>Fact Tables :</u></b></p>
+<ol>
+<li><h4><b>Subscriber Rated Usage</b></h4>  contains entire details of a subscriber's cell phone usage.
+<ul>
+<li>Average row size: 142 bytes</li>
+<li>Number of rows: 1,00,000</li>
+</ul>
+</li>
+<li><h4><b>Dedicated Account Usage</b></h4>  contains call data records of subscribers for calls charged against a dedicated account
+<ul>
+<li>Average row size: 72 bytes</li>
+<li>Number of rows: 20,000</li>
+</ul>
+</li>
+<li><h4><b>Subscriber MSISDN History</b></h4>  contains details of the subscriber's connection plan
+<ul>
+<li>Average row size: 52 bytes</li>
+<li>Number of rows: 22,000</li>
+</ul>
+</li>
+</ol><br>
+<p><b><u>Dimension Table :</u></b></p>
+<ol>
+<li><h4><b>Dedicated Account</b></h4>  contains details of plans on offer for all subscribers
+<ul>
+<li>Average row size: 23 bytes</li>
+<li>Number of rows: 45</li>
+</ul></li>
+</ol>
+</p>
+
+<BR><H2><B>Sample Report</B></H2><HR>
+<p>Cell phone usage details of all subscribers of one state on a particular day (here - 02/02/2009) are generated using this <a onclick="OpenURLInFloatingWindow('?BASE_DIRECTORY?/HTML/query.html');"><b>query.</b></a></p>

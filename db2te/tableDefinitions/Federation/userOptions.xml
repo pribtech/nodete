@@ -1,0 +1,94 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2010-2012 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+<table name="userOptions">
+	<sql_name>SYSIBM.SYSUSEROPTIONS</sql_name>
+	<singular_name>User Option</singular_name>
+	<plural_name>User Options</plural_name>
+	<description/>
+	<disable_edit/>
+	<menu type="leaf">
+		<description>New User</description>
+		<actionScript>
+			<task>
+				<assignSharedConstant name="command" type="raw">
+					<value>SQL/Create/createUserMapping</value>
+				</assignSharedConstant>
+				<callGlobalAction name="commandExecution"/>
+			</task>
+		</actionScript>
+	</menu>
+	<orderBy name="servername" direction="A"/>
+	<orderBy name="authid" direction="A"/>
+	<orderBy name="option" direction="A"/>
+	<display_columns>
+		<col type="column" name="servername"/>
+		<col type="column" name="authid"/>
+		<col type="column" name="option"/>
+		<col type="column" name="setting"/>
+		<col type="column" name="authidtype"/>
+	</display_columns>
+	<action name="dropuser">
+		<title>Drop</title>
+		<icon>images/trash.gif</icon>   
+    	<actionScript>
+    		<task>
+		    	<assignSharedConstant name="objectType" type="fixed">
+					<value>USER MAPPING</value>
+				</assignSharedConstant>
+				<assignSharedConstant name="objectName" type="fixed">
+					<value>FOR ?authid? SERVER ?servername?</value>
+				</assignSharedConstant>
+		   		<callGlobalAction name="dropSQLObject"/>
+	   		</task>
+    	</actionScript>
+    </action>
+	<column name="servername">
+		<sqlName>SERVERNAME</sqlName>
+		<title>Server</title>
+		<type dbType="VARCHAR">s</type>
+		<primaryKey/>	
+	</column>
+	<column name="authid">
+		<sqlName>AUTHID</sqlName>
+		<title>Auth Id.</title>
+		<type dbType="VARCHAR">s</type>
+		<primaryKey/>
+	</column>
+	<column name="option">
+		<sqlName>OPTION</sqlName>
+		<title>Option</title>
+		<type dbType="VARCHAR">s</type>
+		<primaryKey/>
+	</column>
+	<column name="setting">
+		<sqlName>SETTING</sqlName>
+		<title>Setting</title>
+		<type dbType="VARCHAR">s</type>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="authidtype">
+		<sqlName>AUTHIDTYPE</sqlName>
+		<title>Authid Type</title>
+		<type dbType="CHARACTER">s</type>
+	 	<columnMask>
+			<value_mask value="G"><mask>Group</mask></value_mask>
+			<value_mask value="R"><mask>Role</mask></value_mask>
+			<value_mask value="U"><mask>User</mask></value_mask>
+	   	</columnMask>	
+	</column>
+</table>

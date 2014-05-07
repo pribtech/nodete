@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tutorial name="Isolating Activities Using Service Classes and Workloads">
+    <FlowRestriction>forwardExploration</FlowRestriction>
+    <closeAction />
+    <openAction />
+    <globalCodeHighlightOptions highlightCode = "true" />
+    <WMDConfig>
+		<load>
+			<workload name="WLM_tutorial_wl1" profile="wmd/workload_profile_WLM_tutorial_wl1" taskset="wmd/task_set_WLM_tutorial_wl1"/>
+			<workload name="WLM_tutorial_wl2" profile="wmd/workload_profile_WLM_tutorial_wl2" taskset="wmd/task_set_WLM_tutorial_wl2"/>
+		</load>
+	</WMDConfig>
+    <pageList>
+    	<page name="Isolating Activities Using Service Classes and Workloads" type="intro">
+            <entryAction/>
+            <exitAction name="checkForSchema" type="serverAction">
+                <parameterList>
+                    <parameter name="action" type="fixed">
+                        <value>checkForObject</value>
+                    </parameter>
+                    <parameter name="objectType" type="fixed">
+                        <value>table</value>
+                    </parameter>
+                    <parameter name="object[schema]" type="fixed">
+                        <value>WLMTUT</value>
+                    </parameter>
+                    <parameter name="object[table]" type="fixed">
+                        <value>SALES</value>
+                    </parameter>
+                </parameterList>
+                <followOnAction condition="0">
+                    <task>
+                        <action name="createBaseTable" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="fixed">
+									<value>createTablesFromSampleDatabase</value>
+								</parameter>
+								<parameter name="schema" type="fixed">
+									<value>WLMTUT</value>
+								</parameter>
+								<parameter name="table" type="fixed">
+									<value>SALES</value>
+								</parameter>
+							</parameterList>
+							<followOnAction condition="false">
+								<task>
+									<action name="" type="alert">
+										<message>Failed to create base table for initial setup of tutorial. Cannot proceed further with tutorial.</message>
+									</action>
+								</task>
+								<task>
+									<setActionReturn>false</setActionReturn>
+								</task>
+							</followOnAction>
+							<followOnAction condition="[0-9][0-9]*">
+								<task>
+									<assignLocalParameter name="ERROR_MESSAGE" type="returnObject">
+										<value>createBaseTable.returnValue</value>
+									</assignLocalParameter>
+									<alert>Failed to create base tables for initial setup of tutorial. Cannot proceed further with tutorial. SQLMSG: ?ERROR_MESSAGE?</alert>
+								</task>
+								<task>
+									<setActionReturn>false</setActionReturn>
+								</task>
+							</followOnAction>
+						</action>
+					</task>
+				</followOnAction>        
+            </exitAction>
+            <contentFile>IsolatingActivitiesUsingServiceClassesAndWorkloads.html</contentFile>
+             <autoLoadLink>
+                <pageWindow target="informationWindow">
+                    <panel name="main"  PrimaryContainer="true" panelTitle="Workload Driver">
+                        <URL>http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.admin.wlm.doc/doc/c0051412.html?noframes=true</URL>
+                    </panel>
+                </pageWindow>
+            </autoLoadLink>
+        </page>
+        <page name="Run some activities" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>RunSomeActivities.html</contentFile>
+            <autoLoadLink>
+				<pageWindow target="_blank">
+            	<splitPane direction="h" splitPercent="0.5">
+						<topPane>
+							<panel name="Workload Driver" PrimaryContainer="true" panelTitle="Workload Driver">
+								<link type="action" target="main" window="mainLayout" connectionRequired="y">
+									<parameterList>
+										<parameter name="action">WMDTutorialBootstrap</parameter>
+										<parameter name="workload">WLM_tutorial_wl1</parameter>
+										<parameter name="controlerID">?TUTORIAL_ID?</parameter>
+										<parameter name="controlerType">?TUTORIAL_TYPE?</parameter>
+										<parameter name="connection">active</parameter>
+										<parameter name="compactView">true</parameter>
+									</parameterList>
+								</link>
+							</panel>
+						</topPane>
+						<bottomPane>
+							<panel name="Workload Driver 2">
+								<link type="action" target="workload" window="mainLayout" connectionRequired="y">
+									<parameterList>
+										<parameter name="action">WMDTutorialBootstrap</parameter>
+										<parameter name="workload">WLM_tutorial_wl2</parameter>
+										<parameter name="controlerID">?TUTORIAL_ID?</parameter>
+										<parameter name="controlerType">?TUTORIAL_TYPE?</parameter>
+										<parameter name="connection">active</parameter>
+										<parameter name="compactView">true</parameter>
+									</parameterList>
+								</link>
+							</panel>
+						</bottomPane>
+					</splitPane>
+				</pageWindow>
+				</autoLoadLink>
+        </page>
+        
+    <page name="Examine where activities are run" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>ExamineWhereActivitiesAreRun.html</contentFile>
+            <SQLFile>ExamineWhereActivitiesAreRun.sql</SQLFile>
+        </page><page name="Using WLM_GET_WORKLOAD_STATS table function" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>UsingWLM_GET_WORKLOAD_STATSTableFunction.html</contentFile>
+            <SQLFile>UsingWLM_GET_WORKLOAD_STATSTableFunction.sql</SQLFile>
+        </page><page name="Create a Service Class and Workload" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>CreateAServiceClassAndWorkload.html</contentFile>
+            <SQLFile>CreateAServiceClassAndWorkload.sql</SQLFile>
+            <SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar=";"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+        </page><page name="Grant usage on workload" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>GrantUsageOnWorkload.html</contentFile>
+            <SQLFile>GrantUsageOnWorkload.sql</SQLFile>
+        </page><page name="Reset in-memory statistics" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>ResetIn-memoryStatistics.html</contentFile>
+            <SQLFile>ResetIn-memoryStatistics.sql</SQLFile>
+        </page><page name="Run some activities" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>RunSomeActivities.html</contentFile>
+            <SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" 
+            termChar="#" cursor="forward" commitPerStmt="false" numRowReturned="100"/>
+            <autoLoadLink>
+				<pageWindow target="_blank">
+            	<splitPane direction="h" splitPercent="0.5">
+						<topPane>
+							<panel name="Workload Driver" PrimaryContainer="true" panelTitle="Workload Driver">
+								<link type="action" target="main" window="mainLayout" connectionRequired="y">
+									<parameterList>
+										<parameter name="action">WMDTutorialBootstrap</parameter>
+										<parameter name="workload">WLM_tutorial_wl1</parameter>
+										<parameter name="controlerID">?TUTORIAL_ID?</parameter>
+										<parameter name="controlerType">?TUTORIAL_TYPE?</parameter>
+										<parameter name="connection">active</parameter>
+										<parameter name="compactView">true</parameter>
+									</parameterList>
+								</link>
+							</panel>
+						</topPane>
+						<bottomPane>
+							<panel name="Workload Driver 2">
+								<link type="action" target="workload" window="mainLayout" connectionRequired="y">
+									<parameterList>
+										<parameter name="action">WMDTutorialBootstrap</parameter>
+										<parameter name="workload">WLM_tutorial_wl2</parameter>
+										<parameter name="controlerID">?TUTORIAL_ID?</parameter>
+										<parameter name="controlerType">?TUTORIAL_TYPE?</parameter>
+										<parameter name="connection">active</parameter>
+										<parameter name="compactView">true</parameter>
+									</parameterList>
+								</link>
+							</panel>
+						</bottomPane>
+					</splitPane>
+				</pageWindow>
+				</autoLoadLink>
+        </page><page name="View workload and service class statistics" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>ViewWorkloadAndServiceClassStatistics.html</contentFile>
+            <SQLFile>ViewWorkloadAndServiceClassStatistics.sql</SQLFile>
+        </page><page name="Using WLM_GET_SERVICE_SUBCLASS_STATS" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>UsingWLM_GET_SERVICE_SUBCLASS_STATS.html</contentFile>
+            <SQLFile>UsingWLM_GET_SERVICE_SUBCLASS_STATS.sql</SQLFile>
+        </page><page name="Create a second service class" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>CreateASecondServiceClass.html</contentFile>
+            <SQLFile>CreateASecondServiceClass.sql</SQLFile>
+            <SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar=";"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+        </page>
+        <page name="Drop and re-create event monitor (optional)" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>CreateEventMonitor.html</contentFile>
+            <SQLFile>CreateEventMonitor.sql</SQLFile>
+            <SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar="#"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+        </page><page name="Enable activity event monitor" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>EnableActivityEventMonitor.html</contentFile>
+            <SQLFile>EnableActivityEventMonitor.sql</SQLFile>
+            <SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar=";"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+        </page><page name="Reset in-memory statistics and run some activities" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>ResetIn-memoryStatisticsAndRunSomeActivities.html</contentFile>
+            <SQLFile>ResetIn-memoryStatisticsAndRunSomeActivities.sql</SQLFile>
+            <autoLoadLink>
+				<pageWindow target="_blank">
+            	<splitPane direction="h" splitPercent="0.5">
+						<topPane>
+							<panel name="Workload Driver" PrimaryContainer="true" panelTitle="Workload Driver">
+								<link type="action" target="main" window="mainLayout" connectionRequired="y">
+									<parameterList>
+										<parameter name="action">WMDTutorialBootstrap</parameter>
+										<parameter name="workload">WLM_tutorial_wl1</parameter>
+										<parameter name="controlerID">?TUTORIAL_ID?</parameter>
+										<parameter name="controlerType">?TUTORIAL_TYPE?</parameter>
+										<parameter name="connection">active</parameter>
+										<parameter name="compactView">true</parameter>
+									</parameterList>
+								</link>
+							</panel>
+						</topPane>
+						<bottomPane>
+							<panel name="Workload Driver 2">
+								<link type="action" target="workload" window="mainLayout" connectionRequired="y">
+									<parameterList>
+										<parameter name="action">WMDTutorialBootstrap</parameter>
+										<parameter name="workload">WLM_tutorial_wl2</parameter>
+										<parameter name="controlerID">?TUTORIAL_ID?</parameter>
+										<parameter name="controlerType">?TUTORIAL_TYPE?</parameter>
+										<parameter name="connection">active</parameter>
+										<parameter name="compactView">true</parameter>
+									</parameterList>
+								</link>
+							</panel>
+						</bottomPane>
+					</splitPane>
+				</pageWindow>
+				</autoLoadLink>
+        </page><page name="View workload and service class statistics" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>ViewWorkloadAndServiceClassStatistics.html</contentFile>
+            <SQLFile>ViewWorkloadAndServiceClassStatistics.sql</SQLFile>
+        </page><page name="Use WML_GET_SERVICE_SUBCLASS_STATS to show activities" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>UseWML_GET_SERVICE_SUBCLASS_STATSToShowActivities.html</contentFile>
+            <SQLFile>UseWML_GET_SERVICE_SUBCLASS_STATSToShowActivities.sql</SQLFile>
+        </page><page name="View activity data collected" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>ViewActivityDataCollected.html</contentFile>
+            <SQLFile>ViewActivityDataCollected.sql</SQLFile>
+        </page><page name="Assign resources to service classes" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>AssignResourcesToServiceClasses.html</contentFile>
+            <SQLFile>AssignResourcesToServiceClasses.sql</SQLFile>
+        </page><page name="Reset for next task" type="last">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>ResetForNextTask.html</contentFile>
+            <SQLFile>ResetForNextTask.sql</SQLFile>
+            <SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar=";"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+        </page></pageList>
+</tutorial>

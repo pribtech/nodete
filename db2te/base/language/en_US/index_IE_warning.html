@@ -1,0 +1,24 @@
+<div style='width:500px;'>
+  <span>
+    <h1>Warning you are using Internet Explorer!</h1>
+  </span>
+  <p>
+    Although we support Internet Explorer it is highly recommended that you use one of the following browsers.
+  </p>
+  <p>
+    <ul>
+      <li>Chrome</li>
+      <li>Firefox 3+</li>
+      <li>Safari 3+</li>
+    </ul>
+  </p>
+  <p>
+    As an internet application the Technology Explorer uses a lot of JavaScript. Specifically with the new table rendering engine.  Larger views such as the page View->Catalog->Tables, will take significantly longer to load in IE (two to ten times as long as Firefox 3). Considerable time has been spent optimizing the table rendering engine for IE and against the architects philosophy a separate table rendering engine has been created specifically for IE. This engine removes some nice to have features available in other browser, significantly improving the rendering time in IE. 
+  </p>
+  <p>
+    The modified rendering engine can be disable by setting the configuration variable IE_SPEED_EXTENSION to the boolean value false in the config.php file.
+  </p>
+  <p>
+    This message can be disabled by setting the configuration variable SHOW_IE_PERFORMANCE_WARNING to the boolean value false in the config.php file.
+  </p>
+</div>

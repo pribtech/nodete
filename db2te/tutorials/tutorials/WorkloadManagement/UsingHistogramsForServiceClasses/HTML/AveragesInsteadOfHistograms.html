@@ -1,0 +1,22 @@
+The last several queries looked at activity lifetimes, execution times
+  and queue times broken down into bins but aggregated across multiple
+  intervals. The following query presents the same information from a
+  different perspective. It shows averages instead of histograms and,
+  rather than combining the intervals, it shows each interval
+  individually. It also reports a count of the number of completed
+  activities which shows how many activities completed in each interval.
+  It uses the SCSTATS_DB2STATISTICS table instead of the
+  HISTOGRAMBIN_DB2STATISTICS table.
+  <p>
+  The result shows that average lifetimes are slightly higher than
+  average execution times for each interval and all three are just over
+  a half a second or less. The average queue time, as expected, is zero.
+  
+  <!-- 
+  The counts of the number of completed activities in each interval is
+  as expected because workloads 1 and 2 were run in the first interval
+  which resulted in 77 activities collected, workload 1 ran alone in the
+  second interval which resulted in 39 activities, and workload 1 ran
+  twice and workload 2 ran once in the third interval, which resulted in
+  113 activities. -->
+  </p>

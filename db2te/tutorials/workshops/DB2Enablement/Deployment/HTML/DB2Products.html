@@ -1,0 +1,51 @@
+<H2>Deployment Planning</H2><HR>
+<p>
+Planning of deploying DB2 products consist of:
+<ul>
+<li class= class="sourceChange"> Identifying the right DB2 product </li>
+<li class= class="sourceChange"> Selecting the right installation method</li>
+</ul>
+</p>
+
+<BR><BR><H2>DB2 Products</H2><HR>
+The first step in planning is identifying the right DB2 product.
+To help you determine which DB2 products to install in your environment, 
+click on the corresponding product link in the below section. 
+<ol>
+<li><b class="sourceCopiedFrom">DB2 Server</b></li>
+Several DB2 server products are available depending on your applications, users' 
+functions, and workload characteristics. All DB2 servers are licensed products and 
+some features require additional feature licenses.
+<ul>
+<li><a onclick="OpenURLInFloatingWindow('http://www-142.ibm.com/software/products/us/en/db2persedit');">DB2 Personal Edition</a></li>
+<li><a onclick="OpenURLInFloatingWindow('http://www-01.ibm.com/software/data/db2/express/index.html');">DB2 Express-C Edition</a></li>
+<li><a onclick="OpenURLInFloatingWindow('http://www-01.ibm.com/software/data/db2/linux-unix-windows/edition-express.html');">DB2 Express Edition</a></li>
+<li><a onclick="OpenURLInFloatingWindow('http://www-01.ibm.com/software/data/db2/linux-unix-windows/edition-workgroup.html');">DB2 Workgroup Server Edition </a></li>
+<li><a onclick="OpenURLInFloatingWindow('http://www-01.ibm.com/software/data/db2/db2connect/edition-ee.html');">DB2 Connect Enterprise Edition</a></li>
+<li><a onclick="OpenURLInFloatingWindow('http://www-01.ibm.com/software/data/db2/linux-unix-windows/edition-enterprise.html');">DB2 Enterprise Server Edition</a></li>
+</ul>
+<br><li><b class="sourceCopiedFrom"">DB2 clients and drivers</b></li>
+Depending on the architecture of your application, you might want to install a DB2 client 
+or driver on each computer that your application is installed on. This setup enables your 
+application to communicate with the DB2 server while the application is running.
+Understanding the different clients and drivers that are available and selecting the 
+appropriate one is critical for configuring DB2 connectivity and reducing the footprint of 
+the DB2 files.
+<ul>
+<li><a onclick="OpenURLInFloatingWindow('http://www-01.ibm.com/software/data/db2/ad/dotnet.html');">IBM Data Server Runtime Client</a></li></li>
+<li>IBM Data Server Client</li>
+<li>IBM Data Server Driver for ODBC, CLI, and .NET</li>
+<li><a onclick="OpenURLInFloatingWindow('http://www-01.ibm.com/software/data/db2/ad/java.html');">IBM Data Server Driver</a></li></li>
+</ul>
+<br><li><b class="sourceCopiedFrom">Redistributing clients and drivers</b></li>
+You can freely redistribute all clients and drivers, except the IBM Data Server Client, with your 
+application. You can download these files from the <a onclick="OpenURLInFloatingWindow('http://www.ibm.com/software/data/db2/ad');">DB2 Application Development</a></li> Web site 
+at no charge. 
+</ol>
+<br>
+The article on the right pane tells you which distributed edition of DB2 is right for you.
+
+<BR><BR><H2>Best Practice</H2><HR>
+Because each server has the full functionality of all clients, including the GUI tools and 
+application development tools, there is no reason to install a client on a computer that 
+already has a server.

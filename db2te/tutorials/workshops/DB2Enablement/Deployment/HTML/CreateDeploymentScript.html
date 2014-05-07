@@ -1,0 +1,52 @@
+<H2>Deployment Package or Script</H2><HR>
+The next step in deployment process after creating the response file is creating and running the deployment script.
+<p>
+	To deploy DB2 products to another computer, you must create a package using a software deployment tool 
+	or create a script that you can run on the computer. This section describes how to create a package 
+	using <a onclick="OpenURLInFloatingWindow('http://www.microsoft.com/technet/downloads/sms.mspx');"><b>SMS</b></a> 
+	on Windows and how to create a deployment script on Linux and UNIX platforms.
+	
+<H2>Creating Deployment Package or Script</H2><HR><BR>
+<ul>
+	<li><b class="sourceCopiedFrom">Packaging IBM Data Server products using SMS</b></li>
+	To package IBM data server products you must have SMS 2003 installed and configured on your network 
+	for both your SMS 2003 server and your SMS 2003 client workstations. For more details on how to configure
+	check this <a onclick="OpenURLInFloatingWindow('http://www.ibm.com/developerworks/wikis/display/data/Best+Practice+-+Deploying+IBM+DB2+Products+-+06.+Creating+a+deployment+package+or+script+-+6.1.+Packaging+IBM+Data+Server+products+using+SMS+2003');"><b>link</b></a> .
+	<br><br><li><b class="sourceCopiedFrom">Creating a deployment script</b></li>
+	The deployment script can be written as a shell script or in Perl, 
+	Java,  C or batch files. These script act as a wrapper to handle aspects of DB2 
+	installation and configuration that the DB2 installation procedure does not handle. 
+	You run the script on the target computer as part of the deployment process. <a onclick="OpenURLInFloatingWindow('ftp://www.redbooks.ibm.com/redbooks/SG247653/');"><b>Click here</b></a> to download sample 
+	deployment script that comes with <B>DB2 Deployment Guide </B>. For DB2 Deployment Guide check the reference part in the last page.
+	<br><br><li><b class="sourceCopiedFrom">Deploying a response file installation</b></li>
+	Deploying a response file installation is the easiest of all installation as the product definition, the selection of components, 
+	and the setting up of instances are almost completely encapsulated by the response file. 
+</ul>
+
+<br><br><H2>Running Deployment Script</H2><HR><BR>
+Previous sections provided the steps to prepare for deployment. 
+You can perform these steps once, incurring the upfront preparation costs, and then deploy to hundreds or 
+thousands of computers. You can add extra computers later with almost no additional preparation.
+
+There are two basic styles of deployment: <b>Push</b> and <b>Pull</b>.
+<ol>
+	<br><li class="sourceCopiedFrom"><b>Push</b>:-</li>
+	In a push deployment, a centralized location initiates the contact with each computer. This is usually suitable for cases 
+	where a centralized IT department wants to set up many computers without any user action.
+	<br><br><li class="sourceCopiedFrom"><b>Pull</b>:-</li>
+	In a pull deployment, each location in which a DB2 product is being installed initiates its own contact 
+	with the server to start the installation. Often, this operation is done using a link on a Web page or 
+	in an e-mail. This style is suitable for cases where very few computers require a DB2 product 
+	installation or no automated service is available to initiate a push installation.
+	<br><br><li class="sourceCopiedFrom"><b>Distributing IBM Data Server products using SMS</b>:-</li>
+	With SMS, you can set up the installation of DB2 or IBM Data Server products from a central location, 
+	and install it in an efficient and reliable manner across a computer network. For more details
+	check this <a onclick="OpenURLInFloatingWindow('http://www.ibm.com/developerworks/wikis/pages/viewpage.action?pageId=61243570');"><b>link</b></a> to see how to distribute Data Server using SMS.
+</ol>	
+
+
+
+
+
+
+

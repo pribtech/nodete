@@ -1,0 +1,25 @@
+<p>Create a second service class and then create a workload
+  such that all activities run from the WLM_tutorial_wk2 application
+  get mapped to the newly created service class. In addition,
+  set up the workload so that it will collect some activity
+  data. For this example, we will just collect activity data
+  without any additional details or values.
+  </p><p>
+  When the <a onclick="OpenURLInFloatingWindow
+('http://publib.boulder.ibm.com/infocenter/db2luw/v9r7/topic/com.ibm.db2.luw.admin.wlm.doc/doc/t0052786.html?noframes=true');">COLLECT ACTIVITY DATA</a>
+  clause is specified for a workload, information about any
+  activity submitted by an occurrence of that workload will be
+  sent to the active ACTIVITIES event monitor when the
+  activity completes. The COLLECT ACTIVITY DATA clause allows
+  you to specify how much information should be collected by
+  applying one of the following options:
+  </p>
+  <ul>
+  <li>WITHOUT DETAILS - Collect activity information
+      without statement and compilation environment (the default) </li>
+  <li>WITH DETAILS - Collect activity information
+      including statement and compilation environment. </li>
+  <li>WITH DETAILS AND VALUES - Collect activity
+      information including statement and compilation environment,
+      and input data values. </li>
+  </ul>

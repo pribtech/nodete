@@ -1,0 +1,220 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2010 All rights reserved.
+  
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+
+<table name="componentActivePercentage">
+	<sql_name>componentActivePercentage</sql_name>
+	<singular_name>Component Active</singular_name>
+	<plural_name>Component Active</plural_name>
+	<inlinequery>
+<![CDATA[
+SELECT
+	WAIT,
+	SECT_PROC_TIME, SECT_TIME,
+	DEC((SECT_PROC_TIME / SECT_TIME) * 100,5,1) AS SECT_PROC_PCT,
+	COMP_PROC_TIME,COMP_TIME,
+	DEC((COMP_PROC_TIME / COMP_TIME) * 100,5,1) AS COMPILE_PROC_PCT,
+	IMP_C_PROC_TIME, IMP_C_TIME,
+	DEC((IMP_C_PROC_TIME / IMP_C_TIME) * 100,5,1) AS IMPL_COMPILE_PROC_PCT,
+	ROLLBACK_PROC_TIME,ROLLBACK_TIME,
+	DEC((ROLLBACK_PROC_TIME / ROLLBACK_TIME) * 100,5,1) AS ROLLBACK_PROC_PCT,
+	COMMIT_PROC_TIME,COMMIT_TIME,
+	DEC((COMMIT_PROC_TIME / COMMIT_TIME) * 100,5,1) AS COMMIT_PROC_PCT,
+	RUNSTATS_PROC_TIME,RUNSTATS_TIME,
+	DEC((RUNSTATS_PROC_TIME / RUNSTATS_TIME) * 100,5,1) AS RUNSTATS_PROC_PCT,
+	REORG_PROC_TIME,REORG_TIME,
+	DEC((REORG_PROC_TIME / REORG_TIME) * 100,5,1) AS REORG_PROC_PCT,
+	LOAD_PROC_TIME,LOAD_TIME,
+	DEC((LOAD_PROC_TIME / LOAD_TIME) * 100,5,1) AS LOAD_PROC_PCT
+FROM (
+	SELECT 
+		SUM(TOTAL_WAIT_TIME) AS WAIT,
+		nullif(float(SUM(TOTAL_SECTION_TIME)),0) AS SECT_TIME, nullif(float(SUM(TOTAL_SECTION_PROC_TIME)),0) AS SECT_PROC_TIME, 
+		nullif(float(SUM(TOTAL_COMPILE_TIME)),0) AS COMP_TIME, nullif(float(SUM(TOTAL_COMPILE_PROC_TIME)),0) AS COMP_PROC_TIME,
+		nullif(float(SUM(TOTAL_IMPLICIT_COMPILE_TIME)),0) AS IMP_C_TIME, nullif(float(SUM(TOTAL_IMPLICIT_COMPILE_PROC_TIME)),0) AS IMP_C_PROC_TIME,
+		nullif(float(SUM(TOTAL_COMMIT_TIME)),0) AS COMMIT_TIME, nullif(float(SUM(TOTAL_COMMIT_PROC_TIME)),0) AS COMMIT_PROC_TIME,
+		nullif(float(SUM(TOTAL_ROLLBACK_TIME)),0) AS ROLLBACK_TIME, nullif(float(SUM(TOTAL_ROLLBACK_PROC_TIME)),0) AS ROLLBACK_PROC_TIME,
+		nullif(float(SUM(TOTAL_RUNSTATS_TIME)),0) AS RUNSTATS_TIME, nullif(float(SUM(TOTAL_RUNSTATS_PROC_TIME)),0) AS RUNSTATS_PROC_TIME,
+		nullif(float(SUM(TOTAL_REORG_TIME)),0) AS REORG_TIME, nullif(float(SUM(TOTAL_REORG_PROC_TIME)),0) AS REORG_PROC_TIME,
+		nullif(float(SUM(TOTAL_LOAD_TIME)),0) AS LOAD_TIME, nullif(float(SUM(TOTAL_LOAD_PROC_TIME)),0) AS LOAD_PROC_TIME
+	FROM TABLE(MON_GET_CONNECTION(NULL, -2)) AS METRICS
+)
+]]>
+	</inlinequery>
+	<messages><SQL0551N>Security issue. Please install "Monitoring Switches/Security" in Tools -> Installed Components</SQL0551N></messages>
+	<order_by_index/>
+	<display_columns>
+		<col type="column" name="SECT_PROC_PCT"/>
+		<col type="column" name="COMPILE_PROC_PCT"/>
+		<col type="column" name="IMPL_COMPILE_PROC_PCT"/>
+		<col type="column" name="ROLLBACK_PROC_PCT"/>
+		<col type="column" name="COMMIT_PROC_PCT"/>
+		<col type="column" name="RUNSTATS_PROC_PCT"/>
+		<col type="column" name="REORG_PROC_PCT"/>
+		<col type="column" name="LOAD_PROC_PCT"/>
+	</display_columns>
+	<column name="SECT_PROC_PCT">
+		<c_sql_name>SECT_PROC_PCT</c_sql_name>
+		<c_title>Section %</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="COMPILE_PROC_PCT">
+		<c_sql_name>COMPILE_PROC_PCT</c_sql_name>
+		<c_title>Compile %</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="IMPL_COMPILE_PROC_PCT">
+		<c_sql_name>IMPL_COMPILE_PROC_PCT</c_sql_name>
+		<c_title>Impl Compile %</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="ROLLBACK_PROC_PCT">
+		<c_sql_name>ROLLBACK_PROC_PCT</c_sql_name>
+		<c_title>Rollback %</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="COMMIT_PROC_PCT">
+		<c_sql_name>COMMIT_PROC_PCT</c_sql_name>
+		<c_title>Commit %</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="RUNSTATS_PROC_PCT">
+		<c_sql_name>RUNSTATS_PROC_PCT</c_sql_name>
+		<c_title>Runstats %</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="REORG_PROC_PCT">
+		<c_sql_name>REORG_PROC_PCT</c_sql_name>
+		<c_title>Reorg %</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="LOAD_PROC_PCT">
+		<c_sql_name>LOAD_PROC_PCT</c_sql_name>
+		<c_title>Load %</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="WAIT">
+		<c_sql_name>WAIT</c_sql_name>
+		<c_title>Wait Time</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="SECT_PROC_TIME">
+		<c_sql_name>SECT_PROC_TIME</c_sql_name>
+		<c_title>Section Process Time</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="SECT_TIME">
+		<c_sql_name>SECT_TIME</c_sql_name>
+		<c_title>Section Time</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="COMP_PROC_TIME">
+		<c_sql_name>COMP_PROC_TIME</c_sql_name>
+		<c_title>Compile Process Time</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="COMP_TIME">
+		<c_sql_name>COMP_TIME</c_sql_name>
+		<c_title>Compile Time</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="IMP_C_PROC_TIME">
+		<c_sql_name>IMP_C_PROC_TIME</c_sql_name>
+		<c_title>Imp Compile Process Time</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="IMP_C_TIME">
+		<c_sql_name>IMP_C_TIME</c_sql_name>
+		<c_title>Imp Compile</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="ROLLBACK_PROC_TIME">
+		<c_sql_name>ROLLBACK_PROC_TIME</c_sql_name>
+		<c_title>Rollback Process Time</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="ROLLBACK_TIME">
+		<c_sql_name>ROLLBACK_TIME</c_sql_name>
+		<c_title>Rollback Time</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="COMMIT_PROC_TIME">
+		<c_sql_name>COMMIT_PROC_TIME</c_sql_name>
+		<c_title>Commit Process Time</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="COMMIT_TIME">
+		<c_sql_name>COMMIT_TIME</c_sql_name>
+		<c_title>Commit Time</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="RUNSTATS_PROC_TIME">
+		<c_sql_name>RUNSTATS_PROC_TIME</c_sql_name>
+		<c_title>Runstats Process Time</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="RUNSTATS_TIME">
+		<c_sql_name>RUNSTATS_TIME</c_sql_name>
+		<c_title>Runstats Time</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="REORG_PROC_TIME">
+		<c_sql_name>REORG_PROC_TIME</c_sql_name>
+		<c_title>Reorg Process Time</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="REORG_TIME">
+		<c_sql_name>REORG_TIME</c_sql_name>
+		<c_title>Reorg Time</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="LOAD_PROC_TIME">
+		<c_sql_name>LOAD_PROC_TIME</c_sql_name>
+		<c_title>Load Process Time</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="LOAD_TIME">
+		<c_sql_name>LOAD_TIME</c_sql_name>
+		<c_title>Load Time</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+</table>

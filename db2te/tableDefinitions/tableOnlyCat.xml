@@ -1,0 +1,1116 @@
+<!--
+  Copyright IBM Corp. 2007 All rights reserved.
+  Updated Peter Prib, Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2009-2011 All rights reserved. 
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<table name="tableOnlyCat">
+	<inlinequery><![CDATA[ SELECT * FROM SYSCAT.TABLES WHERE TYPE = 'T' ]]></inlinequery>
+	<sqlName>table</sqlName>
+	<singularName>Table</singularName>
+	<pluralName>Tables</pluralName>
+	<description>Each row represents a 
+		&lt;a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.admin.dbobj.doc/doc/c0004098.html?noframes=true');"&gt;table&lt;/a&gt;,
+	    &lt;a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.admin.dbobj.doc/doc/c0004106.html?noframes=true');"&gt;view&lt;/a&gt; or
+	    &lt;a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.admin.dbobj.doc/doc/c0004097.html?noframes=true');"&gt;alias&lt;/a&gt;
+		in the database. 
+		This list is generated from the &lt;a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.sql.ref.doc/doc/r0001063.html?noframes=true');"&gt;SYSCAT.TABLES&lt;/a&gt; catalog view.
+	</description>
+   	<menu type="leaf">
+		<description>New Table</description>
+   		<actionScript>
+   			<task>
+		    	<assignSharedConstant name="command" type="raw">
+					<value>SQL/Create/createTable</value>
+				</assignSharedConstant>
+		   		<callGlobalAction name="commandExecution"/>
+   			</task>
+   		</actionScript>
+   	</menu>
+	<output>
+		<type name="DDL" destination="" title="" generator=""/>
+		<type name="PDF" destination="fo2pdf" title="PDF" generator="XSL/compareTable2FO.xsl"/>
+		<type name="RUNSTATS" destination="adhoc" title="Runstats" generator="XSL/tableRunstats.xsl">
+			<parameterList>
+				<parameter name="options" type="raw"><value>use profile</value></parameter>
+			</parameterList>
+		</type>
+		<type name="REORGONLINE" destination="adhoc" title="Re-0rg Online" generator="XSL/tableReorgOnline.xsl"/>
+		<type name="REORGOFFLINE" destination="adhoc" title="Re-0rg Offline" generator="XSL/tableReorgOffline.xsl"/>
+		<type name="DROP" destination="adhoc" title="Drop" generator="XSL/compareTableUpdates.xsl">
+			<parameterList>
+				<parameter name="action" type="raw"><value>delete</value></parameter>
+			</parameterList>
+		</type>
+		<type name="GRANT" destination="adhoc" title="Grant" generator="XSL/compareTableUpdates.xsl">
+			<parameterList>
+				<parameter name="type" type="raw"><value>grant</value></parameter>
+				<parameter name="table" type="raw"><value>table</value></parameter>
+			</parameterList>
+		</type>
+		<type name="CREATE" destination="adhoc" title="Generate DDL" generator="XSL/createTable.xsl" action="getSQLValue">
+			<parameterList>
+				<parameter name="query" type="fixed"><value>file:predefined/Table2XML[where TABSCHEMA='?tabschema?' and TABNAME='?tabname?']</value></parameter>
+			</parameterList>
+		</type>
+		<type name="SETINTEGRITYCHECKED" destination="adhoc" title="Set Integrity Checked" generator="XSL/tableSetIntegrity.xsl"/>
+			<type name="SETINTEGRITYUNCHECKED" destination="adhoc" title="Set Integrity Unchecked" generator="XSL/tableSetIntegrity.xsl">
+			<parameterList>
+				<parameter name="setLevel" type="raw"><value>IMMEDIATE UNCHECKED</value></parameter>
+			</parameterList>
+		</type>
+		<type name="COPY" destination="adhoc" title="Copy " generator="XSL/copyTable.xsl" action="getSQLValue">
+			<parameterList>
+				<parameter name="query" type="fixed"><value>file:predefined/Table2XML[where TABSCHEMA='?tabschema?' and TABNAME='?tabname?']</value></parameter>
+			</parameterList>
+		</type>
+		<type name="SELECT" destination="adhoc" title="Select" generator="XSL/selectTable.xsl" action="getSQLValue">
+			<parameterList>
+				<parameter name="query" type="fixed"><value>file:predefined/Table2XML[where TABSCHEMA='?tabschema?' and TABNAME='?tabname?']</value></parameter>
+			</parameterList>
+		</type>
+		<type name="XML DATA" destination="adhoc" title="XML Row Set" generator="XSL/selectTable.xsl" action="getSQLValue">
+			<parameterList>
+				<parameter name="outputType" type="raw"><value>rowset</value></parameter>
+				<parameter name="test" type="raw"><value>rowset</value></parameter>
+				<parameter name="query" type="fixed"><value>file:predefined/Table2XML[where TABSCHEMA='?tabschema?' and TABNAME='?tabname?']</value></parameter>
+			</parameterList>
+		</type>
+	</output>
+	<rowsPerPage>100</rowsPerPage>
+	<orderByIndex name="tabschema" direction="A"/>
+	<orderByIndex name="tabname" direction="A"/>
+	<displayColumns>
+		<col type="reference" name="contents"/>
+		<col type="reference" name="dynSQL"/>	
+		<col type="action" name="xmlgen"/>
+		<col type="column" name="tabschema"/>
+		<col type="column" name="tabname"/>
+		<col type="column" name="status"/>
+		<col type="column" name="compression"/>						
+		<col type="action" name="rowcount"/>						
+		<col type="column" name="card"/>
+		<col type="column" name="avgRowSize"/>
+		<col type="column" name="volatile"/>
+		<col type="reference" name="cols"/>
+		<col type="reference" name="indexCols"/>
+		<col type="reference" name="auth"/>
+		<col type="column" name="dbName"/>
+		<col type="column" name="tbspace"/>
+		<col type="column" name="pagesUsed"/>
+		<col type="column" name="pagesAllocated"/>
+		<col type="column" name="index_tbspace"/>
+		<col type="column" name="long_tbspace"/>
+	</displayColumns>
+	<disable_edit/>
+	<action name="diagram" DBMS="DB2">
+		<title>Diagram</title>
+		<icon>images/icon-histo.gif</icon>   
+    	<actionScript>
+    		<task>
+				<loadPage>
+					<pageWindow target="_blank" windowStage="?CALLING_STAGE?">
+						<panel name="main" PrimaryContainer="true">
+							<link type="action" target="_self" window="_self" connectionRequired="y">
+								<parameterList>
+									<parameter name="action">chartNodal</parameter>
+									<parameter name="$chartTitle">Table</parameter>
+									<parameter name="$sourceType">SQL</parameter>
+									<parameter name="$source">file:predefined/Table2XML[where TABSCHEMA='?tabschema?' and TABNAME='?tabname?']</parameter>
+									<parameter name="$report">XSL/createTable.xsl</parameter>
+									<parameter name="$reportType">text</parameter>
+									<parameter name="$nodeControl">
+<![CDATA[
+<nodeControl>
+	<node name='default' textSizeAttribute='5'/>
+	<node name='table' colour='#99CCFF' shape='table'/>
+	<node name='column' colour='#CC66FF' shape='operator' hideAble='true'/>	
+</nodeControl>
+]]>
+									</parameter>
+								</parameterList>
+							</link>				
+						</panel>
+					</pageWindow>
+				</loadPage>
+			</task>
+    	</actionScript>
+    </action>
+	<action name="dropTable">
+		<title>Drop</title>
+		<icon>images/trash.gif</icon>   
+    	<actionScript>
+    		<task>
+		    	<assignSharedConstant name="objectType" type="fixed">
+					<value>?type?</value>
+				</assignSharedConstant>
+				<assignSharedConstant name="objectName" type="fixed">
+					<value>"?tabschema?"."?tabname?" </value>
+				</assignSharedConstant>
+		   		<callGlobalAction name="dropSQLObject"/>
+	   		</task>
+    	</actionScript>
+    </action>
+    <action name="db2look" DBMS="DB2">
+		<title>Generate DDL</title>
+    		<actionScript>
+    		<task>
+    			<lock/>
+    				<action name="getSession" type="serverAction" >
+					<parameterList>
+						<parameter name="action" type="raw">
+							<value>getSessionVariable</value>
+						</parameter>
+						<parameter name="name[database]" type="fixed">
+							<value>Connections.USE_DATABASE_CONNECTION.database</value>
+						</parameter>
+					</parameterList>
+				</action>
+			    <assignSharedConstant name="database-name" type="returnObject">
+					<value>getSession.returnValue.database</value>
+				</assignSharedConstant>
+			    	<assignSharedConstant name="schema-name" type="blockValue">
+					<value>tabschema</value>
+				</assignSharedConstant>
+				<assignSharedConstant name="table-name" type="blockValue">
+					<value>tabname</value>
+				</assignSharedConstant>
+		   		<assignSharedConstant name="command" type="raw">
+					<value>System/db2look.table</value>
+				</assignSharedConstant>
+	   			<callGlobalAction name="systemCommandExecution"/>				
+    			<unlock/>
+	   		</task>
+    	</actionScript>
+    </action>
+	<reference name="dynSQL" DBMS="DB2" navigator="leaf">
+		<title>Possible SQL</title>
+		<reftype>table</reftype>
+		<refvalue>Performance/snapdynsql</refvalue>
+		<icon>images/icon-link-calendar.gif</icon>								
+		<ref foreignColumnName="stmttext">
+			<comparetype>locateAnyCase</comparetype>
+			<localColumnName>tabname</localColumnName>
+		</ref>
+	</reference>	
+	<action name="rowcount">
+		<title>Count</title>
+		<icon>images/icon-count.gif</icon>			
+		<actionScript name="helloworld" type="serverAction">
+			<parameterList>
+					<parameter name="action" type="fixed">
+						<value>rowCount</value>
+					</parameter>
+					<parameter name="schema"  type="fixed">
+						<value>"?tabschema?"</value>
+					</parameter>
+					<parameter name="name" type="fixed">
+						<value>"?tabname?"</value>
+					</parameter>
+				</parameterList>
+				<followOnAction condition="true">
+					<task>	
+						<assignLocalParameter name="RETURN_VALUE" type="returnObject">
+							<value>helloworld.returnValue</value>
+						</assignLocalParameter>
+							<alert>Total number of rows: ?RETURN_VALUE?</alert>
+					</task>
+				</followOnAction>
+				<followOnAction condition="true" negCondition="true">
+					<task>
+						<alert>Error retrieving row count.</alert>
+					</task>
+				</followOnAction>
+		</actionScript>
+	</action>
+	<reference name="contents">
+		<title>Contents</title>
+		<reftype>table</reftype>
+		<refvalue></refvalue>
+		<frame>main</frame>
+		<window>_blank</window>
+		<icon>images/icon-link-calendar.gif</icon>
+		<ref foreignColumnName="schema">
+			<localColumnName>tabschema</localColumnName>
+		</ref>
+		<ref foreignColumnName="table">
+			<localColumnName>tabname</localColumnName>
+		</ref>
+	</reference>		
+	<action name="xmlgen">
+		<title>XML</title>
+		<icon>images/icon-xml.gif</icon>
+		<actionScript name="helloworld" type="block">
+				<followOnAction condition="">
+					<task>	
+						<assignLocalParameter name="TABLENAME" type="blockValue">
+							<value>tabname</value>
+						</assignLocalParameter>
+						<assignLocalParameter name="SCHEMANAME" type="blockValue">
+							<value>tabschema</value>
+						</assignLocalParameter>
+						<loadPage>
+							<pageWindow target="_blank" windowStage="?CALLING_STAGE?">
+								<panel name="main" PrimaryContainer="true">
+										<URL>
+<![CDATA[
+http://?DB2MC_SERVER?/?ACTION_PROCESSOR??action=xmlgen&schemanameparm=?SCHEMANAME?&tablenameparm=?TABLENAME?&USE_CONNECTION=?ACTIVE_DATABASE_CONNECTION?
+]]>
+									</URL>				
+								</panel>
+							</pageWindow>
+						</loadPage>
+					</task>
+				</followOnAction>
+		</actionScript>
+	</action>
+	<reference name="cols">
+		<title>Columns</title>
+		<reftype>table</reftype>
+		<refvalue>colcatdetail</refvalue>
+		<icon>images/icon-column.gif</icon>
+		<ref foreignColumnName="tabschema">
+			<localColumnName>tabschema</localColumnName>
+		</ref>
+		<ref foreignColumnName="tabname">
+			<localColumnName>tabname</localColumnName>
+		</ref>
+	</reference>
+	<reference name="primaryKey" DBMS="DB2">
+		<title>Primary Key</title>
+		<reftype>table</reftype>
+		<refvalue>primaryKey</refvalue>
+		<icon>images/icon-column.gif</icon>
+		<ref foreignColumnName="tabschema">
+			<localColumnName>tabschema</localColumnName>
+		</ref>
+		<ref foreignColumnName="tabname">
+			<localColumnName>tabname</localColumnName>
+		</ref>
+	</reference>
+	<reference name="key" DBMS="DB2">
+		<title>Keys</title>
+		<reftype>table</reftype>
+		<refvalue>key</refvalue>
+		<icon>images/icon-column.gif</icon>
+		<ref foreignColumnName="tabschema">
+			<localColumnName>tabschema</localColumnName>
+		</ref>
+		<ref foreignColumnName="tabname">
+			<localColumnName>tabname</localColumnName>
+		</ref>
+	</reference>
+	<reference name="children" DBMS="DB2">
+	    <title>Children</title>
+		<reftype>table</reftype>
+		<refvalue>references</refvalue>
+		<icon>images/icon-column.gif</icon>
+		<ref foreignColumnName="reftabschema">
+			<localColumnName>tabschema</localColumnName>
+		</ref>
+		<ref foreignColumnName="reftabname">
+			<localColumnName>tabname</localColumnName>
+		</ref>
+	</reference>
+	<reference name="parents" DBMS="DB2">
+		<title>Parents</title>
+		<reftype>table</reftype>
+		<refvalue>references</refvalue>
+		<icon>images/icon-column.gif</icon>
+		<ref foreignColumnName="tabschema">
+			<localColumnName>tabschema</localColumnName>
+		</ref>
+		<ref foreignColumnName="tabname">
+			<localColumnName>tabname</localColumnName>
+		</ref>
+	</reference>
+	<reference name="auth">
+		<title>Privileges</title>
+		<reftype>table</reftype>
+		<refvalue>Authority/tabauth</refvalue>
+		<icon>images/icon-privilege.gif</icon>
+		<ref foreignColumnName="tabschema">
+			<localColumnName>tabschema</localColumnName>
+		</ref>
+		<ref foreignColumnName="tabname">
+			<localColumnName>tabname</localColumnName>
+		</ref>
+	</reference>
+	<reference name="indexes">
+		<title>Indexes</title>
+		<reftype>table</reftype>
+		<refvalue>indexcat</refvalue>
+		<icon>images/icon-index.gif</icon>
+		<ref foreignColumnName="tabschema">
+			<localColumnName>tabschema</localColumnName>
+		</ref>
+		<ref foreignColumnName="tabname">
+			<localColumnName>tabname</localColumnName>
+		</ref>
+	</reference>
+	<reference name="indexCols">
+		<title>Index Columns</title>
+		<reftype>table</reftype>
+		<refvalue>indexcolumnsuse</refvalue>
+		<icon>images/icon-index.gif</icon>
+		<ref foreignColumnName="tabschema">
+			<localColumnName>tabschema</localColumnName>
+		</ref>
+		<ref foreignColumnName="tabname">
+			<localColumnName>tabname</localColumnName>
+		</ref>
+	</reference>
+	<reference name="depViews">
+		<title>Dependent Views</title>
+		<reftype>table</reftype>
+		<refvalue>DB2Catalog/viewDep</refvalue>
+		<icon>images/icon-index.gif</icon>
+		<ref foreignColumnName="viewschema">
+			<localColumnName>tabschema</localColumnName>
+		</ref>
+		<ref foreignColumnName="viewname">
+			<localColumnName>tabname</localColumnName>
+		</ref>
+	</reference>
+	<reference name="referralTables">
+		<title>Parent Views</title>
+		<reftype>table</reftype>
+		<refvalue>DB2Catalog/viewDep</refvalue>
+		<icon>images/icon-index.gif</icon>
+		<ref foreignColumnName="bschema">
+			<localColumnName>tabschema</localColumnName>
+		</ref>
+		<ref foreignColumnName="bname">
+			<localColumnName>tabname</localColumnName>
+		</ref>
+	</reference>
+	<reference name="packages">
+		<title>Plan/Packages</title>
+		<reftype>table</reftype>
+		<refvalue>planDep</refvalue>
+		<ref foreignColumnName="btype">
+			<localColumnName>type</localColumnName>
+		</ref>
+		<ref foreignColumnName="bcreator">
+			<localColumnName>tabschema</localColumnName>
+		</ref>
+		<ref foreignColumnName="bname">
+			<localColumnName>tabname</localColumnName>
+		</ref>
+	</reference>
+	<reference name="routines">
+		<title>Routines(packages)</title>
+		<reftype>table</reftype>
+		<refvalue>DB2Catalog/routineDep</refvalue>
+		<ref foreignColumnName="btype">
+			<localColumnName>type</localColumnName>
+		</ref>
+		<ref foreignColumnName="bschema">
+		<localColumnName>tabschema</localColumnName>
+		</ref>
+		<ref foreignColumnName="bname">
+			<localColumnName>tabname</localColumnName>
+		</ref>
+	</reference>
+	<reference name="dynSQL" DBMS="DB2" navigator="leaf">
+		<title>Possible SQL</title>
+		<reftype>table</reftype>
+		<refvalue>Performance/snapdynsql</refvalue>
+		<icon>images/icon-link-calendar.gif</icon>								
+		<ref foreignColumnName="stmttext">
+			<comparetype>locateAnyCase</comparetype>
+			<localColumnName>tabname</localColumnName>
+		</ref>
+	</reference>	
+	<reference name="trigger">
+		<title>Triggers</title>
+			<reftype>table</reftype>
+		<refvalue>DB2Catalog/trigger</refvalue>
+		<ref foreignColumnName="tabschema">
+			<localColumnName>tabschema</localColumnName>
+		</ref>
+		<ref foreignColumnName="tabname">
+			<localColumnName>tabname</localColumnName>
+		</ref>
+	</reference>
+	<action name="dropTable">
+		<title>Drop</title>
+		<icon>images/trash.gif</icon>   
+    	<actionScript>
+    		<task>
+		    	<assignSharedConstant name="objectType" type="raw">
+					<value>TABLE</value>
+				</assignSharedConstant>
+				<assignSharedConstant name="objectName" type="fixed">
+					<value>"?tabschema?"."?tabname?" </value>
+				</assignSharedConstant>
+		   		<callGlobalAction name="dropSQLObject"/>
+	   		</task>
+    	</actionScript>
+    </action>
+	<action name="runstats" DBMS="DB2">
+		<title>Runstats</title>
+    	<actionScript>
+    		<task>
+		    	<assignSharedConstant name="schema" type="fixed">
+					<value>"?tabschema?"</value>
+				</assignSharedConstant>
+		    	<assignSharedConstant name="name" type="fixed">
+					<value>"?tabname?"</value>
+				</assignSharedConstant>
+		    	<assignSharedConstant name="command" type="raw">
+					<value>SQL/adminCmdRunstats</value>
+				</assignSharedConstant>
+		   		<callGlobalAction name="commandExecution"/>
+	   		</task>
+    	</actionScript>
+    </action>
+	<action name="createIndex">
+		<title>Create Index</title>
+    	<actionScript>
+    		<task>
+		    	<assignSharedConstant name="table-name" type="fixed">
+					<value>"?tabschema?"."?tabname?"</value>
+				</assignSharedConstant>
+		    	<assignSharedConstant name="command" type="raw">
+					<value>SQL/Create/createIndex</value>
+				</assignSharedConstant>
+		   		<callGlobalAction name="commandExecution"/>
+	   		</task>
+    	</actionScript>
+    </action>
+	<action name="truncate" DBMS="DB2">
+		<title>Truncate</title>
+    	<actionScript>
+    		<task>
+		    	<assignSharedConstant name="table-name" type="fixed">
+					<value>"?tabschema?"."?tabname?"</value>
+				</assignSharedConstant>
+		    	<assignSharedConstant name="command" type="raw">
+					<value>SQL/truncate</value>
+				</assignSharedConstant>
+		   		<callGlobalAction name="commandExecution"/>
+	   		</task>
+    	</actionScript>
+    </action>
+	<action name="reorg" DBMS="DB2">
+		<title>Reorg</title>
+    	<actionScript>
+    		<task>
+		    	<assignSharedConstant name="table-name" type="fixed">
+					<value>"?tabschema?"."?tabname?"</value>
+				</assignSharedConstant>
+		    	<assignSharedConstant name="command" type="raw">
+					<value>SQL/adminCmdReorg</value>
+				</assignSharedConstant>
+		   		<callGlobalAction name="commandExecution"/>
+	   		</task>
+    	</actionScript>
+    </action>
+   	<action name="grant">
+		<title>Grant</title>
+    	<actionScript>
+    		<task>
+		    	<assignSharedConstant name="table-name" type="fixed">
+					<value>"?tabschema?"."?tabname?"</value>
+				</assignSharedConstant>
+		    	<assignSharedConstant name="command" type="raw">
+					<value>SQL/Grant/grantTable</value>
+				</assignSharedConstant>
+		   		<callGlobalAction name="commandExecution"/>
+	   		</task>
+    	</actionScript>
+    </action>
+	<action name="setCompress" DBMS="DB2">
+		<title>Compress</title>
+		<icon>images/switch.gif</icon>	
+		<actionScript name="askSetCompress" type="prompt">
+			<message>alter table "?TABSCHEMA?"."?TABNAME?" compress</message>
+			<parameterList>
+				<parameter name="TABSCHEMA" type="blockValue">
+					<value>tabschema</value>
+				</parameter>
+				<parameter name="TABNAME" type="blockValue">
+					<value>tabname</value>
+				</parameter>
+				<parameter name="PROMPT_DEFAULT" type="blockValue">
+					<value>compression</value>
+					<check>
+						<onMatch condition="Y">
+							<task>
+								<assignLocalParameter name="PROMPT_DEFAULT" type="raw">
+									<value>no</value>
+								</assignLocalParameter>
+							</task>
+							</onMatch>
+							<onMatch condition="N">
+								<task>
+								<assignLocalParameter name="PROMPT_DEFAULT" type="raw">
+									<value>yes</value>
+									</assignLocalParameter>
+								</task>
+							</onMatch>
+						</check>							
+					</parameter>
+				</parameterList>
+				<followOnAction condition="true">
+					<task>
+						<action name="executeCompress" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="fixed">
+									<value>executeSQL</value>
+								</parameter>
+								<parameter name="SQL" type="fixed">
+									<value>alter table "?TABSCHEMA?"."?TABNAME?" compress ?VALUE?</value>
+								</parameter>
+								<parameter name="parameter[VALUE]" type="returnObject">
+									<value>askSetCompress.returnValue</value>
+								</parameter>
+								<parameter name="parameter[TABSCHEMA]" type="blockValue">
+									<value>tabschema</value>
+								</parameter>
+								<parameter name="parameter[TABNAME]" type="blockValue">
+									<value>tabname</value>
+								</parameter>
+							</parameterList>
+							<followOnAction condition="true" negCondition="true">
+								<task>
+									<action name="raiseError" type="alert">
+										<message>Set compression failed: ?ERROR_MESSAGE?</message>
+										<parameterList>
+											<parameter name="ERROR_MESSAGE" type="returnObject">
+												<value>executeCompress.returnValue.STMTMSG</value>
+											</parameter>
+										</parameterList>
+									</action>
+								</task>
+							</followOnAction>
+							<followOnAction condition="true">
+								<task>
+									<windowReload/>
+								</task>
+							</followOnAction>
+						</action>
+				</task>
+			</followOnAction>
+		</actionScript>
+	</action>	
+	<column name="dbName" DBMS="DB2Z">
+		<sqlName>DBNAME</sqlName>
+		<title>DB</title>
+	</column>
+	<column name="tabschema">
+		<sqlName>TABSCHEMA</sqlName>
+		<title>Schema</title>
+		<primaryKey/>			
+		<c_prefill>
+			<table>schema</table>
+			<column>SCHEMANAME</column>
+		</c_prefill>
+	</column>
+	<column name="tabname">
+		<sqlName>TABNAME</sqlName>
+		<title>Table</title>
+		<primaryKey/>			
+	</column>
+	<column name="volatile" DBMS="DB2">
+		<sqlName>VOLATILE</sqlName>
+		<title>Volatile</title>
+		<type>n</type>
+		<c_drill>s</c_drill>
+   		<columnMask>
+			<valueMask value=""><mask></mask></valueMask>
+			<valueMask value="C"><mask>Yes</mask></valueMask>
+   		</columnMask>					
+	</column>
+	<column name="card">
+		<sqlName>CARD</sqlName>
+		<title>Number of Rows</title>
+		<type>n</type>
+   		<columnMask>
+			<valueMask value="-1"><mask>No Stats</mask></valueMask>
+   		</columnMask>					
+   		<formatNumber separator=","/>				
+	</column>
+	<column name="type">
+		<sqlName>TYPE</sqlName>
+		<title>Type</title>
+		<prefillEnable/>
+   		<columnMask_file>masks/tableTypeMasks.xml</columnMask_file>	
+		<columnMask>
+			<valueMask value="T">
+				<mask>Table</mask>
+				<reference name="details">
+					<title>Tables</title>
+					<reftype>displayRow</reftype>
+					<refvalue>tablecat</refvalue>
+					<icon>images/fw_bold.gif</icon>
+					<ref foreignColumnName="tabschema">
+						<localColumnName>tabschema</localColumnName>
+					</ref>
+					<ref foreignColumnName="tabname">
+						<localColumnName>tabname</localColumnName>
+					</ref>
+				</reference>
+			</valueMask>
+			<valueMask value="S">
+				<mask>Materialized Query Table</mask>
+				<reference name="details">
+						<title>MQTs</title>
+						<reftype>displayRow</reftype>
+						<refvalue>viewcat</refvalue>
+						<icon>images/fw_bold.gif</icon>
+						<ref foreignColumnName="tabschema">
+							<localColumnName>tabschema</localColumnName>
+						</ref>
+						<ref foreignColumnName="tabname">
+							<localColumnName>tabname</localColumnName>
+						</ref>
+				</reference>
+			</valueMask>
+			<valueMask value="N">
+				<mask>Nickname</mask>
+				<reference name="details">
+					<title>Nicknames</title>
+					<reftype>displayRow</reftype>
+					<refvalue>Federation/federatedObjects</refvalue>
+					<icon>images/fw_bold.gif</icon>
+					<ref foreignColumnName="TABSCHEMA">
+						<localColumnName>tabschema</localColumnName>
+					</ref>
+					<ref foreignColumnName="TABNAME">
+						<localColumnName>tabname</localColumnName>
+					</ref>
+				</reference>
+			</valueMask>
+			<valueMask value="V">
+				<mask>View</mask>
+				<reference name="details">
+					<title>Views</title>
+					<reftype>displayRow</reftype>
+					<refvalue>viewcat</refvalue>
+					<icon>images/fw_bold.gif</icon>
+					<ref foreignColumnName="viewschema">
+						<localColumnName>tabschema</localColumnName>
+					</ref>
+					<ref foreignColumnName="viewname">
+						<localColumnName>tabname</localColumnName>
+					</ref>
+				</reference>
+			</valueMask>
+			<valueMask value="A">
+				<mask>Alias</mask>
+				<reference name="details">
+					<title>Aliases</title>
+					<reftype>displayRow</reftype>
+					<refvalue>alias</refvalue>
+					<icon>images/fw_bold.gif</icon>
+					<ref foreignColumnName="aliasSchema">
+						<localColumnName>tabschema</localColumnName>
+					</ref>
+					<ref foreignColumnName="aliasName">
+						<localColumnName>tabname</localColumnName>
+					</ref>
+				</reference>
+			</valueMask>
+		</columnMask>
+	</column>
+	<column name="status">
+		<sqlName>STATUS</sqlName>
+		<title>Status</title>
+		<prefillEnable/>						
+   		<columnMask>
+			<valueMask value="C"><mask>Set integrity pending</mask></valueMask>
+			<valueMask value="N"><mask>Normal</mask></valueMask>
+			<valueMask value="X"><mask>Inoperative</mask></valueMask>
+   		</columnMask>					
+	</column>
+	<column name="tbspaceid">
+		<sqlName>TBSPACEID</sqlName>
+		<title>Tablespace Id</title>
+		<type>n</type>
+		<prefillEnable/>								
+	</column>	
+	<column name="tbspace"  DBMS="DB2">
+		<reference name="tbspace">
+			<title>Tablespace</title>
+			<reftype>displayRow</reftype>
+			<refvalue>Performance/tbsputil</refvalue>
+			<icon>images/icon-tbs.gif</icon>
+			<ref foreignColumnName="tbsp_id">
+				<localColumnName>tbspaceid</localColumnName>
+				</ref>
+		</reference>	
+		<sqlName>
+		   case when type in ('T','S') then coalesce(TBSPACE,'*partitioned')
+		   end 
+		</sqlName>
+		<title>Tablespace</title>
+		<prefillEnable/>
+		<reference name="tbspace">
+			<title>Tablespace</title>
+			<reftype>table</reftype>
+			<refvalue>Performance/tbsputil</refvalue>
+			<icon>images/icon-tbs.gif</icon>
+			<ref foreignColumnName="tbsp_id">
+				<localColumnName>tbspaceid</localColumnName>
+			</ref>
+		</reference>
+		<columnMask>
+			<valueMask>
+				<mask></mask>
+			</valueMask>
+			<valueMask value="*partitioned">
+				<mask>*partitioned</mask>
+				<reference name="dataParts">
+					<title>Partitions</title>
+					<reftype>table</reftype>
+					<refvalue>dataPartition</refvalue>
+					<icon>images/fw_bold.gif</icon>
+					<ref foreignColumnName="TABSCHEMA">
+						<localColumnName>schema</localColumnName>
+					</ref>
+					<ref foreignColumnName="TABNAME">
+						<localColumnName>tabname</localColumnName>
+					</ref>
+				</reference>
+			</valueMask>
+   		</columnMask>					
+	</column>	
+	<column name="index_tbspace">
+		<sqlName>index_tbspace</sqlName>
+		<title>Index Space</title>
+		<type>s</type>
+		<prefillEnable/>									
+   		<columnMask>
+			<valueMask value="null"><mask></mask></valueMask>
+   		</columnMask>					
+	</column>
+	<column name="long_tbspace">
+		<sqlName>long_tbspace</sqlName>
+		<title>Long Space</title>
+		<type>s</type>
+		<prefillEnable/>									
+   		<columnMask>
+			<valueMask value="null"><mask></mask></valueMask>
+   		</columnMask>					
+	</column>
+	<column name="pagesAllocated">
+		<sqlName>FPAGES</sqlName>
+		<title>Pages Allocated</title>
+		<type>n</type>
+   		<columnMask>
+			<valueMask value="-1"><mask>No Stats</mask></valueMask>
+   		</columnMask>					
+	</column>
+	<column name="pagesUsed">
+		<sqlName>NPAGES</sqlName>
+		<title>Pages Used</title>
+		<type>n</type>
+   		<columnMask>
+			<valueMask value="-1"><mask>No Stats</mask></valueMask>
+   		</columnMask>					
+	</column>
+	<column name="statisticsProfile" DBMS="DB2">
+		<sqlName>STATISTICS_PROFILE</sqlName>
+		<title>Statistics Profile</title>
+		<type>l</type>
+	</column>
+	<column name="compression" DBMS="DB2">
+		<sqlName>COMPRESSION</sqlName>
+		<title>Compress</title>
+	</column>
+	<column name="avgRowSize" DBMS="DB2">
+		<sqlName>AVGROWSIZE</sqlName>
+		<title>Avg. Row Size</title>
+		<type>n</type>
+	</column>
+	<column name="OWNER">
+		<sqlName>OWNER</sqlName>
+		<title>Owner</title>
+		<type>s</type>
+	</column>
+	<column name="OWNERTYPE">
+		<sqlName>OWNERTYPE</sqlName>
+		<title>Owner Type</title>
+		<type>s</type>
+	</column>
+	<column name="BASE_TABSCHEMA">
+		<sqlName>BASE_TABSCHEMA</sqlName>
+		<title>Base Schema</title>
+		<type>s</type>
+	</column>
+	<column name="BASE_TABNAME" DBMS="DB2">
+		<sqlName>BASE_TABNAME</sqlName>
+		<title>Base Table Name</title>
+		<type>s</type>
+	</column>
+	<column name="ROWTYPESCHEMA" DBMS="DB2">
+		<sqlName>ROWTYPESCHEMA</sqlName>
+		<title>Row Type Schema</title>
+		<type>s</type>
+	</column>
+	<column name="ROWTYPENAME" DBMS="DB2">
+		<sqlName>ROWTYPENAME</sqlName>
+		<title>Row Type Name</title>
+		<type>s</type>
+	</column>
+	<column name="CREATE_TIME">
+		<sqlName>CREATE_TIME</sqlName>
+		<title>Created</title>
+		<type>n</type>
+	</column>
+	<column name="ALTER_TIME">
+		<sqlName>ALTER_TIME</sqlName>
+		<title>Altered</title>
+		<type>n</type>
+	</column>
+	<column name="INVALIDATE_TIME">
+		<sqlName>INVALIDATE_TIME</sqlName>
+		<title>Invalidated</title>
+		<type>n</type>
+	</column>
+	<column name="STATS_TIME">
+		<sqlName>STATS_TIME</sqlName>
+		<title>Statistic</title>
+		<type>n</type>
+	</column>
+	<column name="COLCOUNT">
+		<sqlName>COLCOUNT</sqlName>
+		<title>Col. Count</title>
+		<type>n</type>
+	</column>
+	<column name="TABLEID">
+		<sqlName>TABLEID</sqlName>
+		<title>Table Id.</title>
+		<type>n</type>
+	</column>
+	<column name="OVERFLOW">
+		<sqlName>OVERFLOW</sqlName>
+		<title>Overflow</title>
+		<type>n</type>
+	</column>
+	<column name="PARENTS" DBMS="DB2">
+		<sqlName>PARENTS</sqlName>
+		<title>Parents</title>
+		<type>n</type>
+	</column>
+	<column name="CHILDREN" DBMS="DB2">
+		<sqlName>CHILDREN</sqlName>
+		<title>Children</title>
+		<type>n</type>
+	</column>
+	<column name="SELFREFS" DBMS="DB2">
+		<sqlName>SELFREFS</sqlName>
+		<title>Self Refs</title>
+		<type>n</type>
+	</column>
+	<column name="KEYCOLUMNS">
+		<sqlName>KEYCOLUMNS</sqlName>
+		<title>Key Columns</title>
+		<type>n</type>
+	</column>
+	<column name="KEYINDEXID" DBMS="DB2">
+		<sqlName>KEYINDEXID</sqlName>
+		<title>Key Index Id.</title>
+		<type>n</type>
+	</column>
+	<column name="KEYUNIQUE">
+		<sqlName>KEYUNIQUE</sqlName>
+		<title>Key Unique</title>
+		<type>n</type>
+	</column>
+	<column name="CHECKCOUNT">
+		<sqlName>CHECKCOUNT</sqlName>
+		<title>Check Count</title>
+		<type>n</type>
+	</column>
+	<column name="DATACAPTURE">
+		<sqlName>DATACAPTURE</sqlName>
+		<title>Data Capture</title>
+		<type>s</type>
+	</column>
+	<column name="CONST_CHECKED">
+		<sqlName>CONST_CHECKED</sqlName>
+		<title>Const. Checked</title>
+		<type>s</type>
+	</column>
+	<column name="PMAP_ID">
+		<sqlName>PMAP_ID</sqlName>
+		<title>pmap Id.</title>
+		<type>n</type>
+	</column>
+	<column name="PARTITION_MODE" DBMS="DB2">
+		<sqlName>PARTITION_MODE</sqlName>
+		<title>Partition Mode</title>
+		<type>s</type>
+	</column>
+	<column name="LOG_ATTRIBUTE" DBMS="DB2">
+		<sqlName>LOG_ATTRIBUTE</sqlName>
+		<title>Log Attribute</title>
+		<type>s</type>
+	</column>
+	<column name="PCTFREE">
+		<sqlName>PCTFREE</sqlName>
+		<title>% Free</title>
+		<type>n</type>
+		
+	</column>
+	<column name="APPEND_MODE" DBMS="DB2">
+		<sqlName>APPEND_MODE</sqlName>
+		<title>Append</title>
+		<type>s</type>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="REFRESH" DBMS="DB2">
+		<sqlName>REFRESH</sqlName>
+		<title>refresh</title>
+		<type>s</type>
+	</column>
+	<column name="REFRESH_TIME" DBMS="DB2">
+		<sqlName>REFRESH_TIME</sqlName>
+		<title>Refresh Time</title>
+		<type>n</type>
+	</column>
+	<column name="LOCKSIZE">
+		<sqlName>LOCKSIZE</sqlName>
+		<title>Lock Size</title>
+		<type>s</type>
+	</column>
+	<column name="ROW_FORMAT" DBMS="DB2">
+		<sqlName>ROW_FORMAT</sqlName>
+		<title>Row Format</title>
+		<type>s</type>
+	</column>
+	<column name="PROPERTY" DBMS="DB2">
+		<sqlName>PROPERTY</sqlName>
+		<title>Property</title>
+		<type>s</type>
+	</column>
+	<column name="ACCESS_MODE" DBMS="DB2">
+		<sqlName>ACCESS_MODE</sqlName>
+		<title>Access Mode</title>
+		<type>s</type>
+	</column>
+	<column name="CLUSTERED">
+		<sqlName>CLUSTERED</sqlName>
+		<title>Clustered</title>
+		<type>s</type>
+	</column>
+	<column name="ACTIVE_BLOCKS" DBMS="DB2">
+		<sqlName>ACTIVE_BLOCKS</sqlName>
+		<title>Active Blocks</title>
+		<type>n</type>
+	</column>
+	<column name="DROPRULE" DBMS="DB2">
+		<sqlName>DROPRULE</sqlName>
+		<title>Drop Rule</title>
+		<type>s</type>
+	</column>
+	<column name="MAXFREESPACESEARCH" DBMS="DB2">
+		<sqlName>MAXFREESPACESEARCH</sqlName>
+		<title>Max Freespace Search</title>
+		<type>n</type>
+	</column>
+	<column name="AVGCOMPRESSEDROWSIZE" DBMS="DB2">
+		<sqlName>AVGCOMPRESSEDROWSIZE</sqlName>
+		<title>Avg Compressed Row Size</title>
+		<type>n</type>
+	</column>
+	<column name="AVGROWCOMPRESSIONRATIO" DBMS="DB2">
+		<sqlName>AVGROWCOMPRESSIONRATIO</sqlName>
+		<title>Avg. Row Compression Ratio</title>
+		<type>n</type>
+	</column>
+	<column name="PCTROWSCOMPRESSED" DBMS="DB2">
+		<sqlName>PCTROWSCOMPRESSED</sqlName>
+		<title>% Rows Compressed</title>
+		<type>n</type>
+	</column>
+	<column name="LOGINDEXBUILD" DBMS="DB2">
+		<sqlName>LOGINDEXBUILD</sqlName>
+		<title>Log Index Build</title>
+		<type>s</type>
+	</column>
+	<column name="CODEPAGE" DBMS="DB2">
+		<sqlName>CODEPAGE</sqlName>
+		<title>Code Page</title>
+		<type>n</type>
+	</column>
+	<column name="COLLATIONSCHEMA" DBMS="DB2">
+		<sqlName>COLLATIONSCHEMA</sqlName>
+		<title>Collation Schema</title>
+		<type>s</type>
+	</column>
+	<column name="COLLATIONNAME" DBMS="DB2">
+		<sqlName>COLLATIONNAME</sqlName>
+		<title>Collation Name</title>
+		<type>s</type>
+	</column>
+	<column name="COLLATIONSCHEMA_ORDERBY" DBMS="DB2">
+		<sqlName>COLLATIONSCHEMA_ORDERBY</sqlName>
+		<title>Collation Schema Order</title>
+		<type>s</type>
+	</column>
+	<column name="COLLATIONNAME_ORDERBY" DBMS="DB2">
+		<sqlName>COLLATIONNAME_ORDERBY</sqlName>
+		<title>Collation Name Order</title>
+		<type>s</type>
+	</column>
+	<column name="ENCODING_SCHEME" DBMS="DB2">
+		<sqlName>ENCODING_SCHEME</sqlName>
+		<title>Encoding Scheme</title>
+		<type>s</type>
+	</column>
+	<column name="PCTPAGESSAVED">
+		<sqlName>PCTPAGESSAVED</sqlName>
+		<title>% Pages Saved</title>
+		<type>n</type>
+	</column>
+	<column name="LAST_REGEN_TIME" DBMS="DB2">
+		<sqlName>LAST_REGEN_TIME</sqlName>
+		<title>Last Regen</title>
+		<type>n</type>
+	</column>
+	<column name="SECPOLICYID" DBMS="DB2">
+		<sqlName>SECPOLICYID</sqlName>
+		<title>Sec. Policy Id.</title>
+		<type>n</type>
+	</column>
+	<column name="PROTECTIONGRANULARITY" DBMS="DB2">
+		<sqlName>PROTECTIONGRANULARITY</sqlName>
+		<title>Protection Granularity</title>
+		<type>s</type>
+	</column>
+	<column name="AUDITPOLICYID" DBMS="DB2">
+		<sqlName>AUDITPOLICYID</sqlName>
+		<title>Audit Policy Id.</title>
+		<type>n</type>
+	</column>
+	<column name="AUDITPOLICYNAME" DBMS="DB2">
+		<sqlName>AUDITPOLICYNAME</sqlName>
+		<title>Audit Policy Name</title>
+		<type>s</type>
+	</column>
+	<column name="DEFINER" DBMS="DB2">
+		<sqlName>DEFINER</sqlName>
+		<title>Definer</title>
+		<type>s</type>
+	</column>
+	<column name="REMARKS">
+		<sqlName>REMARKS</sqlName>
+		<title>Remarks</title>
+		<type>s</type>
+	</column>
+</table>
+	

@@ -1,0 +1,371 @@
+/*******************************************************************************
+ *  Copyright IBM Corp. 2007 All rights reserved.
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *********************************************************************************/
+
+  .contextBaseNoLinkHighlight a {
+ }
+ .contextBaseNoLinkHighlight a:hover {
+ 	padding-right:15px;
+	cursor: pointer;
+	background-color: #e1e1e1;
+	color:#000000; 
+ }
+ 
+ 
+.contextBase {
+	background-color:transparent;
+	border: 1px solid transparent;
+	height:20px;
+	width:100%;
+	text-decoration: none;
+	font-family: Arial, Helvetica, sans-serif;
+	z-index:1000;
+	font-size:12px;
+}
+
+.contextBase_touch {
+        background-color:transparent;
+        border: 1px solid transparent;
+        height:30px;
+        width:100%;
+        text-decoration: none;
+        font-family: Arial, Helvetica, sans-serif;
+        z-index:1000;
+        font-size:18px;
+}
+
+
+.contextBaseBreak {
+	background-image:url('./images/linebreak.gif');
+	background-position:center left;
+	background-repeat:repeat-x;
+	margin: 0px;
+	padding: 0px;
+	
+}
+
+.contextBaseBreakNoText {
+	background-image:url('./images/linebreak.gif');
+	background-position:center left;
+	background-repeat:repeat-x;
+	margin: 0px;
+	padding: 0px;
+}
+
+.contextBaseBreakText {
+	background-color: #e1e1e1;
+	margin-left: 5px;
+	font-family: Arial, Helvetica, sans-serif;
+	z-index:1000;
+	font-size:10px;
+	padding:3px;	
+}
+
+.contextBaseBreakText_touch {
+        background-color: #e1e1e1;
+        margin-left: 5px;
+        font-family: Arial, Helvetica, sans-serif;
+        z-index:1000;
+        font-size:16px;
+        padding:3px;
+}
+
+
+.contextBase a{
+	padding-right:15px;
+	cursor: pointer;
+	background-color: #e1e1e1;
+
+	color:#000000;
+}
+
+.contextBase a:hover{
+	background-image: url(images/onSubMenuBackground.gif);
+	background-repeat: repeat-x;
+	
+	color:#FFFFFF;
+	text-decoration: none;
+}
+
+.contextBase_touch a{
+        padding-right:15px;
+        cursor: pointer;
+        background-color: #e1e1e1;
+        border: 1px solid transparent;
+        color:#000000;
+}
+
+.contextRootBaseHeader {
+	background-color:rgb(200,200,200);
+	border: 1px solid transparent;
+	width:100%;
+	text-decoration: none;
+	font-family: Arial, Helvetica, sans-serif;
+	z-index:1000;
+	font-size:12px;
+}
+
+.contextRootBase {
+	background-image: url(images/generalTitleBarBack.gif);
+	background-repeat: repeat-x;
+	border: 1px solid transparent;
+	height:20px;
+	width:100%;
+	text-decoration: none;
+	font-family: Arial, Helvetica, sans-serif;
+	z-index:1000;
+	font-size:12px;
+}
+
+.contextRootBase a{
+	padding-right:15px;
+	cursor: pointer;
+	background-color:transparent;
+	color:#000000;
+}
+.contextRootBase a:hover{
+	background-image: url(images/onSubMenuBackground.gif);
+	background-repeat: repeat-x;
+	color:#FFFFFF;
+	text-decoration: none;
+}
+
+.contextBaseSelected {
+	background-color: #a2b7cc;
+	border: 1px solid #b5b7ff;
+	color:#FFFFFF;
+	text-decoration: none;
+}
+
+.contextBaseWindow a{
+	padding-right:15px;
+	padding-left:5px;
+	cursor: pointer;
+	background-color: #e1e1e1;
+	border: 1px solid #transparent;
+	color:#000000;
+	text-decoration: none;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size:14px;
+}
+
+.contextBaseWindow_touch a{
+        padding-right:15px;
+        padding-left:5px;
+        cursor: pointer;
+        background-color: #e1e1e1;
+        color:#000000;
+        text-decoration: none;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size:20px;
+}
+
+
+.contextBaseWindow a:hover{
+	background-image: url(images/onSubMenuBackground.gif);
+	background-repeat: repeat-x;
+	background-
+	cursor: pointer;
+	color:#ffffff;
+	text-decoration: none;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size:14px;
+}
+
+.contextBaseWindow hr{
+	background-color: #a2b7cc;
+}
+
+.contextBaseULVertical {
+
+margin: 0px;
+padding: 0px;
+list-style-position:inside;
+font-family: Arial, Helvetica, sans-serif;
+white-space: nowrap;
+}
+
+.contextBaseULVertical_touch {
+
+margin: 0px;
+padding: 0px;
+list-style-position:inside;
+font-family: Arial, Helvetica, sans-serif;
+white-space: nowrap;
+}
+
+
+.contextBaseULHorizontal {
+
+margin: 0px;
+padding: 0px;
+list-style-position:inside;
+font-family: Arial, Helvetica, sans-serif;
+white-space: nowrap;
+
+}
+
+.contextBaseULHorizontal_touch {
+
+margin: 0px;
+padding: 0px;
+list-style-position:inside;
+font-family: Arial, Helvetica, sans-serif;
+white-space: nowrap;
+
+}
+
+
+.contextBaseULHorizontal li {
+	display: inline;
+	list-style-type: none;
+}
+
+.contextBaseULHorizontal_touch li {
+        display: inline;
+        list-style-type: none;
+}
+
+
+
+.contextBaseLIMenu a
+{
+	cursor: pointer;
+	padding-top:1px;
+	padding-bottom:1px;
+	padding-left:10px;
+	padding-right:20px;
+	display:block;
+	background-image:URL("images/fw_bold.gif");
+	background-repeat:no-repeat;
+	background-position:center right;
+}
+
+.contextBaseLIMenu_touch a
+{
+        cursor: pointer;
+        padding-top:1px;
+        padding-bottom:1px;
+        padding-left:10px;
+        padding-right:20px;
+        display:block;
+        background-image:URL("images/fw_bold.gif");
+        background-repeat:no-repeat;
+        background-position:center right;
+}
+
+
+.contextBaseLIMenu a:hover {
+}
+
+.contextBaseLILink a{
+	cursor: pointer;
+	padding-left:10px;
+	display:block;
+}
+
+.contextBaseLILink_touch a{
+        cursor: pointer;
+        padding:5px;
+	padding-left:10px;
+	padding-right:10px;
+        display:block;
+}
+
+
+.contextBaseLILink a:hover{
+	background-image: url(images/onActionMenuBackground.gif);
+	background-repeat: repeat-x;
+	color:#000000;
+}
+
+
+.contextRootLIMenu a{
+	background-color:transparent;
+	border: 1px solid transparent;
+
+}
+
+.contextRootLIMenu_touch a{
+        background-color:transparent;
+        border: 1px solid transparent;
+
+}
+
+
+.contextRootLIMenu a:hover{}
+
+.contextRootLILink a{
+	background-color:transparent;
+	padding-left:5px;
+	padding-right:5px;
+}
+
+.contextRootLILink_touch a{
+        border: 1px solid transparent;
+        background-color:transparent;
+        padding-left:5px;
+        padding-right:5px;
+}
+
+
+.contextRootLILink a:hover {
+	background-image: url(images/onActionMenuBackground.gif);
+	background-repeat: repeat-x;
+	color:#000000;
+}
+
+
+.contextMenuBox {
+	border-left: 3px groove #CDCDCD;
+	padding-left:10px;
+    padding-top:1px;
+    padding-right:5px;
+}
+
+.embeddedMenu {
+	padding:0px;
+	margin:0px;
+	color:#000000;
+	text-decoration: none;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size:14px;
+}
+
+.embeddedMenu li{
+	padding-left:0px;
+	padding-left:0px;
+	border: 2px solid #b5b7ff;
+	color:#AAAAAA;
+	margin:0px;
+	list-style-type: none;
+}
+
+.embeddedMenu a{
+	display:block;
+	cursor: pointer;
+	color:#0000FF;
+	
+}
+
+.embeddedMenu a:hover{
+	cursor: pointer;
+	color:#000000;
+	background-color: #E0E0FF;
+}
+
+.embeddedMenu b{
+	color:#000000;
+}

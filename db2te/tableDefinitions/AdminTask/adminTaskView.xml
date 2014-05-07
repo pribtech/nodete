@@ -1,0 +1,109 @@
+<table name="SYSTOOLS.ADMIN_TASK_LIST">
+    <sql_name>SYSTOOLS.ADMIN_TASK_LIST</sql_name>
+    <singular_name>SYSTOOLS.ADMIN_TASK_LIST</singular_name>
+    <plural_name>SYSTOOLS.ADMIN_TASK_LIST</plural_name>
+    <description/>
+    <rows_per_page>50</rows_per_page>
+	<messages><SQL0204N>ATS Not installed.</SQL0204N></messages>
+    <display_columns>
+        <col type="column" name="begin_time"/>
+        <col type="column" name="end_time"/>
+        <col type="column" name="max_invocations"/>
+        <col type="column" name="name"/>
+        <col type="column" name="options"/>
+        <col type="column" name="owner"/>
+        <col type="column" name="ownertype"/>
+        <col type="column" name="procedure_input"/>
+        <col type="column" name="procedure_name"/>
+        <col type="column" name="procedure_schema"/>
+        <col type="column" name="remarks"/>
+        <col type="column" name="schedule"/>
+        <col type="column" name="taskid"/>
+        <col type="column" name="update_time"/>
+    </display_columns>
+	<disable_edit/>
+    <column name="begin_time">
+        <c_sql_name>BEGIN_TIME</c_sql_name>
+        <c_title>BEGIN_TIME</c_title>
+        <c_presentation>n</c_presentation>
+        <c_drill>n</c_drill>
+    </column>
+    <column name="end_time">
+        <c_sql_name>END_TIME</c_sql_name>
+        <c_title>END_TIME</c_title>
+        <c_presentation>n</c_presentation>
+        <c_drill>n</c_drill>
+    </column>
+    <column name="max_invocations">
+        <c_sql_name>MAX_INVOCATIONS</c_sql_name>
+        <c_title>MAX_INVOCATIONS</c_title>
+        <c_presentation>n</c_presentation>
+        <c_drill>n</c_drill>
+    </column>
+    <column name="name">
+        <c_sql_name>NAME</c_sql_name>
+        <c_title>NAME</c_title>
+        <c_presentation>s</c_presentation>
+        <c_drill>y</c_drill>
+    </column>
+    <column name="options">
+        <c_sql_name>OPTIONS</c_sql_name>
+        <c_title>OPTIONS</c_title>
+        <c_presentation>s</c_presentation>
+        <c_drill>y</c_drill>
+    </column>
+    <column name="owner">
+        <c_sql_name>OWNER</c_sql_name>
+        <c_title>OWNER</c_title>
+        <c_presentation>s</c_presentation>
+        <c_drill>y</c_drill>
+    </column>
+    <column name="ownertype">
+        <c_sql_name>OWNERTYPE</c_sql_name>
+        <c_title>OWNERTYPE</c_title>
+        <c_presentation>s</c_presentation>
+        <c_drill>y</c_drill>
+    </column>
+    <column name="procedure_input">
+        <c_sql_name>PROCEDURE_INPUT</c_sql_name>
+        <c_title>PROCEDURE_INPUT</c_title>
+        <c_presentation>l</c_presentation>
+        <c_drill>n</c_drill>
+    </column>
+    <column name="procedure_name">
+        <c_sql_name>PROCEDURE_NAME</c_sql_name>
+        <c_title>PROCEDURE_NAME</c_title>
+        <c_presentation>s</c_presentation>
+        <c_drill>y</c_drill>
+    </column>
+    <column name="procedure_schema">
+        <c_sql_name>PROCEDURE_SCHEMA</c_sql_name>
+        <c_title>PROCEDURE_SCHEMA</c_title>
+        <c_presentation>s</c_presentation>
+        <c_drill>y</c_drill>
+    </column>
+    <column name="remarks">
+        <c_sql_name>REMARKS</c_sql_name>
+        <c_title>REMARKS</c_title>
+        <c_presentation>s</c_presentation>
+        <c_drill>y</c_drill>
+    </column>
+    <column name="schedule">
+        <c_sql_name>SCHEDULE</c_sql_name>
+        <c_title>SCHEDULE</c_title>
+        <c_presentation>s</c_presentation>
+        <c_drill>y</c_drill>
+    </column>
+    <column name="taskid">
+        <c_sql_name>TASKID</c_sql_name>
+        <c_title>TASKID</c_title>
+        <c_presentation>n</c_presentation>
+        <c_drill>n</c_drill>
+    </column>
+    <column name="update_time">
+        <c_sql_name>UPDATE_TIME</c_sql_name>
+        <c_title>UPDATE_TIME</c_title>
+        <c_presentation>n</c_presentation>
+        <c_drill>n</c_drill>
+    </column>
+</table>

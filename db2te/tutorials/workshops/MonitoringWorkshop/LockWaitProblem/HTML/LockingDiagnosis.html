@@ -1,0 +1,40 @@
+<h2>Tutorial Flow:</h2><hr>
+<BR>
+<ul>
+<li>Determining the problem category (completed)</li>
+<li class="sourceCopiedFrom">Performing detailed diagnosis of the problem</li>
+<li>Identifying the scope of the SQL statements involved</li>
+</ul>
+
+<BR>
+<BR><h2>Performing detailed diagnosis of the problem</h2><hr>
+<P><B><font color=grey>The database administrator determines that the problem is related to locking. He identifies the type of locking problem by
+revisiting the <B><CODE>MONREPORT.DBSUMMARY</CODE></B> report. This report contains further information related to locking.</font></B></p>
+
+<BR>
+<h4>Monitoring report used</h4>
+<ul>
+<li><B><CODE>MONREPORT.DBSUMMARY</CODE></B></li>
+<li><a onclick="OpenURLInFloatingWindow('?BASE_DIRECTORY?/HTML/sample_commonMetrics.html');">Sample output</a> of the report</li>
+</ul>
+
+<br><BR>
+<h4>Report highlights</h4>
+Pay attention to check common request metrics and focus on lock metrics.
+
+<br><BR>
+<h4>Results</h4>
+<ul>
+<li>No deadlocks</li>
+<li>High values of <B><CODE>LOCK_WAITS</CODE></B> and <B><CODE>LOCK_WAIT_TIME</CODE></B></li>
+</ul>
+
+<BR><BR>
+<h4>Conclusion</h4>
+<ul>
+<li>The locking problem does not involve lock timeouts, deadlocks, or lock
+escalations. This is purely a lock wait problem.</li>
+<li>The increased overall lock wait time <B><CODE>(LOCK_WAIT_TIME)</CODE></B> is due to many
+statements waiting for a lock for a shorter period. </li>
+</ul>
+

@@ -1,0 +1,19 @@
+<p>The last thing that is required to complete the menu is a link to load the table. Links are a dynamic way to write a URL. <!--See here for more information.--> You can also use the element 'URL' in place of a link to load content, or even 'RAW' to load raw content.</p>
+
+
+<p><h3>Steps to complete:</h3>
+<ul>
+  <li>Make the changes to your document as indicated on the right</li>
+</ul>
+</p>
+
+
+<p>Understanding links:</p>
+
+<p>First, the location attributes ('target' and 'window') within the 'link' element are optional since the link location is explicitly identified by the XML structure. The attribute 'target' represents the panel the link is to be loaded into. The attribute 'window' represents the window in which the panel resides.</p>
+
+<p>The attribute 'type' is used to identify whether you would like to pull from 'action' (the action processor), 'html' (the html directory), or 'other' (make up your own). In the types 'html' and 'other' there is an extra element within the 'link' element named 'address' which contains the full URL you wish to call. </p>
+
+<p>The element parameter list is used to define a set of GET parameters. The attribute 'name' in the element 'parameter' is used to identify the name of the parameter and the content of the element is the  value. </p>
+
+<p>In this case we are calling the action processor to execute the 'action' 'list_table', and we want to list the table 'ATSLab/atsBaseView' </p>

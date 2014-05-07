@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tutorial name="Capture Detailed Information about a Currently Executing Activity">
+    <FlowRestriction>forwardExploration</FlowRestriction>
+    <closeAction />
+    <openAction />
+    <globalCodeHighlightOptions highlightCode = "true" />
+    <WMDConfig>
+		<load>
+			<workload name="WLM_tutorial_longquery" profile="wmd/workload_profile_WLM_tutorial_longquery" taskset="wmd/task_set_WLM_tutorial_longquery"/>
+		</load>
+	</WMDConfig>
+    <pageList>
+    	<page name="Capture Detailed Information about a Currently Executing Activity" type="intro">
+            <entryAction/>
+            <exitAction name="checkForSchema" type="serverAction">
+                <parameterList>
+                    <parameter name="action" type="fixed">
+                        <value>checkForObject</value>
+                    </parameter>
+                    <parameter name="objectType" type="fixed">
+                        <value>table</value>
+                    </parameter>
+                    <parameter name="object[schema]" type="fixed">
+                        <value>WLMTUT</value>
+                    </parameter>
+                    <parameter name="object[table]" type="fixed">
+                        <value>SALES</value>
+                    </parameter>
+                </parameterList>
+                <followOnAction condition="0">
+                    <task>
+                        <action name="createBaseTable" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="fixed">
+									<value>createTablesFromSampleDatabase</value>
+								</parameter>
+								<parameter name="schema" type="fixed">
+									<value>WLMTUT</value>
+								</parameter>
+								<parameter name="table" type="fixed">
+									<value>SALES</value>
+								</parameter>
+							</parameterList>
+							<followOnAction condition="false">
+								<task>
+									<action name="" type="alert">
+										<message>Failed to create base table for initial setup of tutorial. Cannot proceed further with tutorial.</message>
+									</action>
+								</task>
+								<task>
+									<setActionReturn>false</setActionReturn>
+								</task>
+							</followOnAction>
+							<followOnAction condition="[0-9][0-9]*">
+								<task>
+									<assignLocalParameter name="ERROR_MESSAGE" type="returnObject">
+										<value>createBaseTable.returnValue</value>
+									</assignLocalParameter>
+									<alert>Failed to create base tables for initial setup of tutorial. Cannot proceed further with tutorial. SQLMSG: ?ERROR_MESSAGE?</alert>
+								</task>
+								<task>
+									<setActionReturn>false</setActionReturn>
+								</task>
+							</followOnAction>
+						</action>
+					</task>
+				</followOnAction>        
+            </exitAction>
+            <contentFile>CaptureDetailedInformationAboutACurrentlyExecutingActivity.html</contentFile>
+            <autoLoadLink>
+                <pageWindow target="informationWindow">
+                    <panel name="main">
+                        <URL>http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.sql.rtn.doc/doc/r0052913.html?noframes=true</URL>
+                    </panel>
+                </pageWindow>
+            </autoLoadLink>
+        </page>
+        <page name="Drop and re-create event monitor (optional)" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>CreateEventMonitor.html</contentFile>
+            <SQLFile>CreateEventMonitor.sql</SQLFile>
+            <SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar="#"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+        </page><page name="Enable Activity Event Monitor" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>EnableActivityEventMonitor.html</contentFile>
+            <SQLFile>EnableActivityEventMonitor.sql</SQLFile>
+        </page><page name="Run Long Running Query" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>RunLongRunningQuery.html</contentFile>
+            <SQLFile>RunLongRunningQuery.sql</SQLFile><autoLoadLink>
+				<pageWindow target="_blank">
+							<panel name="Workload Driver" PrimaryContainer="true" panelTitle="Workload Driver">
+								<link type="action" target="main" window="mainLayout" connectionRequired="y">
+									<parameterList>
+										<parameter name="action">WMDTutorialBootstrap</parameter>
+										<parameter name="workload">WLM_tutorial_longquery</parameter>
+										<parameter name="controlerID">?TUTORIAL_ID?</parameter>
+										<parameter name="controlerType">?TUTORIAL_TYPE?</parameter>
+										<parameter name="connection">active</parameter>
+										<parameter name="compactView">false</parameter>
+									</parameterList>
+								</link>
+							</panel>
+				</pageWindow>
+				</autoLoadLink>
+        </page><page name="Get Application Handle" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>GetApplicationHandle.html</contentFile>
+            <SQLFile>GetApplicationHandle.sql</SQLFile>
+        </page><page name="Capture Information about the Activity" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>CaptureInformationAboutTheActivity.html</contentFile>
+            <SQLFile>CaptureInformationAboutTheActivity.sql</SQLFile>
+        </page><page name="View Activity Information" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>ViewActivityInformation.html</contentFile>
+            <SQLFile>ViewActivityInformation.sql</SQLFile>
+        </page><page name="Cancel activity" type="last">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>CancelActivity.html</contentFile>
+            <SQLFile>CancelActivity.sql</SQLFile>
+        </page></pageList>
+</tutorial>

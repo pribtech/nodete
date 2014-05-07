@@ -1,0 +1,296 @@
+<PRE>
+<b>Query</b>  
+
+  SELECT event_start_dt, subscriber_key, subscriber_msisdn, 
+
+          subscriber_circle_id, trf_plan_key, SUM 
+
+          (VOICE_LOCAL_OG_HOME_MOU)LOCAL_OG_MOU, SUM(
+
+          VOICE_LOCAL_OG_HOME_PULSE_60)LOCAL_OG_PULSE_60, SUM(
+
+          VOICE_LOCAL_OG_HOME_COUNT)LOCAL_OG_COUNT, SUM(
+
+          VOICE_LOCAL_OG_HOME_CORE_INR)LOCAL_OG_CORE_AMT, SUM 
+
+          (VOICE_LOCAL_OG_HOME_DED_INR)LOCAL_OG_DED_AMT, SUM 
+
+          (VOICE_LOCAL_IC_OR_MOU)LOCAL_IC_OR_MOU, SUM 
+
+          (VOICE_LOCAL_IC_OR_PULSE_60)LOCAL_IC_OR_PULSE_60, SUM 
+
+          (VOICE_LOCAL_IC_OR_COUNT)LOCAL_IC_OR_COUNT, SUM 
+
+          (VOICE_LOCAL_IC_OR_CORE_INR)LOCAL_IC_OR_CORE_AMT, SUM 
+
+          (VOICE_LOCAL_IC_OR_DED_INR)LOCAL_IC_OR_DED_AMT, SUM 
+
+          (VOICE_STD_OG_HOME_MOU)STD_OG_MOU, SUM 
+
+          (VOICE_STD_OG_HOME_PULSE_60)STD_OG_PULSE_60, SUM 
+
+          (VOICE_STD_OG_HOME_COUNT)STD_OG_COUNT, SUM 
+
+          (VOICE_STD_OG_HOME_CORE_INR)STD_OG_CORE_AMT, SUM 
+
+          (VOICE_STD_OG_HOME_DED_INR)STD_OG_DED_AMT, SUM(
+
+          VOICE_STD_IC_OR_MOU)STD_IC_OR_MOU, SUM(
+
+          VOICE_STD_IC_OR_PULSE_60)STD_IC_OR_PULSE_60, SUM(
+
+          VOICE_STD_IC_OR_COUNT)STD_IC_OR_COUNT, SUM 
+
+          (VOICE_STD_IC_OR_CORE_INR)STD_IC_OR_CORE_AMT, SUM 
+
+          (VOICE_STD_IC_OR_DED_INR)STD_IC_OR_DED_AMT 
+
+  FROM ( 
+
+     SELECT A.event_start_dt, D.subscriber_key, A.subscriber_msisdn, 
+
+             A.subscriber_circle_id, A.trf_plan_key, 
+
+     CASE 
+
+     WHEN event_type_key =0 AND event_type_clsf_key =0 AND event_dir =
+
+             1 AND out_roaming_ind =1 
+
+     THEN SUM (A.event_duration)/60 
+
+     ELSE 0 END AS VOICE_LOCAL_OG_HOME_MOU, 
+
+     CASE 
+
+     WHEN event_type_key =0 AND event_type_clsf_key =0 AND event_dir =
+
+             1 AND out_roaming_ind =1 
+
+     THEN SUM (call_pulse_60)
+
+     ELSE 0 END AS VOICE_LOCAL_OG_HOME_PULSE_60, 
+
+     CASE 
+
+     WHEN event_type_key =0 AND event_type_clsf_key =0 AND event_dir =
+
+             1 AND out_roaming_ind =0 
+
+     THEN COUNT(A.cdr_id_key)
+
+     ELSE 0 END AS VOICE_LOCAL_OG_HOME_COUNT, 
+
+     CASE 
+
+     WHEN event_type_key =0 AND event_type_clsf_key =0 AND event_dir =
+
+             1 AND out_roaming_ind =0 
+
+     THEN SUM(core_acc_charge_amt)
+
+     ELSE 0 END AS VOICE_LOCAL_OG_HOME_CORE_INR, 
+
+     CASE 
+
+     WHEN event_type_key =0 AND event_type_clsf_key =0 AND event_dir =
+
+             1 AND out_roaming_ind =0 
+
+     THEN SUM(ded_acc_charge_amt * ded_acc_conversion_factor)
+
+     ELSE 0 END AS VOICE_LOCAL_OG_HOME_DED_INR, 
+
+     CASE 
+
+     WHEN event_type_key =0 AND event_type_clsf_key =0 AND event_dir =
+
+             0 AND out_roaming_ind =1 
+
+     THEN SUM (A.event_duration)/60 
+
+     ELSE 0 END AS VOICE_LOCAL_IC_OR_MOU, 
+
+     CASE 
+
+     WHEN event_type_key =0 AND event_type_clsf_key =0 AND event_dir =
+
+             0 AND out_roaming_ind =1 
+
+     THEN SUM (call_pulse_60)
+
+     ELSE 0 END AS VOICE_LOCAL_IC_OR_PULSE_60, 
+
+     CASE 
+
+     WHEN event_type_key =0 AND event_type_clsf_key =0 AND event_dir =
+
+             0 AND out_roaming_ind =1 
+
+     THEN COUNT(A.cdr_id_key)
+
+     ELSE 0 END AS VOICE_LOCAL_IC_OR_COUNT, 
+
+     CASE 
+
+     WHEN event_type_key =0 AND event_type_clsf_key =0 AND event_dir =
+
+             0 AND out_roaming_ind =1 
+
+     THEN SUM(core_acc_charge_amt)
+
+     ELSE 0 END AS VOICE_LOCAL_IC_OR_CORE_INR, 
+
+     CASE 
+
+     WHEN event_type_key =0 AND event_type_clsf_key =0 AND event_dir =
+
+             0 AND out_roaming_ind =1 
+
+     THEN SUM (ded_acc_charge_amt * ded_acc_conversion_factor)
+
+     ELSE 0 END AS VOICE_LOCAL_IC_OR_DED_INR, 
+
+     CASE 
+
+     WHEN event_type_key =0 AND event_type_clsf_key =1 AND event_dir =
+
+             1 AND out_roaming_ind =0 
+
+     THEN SUM (A.event_duration)/60 
+
+     ELSE 0 END AS VOICE_STD_OG_HOME_MOU, 
+
+     CASE 
+
+     WHEN event_type_key =0 AND event_type_clsf_key =1 AND event_dir =
+
+             1 AND out_roaming_ind =0 
+
+     THEN SUM (call_pulse_60)
+
+     ELSE 0 END AS VOICE_STD_OG_HOME_PULSE_60, 
+
+     CASE 
+
+     WHEN event_type_key =0 AND event_type_clsf_key =1 AND event_dir =
+
+             1 AND out_roaming_ind =0 
+
+     THEN COUNT(A.cdr_id_key)
+
+     ELSE 0 END AS VOICE_STD_OG_HOME_COUNT, 
+
+     CASE 
+
+     WHEN event_type_key =0 AND event_type_clsf_key =1 AND event_dir =
+
+             1 AND out_roaming_ind =1 
+
+     THEN SUM(core_acc_charge_amt)
+
+     ELSE 0 END AS VOICE_STD_OG_HOME_CORE_INR, 
+
+     CASE 
+
+     WHEN event_type_key =0 AND event_type_clsf_key =1 AND event_dir =
+
+             1 AND out_roaming_ind =0 
+
+     THEN SUM(ded_acc_charge_amt * ded_acc_conversion_factor)
+
+     ELSE 0 END AS VOICE_STD_OG_HOME_DED_INR, 
+
+     CASE 
+
+     WHEN event_type_key =0 AND event_type_clsf_key =1 AND event_dir =
+
+             0 AND out_roaming_ind =1 
+
+     THEN SUM (A.event_duration)/60 
+
+     ELSE 0 END AS VOICE_STD_IC_OR_MOU, 
+
+     CASE 
+
+     WHEN event_type_key =0 AND event_type_clsf_key =1 AND event_dir =
+
+             0 AND out_roaming_ind =1 
+
+     THEN SUM (call_pulse_60)
+
+     ELSE 0 END AS VOICE_STD_IC_OR_PULSE_60, 
+
+     CASE 
+
+     WHEN event_type_key =0 AND event_type_clsf_key =1 AND event_dir =
+
+             0 AND out_roaming_ind =2 
+
+     THEN COUNT(A.cdr_id_key)
+
+     ELSE 0 END AS VOICE_STD_IC_OR_COUNT, 
+
+     CASE 
+
+     WHEN event_type_key =0 AND event_type_clsf_key =1 AND event_dir =
+
+             0 AND out_roaming_ind =1 
+
+     THEN SUM(core_acc_charge_amt)
+
+     ELSE 0 END AS VOICE_STD_IC_OR_CORE_INR, 
+
+     CASE 
+
+     WHEN event_type_key =0 AND event_type_clsf_key =1 AND event_dir =
+
+             0 AND out_roaming_ind =1 
+
+     THEN SUM (ded_acc_charge_amt * ded_acc_conversion_factor)
+
+     ELSE 0 END AS VOICE_STD_IC_OR_DED_INR 
+
+     FROM SUBSCRIBER_RATED_USAGE A LEFT 
+
+             OUTER JOIN 
+
+             SUBSCRIBER_DEDICATED_ACCOUNT_USAGE B
+
+             ON A.cdr_id_key =B.cdr_id_key AND 
+
+             a.subscriber_msisdn =b.subscriber_msisdn LEFT OUTER JOIN 
+
+             DEDICATED_ACCOUNT c ON 
+
+             A.subscriber_circle_id =C.CIRCLE_ID AND B.ded_acc_key =
+
+             C.ded_acc_key AND A.event_start_dt >=C.ded_acc_eff_dt 
+
+             AND A.event_start_dt < C.DED_ACC_END_DT LEFT OUTER JOIN 
+
+             subscriber_msisdn_HISTORY D ON 
+
+             A.subscriber_msisdn = D.subscriber_msisdn AND 
+
+             A.event_start_dt >= D.msisdn_start_dt and 
+
+             A.event_start_dt < D.msisdn_END_DT 
+
+     WHERE A.event_start_dt ='2009-02-02' AND A.subscriber_circle_id = 3 
+
+     GROUP BY A.event_start_dt, A.subscriber_msisdn, D.subscriber_key,
+
+             A.event_type_key, A.subscriber_circle_id, A.event_dir, 
+
+             A.event_type_clsf_key, A.out_roaming_ind, A.trf_plan_key)
+
+  GROUP BY event_start_dt, subscriber_key, subscriber_msisdn, 
+
+          subscriber_circle_id, trf_plan_key
+		  
+</PRE>
+
+
+
+

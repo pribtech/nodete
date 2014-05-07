@@ -1,0 +1,735 @@
+<!--
+  Peter Prib, Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2012 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<table name="session">
+	<sqlName>v$session</sqlName>
+	<singularName>Session</singularName>
+	<pluralName>Sessions</pluralName>
+	<description></description>
+	<disable_edit/>
+	<output>
+		<type name="DDL" destination="" title="" generator=""/>
+	</output>
+	<orderBy name="STATUS" direction="A"/> 
+	<orderBy name="SID" direction="A"/> 
+	<displayColumns>
+		<col type="column" name="STATUS"/>
+		<col type="column" name="SID"/>
+		<col type="reference" name="stats" title="Stats"/>
+		<col type="reference" name="waits"/>
+		<col type="reference" name="events"/>
+		<col type="action" name="kill"/>
+		<col type="column" name="SERIAL#"/>
+		<col type="column" name="USERNAME"/>
+		<col type="column" name="COMMAND_TEXT"/>
+		<col type="column" name="LOCKWAIT"/>
+		<col type="column" name="SERVER"/>
+		<col type="column" name="SCHEMANAME"/>
+		<col type="column" name="OSUSER"/>
+		<col type="column" name="PROCESS"/>
+		<col type="column" name="MACHINE"/>
+		<col type="column" name="TERMINAL"/>
+		<col type="column" name="PROGRAM"/>
+		<col type="column" name="TYPE"/>
+		<col type="column" name="SQL_CHILD_NUMBER"/>
+		<col type="column" name="SQL_EXEC_START"/>
+		<col type="column" name="SQL_EXEC_ID"/>
+		<col type="column" name="PREV_CHILD_NUMBER"/>
+		<col type="column" name="PREV_EXEC_START"/>
+		<col type="column" name="PREV_EXEC_ID"/>
+		<col type="column" name="PLSQL_ENTRY_OBJECT_ID"/>
+		<col type="column" name="PLSQL_ENTRY_SUBPROGRAM_ID"/>
+		<col type="column" name="PLSQL_OBJECT_ID"/>
+		<col type="column" name="PLSQL_SUBPROGRAM_ID"/>
+		<col type="column" name="MODULE"/>
+		<col type="column" name="ACTION"/>
+		<col type="column" name="CLIENT_INFO"/>
+		<col type="column" name="FIXED_TABLE_SEQUENCE"/>
+		<col type="column" name="ROW_WAIT_OBJ#"/>
+		<col type="column" name="ROW_WAIT_FILE#"/>
+		<col type="column" name="ROW_WAIT_BLOCK#"/>
+		<col type="column" name="ROW_WAIT_ROW#"/>
+		<col type="column" name="LAST_CALL_ET"/>
+		<col type="column" name="PDML_ENABLED"/>
+		<col type="column" name="FAILOVER_TYPE"/>
+		<col type="column" name="FAILOVER_METHOD"/>
+		<col type="column" name="FAILED_OVER"/>
+		<col type="column" name="RESOURCE_CONSUMER_GROUP"/>
+		<col type="column" name="PDML_STATUS"/>
+		<col type="column" name="PDDL_STATUS"/>
+		<col type="column" name="PQ_STATUS"/>
+		<col type="column" name="CURRENT_QUEUE_DURATION"/>
+		<col type="column" name="CLIENT_IDENTIFIER"/>
+		<col type="column" name="BLOCKING_SESSION_STATUS"/>
+		<col type="column" name="BLOCKING_INSTANCE"/>
+		<col type="column" name="BLOCKING_SESSION"/>
+		<col type="column" name="SEQ#"/>
+		<col type="column" name="EVENT"/>
+		<col type="column" name="P1TEXT"/>
+		<col type="column" name="P1"/>
+		<col type="column" name="P2TEXT"/>
+		<col type="column" name="P2"/>
+		<col type="column" name="P3TEXT"/>
+		<col type="column" name="P3"/>
+		<col type="column" name="WAIT_CLASS_ID"/>
+		<col type="column" name="WAIT_CLASS"/>
+		<col type="column" name="WAIT_TIME"/>
+		<col type="column" name="SECONDS_IN_WAIT"/>
+		<col type="column" name="STATE"/>
+		<col type="column" name="WAIT_TIME_MICRO"/>
+		<col type="column" name="TIME_REMAINING_MICRO"/>
+		<col type="column" name="TIME_SINCE_LAST_WAIT_MICRO"/>
+		<col type="column" name="SERVICE_NAME"/>
+		<col type="column" name="SQL_TRACE"/>
+		<col type="column" name="SQL_TRACE_WAITS"/>
+		<col type="column" name="SQL_TRACE_BINDS"/>
+		<col type="column" name="SQL_TRACE_PLAN_STATS"/>
+		<col type="column" name="SESSION_EDITION_ID"/>
+		<col type="column" name="CREATOR_SERIAL#"/>
+	</displayColumns>
+	<action name="kill">
+		<title>Kill</title>
+		<icon>images/cancel.gif</icon> 
+   		<actionScript name="killScript" type="confirm">
+			<message>
+ALTER SYSTEM KILL SESSION '?SID?,?SERIAL#?'
+			</message>
+			<followOnAction condition="true">
+				<task>
+					<action name="kill" type="serverAction">
+						<parameterList>
+							<parameter name="action" type="fixed">
+								<value>executeSQL</value>
+							</parameter>
+							<parameter name="SQL" type="fixed">
+								<value>ALTER SYSTEM KILL SESSION '?SID?,?SERIAL#?'</value>
+							</parameter>
+						</parameterList>
+						<followOnAction condition="true" negCondition="true">
+							<task>
+								<action name="raiseError" type="alert">
+									<message>Kill failed: ?ERROR_MESSAGE?</message>
+									<parameterList>
+										<parameter name="ERROR_MESSAGE" type="returnObject">
+											<value>kill.returnValue.STMTMSG</value>
+										</parameter>
+									</parameterList>
+								</action>
+							</task>
+						</followOnAction>
+						<followOnAction condition="true">
+							<task>
+								<windowReload/>
+							</task>
+						</followOnAction>
+					</action>
+				</task>
+			</followOnAction>
+   		</actionScript>
+   </action>
+	<reference name="sql">
+		<title>SQL</title>
+		<reftype>table</reftype>
+		<refvalue>Oracle/Monitor/sqlArea</refvalue>
+		<icon>images/icon-column.gif</icon>
+		<ref foreign_column_name="ADDRESS">
+			<local_column_name>SQL_ADDRESS</local_column_name>
+		</ref>
+	</reference>
+	<reference name="io">
+		<title>IO</title>
+		<reftype>table</reftype>
+		<refvalue>Oracle/Monitor/sessionIO</refvalue>
+		<icon>images/icon-column.gif</icon>
+		<ref foreign_column_name="SID">
+			<local_column_name>SID</local_column_name>
+		</ref>
+	</reference>
+	<reference name="stats">
+		<title>Statistics</title>
+		<reftype>table</reftype>
+		<refvalue>Oracle/Monitor/sessionStats</refvalue>
+		<icon>images/icon-column.gif</icon>
+		<ref foreignColumnName="SID">
+			<localColumnName>SID</localColumnName>
+		</ref>
+		<ref foreignColumnName="VALUE">
+			<compareType>&lt;&gt;</compareType>
+			<value>0</value>
+		</ref>
+	</reference>
+	<reference name="waits">
+		<title>Waits</title>
+		<reftype>table</reftype>
+		<refvalue>Oracle/Monitor/sessionWait</refvalue>
+		<icon>images/icon-column.gif</icon>
+		<ref foreign_column_name="SID">
+			<local_column_name>SID</local_column_name>
+		</ref>
+	</reference>
+	<reference name="waitsHist">
+		<title>Waits Hist.</title>
+		<reftype>table</reftype>
+		<refvalue>Oracle/Monitor/sessionWaitHistory</refvalue>
+		<icon>images/icon-column.gif</icon>
+		<ref foreign_column_name="SID">
+			<local_column_name>SID</local_column_name>
+		</ref>
+	</reference>
+	<reference name="events">
+		<title>Events</title>
+		<reftype>table</reftype>
+		<refvalue>Oracle/Monitor/sessionEvent</refvalue>
+		<icon>images/icon-column.gif</icon>
+		<ref foreign_column_name="SID">
+			<local_column_name>SID</local_column_name>
+		</ref>
+	</reference>
+	<reference name="timeModel">
+		<title>Time Model</title>
+		<reftype>table</reftype>
+		<refvalue>Oracle/Monitor/sessionTimeModel</refvalue>
+		<icon>images/icon-column.gif</icon>
+		<ref foreign_column_name="SID">
+			<local_column_name>SID</local_column_name>
+		</ref>
+	</reference>
+	<reference name="waitClass">
+		<title>Wait Class</title>
+		<reftype>table</reftype>
+		<refvalue>Oracle/Monitor/sessionWaitClass</refvalue>
+		<icon>images/icon-column.gif</icon>
+		<ref foreign_column_name="SID">
+			<local_column_name>SID</local_column_name>
+		</ref>
+		<ref foreign_column_name="SERIAL#">
+			<local_column_name>SERIAL#</local_column_name>
+		</ref>
+	</reference>
+	<reference name="activeHistory">
+		<title>Active History</title>
+		<reftype>table</reftype>
+		<refvalue>Oracle/Monitor/activeSessionHistory</refvalue>
+		<icon>images/icon-column.gif</icon>
+		<ref foreign_column_name="SESSION_ID">
+			<local_column_name>SID</local_column_name>
+		</ref>
+		<ref foreign_column_name="SESSION_SERIAL#">
+			<local_column_name>SERIAL#</local_column_name>
+		</ref>
+	</reference>
+	<column name="SADDR">
+		<sqlName>SADDR</sqlName>
+		<title>Saddr</title>
+		<type>n</type>
+	</column>
+	<column name="SID">
+		<sqlName>SID</sqlName>
+		<title>SID</title>
+		<type>n</type>
+		<primaryKey/>
+	</column>
+	<column name="SERIAL#">
+		<sqlName>SERIAL#</sqlName>
+		<title>Serial Id.</title>
+		<type>n</type>
+	</column>
+	<column name="AUDSID">
+		<sqlName>AUDSID</sqlName>
+		<title>Aud SID</title>
+		<type>n</type>
+	</column>
+	<column name="PADDR">
+		<sqlName>PADDR</sqlName>
+		<title>PADDR</title>
+		<type>n</type>
+	</column>
+	<column name="USER#">
+		<sqlName>USER#</sqlName>
+		<title>User Id.</title>
+		<type>n</type>
+	</column>
+	<column name="USERNAME">
+		<sqlName>USERNAME</sqlName>
+		<title>User</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="COMMAND">
+		<sqlName>COMMAND</sqlName>select * from AUDIT_ACTIONS
+		<title>Command</title>
+		<type>n</type>
+	</column>
+	<column name="COMMAND_TEXT">
+		<sqlName>(select NAME from AUDIT_ACTIONS where action=command)</sqlName>
+		<title>Command</title>
+		<type>s</type>
+	</column>
+	<column name="OWNERID">
+		<sqlName>OWNERID</sqlName>
+		<title>Owner Id.</title>
+		<type>n</type>
+	</column>
+	<column name="TADDR">
+		<sqlName>TADDR</sqlName>
+		<title>TADDR</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="LOCKWAIT">
+		<sqlName>LOCKWAIT</sqlName>
+		<title>Lock Wait</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="STATUS">
+		<sqlName>STATUS</sqlName>
+		<title>Status</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="SERVER">
+		<sqlName>SERVER</sqlName>
+		<title>Server</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="SCHEMA#">
+		<sqlName>SCHEMA#</sqlName>
+		<title>Schema Id.</title>
+		<type>n</type>
+	</column>
+	<column name="SCHEMANAME">
+		<sqlName>SCHEMANAME</sqlName>
+		<title>Schema</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="OSUSER">
+		<sqlName>OSUSER</sqlName>
+		<title>OS User</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="PROCESS">
+		<sqlName>PROCESS</sqlName>
+		<title>Process</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="MACHINE">
+		<sqlName>MACHINE</sqlName>
+		<title>Machine</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="TERMINAL">
+		<sqlName>TERMINAL</sqlName>
+		<title>Terminal</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="PROGRAM">
+		<sqlName>PROGRAM</sqlName>
+		<title>Program</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="TYPE">
+		<sqlName>TYPE</sqlName>
+		<title>Type</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="SQL_ADDRESS">
+		<sqlName>rawtonhex(SQL_ADDRESS)</sqlName>
+		<title>SQL Address</title>
+		<type>s</type>
+	</column>
+	<column name="SQL_HASH_VALUE">
+		<sqlName>SQL_HASH_VALUE</sqlName>
+		<title>SQL Hash Value</title>
+		<type>n</type>
+	</column>
+	<column name="SQL_ID">
+		<sqlName>SQL_ID</sqlName>
+		<title>SQL Id</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="SQL_CHILD_NUMBER">
+		<sqlName>SQL_CHILD_NUMBER</sqlName>
+		<title>SQL Child No.</title>
+		<type>n</type>
+	</column>
+	<column name="SQL_EXEC_START">
+		<sqlName>SQL_EXEC_START</sqlName>
+		<title>SQL Exec Start</title>
+		<type>n</type>
+		<drillEnable/>
+	</column>
+	<column name="SQL_EXEC_ID">
+		<sqlName>SQL_EXEC_ID</sqlName>
+		<title>SQL Exec Id</title>
+		<type>n</type>
+	</column>
+	<column name="PREV_SQL_ADDR">
+		<sqlName>PREV_SQL_ADDR</sqlName>
+		<title>Prev SQL Addr</title>
+		<type>n</type>
+	</column>
+	<column name="PREV_HASH_VALUE">
+		<sqlName>PREV_HASH_VALUE</sqlName>
+		<title>Prev Hash Value</title>
+		<type>n</type>
+	</column>
+	<column name="PREV_SQL_ID">
+		<sqlName>PREV_SQL_ID</sqlName>
+		<title>Prev SQL Id</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="PREV_CHILD_NUMBER">
+		<sqlName>PREV_CHILD_NUMBER</sqlName>
+		<title>Prev Child Number</title>
+		<type>n</type>
+	</column>
+	<column name="PREV_EXEC_START">
+		<sqlName>PREV_EXEC_START</sqlName>
+		<title>Prev Exec Start</title>
+		<type>n</type>
+		<drillEnable/>
+	</column>
+	<column name="PREV_EXEC_ID">
+		<sqlName>PREV_EXEC_ID</sqlName>
+		<title>Prev Exec Id.</title>
+		<type>n</type>
+	</column>
+	<column name="PLSQL_ENTRY_OBJECT_ID">
+		<sqlName>PLSQL_ENTRY_OBJECT_ID</sqlName>
+		<title>PL/SQL Entry Object</title>
+		<type>n</type>
+	</column>
+	<column name="PLSQL_ENTRY_SUBPROGRAM_ID">
+		<sqlName>PLSQL_ENTRY_SUBPROGRAM_ID</sqlName>
+		<title>PL/SQL Entry Subprogram</title>
+		<type>n</type>
+	</column>
+	<column name="PLSQL_OBJECT_ID">
+		<sqlName>PLSQL_OBJECT_ID</sqlName>
+		<title>PL/SQL Object</title>
+		<type>n</type>
+	</column>
+	<column name="PLSQL_SUBPROGRAM_ID">
+		<sqlName>PLSQL_SUBPROGRAM_ID</sqlName>
+		<title>PL/SQL Subprogram</title>
+		<type>n</type>
+	</column>
+	<column name="MODULE">
+		<sqlName>MODULE</sqlName>
+		<title>Module</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="MODULE_HASH">
+		<sqlName>MODULE_HASH</sqlName>
+		<title>Module Hash</title>
+		<type>n</type>
+	</column>
+	<column name="ACTION">
+		<sqlName>ACTION</sqlName>
+		<title>Action</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="ACTION_HASH">
+		<sqlName>ACTION_HASH</sqlName>
+		<title>Action Hash</title>
+		<type>n</type>
+	</column>
+	<column name="CLIENT_INFO">
+		<sqlName>CLIENT_INFO</sqlName>
+		<title>Client Info</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="FIXED_TABLE_SEQUENCE">
+		<sqlName>FIXED_TABLE_SEQUENCE</sqlName>
+		<title>Fixed Table Sequence</title>
+		<type>n</type>
+	</column>
+	<column name="ROW_WAIT_OBJ#">
+		<sqlName>ROW_WAIT_OBJ#</sqlName>
+		<title>Row Wait Object Id.</title>
+		<type>n</type>
+	</column>
+	<column name="ROW_WAIT_FILE#">
+		<sqlName>ROW_WAIT_FILE#</sqlName>
+		<title>Row Wait File Id.</title>
+		<type>n</type>
+	</column>
+	<column name="ROW_WAIT_BLOCK#">
+		<sqlName>ROW_WAIT_BLOCK#</sqlName>
+		<title>Row Wait Block Id.</title>
+		<type>n</type>
+	</column>
+	<column name="ROW_WAIT_ROW#">
+		<sqlName>ROW_WAIT_ROW#</sqlName>
+		<title>Row Wait Row Id.</title>
+		<type>n</type>
+	</column>
+	<column name="LOGON_TIME">
+		<sqlName>LOGON_TIME</sqlName>
+		<title>Logon Time</title>
+		<type>n</type>
+		<drillEnable/>
+	</column>
+	<column name="LAST_CALL_ET">
+		<sqlName>LAST_CALL_ET</sqlName>
+		<title>Last Call ET</title>
+		<type>n</type>
+	</column>
+	<column name="PDML_ENABLED">
+		<sqlName>PDML_ENABLED</sqlName>
+		<title>PDML Enabled</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="FAILOVER_TYPE">
+		<sqlName>FAILOVER_TYPE</sqlName>
+		<title>Failover Type</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="FAILOVER_METHOD">
+		<sqlName>FAILOVER_METHOD</sqlName>
+		<title>Failover Method</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="FAILED_OVER">
+		<sqlName>FAILED_OVER</sqlName>
+		<title>Failed Over</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="RESOURCE_CONSUMER_GROUP">
+		<sqlName>RESOURCE_CONSUMER_GROUP</sqlName>
+		<title>Resource Consumer Group</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="PDML_STATUS">
+		<sqlName>PDML_STATUS</sqlName>
+		<title>PDML Status</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="PDDL_STATUS">
+		<sqlName>PDDL_STATUS</sqlName>
+		<title>PDDL Status</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="PQ_STATUS">
+		<sqlName>PQ_STATUS</sqlName>
+		<title>PQ Status</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="CURRENT_QUEUE_DURATION">
+		<sqlName>CURRENT_QUEUE_DURATION</sqlName>
+		<title>Current Queue Duration</title>
+		<type>n</type>
+	</column>
+	<column name="CLIENT_IDENTIFIER">
+		<sqlName>CLIENT_IDENTIFIER</sqlName>
+		<title>Client Id.</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="BLOCKING_SESSION_STATUS">
+		<sqlName>BLOCKING_SESSION_STATUS</sqlName>
+		<title>Blocking Session Status</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="BLOCKING_INSTANCE">
+		<sqlName>BLOCKING_INSTANCE</sqlName>
+		<title>Blocking Instance</title>
+		<type>n</type>
+	</column>
+	<column name="BLOCKING_SESSION">
+		<sqlName>BLOCKING_SESSION</sqlName>
+		<title>Blocking Session</title>
+		<type>n</type>
+	</column>
+	<column name="SEQ#">
+		<sqlName>SEQ#</sqlName>
+		<title>Seq. No.</title>
+		<type>n</type>
+	</column>
+	<column name="EVENT#">
+		<sqlName>EVENT#</sqlName>
+		<title>Event Id.</title>
+		<type>n</type>
+	</column>
+	<column name="EVENT">
+		<sqlName>EVENT</sqlName>
+		<title>Event</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="P1TEXT">
+		<sqlName>P1TEXT</sqlName>
+		<title>P1 Text</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="P1">
+		<sqlName>P1</sqlName>
+		<title>P1</title>
+		<type>n</type>
+	</column>
+	<column name="P1RAW">
+		<sqlName>P1RAW</sqlName>
+		<title>P1 Raw</title>
+		<type>n</type>
+	</column>
+	<column name="P2TEXT">
+		<sqlName>P2TEXT</sqlName>
+		<title>P2 Text</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="P2">
+		<sqlName>P2</sqlName>
+		<title>P2</title>
+		<type>n</type>
+	</column>
+	<column name="P2RAW">
+		<sqlName>P2RAW</sqlName>
+		<title>P2 Raw</title>
+		<type>n</type>
+	</column>
+	<column name="P3TEXT">
+		<sqlName>P3TEXT</sqlName>
+		<title>P3 Text</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="P3">
+		<sqlName>P3</sqlName>
+		<title>P3</title>
+		<type>n</type>
+	</column>
+	<column name="P3RAW">
+		<sqlName>P3RAW</sqlName>
+		<title>P3 Raw</title>
+		<type>n</type>
+	</column>
+	<column name="WAIT_CLASS_ID">
+		<sqlName>WAIT_CLASS</sqlName>
+		<title>Wait Class Id</title>
+		<type>n</type>
+	</column>
+	<column name="WAIT_CLASS#">
+		<sqlName>WAIT_CLASS#</sqlName>
+		<title>Wait Class No.</title>
+		<type>n</type>
+	</column>
+	<column name="WAIT_CLASS">
+		<sqlName>WAIT_CLASS</sqlName>
+		<title>Wait Class</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="WAIT_TIME">
+		<sqlName>WAIT_TIME</sqlName>
+		<title>Wait Time</title>
+		<type>n</type>
+		<formatNumber toDuration="ss"/> 
+	</column>
+	<column name="SECONDS_IN_WAIT">
+		<sqlName>SECONDS_IN_WAIT</sqlName>
+		<title>Seconds In Wait</title>
+		<type>n</type>
+		<formatNumber toDuration="ss"/> 
+	</column>
+	<column name="STATE">
+		<sqlName>STATE</sqlName>
+		<title>State</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="WAIT_TIME_MICRO">
+		<sqlName>WAIT_TIME_MICRO</sqlName>
+		<title>Wait Time Micro</title>
+		<type>n</type>
+	</column>
+	<column name="TIME_REMAINING_MICRO">
+		<sqlName>TIME_REMAINING_MICRO</sqlName>
+		<title>Time Remaining Micro</title>
+		<type>n</type>
+	</column>
+	<column name="TIME_SINCE_LAST_WAIT_MICRO">
+		<sqlName>TIME_SINCE_LAST_WAIT_MICRO</sqlName>
+		<title>Time Since Last Wait Micro</title>
+		<type>n</type>
+	</column>
+	<column name="SERVICE_NAME">
+		<sqlName>SERVICE_NAME</sqlName>
+		<title>Service Name</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="SQL_TRACE">
+		<sqlName>SQL_TRACE</sqlName>
+		<title>Trace</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="SQL_TRACE_WAITS">
+		<sqlName>SQL_TRACE_WAITS</sqlName>
+		<title>Trace Waits</title>
+		<type>s</type>
+	</column>
+	<column name="SQL_TRACE_BINDS">
+		<sqlName>SQL_TRACE_BINDS</sqlName>
+		<title>Trace Binds</title>
+		<type>s</type>
+	</column>
+	<column name="SQL_TRACE_PLAN_STATS">
+		<sqlName>SQL_TRACE_PLAN_STATS</sqlName>
+		<title>Trace Plan Stats</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="SESSION_EDITION_ID">
+		<sqlName>SESSION_EDITION_ID</sqlName>
+		<title>Session Edition</title>
+		<type>n</type>
+	</column>
+	<column name="CREATOR_ADDR">
+		<sqlName>CREATOR_ADDR</sqlName>
+		<title>Creator Address</title>
+		<type>n</type>
+	</column>
+	<column name="CREATOR_SERIAL#">
+		<sqlName>CREATOR_SERIAL#</sqlName>
+		<title>Creator Serial No.</title>
+		<type>n</type>
+	</column>
+</table>

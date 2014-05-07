@@ -1,0 +1,35 @@
+<H2>Solution to the problem<HR></H2>
+<BR>
+<font color=grey><B>The database administrator earlier concluded the problem for the performance slowdown, to be compilation of SQLs instead of hitting the package cache.
+The SQLs where compiled as literals are used in the workload, instead of parameter markers. Usage of parameter markers would cause the SQL to be compiled only once, 
+and later execution of SQLs would hit the package cache directly. Hence, the literals in the workload are replaced with parameter markers.</b></font>
+<BR><BR>
+<h2> Run sample workload </h2>
+<HR>
+<P>
+
+<BR>The SQL compilation problem scenario can be simulated by a java program<code>(SampleCompilationProblem_NP.java)</code> available in <CODE>"[tutorial-base-directory]/extras"</CODE> directory.<P>
+This program prepares and executes many SQL queries, which introduces many compilation at runtime on the server. <P>
+
+<h2>Steps to run workload on command line</h2>
+<hr>
+<BR>
+<ul>
+	<li>Verify java is available in your system PATH. To add java to the path, use following command:</li>
+	<ul>
+		<li>On windows: <code>set PATH=&lt;DB2 install path&gt;java\jdk\bin;%PATH%</code></li>
+		<li>On Unix: <code>export PATH=&lt;DB2 install path&gt;/java/jdk/bin:$PATH</code></li>
+	</ul>
+	<li>Change directory to <CODE>"[TE-directory]/tutorials/Workshops/MonitoringWorkshop/ProblemDetermination/SQLCompilation/extras"</CODE> directory</li>
+	<li>Compile the sample java workload </li>
+	<ul>
+			<li><code>javac SampleCompilationProblem_NP.java</code></li>
+	</ul>
+	<li>Execute the program</li>
+	<ul>
+			<li><code>java SampleCompilationProblem_NP &lt;userid&gt; &lt;password&gt; &lt;hostname&gt; &lt;DB2_port_number&gt;</code></li>
+	</ul>
+</ul>
+
+	
+

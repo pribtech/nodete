@@ -1,0 +1,121 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2011 All rights reserved.
+  
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+
+<table name="table">
+	<sql_name>sys.systables</sql_name>
+	<singular_name>Table</singular_name>
+	<plural_name>Table</plural_name>
+	<order_by_index name="SCHEMANAME" direction="A"/>
+	<order_by_index name="TABLENAME" direction="A"/>
+	<display_columns>
+		<col type="reference" name="contents"/>
+		<col type="column" name="SCHEMANAME"/>
+		<col type="column" name="TABLENAME"/>
+		<col type="column" name="TABLETYPE"/>
+		<col type="reference" name="columns"/>
+		<col type="column" name="TABLEID"/>
+		<col type="column" name="SCHEMAID"/>
+		<col type="column" name="LOCKGRANULARITY"/>
+	</display_columns>
+
+	<action name="xmlgen">
+		<title>XML</title>
+		<icon>images/icon-xml.gif</icon>
+		<actionScript name="helloworld" type="block">
+				<followOnAction condition="">
+					<task>	
+						<assignLocalParameter name="TABLENAME" type="blockValue">
+							<value>TABLENAME</value>
+						</assignLocalParameter>
+						<assignLocalParameter name="SCHEMANAME" type="blockValue">
+							<value>SCHEMANAME</value>
+						</assignLocalParameter>
+						<loadPage>
+							<pageWindow target="_blank" windowStage="?CALLING_STAGE?">
+								<panel name="main" PrimaryContainer="true">
+									<URL>
+<![CDATA[
+http://?DB2MC_SERVER?/?ACTION_PROCESSOR??action=xmlgen&schemanameparm=?SCHEMANAME?&tablenameparm=?TABLENAME?&USE_CONNECTION=?ACTIVE_DATABASE_CONNECTION?
+]]>
+									</URL>				
+								</panel>
+							</pageWindow>
+						</loadPage>
+					</task>
+				</followOnAction>
+		</actionScript>
+	</action>
+	<reference name="contents">
+		<title>Contents</title>
+		<reftype>table</reftype>
+		<refvalue></refvalue>
+		<frame>main</frame>
+		<window>_blank</window>
+		<icon>images/icon-link-calendar.gif</icon>
+		<ref foreign_column_name="schema">
+			<local_column_name>SCHEMANAME</local_column_name>
+		</ref>
+		<ref foreign_column_name="table">
+			<local_column_name>TABLENAME</local_column_name>
+		</ref>
+	</reference>
+	<reference name="columns">
+		<title>Columns</title>
+		<reftype>table</reftype>
+		<refvalue>Derby/column</refvalue>
+		<displayColumnsSet>table</displayColumnsSet>
+		<icon>images/icon-column.gif</icon>
+		<ref foreign_column_name="REFERENCEID">
+			<local_column_name>TABLEID</local_column_name>
+		</ref>
+	</reference>
+	<column name="TABLEID">
+		<sql_name>TABLEID</sql_name>
+		<title>Table Id</title>
+		<type>s</type>
+		<primarykey/>
+	</column>
+	<column name="TABLENAME">
+		<sql_name>TABLENAME</sql_name>
+		<title>Name</title>
+		<type>s</type>
+	</column>
+	<column name="TABLETYPE">
+		<sql_name>TABLETYPE</sql_name>
+		<title>Type</title>
+		<type>n</type>
+		<drill_enable/>
+	</column>
+	<column name="SCHEMAID">
+		<sql_name>SCHEMAID</sql_name>
+		<title>Schema Id</title>
+		<type>s</type>
+		<drill_enable/>
+	</column>
+	<column name="SCHEMANAME">
+		<sql_name>(SELECT s.SCHEMANAME from sys.SYSSCHEMAS s where s.SCHEMAID=systables.SCHEMAID)</sql_name>
+		<title>Schema</title>
+		<type>s</type>
+	</column>
+	<column name="LOCKGRANULARITY">
+		<sql_name>LOCKGRANULARITY</sql_name>
+		<title>Lock Granularity</title>
+		<type>n</type>
+		<drill_enable/>
+	</column>
+</table>

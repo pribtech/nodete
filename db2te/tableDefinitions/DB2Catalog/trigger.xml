@@ -1,0 +1,192 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2010 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+
+<table name="trigger">
+	<sql_name>SYSCAT.TRIGGERS</sql_name>
+	<singular_name>Trigger</singular_name>
+	<plural_name>Triggers</plural_name>
+	<description />
+	<disable_edit />
+	<order_by_index name="trigschema" direction="A"/>
+	<order_by_index name="trigname" direction="A"/>
+	<display_columns>
+		<col type="column" name="trigschema" />
+		<col type="column" name="trigname" />
+		<col type="column" name="owner" />
+		<col type="column" name="ownertype" />
+		<col type="column" name="tabschema" />
+		<col type="column" name="tabname" />
+		<col type="column" name="trigtime" />
+		<col type="column" name="trigevent" />
+		<col type="column" name="granularity" />
+		<col type="column" name="valid" />
+		<col type="column" name="create_time" />
+		<col type="column" name="qualifier" />
+		<col type="column" name="func_path" />
+		<col type="column" name="text" />
+		<col type="column" name="last_regen_time" />
+		<col type="column" name="collationschema" />
+		<col type="column" name="collationname" />
+		<col type="column" name="collationschema_orderby" />
+		<col type="column" name="collationname_orderby" />
+		<col type="column" name="definer" />
+		<col type="column" name="remarks" />
+	</display_columns>
+
+	<column name="trigschema">
+		<sql_name>TRIGSCHEMA</sql_name>
+		<title>Schema</title>
+		<type>s</type>
+		<c_drill>y</c_drill>
+		<c_pkey>p</c_pkey>
+		<c_prefill>y</c_prefill>
+	</column>
+	<column name="trigname">
+		<sql_name>TRIGNAME</sql_name>
+		<title>Name</title>
+		<type>s</type>
+		<c_drill>y</c_drill>
+		<c_pkey>p</c_pkey>
+	</column>
+	<column name="owner" DBMS="DB2">
+		<sql_name>OWNER</sql_name>
+		<title>Owner</title>
+		<type>s</type>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="ownertype" DBMS="DB2">
+		<sql_name>OWNERTYPE</sql_name>
+		<title>Owner Type</title>
+		<type>s</type>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="tabschema">
+		<sql_name>TABSCHEMA</sql_name>
+		<title>Table Schema</title>
+		<type>s</type>
+		<c_drill>y</c_drill>
+		<c_prefill>
+			<table>schema</table>
+			<column>SCHEMANAME</column>
+		</c_prefill>
+	</column>
+	<column name="tabname">
+		<sql_name>TABNAME</sql_name>
+		<title>Table Name</title>
+		<type>s</type>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="trigtime">
+		<sql_name>TRIGTIME</sql_name>
+		<title>Trigger Time</title>
+		<type>s</type>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="trigevent">
+		<sql_name>TRIGEVENT</sql_name>
+		<title>Trigger Event</title>
+		<type>s</type>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="granularity">
+		<sql_name>GRANULARITY</sql_name>
+		<title>Granularity</title>
+		<type>s</type>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="valid">
+		<sql_name>VALID</sql_name>
+		<title>Valid</title>
+		<type>s</type>
+		<c_column_mask_file>masks/valid.xml</c_column_mask_file>	
+	</column>
+	<column name="create_time">
+		<sql_name>CREATE_TIME</sql_name>
+		<title>Create Time</title>
+		<type>n</type>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="qualifier" DBMS="DB2">
+		<sql_name>QUALIFIER</sql_name>
+		<title>Qualifier</title>
+		<type>s</type>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="func_path">
+		<sql_name>FUNC_PATH</sql_name>
+		<title>Function Path</title>
+		<type>l</type>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="text">
+		<sql_name>TEXT</sql_name>
+		<title>Text</title>
+		<type>l</type>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="last_regen_time">
+		<sql_name>LAST_REGEN_TIME</sql_name>
+		<title>Last Regeneration Time</title>
+		<type>n</type>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="collationschema">
+		<sql_name>COLLATIONSCHEMA</sql_name>
+		<title>Collation Schema</title>
+		<type>s</type>
+		<c_drill>y</c_drill>
+		<c_prefill>
+			<table>schema</table>
+			<column>SCHEMANAME</column>
+		</c_prefill>
+	</column>
+	<column name="collationname">
+		<sql_name>COLLATIONNAME</sql_name>
+		<title>Collation Name</title>
+		<type>s</type>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="collationschema_orderby">
+		<sql_name>COLLATIONSCHEMA_ORDERBY</sql_name>
+		<title>Collation Schema Order By</title>
+		<type>s</type>
+		<c_drill>y</c_drill>
+		<c_prefill>
+			<table>schema</table>
+			<column>SCHEMANAME</column>
+		</c_prefill>
+	</column>
+	<column name="collationname_orderby">
+		<sql_name>COLLATIONNAME_ORDERBY</sql_name>
+		<title>Collation Name Order By</title>
+		<type>s</type>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="definer">
+		<sql_name>DEFINER</sql_name>
+		<title>Definer</title>
+		<type>s</type>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="remarks">
+		<sql_name>REMARKS</sql_name>
+		<title>Remarks</title>
+		<type>s</type>
+		<c_drill>y</c_drill>
+	</column>
+</table>

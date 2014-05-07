@@ -1,0 +1,18 @@
+<BR><BR><H2><B>Role based access by manager Joe</B></H2><HR><P>
+<?php
+  $baseDIR = $_POST["BASE_DIR"];
+?>
+<img src="?BASE_DIRECTORY?HTML/Joe.png" />
+
+<p><b>You must log into the database as Joe before proceeding with this page.</b></p>
+<br>Joe is the manager of customer service department. Role 'Mgr' is granted to Joe.
+Check if he can access <font face="courier">'credit_card'</font> table data.</p>
+
+<h4>Operation</h4><br>
+
+Through role 'Mgr', Joe has privileges to perform SELECT, INSERT, UPDATE, and DELETE operations on <font face="courier">'credit_card'</font> table.
+
+</P>
+
+<br><br><h4>Solution</h4><br>
+The query results in the right pane show that user Joe is able to successfully execute all the SQL statements.

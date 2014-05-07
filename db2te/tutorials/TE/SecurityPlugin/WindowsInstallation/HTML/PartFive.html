@@ -1,0 +1,17 @@
+<H3>Setting Environment Variables</H3><hr>
+<p>Lastly, we need to change SYSADM_GROUP configuration parameter to use your choice of the SYSADM group name as the SYSADM group for this DB2 instance. 
+<br/>We also need to update the DB2 server instance to use the db2auth security plug-in binaries. 
+</p>
+
+<H2>Steps:</H2><p>
+<ol>
+<li>Issue the following command:
+<br/><i>configure_db2auth_plugin.bat (your SYSADM group name here)</i>
+</li>
+<br/><li>Re-start the DB2 instance:
+<br/><i>db2stop</i>
+<br/><i>db2start</i>
+</li></ol><br/>
+</p>
+<p>You have now finished installing and configuring the plug-in.</p>
+<p>For further information or trouble-shooting, please refer to the README documentation provided in the plug-in package.</p>

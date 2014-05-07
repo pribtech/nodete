@@ -1,0 +1,30 @@
+The two examples that follow are simple, and demonstrate the ways to create
+  a <a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v9r7/topic/com.ibm.db2.luw.admin.dbobj.doc/doc/c0020090.html');">range-clustered table</a>. The examples show how you can use either 
+  single or multiple columns as the key to the table. In
+  addition, they show how to create a table that allows data to overflow, and a
+  table that does not allow data to overflow.
+  <P>The first example shows a range-clustered table that is used to locate a
+  student using a STUDENT_ID. For each student record, we include the
+  following information:
+  </P>
+  <UL>
+  <LI>School ID </LI>
+  <LI>Program ID </LI>
+  <LI>Student number </LI>
+  <LI>Student ID </LI>
+  <LI>Student first name </LI>
+  <LI>Student last name </LI>
+  <LI>Student grade point average (GPA) </LI>
+  </UL>
+  <P>In this case, we would like to work with student records solely based on
+  the STUDENT_ID. The STUDENT_ID will be used to add, update, and delete
+  student records.</P>
+  <DL>
+<DT>
+<B>Note:</B>
+</DT>
+<DD>Other indexes can be added separately at another time. However, for
+  the purpose of this example, the organization of the table and how to access
+  the table's data are defined when the table is created.
+  </DD>
+</DL>

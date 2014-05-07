@@ -1,0 +1,17 @@
+<BR><BR><H2><B>Access table data by manager Joe from trusted connection</B></H2><HR><P>
+<?php
+  $baseDIR = $_POST["BASE_DIR"];
+?>
+<img src="?BASE_DIRECTORY?HTML/Joe.png" />
+
+<p><b>You must log into the database as Joe before proceeding with this page.</b></p>
+<br>Joe is the manager of customer service department. Check if he can access <font face="courier">'credit_card'</font> table data.</p>
+
+<br><br><h4>Operation</h4><br>
+
+Joe gets 'Mgr' role privileges to perform SELECT, INSERT and UPDATE operations on <font face="courier">'credit_card'</font> table. However DELETE operation by Joe is not allowed.
+
+</P>
+
+<br><br><h4>Solution</h4><br>
+The query results in the right pane show that user Joe is able to successfully execute the SQL statements a 'Mgr' role is allowed when connected through trusted connection.

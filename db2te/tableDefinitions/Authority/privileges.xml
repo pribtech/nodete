@@ -1,0 +1,94 @@
+<table name="SYSIBMADM.PRIVILEGES">
+    <sql_name>SYSIBMADM.PRIVILEGES</sql_name>
+    <singular_name>Privilege</singular_name>
+    <plural_name>Privileges</plural_name>
+    <description>
+	This view returns all explicit 
+	&lt;a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.admin.sec.doc/doc/c0005478.html?noframes=true');"&gt;privileges&lt;/a&gt;
+	for all authorization IDs.    
+	This list is generated from the &lt;a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.sql.rtn.doc/doc/r0021978.html?noframes=true');"&gt;SYSIBMADM.PRIVILEGES&lt;/a&gt; administrative view.
+    </description>
+    <rows_per_page>50</rows_per_page>
+    <order_by_index></order_by_index>
+    <display_columns>
+        <col type="reference" name="authidlink"></col>    
+        <col type="column" name="authid"></col>
+        <col type="column" name="authidtype"></col>
+        <col type="column" name="privilege"></col>
+        <col type="column" name="grantable"></col>
+        <col type="column" name="objecttype"></col>                
+        <col type="column" name="objectschema"></col>        
+        <col type="column" name="objectname"></col>
+    </display_columns>
+	<disable_edit/>
+		<order_by_index name="authid" direction="A"/>
+		<order_by_index name="objecttype" direction="A"/>				
+		<order_by_index name="objectschema" direction="A"/>						
+		<order_by_index name="objectname" direction="A"/>								
+    <column name="authid">
+        <c_sql_name>AUTHID</c_sql_name>
+        <c_title>Authorization ID</c_title>
+        <c_pkey>p</c_pkey>
+        <c_presentation>s</c_presentation>
+        <c_drill>y</c_drill>
+        <c_prefill>y</c_prefill>                
+    </column>
+	<reference name="authidlink">
+		<title>Auth</title>
+		<reftype>displayRow</reftype>
+		<refvalue>Authority/authids</refvalue>
+		<icon>images/icon-user.gif</icon>						
+		<ref foreign_column_name="authid">
+			<local_column_name>authid</local_column_name>
+		</ref>
+	</reference>			
+    <column name="authidtype">
+        <c_sql_name>AUTHIDTYPE</c_sql_name>
+        <c_pkey>p</c_pkey>
+        <c_title>Type</c_title>
+        <c_presentation>s</c_presentation>
+        <c_drill>y</c_drill>
+        <c_prefill>y</c_prefill>                
+    </column>
+    <column name="privilege">
+        <c_sql_name>PRIVILEGE</c_sql_name>
+        <c_title>Privilege</c_title>
+        <c_pkey>p</c_pkey>
+        <c_presentation>s</c_presentation>
+        <c_drill>y</c_drill>
+        <c_prefill>y</c_prefill>                
+    </column>
+    <column name="grantable">
+        <c_sql_name>GRANTABLE</c_sql_name>
+        <c_title>Grantable</c_title>
+        <c_presentation>s</c_presentation>
+        <c_drill>y</c_drill>
+        <c_prefill>y</c_prefill>        
+    </column>
+    <column name="objectname">
+        <c_sql_name>OBJECTNAME</c_sql_name>
+        <c_title>Object</c_title>
+        <c_pkey>p</c_pkey>
+        <c_presentation>s</c_presentation>
+        <c_drill>y</c_drill>
+    </column>
+    <column name="objectschema">
+        <c_sql_name>OBJECTSCHEMA</c_sql_name>
+        <c_title>Schema</c_title>
+        <c_presentation>s</c_presentation>
+        <c_pkey>p</c_pkey>
+        <c_drill>y</c_drill>
+		<c_prefill>
+			<table>schema</table>
+			<column>SCHEMANAME</column>
+		</c_prefill>        
+    </column>
+    <column name="objecttype">
+        <c_sql_name>OBJECTTYPE</c_sql_name>
+        <c_title>Type</c_title>
+        <c_pkey>p</c_pkey>
+        <c_presentation>s</c_presentation>
+        <c_drill>y</c_drill>
+        <c_prefill>y</c_prefill>                
+    </column>
+</table>

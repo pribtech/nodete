@@ -1,0 +1,153 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2013 All rights reserved.
+  
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+<table name="indexInfo">
+	<sqlName>pg_index</sqlName>
+	<singularName>Index Info</singularName>
+	<pluralName>Index Info</pluralName>
+	<description></description>
+	<orderBy name="schemaname" direction="A"/>
+	<orderBy name="tablename" direction="A"/>
+	<orderBy name="indexname" direction="A"/>
+	<disableEdit/>
+	<output>
+		<type name="DDL" destination="" title="" generator=""/>
+	</output>
+	<displayColumns>
+		<col type="column" name="schemaname"/>
+		<col type="column" name="tablename"/>
+		<col type="column" name="indexname"/>
+		<col type="column" name="indnatts"/>
+		<col type="column" name="indisunique"/>
+		<col type="column" name="indisprimary"/>
+		<col type="column" name="indisexclusion"/>
+		<col type="column" name="indimmediate"/>
+		<col type="column" name="indisclustered"/>
+		<col type="column" name="indisvalid"/>
+		<col type="column" name="indcheckxmin"/>
+		<col type="column" name="indisready"/>
+		<col type="column" name="indislive"/>
+		<col type="column" name="indkey"/>
+		<col type="column" name="indcollation"/>
+		<col type="column" name="indclass"/>
+		<col type="column" name="indoption"/>
+		<col type="column" name="indexprs"/>
+		<col type="column" name="indpred"/>
+	</displayColumns>
+	<column name="indexrelid">
+		<sqlName>indexrelid</sqlName>
+		<title>Indexrelid</title>
+		<type>n</type>
+	</column>
+	<column name="indexname">
+		<sqlName>(select i.relname from pg_class i where i.oid = indexrelid)</sqlName>
+		<title>Index</title>
+	</column>
+	<column name="indrelid">
+		<sqlName>indrelid</sqlName>
+		<title>Indrelid</title>
+		<type>n</type>
+	</column>
+	<column name="tablename">
+		<sqlName>(select c.relname from pg_class c where c.oid = indrelid)</sqlName>
+		<title>Table</title>
+	</column>
+	<column name="schemaname">
+		<sqlName>(select n.nspname from pg_class c1 ,pg_namespace n where c1.oid = indrelid and n.oid = c1.relnamespace)</sqlName>
+		<title>Schema</title>
+	</column>
+	<column name="indnatts">
+		<sqlName>indnatts</sqlName>
+		<title>Natts</title>
+		<type>n</type>
+	</column>
+	<column name="indisunique">
+		<sqlName>indisunique</sqlName>
+		<title>Unique</title>
+		<type>n</type>
+	</column>
+	<column name="indisprimary">
+		<sqlName>indisprimary</sqlName>
+		<title>Primary</title>
+		<type>n</type>
+	</column>
+	<column name="indisexclusion">
+		<sqlName>indisexclusion</sqlName>
+		<title>Exclusion</title>
+		<type>n</type>
+	</column>
+	<column name="indimmediate">
+		<sqlName>indimmediate</sqlName>
+		<title>Immediate</title>
+		<type>n</type>
+	</column>
+	<column name="indisclustered">
+		<sqlName>indisclustered</sqlName>
+		<title>Clustered</title>
+		<type>n</type>
+	</column>
+	<column name="indisvalid">
+		<sqlName>indisvalid</sqlName>
+		<title>Valid</title>
+		<type>n</type>
+	</column>
+	<column name="indcheckxmin">
+		<sqlName>indcheckxmin</sqlName>
+		<title>Checkxmin</title>
+		<type>n</type>
+	</column>
+	<column name="indisready">
+		<sqlName>indisready</sqlName>
+		<title>Ready</title>
+		<type>n</type>
+	</column>
+	<column name="indislive">
+		<sqlName>indislive</sqlName>
+		<title>Live</title>
+		<type>n</type>
+	</column>
+	<column name="indkey">
+		<sqlName>indkey</sqlName>
+		<title>Key</title>
+		<type>n</type>
+	</column>
+	<column name="indcollation">
+		<sqlName>indcollation</sqlName>
+		<title>Collation</title>
+		<type>n</type>
+	</column>
+	<column name="indclass">
+		<sqlName>indclass</sqlName>
+		<title>Class</title>
+		<type>n</type>
+	</column>
+	<column name="indoption">
+		<sqlName>indoption</sqlName>
+		<title>Option</title>
+		<type>n</type>
+	</column>
+	<column name="indexprs">
+		<sqlName>indexprs</sqlName>
+		<title>prs</title>
+		<type>n</type>
+	</column>
+	<column name="indpred">
+		<sqlName>indpred</sqlName>
+		<title>pred</title>
+		<type>n</type>
+	</column>
+</table>

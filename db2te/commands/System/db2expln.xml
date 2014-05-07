@@ -1,0 +1,219 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2009 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<command name="db2expln" title="Explain">
+<![CDATA[
+>>-db2expln--+------------------------+------------------------->
+             '-| connection-options |-'   
+]]>
+	<text>db2expln</text>
+	<select>
+		<option default="true"><text></text></option> 
+		<option><clauseReference name="connection-options"/></option> 
+	</select>
+	<br statement='false'/>
+<![CDATA[
+>--+--------------------+--+---------------------+-------------->
+   '-| output-options |-'  '-| package-options |-'   
+]]>
+	<select>
+		<option default="true"><text></text></option> 
+		<option><clauseReference name="output-options"/></option> 
+	</select>
+	<select>
+		<option default="true"><text></text></option> 
+		<option><clauseReference name="package-options"/></option> 
+	</select>
+	<br statement='false'/>
+<![CDATA[
+>--+---------------------+--+---------------------+------------->
+   '-| dynamic-options |-'  '-| explain-options |-'   
+]]>
+	<select>
+		<option default="true"><text></text></option> 
+		<option><clauseReference name="dynamic-options"/></option> 
+	</select>
+	<br statement='false'/>
+	<select>
+		<option default="true"><text></text></option> 
+		<option><clauseReference name="explain-options"/></option> 
+	</select>
+	<br statement='false'/>
+<![CDATA[
+>--+---------------------------+--+--------+-------------------><
+   '-| event-monitor-options |-'  '- -help-'   
+]]>
+	<select>
+		<option default="true"><text></text></option> 
+		<option><clauseReference name="event-monitor-options"/></option> 
+	</select>
+	<select>
+		<option default="true"><text></text></option> 
+		<option><text>-help</text></option> 
+	</select>
+	
+	<clause name="connection-options" title="connection options">
+<![CDATA[
+|-- -database--database-name--+---------------------------+-----|
+                              '- -user--user-id--password-'   
+]]>
+		<text>-database</text><clauseReference name="database-name"/>
+		<select>
+			<option default="true"><text></text></option> 
+			<option><text>-user</text><input size="12" title="user-id"/><input size="12" title="password"/></option> 
+		</select>
+	</clause>
+
+	<clause name="output-options" title="output options">
+<![CDATA[
+|--+-----------------------+--+------------+--------------------|
+   '- -output--output-file-'  '- -terminal-'   
+]]>
+		<select>
+			<option default="true"><text></text></option> 
+			<option><text>-output</text><clauseReference name="file-name"/></option> 
+		</select>
+		<select>
+			<option default="true"><text></text></option> 
+			<option><text>-terminal</text></option> 
+		</select>
+	</clause>
+
+	<clause name="package-options" title="package options">
+<![CDATA[
+package-options
+
+|-- -schema--schema-name-- -package--package-name--------------->
+
+>--+-------------------------------+---------------------------->
+   '- -version--version-identifier-'   
+
+>--+----------------------------+--+-----------+---------------->
+   '- -escape--escape-character-'  '- -noupper-'   
+
+>--+---------------------------+--------------------------------|
+   '- -section--section-number-'   
+]]>
+		<text>-schema</text><clauseReference name="schema-name"/>
+		<text>-package</text><clauseReference name="package-name"/>
+		<br statement='false'/>
+		<select>
+			<option default="true"><text></text></option> 
+			<option><text>-version</text><clauseReference name="version-id"/></option> 
+		</select>
+		<br statement='false'/>
+		<select>
+			<option default="true"><text></text></option> 
+			<option><text>-escape</text><input size="1"/></option> 
+		</select>
+		<select>
+			<option default="true"><text></text></option> 
+			<option><text>-noupper</text></option> 
+		</select>
+		<br statement='false'/>
+		<select>
+			<option default="true"><text></text></option> 
+			<option><text>-section</text><input size="4" type="int"/></option> 
+		</select>
+	</clause>
+
+	<clause name="dynamic-options" title="dynamic options">
+<![CDATA[
+|--+------------------------------+----------------------------->
+   '- -statement--query-statement-'   
+
+>--+----------------------------------+------------------------->
+   '- -stmtfile--query-statement-file-'   
+
+>--+-------------------------------------+--+---------+---------|
+   '- -terminator--termination-character-'  '- -noenv-'   
+]]>
+		<select>
+			<option default="true"><text></text></option> 
+			<option><text>-statement</text><input size="128" name="query-statement"/></option> 
+		</select>
+		<br statement='false'/>
+		<select>
+			<option default="true"><text></text></option> 
+			<option><text>-stmtfile</text><clauseReference name="file-name"/></option> 
+		</select>
+		<br statement='false'/>
+		<select>
+			<option default="true"><text></text></option> 
+			<option><text>-terminator</text><input size="1"/></option> 
+		</select>
+		<select>
+			<option default="true"><text></text></option> 
+			<option><text>-noenv</text></option> 
+		</select>
+	</clause>
+	
+	<clause name="explain-options" title="explain options">
+<![CDATA[
+|--+---------+--+---------+--+---------------------+------------|
+   '- -graph-'  '- -opids-'  '- -setup--setup-file-'   
+]]>
+		<select>
+			<option default="true"><text></text></option> 
+			<option><text>-graph</text></option> 
+		</select>
+		<select>
+			<option default="true"><text></text></option> 
+			<option><text>-opids</text></option> 
+		</select>
+		<select>
+			<option default="true"><text></text></option> 
+			<option><text>-setup</text><clauseReference name="file-name"/></option> 
+		</select>
+	</clause>
+
+	<clause name="event-monitor-options" title="event monitor options">
+<![CDATA[
+|-- -actevm--event-monitor-name--+-------------------------+---->
+                                 '- -appid--application_id-'   
+
+>--+-----------------+--+----------------------+---------------->
+   '- -uowid--uow_id-'  '- -actid--activity_id-'   
+
+   .- -actid2--0---------------------.   
+>--+---------------------------------+--------------------------|
+   '- -actid2--activity_secondary_id-'   
+]]>
+		<text>-actevm</text><clauseReference name="event-monitor-name"/>
+		<select>
+			<option default="true"><text></text></option> 
+			<option><text>-appid</text><input size="16" title="application id"/></option> 
+		</select>
+		<br statement='false'/>
+		<select>
+			<option default="true"><text></text></option> 
+			<option><text>-uowid</text><input size="16" title="uow id"/></option> 
+		</select>
+		<select>
+			<option default="true"><text></text></option> 
+			<option><text>-actid</text><input size="16" title="activity id"/></option> 
+		</select>
+		<select>
+			<option><text>-actid2 0</text></option> 
+			<option default="true"><text></text></option> 
+			<option><text>-actid2</text><input size="16" title="activity_secondary_id"/></option> 
+		</select>
+		<br statement='false'/>
+	</clause>
+
+</command>
+        

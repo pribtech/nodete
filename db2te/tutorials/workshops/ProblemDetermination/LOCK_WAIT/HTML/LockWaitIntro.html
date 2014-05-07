@@ -1,0 +1,30 @@
+<p>
+	This tutorial contains an example of an application that is performing poorly under heavy traffic, due to long lock wait time in the database.
+</p>
+<p>
+  When more than one queries are accessing the same piece of data concurrently, data consistency and integrity might be compromised. To avoid this problem, DB2 will place a lock on the rows before performing any read or write operations. This ensures a row cannot be accessed by more than one query at any given moment. Therefore, when multiple queries are trying to access the same piece of data, they would have to wait for the required locks to be granted. Intuitively, when more queries try to access the data, more time would be spent waiting for locks.
+</p>
+<p>
+  In a high-traffic application, the database's performance could be severely affected by lock waits. For example, an online auction site might experience a very high peak traffic when the auction for a particular item is about to end. Because these traffic will likely access the same data from the database, they might have to spend a significant amount of time waiting for locks to be granted.
+</p>
+<p>
+	In this tutorial you will:
+	<ul>
+	  <li>Simulate a lock wait problem using the Workload Multiuser Driver</li>
+	  <li>Identify the symptoms of a lock wait problem using the Server Monitoring Dashboard</li>
+		<li>Learn how to resolve and avoid lock wait problems</li>
+	</ul>
+</p>
+<br />
+<!--
+<p>
+	<b>Prerequisites</b><br />
+	<ul>
+	  <li>TE Version ???</li>
+	  <li>WMD Version ???</li>
+	</ul>
+</p>
+<p>
+	Note: This tutorial requires the Technology Explorer for IBM DB2 version ??? or greater.
+</p>
+-->

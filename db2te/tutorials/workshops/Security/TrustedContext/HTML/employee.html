@@ -1,0 +1,28 @@
+<BR><BR><H2><B>Access to table data by Bob</B></H2><HR><P>
+<?php
+  $baseDIR = $_POST["BASE_DIR"];
+?>
+
+<img src="?BASE_DIRECTORY?HTML/employee.png" />
+
+<b>You must log into the database as Bob through trusted context 'trCtx' before proceeding with this page. 
+
+</b><br><br>
+
+<p>Bob is an employee of customer service department. Check if Bob can access <font face="courier">'credit_card'</font> table data using
+trusted connection. </p>
+
+<h4>Operation</h4><br>
+<p>Bob acquires SELECT privilege through the 'custService' role.</p>
+
+<h4>Solution</h4><br>
+<p>The query results in the right pane show that user Bob is able to execute SELECT statement successfully. ALL other
+statements on the right pane will fail as Bob does not have privileges.</p>
+
+
+
+
+
+
+
+

@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xa="task.xsd"  xmlns:xb="action.xsd">
+    <xs:include schemaLocation="task.xsd"/>
+    <xs:include schemaLocation="action.xsd"/>
+        <xs:complexType name="parameter">
+            <xs:annotation>
+                <xs:documentation><![CDATA[
+                Parameters (Think variables in any programing language) represents a location to temporarily hold data.
+]]>
+                </xs:documentation>
+            </xs:annotation>
+                <xs:all>
+                    <xs:element name="value" type="xs:string">
+                        <xs:annotation>
+                            <xs:documentation>
+                            <![CDATA[
+                The value is use in conjunction with the parameter attribute 'type' to define the value to assign to the parameter.
+]]>                    
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element name="defaultValue" type="xs:string">
+                        <xs:annotation>
+                            <xs:documentation>
+                                <![CDATA[
+                A string value that is assigned as the value of the variable if an error occurs in assign the value or data represented by the value string.
+]]>                    
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element name="check">
+                        <xs:annotation>
+                            <xs:documentation>
+                                Checks allow you to run data sanitation on a the parameter before proceeding with the action.
+                            </xs:documentation>
+                        </xs:annotation>
+                        <xs:complexType>
+                            <xs:sequence>
+                                <xs:element name="onMatch" type="checkType">
+                                    <xs:annotation>
+                                        <xs:documentation>
+                                            When the condition matches true execute the following tasks
+                                        </xs:documentation>
+                                    </xs:annotation>
+                                </xs:element>
+                                <xs:element name="onNonMatch" type="checkType">
+                                    <xs:annotation>
+                                        <xs:documentation>
+                                            When the condition does not match execute the following tasks
+                                        </xs:documentation>
+                                    </xs:annotation>
+                                </xs:element>
+                            </xs:sequence>
+                        </xs:complexType>
+                    </xs:element>
+                </xs:all>
+                <xs:attribute name="name" type="xs:string" use="required">
+                    <xs:annotation>
+                        <xs:documentation>
+                            The name that the parameter will be accessed and retrieved by.
+                        </xs:documentation>
+                    </xs:annotation>
+                </xs:attribute>
+                <xs:attribute name="type" use="required">
+                    <xs:annotation>
+                        <xs:documentation>
+                            The attribute type represents how to treat the data located in the value element. See each of the option for more information.
+                        </xs:documentation>
+                    </xs:annotation>
+                    <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                            <xs:enumeration value="returnObject">
+                                <xs:annotation>
+                                    <xs:documentation><![CDATA[
+A returnObject allows you to retrieve the returned data from the current or previous action. Object an array navigation is done using “.” separators. This is limited by the fact you must know exactly what the return for a given action is.
+
+Example: 
+
+For the return object represented in JSON notation from an action named “getFavoriteColors”
+{
+	returnCode:true,
+	returnValue:[
+			{
+				name:Matthew,
+				favoriteColor:orange
+			},
+			{
+				name:Brian
+				favoriteColor: red
+			}
+		]
+}
+
+To retrieve the return code the value of the element value would be:
+“getFavoriteColors.returnCode”
+
+assigned value will be: “true”
+
+To retrieve the first name the value of the element value would be:
+“getFavoriteColors.returnValue.0.name”
+
+assigned value will be: “Matthew”
+
+To retrieve the favorite color of the second entire the value of the element value would be:
+“getFavoriteColors.returnValue.1.favoriteColor ”
+
+assigned value will be: “red”
+]]></xs:documentation>
+                                </xs:annotation>
+                            </xs:enumeration>
+                            <xs:enumeration value="blockValue">
+                                <xs:annotation>
+                                    <xs:documentation><![CDATA[
+A blockValue represents a means to retrieve data from with in the block (namespace) that the action is running within. The value is retrieved from the element with the id “<Block>_<Value name>” where value name is the value of the element 'value' and the namespace is passed in on call of the action. 
+This is most commonly seen in column actions located with in the table definition files. Where a block (namespace) is the current row that the action is executed on and a column value in that row can be accessed using the column ID as the value name.
+]]>                                </xs:documentation>
+                                </xs:annotation>
+                            </xs:enumeration>
+                            <xs:enumeration value="constant">
+                                <xs:annotation>
+                                    <xs:documentation>
+                                        The data located in the element value corresponds to a global, shared or local parameter name.
+                                    </xs:documentation>
+                                </xs:annotation>
+                            </xs:enumeration>
+                            <xs:enumeration value="fixed">
+                                <xs:annotation>
+                                    <xs:documentation><![CDATA[
+                                        The data located in the element value will be assigned and all substitution markers with a corresponding global, shared or local parameter will be substituted. Substitution string are marked by “?<Parameter Name>?” (question mark, the parameter name, question mark).
+                                    ]]></xs:documentation>
+                                </xs:annotation>
+                            </xs:enumeration>
+                            <xs:enumeration value="raw">
+                                <xs:annotation>
+                                    <xs:documentation>
+                                        The data located in the element value will be assigned as is.
+                                    </xs:documentation>
+                                </xs:annotation>
+                            </xs:enumeration>
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:attribute>
+        </xs:complexType>
+    <xs:complexType name="checkType">
+        <xs:sequence>
+            <xs:element name="task" type="task" maxOccurs="unbounded" minOccurs="1"/>
+        </xs:sequence>
+        <xs:attribute name="condition" type="xs:string">
+            <xs:annotation>
+                <xs:documentation>
+                    Contains a regular expression used to compare the parameter value against. See (https://developer.mozilla.org/En/Core_JavaScript_1.5_Guide/Regular_Expressions or http://msdn.microsoft.com/en-us/library/1400241x(VS.85).aspx) for a discription on how to use regular expression.
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="conditionType" type="baseActionObjects">
+            <xs:annotation>
+                <xs:documentation>
+                    The attribute conditionType represents how to treat the data located in the condition attribute. See each of the option for more information. Unless otherwise set the conditionType is assumed to be 'raw'.
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="conditionCompairType">
+            <xs:annotation>
+                <xs:documentation>
+                    the method used when compairing the contidtion to the value, by default this is regex
+                </xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="regex"/>
+                    <xs:enumeration value="str"/>
+                    <xs:enumeration value="istr"/>
+                </xs:restriction> 
+            </xs:simpleType>
+        </xs:attribute>
+    </xs:complexType>
+</xs:schema>

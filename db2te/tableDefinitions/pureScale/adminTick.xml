@@ -1,0 +1,75 @@
+<table name="adminTick">
+	<sql_name>tick</sql_name>
+	<singular_name>Administration log (last 15 minutes)</singular_name>
+	<plural_name>Administration log (last 15 minutes)</plural_name>
+	<inlinequery>
+<![CDATA[
+SELECT
+	      TIME(timestamp) as time, 
+	      dbpartitionnum,
+	      msg 
+	    FROM 
+	    	SYSIBMADM.PDLOGMSGS_LAST24HOURS
+	    ORDER BY TIMESTAMP DESC
+	    FETCH FIRST 30 ROWS ONLY
+]]>
+	</inlinequery>
+	
+	<menu type="leaf">
+		<description>
+			Clear logs
+		</description>
+		<actionScript name="notify" type="confirm">
+			<message>Are you sure you want to delete the administration logs?</message>
+			<if condition="true">
+				<task>
+					<action name="removeAdminLog" type="serverAction">
+						<parameterList>
+							<parameter name="action"><value>sshCommand</value></parameter>
+							<parameter name="command"><value>rm $HOME/sqllib/db2dump/*.nfy</value></parameter>
+						</parameterList>
+						<if condition="true">
+							<task>
+								<reloadPanel/>
+							</task>
+						</if>
+					</action>
+				</task>
+			</if>
+		</actionScript>
+	</menu>
+	
+	<!--<dataRetrievalAction name="pureScale/adminLog"/>-->
+	<messages>
+		<SQL_NO_DATA>No entries for the past 15 minutes.</SQL_NO_DATA>
+	</messages>
+	<reloadIndicator threshHold="5"/>
+	<rows_per_page>50</rows_per_page>
+	<order_by_index></order_by_index>
+	<display_columns>
+		<col type="column" name="DATE"/>
+		<col type="column" name="NODE"/>
+		<col type="column" name="MESSAGE"/>
+	</display_columns>
+
+	<column name="DATE">
+		<c_sql_name>time</c_sql_name>
+		<c_title>Time</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="NODE">
+		<c_sql_name>dbpartitionnum</c_sql_name>
+		<c_title>Node</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="MESSAGE">
+		<c_sql_name>msg</c_sql_name>
+		<c_title>Message</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+</table>
+
+

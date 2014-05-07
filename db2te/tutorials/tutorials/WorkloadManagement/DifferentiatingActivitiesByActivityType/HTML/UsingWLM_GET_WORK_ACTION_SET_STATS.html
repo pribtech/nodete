@@ -1,0 +1,8 @@
+You can use the <a onclick="OpenURLInFloatingWindow
+('http:http://publib.boulder.ibm.com/infocenter/db2luw/v9r7/topic/com.ibm.db2.luw.sql.rtn.doc/doc/r0052919.html?noframes=true');">
+WLM_GET_WORK_ACTION_SET_STATS table function</a> to access
+  the work action set statistics in memory to get the number of times
+  specific activity types have been run.  Note that running the
+  following query shows only the load_wc, read_wc and ddl_wc work
+  classes since they are the only work classes that have an applicable
+  work action.  All the other activities are counted under the *:

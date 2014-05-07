@@ -1,0 +1,38 @@
+<br><h2>Create LBAC policies</h2><hr><br>
+<p><b>You must log into the database as Pat before proceeding with this page.</b></p>
+<p>Read and/or write access on <font face="courier">'credit_card'</font> table can be restricted using DB2 roles. However roles do not provide row or column level data access control. To prevent some users from accessing all columns of <font face="courier">'credit_card'</font> table and provide access to only business need-to-know people, J.K.Avro superstore decides to implement column level LBAC. </p>
+
+<h4>Operation</h4><br>
+
+<p>SECADM of J.K.Avro superstore sets up column level LBAC policies in such a way that only managers have full access to the credit card information and customer service employees only have write access.</p>
+
+<br><h4>Security Label Component </h4><BR>
+A security label component represents any criteria upon which access control is
+based. The security label component consists of one or more criteria (elements)
+grouped together in specified relationship:<br><ol>
+1. SETs Unordered lists of elements.<br>
+2. ARRAYs Ordered list of elements.<br>
+3. TREEs Elements arranged in a tree structure.<br></ol><p>
+
+<h4>Security Policy</h4>
+<p>A security policy describes the criteria that will be used to decide who has read
+or write access to individual rows and individual columns of a table. A security
+policy defines the structure of a security label and also access rules, referred as
+DB2LBACRULES. These rules are predefined in DB2, there are read access
+rules and write access rules.</p>
+
+<h4>Security Label</h4><p>
+A security label is a database object that describes a certain set of security
+criteria. Security labels are applied to data in order to protect the data. They are
+granted to users to allow them to access protected data.</p>
+
+<h4>Solution</h4><br>
+<p>The query results in the right pane show that the security policies are created successfully. These security policies set the LBAC rules and
+restrict access to columns of <font face="courier">'credit_card'</font> table only to business need-to-know people.
+
+
+
+
+<br><br><h4>Operation</h4><br>
+<p>SECADM of J.K.Avro superstore sets up LBAC policies in such a way that only managers and employees of respective regions can access their own regional data. They cannot access sales data of other regions. On the other hand, the vice president Mark needs to analyze sales data of all regions. Therefore he is granted access to sales data of all the regions. </p>
+

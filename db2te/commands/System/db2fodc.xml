@@ -1,0 +1,81 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2009 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<command name="db2fodc" title="db2fodc">
+<![CDATA[
+Read syntax diagramSkip visual syntax diagram
+>>-db2fodc------------------------------------------------------>
+
+>--+-+- -hang-+--+-------+--+------------------+--+------------------------------------------+-+-->
+   | '- -perf-'  +-basic-+  |       .-,------. |  |                   .-,------------------. | |   
+   |             '-full--'  |       V        | |  |                   V                    | | |   
+   |                        +- -db----dbname-+-+  +- -dbpartitionnum----dbpartition_number-+-+ |   
+   |                        '- -alldbs---------'  '- -alldbpartitionnum----------------------' |   
+   '- -indexerror--FODC_IndexError_directory--+-------+----------------------------------------'   
+                                              +-basic-+                                            
+                                              '-full--'                                            
+
+>--+--------+--------------------------------------------------><
+   '- -help-'   
+]]>
+	<text>db2fodc</text>
+	<br statement='false'/>
+	<select>
+		<option default="true">
+			<select>
+				<option default="true"><text>-hang</text></option> 
+				<option><text>-perf</text></option> 
+			</select>
+			<select>
+				<option default="true"><note>default</note></option> 
+				<option><text>basic</text></option> 
+				<option><text>full</text></option> 
+			</select>
+			<select>
+				<option default="true"><note>default</note></option> 
+				<option>
+					<text>-db</text>
+					<repeatable><input size="8" title="database" /></repeatable>
+				</option> 
+				<option><text>-alldbs</text></option> 
+			</select>
+			<select>
+				<option default="true"><note>default</note></option> 
+				<option>
+					<text>-dbpartitionnum</text>
+					<repeatable><input size="8" type="int" title="num" /></repeatable>
+				</option> 
+				<option><text>-alldbpartitionnum</text></option> 
+			</select>
+		</option> 
+		<option>
+			<text>-indexerror</text>
+			<input size="36" title="FODC_IndexError_directory"/>
+			<select>
+				<option default="true"><note>default</note></option> 
+				<option><text>basic</text></option> 
+				<option><text>full</text></option> 
+			</select>
+		</option> 
+	</select>
+	<br statement='false'/>
+	<select>
+		<option default="true"><note>no help</note></option> 
+		<option><text>-help</text></option> 
+	</select>
+</command>
+        

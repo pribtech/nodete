@@ -1,0 +1,131 @@
+<!--
+  Copyright Independent Systems Integrators Pty Ltd 2008 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<menu type="leaf" branchDirectory="" minVersion="9.5">
+	<pageWindow target="_active">
+	<panelHeaders refreshEnabled="true"/>
+		<title>Summary Views</title>
+		<info>To generate reports of the database activities, the database must have a system temporary table space of 8K or more.</info>
+		<splitPane direction="h" splitPercent="0.2">
+			<topPane>
+				<splitPane direction="v" splitPercent="0.5">
+					<leftPane>
+						<splitPane direction="h"  splitPercent="0.7">
+							<topPane>
+								<panel name="DBM">
+								<panelHeaders refreshEnabled="true"/>
+									<link type="action" target="_self" window="_self" connectionRequired="y">
+										<parameterList>
+											<parameter name="table">Monitor/SummaryViews/monSVSCActivities</parameter>
+											<parameter name="action">list_table</parameter>
+										</parameterList>
+									</link>				
+								</panel>
+							</topPane>
+							<bottomPane>
+								<splitPane direction="h"  splitPercent="0.5">
+									<topPane>
+										<panel name="DB" >
+										<panelHeaders refreshEnabled="true"/>
+											<link type="action" target="_self" window="_self" connectionRequired="y">
+												<parameterList>
+													<parameter name="table">Monitor/SummaryViews/monSVConn</parameter>
+													<parameter name="action">list_table</parameter>
+												</parameterList>
+											</link>				
+										</panel>
+									</topPane>
+									<bottomPane>
+										<splitPane direction="v"  splitPercent="0.4">
+											<topPane>
+												<panel name="DBRR" >
+												<panelHeaders refreshEnabled="true"/>
+													<link type="action" target="_self" window="_self" connectionRequired="y">
+														<parameterList>
+															<parameter name="table">Monitor/SummaryViews/monSVSystemUsage</parameter>
+															<parameter name="action">list_table</parameter>
+														</parameterList>
+													</link>				
+												</panel>
+											</topPane>
+											<bottomPane>
+												<panel name="ContRR">
+												<panelHeaders refreshEnabled="true"/>
+													<link type="action" target="_self" window="_self" connectionRequired="y">
+														<parameterList>
+															<parameter name="table">Monitor/SummaryViews/monSVGeneral</parameter>
+															<parameter name="action">list_table</parameter>
+														</parameterList>
+													</link>				
+												</panel>
+											</bottomPane>
+										</splitPane>
+									</bottomPane>
+								</splitPane>
+							</bottomPane>
+						</splitPane>
+					</leftPane>
+			
+					<rightPane>	
+						<splitPane direction="h"  splitPercent="0.7">
+							<topPane>
+								<panel name="DBMR">
+								<panelHeaders refreshEnabled="true"/>
+									<link type="action" target="_self" window="_self" connectionRequired="y">
+										<parameterList>
+											<parameter name="table">Monitor/SummaryViews/monSVLongUOW</parameter>
+											<parameter name="action">list_table</parameter>
+										</parameterList>
+									</link>				
+								</panel>
+							</topPane>
+							<bottomPane>
+								<splitPane direction="h"  splitPercent="0.5">
+									<topPane>
+										<panel name="DBR" >
+										<panelHeaders refreshEnabled="true"/>
+											<link type="action" target="_self" window="_self" connectionRequired="y">
+												<parameterList>
+													<parameter name="table">Monitor/SummaryViews/monSVCPUConsumption</parameter>
+													<parameter name="action">list_table</parameter>
+												</parameterList>
+											</link>				
+										</panel>
+									</topPane>
+									<bottomPane>
+										<panel name="ContR" splitPercent="0.5">
+										<panelHeaders refreshEnabled="true"/>
+											<link type="action" target="_self" window="_self" connectionRequired="y">
+												<parameterList>
+													<parameter name="table">Monitor/SummaryViews/monSVAppLockWait</parameter>
+													<parameter name="action">list_table</parameter>
+												</parameterList>
+											</link>				
+										</panel>
+									</bottomPane>
+								</splitPane>
+							</bottomPane>
+						</splitPane>
+					</rightPane>
+				</splitPane>
+			</topPane>
+			<bottomPane>
+				<panel name="detail"/>
+			</bottomPane>
+		</splitPane>
+	</pageWindow>
+	<description>Summary Views</description>
+</menu>

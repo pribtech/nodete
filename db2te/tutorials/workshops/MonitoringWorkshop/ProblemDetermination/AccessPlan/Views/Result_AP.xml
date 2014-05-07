@@ -1,0 +1,33 @@
+<table name="Unknown">
+	<sql_name>SQLLIST</sql_name>
+	<singular_name>SQL statement</singular_name>
+	<plural_name>SQL Statements</plural_name>
+	<inlinequery>
+	
+<![CDATA[
+SELECT TOTAL_CPU_TIME, 
+       SUBSTR(STMT_TEXT,1,50) AS STMT_TEXT 
+FROM TABLE (MON_GET_PKG_CACHE_STMT('D', NULL, NULL, -1)) AS TF
+ORDER BY TOTAL_CPU_TIME DESC
+]]>
+	</inlinequery>
+	<description>This pane gives the information about the queries that have high execution time</description>
+	<rows_per_page>50</rows_per_page>
+	<order_by_index></order_by_index>
+	<display_columns>
+		<col type="column" name="TOTAL_CPU_TIME"/>
+		<col type="column" name="STMT_TEXT"/>
+	</display_columns>
+	<column name="TOTAL_CPU_TIME">
+		<c_sql_name>TOTAL_CPU_TIME</c_sql_name>
+		<c_title>TOTAL_CPU_TIME</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="STMT_TEXT">
+		<c_sql_name>STMT_TEXT</c_sql_name>
+		<c_title>STMT_TEXT</c_title>
+		<c_presentation>y</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+</table>

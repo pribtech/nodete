@@ -1,0 +1,88 @@
+<!--
+  Copyright IBM Corp. 2007 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+	<table name="dbmcfg_compat">
+		<sql_name>dbmcfg_compat</sql_name>
+		<singular_name>Database Manager Configuration</singular_name>
+		<plural_name>Database Manager Configuration Parameters</plural_name>
+		<description>Each row represents a 
+		&lt;a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.admin.dbobj.doc/doc/c0004555.html?noframes=true');"&gt;DB2 configration parameter&lt;/a&gt;.
+		This list is based on the &lt;a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.admin.dbobj.doc/doc/r0022029.html?noframes=true');"&gt;SYSIBMADM.DBMCFG&lt;/a&gt; administrative view.
+		</description>
+<inlinequery>
+		<![CDATA[
+SELECT NAME AS NAME,VALUE AS VALUE,VALUE_FLAGS AS FLAGS, 
+DEFERRED_VALUE AS DEFERRED_VALUE,DEFERRED_VALUE_FLAGS AS 
+DEFERRED_VALUE_FLAGS FROM SYSIBMADM.DBCFG WHERE 
+NAME = 'number_compat' OR NAME ='varchar2_compat' 
+OR NAME ='date_compat'
+]]>
+</inlinequery>
+		<disableEdit/>
+		<output>
+			<type name="DDL" destination="" title="" generator=""/>
+		</output>
+		<rows_per_page>50</rows_per_page>
+		<order_by_index name="name" direction="A"/>
+		<display_columns>
+			<col type="column" name="name"/>
+			<col type="column" name="value"/>
+			<col type="column" name="flags"/>
+			<col type="column" name="deferred_value"/>
+			<col type="column" name="deferred_value_flags"/>			
+			<col type="column" name="desc"/>						
+		</display_columns>
+		<column name="name">
+			<c_sql_name>NAME</c_sql_name>
+			<c_title>Parameter Name</c_title>
+			<c_pkey>p</c_pkey>
+			<c_prefill>n</c_prefill>
+			<c_mask_display_order>lv</c_mask_display_order>
+			<c_column_mask_file>masks/configParmsMask.xml</c_column_mask_file>
+			<c_drill>n</c_drill>
+		</column>
+		<column name="value">
+			<c_sql_name>VALUE</c_sql_name>
+			<c_title>Current Value</c_title>
+			<c_drill>n</c_drill>
+		</column>
+		<column name="flags">
+			<c_sql_name>FLAGS</c_sql_name>
+			<c_title>Special Settings</c_title>
+			<c_prefill>y</c_prefill>			
+		</column>
+		<column name="desc">
+			<c_sql_name>NAME</c_sql_name>
+			<c_title>Description</c_title>
+			<drill_disable/>
+			<search_disable/>
+			<sort_disable/>
+			<c_hide_value_if_not_masked>y</c_hide_value_if_not_masked>
+			<c_mask_display_order>m</c_mask_display_order>
+			<c_column_mask_file>masks/configParmsMask.xml</c_column_mask_file>
+		</column>
+		<column name="deferred_value">
+			<c_sql_name>DEFERRED_VALUE_FLAGS</c_sql_name>
+			<c_title>Deferred Value</c_title>
+			<c_presentation>s</c_presentation>
+			<c_drill>n</c_drill>
+		</column>
+		<column name="deferred_value_flags">
+			<c_sql_name>DEFERRED_VALUE_FLAGS</c_sql_name>
+			<c_title>Deferred Value Flag</c_title>
+			<c_presentation>s</c_presentation>
+			<c_drill>y</c_drill>
+		</column>		
+	</table>

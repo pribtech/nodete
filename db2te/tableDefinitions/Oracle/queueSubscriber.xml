@@ -1,0 +1,81 @@
+<!-- XML table definition was generated from the table: SYS.ALL_QUEUE_SUBSCRIBERS -->
+<!--
+  Peter Prib, Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2012 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<table name="queueSubscriber">
+	<sqlName>SYS.ALL_QUEUE_SUBSCRIBERS</sqlName>
+	<singularName>Queue Subscriber</singularName>
+	<pluralName>Queue Subscriber</pluralName>
+	<description/>
+	<disableEdit/>
+	<order_by_index name="owner" direction="A"/>
+	<order_by_index name="queue_name" direction="A"/>
+	<displayColumns>
+		<col type="column" name="owner"/>
+		<col type="column" name="queue_name"/>
+		<col type="column" name="queue_table"/>
+		<col type="column" name="consumer_name"/>
+		<col type="column" name="address"/>
+		<col type="column" name="protocol"/>
+		<col type="column" name="transformation"/>
+		<col type="column" name="delivery_mode"/>
+		<col type="column" name="queue_to_queue"/>
+	</displayColumns>
+	<column name="owner" dbType="VARCHAR2">
+		<sqlName>"OWNER"</sqlName>
+		<title>Owner</title>
+		<type>s</type>
+	</column>
+	<column name="queue_name" dbType="VARCHAR2">
+		<sqlName>"QUEUE_NAME"</sqlName>
+		<title>Queue</title>
+		<type>s</type>
+	</column>
+	<column name="queue_table" dbType="VARCHAR2">
+		<sqlName>"QUEUE_TABLE"</sqlName>
+		<title>Queue Table</title>
+		<type>s</type>
+	</column>
+	<column name="consumer_name" dbType="VARCHAR2">
+		<sqlName>"CONSUMER_NAME"</sqlName>
+		<title>Consumer</title>
+		<type>s</type>
+	</column>
+	<column name="address" dbType="VARCHAR2">
+		<sqlName>"ADDRESS"</sqlName>
+		<title>Address</title>
+		<type dbType="VARCHAR2">s</type>
+	</column>
+	<column name="protocol" dbType="NUMBER">
+		<sqlName>"PROTOCOL"</sqlName>
+		<title>Protocol</title>
+		<type>n</type>
+	</column>
+	<column name="transformation" dbType="VARCHAR2">
+		<sqlName>"TRANSFORMATION"</sqlName>
+		<title>Transformation</title>
+		<type dbType="VARCHAR2">s</type>
+	</column>
+	<column name="delivery_mode" dbType="VARCHAR2">
+		<sqlName>"DELIVERY_MODE"</sqlName>
+		<title>Delivery Mode</title>
+		<type>s</type>
+	</column>
+	<column name="queue_to_queue" dbType="VARCHAR2">
+		<sqlName>"QUEUE_TO_QUEUE"</sqlName>
+		<title>Queue to Queue</title>
+		<type>s</type>
+	</column>
+</table>

@@ -1,0 +1,24 @@
+<BR><H4>Access Plan<HR></H4>
+<BR>
+An alternate way to analyze the query slowdown problem, is by going through the <B>explain snapshot</B>.
+An explain snapshot is compressed information that is collected when an SQL statement is explained. It contains<BR><BR>
+<ul type=i>
+<li>The internal representation of the access plan (graphical as well), including its operators and the tables and indexes accessed.</li>
+<li>The decision criteria used by the optimizer, including statistics for database objects and the cumulative cost for each operation.</li>
+</ul>
+
+<BR><BR><B>Run the following steps on the DB2 CLP window to view the explain snapshot :</B>
+<BR><BR><ul type=i>
+  <li><B>Change to directory</B> DB2_install_directory\sqllib\misc.</li>
+  <li><B>Connect to the database</B> as db2 connect to designdb.</li>
+  <li>Run <B>db2 -tvf EXPLAIN.DDL</B>. This creates the explain tables.</li>
+  <li>Run <B>db2 SET CURRENT EXPLAIN MODE=YES</B>.</li>
+  <li>Go the Ad Hoc SQL tab, Select Options. <B>Note the Default Schema used for this workshop</B>.</li>
+  <li><B>Change to directory</B> TE_install_directory\tutorials\Workshops\DesignforQueryPerformance\Indexing.</li>
+  <li>In the tutorial, under the directory SQL, look for the file query_index.db2 replace 'SCHEMA' with the Default Schema.</li>
+  <li>Run <B>db2 -tvf query_index.db2</B>.</li>
+  <li>Run <B>db2 SET CURRENT EXPLAIN MODE=NO</B>.</li>
+  <li>Run <B>db2exfmt -d sample -1 -o explain_index.out</B>. The Explain Plan can be viewed in the output file explain_index.out.</li>
+<ul>
+
+

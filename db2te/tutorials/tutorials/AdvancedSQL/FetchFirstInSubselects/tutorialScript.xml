@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tutorial name="Fetch First in Subselects">
+	<FlowRestriction>forwardExploration</FlowRestriction>
+<closeAction />
+<openAction />
+    <globalCodeHighlightOptions highlightCode = "true" />
+    <pageList>
+        <page name="Fetch First in Subselects" type="intro">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>FetchFirstInSubselects.html</contentFile>
+        	<autoLoadLink>
+        		<pageWindow target="informationWindow">
+        			<panel name="main">
+        				<URL>http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.sql.ref.doc/doc/r0000875.html?noframes=true</URL>
+        			</panel>
+        		</pageWindow>
+        	</autoLoadLink>
+        </page>
+
+        <page name="Create a Parts table for searching " type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>CreateAPartsTableForSearching.html</contentFile>
+            <SQLFile>CreateAPartsTableForSearching.sql</SQLFile>
+        </page>
+    	
+        <page name="Create a Part Description table" type="general">
+        	<entryAction name="checkForPartsTable" type="serverAction">
+        		<parameterList>
+        			<parameter name="action" type="serverAction">
+        				<value>checkForObject</value>
+        			</parameter>
+        			
+        			<parameter name="objectType" type="raw">
+        				<value>table</value>
+        			</parameter>
+        			
+        			<parameter name="object[schema]" type="constant">
+        				<value>SCHEMA</value>
+        			</parameter>
+        			
+        			<parameter name="object[table]" type="fixed">
+        				<value>Parts</value>
+        			</parameter>
+        		</parameterList>
+        		
+        		<followOnAction condition="false">
+        			<task>
+        				<action name="displayMsg" type="alert">
+        					<message>Required table "Parts" hasn't been created. Please execute this step again.</message>
+        				</action>
+        			</task>
+        			
+        			<task>
+        				<setActionReturn>false</setActionReturn>
+        			</task>
+        		</followOnAction>
+        		
+        		<followOnAction condition="true">
+        			<task>
+        				<action name="checkForProductInsert" type="serverAction">
+        					<parameterList>
+        						<parameter name="action" type="fixed">
+        							<value>checkForRow</value>
+        						</parameter>
+        						<parameter name="schema" type="constant">
+        							<value>SCHEMA</value>
+        						</parameter>
+        						<parameter name="name" type="fixed">
+        							<value>Parts</value>
+        						</parameter>
+        					</parameterList>
+        					<followOnAction condition="true"  negCondition="true">
+        						<task>
+        							<action name="displayMsgForFailedInsert" type="alert">
+        								<message>Data hasn't been inserted in table "Parts". Please try this step again.</message>
+        							</action>
+        						</task>
+        						<task>
+        							<setActionReturn>false</setActionReturn>
+        						</task>
+        					</followOnAction>
+        					
+        				</action>
+        			</task>
+        		</followOnAction>
+        	</entryAction>     
+            <exitAction/>
+            <contentFile>CreateAPartDescriptionTable.html</contentFile>
+            <SQLFile>CreateAPartDescriptionTable.sql</SQLFile>
+        </page>
+    	
+        <page name="Do a regular join of Parts and their Description" type="general">
+        	<entryAction name="checkForPartsTable" type="serverAction">
+        		<parameterList>
+        			<parameter name="action" type="serverAction">
+        				<value>checkForObject</value>
+        			</parameter>
+        			
+        			<parameter name="objectType" type="raw">
+        				<value>table</value>
+        			</parameter>
+        			
+        			<parameter name="object[schema]" type="constant">
+        				<value>SCHEMA</value>
+        			</parameter>
+        			
+        			<parameter name="object[table]" type="fixed">
+        				<value>Part_Description</value>
+        			</parameter>
+        		</parameterList>
+        		
+        		<followOnAction condition="false">
+        			<task>
+        				<action name="displayMsg" type="alert">
+        					<message>Required table "Part_Description" hasn't been created. Please execute this step again.</message>
+        				</action>
+        			</task>
+        			
+        			<task>
+        				<setActionReturn>false</setActionReturn>
+        			</task>
+        		</followOnAction>
+        		
+        		<followOnAction condition="true">
+        			<task>
+        				<action name="checkForProductInsert" type="serverAction">
+        					<parameterList>
+        						<parameter name="action" type="fixed">
+        							<value>checkForRow</value>
+        						</parameter>
+        						<parameter name="schema" type="constant">
+        							<value>SCHEMA</value>
+        						</parameter>
+        						<parameter name="name" type="fixed">
+        							<value>Part_Description</value>
+        						</parameter>
+        					</parameterList>
+        					<followOnAction condition="true"  negCondition="true">
+        						<task>
+        							<action name="displayMsgForFailedInsert" type="alert">
+        								<message>Data hasn't been inserted in table "Part_Description". Please try this step again.</message>
+        							</action>
+        						</task>
+        						<task>
+        							<setActionReturn>false</setActionReturn>
+        						</task>
+        					</followOnAction>
+        					
+        				</action>
+        			</task>
+        		</followOnAction>
+        	</entryAction>     
+            <exitAction/>
+            <contentFile>DoARegularJoinOfPartsAndTheirDescription.html</contentFile>
+            <SQLFile>DoARegularJoinOfPartsAndTheirDescription.sql</SQLFile>
+        </page>
+    	
+        <page name="Do a join using a subselect " type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>DoAJoinUsingASubselect.html</contentFile>
+            <SQLFile>DoAJoinUsingASubselect.sql</SQLFile>
+        </page>
+    	
+        <page name="Try again but use fetch first" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>TryAgainButUseFetchFirst.html</contentFile>
+            <SQLFile>TryAgainButUseFetchFirst.sql</SQLFile>
+        </page>
+    	
+        <page name="Another technique to accomplish a similar thing" type="last">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>AnotherTechniqueToAccomplishASimilarThing.html</contentFile>
+            <SQLFile>AnotherTechniqueToAccomplishASimilarThing.sql</SQLFile>
+        </page>
+    	
+    </pageList>
+</tutorial>

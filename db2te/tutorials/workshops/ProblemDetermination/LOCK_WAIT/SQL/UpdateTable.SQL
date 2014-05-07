@@ -1,0 +1,1 @@
+UPDATE COUNTER SET counter = counter +1 where page_id ='0' @

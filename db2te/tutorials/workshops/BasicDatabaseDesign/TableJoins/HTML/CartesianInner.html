@@ -1,0 +1,26 @@
+<p>This page demonstrates use of the cartesian product join and the inner join</p>
+
+<H2><B>Cartesian Product Join</B></H2><HR><BR>
+
+<h4>Problem Description</h4>
+<p>The store manager wants the entire information from the two tables 'product' and 'inventory'.</p> 
+
+<p><b><u><FONT style="COLOR: red">Note :</FONT></u></b> A Cartesian product join operation should be used with extreme caution when working with large tables as the amount of resources required to perform such a join operation can have a serious negative impact on performance.</p> 
+
+<h4>Operation</h4>
+<p>Query the two tables using a Cartesian product join.</p>
+
+<h4>Result</h4>
+<p>The result data set produced will contain all possible combinations of the rows found in each table specified. Every row in the result data set produced is a row from the first table referenced concatenated with a row from the second table referenced. The total number of rows found in the result data set produced is the product of the number of rows in all the individual table references</p>
+
+
+<H2><B>Inner Join</B></H2><HR><BR>
+
+<h4>Problem Description</h4>
+<p>The store manager wants a comparison of selling price and cost price of those products whose listing is common to both the 'product' table as well as the 'inventory' table</p> 
+
+<h4>Operation</h4>
+<p>Query the two tables using an inner join</p>
+
+<h4>Result</h4>
+<p>The result data set contains a combination of rows from the two tables with common 'product_ID'. This join eliminates information that may be present in either tables but whose product_ID s are not a match. The above SQL returns the names of products available in the store for sale, excluding the in house products and the products in the 'inventory' table that are not in the product table, and their corresponding selling price and cost price</p>

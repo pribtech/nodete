@@ -1,0 +1,198 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2009 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<command name="createGlobalTemporaryTable" title="Create Global Temporary Table">
+<![CDATA[
+CREATE GLOBAL TEMPORARY TABLE--table-name-------------------->
+]]>
+	<text>CREATE GLOBAL TEMPORARY TABLE</text>
+	<clauseReference name="table-name"/>
+	<br/>
+<![CDATA[
+        .-,---------------------.                                    
+        V                       |                                    
+>--+-(----| column-definition |-+--)-----------------------------+-->
+   +-LIKE--+-table-name1-+--+------------------+-----------------+   
+   |       '-view-name---'  '-| copy-options |-'                 |   
+   '-AS--(--fullselect--)--DEFINITION ONLY--+------------------+-'   
+                                            '-| copy-options |-'     
+]]>
+	<select>
+		<option default="true">
+			<text>(</text>
+			<repeatable>
+				<clauseReference name="column-definition"/>
+			</repeatable>
+			<text>)</text>
+		</option> 
+		<option>
+			<text>LIKE</text>
+			<select>
+				<option default="true"><clauseReference name="table-name"/></option> 
+				<option><clauseReference name="view-name"/></option> 
+			</select>
+			<select>
+				<option default="true"><note>no copy option</note></option> 
+				<option><clauseReference name="copy-options"/></option> 
+			</select>
+		</option> 
+		<option>
+			<text>AS (</text>
+			<clauseReference name="view-name"/>
+			<text>) DEFINTION ONLY</text>
+			<select>
+				<option default="true"><note>no copy option</note></option> 
+				<option><clauseReference name="copy-options"/></option> 
+			</select>
+		</option> 
+	</select>
+	<br/>
+<![CDATA[
+      .-ON COMMIT DELETE ROWS---.      
+>--●--+-------------------------+--●---------------------------->
+      '-ON COMMIT PRESERVE ROWS-'      
+]]>
+	<select>
+		<option><text>ON COMMIT DELETE ROWS</text></option>
+		<option default="true"><note>ON COMMIT DELETE ROWS</note></option> 
+		<option><text>ON COMMIT PRESERVE ROWS</text></option>
+	</select>
+	<br/>
+<![CDATA[
+                 .-ON ROLLBACK DELETE ROWS-.        
+   .-NOT LOGGED--+-------------------------+-.      
+>--+-----------------------------------------+--●--------------->
+   +-NOT LOGGED--ON ROLLBACK PRESERVE ROWS---+      
+   '-LOGGED----------------------------------'      
+]]>
+	<select>
+		<option>
+			<text>NOT LOGGED</text>
+			<select>
+				<option><text>ON ROLLBACK DELETE ROWS</text></option>
+				<option default="true"><note>ON ROLLBACK DELETE ROWS</note></option> 
+			</select>
+		</option>
+		<option default="true"><note>NOT LOGGED</note></option> 
+		<option><text>NOT LOGGED ON ROLLBACK PRESERVE ROWS</text></option>
+		<option><text>LOGGED</text></option>
+	</select>
+	<br/>
+<![CDATA[
+>--+---------------------+--●--+-------------------------+--●--><
+   '-IN--tablespace-name-'     '-| distribution-clause |-'      
+]]>
+	<select>
+		<option default="true"><note>default tablespace</note></option> 
+		<option><text>IN</text><clauseReference name="tablespace-name"/></option>
+	</select>
+	<select>
+		<option default="true"><note>no distribution</note></option> 
+		<option><clauseReference name="distribution-clause"/></option>
+	</select>
+
+	<clause name="column-definition" title="column definition">
+<![CDATA[
+|--column-name--| data-type |--+--------------------+-----------|
+                               '-| column-options |-'   
+]]>
+		<clauseReference name="column-name"/>
+		<clauseReference name="data-type"/>
+		<select>
+			<option default="true"><note>no options</note></option> 
+			<option><clauseReference name="column-options"/></option>
+		</select>
+	</clause>
+	
+	<clause name="data-type" title="data type">
+<![CDATA[
+|--+-| built-in-type |--+---------------------------------------|
+   '-distinct-type-name-'   
+]]>
+		<select>
+			<option default="true"><clauseReference name="built-in-type"/></option> 
+			<option><clauseReference name="distinct-type-name"/></option>
+		</select>
+	</clause>
+
+	<clause name="copy-options" title="copy options">
+<![CDATA[
+|--●--+-------------------------------------+--●---------------->
+      |                .-COLUMN-.           |      
+      '-+-INCLUDING-+--+--------+--DEFAULTS-'      
+        '-EXCLUDING-'                              
+]]>
+		<select>
+			<option default="true"><note>copy options</note></option> 
+			<option>
+				<select>
+					<option default="true"><text>INCLUDING</text></option> 
+					<option><text>EXCLUDING</text></option>
+				</select>
+				<select>
+					<option><text>COLUMN</text></option>
+					<option default="true"><note>COLUMN</note></option>
+				</select>
+				<text>DEFAULTS</text>
+			</option>
+		</select>
+	<br/>
+<![CDATA[
+                         .-COLUMN ATTRIBUTES-.        
+   .-EXCLUDING IDENTITY--+-------------------+-.      
+>--+-------------------------------------------+--●-------------|
+   |                     .-COLUMN ATTRIBUTES-. |      
+   '-INCLUDING IDENTITY--+-------------------+-'      
+
+]]>
+		<select>
+			<option>
+				<text>EXCLUDING IDENTITY</text>
+				<select>
+					<option><text>COLUMN ATTRIBUTES</text></option>
+					<option default="true"><note>COLUMN ATTRIBUTES</note></option>
+				</select>
+			</option>
+			<option default="true"><note>identity</note></option> 
+			<option>
+				<text>INCLUDING IDENTITY</text>
+				<select>
+					<option><text>COLUMN ATTRIBUTES</text></option>
+					<option default="true"><note>COLUMN ATTRIBUTES</note></option>
+				</select>
+			</option>
+		</select>
+	</clause>
+
+	<clause name="distribution-clause" title="distribution clause">
+<![CDATA[
+                               .-,-----------.      
+                  .-HASH-.     V             |      
+|--DISTRIBUTE BY--+------+--(----column-name-+--)---------------|
+]]>
+		<text>DISTRIBUTE BY</text>
+		<select>
+			<option><text>HASH</text></option>
+			<option default="true"><note>HASH</note></option>
+		</select>
+		<text>(</text>
+		<repeatable>
+			<clauseReference name="column-name"/>
+		</repeatable>
+		<text>)</text>
+	</clause>
+</command>      

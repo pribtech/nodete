@@ -1,0 +1,447 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2009 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<command name="createWorkLoad" title="Create Workload">
+<![CDATA[
+Read syntax diagramSkip visual syntax diagram
+>>-CREATE WORKLOAD--workload-name------------------------------->
+]]>
+	<text>CREATE WORKLOAD</text><clauseReference name="workload-name"/>
+	<br/>
+<![CDATA[
+   .---------------------------.                            
+   V                           |                            
+>----| connection-attributes |-+--| workload-attributes |------->
+]]>
+	<repeatable><clauseReference name="connection-attributes"/></repeatable>
+	<clauseReference name="workload-attributes"/>
+	<br/>
+
+<![CDATA[
+   .-POSITION LAST-----------------------.   
+>--+-------------------------------------+---------------------->
+   '-POSITION--+-BEFORE--workload-name-+-'   
+               +-AFTER--workload-name--+     
+               '-AT--position----------'   
+]]>
+
+	<select>
+		<option><text>POSITION LAST</text></option> 
+		<option default="true"><note>POSITION LAST</note></option> 
+		<option>
+			<text>POSITION</text>
+			<select>
+				<option default="true"><text>BEFORE</text><clauseReference name="workload-name"/></option> 
+				<option><text>AFTER</text><clauseReference name="workload-name"/></option> 
+				<option><text>AT</text><input type="int" size="8" title="position"/></option> 
+			</select>
+		</option>
+	</select>
+	<br/>
+	
+<![CDATA[
+   .-COLLECT REQUEST METRICS--NONE---------------.   
+>--+---------------------------------------------+-------------->
+   |  (2)                                        |   
+   '-------COLLECT REQUEST METRICS--+-BASE-----+-'   
+                                    '-EXTENDED-'     
+]]>
+	<select>
+		<option><text>COLLECT REQUEST METRICS NONE</text></option> 
+		<option default="true"><note>COLLECT REQUEST METRICS NONE</note></option> 
+		<option>
+			<text>COLLECT REQUEST METRICS</text>
+			<select>
+				<option default="true"><text>BASE</text></option> 
+				<option><text>EXTENDED</text></option> 
+			</select>
+		</option> 
+	</select>
+	<br/>
+	
+<![CDATA[
+   .-COLLECT ACTIVITY DATA--NONE----------------------------------------------.   
+>--+--------------------------------------------------------------------------+-->
+   '-COLLECT ACTIVITY DATA--| collect-on-clause |--| collect-details-clause |-'   
+]]>
+	<select>
+		<option><text>COLLECT ACTIVITY DATA NONE</text></option> 
+		<option default="true"><note>COLLECT ACTIVITY DATA NONE</note></option> 
+		<option>
+			<text>COLLECT ACTIVITY DATA</text>
+			<clauseReference name="collect-on-clause"/>
+			<clauseReference name="collect-details-clause"/>
+		</option> 
+	</select>
+	<br/>
+	
+<![CDATA[
+   .-COLLECT AGGREGATE ACTIVITY DATA--NONE---------.   
+>--+-----------------------------------------------+------------>
+   |                                  .-BASE-----. |   
+   '-COLLECT AGGREGATE ACTIVITY DATA--+----------+-'   
+                                      '-EXTENDED-'     
+]]>
+	<select>
+		<option><text>COLLECT REQUEST METRICS NONE</text></option> 
+		<option default="true"><note>COLLECT REQUEST METRICS NONE</note></option> 
+		<option>
+			<text>COLLECT REQUEST METRICS</text>
+			<select>
+				<option><text>BASE</text></option> 
+				<option default="true"><note>BASE</note></option> 
+				<option><text>EXTENDED</text></option> 
+			</select>
+		</option> 
+	</select>
+	<br/>
+	
+<![CDATA[
+   .-COLLECT LOCK TIMEOUT DATA--WITHOUT HISTORY------------------.   
+>--+-------------------------------------------------------------+-->
+   '-COLLECT LOCK TIMEOUT DATA--+-NONE-------------------------+-'   
+                                '-WITH HISTORY--+------------+-'     
+                                                '-AND VALUES-'       
+]]>
+	<select>
+		<option><text>COLLECT LOCK TIMEOUT DATA WITHOUT HISTORY</text></option> 
+		<option default="true"><note>COLLECT LOCK TIMEOUT DATA WITHOUT HISTORY</note></option> 
+		<option>
+			<text>COLLECT LOCK TIMEOUT DATA</text>
+			<select>
+				<option><text>BASE</text></option> 
+				<option default="true"><text>NONE</text></option> 
+				<option>
+					<select>
+						<option default="true"><note>no values</note></option> 
+						<option><text>AND VALUES</text></option> 
+					</select>
+				</option> 
+			</select>
+		</option> 
+	</select>
+	<br/>
+	
+<![CDATA[
+   .-COLLECT DEADLOCK DATA--WITHOUT HISTORY------------------.   
+>--+---------------------------------------------------------+-->
+   '-COLLECT DEADLOCK DATA----WITH HISTORY--+------------+---'   
+                                            '-AND VALUES-'       
+]]>
+	<select>
+		<option><text>COLLECT DEADLOCK TIMEOUT DATA WITHOUT HISTORY</text></option> 
+		<option default="true"><note>COLLECT DEADLOCK TIMEOUT DATA WITHOUT HISTORY</note></option> 
+		<option>
+			<text>COLLECT DEADLOCK TIMEOUT DATA</text>
+			<select>
+				<option><text>BASE</text></option> 
+				<option default="true"><text>NONE</text></option> 
+				<option>
+					<select>
+						<option default="true"><note>no values</note></option> 
+						<option><text>AND VALUES</text></option> 
+					</select>
+				</option> 
+			</select>
+		</option> 
+	</select>
+	<br/>
+	
+<![CDATA[
+   .-COLLECT LOCK WAIT DATA--NONE--------------------------.   
+>--+-------------------------------------------------------+---->
+   '-COLLECT LOCK WAIT DATA--| collect-lock-wait-options |-'   
+]]>
+	<select>
+		<option><text>COLLECT LOCK WAIT DATA NONE</text></option> 
+		<option default="true"><note>COLLECT LOCK WAIT DATA NONE</note></option> 
+		<option>
+			<text>COLLECT LOCK WAIT DATA</text>
+			<clauseReference name="collect-lock-wait-options"/>
+		</option> 
+	</select>
+	<br/>
+	
+<![CDATA[
+   .-COLLECT UNIT OF WORK DATA--NONE-----.   
+>--+-------------------------------------+---------------------->
+   |                            .-BASE-. |   
+   '-COLLECT UNIT OF WORK DATA--+------+-'   
+]]>
+	<select>
+		<option><text>COLLECT UNIT OF WORK DATA</text></option> 
+		<option default="true"><note>COLLECT UNIT OF WORK DATA NONE</note></option> 
+		<option>
+			<text>COLLECT UNIT OF WORK DATA</text>
+			<select>
+				<option><text>BASE</text></option> 
+				<option default="true"><text>BASE</text></option> 
+			</select>
+		</option> 
+	</select>
+	<br/>
+	
+<![CDATA[
+>--| histogram-template-clause |-------------------------------><
+]]>
+	<clauseReference name="histogram-template-clause"/>
+
+	<clause name="connection-attributes" title="connection attributes">
+<![CDATA[
+                       .-----------------.                                  
+    (1)                V                 |                                  
+|--------+-ADDRESS--(----'address-value'-+--)---------------------------+--|
+         |              .--------------------.                          |   
+         |              V                    |                          |   
+         +-APPLNAME--(----'application-name'-+--)-----------------------+   
+         |                 .----------------------.                     |   
+         |                 V                      |                     |   
+         +-SYSTEM_USER--(----'authorization-name'-+--)------------------+   
+         |                  .----------------------.                    |   
+         |                  V                      |                    |   
+         +-SESSION_USER--(----'authorization-name'-+--)-----------------+   
+         |                        .----------------------.              |   
+         |                        V                      |              |   
+         +-SESSION_USER GROUP--(----'authorization-name'-+--)-----------+   
+         |                       .----------------------.               |   
+         |                       V                      |               |   
+         +-SESSION_USER ROLE--(----'authorization-name'-+--)------------+   
+         |                           .-----------.                      |   
+         |                           V           |                      |   
+         +-CURRENT CLIENT_USERID--(----'user-id'-+--)-------------------+   
+         |                             .---------------------------.    |   
+         |                             V                           |    |   
+         +-CURRENT CLIENT_APPLNAME--(----'client-application-name'-+--)-+   
+         |                               .--------------------.         |   
+         |                               V                    |         |   
+         +-CURRENT CLIENT_WRKSTNNAME--(----'workstation-name'-+--)------+   
+         |                           .---------------------.            |   
+         |                           V                     |            |   
+         '-CURRENT CLIENT_ACCTNG--(----'accounting-string'-+--)---------'   
+
+]]>
+		<select>
+			<option default="true"><note>ENABLE</note></option> 
+			<option default="true"><text>ADDRESS (</text><repeatable><text>'</text><input size="18" title="address-value"/><text>'</text></repeatable><text>)</text></option> 
+			<option><text>APPLNAME (</text><repeatable><text>'</text><input size="18" title="application-name"/><text>'</text></repeatable><text>)</text></option> 
+			<option><text>SYSTEM_USER (</text><repeatable><text>'</text><input size="18" title="authorization-name"/><text>'</text></repeatable><text>)</text></option> 
+			<option><text>SESSION_USER (</text><repeatable><text>'</text><input size="18" title="authorization-name"/><text>'</text></repeatable><text>)</text></option> 
+			<option><text>SESSION_USER GROUP (</text><repeatable><text>'</text><input size="18" title="authorization-name"/><text>'</text></repeatable><text>)</text></option> 
+			<option><text>SESSION_USER ROLE (</text><repeatable><text>'</text><input size="18" title="authorization-name"/><text>'</text></repeatable><text>)</text></option> 
+			<option><text>CURRENT CLIENT_USERID (</text><repeatable><text>'</text><input size="18" title="user-id"/><text>'</text></repeatable><text>)</text></option> 
+			<option><text>CURRENT CLIENT_APPLNAME (</text><repeatable><text>'</text><input size="18" title="client-application-name"/><text>'</text></repeatable><text>)</text></option> 
+			<option><text>CURRENT CLIENT_WRKSTNNAME (</text><repeatable><text>'</text><input size="18" title="workstation-name"/><text>'</text></repeatable><text>)</text></option> 
+			<option><text>CURRENT CLIENT_ACCTNG (</text><repeatable><text>'</text><input size="18" title="accounting-string"/><text>'</text></repeatable><text>)</text></option> 
+		</select>
+	</clause>
+
+	<clause name="workload-attributes" title="workload attributes">
+<![CDATA[
+   .-ENABLE--.  .-ALLOW DB ACCESS----.   
+|--+---------+--+--------------------+-------------------------->
+   '-DISABLE-'  '-DISALLOW DB ACCESS-'   
+]]>
+		<select>
+			<option><text>ENABLE</text></option> 
+			<option default="true"><note>ENABLE</note></option> 
+			<option><text>DISABLE</text></option> 
+		</select>
+		<select>
+			<option><text>ALLOW DB ACCESS</text></option> 
+			<option default="true"><note>ALLOW DB ACCESS</note></option> 
+			<option><text>ALLOW DB ACCESS</text></option> 
+		</select>
+		<br/>
+<![CDATA[
+   .-SERVICE CLASS SYSDEFAULTUSERCLASS-------------------------------------.   
+>--+-----------------------------------------------------------------------+--|
+   '-SERVICE CLASS--service-class-name--+--------------------------------+-'   
+                                        '-UNDER--service-superclass-name-'     
+]]>
+		<select>
+			<option><text>SERVICE CLASS SYSDEFAULTUSERCLASS</text></option>
+			<option default="true"><note>SERVICE CLASS SYSDEFAULTUSERCLASS</note></option>
+			<option>
+				<text>SERVICE CLASS</text>
+				<clauseReference name="service-class-name"/>
+				<select>
+					<option default="true"><note>no under</note></option>
+					<option>
+						<text>UNDER</text>
+						<clauseReference name="service-superclass-name"/>
+					</option>
+				</select>
+			</option>
+		</select>
+	</clause>
+
+	<clause name="collect-on-clause" title="collect on clause">
+<![CDATA[
+                     .-DATABASE PARTITION-.     
+   .-ON COORDINATOR--+--------------------+-.   
+|--+----------------------------------------+------------------->
+   |         .-DATABASE PARTITIONS-.        |   
+   '-ON ALL--+---------------------+--------'   
+]]>
+		<select>
+			<option>
+				<text>ON COORDINATOR</text>
+				<select>
+					<option><text>DATABASE PARTITIONS</text></option>
+					<option default="true"><note>DATABASE PARTITIONS</note></option>
+				</select>
+			</option> 
+			<option default="true"><note>ON COORDINATOR</note></option> 
+			<option>
+				<text>ON ALL</text>
+				<select>
+					<option><text>DATABASE PARTITIONS</text></option>
+					<option default="true"><note>DATABASE PARTITIONS</note></option>
+				</select>
+			</option> 
+		</select>
+		<br/>	</clause>
+
+	<clause name="collect-details-clause" title="collect details clause">
+<![CDATA[
+   .-WITHOUT DETAILS---------------------------.   
+>--+-------------------------------------------+----------------|
+   |       .-,---------------.                 |   
+   |       V           (2)   |                 |   
+   '-WITH----+-DETAILS-----+-+--+------------+-'   
+             '-SECTION-----'    '-AND VALUES-'     
+]]>
+		<select>
+			<option><text>WITHOUT DETAILS</text></option> 
+			<option default="true"><note>WITHOUT DETAILS</note></option> 
+			<option>
+				<text>WITH</text>
+				<repeatable>
+					<select>
+						<option default="true"><text>DETAILS</text></option>
+						<option><text>SECTION</text></option>
+					</select>
+				</repeatable>
+				<select>
+					<option default="true"><note>no values</note></option>
+					<option><text>AND VALUES</text></option>
+				</select>
+			</option> 
+		</select>
+	</clause>
+
+	<clause name="collect-lock-wait-options" title="collect lock wait options">
+<![CDATA[
+|--●------------------------------------------------------------>
+
+>--FOR LOCKS WAITING MORE THAN--+-wait-time--+-SECONDS------+-+-->
+                                |            '-MICROSECONDS-' |   
+                                '-1 SECOND--------------------'   
+]]>
+		<text>FOR LOCKS WAITING MORE THAN</text>
+		<select>
+			<option default="true">
+				<input type="int" size="8" title="wait time"/>
+				<select>
+					<option default="true"><text>SECONDS</text></option>
+					<option><text>MICROSECONDS</text></option>
+				</select>
+			</option>
+			<option><text>1 SECOND</text></option>
+		</select>
+		<br/>
+<![CDATA[
+      .-WITHOUT HISTORY--------------.      
+>--●--+------------------------------+--●-----------------------|
+      '-WITH HISTORY--+------------+-'      
+                      '-AND VALUES-'        
+]]>
+		<select>
+			<option><text>WITHOUT HISTORY</text></option>
+			<option default="true"><note>WITHOUT HISTORY</note></option>
+			<option>
+				<text>WITH HISTORY</text>
+				<select>
+					<option default="true"><text>SECONDS</text></option>
+					<option><text>MICROSECONDS</text></option>
+				</select>
+			</option>
+		</select>
+	</clause>
+
+	<clause name="histogram-template-clause" title="histogram template clause">
+<![CDATA[
+      .-ACTIVITY LIFETIME HISTOGRAM TEMPLATE SYSDEFAULTHISTOGRAM-.   
+|--●--+----------------------------------------------------------+-->
+      '-ACTIVITY LIFETIME HISTOGRAM TEMPLATE--template-name------'   
+]]>
+		<select>
+			<option><text>ACTIVITY LIFETIME HISTOGRAM TEMPLATE SYSDEFAULTHISTOGRAM</text></option> 
+			<option default="true"><note>ACTIVITY LIFETIME HISTOGRAM TEMPLATE SYSDEFAULTHISTOGRAM</note></option> 
+			<option><text>ACTIVITY LIFETIME  HISTOGRAM TEMPLATE</text><clauseReference name="template-name"/></option> 
+		</select>
+		<br/>
+
+<![CDATA[
+      .-ACTIVITY QUEUETIME HISTOGRAM TEMPLATE SYSDEFAULTHISTOGRAM-.   
+>--●--+-----------------------------------------------------------+-->
+      '-ACTIVITY QUEUETIME HISTOGRAM TEMPLATE--template-name------'   
+]]>
+		<select>
+			<option><text>ACTIVITY QUEUETIME HISTOGRAM TEMPLATE SYSDEFAULTHISTOGRAM</text></option> 
+			<option default="true"><note>ACTIVITY QUEUETIME HISTOGRAM TEMPLATE SYSDEFAULTHISTOGRAM</note></option> 
+			<option><text>ACTIVITY QUEUETIME  HISTOGRAM TEMPLATE</text><clauseReference name="template-name"/></option> 
+		</select>
+		<br/>
+<![CDATA[
+      .-ACTIVITY EXECUTETIME HISTOGRAM TEMPLATE SYSDEFAULTHISTOGRAM-.   
+>--●--+-------------------------------------------------------------+-->
+      '-ACTIVITY EXECUTETIME HISTOGRAM TEMPLATE--template-name------'   
+]]>
+		<select>
+			<option><text>ACTIVITY EXECUTETIME HISTOGRAM TEMPLATE SYSDEFAULTHISTOGRAM</text></option> 
+			<option default="true"><note>ACTIVITY EXECUTETIME HISTOGRAM TEMPLATE SYSDEFAULTHISTOGRAM</note></option> 
+			<option><text>ACTIVITY EXECUTETIME  HISTOGRAM TEMPLATE</text><clauseReference name="template-name"/></option> 
+		</select>
+		<br/>
+
+<![CDATA[
+      .-ACTIVITY ESTIMATEDCOST HISTOGRAM TEMPLATE SYSDEFAULTHISTOGRAM-.   
+>--●--+---------------------------------------------------------------+-->
+      '-ACTIVITY ESTIMATEDCOST HISTOGRAM TEMPLATE--template-name------'   
+]]>
+		<select>
+			<option><text>ACTIVITY ESTIMATEDCOST HISTOGRAM TEMPLATE SYSDEFAULTHISTOGRAM</text></option> 
+			<option default="true"><note>ACTIVITY ESTIMATEDCOST HISTOGRAM TEMPLATE SYSDEFAULTHISTOGRAM</note></option> 
+			<option><text>ACTIVITY ESTIMATEDCOST  HISTOGRAM TEMPLATE</text><clauseReference name="template-name"/></option> 
+		</select>
+		<br/>
+
+<![CDATA[
+      .-ACTIVITY INTERARRIVALTIME HISTOGRAM TEMPLATE SYSDEFAULTHISTOGRAM-.   
+>--●--+------------------------------------------------------------------+--|
+      '-ACTIVITY INTERARRIVALTIME  HISTOGRAM TEMPLATE--template-name-----'   
+]]>
+		<select>
+			<option><text>ACTIVITY INTERARRIVALTIME HISTOGRAM TEMPLATE SYSDEFAULTHISTOGRAM</text></option> 
+			<option default="true"><note>ACTIVITY INTERARRIVALTIME HISTOGRAM TEMPLATE SYSDEFAULTHISTOGRAM</note></option> 
+			<option><text>ACTIVITY INTERARRIVALTIME  HISTOGRAM TEMPLATE</text><clauseReference name="template-name"/></option> 
+		</select>
+	</clause>
+
+</command>
+        

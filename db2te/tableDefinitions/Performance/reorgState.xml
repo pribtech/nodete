@@ -1,0 +1,175 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2010 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+
+<table name="SYSIBMADM.SNAPTAB_REORG">
+	<sql_name>SYSIBMADM.SNAPTAB_REORG</sql_name>
+	<singular_name>ReOrg State</singular_name>
+	<plural_name>ReOrg State</plural_name>
+	<description/><rows_per_page>50</rows_per_page>
+	<order_by_index name="reorg_end" direction="D" />
+	<order_by_index name="reorg_phase_start" direction="A" />
+	<rowStyle interfaceColumn='reorg_status'>
+		<option eq='STARTED' style='WARNING'/>
+	</rowStyle>	
+	<display_columns>
+		<col type="column" name="reorg_end"/>
+		<col type="action" name="reorg"/>
+		<col type="column" name="reorg_status"/>
+		<col type="column" name="tabschema"/>
+		<col type="column" name="tabname"/>
+		<col type="column" name="reorg_current_counter"/>
+		<col type="column" name="reorg_max_counter"/>
+		<col type="column" name="page_reorgs"/>
+		<col type="column" name="reorg_phase"/>
+		<col type="column" name="reorg_max_phase"/>
+		<col type="column" name="reorg_type"/>
+		<col type="column" name="reorg_completion"/>
+		<col type="column" name="reorg_start"/>
+		<col type="column" name="reorg_phase_start"/>
+		<col type="column" name="reorg_index_id"/>
+		<col type="column" name="reorg_tbspc_id"/>
+		<col type="column" name="dbpartitionnum"/>
+		<col type="column" name="data_partition_id"/>
+		<col type="column" name="reorg_rowscompressed"/>
+		<col type="column" name="reorg_rowsrejected"/>
+		<col type="column" name="reorg_long_tbspc_id"/>
+	</display_columns>
+	<disable_edit/>
+	<action name="reorg" DBMS="DB2">
+		<title>Reorg</title>
+    	<actionScript>
+    		<task>
+		    	<assignSharedConstant name="table-name" type="fixed">
+					<value>"?tabschema?"."?tabname?"</value>
+				</assignSharedConstant>
+		    	<assignSharedConstant name="command" type="raw">
+					<value>SQL/adminCmdReorg</value>
+				</assignSharedConstant>
+		   		<callGlobalAction name="commandExecution"/>
+	   		</task>
+    	</actionScript>
+    </action>
+	<column name="tabname">
+		<sql_name>TABNAME</sql_name>
+		<title>Table Name</title>
+		<type>s</type>
+	</column>
+	<column name="tabschema">
+		<sql_name>TABSCHEMA</sql_name>
+		<title>Schema</title>
+		<type>s</type>
+	</column>
+	<column name="page_reorgs">
+		<sql_name>PAGE_REORGS</sql_name>
+		<title>Page Moved</title>
+		<type>n</type>
+		<formatNumber separator=","/> 
+	</column>
+	<column name="reorg_phase">
+		<sql_name>REORG_PHASE</sql_name>
+		<title>Phase</title>
+		<type>s</type>
+		<format transform="deunderscoreCapitilize"/>
+	</column>
+	<column name="reorg_max_phase">
+		<sql_name>REORG_MAX_PHASE</sql_name>
+		<title>Max Phase</title>
+		<type>n</type>
+	</column>
+	<column name="reorg_current_counter">
+		<sql_name>REORG_CURRENT_COUNTER</sql_name>
+		<title>Current Counter</title>
+		<type>n</type>
+		<formatNumber separator=","/> 
+	</column>
+	<column name="reorg_max_counter">
+		<sql_name>REORG_MAX_COUNTER</sql_name>
+		<title>Max Counter</title>
+		<type>n</type>
+		<formatNumber separator=","/> 
+	</column>
+	<column name="reorg_type">
+		<sql_name>REORG_TYPE</sql_name>
+		<title>Type</title>
+		<type>s</type>
+	</column>
+	<column name="reorg_status">
+		<sql_name>REORG_STATUS</sql_name>
+		<title>Status</title>
+		<type>s</type>
+		<format transform="capitilize"/>
+	</column>
+	<column name="reorg_completion">
+		<sql_name>REORG_COMPLETION</sql_name>
+		<title>Completion</title>
+		<type>s</type>
+		<format transform="capitilize"/>
+	</column>
+	<column name="reorg_start">
+		<sql_name>REORG_START</sql_name>
+		<title>Start</title>
+		<type>n</type>
+	</column>
+	<column name="reorg_end">
+		<sql_name>REORG_END</sql_name>
+		<title>End</title>
+		<type>n</type>
+	</column>
+	<column name="reorg_phase_start">
+		<sql_name>REORG_PHASE_START</sql_name>
+		<title>Phase Start</title>
+		<type>n</type>
+	</column>
+	<column name="reorg_index_id">
+		<sql_name>REORG_INDEX_ID</sql_name>
+		<title>Index Id.</title>
+		<type>n</type>
+	</column>
+	<column name="reorg_tbspc_id">
+		<sql_name>REORG_TBSPC_ID</sql_name>
+		<title>Tablespace Id.</title>
+		<type>n</type>
+	</column>
+	<column name="dbpartitionnum">
+		<sql_name>DBPARTITIONNUM</sql_name>
+		<title>DB Part. No.</title>
+		<type>n</type>
+	</column>
+	<column name="data_partition_id">
+		<sql_name>DATA_PARTITION_ID</sql_name>
+		<title>Data Partition Id.</title>
+		<type>n</type>
+	</column>
+	<column name="reorg_rowscompressed">
+		<sql_name>REORG_ROWSCOMPRESSED</sql_name>
+		<title>Rows Compressed</title>
+		<type>n</type>
+		<formatNumber separator=","/> 
+	</column>
+	<column name="reorg_rowsrejected">
+		<sql_name>REORG_ROWSREJECTED</sql_name>
+		<title>Rows Rejected</title>
+		<type>n</type>
+		<formatNumber separator=","/> 
+	</column>
+	<column name="reorg_long_tbspc_id">
+		<sql_name>REORG_LONG_TBSPC_ID</sql_name>
+		<title>Long Tablespace Id.</title>
+		<type>n</type>
+	</column>
+</table>

@@ -1,0 +1,20 @@
+<H2>Move Table Online</H2><HR>
+<p>
+	<b>ADMIN_MOVE_TABLE</b> creates a copy of the source table. The data is copied by using either 
+	<b>INSERT FROM CURSOR</b>, which is the default, or LOAD. While the table is being moved, 
+	the ADMIN_MOVE_TABLE routine also creates a staging table that keeps track of all changes to the source table. 
+	Changes are tracked through triggers that are created on the source table. At the end of the move operation, 
+	the ADMIN_MOVE_TABLE routine briefly locks the source table in exclusive mode, catches up with updates that have 
+	occurred, and substitutes the source table with the target. The source table is either dropped 
+	or kept based on one of the ADMIN_MOVE_TABLE input parameters.
+</p>	
+
+<p>
+	In the right pane you will move table order_details from one tablespace to another tablespace,
+	meanwhile you will also fetch the records from the table ORDER_DETAILS.
+</p>	
+<br>
+	In the upper Adhoc window you will move the table <b>ORDER_DETAILS</b> to tablespace tbs2 using 
+	<b>SYSPROC.ADMIN_MOVE_TABLE</b> procedure. Meanwhile in the lower Adhoc window you will fetch the records
+	from the same table ORDER_DETAILS. 
+	

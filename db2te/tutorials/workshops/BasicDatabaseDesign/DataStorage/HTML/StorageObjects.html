@@ -1,0 +1,24 @@
+<p>This page introduces the various DB2 storage objects to store data.</p>
+
+<H2><B>Problem Description</B></H2><HR>
+<p>From the user's perspective, a database is a collection of tables that are usually related in some way. But data storage is a little more complicated than that. An understanding of the same is vital towards building a performance intensive database.</p>
+
+<H2><B>Operation</B></H2><HR>
+<p>The physical implementation of a database relies on the <b>storage objects</b> of a database.</p>
+
+<H2><B>Solution</B></H2><HR>
+<p>Storage objects control where data is physically stored and how data is moved between storage and memory during normal operation. Three types of storage objects are used. They are:
+<ol>
+<li><p><h4><u>Bufferpools</u></h4></p>
+<p>A buffer pool is a section of memory that has been reserved for the sole purpose of caching data pages as they are read from physical storage. Whenever data is needed to resolve a query, the page that the data is stored on (data is stored in sections called pages) is located in physical storage and transferred to a buffer pool, where it is then read and/or modified. The pages read stay in memory. When a page of data is retrieved, the DB2 Database Manager uses a set of heuristic algorithms to try to determine which pages will be needed next, those pages are retrieved as well (referred to as <b>prefetching</b>). Retaining all pages loaded and prefetching are done to improve overall performance; data can be accessed much faster when it is stored in memory than when it is stored on disk.</p></li>
+<li><p><h4><u>Tablespaces</u></h4></p> 
+<p>Tablespaces are used to control where data is physically stored and to provide a layer of indirection between a table and one or more containers in which the table's data actually resides. A single tablespace can span many containers, but each container can only belong to one tablespace. <b>Tables</b> form logical storage units residing in the tablespaces.</p></li>
+<li><p><h4><u>Containers</u></h4></p> 
+<p>A container is a physical storage device. It can be identified by a directory name, a device name, or a file name. A container is assigned to a table space. A tablespace can span many containers. The containers further contain :
+<ul>
+<li><b>Extents</b> - consecutive pages in a table</li>
+<li><b>Data Pages</b> - smallest unit of storage in DB2</li>
+</ul>
+</p></li>
+</ol>
+</p>

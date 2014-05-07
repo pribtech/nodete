@@ -1,0 +1,28 @@
+<p><b>Scenario</b></p>
+<p>
+	Patients who visit a health care provider need to provide their contact information and medical history information. 
+	This detail is created when the patient first approaches the provider. When a returning patient visits the health care provider again, 
+	his personal information and past and current medical details are retrieved.
+</p>
+<p><b>Operation</b></p>
+<p>
+	Use SQL/XML queries to fetch patient data.
+<ul>
+<li>SELECT SQL clause to fetch the data.<li>
+<li>XMLQUERY queries the particular node in the PMD.<li>
+<li>XMLEXISTS checks whether data exists in a particular node.<li>
+</ul></br>
+The example here shows that XMLQUERY is an SQL scalar function 
+that enables you to execute an XQuery expression from within an SQL context.
+</p>
+<p><b>Solution</b></p>
+<p>
+	Patients information and his medical history in XML are retrieved.
+</p>
+<p><b>Best Practices</b></p>
+<p>
+<ul>
+<li>Use SQL/XML functions while querying.</li>
+<li>Use XMLEXISTS predicate in the SQL WHERE clause.</li>
+</ul>
+</p>

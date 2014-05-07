@@ -1,0 +1,145 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2011 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+
+<table name="captureMonitor">
+	<sql_name>ASN.IBMSNAP_CAPMON</sql_name>
+	<singular_name>ASN.IBMSNAP_CAPMON</singular_name>
+	<plural_name>ASN.IBMSNAP_CAPMON</plural_name>
+	<description/>
+	<disable_edit/>
+	<order_by_index name="monitor_time" direction="D"/>
+	<display_columns>
+		<col type="column" name="monitor_time"/>
+		<col type="column" name="current_memory"/>
+		<col type="column" name="cd_rows_inserted"/>
+		<col type="column" name="recap_rows_skipped"/>
+		<col type="column" name="trigr_rows_skipped"/>
+		<col type="column" name="chg_rows_skipped"/>
+		<col type="column" name="trans_processed"/>
+		<col type="column" name="trans_spilled"/>
+		<col type="column" name="max_trans_size"/>
+		<col type="column" name="locking_retries"/>
+		<col type="column" name="logreadlimit"/>
+		<col type="column" name="capture_idle"/>
+		<col type="column" name="synchtime"/>
+		<col type="column" name="current_log_time"/>
+		<col type="column" name="restart_seq"/>
+		<col type="column" name="current_seq"/>
+		<col type="column" name="last_eol_time"/>
+	</display_columns>
+	<column name="monitor_time">
+		<c_sql_name>MONITOR_TIME</c_sql_name>
+		<c_title>Monitor Time</c_title>
+		<c_presentation>n</c_presentation>
+	</column>
+	<column name="restart_time">
+		<c_sql_name>RESTART_TIME</c_sql_name>
+		<c_title>Restart Time</c_title>
+		<c_presentation>n</c_presentation>
+	</column>
+	<column name="current_memory">
+		<c_sql_name>CURRENT_MEMORY</c_sql_name>
+		<c_title>Current Memory</c_title>
+		<c_presentation>n</c_presentation>
+	</column>
+	<column name="cd_rows_inserted">
+		<c_sql_name>CD_ROWS_INSERTED</c_sql_name>
+		<c_title>CD Inserts</c_title>
+		<c_presentation>n</c_presentation>
+	</column>
+	<column name="recap_rows_skipped">
+		<c_sql_name>RECAP_ROWS_SKIPPED</c_sql_name>
+		<c_title>Recaps Skipped</c_title>
+		<c_presentation>n</c_presentation>
+	</column>
+	<column name="trigr_rows_skipped">
+		<c_sql_name>TRIGR_ROWS_SKIPPED</c_sql_name>
+		<c_title>Triggers Skipped</c_title>
+		<c_presentation>n</c_presentation>
+	</column>
+	<column name="chg_rows_skipped">
+		<c_sql_name>CHG_ROWS_SKIPPED</c_sql_name>
+		<c_title>Changes Skipped</c_title>
+		<c_presentation>n</c_presentation>
+	</column>
+	<column name="trans_processed">
+		<c_sql_name>TRANS_PROCESSED</c_sql_name>
+		<c_title>Trans Processed</c_title>
+		<c_presentation>n</c_presentation>
+	</column>
+	<column name="trans_spilled">
+		<c_sql_name>TRANS_SPILLED</c_sql_name>
+		<c_title>Trans Spilled</c_title>
+		<c_presentation>n</c_presentation>
+	</column>
+	<column name="max_trans_size">
+		<c_sql_name>MAX_TRANS_SIZE</c_sql_name>
+		<c_title>Max Trans Size</c_title>
+		<c_presentation>n</c_presentation>
+	</column>
+	<column name="locking_retries">
+		<c_sql_name>LOCKING_RETRIES</c_sql_name>
+		<c_title>Locking Retries</c_title>
+		<c_presentation>n</c_presentation>
+	</column>
+	<column name="jrn_lib">
+		<c_sql_name>JRN_LIB</c_sql_name>
+		<c_title>Journal Lib</c_title>
+		<c_presentation>s</c_presentation>
+	</column>
+	<column name="jrn_name">
+		<c_sql_name>JRN_NAME</c_sql_name>
+		<c_title>Journal Name</c_title>
+		<c_presentation>s</c_presentation>
+	</column>
+	<column name="logreadlimit">
+		<c_sql_name>LOGREADLIMIT</c_sql_name>
+		<c_title>Log Read Limit</c_title>
+		<c_presentation>n</c_presentation>
+	</column>
+	<column name="capture_idle">
+		<c_sql_name>CAPTURE_IDLE</c_sql_name>
+		<c_title>Capture Idle</c_title>
+		<c_presentation>n</c_presentation>
+	</column>
+	<column name="synchtime">
+		<c_sql_name>SYNCHTIME</c_sql_name>
+		<c_title>Synch Time</c_title>
+		<c_presentation>n</c_presentation>
+	</column>
+	<column name="current_log_time">
+		<c_sql_name>CURRENT_LOG_TIME</c_sql_name>
+		<c_title>Current Log Time</c_title>
+		<c_presentation>n</c_presentation>
+	</column>
+	<column name="restart_seq">
+		<c_sql_name>RESTART_SEQ</c_sql_name>
+		<c_title>Restart Seq</c_title>
+		<c_presentation>s</c_presentation>
+	</column>
+	<column name="current_seq">
+		<c_sql_name>CURRENT_SEQ</c_sql_name>
+		<c_title>Current Seq</c_title>
+		<c_presentation>s</c_presentation>
+	</column>
+	<column name="last_eol_time">
+		<c_sql_name>LAST_EOL_TIME</c_sql_name>
+		<c_title>Last EOL Time</c_title>
+		<c_presentation>n</c_presentation>
+	</column>
+</table>

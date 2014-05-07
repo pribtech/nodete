@@ -1,0 +1,23 @@
+<BR><H2><B>Access <font face="courier">'credit_card'</font> table by employee Bob</B></H2><HR><P>
+<?php
+  $baseDIR = $_POST["BASE_DIR"];
+?>
+
+<img src="?BASE_DIRECTORY?HTML/bob.png" />
+<p><b>You must log into the database as Bob before proceeding with this page.</b></p>
+
+<br>Bob is an employee of J.K.Avro superstore. He is granted 'SECRET' security label
+through role 'custService'. Check what columns of <font face="courier">'credit_card'</font> table can Bob access.</p>
+
+<h4>Operation</h4><br>
+<p>Execute SELECT statement given in the right pane.</p>
+
+<h4>Solution</h4><br>
+
+Bob does not have privileges to perform SELECT operation as he is granted 'SECRET' security label with only WRITE ACCESS.
+Hence he will not be able to read any columns from the <font face="courier">'credit_card'</font> table.</p>
+
+
+
+
+

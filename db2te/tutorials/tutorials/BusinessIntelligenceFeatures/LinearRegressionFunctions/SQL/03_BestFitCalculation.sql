@@ -1,0 +1,1 @@
+SELECT DEC(REGR_R2(y,x),15,2) as "Best Fit" FROM ?SCHEMA?.xycoords

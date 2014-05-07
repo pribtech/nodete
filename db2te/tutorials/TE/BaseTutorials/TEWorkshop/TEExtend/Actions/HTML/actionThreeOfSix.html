@@ -1,0 +1,17 @@
+<p>From the previous page, data from the form is stored in shared parameters. This allows you to call an action of type 'serverAction' and submit the data directly. For this action the JSON server action 'executeSQL' is called and passed a SQL query with the appropriate parameter markers in place to substitute most of the form data. Some of the data will have to be checked and assigned to parameters before it can be added.</p>
+
+<p>The following data needs to be checked before the action is finished:
+<ul>
+<li>Maximum Invocations should be a number and set to zero if blank.</li>
+<li>Begin and End, time and date fields combined, and the appropriate SQL function to parse them added</li>
+<li>Schedule should be null if empty and encased in quotes otherwise</li>
+</ul></p>
+<p>These items will be completed over the next few steps.</p>
+
+<p>For this step most of the code has been written below. This block of the script was copied from the 'dropTask' action below and the parts that have been modified have been highlighted. </p>
+
+<p><h3>Steps to complete:</h3>
+<ul>
+  <li>Make the changes to your document as indicated on the right</li>
+</ul>
+</p>

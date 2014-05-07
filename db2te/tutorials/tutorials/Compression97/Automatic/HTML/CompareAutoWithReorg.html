@@ -1,0 +1,31 @@
+<p>Select the actions on this page in order.</p>
+<p>This step compares the different variations of table compression.</p>
+<h4>Get compressed size after reorganization</h4>
+The first step collects statistics for the CUSTOMER_ADDRESS_WITH_AUTO_COMPRESSION table and retrieves an estimate of the the table size.
+The SQL used to collect statistics and determine the table size are:
+<p><pre><code>
+CALL ADMIN_CMD
+  ('RUNSTATS ON TABLE CUSTOMER_ADDRESS_WITH_AUTO_COMPRESSION')
+
+SELECT CAST(CAST(NPAGES AS DOUBLE)/256
+  AS DECIMAL(5,3))
+  FROM SYSIBM.SYSTABLES
+    WHERE CREATOR=?SCHEMA?
+      AND NAME='CUSTOMER_ADDRESS_WITH_AUTO_COMPRESSION'
+
+</code></pre></p>
+<h4>Compare table sizes</h4>
+<p>The second step plots the previous table sizes against the automatically compressed table after it is reorganized.</p>
+<p>If you hover your cursor over the bars in the graph you will see the exact sizes of each table.
+Notice how much space the reorganization step reclaimed from the first few megabytes.</p>
+<h4>Rebuilding your dictionary</h4>
+<p>Also notice that it still isn't as low as the table that was reorganized after compression was turned on.
+That is because a simple reorganization on an automatic table does not rebuild the compression dictionary.
+To do that you need to use the RESETDICTIONARY command parameter on the REORG command to rebuild everything.</p>
+<p>Try going back to the previous step, add RESETDICTIONARY to the REORG command, rerun the command and the return to this step to see the results.
+You will need to rerun the actions on this page to update your results.</p>
+<p><pre><code>
+CALL ADMIN_CMD
+  ('REORG TABLE ?SCHEMA?.CUSTOMER_ADDRESS_WITH_AUTO_COMPRESSION
+  RESETDICTIONARY');
+</code></pre></p>

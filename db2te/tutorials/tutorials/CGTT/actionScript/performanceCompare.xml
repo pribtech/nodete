@@ -1,0 +1,158 @@
+<actionPanel>
+	<flow>free</flow>
+	<useConsole>yes</useConsole>
+	<overview>
+<![CDATA[
+<p><b>Compare Performance between CGTT and DGTT</b></p>
+
+<p>
+Since DGTT does not support Stored Procedures, developers will have to do
+complex processing by writing application code.  This also makes CGTT and DGTT
+difficult.  To simplify the test, we will simply execute the data loading stage
+of the tax processing 100 times to compare performance.  You can expect 
+even more dramatic performance improvement of CGTT over DGTT in more complex
+scenario.
+</p>
+
+There are two actions  on this page which should be executed in order: 
+<ul>
+<li>Populate data into a CGTT and a DGTT.</li>
+<li>Plot the elapsed time for table type on the graph.</li>
+</ul>
+]]>
+	</overview>
+	<taskList>
+		<task name="Populate CGTT and DGTT">
+			<discription>
+				Populate the each table 100 times to simulate multiple, concurrent use of each temporary table type. 
+			</discription>
+			<action  name="runDGTTCGTT" type="blank">
+				<followOnAction condition="true" compareOn="true" compareOnType="raw">
+					<task>
+						<echo>Populating DGTT...</echo>
+						<action  name="runDGTT" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="fixed">
+									<value>run_workload</value>
+								</parameter>
+								<parameter name="SQL[1]" type="fixed">
+									<value>
+									DECLARE GLOBAL TEMPORARY TABLE SESSION.tax_cal_dgtt AS (SELECT e.empno, e.firstnme, e.lastname, e.birthdate, e.bonus, e.comm, p.salarypa, p.tax_payable, p.tax_exempted,  p.tax_proof, p.tax_to_be_paid,p.deptno FROM ?SCHEMA?.employee AS e, ?SCHEMA?.payroll AS p WHERE e.empno = p.empid) DEFINITION ONLY ON COMMIT PRESERVE ROWS;
+									</value>
+								</parameter>
+								<parameter name="SQL[2]" type="fixed">
+									<value>
+									CREATE INDEX SESSION.indexOnId ON SESSION.tax_cal_dgtt(empno) ALLOW REVERSE SCANS;
+									</value>
+								</parameter>
+								<parameter name="SQL[3]" type="fixed">
+									<value>
+									insert into SESSION.tax_cal_dgtt(empno, firstnme, lastname, birthdate, bonus, comm, salarypa, tax_exempted, deptno) SELECT e.empno, e.firstnme, e.lastname, e.birthdate, e.bonus, e.comm, p.salarypa, p.tax_exempted,p.deptno FROM ?SCHEMA?.employee AS e, $SCHEMA?.payroll AS p WHERE e.empno = p.empid; 
+									</value>
+								</parameter>
+								<parameter name="Repetition" type="fixed">
+									<value>100</value>
+								</parameter>
+								<parameter name="SampleRate" type="fixed">
+									<value>100</value>
+								</parameter>
+							</parameterList>
+							<followOnAction condition="true">
+								<task>
+									<assignSharedConstant name="DGTT" type="returnObject">
+										<value>runDGTT.returnValue.scriptTime</value>
+									</assignSharedConstant>
+									<echo>Running time: ?DGTT?s</echo>
+								</task>
+							</followOnAction>
+							<followOnAction condition="false">
+								<task>
+									<echo>Error in run!</echo>
+								</task>
+							</followOnAction>
+						</action>
+					</task>
+					<task>
+						<echo>Populating CGTT...</echo>
+						<action  name="runCGTT" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="fixed">
+									<value>run_workload</value>
+								</parameter>
+								<parameter name="SQL[1]" type="fixed">
+									<value>
+									insert into SESSION.tax_cal_cgtt(empno, firstnme, lastname, birthdate, bonus, comm, salarypa, tax_exempted, deptno) SELECT e.empno, e.firstnme, e.lastname, e.birthdate, e.bonus, e.comm, p.salarypa, p.tax_exempted,p.deptno FROM ?SCHEMA?.employee AS e, ?SCHEMA?.payroll AS p WHERE e.empno = p.empid; 
+									</value>
+								</parameter>
+								<parameter name="Repetition" type="fixed">
+									<value>100</value>
+								</parameter>
+								<parameter name="SampleRate" type="fixed">
+									<value>100</value>
+								</parameter>
+							</parameterList>
+							<followOnAction condition="true">
+								<task>
+									<assignSharedConstant name="CGTT" type="returnObject">
+										<value>runCGTT.returnValue.scriptTime</value>
+									</assignSharedConstant>
+									<echo>Running time: ?CGTT?s</echo>
+								</task>
+							</followOnAction>
+							<followOnAction condition="false">
+								<task>
+									<echo>Error in run!</echo>
+								</task>
+							</followOnAction>
+						</action>
+					</task>
+				</followOnAction>
+			</action>
+		</task>
+<task name="Graph Performance">
+			<discription>
+				Plot the performance data on the graph.
+			</discription>
+			<action  name="runDelete" type="blank">
+				<followOnAction condition="true" compareOn="true" compareOnType="raw">
+					<task>
+						<echo>Graphing times</echo>
+						<loadPage>
+							<pageWindow target="informationWindow">
+						    	<panel name="main">
+						       		<link type="action" target="_self" window="_self" connectionRequired="y">
+						       			<parameterList>
+						       			 	<parameter name="action">graphYUI</parameter>
+                                                <parameter name="graph">
+                                    <![CDATA[
+  {
+   "Graph":
+   {
+      "title": "CGTT vs DGTT Performance",
+      "graphType": "column",
+      "xField": "tableType",
+      "dataSourceType": "data_from_raw",
+      "style":{   "legend": { "display": "right" }, "animationEnabled" : "false"},
+      "responseSchema": {"fields": ["tableType", "time"]},
+      "seriesDef": [{"displayName": "Processing Time (s)", "yField": "time", "style": {"color": "0x0033FF"}}],
+      "datasets":
+          [
+                {"tableType": "DGTT", "time": ?DGTT?},
+                {"tableType": "CGTT", "time": ?CGTT?}
+            ]
+   }
+}
+
+]]>
+												</parameter>
+											</parameterList>
+						       		</link>				
+						       	</panel>
+						      </pageWindow>
+						</loadPage>
+					</task>	
+				</followOnAction>
+			</action>
+		</task>
+	</taskList>
+</actionPanel>

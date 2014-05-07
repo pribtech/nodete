@@ -1,0 +1,368 @@
+<!--
+  Peter Prib, Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2012 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<table name="adviseIndex">
+	<sqlName>adviseIndex</sqlName>
+	<singularName>Advise Index</singularName>
+	<pluralName>Advise Indices</pluralName>
+	<inlinequery>SELECT	'?' as tabschema ,i.* FROM "?".ADVISE_INDEX i</inlinequery>
+	<parameters>
+		<parm name="tabSchema">
+			<title>Schema</title>
+			<value>no schema</value>
+			<type>n</type>
+		</parm>
+		<parm name="tabSchema">
+			<title>Schema</title>
+			<value>no schema</value>
+			<type>n</type>
+		</parm>
+	</parameters>
+	<description></description>
+	<orderBy name="EXPLAIN_REQUESTER" direction="A"/>
+	<orderBy name="EXPLAIN_TIME" direction="A"/>
+	<displayColumns>
+		<col type="column" name="EXPLAIN_REQUESTER"/>
+		<col type="column" name="EXPLAIN_TIME"/>
+		<col type="column" name="SOURCE_NAME"/>
+		<col type="column" name="SOURCE_SCHEMA"/>
+		<col type="column" name="SOURCE_VERSION"/>
+		<col type="column" name="EXPLAIN_LEVEL"/>
+		<col type="column" name="STMTNO"/>
+		<col type="column" name="SECTNO"/>
+		<col type="column" name="QUERYNO"/>
+		<col type="column" name="QUERYTAG"/>
+		<col type="column" name="NAME"/>
+		<col type="column" name="CREATOR"/>
+		<col type="column" name="TBNAME"/>
+		<col type="column" name="TBCREATOR"/>
+		<col type="column" name="COLNAMES"/>
+		<col type="column" name="UNIQUERULE"/>
+		<col type="column" name="COLCOUNT"/>
+		<col type="column" name="IID"/>
+		<col type="column" name="NLEAF"/>
+		<col type="column" name="NLEVELS"/>
+		<col type="column" name="FIRSTKEYCARD"/>
+		<col type="column" name="FULLKEYCARD"/>
+		<col type="column" name="CLUSTERRATIO"/>
+		<col type="column" name="CLUSTERFACTOR"/>
+		<col type="column" name="USERDEFINED"/>
+		<col type="column" name="SYSTEM_REQUIRED"/>
+		<col type="column" name="CREATE_TIME"/>
+		<col type="column" name="STATS_TIME"/>
+		<col type="column" name="PAGE_FETCH_PAIRS"/>
+		<col type="column" name="REMARKS"/>
+		<col type="column" name="DEFINER"/>
+		<col type="column" name="CONVERTED"/>
+		<col type="column" name="SEQUENTIAL_PAGES"/>
+		<col type="column" name="DENSITY"/>
+		<col type="column" name="FIRST2KEYCARD"/>
+		<col type="column" name="FIRST3KEYCARD"/>
+		<col type="column" name="FIRST4KEYCARD"/>
+		<col type="column" name="PCTFREE"/>
+		<col type="column" name="UNIQUE_COLCOUNT"/>
+		<col type="column" name="MINPCTUSED"/>
+		<col type="column" name="REVERSE_SCANS"/>
+		<col type="column" name="USE_INDEX"/>
+		<col type="column" name="CREATION_TEXT"/>
+		<col type="column" name="RUN_ID"/>
+		<col type="column" name="INDEXTYPE"/>
+		<col type="column" name="EXISTS"/>
+		<col type="column" name="RIDTOBLOCK"/>
+		<col type="column" name="AVGPARTITION_CLUSTERRATIO"/>
+		<col type="column" name="AVGPARTITION_CLUSTERFACTOR"/>
+		<col type="column" name="AVGPARTITION_PAGE_FETCH_PAIRS"/>
+		<col type="column" name="DATAPARTITION_CLUSTERFACTOR"/>
+	</displayColumns>
+	<column name="EXPLAIN_REQUESTER">
+		<sqlName>EXPLAIN_REQUESTER</sqlName>
+		<title>Explain Requester</title>
+		<type>s</type>
+		<primaryKey/>
+	</column>
+	<column name="EXPLAIN_TIME">
+		<sqlName>EXPLAIN_TIME</sqlName>
+		<title>Explain Time</title>
+		<type>s</type>
+		<primaryKey/>
+	</column>
+	<column name="SOURCE_NAME">
+		<sqlName>SOURCE_NAME</sqlName>
+		<title>Source Name</title>
+		<type>s</type>
+		<primaryKey/>
+	</column>
+	<column name="SOURCE_SCHEMA">
+		<sqlName>SOURCE_SCHEMA</sqlName>
+		<title>Source Schema</title>
+		<type>s</type>
+		<primaryKey/>
+	</column>
+	<column name="SOURCE_VERSION">
+		<sqlName>SOURCE_VERSION</sqlName>
+		<title>Source Version</title>
+		<type>s</type>
+		<primaryKey/>
+	</column>
+	<column name="EXPLAIN_LEVEL">
+		<sqlName>EXPLAIN_LEVEL</sqlName>
+		<title>Explain Level</title>
+		<type>s</type>
+		<primaryKey/>
+	</column>
+	<column name="STMTNO">
+		<sqlName>STMTNO</sqlName>
+		<title>Stmt No.</title>
+		<type>n</type>
+		<primaryKey/>
+	</column>
+	<column name="SECTNO">
+		<sqlName>SECTNO</sqlName>
+		<title>Section</title>
+		<type>n</type>
+		<primaryKey/>
+	</column>
+	<column name="QUERYNO">
+		<sqlName>QUERYNO</sqlName>
+		<title>Query No.</title>
+		<type>n</type>
+		<primaryKey/>
+	</column>
+	<column name="QUERYTAG">
+		<sqlName>QUERYTAG</sqlName>
+		<title>Query Tag</title>
+		<type>s</type>
+		<primaryKey/>
+	</column>
+	<column name="NAME">
+		<sqlName>NAME</sqlName>
+		<title>Name</title>
+		<type>s</type>
+	</column>
+	<column name="CREATOR">
+		<sqlName>CREATOR</sqlName>
+		<title>Schema</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="TBNAME">
+		<sqlName>TBNAME</sqlName>
+		<title>Table</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="TBCREATOR">
+		<sqlName>TBCREATOR</sqlName>
+		<title>Table Schema</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="COLNAMES">
+		<sqlName>COLNAMES</sqlName>
+		<title>Column Names</title>
+		<type>l</type>
+	</column>
+	<column name="UNIQUERULE">
+		<sqlName>UNIQUERULE</sqlName>
+		<title>Unique Rule</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="COLCOUNT">
+		<sqlName>COLCOUNT</sqlName>
+		<title>Col. Count</title>
+		<type>n</type>
+	</column>
+	<column name="IID">
+		<sqlName>IID</sqlName>
+		<title>IID</title>
+		<type>n</type>
+	</column>
+	<column name="NLEAF">
+		<sqlName>NLEAF</sqlName>
+		<title>No. Leafs</title>
+		<type>n</type>
+	</column>
+	<column name="NLEVELS">
+		<sqlName>NLEVELS</sqlName>
+		<title>Nlevels</title>
+		<type>n</type>
+	</column>
+	<column name="FIRSTKEYCARD">
+		<sqlName>FIRSTKEYCARD</sqlName>
+		<title>First Key Card</title>
+		<type>n</type>
+	</column>
+	<column name="FULLKEYCARD">
+		<sqlName>FULLKEYCARD</sqlName>
+		<title>Full Key Card</title>
+		<type>n</type>
+	</column>
+	<column name="CLUSTERRATIO">
+		<sqlName>CLUSTERRATIO</sqlName>
+		<title>Clusterratio</title>
+		<type>n</type>
+	</column>
+	<column name="CLUSTERFACTOR">
+		<sqlName>CLUSTERFACTOR</sqlName>
+		<title>Cluster Factor</title>
+		<type>n</type>
+	</column>
+	<column name="USERDEFINED">
+		<sqlName>USERDEFINED</sqlName>
+		<title>User Defined</title>
+		<type>n</type>
+	</column>
+	<column name="SYSTEM_REQUIRED">
+		<sqlName>SYSTEM_REQUIRED</sqlName>
+		<title>System Required</title>
+		<type>n</type>
+	</column>
+	<column name="CREATE_TIME">
+		<sqlName>CREATE_TIME</sqlName>
+		<title>Create Time</title>
+		<type>n</type>
+	</column>
+	<column name="STATS_TIME">
+		<sqlName>STATS_TIME</sqlName>
+		<title>Stats Time</title>
+		<type>n</type>
+	</column>
+	<column name="PAGE_FETCH_PAIRS">
+		<sqlName>PAGE_FETCH_PAIRS</sqlName>
+		<title>Page Fetch Pairs</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="REMARKS">
+		<sqlName>REMARKS</sqlName>
+		<title>Remarks</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="DEFINER">
+		<sqlName>DEFINER</sqlName>
+		<title>Definer</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="CONVERTED">
+		<sqlName>CONVERTED</sqlName>
+		<title>Converted</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="SEQUENTIAL_PAGES">
+		<sqlName>SEQUENTIAL_PAGES</sqlName>
+		<title>Sequential Pages</title>
+		<type>n</type>
+	</column>
+	<column name="DENSITY">
+		<sqlName>DENSITY</sqlName>
+		<title>Density</title>
+		<type>n</type>
+	</column>
+	<column name="FIRST2KEYCARD">
+		<sqlName>FIRST2KEYCARD</sqlName>
+		<title>First 2 Key Card</title>
+		<type>n</type>
+	</column>
+	<column name="FIRST3KEYCARD">
+		<sqlName>FIRST3KEYCARD</sqlName>
+		<title>First 3 Key Card</title>
+		<type>n</type>
+	</column>
+	<column name="FIRST4KEYCARD">
+		<sqlName>FIRST4KEYCARD</sqlName>
+		<title>First 4 Key Card</title>
+		<type>n</type>
+	</column>
+	<column name="PCTFREE">
+		<sqlName>PCTFREE</sqlName>
+		<title>% Free</title>
+		<type>n</type>
+	</column>
+	<column name="UNIQUE_COLCOUNT">
+		<sqlName>UNIQUE_COLCOUNT</sqlName>
+		<title>Unique Col Count</title>
+		<type>n</type>
+	</column>
+	<column name="MINPCTUSED">
+		<sqlName>MINPCTUSED</sqlName>
+		<title>Minpctused</title>
+		<type>n</type>
+	</column>
+	<column name="REVERSE_SCANS">
+		<sqlName>REVERSE_SCANS</sqlName>
+		<title>Reverse Scans</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="USE_INDEX">
+		<sqlName>USE_INDEX</sqlName>
+		<title>Use Index</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="CREATION_TEXT">
+		<sqlName>CREATION_TEXT</sqlName>
+		<title>Creation Text</title>
+		<type>l</type>
+	</column>
+	<column name="RUN_ID">
+		<sqlName>RUN_ID</sqlName>
+		<title>Run Id</title>
+		<type>n</type>
+	</column>
+	<column name="INDEXTYPE">
+		<sqlName>INDEXTYPE</sqlName>
+		<title>Index Type</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="EXISTS">
+		<sqlName>EXISTS</sqlName>
+		<title>Exists</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="RIDTOBLOCK">
+		<sqlName>RIDTOBLOCK</sqlName>
+		<title>RID to Block</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="AVGPARTITION_CLUSTERRATIO">
+		<sqlName>AVGPARTITION_CLUSTERRATIO</sqlName>
+		<title>Avg Partition Clusterratio</title>
+		<type>n</type>
+	</column>
+	<column name="AVGPARTITION_CLUSTERFACTOR">
+		<sqlName>AVGPARTITION_CLUSTERFACTOR</sqlName>
+		<title>Avg Partition Clusterfactor</title>
+		<type>n</type>
+	</column>
+	<column name="AVGPARTITION_PAGE_FETCH_PAIRS">
+		<sqlName>AVGPARTITION_PAGE_FETCH_PAIRS</sqlName>
+		<title>Avg Partition Page Fetch Pairs</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="DATAPARTITION_CLUSTERFACTOR">
+		<sqlName>DATAPARTITION_CLUSTERFACTOR</sqlName>
+		<title>Data Partition Cluster Factor</title>
+		<type>n</type>
+	</column>
+</table>

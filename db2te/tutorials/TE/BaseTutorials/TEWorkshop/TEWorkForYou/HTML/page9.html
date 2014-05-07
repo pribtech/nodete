@@ -1,0 +1,20 @@
+<p>Now that you have a saved XML table definition for the Dependencies page, you should switch the target of the reference in the Tables page from the system catalog table to the XML table definition file. </p>
+
+<p><h3>Goal:</h3>
+Switch the reference in the table view to the XML table definition file we just saved. 
+You can use the modified file displayed to the right as an example.
+</p>
+<p><h3>Steps to complete:</h3>
+<ul>
+	<li>If you closed the tablecat.xml file
+		<ul>
+			<li>Open a terminal and run the following command:
+				<ul>
+					<li>“gedit /var/www/tableDefinitions/tablecat.xml &”</li>
+				</ul>
+			</li>
+		</ul>
+	</li>
+	<li>Go to the Dependencies reference</li>
+	<li>Edit the value of the element 'refvalue' to 'tableDependCat' (an extension of lowercase '.xml' is implied)</li>	
+</ul>

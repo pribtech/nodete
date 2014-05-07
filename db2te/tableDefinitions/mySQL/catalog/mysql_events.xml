@@ -1,0 +1,198 @@
+<!--
+  Copyright IBM Corp. 2007 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<table name="mysql_events">
+	<sql_name>INFORMATION_SCHEMA.EVENTS</sql_name>
+	<singular_name>Event</singular_name>
+	<plural_name>Events</plural_name>
+	<description/>
+	<disable_edit/>
+	<order_by_index name="EVENT_CATALOG"  direction="A"/>
+	<order_by_index name="EVENT_SCHEMA"  direction="A"/>
+	<order_by_index name="EVENT_NAME"  direction="A"/>
+	<display_columns>
+		<col type="column" name="EVENT_CATALOG"/>
+		<col type="column" name="EVENT_SCHEMA"/>
+		<col type="column" name="EVENT_NAME"/>
+		<col type="column" name="DEFINER"/>
+		<col type="column" name="TIME_ZONE"/>
+		<col type="column" name="EVENT_BODY"/>
+		<col type="column" name="EVENT_DEFINITION"/>
+		<col type="column" name="EVENT_TYPE"/>
+		<col type="column" name="EXECUTE_AT"/>
+		<col type="column" name="INTERVAL_VALUE"/>
+		<col type="column" name="INTERVAL_FIELD"/>
+		<col type="column" name="SQL_MODE"/>
+		<col type="column" name="STARTS"/>
+		<col type="column" name="ENDS"/>
+		<col type="column" name="STATUS"/>
+		<col type="column" name="ON_COMPLETION"/>
+		<col type="column" name="CREATED"/>
+		<col type="column" name="LAST_ALTERED"/>
+		<col type="column" name="LAST_EXECUTED"/>
+		<col type="column" name="EVENT_COMMENT"/>
+		<col type="column" name="ORIGINATOR"/>
+		<col type="column" name="CHARACTER_SET_CLIENT"/>
+		<col type="column" name="COLLATION_CONNECTION"/>
+		<col type="column" name="DATABASE_COLLATION"/>
+	</display_columns>
+	<column name="EVENT_CATALOG">
+		<c_sql_name>EVENT_CATALOG</c_sql_name>
+		<c_title>Catalog</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>y</c_drill>
+		<c_pkey>p</c_pkey>
+	</column>
+	<column name="EVENT_SCHEMA">
+		<c_sql_name>EVENT_SCHEMA</c_sql_name>
+		<c_title>Schema</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>y</c_drill>
+		<c_pkey>p</c_pkey>
+	</column>
+	<column name="EVENT_NAME">
+		<c_sql_name>EVENT_NAME</c_sql_name>
+		<c_title>Event</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>y</c_drill>
+		<c_pkey>p</c_pkey>
+	</column>
+	<column name="DEFINER">
+		<c_sql_name>DEFINER</c_sql_name>
+		<c_title>Definer</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="TIME_ZONE">
+		<c_sql_name>TIME_ZONE</c_sql_name>
+		<c_title>Time Zone</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="EVENT_BODY">
+		<c_sql_name>EVENT_BODY</c_sql_name>
+		<c_title>Body</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="EVENT_DEFINITION">
+		<c_sql_name>EVENT_DEFINITION</c_sql_name>
+		<c_title>Definition</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="EVENT_TYPE">
+		<c_sql_name>EVENT_TYPE</c_sql_name>
+		<c_title>Type</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="EXECUTE_AT">
+		<c_sql_name>EXECUTE_AT</c_sql_name>
+		<c_title>Execute At</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="INTERVAL_VALUE">
+		<c_sql_name>INTERVAL_VALUE</c_sql_name>
+		<c_title>Interval</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="INTERVAL_FIELD">
+		<c_sql_name>INTERVAL_FIELD</c_sql_name>
+		<c_title>Interval Field</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="SQL_MODE">
+		<c_sql_name>SQL_MODE</c_sql_name>
+		<c_title>SQL Mode</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="STARTS">
+		<c_sql_name>STARTS</c_sql_name>
+		<c_title>STARTS</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="ENDS">
+		<c_sql_name>ENDS</c_sql_name>
+		<c_title>ENDS</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="STATUS">
+		<c_sql_name>STATUS</c_sql_name>
+		<c_title>STATUS</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="ON_COMPLETION">
+		<c_sql_name>ON_COMPLETION</c_sql_name>
+		<c_title>ON_COMPLETION</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="CREATED">
+		<c_sql_name>CREATED</c_sql_name>
+		<c_title>CREATED</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="LAST_ALTERED">
+		<c_sql_name>LAST_ALTERED</c_sql_name>
+		<c_title>LAST_ALTERED</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="LAST_EXECUTED">
+		<c_sql_name>LAST_EXECUTED</c_sql_name>
+		<c_title>LAST_EXECUTED</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="EVENT_COMMENT">
+		<c_sql_name>EVENT_COMMENT</c_sql_name>
+		<c_title>EVENT_COMMENT</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="ORIGINATOR">
+		<c_sql_name>ORIGINATOR</c_sql_name>
+		<c_title>ORIGINATOR</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="CHARACTER_SET_CLIENT">
+		<c_sql_name>CHARACTER_SET_CLIENT</c_sql_name>
+		<c_title>CHARACTER_SET_CLIENT</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="COLLATION_CONNECTION">
+		<c_sql_name>COLLATION_CONNECTION</c_sql_name>
+		<c_title>COLLATION_CONNECTION</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="DATABASE_COLLATION">
+		<c_sql_name>DATABASE_COLLATION</c_sql_name>
+		<c_title>DATABASE_COLLATION</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+</table>

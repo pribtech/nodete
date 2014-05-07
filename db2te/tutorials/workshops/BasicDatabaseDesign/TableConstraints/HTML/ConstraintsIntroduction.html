@@ -1,0 +1,20 @@
+<p>This tutorial highlights the need for applying appropriate <b>table constraints</b> and the different types of constraints.</p>
+
+<H2><B>Problem Description</B></H2><HR>
+<p>A database contains many tables. There is a need to define the relationships between the tables. These tables contain a lot of data, sometimes sensitive information. Certain business rules need to be enforced for the smooth functioning of the database machinery. To maintain integrity between values of all tables that are related to each other as well as to enforce certain business rules, some constraints need to be defined and applied to the tables.</p>
+
+<H2><B>Operation</B></H2><HR>
+<p>Appropriate <b>table constraints</b> are specified on the tables to define the relationship between the tables as well as maintain data integrity.</p>
+
+<H2><B>Solution</B></H2><HR>
+<p>A <b>constraint</b> is a rule that is used for optimization purposes. Database constraints are rules that define interrelations between tables and can check and modify the data in a database. These rules are realized as special database objects. The main advantage of using constraints consists in capability to implement data check, and a part of business-logic of the application at a level of a database, i.e. to centralize and implify it, so as to make the development of databases applications easier and more reliable.</p>
+<p>There are five types of constraints :
+<ol>
+<li>A <b>NOT NULL</b> constraint is a rule that prevents null values from being inserted into the tables</li>
+<li>A <b>unique</b> constraint (also referred to as a unique key constraint) is a rule that forbids duplicate values in one or more columns within a table. Unique and primary keys are the supported unique constraints</li>
+<li>A <b>primary key</b> constraint is a column or combination of columns that has the same properties as a unique constraint. You can use primary key and foreign key constraints to define relationships between table</li>
+<li>A <b>foreign key</b> constraint (also referred to as a referential constraint or a referential integrity constraint) is a logical rule about values in one or more columns in one or more tables. This constraint prevents insert, update, or delete operations that would otherwise result in missing information</li>
+<li>A <b>table check constraint</b> sets restrictions on data added to a specific table. For example, a table check constraint can ensure that the salary level for an employee is at least $20,000 whenever salary data is added or updated in a table containing personnel information</li>
+<li>An <b>informational constraint</b> is an attribute of a certain type of constraint, but one that is not enforced by the database manager</li>
+</ol>
+</p>

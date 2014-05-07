@@ -1,0 +1,57 @@
+DB2 UDB V8.1.4 implements a new table design called range-clustered tables.
+<P>A range-clustered table (RCT) is a table layout scheme where each record in
+the table has a predetermined offset from the logical start of the
+table.
+</P>
+<P>For each table that holds your data, consider which of the possible table
+types would best suit your needs. For example, if you have data records
+that will be loosely clustered (not monotonically increasing), consider using
+a regular table and indexes. If you have data records that will have
+duplicate (not unique) values in the key, you should not use a range-clustered
+table. If you cannot afford to preallocate a fixed amount of storage on
+disk for the range-clustered tables you might want, you should not use this
+type of table. These factors will help you to determine whether you
+have data that can be used as a range-clustered table.
+</P>
+<P>An algorithm is used to equate the value of the key for the record with the
+location of a specific row within a table. The basic algorithm is
+fairly simple. In its most basic form (using a single column instead of
+two or more columns to make up the key), the algorithm maps a sequence number
+to a logical row number. The algorithm also uses the record's key
+to determine the logical page number and slot number. This process
+provides exceptionally fast access to records; that is, to specific rows
+in the table. Using the key, the exact logical location of the record
+on disk can be found using linear interpolation. The algorithm is more
+complex when multiple columns are used to create the key.
+</P>
+<P>The algorithm does not involve hashing because hashing does not preserve
+key-value ordering. Preserving key-value ordering is essential because
+it eliminates the need to reorganize the table data over time.
+</P>
+<P>Each record key in the table should have the following
+characteristics:
+</P>
+<UL>
+<LI>Unique
+</LI>
+<LI>Not null
+</LI>
+<LI>An integer (SMALLINT, INTEGER, or BIGINT)
+</LI>
+<LI>Monotonically increasing
+</LI>
+<LI>Within a predetermined set of ranges based on each column in the key 
+<P>The ALLOW OVERFLOW option is used when creating the table to allow key
+values to exceed the defined range. The DISALLOW OVERFLOW option is
+used when creating the table where key values will not exceed the defined
+range. In this case, if a record is inserted out of the boundary
+indicated by the range, an SQL error message is returned. 
+</P>
+</LI>
+</UL>
+<P>Applications where tightly clustered (dense) sequence key ranges are likely
+are excellent candidates for range-clustered tables. When using this
+type of key to create a range-clustered table, the key is used to generate the
+logical location of a row in a table. This process avoids the need for
+a separate index.
+</P>

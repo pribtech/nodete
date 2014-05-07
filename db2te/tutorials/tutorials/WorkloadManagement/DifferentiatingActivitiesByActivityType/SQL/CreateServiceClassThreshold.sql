@@ -1,0 +1,4 @@
+CREATE THRESHOLD stop_large_activities FOR SERVICE CLASS work1_sc_read
+              UNDER work1_sc
+              ACTIVITIES ENFORCEMENT DATABASE
+              WHEN ESTIMATEDSQLCOST >10000 STOP EXECUTION

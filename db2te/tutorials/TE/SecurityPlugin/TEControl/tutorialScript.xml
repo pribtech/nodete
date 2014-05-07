@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tutorial name="Db2auth Plug-in: How To Use in TE" autoCloseWindowsInRightStage="true" autoClearAdhocResults="true">    
+	
+    <globalCodeHighlightOptions highlightCode = "true" />
+	<pageList>
+    <page name="Connect to the database" type="intro">
+            <contentFile>ConnectToDb.html</contentFile>
+                     <autoLoadLink>
+                <pageWindow target="connectionLoader" raiseToTop="true">
+                    <splitPane direction="h" splitPercent="0.8" allowResize="false">
+                        <topPane>
+                            <panel name="main" PrimaryContainer="true">
+                                <RAW><![CDATA[
+<div id="title">Connection Manager</div>
+Connect to the database where the authorization information is stored, using the db2auth dadministrator account.
+                                ]]></RAW>
+                            </panel>
+                        </topPane>
+                        <bottomPane>
+                            <panel name="connection" PrimaryContainer="false">
+                                <link type="action" target="_self" window="_self" connectionRequired="y">
+                                    <parameterList>
+                                        <parameter name="action">connectionManager</parameter>
+                                    </parameterList>
+                                </link>             
+                            </panel>
+                        </bottomPane>
+                    </splitPane>
+                </pageWindow>
+            </autoLoadLink>
+        </page>	
+	
+	<page name="Open the module" type="general">
+            <contentFile>OpenModule.html</contentFile>
+            <autoLoadLink>
+                <pageWindow target="tabledef" raiseToTop="y">
+                    <panel name="top" PrimaryContainer="true">
+                        <link type="other" target="_self" window="_self" connectionRequired="y">
+                            <address>
+                                ?BASE_DIRECTORY?/other/OpenModule.php                               
+                            </address>
+                            <parameterList>
+                                <parameter name="BASE_DIR">
+                                    ?BASE_DIRECTORY?
+                                </parameter>
+                            </parameterList>
+                        </link>
+                    </panel>
+                </pageWindow>
+            </autoLoadLink>
+            
+    </page>
+    <page name="The Users tab" type="general">
+            <contentFile>Users.html</contentFile>
+            <SQLFile>createUsersTabDef.sql</SQLFile>
+            <autoLoadLink>
+                <pageWindow target="db2authTables" raiseToTop="true">
+                    <splitPane direction="h" splitPercent="0.5" allowResize="false">
+                        <topPane>
+                            <panel name="main" PrimaryContainer="true">
+                                <link type="action" target="_self" window="_self" connectionRequired="y">
+                                    <parameterList>
+                                        <parameter name="table">Db2auth/db2auth_users</parameter>
+                                        <parameter name="action">list_table</parameter>
+                                    </parameterList>
+                                </link>
+                            </panel>
+                        </topPane>
+                        <bottomPane>
+                            <panel name="detail"/>
+                        </bottomPane>
+                    </splitPane>
+                </pageWindow>
+            </autoLoadLink>
+    </page>
+    <page name="The Groups tab" type="general">
+            <contentFile>Groups.html</contentFile>
+            <SQLFile>createGroupsTabDef.sql</SQLFile>
+            <autoLoadLink>
+                <pageWindow target="db2authTables" raiseToTop="true">
+                    <splitPane direction="h" splitPercent="0.5" allowResize="false">
+                        <topPane>
+                            <panel name="main" PrimaryContainer="true">
+                                <link type="action" target="_self" window="_self" connectionRequired="y">
+                                    <parameterList>
+                                        <parameter name="table">Db2auth/db2auth_groups</parameter>
+                                        <parameter name="action">list_table</parameter>
+                                    </parameterList>
+                                </link>
+                            </panel>
+                        </topPane>
+                        <bottomPane>
+                            <panel name="detail"/>
+                        </bottomPane>
+                    </splitPane>
+                </pageWindow>
+            </autoLoadLink>
+    </page>
+    <page name="The Group Memberships tab" type="general">
+            <contentFile>GroupMemberships.html</contentFile>
+            <SQLFile>createMembershipsTabDef.sql</SQLFile>
+            <autoLoadLink>
+                <pageWindow target="db2authTables" raiseToTop="true">
+                    <splitPane direction="h" splitPercent="0.5" allowResize="false">
+                        <topPane>
+                            <panel name="main" PrimaryContainer="true">
+                                <link type="action" target="_self" window="_self" connectionRequired="y">
+                                    <parameterList>
+                                        <parameter name="table">Db2auth/db2auth_memberships</parameter>
+                                        <parameter name="action">list_table</parameter>
+                                    </parameterList>
+                                </link>
+                            </panel>
+                        </topPane>
+                        <bottomPane>
+                            <panel name="detail"/>
+                        </bottomPane>
+                    </splitPane>
+                </pageWindow>
+            </autoLoadLink>
+    </page>
+    <page name="The Master View tab" type="general">
+            <contentFile>MasterView.html</contentFile>
+            <SQLFile>createMasterViewTabDef.sql</SQLFile>
+            <autoLoadLink>
+                <pageWindow target="db2authTables" raiseToTop="true">
+                    <splitPane direction="h" splitPercent="0.5" allowResize="false">
+                        <topPane>
+                            <panel name="main" PrimaryContainer="true">
+                                <link type="action" target="_self" window="_self" connectionRequired="y">
+                                    <parameterList>
+                                        <parameter name="table">Db2auth/db2auth_masterView</parameter>
+                                        <parameter name="action">list_table</parameter>
+                                    </parameterList>
+                                </link>
+                            </panel>
+                        </topPane>
+                        <bottomPane>
+                            <panel name="detail"/>
+                        </bottomPane>
+                    </splitPane>
+                </pageWindow>
+            </autoLoadLink>
+    </page>
+    <page name="The Details panel" type="general">
+            <contentFile>Details.html</contentFile>
+            <!-- <SQLFile>blank.sql</SQLFile>-->
+            <autoLoadLink>
+                <pageWindow target="db2authTables" raiseToTop="true">
+                    <splitPane direction="h" splitPercent="0.5" allowResize="false">
+                        <topPane>
+                            <panel name="main" PrimaryContainer="true">
+                                <link type="action" target="_self" window="_self" connectionRequired="y">
+                                    <parameterList>
+                                        <parameter name="table">Db2auth/db2auth_masterView</parameter>
+                                        <parameter name="action">list_table</parameter>
+                                    </parameterList>
+                                </link>
+                            </panel>
+                        </topPane>
+                        <bottomPane>
+                            <panel name="detail"/>
+                        </bottomPane>
+                    </splitPane>
+                </pageWindow>
+            </autoLoadLink>
+    </page>
+
+	</pageList>
+</tutorial>

@@ -1,0 +1,37 @@
+<p>In this page, we will compare the performance of a select statement on a particular row with <a onclick="OpenURLInFloatingWindow
+('http://publib.boulder.ibm.com/infocenter/db2luw/v9r7/topic/com.ibm.db2.luw.admin.config.doc/doc/r0053556.html?noframes=true');">currently committed</a> 
+turned on, and another select statement on the same row with currently committed turned off, while there is an insert being performed on it.</p>
+<p>
+<b> Run the read statement with cur_comm DISABLED: </b>
+<br>
+Click on the green button in the top right panel.  The query we are performing is:
+<pre><code>
+SELECT * FROM CURRCOMMTUT.CC_TEST WHERE ID = 'test'
+</code></pre>
+<br>
+<p>
+<b> View the performance graph: </b>
+<br>
+Click on the 'Metrics Graphed' button below the green button to show the performance graph.
+<p>
+<b> Run the read statement with cur_comm ON: </b>
+<br>
+Next, click on the green button in the bottom right panel.  The query we are performing is the same as above.
+<p>
+<b> View the performance graph: </b>
+<br>
+Click on the 'Metrics Graphed' button below the green button to show the performance graph.
+<p>
+<b> Run the write statement that will lock the row: </b>
+<br>
+Click on the second tab, then click on the green button. The query we are performing is:
+<pre><code>
+UPDATE CURRCOMMTUT.CC_TEST 
+       SET TIME='3930-12-18-22.37.17.909000'  
+       WHERE ID = 'test' 
+</code></pre>
+<br>
+<p>
+<b> View the performance graph of the two read statements: </b>
+<br>
+If you click back on the third tab, you will see that the statement with currently committed turned on has no effect, while the one without has a major dip in performance.

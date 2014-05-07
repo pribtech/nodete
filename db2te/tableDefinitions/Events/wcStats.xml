@@ -1,0 +1,222 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2011 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+<table name="wcStats">
+	<sql_name>wcStats</sql_name>
+	<singular_name>Work Class Stats</singular_name>
+	<plural_name>Work Class Stats</plural_name>
+	<inlinequery>SELECT	* FROM "?"."?"</inlinequery>
+	<parameters>
+		<parm name="tabschema">
+			<title>tabschema</title>
+			<value>no schema</value>
+			<type>n</type>
+		</parm>
+		<parm name="tabname">
+			<title>tabname</title>
+			<value>no table</value>
+			<type>n</type>
+		</parm>
+	</parameters>
+	<description />
+	<order_by_index name="STATISTICS_TIMESTAMP" direction="D"/>
+	<order_by_index name="WORK_ACTION_SET_NAME" direction="A"/>
+	<order_by_index name="WORK_CLASS_NAME" direction="A"/>
+	<display_columns>
+		<col type="column" name="STATISTICS_TIMESTAMP"/>
+		<col type="column" name="WORK_ACTION_SET_NAME"/>
+		<col type="column" name="WORK_CLASS_NAME"/>
+		<col type="column" name="PARTITION_KEY"/>
+		<col type="column" name="ACT_CPU_TIME_TOP"/>
+		<col type="column" name="ACT_ROWS_READ_TOP"/>
+		<col type="column" name="ACT_TOTAL"/>
+		<col type="column" name="COORD_ACT_EST_COST_AVG"/>
+		<col type="column" name="COORD_ACT_EXEC_TIME_AVG"/>
+		<col type="column" name="COORD_ACT_INTERARRIVAL_TIME_AVG"/>
+		<col type="column" name="COORD_ACT_LIFETIME_AVG"/>
+		<col type="column" name="COORD_ACT_LIFETIME_TOP"/>
+		<col type="column" name="COORD_ACT_QUEUE_TIME_AVG"/>
+		<col type="column" name="COST_ESTIMATE_TOP"/>
+		<col type="column" name="LAST_WLM_RESET"/>
+		<col type="column" name="PARTITION_NUMBER"/>
+		<col type="column" name="ROWS_RETURNED_TOP"/>
+		<col type="column" name="TEMP_TABLESPACE_TOP"/>
+	</display_columns>
+	<charts>
+		<chart>
+			<type>line</type><title>Work Class Statistics</title>
+			<axis>
+				<x><column name="STATISTICS_TIMESTAMP"/></x>
+				<y>
+					<column name="ROWS_RETURNED_TOP"/>
+					<column name="ACT_CPU_TIME_TOP"/>
+					<column name="ACT_ROWS_READ_TOP"/>
+					<column name="COORD_ACT_EXEC_TIME_AVG"/>
+				</y>
+			</axis>
+		</chart>
+	</charts>
+	<graph>
+		<title>Work Class Statitistic</title>
+		<type>line</type>
+ 		<style>
+ 			<legend>
+ 			 	<display>right</display>
+ 			</legend>
+ 			<animationEnabled>false</animationEnabled>
+ 		</style>
+	</graph>
+	<column name="PARTITION_KEY" minVersion="9.7">
+		<sql_name>PARTITION_KEY</sql_name>
+		<title>Partition Key</title>
+	</column>
+	<column name="ACT_CPU_TIME_TOP" minVersion="9.7">
+		<sql_name>ACT_CPU_TIME_TOP</sql_name>
+		<title>Activity CPU Top</title>
+		<type>n</type>
+		<c_graph>
+			<g_description>CPU Top</g_description>
+			<datastyle>
+				<graph_type>line</graph_type>
+					<color>0xFF0000</color>
+					<size>2</size>
+					<lineSize>1</lineSize>
+				</datastyle>
+		</c_graph>
+	</column>
+	<column name="ACT_ROWS_READ_TOP" minVersion="9.7">
+		<sql_name>ACT_ROWS_READ_TOP</sql_name>
+		<title>Activity Rows Read Top</title>
+		<type>n</type>
+		<c_graph>
+			<g_description>Read Top</g_description>
+			<datastyle>
+				<graph_type>line</graph_type>
+					<color>0xFF00FF</color>
+					<size>2</size>
+					<lineSize>1</lineSize>
+				</datastyle>
+		</c_graph>
+	</column>
+	<column name="ACT_TOTAL">
+		<sql_name>ACT_TOTAL</sql_name>
+		<title>Activities</title>
+		<type>n</type>
+	</column>
+	<column name="COORD_ACT_EST_COST_AVG">
+		<sql_name>COORD_ACT_EST_COST_AVG</sql_name>
+		<title>Co-ord. Activity Estimated Cost Average</title>
+		<type>n</type>
+	</column>
+	<column name="COORD_ACT_EXEC_TIME_AVG">
+		<sql_name>COORD_ACT_EXEC_TIME_AVG</sql_name>
+		<title>Co-ord. Activity Exec. Average</title>
+		<type>n</type>
+		<c_graph>
+			<g_description>Exec Avg.</g_description>
+			<datastyle>
+				<graph_type>line</graph_type>
+					<color>0xADFF2F</color>
+					<size>2</size>
+					<lineSize>1</lineSize>
+				</datastyle>
+		</c_graph>
+	</column>
+	<column name="COORD_ACT_INTERARRIVAL_TIME_AVG">
+		<sql_name>COORD_ACT_INTERARRIVAL_TIME_AVG</sql_name>
+		<title>Co-ord. Activity Inter-Arrival Average</title>
+		<type>n</type>
+	</column>
+	<column name="COORD_ACT_LIFETIME_AVG">
+		<sql_name>COORD_ACT_LIFETIME_AVG</sql_name>
+		<title>Co-ord. Activity LifeTime Average</title>
+		<type>n</type>
+	</column>
+	<column name="COORD_ACT_LIFETIME_TOP">
+		<sql_name>COORD_ACT_LIFETIME_TOP</sql_name>
+		<title>Co-ord. Activity LifeTime Top</title>
+		<type>n</type>
+	</column>
+	<column name="COORD_ACT_QUEUE_TIME_AVG">
+		<sql_name>COORD_ACT_QUEUE_TIME_AVG</sql_name>
+		<title>Co-ord. Activity Queue Time Average</title>
+		<type>n</type>
+	</column>
+	<column name="COST_ESTIMATE_TOP">
+		<sql_name>COST_ESTIMATE_TOP</sql_name>
+		<title>Cost Estimate Top</title>
+		<type>n</type>
+	</column>
+	<column name="LAST_WLM_RESET">
+		<sql_name>LAST_WLM_RESET</sql_name>
+		<title>Last Reset</title>
+		<type>n</type>
+	</column>
+	<column name="PARTITION_NUMBER" minVersion="9.7">
+		<sql_name>PARTITION_NUMBER</sql_name>
+		<title>Partition</title>
+		<type>n</type>
+	</column>
+	<column name="ROWS_RETURNED_TOP">
+		<sql_name>ROWS_RETURNED_TOP</sql_name>
+		<title>Rows Returned</title>
+		<type>n</type>
+		<c_graph>
+			<g_description>Rows Returned</g_description>
+			<datastyle>
+				<graph_type>line</graph_type>
+					<color>0xFFD700</color>
+					<size>2</size>
+					<lineSize>1</lineSize>
+				</datastyle>
+		</c_graph>
+	</column>
+	<column name="STATISTICS_TIMESTAMP">
+		<sql_name>STATISTICS_TIMESTAMP</sql_name>
+		<title>Time</title>
+		<primaryKey/>
+		<c_graph>
+			<g_x_categories>y</g_x_categories>
+			<label>Time</label>
+		</c_graph>
+	</column>
+	<column name="TEMP_TABLESPACE_TOP">
+		<sql_name>TEMP_TABLESPACE_TOP</sql_name>
+		<title>Temp Tablespace Top</title>
+		<type>n</type>
+	</column>
+	<column name="WORK_ACTION_SET_ID">
+		<sql_name>WORK_ACTION_SET_ID</sql_name>
+		<title>Work Action Set Id.</title>
+		<type>n</type>
+	</column>
+	<column name="WORK_ACTION_SET_NAME">
+		<sql_name>WORK_ACTION_SET_NAME</sql_name>
+		<title>Work Action Set</title>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="WORK_CLASS_ID">
+		<sql_name>WORK_CLASS_ID</sql_name>
+		<title>Work Class Id.</title>
+		<primaryKey/>
+	</column>
+	<column name="WORK_CLASS_NAME">
+		<sql_name>WORK_CLASS_NAME</sql_name>
+		<title>Work Class</title>
+		<c_drill>y</c_drill>
+	</column>
+</table>

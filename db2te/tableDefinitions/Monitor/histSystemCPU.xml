@@ -1,0 +1,209 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2009 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+
+<table name="histSystemCPU">
+	<sql_name>histSystemCPU</sql_name>
+	<singular_name>System CPU</singular_name>
+	<plural_name>System CPU History</plural_name>
+	<messages><SQL0204N>Not installed. Please install "DB2TE add monitoring tables" in Tools-> Installed Components</SQL0204N></messages>
+	<inlinequery>
+<![CDATA[
+SELECT SAMPLE_TS
+	,avg(cast((case when name='CPU_TOTAL' then value end) as decimal(11,4))) as CPU_TOTAL
+	,avg(cast((case when name='CPU_ONLINE' then value end) as decimal(11,4))) as CPU_ONLINE
+	,avg(cast((case when name='CPU_LOAD_SHORT' then value end) as decimal(11,4))) as CPU_LOAD_SHORT
+	,avg(cast((case when name='CPU_LOAD_MEDIUM' then value end) as decimal(11,4))) as CPU_LOAD_MEDIUM
+	,avg(cast((case when name='CPU_LOAD_LONG' then value end) as decimal(11,4))) as CPU_LOAD_LONG
+	,avg(cast((case when name='CPU_USAGE_TOTAL' then value end) as decimal(11,4))) as CPU_USAGE_TOTAL
+FROM "s#db2mc".HIST_ENV_SYS_RESOURCES
+,(select case when upper(startTs) = 'CURRENT' then current timestamp else timestamp(startTs) end as startTS 
+	,duration
+	from (values(cast('?' as varchar(26)),cast(? as int))) as timePeriod(startTs,duration)
+ ) period
+where SAMPLE_TS between period.startTS - period.duration hours and period.startTS
+  and name like 'CPU%'
+group by SAMPLE_TS
+]]>
+	</inlinequery>
+	<parameters>
+		<parm name="start">
+			<title>Start</title>
+			<value>current</value>
+			<type>timestamp</type>
+		</parm>
+		<parm name="Period">
+			<title>Period (hours)</title>
+			<value>3</value>
+			<type>n</type>
+		</parm>
+	</parameters>
+	<description>Query from ad hoc</description>
+	<rows_per_page>50</rows_per_page>
+	<order_by_index name="SAMPLE_TS" direction="D"/>
+	<display_columns>
+		<col type="column" name="SAMPLE_TS"/>
+		<col type="column" name="CPU_TOTAL"/>
+		<col type="column" name="CPU_ONLINE"/>
+		<col type="column" name="CPU_USAGE_TOTAL"/>
+		<col type="column" name="CPU_LOAD_SHORT"/>
+		<col type="column" name="CPU_LOAD_MEDIUM"/>
+		<col type="column" name="CPU_LOAD_LONG"/>
+	</display_columns>
+	<charts>
+		<chart name="detail" historyInclude="true">
+			<highlight>first</highlight>
+			<type>line</type>
+			<title>System CPU History</title>
+			<axis>
+				<x><column name="SAMPLE_TS"/></x>
+				<y>
+					<column name="CPU_USAGE_TOTAL"/>
+					<column name="CPU_LOAD_SHORT"/>
+					<column name="CPU_LOAD_MEDIUM"/>
+					<column name="CPU_LOAD_LONG"/>
+					<column name="CPU_ONLINE"/>
+				</y>
+			</axis>
+			<overlay table="Monitor/alertHistory">
+				<parameterList>
+					<parameter name="start" type='parameter'>start</parameter>
+					<parameter name="Period" type='parameter'>Period</parameter>
+					</parameterList>
+					<type>events</type>
+					<axis>
+						<x><column name="SAMPLE_TS"/></x>
+						<y><column name="NAME"/><column name="VALUE"/><column name="ID"/></y>
+					</axis>
+			</overlay>
+			<overlay table="Events/changeSummary">
+				<parameterList>
+					<parameter name="start" type='parameter'>start</parameter>
+					<parameter name="Period" type='parameter'>Period</parameter>
+					</parameterList>
+					<type>events</type>
+					<axis>
+						<x><column name="EVENT_TIMESTAMP"/></x>
+						<y><column name="EVENT_TYPE"/></y>
+					</axis>
+			</overlay>
+		</chart>
+	</charts>	
+	<graph>
+		<title>System History CPU</title>
+		<type>line</type>
+ 		<style>
+ 			<legend>
+ 			 	<display>right</display>
+ 			</legend>
+ 			<animationEnabled>false</animationEnabled>
+ 		</style>
+	</graph>	
+
+	<column name="SAMPLE_TS">
+		<sql_name>SAMPLE_TS</sql_name>
+		<title>Time</title>
+		<c_graph>
+			<g_x_categories>y</g_x_categories>
+			<label>Time</label>
+		</c_graph>		
+	</column>
+	<column name="CPU_TOTAL">
+		<sql_name>CPU_TOTAL</sql_name>
+		<title>CPUs</title>
+		<type>n</type>
+		<c_graph>
+			<g_description>CPUs</g_description>
+			<datastyle>
+				<graph_type>line</graph_type>
+					<color>0x00FF00</color>
+					<size>2</size>
+					<lineSize>1</lineSize>
+				</datastyle>
+		</c_graph>
+	</column>
+	<column name="CPU_ONLINE">
+		<sql_name>CPU_ONLINE</sql_name>
+		<title>CPUs Active</title>
+		<type>n</type>
+		<c_graph>
+			<g_description>CPUs Active</g_description>
+			<datastyle>
+				<graph_type>line</graph_type>
+					<color>0xFF0000</color>
+					<size>2</size>
+					<lineSize>1</lineSize>
+				</datastyle>
+		</c_graph>
+	</column>
+	<column name="CPU_LOAD_SHORT">
+		<sql_name>CPU_LOAD_SHORT</sql_name>
+		<title>CPU Load Short</title>
+		<type/>
+		<c_graph>
+			<g_description>CPU Load Short</g_description>
+			<datastyle>
+				<graph_type>line</graph_type>
+					<color>0x0000FF</color>
+					<size>2</size>
+					<lineSize>1</lineSize>
+				</datastyle>
+		</c_graph>
+	</column>
+	<column name="CPU_LOAD_MEDIUM">
+		<sql_name>CPU_LOAD_MEDIUM</sql_name>
+		<title>CPU Load Medium</title>
+		<type>n</type>
+		<c_graph>
+			<g_description>CPU Load Medium</g_description>
+			<datastyle>
+				<graph_type>line</graph_type>
+					<color>0xFF00FF</color>
+					<size>2</size>
+					<lineSize>1</lineSize>
+				</datastyle>
+		</c_graph>
+	</column>
+	<column name="CPU_LOAD_LONG">
+		<sql_name>CPU_LOAD_LONG</sql_name>
+		<title>CPU Load Long</title>
+		<type>n</type>
+		<c_graph>
+			<g_description>CPU Load Long</g_description>
+			<datastyle>
+				<graph_type>line</graph_type>
+					<color>0x00FFFF</color>
+					<size>2</size>
+					<lineSize>1</lineSize>
+				</datastyle>
+		</c_graph>
+	</column>
+	<column name="CPU_USAGE_TOTAL">
+		<sql_name>CPU_USAGE_TOTAL</sql_name>
+		<title>CPU Usage Total</title>
+		<type>n</type>
+		<c_graph>
+			<g_description>CPU Usage Total</g_description>
+			<datastyle>
+				<graph_type>line</graph_type>
+					<color>0x808080</color>
+					<size>2</size>
+					<lineSize>1</lineSize>
+				</datastyle>
+		</c_graph>
+	</column>
+</table>

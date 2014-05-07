@@ -1,0 +1,47 @@
+<div id="title">PHP file diff</div>
+<pre><table><tr><td>
+<font color="#ac008e">&lt;?php</font><br/>
+<font color="#2145f9">$panelID =</font> CALLING_PANEL<font color="#2145f9">;</font>
+<font color="#2145f9">$windowID =</font> CALLING_WINDOW<font color="#2145f9">;</font>
+<font color="#2145f9">$stageID =</font> CALLING_STAGE<font color="#2145f9">;</font>
+<font color="#2145f9">$pageID =</font> CALLING_PAGE<font color="#2145f9">;</font>
+<font color="#ac008e">?&gt;</font><br/>
+<font color="#ac008e">&lt;</font><font color="#2145f9">div</font> <font color="#009400">id</font><font color="#990000">=</font><font color="#6f0000">"title"</font><font color="#ac008e">&gt;</font>Db2Auth Lab Control Panel<font color="#ac008e">&lt;/</font><font color="#2145f9">div</font><font color="#ac008e">&gt;</font><br/>
+<font color="#ac008e">&lt;</font><font color="#2145f9">script</font> <font color="#009400">type</font><font color="#990000">=</font><font color="#6f0000">"text/javascript"</font><font color="#ac008e">&gt;</font><br/>
+&nbsp;&nbsp;&nbsp;<font color="#6600FF">var</font> layout = ({<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;type: <font color="#6f0000">"stage"</font>,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name: "<font color="#ac008e">&lt;?php echo</font> <font color="#2145f9">$pageID;</font> <font color="#ac008e">?&gt;</font><font color="#6f0000">_DB2AUTH_CONTROL"</font>,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;HasMenuBarContainer: TOP_TAB_TASK_BAR,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;top: <font color="#ac008e">0</font>,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;botton: <font color="#ac008e">0</font>,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;left: <font color="#ac008e">0</font>,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;right: <font color="#ac008e">0</font>,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;titleBarType: NO_TITLE_BAR,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;windowOptionType: NAV_BACK_BUTTON + NAV_FORWARD_BUTTON + NAV_RELOAD_BUTTON,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;windowControlTypes: NO_TITLE_BAR_OPTIONS,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sizable: WINDOW_IS_FULL,
+&nbsp;&nbsp;&nbsp;});
+<br/>
+&nbsp;&nbsp;&nbsp;getWindow('<font color="#ac008e">&lt;?php echo</font> <font color="#2145f9">$stageID;</font> <font color="#ac008e">?&gt;</font>','<font color="#ac008e">&lt;?php echo</font> <font color="#2145f9">$windowID;</font> <font color="#ac008e">?&gt;</font>').WindowContainers.get('<font color="#ac008e">&lt;?php echo</font> <font color="#2145f9">$panelID;</font> <font color="#ac008e">?&gt;</font>').loadLayout(layout);
+<br/>
+<tr><td class="sourceAdd">
+&nbsp;&nbsp;&nbsp;<font color="#6600FF">var</font> layout = ({<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;target: <font color="#6f0000">"DB2AUTH_CUSTOM_USERS",</font>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raiseToTop: <font color="#6f0000">"",</font>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;windowStage: "<font color="#ac008e">&lt;?php echo</font> <font color="#2145f9">$pageID;</font> <font color="#ac008e">?&gt;</font><font color="#6f0000">_DB2AUTH_CONTROL"</font>,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;windowType: CAN_NOT_CLOSE,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;content: {<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;type: <font color="#6f0000">"splitPane",</font>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;direction: <font color="#6f0000">"h",</font>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;splitPercent: <font color="#ac008e">0.5</font>,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;allowResize: <font color="#6600FF">true</font>,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;panelA: {<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;panelB: {<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;});
+&nbsp;&nbsp;&nbsp;loadNewPageLayout(layout);
+<br/><tr><td>
+<font color="#ac008e">&lt;/</font><font color="#2145f9">script</font><font color="#ac008e">&gt;</font><br/>
+</td></tr></table></pre>

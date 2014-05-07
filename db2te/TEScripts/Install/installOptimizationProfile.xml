@@ -1,0 +1,111 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2012 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+
+<tutorial name="installOptimizationProfile" disableSetSchema="true">
+	<flowRestriction>forwardexploration</flowRestriction>
+    <closeAction />
+    <openAction />
+    <globalCodeHighlightOptions highlightCode = "true" />
+    <WMDConfig/>
+  
+    <pageList>
+		<page name="Install db2mc jar" type="general">
+    	 	<entryAction/>
+    	 	<exitAction/>
+            <contentText>
+<![CDATA[
+<p>Create the objects required for Optimization Profile</p>
+]]>
+			</contentText>
+            <SQLText>
+<![CDATA[
+CALL SYSPROC.SYSINSTALLOBJECTS('OPT_PROFILES', 'C', CAST (null AS VARCHAR(128)),   CAST (null AS VARCHAR(128)))
+]]>
+			</SQLText>
+            <SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar="@"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+        </page>
+    
+
+		<page name="Create auto flush trigger" type="general">
+    	 	<entryAction/>
+    	 	<exitAction/>
+            <contentText>
+<![CDATA[
+Install trigger for auto flush if required  
+]]>
+			</contentText>
+            <SQLText>
+<![CDATA[
+CREATE PROCEDURE SYSTOOLS.OPT_FLUSH_CACHE( IN SCHEMA VARCHAR(128),
+                                              IN NAME VARCHAR(128) )
+   LANGUAGE SQL
+   MODIFIES SQL DATA
+   BEGIN ATOMIC
+    -- FLUSH stmt (33) + quoted schema (130) + dot (1) + quoted name (130) = 294
+    DECLARE FSTMT VARCHAR(294) DEFAULT 'FLUSH OPTIMIZATION PROFILE CACHE '; --
+
+    IF NAME IS NOT NULL THEN
+      IF SCHEMA IS NOT NULL THEN
+        SET FSTMT = FSTMT || '"' || SCHEMA || '".'; --
+      END IF; --
+
+      SET FSTMT = FSTMT || '"' || NAME || '"'; --
+
+      EXECUTE IMMEDIATE FSTMT; --
+    END IF; --
+   END
+@
+
+CREATE TRIGGER SYSTOOLS.OPT_PROFILE_UTRIG AFTER UPDATE ON SYSTOOLS.OPT_PROFILE
+   REFERENCING OLD AS O
+   FOR EACH ROW
+     CALL SYSTOOLS.OPT_FLUSH_CACHE( O.SCHEMA, O.NAME )
+@
+
+CREATE TRIGGER SYSTOOLS.OPT_PROFILE_DTRIG AFTER DELETE ON SYSTOOLS.OPT_PROFILE
+   REFERENCING OLD AS O
+   FOR EACH ROW
+     CALL SYSTOOLS.OPT_FLUSH_CACHE( O.SCHEMA, O.NAME )
+@
+]]>
+            </SQLText>
+            <SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar="@"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+        </page>
+        
+		<page name="Uninstall" type="last">
+            <contentText>
+<![CDATA[
+Uninstall objects.
+]]>
+			</contentText>
+            <SQLText>
+<![CDATA[
+DROP TRIGGER SYSTOOLS.OPT_PROFILE_UTRIG@
+DROP TRIGGER SYSTOOLS.OPT_PROFILE_DTRIG@
+DROP PROCEDURE SYSTOOLS.OPT_FLUSH_CACHE@
+CALL SYSPROC.SYSINSTALLOBJECTS('OPT_PROFILES', 'D', CAST (null AS VARCHAR(128)),   CAST (null AS VARCHAR(128)))@
+]]>
+            </SQLText>
+            <SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar="@"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+        </page>
+
+    </pageList>
+</tutorial>

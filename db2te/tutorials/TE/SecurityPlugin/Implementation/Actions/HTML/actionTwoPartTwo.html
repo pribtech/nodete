@@ -1,0 +1,19 @@
+<h3>Retrieving Row Information for Editing</h3><hr/>
+<p>The first thing that needs to be done when editing anything is to retrieve all editable information from the database. </p>
+
+<p>The easiest way to accomplish this is to copy the action 'remove member', which we created below, and make the highlighted changes on the right.</p>
+
+<p><h2>Steps:</h2>
+<ol>
+  <li>Make the changes to your document as indicated on the right
+  <br/>Differences from the 'remove member' action is highlighted in yellow</li>
+</ol>
+</p>
+<br/>
+<p>Notice that the action type of 'getNewPasswordForm' is 'form'.  We need the user to input the new password via a form.  The form is created with the 'CDATA' tag, as shown on the right.  The variable, 'PASSWORD_1' is assigned that new password from the form.</p>
+
+<p>We also need to hash the new password.  Therefore, in the followOnAction, we specify the action, 'hash', and pass in 'PASSWORD_1' to the action</p>
+
+<p>Once the password has been successfully hashed, we assign it to 'PASSWORD_2'</p>
+
+<br/>

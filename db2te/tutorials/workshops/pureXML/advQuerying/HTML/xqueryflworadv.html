@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-us" xml:lang="en-us">
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+</head>
+<body bgcolor='blue'>
+<p><b>Scenario</b></p>
+<p>Over a period of time a patient medical information keeps on adding to the PMD. The entire medical history would be 
+the cumulation of all the diagnosis or observation done on the patient. The doctor needs a entire history of a patient medical history.
+</p>
+<p><b>Operation</b></p>
+<p>
+The PMD document contains a node called component which holds information about a patient's visit. Additional nodes are added for subsequent visits.
+Hence to get the complete information we need to loop through the nodes. For example a patient who visited the provider 10 times will have 10 component nodes.
+</p>
+<p>
+The FLWOR expression helps to iterate over a sequence and bind the values to intermediate results. The FLWOR expression s are useful when two XML column or documents are joined.
+
+<ul>
+<li><b>F -</b>	for iterates through an XML document.</li>
+<li><b>L -</b>	let assigns the value to a variable which will be a later used in the FLWOR expression.</li>
+<li><b>W -</b>	where filters the variables generate by the for and let clauses.</li>
+<li><b>O -</b> 	order by orders the result that will be returned by the return clause.</li>
+<li><b>R -</b>	return returns the result generated.</li>
+</ul>
+</p>
+</br></br>
+<p><b>Solution</b></p>
+<p>
+The following Xquery explains the FLWOR expression where a patient's entire medical history is fetched as a single 
+XML document by iterating through his medical history where the date of consultancy filters the particular date when the patient consulted.
+</p>
+</br></br>
+<p>
+The queries on the right hand side shows few basic XQuery features. The results are displayed in separate tabs.
+</p>
+<p><b>Best Practices</b></p>
+<ul> 
+<li>
+In return clauses, use parentheses to enclose expressions that contain top-level comma operators. Because FLWOR expressions have a higher precedence 
+than the comma operator, expressions that contain top-level comma operators could result in errors or unexpected results if parentheses are not used.
+</li>
+</ul>
+<br/>
+
+<p>
+</p>
+
+<!--<raw><![CDATA[<div id='healthcarescenario'><Ttile of </div><img src='?BASE_DIRECTORY?/HTML/clip_image002.jpg'/>]]></raw>-->
+<!--<img src='http://localhost/te/XML/healthcarescenario/HTML/clip_image002.jpg'/>-->
+<!--<table width="100%"><tr><td><div><img src="te/tutorials/TE/XML/healthcarescenario/HTML/clip_image002.jpg" alt="Health Care Flow Chart" /></div></td></tr></table>-->
+<!--<a onclick="OpenURLInFloatingWindow('tutorials/TE/XML/healthcarescenario/HTML/clip_image002.jpg');">
+	Clinial Flow Chart </a>-->
+	
+</body>
+</html>

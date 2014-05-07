@@ -1,0 +1,1 @@
+select number, trunc(number,0) from ?SCHEMA?.show_decimal;

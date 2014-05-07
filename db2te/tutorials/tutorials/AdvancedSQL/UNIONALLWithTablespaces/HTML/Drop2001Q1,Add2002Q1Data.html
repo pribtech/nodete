@@ -1,0 +1,5 @@
+The following step will DROP the first quarter of the year (Q1_2001) and then add the new
+  quarter to the view.  Note that dropping the tablespace will not result in 
+  any logging taking
+  place.  This can substantially reduce the amount of log space that is taken up when trying 
+  to get rid of a range of data.  We will also DROP the existing view to create the updated one.

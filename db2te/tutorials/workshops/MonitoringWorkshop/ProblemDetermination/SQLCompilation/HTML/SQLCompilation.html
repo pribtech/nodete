@@ -1,0 +1,101 @@
+<pre>
+import java.lang.*;
+import java.net.ConnectException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.*;
+import java.util.*;
+
+class SampleCompilationProblem_Literals
+{
+  static Thread myThread; 
+  public static String userID = "";
+  public static String password = "";
+  public static String conString = "";
+  
+	
+  public static void main(String args[])
+  {
+    try
+    {
+	userID = args[0];
+	password = args[1];
+        conString = "jdbc:db2://"+args[2]+":"+args[3]+"/sample";
+	  try{
+			Class.forName("com.ibm.db2.jcc.DB2Driver").newInstance();
+			}
+		catch (ClassNotFoundException e){}
+		Connection db2Conn1;	
+		db2Conn1 = DriverManager.getConnection(conString, userID, password);
+		db2Conn1.setAutoCommit(true);
+		
+            System.out.println();
+      System.out.println(
+        "THIS SAMPLE SHOWS HOW TO READ TABLE DATA.");
+
+
+      execPreparedQuery(db2Conn1);
+	  
+      db2Conn1.close();
+
+    }
+    catch (Exception e)
+    {
+		System.out.print(e);
+    }
+  } // main
+
+  static void execPreparedQuery(Connection con)
+  {
+    try
+    {
+      System.out.println();
+      System.out.println(
+        "Simulation Started");
+
+      Statement stmt = con.createStatement();
+
+      // prepare the query
+      System.out.println();
+      System.out.println(
+        "  Prepare Statement:\n" +
+        "    SELECT deptnumb, location FROM org WHERE deptnumb < 25 AND manager = ");
+
+	  for (int i=0; i<100; i++) {
+		  
+				myThread.sleep(1000);//sleep for 1000000 ms
+				
+			System.out.println("Running thread "+i);	
+		  PreparedStatement pstmt = con.prepareStatement(
+			"SELECT deptnumb, location FROM org WHERE deptnumb < 25 AND manager = "+i);
+
+		  System.out.println();
+		  System.out.println("  Execute prepared statement");
+	               
+		  ResultSet rs = pstmt.executeQuery();
+
+		  System.out.println();
+		  System.out.println("  Results Recieved");
+
+		  int deptnumb = 0;
+		  String location = "";
+		  while (rs.next())
+		  {
+			deptnumb = rs.getInt(1);
+			location = rs.getString(2);
+		  }
+		  rs.close();
+		  stmt.close();
+	  }
+    }
+    catch (Exception e)
+    {
+		System.out.print(e);
+    }
+  }
+
+} // SampleCompilationProblem
+</pre>

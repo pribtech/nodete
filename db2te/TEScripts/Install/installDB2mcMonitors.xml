@@ -1,0 +1,1426 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2009 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+<actionScript name="setupDB2mcMonitors" type="form">
+<!-- 
+This action is used to setup the environment for the db2mc history monitors across an instance
+-->
+	<message><![CDATA[
+		<div style=width:500px>
+			<p>Setup the environment for the db2mc history monitors</p>
+			<table>
+				<tr><td>Tablespace</td><td>:</td><td><input type="text" name=TABLESPACE value="SYSTOOLSPACE" style="width:300px"/></td></tr>
+			</table>
+			<p>This is dependant on the task schelduler being active and monitor switches being on</p>
+			<p>The task to may take a while.  A pop screen will appear when completed</p>
+		</div>
+	]]></message>
+    <parameterList>
+        <parameter name="TABLESPACE" type="blockValue">
+			<value>TABLESPACE</value>
+		</parameter>
+		<parameter name="buttonOK" type="raw">
+			<value>Setup</value>
+		</parameter>
+	</parameterList>
+	<if condition="true">
+		<task>
+			<action name="setup" type="serverAction">
+				<parameterList>
+					<parameter name="action" type="raw">
+						<value>executeSQL</value>
+					</parameter>
+					<parameter name="commitPerSTMT" type="raw">
+						<value>true</value>
+					</parameter>
+					<parameter name="abortOnFailure" type="raw">
+						<value>true</value>
+					</parameter>
+					<parameter name="SQL[0]" type="fixed">
+						<value>
+<![CDATA[
+create table "s#db2mc".hist_env_sys_resources
+	as (select current timestamp as sample_ts,s.* from sysibmadm.env_sys_resources as s) with no data
+	in "?TABLESPACE?" 
+]]>
+						</value>
+					</parameter>
+					<parameter name="SQL[1]" type="fixed">
+						<value>
+<![CDATA[
+create unique index "s#db2mc".hist_env_sys_resources_u1
+	on "s#db2mc".hist_env_sys_resources (sample_ts desc,name)
+	allow reverse scans
+]]>
+						</value>
+					</parameter>
+					<parameter name="SQL[2]" type="fixed">
+						<value>
+<![CDATA[
+create table "s#db2mc".hist_LOG_UTILIZATION
+	as (select current timestamp as sample_ts,s.* from sysibmadm.LOG_UTILIZATION as s) with no data
+	in "?TABLESPACE?" 
+]]>
+						</value>
+					</parameter>
+					<parameter name="SQL[3]" type="fixed">
+						<value>
+<![CDATA[
+create unique index "s#db2mc".hist_LOG_UTILIZATION_u1 on "s#db2mc".hist_LOG_UTILIZATION  (sample_ts desc,db_name)
+allow reverse scans
+]]>
+						</value>
+					</parameter>
+					<parameter name="SQL[4]" type="fixed">
+						<value>
+<![CDATA[
+create table "s#db2mc".hist_SNAPDBM
+	as (select s.* from sysibmadm.SNAPDBM as s) with no data
+	in "?TABLESPACE?"
+]]>
+						</value>
+					</parameter>
+					<parameter name="SQL[5]" type="fixed">
+						<value>
+<![CDATA[
+create unique index  "s#db2mc".hist_SNAPDBM_u1 on "s#db2mc".hist_SNAPDBM
+  (snapshot_timestamp desc,DBPARTITIONNUM asc ) ALLOW REVERSE SCANS 
+]]>
+						</value>
+					</parameter>
+					<parameter name="SQL[6]" type="fixed">
+						<value>
+<![CDATA[
+CREATE TABLE "s#db2mc".HIST_SNAPDBM_delta  (
+		  "SNAPSHOT_TIMESTAMP" TIMESTAMP , 
+		  period double , 
+		  "SORT_HEAP_ALLOCATED" BIGINT , 
+		  "POST_THRESHOLD_SORTS" BIGINT , 
+		  "PIPED_SORTS_REQUESTED" BIGINT , 
+		  "PIPED_SORTS_ACCEPTED" BIGINT , 
+		  "REM_CONS_IN" BIGINT , 
+		  "REM_CONS_IN_EXEC" BIGINT , 
+		  "LOCAL_CONS" BIGINT , 
+		  "LOCAL_CONS_IN_EXEC" BIGINT , 
+		  "CON_LOCAL_DBASES" BIGINT , 
+		  "AGENTS_REGISTERED" BIGINT , 
+		  "AGENTS_WAITING_ON_TOKEN" BIGINT , 
+		  "AGENTS_REGISTERED_TOP" BIGINT , 
+		  "AGENTS_WAITING_TOP" BIGINT , 
+		  "COMM_PRIVATE_MEM" BIGINT , 
+		  "IDLE_AGENTS" BIGINT , 
+		  "AGENTS_FROM_POOL" BIGINT , 
+		  "AGENTS_CREATED_EMPTY_POOL" BIGINT , 
+		  "COORD_AGENTS_TOP" BIGINT , 
+		  "MAX_AGENT_OVERFLOWS" BIGINT , 
+		  "AGENTS_STOLEN" BIGINT , 
+		  "GW_TOTAL_CONS" BIGINT , 
+		  "GW_CUR_CONS" BIGINT , 
+		  "GW_CONS_WAIT_HOST" BIGINT , 
+		  "GW_CONS_WAIT_CLIENT" BIGINT , 
+		  "POST_THRESHOLD_HASH_JOINS" BIGINT , 
+		  "NUM_GW_CONN_SWITCHES" BIGINT , 
+		  "NUM_NODES_IN_DB2_INSTANCE" INTEGER , 
+		  "SORT_HEAP_TOP" BIGINT , 
+		  "DBPARTITIONNUM" SMALLINT , 
+		  "POST_THRESHOLD_OLAP_FUNCS" BIGINT )   
+	in "?TABLESPACE?"
+]]>
+						</value>
+					</parameter>
+					<parameter name="SQL[7]" type="fixed">
+						<value>
+<![CDATA[
+CREATE UNIQUE INDEX "s#db2mc".HIST_SNAPDBM_delta_U1 ON "s#db2mc".HIST_SNAPDBM_delta 
+		("SNAPSHOT_TIMESTAMP" desc, "DBPARTITIONNUM" ASC)
+		ALLOW REVERSE SCANS
+]]>
+						</value>
+					</parameter>
+					<parameter name="SQL[8]" type="fixed">
+						<value>
+<![CDATA[
+create table "s#db2mc".hist_SNAPDB
+	as (select s.* from table(SNAP_GET_DB_V97(cast(null as varchar(128)),0)) as s) with no data
+	in "?TABLESPACE?" 
+]]>
+						</value>
+					</parameter>
+					<parameter name="SQL[9]" type="fixed">
+						<value>
+<![CDATA[
+create unique index  "s#db2mc".hist_SNAPDB_u1 on "s#db2mc".hist_SNAPDB (snapshot_timestamp desc,DB_NAME,DBPARTITIONNUM)
+		ALLOW REVERSE SCANS
+]]>
+						</value>
+					</parameter>
+					<parameter name="SQL[10]" type="fixed">
+						<value>
+<![CDATA[
+CREATE TABLE "s#db2mc ".HIST_SNAPDB_delta  (
+		  "SNAPSHOT_TIMESTAMP" TIMESTAMP not null,
+		  DB_NAME varchar(128) not null, 
+		  period double , 
+		  "CONNECTIONS_TOP" BIGINT , 
+		  "TOTAL_CONS" BIGINT , 
+		  "TOTAL_SEC_CONS" BIGINT , 
+		  "APPLS_CUR_CONS" BIGINT , 
+		  "APPLS_IN_DB2" BIGINT , 
+		  "NUM_ASSOC_AGENTS" BIGINT , 
+		  "AGENTS_TOP" BIGINT , 
+		  "COORD_AGENTS_TOP" BIGINT , 
+		  "LOCKS_HELD" BIGINT , 
+		  "LOCK_WAITS" BIGINT , 
+		  "LOCK_WAIT_TIME" BIGINT , 
+		  "LOCK_LIST_IN_USE" BIGINT , 
+		  "DEADLOCKS" BIGINT , 
+		  "LOCK_ESCALS" BIGINT , 
+		  "X_LOCK_ESCALS" BIGINT , 
+		  "LOCKS_WAITING" BIGINT , 
+		  "LOCK_TIMEOUTS" BIGINT , 
+		  "NUM_INDOUBT_TRANS" BIGINT , 
+		  "SORT_HEAP_ALLOCATED" BIGINT , 
+		  "SORT_SHRHEAP_ALLOCATED" BIGINT , 
+		  "SORT_SHRHEAP_TOP" BIGINT , 
+		  "POST_SHRTHRESHOLD_SORTS" BIGINT , 
+		  "TOTAL_SORTS" BIGINT , 
+		  "TOTAL_SORT_TIME" BIGINT , 
+		  "SORT_OVERFLOWS" BIGINT , 
+		  "ACTIVE_SORTS" BIGINT , 
+		  "POOL_DATA_L_READS" BIGINT , 
+		  "POOL_DATA_P_READS" BIGINT , 
+		  "POOL_TEMP_DATA_L_READS" BIGINT , 
+		  "POOL_TEMP_DATA_P_READS" BIGINT , 
+		  "POOL_ASYNC_DATA_READS" BIGINT , 
+		  "POOL_DATA_WRITES" BIGINT , 
+		  "POOL_ASYNC_DATA_WRITES" BIGINT , 
+		  "POOL_INDEX_L_READS" BIGINT , 
+		  "POOL_INDEX_P_READS" BIGINT , 
+		  "POOL_TEMP_INDEX_L_READS" BIGINT , 
+		  "POOL_TEMP_INDEX_P_READS" BIGINT , 
+		  "POOL_ASYNC_INDEX_READS" BIGINT , 
+		  "POOL_INDEX_WRITES" BIGINT , 
+		  "POOL_ASYNC_INDEX_WRITES" BIGINT , 
+		  "POOL_XDA_P_READS" BIGINT , 
+		  "POOL_XDA_L_READS" BIGINT , 
+		  "POOL_XDA_WRITES" BIGINT , 
+		  "POOL_ASYNC_XDA_READS" BIGINT , 
+		  "POOL_ASYNC_XDA_WRITES" BIGINT , 
+		  "POOL_TEMP_XDA_P_READS" BIGINT , 
+		  "POOL_TEMP_XDA_L_READS" BIGINT , 
+		  "POOL_READ_TIME" BIGINT , 
+		  "POOL_WRITE_TIME" BIGINT , 
+		  "POOL_ASYNC_READ_TIME" BIGINT , 
+		  "POOL_ASYNC_WRITE_TIME" BIGINT , 
+		  "POOL_ASYNC_DATA_READ_REQS" BIGINT , 
+		  "POOL_ASYNC_INDEX_READ_REQS" BIGINT , 
+		  "POOL_ASYNC_XDA_READ_REQS" BIGINT , 
+		  "POOL_NO_VICTIM_BUFFER" BIGINT , 
+		  "POOL_LSN_GAP_CLNS" BIGINT , 
+		  "POOL_DRTY_PG_STEAL_CLNS" BIGINT , 
+		  "POOL_DRTY_PG_THRSH_CLNS" BIGINT , 
+		  "PREFETCH_WAIT_TIME" BIGINT , 
+		  "UNREAD_PREFETCH_PAGES" BIGINT , 
+		  "DIRECT_READS" BIGINT , 
+		  "DIRECT_WRITES" BIGINT , 
+		  "DIRECT_READ_REQS" BIGINT , 
+		  "DIRECT_WRITE_REQS" BIGINT , 
+		  "DIRECT_READ_TIME" BIGINT , 
+		  "DIRECT_WRITE_TIME" BIGINT , 
+		  "FILES_CLOSED" BIGINT , 
+		  "ELAPSED_EXEC_TIME" double , 
+		  "COMMIT_SQL_STMTS" BIGINT , 
+		  "ROLLBACK_SQL_STMTS" BIGINT , 
+		  "DYNAMIC_SQL_STMTS" BIGINT , 
+		  "STATIC_SQL_STMTS" BIGINT , 
+		  "FAILED_SQL_STMTS" BIGINT , 
+		  "SELECT_SQL_STMTS" BIGINT , 
+		  "UID_SQL_STMTS" BIGINT , 
+		  "DDL_SQL_STMTS" BIGINT , 
+		  "INT_AUTO_REBINDS" BIGINT , 
+		  "INT_ROWS_DELETED" BIGINT , 
+		  "INT_ROWS_INSERTED" BIGINT , 
+		  "INT_ROWS_UPDATED" BIGINT , 
+		  "INT_COMMITS" BIGINT , 
+		  "INT_ROLLBACKS" BIGINT , 
+		  "INT_DEADLOCK_ROLLBACKS" BIGINT , 
+		  "ROWS_DELETED" BIGINT , 
+		  "ROWS_INSERTED" BIGINT , 
+		  "ROWS_UPDATED" BIGINT , 
+		  "ROWS_SELECTED" BIGINT , 
+		  "ROWS_READ" BIGINT , 
+		  "BINDS_PRECOMPILES" BIGINT , 
+		  "TOTAL_LOG_AVAILABLE" BIGINT , 
+		  "TOTAL_LOG_USED" BIGINT , 
+		  "SEC_LOG_USED_TOP" BIGINT , 
+		  "TOT_LOG_USED_TOP" BIGINT , 
+		  "SEC_LOGS_ALLOCATED" BIGINT , 
+		  "LOG_READS" BIGINT , 
+		  "LOG_READ_TIME" double , 
+		  "LOG_WRITES" BIGINT , 
+		  "LOG_WRITE_TIME" double , 
+		  "NUM_LOG_WRITE_IO" BIGINT , 
+		  "NUM_LOG_READ_IO" BIGINT , 
+		  "NUM_LOG_PART_PAGE_IO" BIGINT , 
+		  "NUM_LOG_BUFFER_FULL" BIGINT , 
+		  "NUM_LOG_DATA_FOUND_IN_BUFFER" BIGINT , 
+		  "PKG_CACHE_LOOKUPS" BIGINT , 
+		  "PKG_CACHE_INSERTS" BIGINT , 
+		  "PKG_CACHE_NUM_OVERFLOWS" BIGINT , 
+		  "PKG_CACHE_SIZE_TOP" BIGINT , 
+		  "APPL_SECTION_LOOKUPS" BIGINT , 
+		  "APPL_SECTION_INSERTS" BIGINT , 
+		  "CAT_CACHE_LOOKUPS" BIGINT , 
+		  "CAT_CACHE_INSERTS" BIGINT , 
+		  "CAT_CACHE_OVERFLOWS" BIGINT , 
+		  "CAT_CACHE_SIZE_TOP" BIGINT , 
+		  "PRIV_WORKSPACE_SIZE_TOP" BIGINT , 
+		  "PRIV_WORKSPACE_NUM_OVERFLOWS" BIGINT , 
+		  "PRIV_WORKSPACE_SECTION_INSERTS" BIGINT , 
+		  "PRIV_WORKSPACE_SECTION_LOOKUPS" BIGINT , 
+		  "SHR_WORKSPACE_SIZE_TOP" BIGINT , 
+		  "SHR_WORKSPACE_NUM_OVERFLOWS" BIGINT , 
+		  "SHR_WORKSPACE_SECTION_INSERTS" BIGINT , 
+		  "SHR_WORKSPACE_SECTION_LOOKUPS" BIGINT , 
+		  "TOTAL_HASH_JOINS" BIGINT , 
+		  "TOTAL_HASH_LOOPS" BIGINT , 
+		  "HASH_JOIN_OVERFLOWS" BIGINT , 
+		  "HASH_JOIN_SMALL_OVERFLOWS" BIGINT , 
+		  "POST_SHRTHRESHOLD_HASH_JOINS" BIGINT , 
+		  "ACTIVE_HASH_JOINS" BIGINT , 
+		  "NUM_DB_STORAGE_PATHS" BIGINT , 
+		  "DBPARTITIONNUM" SMALLINT not null, 
+		  "TOTAL_OLAP_FUNCS" BIGINT , 
+		  "OLAP_FUNC_OVERFLOWS" BIGINT , 
+		  "ACTIVE_OLAP_FUNCS" BIGINT , 
+		  "STATS_CACHE_SIZE" BIGINT , 
+		  "STATS_FABRICATIONS" BIGINT , 
+		  "SYNC_RUNSTATS" BIGINT , 
+		  "ASYNC_RUNSTATS" BIGINT , 
+		  "STATS_FABRICATE_TIME" BIGINT , 
+		  "SYNC_RUNSTATS_TIME" BIGINT , 
+		  "NUM_THRESHOLD_VIOLATIONS" BIGINT )   
+		 IN "?TABLESPACE?" 
+]]>
+						</value>
+					</parameter>
+					<parameter name="SQL[11]" type="fixed">
+						<value>
+<![CDATA[
+CREATE UNIQUE INDEX "s#db2mc "."HIST_SNAPDB_DELTA_U1" ON "s#db2mc "."HIST_SNAPDB_DELTA" (snapshot_timestamp desc,DB_NAME,DBPARTITIONNUM)
+		ALLOW REVERSE SCANS
+]]>
+						</value>
+					</parameter>
+					<parameter name="SQL[12]" type="fixed">
+						<value>
+<![CDATA[
+create table "s#db2mc".hist_snapbp
+	as (select s.* from table(SNAP_GET_BP(cast(null as varchar(128)),0)) as s) with no data
+	in "?TABLESPACE?" 
+]]>
+						</value>
+					</parameter>
+					<parameter name="SQL[13]" type="fixed">
+						<value>
+<![CDATA[
+create unique index "s#db2mc".hist_snapbp_u1 on "s#db2mc".hist_snapbp (snapshot_timestamp desc,DB_NAME,bp_name,DBPARTITIONNUM)
+		 ALLOW REVERSE SCANS
+]]>
+						</value>
+					</parameter>
+					<parameter name="SQL[14]" type="fixed">
+						<value>
+<![CDATA[
+CREATE TABLE "s#db2mc".HIST_SNAPBP_delta  (
+		  "SNAPSHOT_TIMESTAMP" TIMESTAMP not null,
+		  DB_NAME  VARCHAR(128) not null,
+		  "BP_NAME" VARCHAR(128) not null, 
+		  period double , 
+		  "POOL_DATA_L_READS" BIGINT , 
+		  "POOL_DATA_P_READS" BIGINT , 
+		  "POOL_DATA_WRITES" BIGINT , 
+		  "POOL_INDEX_L_READS" BIGINT , 
+		  "POOL_INDEX_P_READS" BIGINT , 
+		  "POOL_INDEX_WRITES" BIGINT , 
+		  "POOL_XDA_L_READS" BIGINT , 
+		  "POOL_XDA_P_READS" BIGINT , 
+		  "POOL_XDA_WRITES" BIGINT , 
+		  "POOL_READ_TIME" BIGINT , 
+		  "POOL_WRITE_TIME" BIGINT , 
+		  "POOL_ASYNC_DATA_READS" BIGINT , 
+		  "POOL_ASYNC_DATA_WRITES" BIGINT , 
+		  "POOL_ASYNC_INDEX_READS" BIGINT , 
+		  "POOL_ASYNC_INDEX_WRITES" BIGINT , 
+		  "POOL_ASYNC_XDA_READS" BIGINT , 
+		  "POOL_ASYNC_XDA_WRITES" BIGINT , 
+		  "POOL_ASYNC_READ_TIME" BIGINT , 
+		  "POOL_ASYNC_WRITE_TIME" BIGINT , 
+		  "POOL_ASYNC_DATA_READ_REQS" BIGINT , 
+		  "POOL_ASYNC_INDEX_READ_REQS" BIGINT , 
+		  "POOL_ASYNC_XDA_READ_REQS" BIGINT , 
+		  "DIRECT_READS" BIGINT , 
+		  "DIRECT_WRITES" BIGINT , 
+		  "DIRECT_READ_REQS" BIGINT , 
+		  "DIRECT_WRITE_REQS" BIGINT , 
+		  "DIRECT_READ_TIME" BIGINT , 
+		  "DIRECT_WRITE_TIME" BIGINT , 
+		  "UNREAD_PREFETCH_PAGES" BIGINT , 
+		  "FILES_CLOSED" BIGINT , 
+		  "POOL_TEMP_DATA_L_READS" BIGINT , 
+		  "POOL_TEMP_DATA_P_READS" BIGINT , 
+		  "POOL_TEMP_INDEX_L_READS" BIGINT , 
+		  "POOL_TEMP_INDEX_P_READS" BIGINT , 
+		  "POOL_TEMP_XDA_L_READS" BIGINT , 
+		  "POOL_TEMP_XDA_P_READS" BIGINT , 
+		  "POOL_NO_VICTIM_BUFFER" BIGINT , 
+		  "PAGES_FROM_BLOCK_IOS" BIGINT , 
+		  "PAGES_FROM_VECTORED_IOS" BIGINT , 
+		  "VECTORED_IOS" BIGINT , 
+		  "DBPARTITIONNUM" SMALLINT 
+		  )   
+	in "?TABLESPACE?" 
+]]>
+						</value>
+					</parameter>
+					<parameter name="SQL[15]" type="fixed">
+						<value>
+<![CDATA[
+create table "s#db2mc".hist_snapDBmem
+	as (select s.* from table(SNAP_GET_DB_MEMORY_POOL(cast(null as varchar(128)),0)) as s) with no data
+	in "?TABLESPACE?" 
+]]>
+						</value>
+					</parameter>
+					<parameter name="SQL[16]" type="fixed">
+						<value>
+<![CDATA[
+create unique index "s#db2mc".hist_snapDBmem_pk on "s#db2mc".hist_snapDBmem (snapshot_timestamp desc,DB_NAME,POOL_ID,POOL_SECONDARY_ID,DBPARTITIONNUM)
+		 ALLOW REVERSE SCANS
+]]>
+						</value>
+					</parameter>					
+					<parameter name="SQL[17]" type="fixed">
+						<value>
+<![CDATA[
+CREATE UNIQUE INDEX "s#db2mc".HIST_SNAPBP_delta_U1 ON "s#db2mc".HIST_SNAPBP_delta 
+		("SNAPSHOT_TIMESTAMP" desc,DB_NAME,"BP_NAME" ASC,"DBPARTITIONNUM" ASC)
+		 ALLOW REVERSE SCANS
+]]>
+						</value>
+					</parameter>
+					<parameter name="SQL[18]" type="fixed">
+						<value>
+<![CDATA[
+create table "s#db2mc".hist_snapHADR
+	as (select s.* from table(SNAP_GET_HADR(cast(null as varchar(128)),0)) as s) with no data
+	in "?TABLESPACE?" 
+]]>
+						</value>
+					</parameter>
+					<parameter name="SQL[19]" type="fixed">
+						<value>
+<![CDATA[
+CREATE UNIQUE INDEX "s#db2mc".HIST_snapHADR_U1 ON "s#db2mc".hist_snapHADR 
+		("SNAPSHOT_TIMESTAMP" desc,DB_NAME,"DBPARTITIONNUM" ASC)
+		 ALLOW REVERSE SCANS
+]]>
+						</value>
+					</parameter>
+
+					<parameter name="SQL[20]" type="fixed">
+						<value>
+<![CDATA[
+create table "s#db2mc".hist_DBP_MEM_USAGE
+	as (select current timestamp as sample_ts,s.* from table(SYSPROC.ADMIN_GET_DBP_MEM_USAGE()) as s) with no data
+	in "?TABLESPACE?" 
+]]>
+						</value>
+					</parameter>
+					<parameter name="SQL[21]" type="fixed">
+						<value>
+<![CDATA[
+create unique index "s#db2mc".hist_DBP_MEM_USAGE_pk on "s#db2mc".hist_DBP_MEM_USAGE (sample_ts)
+		 ALLOW REVERSE SCANS
+]]>
+						</value>
+					</parameter>					
+
+					<parameter name="SQL[22]" type="fixed">
+						<value>
+<![CDATA[
+create table "s#db2mc".hist_SNAP_GET_TAB
+	as (select cast(' ' as varchar(128)) as DB_NAME, t.* from TABLE(SNAP_GET_TAB_V91('',-2)) AS T) with no data
+	in "?TABLESPACE?" 
+]]>
+						</value>
+					</parameter>
+					<parameter name="SQL[23]" type="fixed">
+						<value>
+<![CDATA[
+create unique index "s#db2mc".hist_SNAP_GET_TAB_pk on "s#db2mc".hist_SNAP_GET_TAB ("SNAPSHOT_TIMESTAMP" desc,DB_NAME,TABSCHEMA,TABNAME,DBPARTITIONNUM)
+		 ALLOW REVERSE SCANS
+]]>
+						</value>
+					</parameter>					
+
+					<parameter name="SQL[24]" type="fixed">
+						<value>
+<![CDATA[
+create table "s#db2mc".hist_SNAP_GET_TAB_delta
+	as (select cast(' ' as varchar(128)) as DB_NAME, double(0) as period ,t.* from TABLE(SNAP_GET_TAB_V91('',-2)) AS T) with no data
+	in "?TABLESPACE?" 
+]]>
+						</value>
+					</parameter>
+					<parameter name="SQL[25]" type="fixed">
+						<value>
+<![CDATA[
+create unique index "s#db2mc".hist_SNAP_GET_TAB_delta_pk on "s#db2mc".hist_SNAP_GET_TAB_delta (SNAPSHOT_TIMESTAMP desc,DB_NAME,TABSCHEMA,TABNAME,DBPARTITIONNUM)
+		 ALLOW REVERSE SCANS
+]]>
+						</value>
+					</parameter>					
+
+
+					<parameter name="SQL[26]" type="fixed">
+						<value>
+<![CDATA[
+create table "s#db2mc".hist_lock_waits
+	as (
+SELECT cast(' ' as varchar(128)) as DB_NAME
+	,SNAPSHOT_TIMESTAMP,TYPE,AGENT_ID,AGENT_ID_HOLDING_LK,STMT_TYPE AS STMT_TYPE,STMT_START AS STMT_START,STMT_STOP AS STMT_STOP,STMT_TEXT AS STMT_TEXT FROM table(select s.SNAPSHOT_TIMESTAMP
+	,type
+	,l.agent_id
+	,AGENT_ID_HOLDING_LK
+	,case when s.STMT_TEXT is null then 'Static' else 'Dynamic' end as stmt_type
+	,coalesce(STMT_TEXT
+		,(select TEXT from SYSIBM.SYSSTMT p
+			where (p.PLCREATOR,p.PLNAME,p.SECTNO)=(s.CREATOR,s.PACKAGE_NAME,s.SECTION_NUMBER)
+		)) as STMT_TEXT
+	,s.STMT_START
+	,s.STMT_STOP
+from (
+	select distinct 
+	  lock.type
+	 ,case lock.type when 'Waiting' then AGENT_ID else AGENT_ID_HOLDING_LK end as agent_id
+	 ,case lock.type when 'Waiting' then AGENT_ID_HOLDING_LK end as AGENT_ID_HOLDING_LK
+	from SYSIBMADM.SNAPLOCKwait
+		,(values('Holder'),('Waiting')) as lock(type)
+	) as l
+	,SYSIBMADM.SNAPSTMT s
+where l.agent_id=s.agent_id) as lockActiveSQL 	
+	) with no data
+	in "?TABLESPACE?" 
+]]>
+						</value>
+					</parameter>
+					<parameter name="SQL[27]" type="fixed">
+						<value>
+<![CDATA[
+create unique index "s#db2mc".hist_lock_waits_pk on "s#db2mc".hist_lock_waits (SNAPSHOT_TIMESTAMP,DB_NAME,AGENT_ID,AGENT_ID_HOLDING_LK)
+		 ALLOW REVERSE SCANS
+]]>
+						</value>
+					</parameter>					
+
+
+
+					<parameter name="SQL[28]" type="fixed">
+						<value>
+<![CDATA[
+CREATE PROCEDURE "s#db2mc"."gatherStatistics" ()
+  SPECIFIC "s#db2mc.gatherStatistics"
+  DYNAMIC RESULT SETS 0
+  LANGUAGE SQL
+  BEGIN
+--/******************************************************************************	
+--  Author: Peter Prib
+--  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2009 All rights reserved.
+--
+--  Licensed under the Apache License, Version 2.0 (the "License");
+--  you may not use this file except in compliance with the License.
+--  You may obtain a copy of the License at
+--
+--      http://www.apache.org/licenses/LICENSE-2.0
+--
+--  Unless required by applicable law or agreed to in writing, software
+--  distributed under the License is distributed on an "AS IS" BASIS,
+--  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+--  See the License for the specific language governing permissions and
+--  limitations under the License.
+--******************************************************************************/
+--  SQLSTATE '22018' is a bug that appears to occur with timestamp at the 60 second mark.
+--
+	DECLARE stmt varchar(32000);
+	DECLARE stmt2 varchar(32000);
+	DECLARE stmtDelta varchar(32000);
+	DECLARE database varchar(128) default '';
+	DECLARE bug CONDITION FOR SQLSTATE '22018';
+	DECLARE CONTINUE HANDLER FOR not found begin end;
+	DECLARE CONTINUE HANDLER FOR bug begin end;
+
+-- deliberate use of dynamic SQL to avoid rebinding
+	
+	set stmt = '
+		insert into "s#db2mc".hist_env_sys_resources
+		(select current timestamp as sample_ts,s.* from sysibmadm.env_sys_resources as s
+			where datatype not like ''VARCHAR%'')
+		';
+	prepare s1 from stmt;
+	execute s1;
+	commit;
+	set stmt = '
+		insert into "s#db2mc".hist_DBP_MEM_USAGE
+		(select current timestamp as sample_ts,s.* from table(SYSPROC.ADMIN_GET_DBP_MEM_USAGE()) as s)
+		';
+	prepare s1 from stmt;
+	execute s1;
+	commit;
+	set stmt = '
+		insert into "s#db2mc".hist_snapDBmem
+		(select s.* from table(SNAP_GET_DB_MEMORY_POOL(cast(null as varchar(128)),0)) as s)
+		';
+	prepare s1 from stmt;
+	execute s1;
+	commit;
+	set stmt = '
+		insert into "s#db2mc".hist_snapHADR
+		(select s.* from table(SNAP_GET_HADR(cast(null as varchar(128)),0)) as s)
+		';
+	prepare s1 from stmt;
+	execute s1;
+	commit;
+	set stmt = '
+		insert into "s#db2mc".hist_LOG_UTILIZATION (select current timestamp as sample_ts,s.* from sysibmadm.LOG_UTILIZATION as s)
+		';
+	prepare s1 from stmt;
+	execute s1;
+	commit;
+	set stmt = '
+		insert into "s#db2mc".hist_snapbp (select s.* from table(SNAP_GET_BP(cast(null as varchar(128)),0)) as s
+		where POOL_DATA_L_READS 
+			+ POOL_INDEX_L_READS 
+			+ POOL_XDA_L_READS 
+			+ POOL_TEMP_DATA_L_READS 
+			+ POOL_TEMP_INDEX_L_READS 
+			+ POOL_TEMP_XDA_L_READS 
+			> 0
+		)
+		';
+	prepare s1 from stmt;
+	execute s1;
+	commit;
+	set stmt = '
+		insert into "s#db2mc".hist_snapbp_delta (
+			 SNAPSHOT_TIMESTAMP
+			,DB_NAME
+			,BP_NAME
+			,DBPARTITIONNUM 
+			,period 
+			,POOL_DATA_L_READS 
+			,POOL_DATA_P_READS 
+			,POOL_DATA_WRITES 
+			,POOL_INDEX_L_READS 
+			,POOL_INDEX_P_READS 
+			,POOL_INDEX_WRITES 
+			,POOL_XDA_L_READS 
+			,POOL_XDA_P_READS 
+			,POOL_XDA_WRITES 
+			,POOL_READ_TIME 
+			,POOL_WRITE_TIME 
+			,POOL_ASYNC_DATA_READS 
+			,POOL_ASYNC_DATA_WRITES 
+			,POOL_ASYNC_INDEX_READS 
+			,POOL_ASYNC_INDEX_WRITES 
+			,POOL_ASYNC_XDA_READS 
+			,POOL_ASYNC_XDA_WRITES 
+			,POOL_ASYNC_READ_TIME 
+			,POOL_ASYNC_WRITE_TIME 
+			,POOL_ASYNC_DATA_READ_REQS 
+			,POOL_ASYNC_INDEX_READ_REQS 
+			,POOL_ASYNC_XDA_READ_REQS 
+			,DIRECT_READS 
+			,DIRECT_WRITES 
+			,DIRECT_READ_REQS 
+			,DIRECT_WRITE_REQS 
+			,DIRECT_READ_TIME 
+			,DIRECT_WRITE_TIME 
+			,UNREAD_PREFETCH_PAGES 
+			,FILES_CLOSED 
+			,POOL_TEMP_DATA_L_READS 
+			,POOL_TEMP_DATA_P_READS 
+			,POOL_TEMP_INDEX_L_READS 
+			,POOL_TEMP_INDEX_P_READS 
+			,POOL_TEMP_XDA_L_READS 
+			,POOL_TEMP_XDA_P_READS 
+			,POOL_NO_VICTIM_BUFFER 
+			,PAGES_FROM_BLOCK_IOS 
+			,PAGES_FROM_VECTORED_IOS 
+			,VECTORED_IOS 
+		)
+		SELECT c.SNAPSHOT_TIMESTAMP,c.DB_NAME,c.BP_NAME,c.DBPARTITIONNUM 
+			,case when c.SNAPSHOT_TIMESTAMP < l.SNAPSHOT_TIMESTAMP + 8 hours 
+				then double(timestampdiff(1,char(c.SNAPSHOT_TIMESTAMP-l.SNAPSHOT_TIMESTAMP)))/1000000 
+				else double(timestampdiff(2,char(c.SNAPSHOT_TIMESTAMP-l.SNAPSHOT_TIMESTAMP)))
+				end as period 
+			,c.POOL_DATA_L_READS - l.POOL_DATA_L_READS  AS POOL_DATA_L_READS 
+			,c.POOL_DATA_P_READS - l.POOL_DATA_P_READS  AS POOL_DATA_P_READS 
+			,c.POOL_DATA_WRITES - l.POOL_DATA_WRITES  AS POOL_DATA_WRITES 
+			,c.POOL_INDEX_L_READS - l.POOL_INDEX_L_READS  AS POOL_INDEX_L_READS 
+			,c.POOL_INDEX_P_READS - l.POOL_INDEX_P_READS  AS POOL_INDEX_P_READS 
+			,c.POOL_INDEX_WRITES - l.POOL_INDEX_WRITES  AS POOL_INDEX_WRITES 
+			,c.POOL_XDA_L_READS - l.POOL_XDA_L_READS  AS POOL_XDA_L_READS 
+			,c.POOL_XDA_P_READS - l.POOL_XDA_P_READS  AS POOL_XDA_P_READS 
+			,c.POOL_XDA_WRITES - l.POOL_XDA_WRITES  AS POOL_XDA_WRITES 
+			,c.POOL_READ_TIME - l.POOL_READ_TIME  AS POOL_READ_TIME 
+			,c.POOL_WRITE_TIME - l.POOL_WRITE_TIME  AS POOL_WRITE_TIME 
+			,c.POOL_ASYNC_DATA_READS - l.POOL_ASYNC_DATA_READS  AS POOL_ASYNC_DATA_READS 
+			,c.POOL_ASYNC_DATA_WRITES - l.POOL_ASYNC_DATA_WRITES  AS POOL_ASYNC_DATA_WRITES 
+			,c.POOL_ASYNC_INDEX_READS - l.POOL_ASYNC_INDEX_READS  AS POOL_ASYNC_INDEX_READS 
+			,c.POOL_ASYNC_INDEX_WRITES - l.POOL_ASYNC_INDEX_WRITES  AS POOL_ASYNC_INDEX_WRITES 
+			,c.POOL_ASYNC_XDA_READS - l.POOL_ASYNC_XDA_READS  AS POOL_ASYNC_XDA_READS 
+			,c.POOL_ASYNC_XDA_WRITES - l.POOL_ASYNC_XDA_WRITES  AS POOL_ASYNC_XDA_WRITES 
+			,c.POOL_ASYNC_READ_TIME - l.POOL_ASYNC_READ_TIME  AS POOL_ASYNC_READ_TIME 
+			,c.POOL_ASYNC_WRITE_TIME - l.POOL_ASYNC_WRITE_TIME  AS POOL_ASYNC_WRITE_TIME 
+			,c.POOL_ASYNC_DATA_READ_REQS - l.POOL_ASYNC_DATA_READ_REQS  AS POOL_ASYNC_DATA_READ_REQS 
+			,c.POOL_ASYNC_INDEX_READ_REQS - l.POOL_ASYNC_INDEX_READ_REQS  AS POOL_ASYNC_INDEX_READ_REQS 
+			,c.POOL_ASYNC_XDA_READ_REQS - l.POOL_ASYNC_XDA_READ_REQS  AS POOL_ASYNC_XDA_READ_REQS 
+			,c.DIRECT_READS - l.DIRECT_READS  AS DIRECT_READS 
+			,c.DIRECT_WRITES - l.DIRECT_WRITES  AS DIRECT_WRITES 
+			,c.DIRECT_READ_REQS - l.DIRECT_READ_REQS  AS DIRECT_READ_REQS 
+			,c.DIRECT_WRITE_REQS - l.DIRECT_WRITE_REQS  AS DIRECT_WRITE_REQS 
+			,c.DIRECT_READ_TIME - l.DIRECT_READ_TIME  AS DIRECT_READ_TIME 
+			,c.DIRECT_WRITE_TIME - l.DIRECT_WRITE_TIME  AS DIRECT_WRITE_TIME 
+			,c.UNREAD_PREFETCH_PAGES - l.UNREAD_PREFETCH_PAGES  AS UNREAD_PREFETCH_PAGES 
+			,c.FILES_CLOSED - l.FILES_CLOSED  AS FILES_CLOSED 
+			,c.POOL_TEMP_DATA_L_READS - l.POOL_TEMP_DATA_L_READS  AS POOL_TEMP_DATA_L_READS 
+			,c.POOL_TEMP_DATA_P_READS - l.POOL_TEMP_DATA_P_READS  AS POOL_TEMP_DATA_P_READS 
+			,c.POOL_TEMP_INDEX_L_READS - l.POOL_TEMP_INDEX_L_READS  AS POOL_TEMP_INDEX_L_READS 
+			,c.POOL_TEMP_INDEX_P_READS - l.POOL_TEMP_INDEX_P_READS  AS POOL_TEMP_INDEX_P_READS 
+			,c.POOL_TEMP_XDA_L_READS - l.POOL_TEMP_XDA_L_READS  AS POOL_TEMP_XDA_L_READS 
+			,c.POOL_TEMP_XDA_P_READS - l.POOL_TEMP_XDA_P_READS  AS POOL_TEMP_XDA_P_READS 
+			,c.POOL_NO_VICTIM_BUFFER - l.POOL_NO_VICTIM_BUFFER  AS POOL_NO_VICTIM_BUFFER 
+			,c.PAGES_FROM_BLOCK_IOS - l.PAGES_FROM_BLOCK_IOS  AS PAGES_FROM_BLOCK_IOS 
+			,c.PAGES_FROM_VECTORED_IOS - l.PAGES_FROM_VECTORED_IOS  AS PAGES_FROM_VECTORED_IOS 
+			,c.VECTORED_IOS - l.VECTORED_IOS  AS VECTORED_IOS 
+		from (values((select max(SNAPSHOT_TIMESTAMP) from "s#db2mc".HIST_SNAPBP)
+					,(select max(SNAPSHOT_TIMESTAMP) from "s#db2mc".HIST_SNAPBP where SNAPSHOT_TIMESTAMP < (select max(SNAPSHOT_TIMESTAMP) from "s#db2mc".HIST_SNAPBP))
+					)) as t(current_ts,last_ts)
+		join "s#db2mc".HIST_SNAPBP  c
+		  on c.SNAPSHOT_TIMESTAMP=t.current_ts
+		join "s#db2mc".HIST_SNAPBP  l 
+		  on l.SNAPSHOT_TIMESTAMP=t.last_ts
+		 and (c.BP_NAME,c.DB_NAME,c.DBPARTITIONNUM)=(l.BP_NAME,l.DB_NAME,l.DBPARTITIONNUM)
+		';
+	prepare s1 from stmt;
+	execute s1;
+	commit;
+	set stmt = '
+		insert into "s#db2mc".hist_SNAPDBM (select s.* from sysibmadm.SNAPDBM as s)
+		';
+	prepare s1 from stmt;
+	execute s1;
+	commit;
+	set stmt = '
+		insert into "s#db2mc".hist_SNAPDBM_delta (
+			 SNAPSHOT_TIMESTAMP 
+			,period 
+			,SORT_HEAP_ALLOCATED 
+			,POST_THRESHOLD_SORTS 
+			,PIPED_SORTS_REQUESTED 
+			,PIPED_SORTS_ACCEPTED 
+			,REM_CONS_IN 
+			,REM_CONS_IN_EXEC 
+			,LOCAL_CONS 
+			,LOCAL_CONS_IN_EXEC 
+			,CON_LOCAL_DBASES 
+			,AGENTS_REGISTERED 
+			,AGENTS_WAITING_ON_TOKEN 
+			,AGENTS_REGISTERED_TOP 
+			,AGENTS_WAITING_TOP 
+			,COMM_PRIVATE_MEM 
+			,IDLE_AGENTS 
+			,AGENTS_FROM_POOL 
+			,AGENTS_CREATED_EMPTY_POOL 
+			,COORD_AGENTS_TOP 
+			,MAX_AGENT_OVERFLOWS 
+			,AGENTS_STOLEN 
+			,GW_TOTAL_CONS 
+			,GW_CUR_CONS 
+			,GW_CONS_WAIT_HOST 
+			,GW_CONS_WAIT_CLIENT 
+			,POST_THRESHOLD_HASH_JOINS 
+			,NUM_GW_CONN_SWITCHES 
+			,NUM_NODES_IN_DB2_INSTANCE 
+			,SORT_HEAP_TOP 
+			,DBPARTITIONNUM 
+			,POST_THRESHOLD_OLAP_FUNCS 
+		)
+		SELECT c.SNAPSHOT_TIMESTAMP 
+			,case when c.SNAPSHOT_TIMESTAMP < l.SNAPSHOT_TIMESTAMP + 8 hours 
+				then double(timestampdiff(1,char(c.SNAPSHOT_TIMESTAMP-l.SNAPSHOT_TIMESTAMP)))/1000000 
+				else double(timestampdiff(2,char(c.SNAPSHOT_TIMESTAMP-l.SNAPSHOT_TIMESTAMP)))
+				end as period 
+			,c.SORT_HEAP_ALLOCATED -  l.SORT_HEAP_ALLOCATED AS SORT_HEAP_ALLOCATED 
+			,c.POST_THRESHOLD_SORTS -  l.POST_THRESHOLD_SORTS AS POST_THRESHOLD_SORTS 
+			,c.PIPED_SORTS_REQUESTED -  l.PIPED_SORTS_REQUESTED AS PIPED_SORTS_REQUESTED 
+			,c.PIPED_SORTS_ACCEPTED -  l.PIPED_SORTS_ACCEPTED AS PIPED_SORTS_ACCEPTED 
+			,c.REM_CONS_IN -  l.REM_CONS_IN AS REM_CONS_IN 
+			,c.REM_CONS_IN_EXEC -  l.REM_CONS_IN_EXEC AS REM_CONS_IN_EXEC 
+			,c.LOCAL_CONS -  l.LOCAL_CONS AS LOCAL_CONS 
+			,c.LOCAL_CONS_IN_EXEC -  l.LOCAL_CONS_IN_EXEC AS LOCAL_CONS_IN_EXEC 
+			,c.CON_LOCAL_DBASES -  l.CON_LOCAL_DBASES AS CON_LOCAL_DBASES 
+			,c.AGENTS_REGISTERED -  l.AGENTS_REGISTERED AS AGENTS_REGISTERED 
+			,c.AGENTS_WAITING_ON_TOKEN -  l.AGENTS_WAITING_ON_TOKEN AS AGENTS_WAITING_ON_TOKEN 
+			,c.AGENTS_REGISTERED_TOP -  l.AGENTS_REGISTERED_TOP AS AGENTS_REGISTERED_TOP 
+			,c.AGENTS_WAITING_TOP -  l.AGENTS_WAITING_TOP AS AGENTS_WAITING_TOP 
+			,c.COMM_PRIVATE_MEM -  l.COMM_PRIVATE_MEM AS COMM_PRIVATE_MEM 
+			,c.IDLE_AGENTS -  l.IDLE_AGENTS AS IDLE_AGENTS 
+			,c.AGENTS_FROM_POOL -  l.AGENTS_FROM_POOL AS AGENTS_FROM_POOL 
+			,c.AGENTS_CREATED_EMPTY_POOL -  l.AGENTS_CREATED_EMPTY_POOL AS AGENTS_CREATED_EMPTY_POOL 
+			,c.COORD_AGENTS_TOP -  l.COORD_AGENTS_TOP AS COORD_AGENTS_TOP 
+			,c.MAX_AGENT_OVERFLOWS -  l.MAX_AGENT_OVERFLOWS AS MAX_AGENT_OVERFLOWS 
+			,c.AGENTS_STOLEN -  l.AGENTS_STOLEN AS AGENTS_STOLEN 
+			,c.GW_TOTAL_CONS -  l.GW_TOTAL_CONS AS GW_TOTAL_CONS 
+			,c.GW_CUR_CONS -  l.GW_CUR_CONS AS GW_CUR_CONS 
+			,c.GW_CONS_WAIT_HOST -  l.GW_CONS_WAIT_HOST AS GW_CONS_WAIT_HOST 
+			,c.GW_CONS_WAIT_CLIENT -  l.GW_CONS_WAIT_CLIENT AS GW_CONS_WAIT_CLIENT 
+			,c.POST_THRESHOLD_HASH_JOINS -  l.POST_THRESHOLD_HASH_JOINS AS POST_THRESHOLD_HASH_JOINS 
+			,c.NUM_GW_CONN_SWITCHES -  l.NUM_GW_CONN_SWITCHES AS NUM_GW_CONN_SWITCHES 
+			,c.NUM_NODES_IN_DB2_INSTANCE -  l.NUM_NODES_IN_DB2_INSTANCE AS NUM_NODES_IN_DB2_INSTANCE 
+			,c.SORT_HEAP_TOP -  l.SORT_HEAP_TOP AS SORT_HEAP_TOP 
+			,c.DBPARTITIONNUM 
+			,c.POST_THRESHOLD_OLAP_FUNCS -  l.POST_THRESHOLD_OLAP_FUNCS AS POST_THRESHOLD_OLAP_FUNCS 
+			from (values((select max(SNAPSHOT_TIMESTAMP) from "s#db2mc".HIST_SNAPDBM)
+					,(select max(SNAPSHOT_TIMESTAMP) from "s#db2mc".HIST_SNAPDBM where SNAPSHOT_TIMESTAMP < (select max(SNAPSHOT_TIMESTAMP) from "s#db2mc".HIST_SNAPDBM))
+					)) as t(current_ts,last_ts)
+			join "s#db2mc".HIST_SNAPDBM  c 
+			  on c.SNAPSHOT_TIMESTAMP=t.current_ts
+			join "s#db2mc".HIST_SNAPDBM  l 
+			  on l.SNAPSHOT_TIMESTAMP=t.last_ts
+			 and (c.DBPARTITIONNUM)=(l.DBPARTITIONNUM)
+			where (c.LAST_RESET is null or c.LAST_RESET<l.SNAPSHOT_TIMESTAMP )
+			  and c.DB2START_TIME < l.SNAPSHOT_TIMESTAMP
+		';
+	prepare s1 from stmt;
+	execute s1;
+	commit;
+	set stmt = '
+		insert into "s#db2mc".hist_SNAPDB (select s.* from table(SNAP_GET_DB_V97(cast(null as varchar(128)),0)) as s)
+		';
+	prepare s1 from stmt;
+	execute s1;
+	commit;
+	set stmt = '
+		insert into "s#db2mc".hist_SNAPDB_delta (
+		 SNAPSHOT_TIMESTAMP
+		,DB_NAME
+		,period 
+		,CONNECTIONS_TOP
+		,TOTAL_CONS
+		,TOTAL_SEC_CONS 
+		,APPLS_CUR_CONS
+		,APPLS_IN_DB2 
+		,NUM_ASSOC_AGENTS 
+		,AGENTS_TOP
+		,COORD_AGENTS_TOP 
+		,LOCKS_HELD
+		,LOCK_WAITS 
+		,LOCK_WAIT_TIME
+		,LOCK_LIST_IN_USE
+		,DEADLOCKS
+		,LOCK_ESCALS
+		,X_LOCK_ESCALS
+		,LOCKS_WAITING
+		,LOCK_TIMEOUTS
+		,NUM_INDOUBT_TRANS
+		,SORT_HEAP_ALLOCATED
+		,SORT_SHRHEAP_ALLOCATED
+		,SORT_SHRHEAP_TOP
+		,POST_SHRTHRESHOLD_SORTS
+		,TOTAL_SORTS
+		,TOTAL_SORT_TIME
+		,SORT_OVERFLOWS
+		,ACTIVE_SORTS
+		,POOL_DATA_L_READS
+		,POOL_DATA_P_READS
+		,POOL_TEMP_DATA_L_READS
+		,POOL_TEMP_DATA_P_READS
+		,POOL_ASYNC_DATA_READS
+		,POOL_DATA_WRITES 
+		,POOL_ASYNC_DATA_WRITES
+		,POOL_INDEX_L_READS
+		,POOL_INDEX_P_READS
+		,POOL_TEMP_INDEX_L_READS
+		,POOL_TEMP_INDEX_P_READS
+		,POOL_ASYNC_INDEX_READS
+		,POOL_INDEX_WRITES
+		,POOL_ASYNC_INDEX_WRITES
+		,POOL_XDA_P_READS
+		,POOL_XDA_L_READS
+		,POOL_XDA_WRITES
+		,POOL_ASYNC_XDA_READS
+		,POOL_ASYNC_XDA_WRITES
+		,POOL_TEMP_XDA_P_READS
+		,POOL_TEMP_XDA_L_READS
+		,POOL_READ_TIME
+		,POOL_WRITE_TIME
+		,POOL_ASYNC_READ_TIME
+		,POOL_ASYNC_WRITE_TIME
+		,POOL_ASYNC_DATA_READ_REQS
+		,POOL_ASYNC_INDEX_READ_REQS
+		,POOL_ASYNC_XDA_READ_REQS
+		,POOL_NO_VICTIM_BUFFER
+		,POOL_LSN_GAP_CLNS
+		,POOL_DRTY_PG_STEAL_CLNS
+		,POOL_DRTY_PG_THRSH_CLNS
+		,PREFETCH_WAIT_TIME
+		,UNREAD_PREFETCH_PAGES
+		,DIRECT_READS
+		,DIRECT_WRITES
+		,DIRECT_READ_REQS
+		,DIRECT_WRITE_REQS
+		,DIRECT_READ_TIME
+		,DIRECT_WRITE_TIME
+		,FILES_CLOSED 
+		,ELAPSED_EXEC_TIME
+		,COMMIT_SQL_STMTS 
+		,ROLLBACK_SQL_STMTS 
+		,DYNAMIC_SQL_STMTS
+		,STATIC_SQL_STMTS
+		,FAILED_SQL_STMTS
+		,SELECT_SQL_STMTS
+		,UID_SQL_STMTS
+		,DDL_SQL_STMTS
+		,INT_AUTO_REBINDS
+		,INT_ROWS_DELETED
+		,INT_ROWS_INSERTED
+		,INT_ROWS_UPDATED
+		,INT_COMMITS
+		,INT_ROLLBACKS 
+		,INT_DEADLOCK_ROLLBACKS
+		,ROWS_DELETED
+		,ROWS_INSERTED
+		,ROWS_UPDATED
+		,ROWS_SELECTED
+		,ROWS_READ
+		,BINDS_PRECOMPILES
+		,TOTAL_LOG_AVAILABLE
+		,TOTAL_LOG_USED
+		,SEC_LOG_USED_TOP
+		,TOT_LOG_USED_TOP
+		,SEC_LOGS_ALLOCATED
+		,LOG_READS
+		,LOG_READ_TIME
+		,LOG_WRITES
+		,LOG_WRITE_TIME
+		,NUM_LOG_WRITE_IO 
+		,NUM_LOG_READ_IO 
+		,NUM_LOG_PART_PAGE_IO 
+		,NUM_LOG_BUFFER_FULL
+		,NUM_LOG_DATA_FOUND_IN_BUFFER
+		,PKG_CACHE_LOOKUPS
+		,PKG_CACHE_INSERTS
+		,PKG_CACHE_NUM_OVERFLOWS 
+		,PKG_CACHE_SIZE_TOP
+		,APPL_SECTION_LOOKUPS
+		,APPL_SECTION_INSERTS
+		,CAT_CACHE_LOOKUPS
+		,CAT_CACHE_INSERTS
+		,CAT_CACHE_OVERFLOWS
+		,CAT_CACHE_SIZE_TOP
+		,PRIV_WORKSPACE_SIZE_TOP
+		,PRIV_WORKSPACE_NUM_OVERFLOWS
+		,PRIV_WORKSPACE_SECTION_INSERTS
+		,PRIV_WORKSPACE_SECTION_LOOKUPS
+		,SHR_WORKSPACE_SIZE_TOP
+		,SHR_WORKSPACE_NUM_OVERFLOWS
+		,SHR_WORKSPACE_SECTION_INSERTS
+		,SHR_WORKSPACE_SECTION_LOOKUPS
+		,TOTAL_HASH_JOINS
+		,TOTAL_HASH_LOOPS 
+		,HASH_JOIN_OVERFLOWS 
+		,HASH_JOIN_SMALL_OVERFLOWS 
+		,POST_SHRTHRESHOLD_HASH_JOINS 
+		,ACTIVE_HASH_JOINS 
+		,NUM_DB_STORAGE_PATHS 
+		,DBPARTITIONNUM
+		,TOTAL_OLAP_FUNCS
+		,OLAP_FUNC_OVERFLOWS
+		,ACTIVE_OLAP_FUNCS
+		,STATS_CACHE_SIZE
+		,STATS_FABRICATIONS
+		,SYNC_RUNSTATS 
+		,ASYNC_RUNSTATS
+		,STATS_FABRICATE_TIME
+		,SYNC_RUNSTATS_TIME
+		,NUM_THRESHOLD_VIOLATIONS
+		)
+		SELECT c.SNAPSHOT_TIMESTAMP,c.DB_NAME
+			,case when c.SNAPSHOT_TIMESTAMP < l.SNAPSHOT_TIMESTAMP + 8 hours 
+				then double(timestampdiff(1,char(c.SNAPSHOT_TIMESTAMP-l.SNAPSHOT_TIMESTAMP)))/1000000 
+				else double(timestampdiff(2,char(c.SNAPSHOT_TIMESTAMP-l.SNAPSHOT_TIMESTAMP)))
+				end as period 
+			,c.CONNECTIONS_TOP -  l.CONNECTIONS_TOP AS CONNECTIONS_TOP
+			,c.TOTAL_CONS -  l.TOTAL_CONS AS TOTAL_CONS
+			,c.TOTAL_SEC_CONS -  l.TOTAL_SEC_CONS AS TOTAL_SEC_CONS
+			,c.APPLS_CUR_CONS -  l.APPLS_CUR_CONS AS APPLS_CUR_CONS
+			,c.APPLS_IN_DB2 -  l.APPLS_IN_DB2 AS APPLS_IN_DB2
+			,c.NUM_ASSOC_AGENTS -  l.NUM_ASSOC_AGENTS AS NUM_ASSOC_AGENTS
+			,c.AGENTS_TOP -  l.AGENTS_TOP AS AGENTS_TOP
+			,c.COORD_AGENTS_TOP -  l.COORD_AGENTS_TOP AS COORD_AGENTS_TOP
+			,c.LOCKS_HELD -  l.LOCKS_HELD AS LOCKS_HELD
+			,c.LOCK_WAITS -  l.LOCK_WAITS AS LOCK_WAITS
+			,c.LOCK_WAIT_TIME -  l.LOCK_WAIT_TIME AS LOCK_WAIT_TIME
+			,c.LOCK_LIST_IN_USE -  l.LOCK_LIST_IN_USE AS LOCK_LIST_IN_USE
+			,c.DEADLOCKS -  l.DEADLOCKS AS DEADLOCKS
+			,c.LOCK_ESCALS -  l.LOCK_ESCALS AS LOCK_ESCALS
+			,c.X_LOCK_ESCALS -  l.X_LOCK_ESCALS AS X_LOCK_ESCALS
+			,c.LOCKS_WAITING -  l.LOCKS_WAITING AS LOCKS_WAITING
+			,c.LOCK_TIMEOUTS -  l.LOCK_TIMEOUTS AS LOCK_TIMEOUTS
+			,c.NUM_INDOUBT_TRANS -  l.NUM_INDOUBT_TRANS AS NUM_INDOUBT_TRANS
+			,c.SORT_HEAP_ALLOCATED -  l.SORT_HEAP_ALLOCATED AS SORT_HEAP_ALLOCATED
+			,c.SORT_SHRHEAP_ALLOCATED -  l.SORT_SHRHEAP_ALLOCATED AS SORT_SHRHEAP_ALLOCATED
+			,c.SORT_SHRHEAP_TOP -  l.SORT_SHRHEAP_TOP AS SORT_SHRHEAP_TOP
+			,c.POST_SHRTHRESHOLD_SORTS -  l.POST_SHRTHRESHOLD_SORTS AS POST_SHRTHRESHOLD_SORTS
+			,c.TOTAL_SORTS -  l.TOTAL_SORTS AS TOTAL_SORTS
+			,c.TOTAL_SORT_TIME -  l.TOTAL_SORT_TIME AS TOTAL_SORT_TIME
+			,c.SORT_OVERFLOWS -  l.SORT_OVERFLOWS AS SORT_OVERFLOWS
+			,c.ACTIVE_SORTS -  l.ACTIVE_SORTS AS ACTIVE_SORTS
+			,c.POOL_DATA_L_READS -  l.POOL_DATA_L_READS AS POOL_DATA_L_READS
+			,c.POOL_DATA_P_READS -  l.POOL_DATA_P_READS AS POOL_DATA_P_READS
+			,c.POOL_TEMP_DATA_L_READS -  l.POOL_TEMP_DATA_L_READS AS POOL_TEMP_DATA_L_READS
+			,c.POOL_TEMP_DATA_P_READS -  l.POOL_TEMP_DATA_P_READS AS POOL_TEMP_DATA_P_READS
+			,c.POOL_ASYNC_DATA_READS -  l.POOL_ASYNC_DATA_READS AS POOL_ASYNC_DATA_READS
+			,c.POOL_DATA_WRITES -  l.POOL_DATA_WRITES AS POOL_DATA_WRITES
+			,c.POOL_ASYNC_DATA_WRITES -  l.POOL_ASYNC_DATA_WRITES AS POOL_ASYNC_DATA_WRITES
+			,c.POOL_INDEX_L_READS -  l.POOL_INDEX_L_READS AS POOL_INDEX_L_READS
+			,c.POOL_INDEX_P_READS -  l.POOL_INDEX_P_READS AS POOL_INDEX_P_READS
+			,c.POOL_TEMP_INDEX_L_READS -  l.POOL_TEMP_INDEX_L_READS AS POOL_TEMP_INDEX_L_READS
+			,c.POOL_TEMP_INDEX_P_READS -  l.POOL_TEMP_INDEX_P_READS AS POOL_TEMP_INDEX_P_READS
+			,c.POOL_ASYNC_INDEX_READS -  l.POOL_ASYNC_INDEX_READS AS POOL_ASYNC_INDEX_READS
+			,c.POOL_INDEX_WRITES -  l.POOL_INDEX_WRITES AS POOL_INDEX_WRITES
+			,c.POOL_ASYNC_INDEX_WRITES -  l.POOL_ASYNC_INDEX_WRITES AS POOL_ASYNC_INDEX_WRITES
+			,c.POOL_XDA_P_READS -  l.POOL_XDA_P_READS AS POOL_XDA_P_READS
+			,c.POOL_XDA_L_READS -  l.POOL_XDA_L_READS AS POOL_XDA_L_READS
+			,c.POOL_XDA_WRITES -  l.POOL_XDA_WRITES AS POOL_XDA_WRITES
+			,c.POOL_ASYNC_XDA_READS -  l.POOL_ASYNC_XDA_READS AS POOL_ASYNC_XDA_READS
+			,c.POOL_ASYNC_XDA_WRITES -  l.POOL_ASYNC_XDA_WRITES AS POOL_ASYNC_XDA_WRITES
+			,c.POOL_TEMP_XDA_P_READS -  l.POOL_TEMP_XDA_P_READS AS POOL_TEMP_XDA_P_READS
+			,c.POOL_TEMP_XDA_L_READS -  l.POOL_TEMP_XDA_L_READS AS POOL_TEMP_XDA_L_READS
+			,c.POOL_READ_TIME -  l.POOL_READ_TIME AS POOL_READ_TIME
+			,c.POOL_WRITE_TIME -  l.POOL_WRITE_TIME AS POOL_WRITE_TIME
+			,c.POOL_ASYNC_READ_TIME -  l.POOL_ASYNC_READ_TIME AS POOL_ASYNC_READ_TIME
+			,c.POOL_ASYNC_WRITE_TIME -  l.POOL_ASYNC_WRITE_TIME AS POOL_ASYNC_WRITE_TIME
+			,c.POOL_ASYNC_DATA_READ_REQS -  l.POOL_ASYNC_DATA_READ_REQS AS POOL_ASYNC_DATA_READ_REQS
+			,c.POOL_ASYNC_INDEX_READ_REQS -  l.POOL_ASYNC_INDEX_READ_REQS AS POOL_ASYNC_INDEX_READ_REQS
+			,c.POOL_ASYNC_XDA_READ_REQS -  l.POOL_ASYNC_XDA_READ_REQS AS POOL_ASYNC_XDA_READ_REQS
+			,c.POOL_NO_VICTIM_BUFFER -  l.POOL_NO_VICTIM_BUFFER AS POOL_NO_VICTIM_BUFFER
+			,c.POOL_LSN_GAP_CLNS -  l.POOL_LSN_GAP_CLNS AS POOL_LSN_GAP_CLNS
+			,c.POOL_DRTY_PG_STEAL_CLNS -  l.POOL_DRTY_PG_STEAL_CLNS AS POOL_DRTY_PG_STEAL_CLNS
+			,c.POOL_DRTY_PG_THRSH_CLNS -  l.POOL_DRTY_PG_THRSH_CLNS AS POOL_DRTY_PG_THRSH_CLNS
+			,c.PREFETCH_WAIT_TIME -  l.PREFETCH_WAIT_TIME AS PREFETCH_WAIT_TIME
+			,c.UNREAD_PREFETCH_PAGES -  l.UNREAD_PREFETCH_PAGES AS UNREAD_PREFETCH_PAGES
+			,c.DIRECT_READS -  l.DIRECT_READS AS DIRECT_READS
+			,c.DIRECT_WRITES -  l.DIRECT_WRITES AS DIRECT_WRITES
+			,c.DIRECT_READ_REQS -  l.DIRECT_READ_REQS AS DIRECT_READ_REQS
+			,c.DIRECT_WRITE_REQS -  l.DIRECT_WRITE_REQS AS DIRECT_WRITE_REQS
+			,c.DIRECT_READ_TIME -  l.DIRECT_READ_TIME AS DIRECT_READ_TIME
+			,c.DIRECT_WRITE_TIME -  l.DIRECT_WRITE_TIME AS DIRECT_WRITE_TIME
+			,c.FILES_CLOSED -  l.FILES_CLOSED AS FILES_CLOSED
+			,c.ELAPSED_EXEC_TIME_S -  l.ELAPSED_EXEC_TIME_S 
+			     + (c.ELAPSED_EXEC_TIME_MS -  l.ELAPSED_EXEC_TIME_MS)/1000000 AS ELAPSED_EXEC_TIME
+			,c.COMMIT_SQL_STMTS -  l.COMMIT_SQL_STMTS AS COMMIT_SQL_STMTS
+			,c.ROLLBACK_SQL_STMTS -  l.ROLLBACK_SQL_STMTS AS ROLLBACK_SQL_STMTS
+			,c.DYNAMIC_SQL_STMTS -  l.DYNAMIC_SQL_STMTS AS DYNAMIC_SQL_STMTS
+			,c.STATIC_SQL_STMTS -  l.STATIC_SQL_STMTS AS STATIC_SQL_STMTS
+			,c.FAILED_SQL_STMTS -  l.FAILED_SQL_STMTS AS FAILED_SQL_STMTS
+			,c.SELECT_SQL_STMTS -  l.SELECT_SQL_STMTS AS SELECT_SQL_STMTS
+			,c.UID_SQL_STMTS -  l.UID_SQL_STMTS AS UID_SQL_STMTS
+			,c.DDL_SQL_STMTS -  l.DDL_SQL_STMTS AS DDL_SQL_STMTS
+			,c.INT_AUTO_REBINDS -  l.INT_AUTO_REBINDS AS INT_AUTO_REBINDS
+			,c.INT_ROWS_DELETED -  l.INT_ROWS_DELETED AS INT_ROWS_DELETED
+			,c.INT_ROWS_INSERTED -  l.INT_ROWS_INSERTED AS INT_ROWS_INSERTED
+			,c.INT_ROWS_UPDATED -  l.INT_ROWS_UPDATED AS INT_ROWS_UPDATED
+			,c.INT_COMMITS -  l.INT_COMMITS AS INT_COMMITS
+			,c.INT_ROLLBACKS -  l.INT_ROLLBACKS AS INT_ROLLBACKS
+			,c.INT_DEADLOCK_ROLLBACKS -  l.INT_DEADLOCK_ROLLBACKS AS INT_DEADLOCK_ROLLBACKS
+			,c.ROWS_DELETED -  l.ROWS_DELETED AS ROWS_DELETED
+			,c.ROWS_INSERTED -  l.ROWS_INSERTED AS ROWS_INSERTED
+			,c.ROWS_UPDATED -  l.ROWS_UPDATED AS ROWS_UPDATED
+			,c.ROWS_SELECTED -  l.ROWS_SELECTED AS ROWS_SELECTED
+			,c.ROWS_READ -  l.ROWS_READ AS ROWS_READ
+			,c.BINDS_PRECOMPILES -  l.BINDS_PRECOMPILES AS BINDS_PRECOMPILES
+			,c.TOTAL_LOG_AVAILABLE
+			,c.TOTAL_LOG_USED
+			,c.SEC_LOG_USED_TOP
+			,c.TOT_LOG_USED_TOP
+			,c.SEC_LOGS_ALLOCATED
+			,c.LOG_READS -  l.LOG_READS AS LOG_READS
+			,  c.LOG_READ_TIME_S -  l.LOG_READ_TIME_S
+			 +(c.LOG_READ_TIME_NS -  l.LOG_READ_TIME_NS)/1000000000 AS LOG_READ_TIME
+			,c.LOG_WRITES -  l.LOG_WRITES AS LOG_WRITES
+			,  c.LOG_WRITE_TIME_S -  l.LOG_WRITE_TIME_S 
+			 +(c.LOG_WRITE_TIME_NS -  l.LOG_WRITE_TIME_NS)/1000000000 AS LOG_WRITE_TIME
+			,c.NUM_LOG_WRITE_IO -  l.NUM_LOG_WRITE_IO AS NUM_LOG_WRITE_IO
+			,c.NUM_LOG_READ_IO -  l.NUM_LOG_READ_IO AS NUM_LOG_READ_IO
+			,c.NUM_LOG_PART_PAGE_IO -  l.NUM_LOG_PART_PAGE_IO AS NUM_LOG_PART_PAGE_IO
+			,c.NUM_LOG_BUFFER_FULL -  l.NUM_LOG_BUFFER_FULL AS NUM_LOG_BUFFER_FULL
+			,c.NUM_LOG_DATA_FOUND_IN_BUFFER -  l.NUM_LOG_DATA_FOUND_IN_BUFFER AS NUM_LOG_DATA_FOUND_IN_BUFFER
+			,c.PKG_CACHE_LOOKUPS -  l.PKG_CACHE_LOOKUPS AS PKG_CACHE_LOOKUPS
+			,c.PKG_CACHE_INSERTS -  l.PKG_CACHE_INSERTS AS PKG_CACHE_INSERTS
+			,c.PKG_CACHE_NUM_OVERFLOWS -  l.PKG_CACHE_NUM_OVERFLOWS AS PKG_CACHE_NUM_OVERFLOWS
+			,c.PKG_CACHE_SIZE_TOP -  l.PKG_CACHE_SIZE_TOP AS PKG_CACHE_SIZE_TOP
+			,c.APPL_SECTION_LOOKUPS -  l.APPL_SECTION_LOOKUPS AS APPL_SECTION_LOOKUPS
+			,c.APPL_SECTION_INSERTS -  l.APPL_SECTION_INSERTS AS APPL_SECTION_INSERTS
+			,c.CAT_CACHE_LOOKUPS -  l.CAT_CACHE_LOOKUPS AS CAT_CACHE_LOOKUPS
+			,c.CAT_CACHE_INSERTS -  l.CAT_CACHE_INSERTS AS CAT_CACHE_INSERTS
+			,c.CAT_CACHE_OVERFLOWS -  l.CAT_CACHE_OVERFLOWS AS CAT_CACHE_OVERFLOWS
+			,c.CAT_CACHE_SIZE_TOP -  l.CAT_CACHE_SIZE_TOP AS CAT_CACHE_SIZE_TOP
+			,c.PRIV_WORKSPACE_SIZE_TOP -  l.PRIV_WORKSPACE_SIZE_TOP AS PRIV_WORKSPACE_SIZE_TOP
+			,c.PRIV_WORKSPACE_NUM_OVERFLOWS -  l.PRIV_WORKSPACE_NUM_OVERFLOWS AS PRIV_WORKSPACE_NUM_OVERFLOWS
+			,c.PRIV_WORKSPACE_SECTION_INSERTS -  l.PRIV_WORKSPACE_SECTION_INSERTS AS PRIV_WORKSPACE_SECTION_INSERTS
+			,c.PRIV_WORKSPACE_SECTION_LOOKUPS -  l.PRIV_WORKSPACE_SECTION_LOOKUPS AS PRIV_WORKSPACE_SECTION_LOOKUPS
+			,c.SHR_WORKSPACE_SIZE_TOP -  l.SHR_WORKSPACE_SIZE_TOP AS SHR_WORKSPACE_SIZE_TOP
+			,c.SHR_WORKSPACE_NUM_OVERFLOWS -  l.SHR_WORKSPACE_NUM_OVERFLOWS AS SHR_WORKSPACE_NUM_OVERFLOWS
+			,c.SHR_WORKSPACE_SECTION_INSERTS -  l.SHR_WORKSPACE_SECTION_INSERTS AS SHR_WORKSPACE_SECTION_INSERTS
+			,c.SHR_WORKSPACE_SECTION_LOOKUPS -  l.SHR_WORKSPACE_SECTION_LOOKUPS AS SHR_WORKSPACE_SECTION_LOOKUPS
+			,c.TOTAL_HASH_JOINS -  l.TOTAL_HASH_JOINS AS TOTAL_HASH_JOINS
+			,c.TOTAL_HASH_LOOPS -  l.TOTAL_HASH_LOOPS AS TOTAL_HASH_LOOPS
+			,c.HASH_JOIN_OVERFLOWS -  l.HASH_JOIN_OVERFLOWS AS HASH_JOIN_OVERFLOWS
+			,c.HASH_JOIN_SMALL_OVERFLOWS -  l.HASH_JOIN_SMALL_OVERFLOWS AS HASH_JOIN_SMALL_OVERFLOWS
+			,c.POST_SHRTHRESHOLD_HASH_JOINS -  l.POST_SHRTHRESHOLD_HASH_JOINS AS POST_SHRTHRESHOLD_HASH_JOINS
+			,c.ACTIVE_HASH_JOINS -  l.ACTIVE_HASH_JOINS AS ACTIVE_HASH_JOINS
+			,c.NUM_DB_STORAGE_PATHS -  l.NUM_DB_STORAGE_PATHS AS NUM_DB_STORAGE_PATHS
+			,c.DBPARTITIONNUM
+			,c.TOTAL_OLAP_FUNCS -  l.TOTAL_OLAP_FUNCS AS TOTAL_OLAP_FUNCS
+			,c.OLAP_FUNC_OVERFLOWS -  l.OLAP_FUNC_OVERFLOWS AS OLAP_FUNC_OVERFLOWS
+			,c.ACTIVE_OLAP_FUNCS -  l.ACTIVE_OLAP_FUNCS AS ACTIVE_OLAP_FUNCS
+			,c.STATS_CACHE_SIZE -  l.STATS_CACHE_SIZE AS STATS_CACHE_SIZE
+			,c.STATS_FABRICATIONS -  l.STATS_FABRICATIONS AS STATS_FABRICATIONS
+			,c.SYNC_RUNSTATS -  l.SYNC_RUNSTATS AS SYNC_RUNSTATS
+			,c.ASYNC_RUNSTATS -  l.ASYNC_RUNSTATS AS ASYNC_RUNSTATS
+			,c.STATS_FABRICATE_TIME -  l.STATS_FABRICATE_TIME AS STATS_FABRICATE_TIME
+			,c.SYNC_RUNSTATS_TIME -  l.SYNC_RUNSTATS_TIME AS SYNC_RUNSTATS_TIME
+			,c.NUM_THRESHOLD_VIOLATIONS -  l.NUM_THRESHOLD_VIOLATIONS AS NUM_THRESHOLD_VIOLATIONS
+			from (values((select max(SNAPSHOT_TIMESTAMP) from "s#db2mc".HIST_SNAPDB)
+					,(select max(SNAPSHOT_TIMESTAMP) from "s#db2mc".HIST_SNAPDB where SNAPSHOT_TIMESTAMP < (select max(SNAPSHOT_TIMESTAMP) from "s#db2mc".HIST_SNAPDB))
+					)) as t(current_ts,last_ts)
+			join "s#db2mc".HIST_SNAPDB  c 
+			  on c.SNAPSHOT_TIMESTAMP=t.current_ts
+			join "s#db2mc".HIST_SNAPDB  l 
+			  on l.SNAPSHOT_TIMESTAMP=t.last_ts
+			 and (c.DB_NAME,c.DBPARTITIONNUM)=(l.DB_NAME,l.DBPARTITIONNUM)
+			where (c.LAST_RESET is null or c.LAST_RESET<l.SNAPSHOT_TIMESTAMP )
+				and c.DB_CONN_TIME<l.SNAPSHOT_TIMESTAMP
+		';
+	prepare s1 from stmt;
+	execute s1;
+
+	set stmt = '
+	insert into "s#db2mc".hist_SNAP_GET_TAB (
+		 DB_NAME
+		,SNAPSHOT_TIMESTAMP
+		,TABSCHEMA
+		,TABNAME
+		,TAB_FILE_ID
+		,TAB_TYPE
+		,DATA_OBJECT_PAGES
+		,INDEX_OBJECT_PAGES
+		,LOB_OBJECT_PAGES
+		,LONG_OBJECT_PAGES
+		,XDA_OBJECT_PAGES
+		,ROWS_READ
+		,ROWS_WRITTEN
+		,OVERFLOW_ACCESSES
+		,PAGE_REORGS
+		,DBPARTITIONNUM
+		,TBSP_ID
+		,DATA_PARTITION_ID
+	)
+		select cast(? as varchar(128)) as DB_NAME
+		 ,SNAPSHOT_TIMESTAMP
+		 ,TABSCHEMA
+		 ,TABNAME
+		 ,TAB_FILE_ID
+		 ,TAB_TYPE
+		 ,DATA_OBJECT_PAGES
+		 ,INDEX_OBJECT_PAGES
+		 ,LOB_OBJECT_PAGES
+		 ,LONG_OBJECT_PAGES
+		 ,XDA_OBJECT_PAGES
+		 ,ROWS_READ
+		 ,ROWS_WRITTEN
+		 ,OVERFLOW_ACCESSES
+		 ,PAGE_REORGS
+		 ,coalesce(DBPARTITIONNUM,0)
+		 ,TBSP_ID
+		 ,DATA_PARTITION_ID
+		from TABLE(SNAP_GET_TAB_V91(cast(? as varchar(128)),-2)) AS T
+	';
+	prepare s1 from stmt;
+	set stmtDelta = '
+	insert into "s#db2mc".hist_SNAP_GET_TAB_DELTA (
+		 DB_NAME
+		,SNAPSHOT_TIMESTAMP
+		,period
+		,TABSCHEMA
+		,TABNAME
+		,TAB_FILE_ID
+		,TAB_TYPE
+		,DATA_OBJECT_PAGES
+		,INDEX_OBJECT_PAGES
+		,LOB_OBJECT_PAGES
+		,LONG_OBJECT_PAGES
+		,XDA_OBJECT_PAGES
+		,ROWS_READ
+		,ROWS_WRITTEN
+		,OVERFLOW_ACCESSES
+		,PAGE_REORGS
+		,DBPARTITIONNUM
+		,TBSP_ID
+		,DATA_PARTITION_ID
+		)
+		SELECT c.DB_NAME,c.SNAPSHOT_TIMESTAMP
+			,case when c.SNAPSHOT_TIMESTAMP < l.SNAPSHOT_TIMESTAMP + 8 hours 
+				then double(timestampdiff(1,char(c.SNAPSHOT_TIMESTAMP-l.SNAPSHOT_TIMESTAMP)))/1000000 
+				else double(timestampdiff(2,char(c.SNAPSHOT_TIMESTAMP-l.SNAPSHOT_TIMESTAMP)))
+				end as period 
+			,c.TABSCHEMA
+			,c.TABNAME
+			,c.TAB_FILE_ID
+			,c.TAB_TYPE
+			,c.DATA_OBJECT_PAGES-l.DATA_OBJECT_PAGES
+			,c.INDEX_OBJECT_PAGES-l.INDEX_OBJECT_PAGES
+			,c.LOB_OBJECT_PAGES-l.LOB_OBJECT_PAGES
+			,c.LONG_OBJECT_PAGES-l.LONG_OBJECT_PAGES
+			,c.XDA_OBJECT_PAGES-l.XDA_OBJECT_PAGES
+			,c.ROWS_READ-l.ROWS_READ
+			,c.ROWS_WRITTEN-l.ROWS_WRITTEN
+			,c.OVERFLOW_ACCESSES-l.OVERFLOW_ACCESSES
+			,c.PAGE_REORGS-l.PAGE_REORGS
+			,c.DBPARTITIONNUM
+			,c.TBSP_ID
+			,c.DATA_PARTITION_ID
+			from (values( cast(? as varchar(128))
+					,(select max(SNAPSHOT_TIMESTAMP) from "s#db2mc".hist_SNAP_GET_TAB where db_name=? )
+					,(select max(SNAPSHOT_TIMESTAMP) from "s#db2mc".hist_SNAP_GET_TAB dl where db_name=? and SNAPSHOT_TIMESTAMP < (select max(SNAPSHOT_TIMESTAMP) from "s#db2mc".hist_SNAP_GET_TAB dc where dl.db_name=dc.db_name))
+					)) as t(db_name,current_ts,last_ts)
+			join "s#db2mc".hist_SNAP_GET_TAB  c 
+			  on (c.SNAPSHOT_TIMESTAMP,c.db_name)=(t.current_ts,t.db_name)
+			join "s#db2mc".hist_SNAP_GET_TAB  l 
+			  on l.SNAPSHOT_TIMESTAMP=t.last_ts
+			  and (c.DB_NAME,c.TABSCHEMA,c.TABNAME,c.DBPARTITIONNUM)=(l.DB_NAME,l.TABSCHEMA,l.TABNAME,l.DBPARTITIONNUM)
+			where c.ROWS_READ>l.ROWS_READ
+			';
+	prepare sDelta from stmtDelta;
+
+	set stmt2 = '
+	insert into "s#db2mc".hist_lock_waits (
+	DB_NAME,SNAPSHOT_TIMESTAMP,TYPE,AGENT_ID,AGENT_ID_HOLDING_LK,STMT_TYPE,STMT_START,STMT_STOP,STMT_TEXT
+    )
+select cast(? as varchar(128)) as DB_NAME
+	,SNAPSHOT_TIMESTAMP,TYPE ,AGENT_ID ,AGENT_ID_HOLDING_LK ,STMT_TYPE ,STMT_START ,STMT_STOP ,STMT_TEXT 
+FROM table(select s.SNAPSHOT_TIMESTAMP
+	,type
+	,l.agent_id
+	,AGENT_ID_HOLDING_LK
+	,case when s.STMT_TEXT is null then ''Static'' else ''Dynamic'' end as stmt_type
+	,coalesce(STMT_TEXT
+		,(select TEXT from SYSIBM.SYSSTMT p
+			where (p.PLCREATOR,p.PLNAME,p.SECTNO)=(s.CREATOR,s.PACKAGE_NAME,s.SECTION_NUMBER)
+		)) as STMT_TEXT
+	,s.STMT_START
+	,s.STMT_STOP
+from (
+	select distinct 
+	  lock.type
+	 ,case lock.type when ''Waiting'' then AGENT_ID else AGENT_ID_HOLDING_LK end as agent_id
+	 ,case lock.type when ''Waiting'' then AGENT_ID_HOLDING_LK end as AGENT_ID_HOLDING_LK
+	from SYSIBMADM.SNAPLOCKwait
+		,(values(''Holder''),(''Waiting'')) as lock(type)
+	) as l
+	,SYSIBMADM.SNAPSTMT s
+where l.agent_id=s.agent_id) as lockActiveSQL
+			';
+	prepare sLock from stmt2;
+
+	for databases as database_cursor cursor with hold for
+		select s.DB_NAME from table(SNAP_GET_DB(cast(null as varchar(128)),0)) as s
+	do
+		execute s1 using DB_NAME,DB_NAME ;
+		commit;
+		execute sDelta using DB_NAME,DB_NAME,DB_NAME;
+		commit;
+	end for;
+-- need to put a loop in for other database using federated
+	execute sLock using database;
+	commit;
+end
+]]>
+						</value>
+					</parameter>
+					<parameter name="SQL[29]" type="fixed">
+						<value>call ADMIN_TASK_ADD('db2mc History Collection'
+							,cast(NULL as TIMESTAMP)
+							,cast(NULL as TIMESTAMP)
+							,cast(NULL as INTEGER)
+							,'* * * * *' 
+							,'s#db2mc'
+							,'gatherStatistics'
+							,cast(null as CLOB(100))
+							,cast(null as VARCHAR(512))
+							,'')
+						</value>
+					</parameter>
+					<parameter name="SQL[30]" type="fixed">
+						<value>
+<![CDATA[
+CREATE PROCEDURE "s#db2mc"."pruneStatistics" (
+	  in work_Tables_Retain_Days int
+	 ,in data_Retain_Days int 
+	 )
+  SPECIFIC "s#db2mc.pruneStatistics"
+  DYNAMIC RESULT SETS 0
+  LANGUAGE SQL
+begin
+--/******************************************************************************	
+--  Author: Peter Prib
+--  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2009 All rights reserved.
+--
+--  Licensed under the Apache License, Version 2.0 (the "License");
+--  you may not use this file except in compliance with the License.
+--  You may obtain a copy of the License at
+--
+--      http://www.apache.org/licenses/LICENSE-2.0
+--
+--  Unless required by applicable law or agreed to in writing, software
+--  distributed under the License is distributed on an "AS IS" BASIS,
+--  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+--  See the License for the specific language governing permissions and
+--  limitations under the License.
+--******************************************************************************/
+	DECLARE stmt varchar(4000);
+	DECLARE CONTINUE HANDLER FOR not found begin end;
+
+-- deliberate use of dynamic SQL to avoid rebinding
+	
+	set stmt = 'delete from "s#db2mc".hist_SNAPDBM where  SNAPSHOT_TIMESTAMP < current timestamp - '||char(coalesce(work_Tables_Retain_Days,2))||' days';
+	prepare s1 from stmt;
+	execute s1;
+	commit;
+	set stmt = 'delete from "s#db2mc".hist_SNAPDB where  SNAPSHOT_TIMESTAMP < current timestamp - '||char(coalesce(work_Tables_Retain_Days,2))||'  days';
+	prepare s1 from stmt;
+	execute s1;
+	commit;
+	set stmt = 'delete from "s#db2mc".hist_SNAPBP where  SNAPSHOT_TIMESTAMP < current timestamp - '||char(coalesce(work_Tables_Retain_Days,2))||'  days';
+	prepare s1 from stmt;
+	execute s1;
+	commit;
+	set stmt = 'delete from "s#db2mc".hist_env_sys_resources where  sample_ts < current timestamp - '||char(coalesce(data_Retain_Days,9999))||'  days';
+	prepare s1 from stmt;
+	execute s1;
+	commit;
+	set stmt = 'delete from "s#db2mc".hist_DBP_MEM_USAGE where  sample_ts < current timestamp - '||char(coalesce(data_Retain_Days,9999))||'  days';
+	prepare s1 from stmt;
+	execute s1;
+	commit;
+	set stmt = 'delete from "s#db2mc".hist_snapDBmem where  SNAPSHOT_TIMESTAMP < current timestamp - '||char(coalesce(data_Retain_Days,9999))||'  days';
+	prepare s1 from stmt;
+	execute s1;
+	commit;
+	set stmt = 'delete from "s#db2mc".hist_LOG_UTILIZATION where  sample_ts < current timestamp - '||char(coalesce(data_Retain_Days,9999))||'  days';
+	prepare s1 from stmt;
+	execute s1;
+	commit;
+	set stmt = 'delete from "s#db2mc".hist_SNAPDBM_delta where  SNAPSHOT_TIMESTAMP < current timestamp - '||char(coalesce(data_Retain_Days,9999))||'  days';
+	prepare s1 from stmt;
+	execute s1;
+	commit;
+	set stmt = 'delete from "s#db2mc".hist_SNAPDB_delta where  SNAPSHOT_TIMESTAMP < current timestamp - '||char(coalesce(data_Retain_Days,9999))||'  days';
+	prepare s1 from stmt;
+	execute s1;
+	commit;
+	set stmt = 'delete from "s#db2mc".hist_SNAPBP_delta where  SNAPSHOT_TIMESTAMP < current timestamp - '||char(coalesce(data_Retain_Days,9999))||'  days';
+	prepare s1 from stmt;
+	execute s1;
+	commit;
+	set stmt = 'delete from "s#db2mc".hist_snapHADR where  SNAPSHOT_TIMESTAMP < current timestamp - '||char(coalesce(data_Retain_Days,9999))||'  days';
+	prepare s1 from stmt;
+	execute s1;
+	set stmt = 'delete from "s#db2mc".hist_SNAP_GET_TAB where  SNAPSHOT_TIMESTAMP < current timestamp - '||char(coalesce(work_Tables_Retain_Days,2))||' days';
+	prepare s1 from stmt;
+	execute s1;
+	commit;
+	set stmt = 'delete from "s#db2mc".hist_SNAP_GET_TAB_delta where  SNAPSHOT_TIMESTAMP < current timestamp - '||char(coalesce(data_Retain_Days,9999))||'  days';
+	prepare s1 from stmt;
+	execute s1;
+	commit;
+	set stmt = 'delete from "s#db2mc".hist_hist_lock_waits where  SNAPSHOT_TIMESTAMP < current timestamp - '||char(coalesce(data_Retain_Days,9999))||'  days';
+	prepare s1 from stmt;
+	execute s1;
+	commit;
+end
+]]>
+						</value>
+					</parameter>
+					<parameter name="SQL[31]" type="fixed">
+						<value>call ADMIN_TASK_ADD('db2mc History Prune'
+							,cast(NULL as TIMESTAMP)
+							,cast(NULL as TIMESTAMP)
+							,cast(NULL as INTEGER)
+							,'10 6 * * *' 
+							,'s#db2mc'
+							,'pruneStatistics'
+							,cast('values(2,null)' as CLOB(100))
+							,cast(null as VARCHAR(512))
+							,'')
+						</value>
+					</parameter>
+					<parameter name="parameter[TABLESPACE]" type="blockValue">
+						<value>TABLESPACE</value>
+					</parameter>
+				</parameterList>
+				<if condition="true" negCondition="true">
+					<task>
+						<assignSharedConstant name="STMTRun" type="returnObject">
+							<value>setup.returnValue.STMTRun</value>
+						</assignSharedConstant>
+						<assignSharedConstant name="STMT" type="returnObject">
+							<value>setup.returnValue.STMT</value>
+						</assignSharedConstant>
+						<assignSharedConstant name="STMTMSG" type="returnObject">
+							<value>setup.returnValue.STMTMSG</value>
+						</assignSharedConstant>
+						<alert>Failed to setup db2mc Monitors, statement ?STMTRun? 
+						
+						?STMTMSG?
+						
+						?STMT?
+						</alert>
+					</task>
+				</if>
+				<if condition="true">
+					<task>
+						<alert>Setup DB2mc Monitors completed successfully</alert>
+					</task>
+				</if>
+			</action>
+		</task>
+	</if>
+</actionScript>

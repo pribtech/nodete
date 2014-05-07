@@ -1,0 +1,34 @@
+<H2>Scenario</H2><HR>
+<p class="sourceChange">
+<b>After the successful registration of customers, company decides to create an application
+to send automatic updates of a product to registered customer. The application developer uses 
+column name as <b>CUSTOMER_TYPE</b> instead of <B>TYPE</B> in the SQL statements.
+Because of the mismatch in column name in the database table and the application, 
+application will not run. </b>
+</p>
+
+<BR><H2>Problem</H2><HR>
+<p>
+As the occurrences of CUSTOMER_TYPE column in the application is high
+the DBA has to rename the customer table column <b>TYPE</b> column to CUSTOMER_TYPE to get the 
+application working. 
+</p>
+
+<BR><H2>Solution</H2><HR>
+<p>
+	To solve the above problem, DB2 9.7 offers <a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v9r7/topic/com.ibm.db2.luw.admin.dbobj.doc/doc/t0020130.html');"><b>RENAME COLUMN</b></a> option
+	in the ALTER TABLE command.	DBA performs below steps to accommodate this requirement.
+	
+	<ol>
+	<li class="sourceCopiedFrom">Rename column using <b>RENAME COLUMN</b> option in <b>ALTER TABLE </b> command.</li><br>
+	<li class="sourceCopiedFrom">Check the new definition of table from <b>syscat.columns</b>.</li><br>
+	<li class="sourceCopiedFrom">Fetch the rows from customer table using <b>SELECT</b> command.</li><br>
+	</ol>
+</p>
+
+<BR><H2>Output</H2><HR>
+<p>
+	After running the SQL scripts on the right pane, <br><SPAN style="BACKGROUND-COLOR: #ffff00">Result tab 2 of 3</SPAN>shows a column <b class="sourceCopiedFrom">TYPE</b> 
+	renamed to <b class="sourceCopiedFrom">CUSTOMER_TYPE</b> in the base table CUSTOMER.</br><br><br>
+	
+<img src="?BASE_DIRECTORY?HTML/RenameColumn.PNG"/>

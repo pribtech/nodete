@@ -1,0 +1,13 @@
+<H2>Results<HR></H2>
+<BR>
+<font color=grey>The database administrator looks at the monitoring report generated here, to check, if the statements 
+which were expensive are performing as expected now.</font><BR><BR>
+The database administrator monitors the metrics again and finds
+<BR>
+<ul>
+<li><B>ROWS_READ/ROWS_RETURNED :</B> Is normal / as expected now.</li>
+<li><B>Total sorts and other sort metrics :</B> Is normal.</li>
+</ul>
+<BR>
+<font color=grey><B>The evidence suggests that the statements which were slow earlier, due to 
+scanning table rows rather than using an index, perform as expected with "index scans" taking place.</b></font>

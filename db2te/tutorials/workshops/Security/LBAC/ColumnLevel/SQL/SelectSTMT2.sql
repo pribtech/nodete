@@ -1,0 +1,1 @@
+SELECT * FROM ?SCHEMA?.credit_card

@@ -1,0 +1,14 @@
+<p>This tutorial demonstrates how you can customize the Technology Explorer for IBM DB2 (TE). 
+There are probably numerous queries you run on a regular basis and tables that you explore either 
+from the command line or the Control Center. In this lab you will quickly extend an existing Technology Explorer page to explore table dependencies. 
+</p>
+<p>
+Views and materialized query tables (MQTs) depend on the existence and privileges of other objects.
+If you drop or alter one of those objects it can affect the state of the views or MQTs that depend on them. 
+</p>
+<p>	
+Table dependencies can be found in the system catalog table 'SYSCAT.TABDEP'.
+Each row represents a dependency of a view or a materialized query table on some other object. 
+The view or materialized query table depends on the object of type 'BTYPE' of name 'BNAME', 
+so a change to the object affects the view or materialized query table. 
+</p>

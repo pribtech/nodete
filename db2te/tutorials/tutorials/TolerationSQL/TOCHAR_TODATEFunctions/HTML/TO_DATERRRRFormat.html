@@ -1,0 +1,23 @@
+The RR/RRRR format <a onclick="OpenURLInFloatingWindow
+('http://publib.boulder.ibm.com/infocenter/db2luw/v9r7/topic/com.ibm.db2.luw.sql.ref.doc/doc/r0007107.html?noframes=true');"> (see section on RR/RRRR format within TIMESTAMP_FORMAT scalar function page)</a>
+   works slightly differently than YY/YYYY. 
+  The RR and RRRR format elements can be used to alter how a specification
+  for a year is to be interpreted by adjusting the value to produce a 2-digit 
+  value or a 4-digit value depending on the leftmost two digits of the 
+  current year according to the following rules: 
+  <p>
+<table>
+<tr><td><b>First two digits of the current year (ZZ)</b> </td><td><b>Last two digits of the current year (XX)</b></td><td><b>Two-digit year in string-expression (YY)</b></td><td><b>Resulting year</b></td></tr>
+<tr><td>0-99</td><td>0-50</td><td>0-49</td><td>ZZYY</td></tr>
+<tr><td>0-99</td><td>51-99</td><td>0-49</td><td>(ZZ+1)YY</td></tr>
+<tr><td>0-99</td><td>0-50</td><td>50-99</td><td>(ZZ-1)YY</td></tr>
+<tr><td>0-99</td><td>51-99</td><td>50-99</td><td>ZZYY</td></tr>
+</table>
+<p>
+<b>Examples:</b>
+<br/> For the current year being ZZXX and a string-expression year of YY:
+  <ul>
+  <li>If the current year is 2010, ZZ=20 and XX=10.  If YY=59, the resulting year is 1959.</li>
+  <li>If the current year is 2051, ZZ=20 and XX=10.  If YY=59, the resulting year is 2051.</li>
+  <li>If the current year is 2010, ZZ=20 and XX=10.  If YY=49, the resulting year is 2149.</li>
+  </ul>

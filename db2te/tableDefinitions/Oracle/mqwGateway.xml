@@ -1,0 +1,234 @@
+<!--
+  Peter Prib, Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2012 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<table name="mgwGateway">
+	<sqlName>MGW_GATEWAY</sqlName>
+	<singularName>MQW Gateway</singularName>
+	<pluralName>MQW Gateways</pluralName>
+	<description></description>
+	<disable_edit/>
+	<output>
+		<type name="DDL" destination="" title="" generator=""/>
+	</output>
+	<orderBy name="AGENT_NAME" direction="A"/>
+	<displayColumns>
+		<col type="column" name="AGENT_NAME"/>
+		<col type="column" name="AGENT_STATUS"/>
+		<col type="column" name="AGENT_PING"/>
+		<col type="column" name="AGENT_JOB"/>
+		<col type="column" name="AGENT_USER"/>
+		<col type="column" name="AGENT_DATABASE"/>
+		<col type="column" name="LAST_ERROR_DATE"/>
+		<col type="column" name="LAST_ERROR_TIME"/>
+		<col type="column" name="LAST_ERROR_MSG"/>
+		<col type="column" name="MAX_CONNECTIONS"/>
+		<col type="column" name="MAX_MEMORY"/>
+		<col type="column" name="MAX_THREADS"/>
+		<col type="column" name="AGENT_INSTANCE"/>
+		<col type="column" name="AGENT_START_TIME"/>
+		<col type="column" name="CONNTYPE"/>
+		<col type="column" name="SERVICE"/>
+		<col type="column" name="INITFILE"/>
+		<col type="column" name="COMMENTS"/>
+	</displayColumns>
+	<column name="AGENT_STATUS">
+		<sqlName>AGENT_STATUS</sqlName>
+		<title>Agent Status</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="AGENT_PING">
+		<sqlName>AGENT_PING</sqlName>
+		<title>Agent Ping</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="AGENT_JOB">
+		<sqlName>AGENT_JOB</sqlName>
+		<title>Agent Job</title>
+		<type>n</type>
+	</column>
+	<column name="AGENT_USER">
+		<sqlName>AGENT_USER</sqlName>
+		<title>Agent User</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="AGENT_DATABASE">
+		<sqlName>AGENT_DATABASE</sqlName>
+		<title>Agent Database</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="LAST_ERROR_DATE">
+		<sqlName>LAST_ERROR_DATE</sqlName>
+		<title>Last Error Date</title>
+		<type>n</type>
+		<drillEnable/>
+	</column>
+	<column name="LAST_ERROR_TIME">
+		<sqlName>LAST_ERROR_TIME</sqlName>
+		<title>Last Error Time</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="LAST_ERROR_MSG">
+		<sqlName>LAST_ERROR_MSG</sqlName>
+		<title>Last Error Msg</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="MAX_CONNECTIONS">
+		<sqlName>MAX_CONNECTIONS</sqlName>
+		<title>Max Connections</title>
+		<type>n</type>
+	</column>
+	<column name="MAX_MEMORY">
+		<sqlName>MAX_MEMORY</sqlName>
+		<title>Max Memory (MB)</title>
+		<type>n</type>
+	</column>
+	<column name="MAX_THREADS">
+		<sqlName>MAX_THREADS</sqlName>
+		<title>Max Threads</title>
+		<type>n</type>
+	</column>
+	<column name="AGENT_INSTANCE">
+		<sqlName>AGENT_INSTANCE</sqlName>
+		<title>Agent Instance</title>
+		<type>n</type>
+	</column>
+	<column name="AGENT_START_TIME">
+		<sqlName>AGENT_START_TIME</sqlName>
+		<title>Agent Start Time</title>
+		<type>n</type>
+	</column>
+	<column name="CONNTYPE">
+		<sqlName>CONNTYPE</sqlName>
+		<title>Conntype</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="AGENT_NAME">
+		<sqlName>AGENT_NAME</sqlName>
+		<title>Agent Name</title>
+		<type>s</type>
+		<primaryKey/>
+	</column>
+	<column name="SERVICE">
+		<sqlName>SERVICE</sqlName>
+		<title>Service</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="INITFILE">
+		<sqlName>INITFILE</sqlName>
+		<title>Initfile</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="COMMENTS">
+		<sqlName>COMMENTS</sqlName>
+		<title>Comments</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<action name="start">
+		<title>Start</title>
+		<icon>images/trash.gif</icon>   
+    	<actionScript>
+    		<task>
+				<assignSharedConstant name="sql" type="fixed">
+					<value>
+<![CDATA[
+begin
+   dbms_mgwadm.startup;
+end;
+]]>
+					</value>
+				</assignSharedConstant>
+		   		<callGlobalAction name="sqlExecution"/>
+	   		</task>
+    	</actionScript>
+    </action> 
+	<action name="shutdown">
+		<title>Shutdown</title>
+		<icon>images/trash.gif</icon>   
+    	<actionScript>
+    		<task>
+				<assignSharedConstant name="sql" type="fixed">
+					<value>
+<![CDATA[
+begin
+  dbms_mgwadm.shutdown;
+end;
+]]>
+					</value>
+				</assignSharedConstant>
+		   		<callGlobalAction name="sqlExecution"/>
+	   		</task>
+    	</actionScript>
+    </action>
+	<action name="shutdownImmediate">
+		<title>Shutdown Immediate</title>
+		<icon>images/trash.gif</icon>   
+    	<actionScript>
+    		<task>
+				<assignSharedConstant name="sql" type="fixed">
+					<value>
+<![CDATA[
+begin
+  dbms_mgwadm.shutdown(DBMS_MGWADM.SHUTDOWN_IMMEDIATE );
+end;
+]]>
+					</value>
+				</assignSharedConstant>
+		   		<callGlobalAction name="sqlExecution"/>
+	   		</task>
+    	</actionScript>
+    </action>
+	<action name="Alter">
+		<title>Alter</title>
+		<icon>images/trash.gif</icon>   
+    	<actionScript>
+    		<task>
+				<assignSharedConstant name="sql" type="fixed">
+					<value>
+<![CDATA[
+begin
+  DBMS_MGWADM.ALTER_AGENT (
+   	  ?newMAX_CONNECTIONS? -- max_connections  IN BINARY_INTEGER  DEFAULT NULL
+   	, ?newMAX_MEMORY?      -- max_memory       IN BINARY_INTEGER  DEFAULT NULL
+   	);
+end;
+]]>
+					</value>
+				</assignSharedConstant>
+				<assignSharedConstant name="form" type="fixed">
+					<value>
+<![CDATA[
+<table>
+<tr><td>max connections</td><td><input type="text" size="8" id="newMAX_CONNECTIONS" name="newMAX_CONNECTIONS" value="?MAX_CONNECTIONS?"/></td></tr>
+<tr><td>max memory (MB)</td><td><input type="text" size="8" id="newMAX_MEMORY" name="newMAX_MEMORY" value="?MAX_MEMORY?"/></td></tr>
+</table>
+<note>Need to recycle Gateway to take effect</note>
+]]>
+					</value>
+				</assignSharedConstant>
+		   		<callGlobalAction name="sqlExecutionForm"/>
+	   		</task>
+    	</actionScript>
+    </action>
+</table>

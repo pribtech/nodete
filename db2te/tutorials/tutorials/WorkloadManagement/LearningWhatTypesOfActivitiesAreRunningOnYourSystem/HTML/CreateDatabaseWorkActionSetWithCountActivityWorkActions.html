@@ -1,0 +1,28 @@
+<p>To count the number of times an activity of a specific type has been
+  run over a period of time, a work action set needs to be created. In
+  this example, because we are interested in the activities that are run
+  on the entire system, the work action set will be created at the
+  database level and is associated with the all_class_types work class set
+  created by the first SQL statement (for more detail about work class sets, 
+  please refer to the 'Differentiation Activities by Activity Type' tutorial 
+  of this workshop).  If you've already run other tutorials in this 
+  workshop, this work class set may already have been created.  </p>
+  <p>This work class set contains
+  work classes for all types of recognized activities. If we were only
+  interested in the activities being run in a specific service class, we
+  would create a work action set at the service class level. For this
+  example, we are also interested in the information for all types of
+  activities so that the work action set contains a COUNT ACTIVITY work
+  action for each work class in the all_class_types work class set.</p>
+  <p>
+  Additional information: Each time an activity corresponding to a work
+  class has one or more work actions applied to it, a counter for the
+  work class is incremented by one. The COUNT ACTIVITY work action
+  provides an efficient way to ensure that the counter is updated. If no
+  work action is applied to an activity corresponding to a work class,
+  the work class is treated as though it does not exist, no activity is
+  associated with it, and the counter will not be incremented. If you do
+  not want to perform any other action on an activity other than
+  counting the number of activities of that type that have been run, the
+  COUNT ACTIVITY work action is the best approach.
+  </p>

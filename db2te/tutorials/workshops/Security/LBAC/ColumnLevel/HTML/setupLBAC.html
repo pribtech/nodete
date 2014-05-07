@@ -1,0 +1,23 @@
+<br><h2>Set up Column Level LBAC</h2><hr><br>
+<p><b>You must log into the database as Pat before proceeding with this page.</b></p>
+
+SECADM Pat has created the LBAC policies, he now needs to grant them to appropriate users so that specific columns of <font face="courier">'credit_card'</font> table can only be accessed according to the policy.</p>
+
+<br><br><h4>Operation</h4><br>
+
+<p>SECADM Pat grants security labels to users and associates security labels to the columns of the <font face="courier">'credit_card'</font> table.
+Using the GRANT SECURITY LABEL command, SECADM grants security labels to roles with READ and/or WRITE access.</p>
+
+<h4>Solution</h4><br>
+<p>The query results on the right pane show that Pat <br>
+<ul>
+<li> Grants security label TOP_SECRET to role Mgr. In previous pages, Mgr role is granted to Joe. Hence Joe gets SELECT, INSERT, UPDATE and DELETE privileges on <font face="courier">'credit_card'</font> table. </li>
+<li>Grants security label SECRET to role custService with WRITE ACCESS only. In previous pages, custService role is granted to Bob. Hence Bob gets SELECT, INSERT, and UPDATE privileges.</li>
+<li>Associate security label TOP_SECRET to 'card_number' column of <font face="courier">'credit_card'</font> table.</li>
+<li>Associate security label SECRET to all other columns of <font face="courier">'credit_card'</font> table.</li></ul>
+</p>
+
+<p>Now the column level LBAC is defined on <font face="courier">'credit_card'</font> table.
+
+<br><br>When a user tries to access <font face="courier">'credit_card'</font> table data, DB2 compares the user's security label with the row's security label. Access will be given to the user only if the security labels match. Otherwise an empty result set will be returned.
+</p>

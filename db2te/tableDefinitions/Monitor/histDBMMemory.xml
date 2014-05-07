@@ -1,0 +1,87 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2009 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+
+<table name="histDBMMemory">
+	<sql_name>histInstanceMemory</sql_name>
+	<singular_name>Instance Memory</singular_name>
+	<plural_name>Instance Memory History</plural_name>
+	<messages><SQL0204N>Not installed. Please install "DB2TE add monitoring tables V95" in Tools-> Installed Components</SQL0204N></messages>
+	<inlinequery>
+<![CDATA[
+SELECT h.*
+FROM "s#db2mc".hist_DBP_MEM_USAGE h
+,(select case when upper(startTs) = 'CURRENT' then current timestamp else timestamp(startTs) end as startTS 
+	,duration
+	from (values(cast('?' as varchar(26)),cast(? as int))) as timePeriod(startTs,duration)
+ ) as period
+where SAMPLE_TS between period.startTS - period.duration hours	and period.startTS 
+]]>
+	</inlinequery>
+	<parameters>
+		<parm name="start">
+			<title>Start</title>
+			<value>current</value>
+			<type>timestamp</type>
+		</parm>
+		<parm name="Period">
+			<title>Period (hours)</title>
+			<value>3</value>
+			<type>n</type>
+		</parm>
+	</parameters>
+	<description></description>
+	<rows_per_page>50</rows_per_page>
+	<order_by_index name="SAMPLE_TS" direction="D"/>
+	<display_columns>
+		<col type="column" name="SAMPLE_TS"/>
+		<col type="column" name="DBPARTITIONNUM"/>
+		<col type="column" name="MAX_PARTITION_MEM"/>
+		<col type="column" name="CURRENT_PARTITION_MEM"/>
+		<col type="column" name="PEAK_PARTITION_MEM"/>
+	</display_columns>
+	<column name="SAMPLE_TS">
+		<c_sql_name>SAMPLE_TS</c_sql_name>
+		<c_title>Time</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="DBPARTITIONNUM">
+		<c_sql_name>DBPARTITIONNUM</c_sql_name>
+		<c_title>Partition</c_title>
+		<c_presentation>s</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="MAX_PARTITION_MEM">
+		<c_sql_name>MAX_PARTITION_MEM</c_sql_name>
+		<c_title>Max Allowed</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="CURRENT_PARTITION_MEM">
+		<c_sql_name>CURRENT_PARTITION_MEM</c_sql_name>
+		<c_title>Current</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="PEAK_PARTITION_MEM">
+		<c_sql_name>PEAK_PARTITION_MEM</c_sql_name>
+		<c_title>Peak</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+</table>

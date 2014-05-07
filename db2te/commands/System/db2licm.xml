@@ -1,0 +1,136 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2009 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<command name="db2licm" title="db2licm">
+<![CDATA[
+>>-db2licm--+-----------------------------------------+--------><
+            +- -a--filename---------------------------+   
+            +- -e--product-identifier--+-HARD-+-------+   
+            |                          '-SOFT-'       |   
+            +- -p--product-identifier--+-CONCURRENT-+-+   
+            |                          '-OFF--------' |   
+            +- -r--product-identifier-----------------+   
+            +- -u--product-identifier--num-users------+   
+            +- -c--product-identifier--num-connectors-+   
+            +- -g--filename---------------------------+   
+            +- -x-------------------------------------+   
+            +- -l--+-------------+--------------------+   
+            |      '-SHOW DETAIL-'                    |   
+            +- -v-------------------------------------+   
+            '-+- -h-+---------------------------------'   
+              '- -?-'                                     
+]]>
+	<text>db2licm</text>
+	<select>
+		<option default="true"><note>help</note></option> 
+		<option help="-a">
+			<text>-a</text>
+			<clauseReference name="file-name"/>
+			<select>
+				<option default="true"><text>HARD</text></option>
+				<option><text>SOFT</text></option>
+	 		</select>
+		</option> 
+		<option help="-e"><text>-e</text><input size="36" title="product identifier"/></option> 
+		<option help="-p">>
+			<text>-p</text><input size="36" title="product identifier"/>
+ 			<select>
+				<option default="true"><text>CONCURRENT</text></option>
+				<option><text>OFF</text></option>
+	 		</select>
+		</option> 
+		<option help="-r">><text>-r</text><input size="36" title="product identifier"/></option> 
+		<option help="-u">><text>-u</text><input size="36" title="product identifier"/><input type="int" size="4" title="num users"/></option> 
+		<option help="-c">><text>-c</text><input size="36" title="product identifier"/><input type="int" size="4" title="num connectors"/></option> 
+		<option help="-g">><text>-g</text><clauseReference name="file-name"/></option> 
+		<option help="-x">><text>-x</text></option> 
+		<option help="-l">
+			<text>-l</text>
+ 			<select>
+				<option default="true"></option>
+				<option><text>SHOW DETAIL</text></option>
+	 		</select>
+		</option> 
+		<option help="-v">><text>-v</text></option>
+		<option help="-h">
+ 			<select>
+				<option default="true"><text>-h</text></option>
+				<option><text>-?</text></option>
+	 		</select>
+	 	</option>
+ 	</select>
+	<help name='-a'>
+    Adds a license for a product. Specify a file name containing valid license information. This can be obtained from your licensed product CD or by contacting your IBM representative or authorized dealer. 
+	</help>	
+	<help name='-c'>
+    Updates the number of connector entitlements that have been purchased. Specify the product identifier and the number of connector entitlements.
+	</help>	
+	<help name='-e'>
+	<![CDATA[
+    Updates the enforcement policy on the system. Valid values are:
+	<table><tr>
+    <td>HARD</td>
+        <td>Specifies that unlicensed requests will not be allowed.</td> 
+	<tr></tr>
+    <td>SOFT</td>
+        <td>Specifies that unlicensed requests will be logged but not restricted.</td>
+	</tr></table>
+	]]>
+	</help>
+	<help name='-g'>
+    Generates compliance report. Specify file name where output is to be stored.
+	</help>
+	<help name='-h'>
+    Displays help information. When this option is specified, all other options are ignored, and only the help information is displayed.
+	</help>
+	<help name='-l'>
+	<![CDATA[
+    Lists all the products with available license information, including the product identifier.
+	<table><tr>
+    <td>SHOW DETAIL</td>
+        <td>Specify to view detailed information about licensed features (if any).</td>
+	</tr></table>
+	]]>
+	</help>
+	<help name='-p'>
+	<![CDATA[
+    Updates the license policy type to use on the system.
+	<table><tr>
+    <td>CONCURRENT</td>
+        <td>Specify for concurrent user policy.</td>
+	<tr></tr>
+    <td>OFF</td>
+        <td>Specify to turn off all policies.</td>
+	</tr></table>
+	]]>
+	</help>
+	<help name='-r'>
+    Removes the license for a product. To get the product identifier for a specific product, invoke the command with the -l option.
+	</help>
+	<help name='-u'>
+    Updates the number of user licenses that the customer has purchased. Specify the product identifier and the number of users.
+	</help>
+	<help name='-v'>
+    Displays version information.
+	</help>
+	<help name='-x'>
+    Resets license compliance information for the purposes of license compliance report. 
+	</help>
+ 	
+</command>
+        
+

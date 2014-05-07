@@ -1,0 +1,62 @@
+<!--
+  Author: Peter Prib
+  
+  Copyright Independent Systems Integrators Pty Ltd 2008 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+<table name="stmgDBSizeInfo">
+	<sql_name>SYSTOOLS.STMG_DBSIZE_INFO</sql_name>
+	<singular_name>Database Size</singular_name>
+	<plural_name>Database Size</plural_name>
+	<description />
+	<messages>
+		<SQL0204N> Not installed. Please install "Storage Management Object" in Tools-> Installed Components </SQL0204N>
+	</messages>
+	<rows_per_page>50</rows_per_page>
+	<order_by_index />
+	<display_columns>
+		<col type="reference" name="stmgTablespaces"/>
+		<col type="column" name="db_size" />
+		<col type="column" name="db_capacity" />
+		<col type="column" name="snapshot_timestamp" />
+	</display_columns>
+	<disable_edit/>
+	<reference name="stmgTablespaces">
+		<c_title>Tablespace</c_title>
+		<reftype>table</reftype>
+		<refvalue>StorageManagement/stmgTablespace</refvalue>
+		<icon>images/icon-tbs.gif</icon>
+	</reference>
+	<column name="snapshot_timestamp">
+		<c_sql_name>SNAPSHOT_TIMESTAMP</c_sql_name>
+		<c_title>Timestamp</c_title>
+		<c_presentation>s</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="db_size">
+		<c_sql_name>DB_SIZE</c_sql_name>
+		<c_title>Size (actual)</c_title>
+		<c_presentation>n</c_presentation>
+		<formatNumber separator="," prependAbbreviated="4"/> 
+		<c_drill>n</c_drill>
+	</column>
+	<column name="db_capacity">
+		<c_sql_name>DB_CAPACITY</c_sql_name>
+		<c_title>Capacity</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+		<formatNumber separator="," prependAbbreviated="4"/> 
+	</column>
+</table>

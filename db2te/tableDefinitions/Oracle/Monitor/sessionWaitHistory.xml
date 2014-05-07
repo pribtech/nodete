@@ -1,0 +1,119 @@
+<!--
+  Peter Prib, Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2012 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<table name="sessionWaitHistory">
+	<sqlName>v$session_wait_history</sqlName>
+	<singularName>Session Wait History</singularName>
+	<pluralName>Sessions Waits History</pluralName>
+	<description></description>
+	<disable_edit/>
+	<output>
+		<type name="DDL" destination="" title="" generator=""/>
+	</output>
+	<orderBy name="WAIT_TIME_MICRO" direction="D"/> 
+	<displayColumns>
+		<col type="column" name="SID"/>
+		<col type="reference" name="session"/>
+		<col type="column" name="SEQ#"/>
+		<col type="column" name="EVENT#"/>
+		<col type="column" name="EVENT"/>
+		<col type="column" name="WAIT_TIME_MICRO"/>
+		<col type="column" name="P1TEXT"/>
+		<col type="column" name="P1"/>
+		<col type="column" name="P2TEXT"/>
+		<col type="column" name="P2"/>
+		<col type="column" name="P3TEXT"/>
+		<col type="column" name="P3"/>
+		<col type="column" name="TIME_SINCE_LAST_WAIT_MICRO"/>
+	</displayColumns>
+	<reference name="session">
+		<title>Session</title>
+		<reftype>displayRow</reftype>
+		<refvalue>Oracle/Monitor/session</refvalue>
+		<icon>images/icon-column.gif</icon>
+		<ref foreign_column_name="SID">
+			<local_column_name>SID</local_column_name>
+		</ref>
+	</reference>
+	<column name="SID">
+		<sqlName>SID</sqlName>
+		<title>SID</title>
+		<type>n</type>
+	</column>
+	<column name="SEQ#">
+		<sqlName>SEQ#</sqlName>
+		<title>Seq. No.</title>
+		<type>n</type>
+	</column>
+	<column name="EVENT#">
+		<sqlName>EVENT#</sqlName>
+		<title>Event#</title>
+		<type>n</type>
+	</column>
+	<column name="EVENT">
+		<sqlName>EVENT</sqlName>
+		<title>Event</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="P1TEXT">
+		<sqlName>P1TEXT</sqlName>
+		<title>P1 Text</title>
+		<type>s</type>
+	</column>
+	<column name="P1">
+		<sqlName>P1</sqlName>
+		<title>P1</title>
+		<type>n</type>
+	</column>
+	<column name="P2TEXT">
+		<sqlName>P2TEXT</sqlName>
+		<title>P2 Text</title>
+		<type>s</type>
+	</column>
+	<column name="P2">
+		<sqlName>P2</sqlName>
+		<title>P2</title>
+		<type>n</type>
+	</column>
+	<column name="P3TEXT">
+		<sqlName>P3TEXT</sqlName>
+		<title>P3 Text</title>
+		<type>s</type>
+	</column>
+	<column name="P3">
+		<sqlName>P3</sqlName>
+		<title>P3</title>
+		<type>n</type>
+	</column>
+	<column name="WAIT_TIME">
+		<sqlName>WAIT_TIME</sqlName>
+		<title>Wait Time</title>
+		<type>n</type>
+		<formatNumber separator=","/> 
+	</column>
+	<column name="WAIT_TIME_MICRO">
+		<sqlName>WAIT_TIME_MICRO</sqlName>
+		<title>Wait Time Micro</title>
+		<type>n</type>
+		<formatNumber separator=","/> 
+	</column>
+	<column name="TIME_SINCE_LAST_WAIT_MICRO">
+		<sqlName>TIME_SINCE_LAST_WAIT_MICRO</sqlName>
+		<title>Time Since Last Wait Micro</title>
+		<type>n</type>
+		<formatNumber separator=","/> 
+	</column>
+</table>

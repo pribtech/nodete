@@ -1,0 +1,85 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2013 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+<tutorial name="Setup Statement Monitor" autoPlayTime="5">
+	<flowRestriction>freewithchecks</flowRestriction>
+    <closeAction />
+    <openAction />
+    <globalCodeHighlightOptions highlightCode = "true" />
+    <WMDConfig/>
+    <pageList>
+    	 <page name="Enable Statement Monitoring" type="general">
+			<entryAction/>
+            <contentText>
+<![CDATA[
+<h2>Setup Statement Monitoring</h2>
+<p/>
+First edit the postgresql.conf by adding or removing the comment tag (# character) from the following line:
+<p/>
+shared_preload_libraries = 'pg_stat_statements'
+<p/>
+Running the SQL in the ad hoc window will display the location of the configuration file and create required object.
+<p/>
+Once completed then restart PostgreSQL.
+<h3>Additional Settings</h3>
+<p/>
+The following addtional settings can be changed in the configuration file.
+<pre>
+pg_stat_statements.max = 1000
+pg_stat_statements.track = top # top,all,none
+pg_stat_statements.save = off
+<pre>
+]]>
+            </contentText>
+            <SQLText><![CDATA[
+select name, setting, unit from pg_settings where name='config_file'
+@
+create extension pg_stat_statements
+@
+]]>
+			</SQLText>
+            <SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar="@"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+        </page>
+
+    	 <page name="Uninstall" type="last" autoPlay="false">
+            <contentText>
+<![CDATA[
+<h2>Uninstall Statement Monitor</h2>
+<p/>
+Edit the postgresql.conf commenting out (# character) the following or removing pg_stat_statements from the list:
+<p/>
+# shared_preload_libraries = 'pg_stat_statements'
+<p/>
+Running the SQL in the ad hoc window will display the location of the configurtation file and drop object.
+<p/>
+Once completed then restart PostgreSQL.
+]]>
+           </contentText>
+            <SQLText>
+<![CDATA[
+select name, setting, unit from pg_settings where name='config_file'
+@
+drop extension pg_stat_statements
+@
+]]>
+            </SQLText>
+            <SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar="@"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+        </page>
+    </pageList>
+</tutorial>

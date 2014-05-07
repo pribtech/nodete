@@ -1,0 +1,18 @@
+<p>Run the SQL in the Ad Hoc command window to the right.</p>
+<p>This steps explains how to turn on automatic table compression.</p>
+<h4>Create tabe with automatic compression turned on</h4>
+<p>The first statement creates a new table CUSTOMER_ADDRESS_WITH_AUTO_COMPRESSION with automatic compression turned on.
+The CUSTOMER_ADDRESS_WITH_AUTO_COMPRESSION table is identical to the CUSTOMER_ADDRESS_WITHOUT_COMPRESSION table except
+ that it will have <a onclick="OpenURLInFloatingWindow
+('http://publib.boulder.ibm.com/infocenter/db2luw/v9r7/topic/com.ibm.dwe.sqw.luw.doc/designing/control_flow/tdefiningrowcompression.html?noframes=true');">COMPRESS YES</a> turned on.</p>
+All the rows from the original CUSTOMER_ADDRESS_WITHOUT_COMPRESSION table are selected
+and inserted in the new CUSTOMER_ADDRESS_WITH_AUTO_COMRESSION table.</p>
+<h4>What happens automatically</h4>
+<p>
+ When enough new data has been sampled (typically 1 - 2 MB), a compression dictionary is automatically created.
+ Any new incoming data is also compressed automatically.
+ You don't have to run <a onclick="OpenURLInFloatingWindow
+('http://publib.boulder.ibm.com/infocenter/db2luw/v9r7/topic/com.ibm.db2.luw.admin.cmd.doc/doc/r0001966.html?noframes=true');">REORG</a> or <a onclick="OpenURLInFloatingWindow
+('http://publib.boulder.ibm.com/infocenter/db2luw/v9r7/topic/com.ibm.db2.luw.admin.cmd.doc/doc/r0008633.html?noframes=true');">INSPECT</a>
+to explicitly create the compression dictionary.
+</p>

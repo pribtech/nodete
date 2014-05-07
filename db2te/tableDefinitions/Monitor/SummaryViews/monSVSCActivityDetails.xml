@@ -1,0 +1,239 @@
+<table name="monWorkload">
+	<sql_name>monTest</sql_name>
+	<singular_name>Service Class Activities</singular_name>
+	<plural_name>Service Class Activities</plural_name>
+	<inlinequery>
+<![CDATA[
+SELECT * FROM (
+SELECT SERVICE_SUPERCLASS_NAME, SERVICE_SUBCLASS_NAME, APPLICATION_HANDLE, DBPARTITIONNUM, ENTITY, WORKLOAD_NAME, WORKLOAD_OCCURRENCE_ID, UOW_ID, ACTIVITY_ID, PARENT_UOW_ID, PARENT_ACTIVITY_ID, AGENT_TID, REQUEST_TYPE, AGENT_TYPE, NESTING_LEVEL, SMP_COORDINATOR, INVOCATION_ID, AGENT_SUBTYPE, ROUTINE_ID, AGENT_STATE, EVENT_OBJECT_NAME, EVENT_TYPE, EVENT_OBJECT, EVENT_STATE, REQUEST_ID
+	FROM TABLE(WLM_GET_SERVICE_CLASS_AGENTS_V97(CAST(NULL AS VARCHAR(128)), CAST(NULL AS VARCHAR(128)), NULL, -2)) AS SCDETAILS
+	WHERE SERVICE_SUPERCLASS_NAME IS NOT NULL AND SERVICE_SUBCLASS_NAME IS NOT NULL
+	)
+]]>
+	</inlinequery>
+	<messages><SQL0551N>Security issue. Please install "Monitoring Switches/Security" in Tools -> Installed Components</SQL0551N></messages>
+	<description></description>
+	<order_by_index />
+	<display_columns>
+		<col type="column" name="SERVICE_SUPERCLASS_NAME" />
+		<col type="column" name="SERVICE_SUBCLASS_NAME" />
+		<col type="column" name="APPLICATION_HANDLE" />
+		<col type="column" name="DBPARTITIONNUM" />
+		<col type="column" name="ENTITY" />
+		<col type="column" name="WORKLOAD_NAME" />
+		<col type="column" name="WORKLOAD_OCCURRENCE_ID" />
+		<col type="column" name="UOW_ID" />
+		<col type="column" name="ACTIVITY_ID" />
+		<col type="column" name="PARENT_UOW_ID" />
+		<col type="column" name="PARENT_ACTIVITY_ID" />
+		<col type="column" name="AGENT_TID" />
+		<col type="column" name="REQUEST_TYPE" />
+		<col type="column" name="AGENT_TYPE" />
+		<col type="column" name="NESTING_LEVEL" />
+		<col type="column" name="SMP_COORDINATOR" />
+		<col type="column" name="INVOCATION_ID" />
+		<col type="column" name="AGENT_SUBTYPE" />
+		<col type="column" name="ROUTINE_ID" />
+		<col type="column" name="AGENT_STATE" />
+		<col type="column" name="EVENT_OBJECT_NAME" />
+		<col type="column" name="EVENT_TYPE" />
+		<col type="column" name="EVENT_OBJECT" />
+		<col type="column" name="EVENT_STATE" />
+		<col type="column" name="REQUEST_ID" />
+	</display_columns>
+	<column name="SERVICE_SUPERCLASS_NAME">
+		<c_sql_name>SERVICE_SUPERCLASS_NAME</c_sql_name>
+		<c_title>Service Class</c_title>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="SERVICE_SUBCLASS_NAME">
+		<c_sql_name>SERVICE_SUBCLASS_NAME</c_sql_name>
+		<c_title>Service Subclass</c_title>
+		<c_drill>n</c_drill>
+		<c_pkey>p</c_pkey>
+		<c_column_mask_file>masks/skipNulls.xml</c_column_mask_file>
+	</column>
+	<column name="APPLICATION_HANDLE">
+		<c_sql_name>APPLICATION_HANDLE</c_sql_name>
+		<c_title>APPLICATION_HANDLE</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+		<c_reference name="instance">
+			<reftype>table</reftype>
+			<refvalue>Monitor/monServiceSubclass</refvalue>
+			<icon>images/sout.gif</icon>
+			<ref foreign_column_name="SERVICE_CLASS_ID">
+				<local_column_name>SERVICE_CLASS_ID</local_column_name>
+			</ref>
+		</c_reference>
+		<c_column_mask_file>masks/skipNulls.xml</c_column_mask_file>
+	</column>
+	<column name="DBPARTITIONNUM">
+		<c_sql_name>DBPARTITIONNUM</c_sql_name>
+		<c_title>DBPARTITIONNUM</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+
+		<c_column_mask_file>masks/skipNulls.xml</c_column_mask_file>
+	</column>
+	<column name="ENTITY">
+		<c_sql_name>ENTITY</c_sql_name>
+		<c_title>ENTITY</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+		<c_column_mask_file>masks/skipNulls.xml</c_column_mask_file>
+	</column>
+	<column name="WORKLOAD_NAME">
+		<c_sql_name>WORKLOAD_NAME</c_sql_name>
+		<c_title>WORKLOAD_NAME</c_title>
+		<c_drill>n</c_drill>
+		<c_column_mask_file>masks/skipNulls.xml</c_column_mask_file>
+	</column>
+	<column name="WORKLOAD_OCCURRENCE_ID">
+		<c_sql_name>WORKLOAD_OCCURRENCE_ID</c_sql_name>
+		<c_title>WORKLOAD_OCCURRENCE_ID</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+		<c_column_mask_file>masks/skipNulls.xml</c_column_mask_file>
+	</column>
+	<column name="UOW_ID">
+		<c_sql_name>UOW_ID</c_sql_name>
+		<c_title>UOW_ID</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+		<c_column_mask_file>masks/skipNulls.xml</c_column_mask_file>
+	</column>
+	<column name="ACTIVITY_ID">
+		<c_sql_name>ACTIVITY_ID</c_sql_name>
+		<c_title>ACTIVITY_ID</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+		<c_column_mask_file>masks/skipNulls.xml</c_column_mask_file>
+	</column>
+	<column name="PARENT_UOW_ID">
+		<c_sql_name>PARENT_UOW_ID</c_sql_name>
+		<c_title>PARENT_UOW_ID</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+		<c_column_mask_file>masks/skipNulls.xml</c_column_mask_file>
+	</column>
+	<column name="PARENT_ACTIVITY_ID">
+		<c_sql_name>PARENT_ACTIVITY_ID</c_sql_name>
+		<c_title>PARENT_ACTIVITY_ID</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+		<c_column_mask_file>masks/skipNulls.xml</c_column_mask_file>
+	</column>
+	<column name="AGENT_TID">
+		<c_sql_name>AGENT_TID</c_sql_name>
+		<c_title>AGENT_TID</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+		<c_column_mask_file>masks/skipNulls.xml</c_column_mask_file>
+	</column>
+	<column name="AGENT_TYPE">
+		<c_sql_name>AGENT_TYPE</c_sql_name>
+		<c_title>AGENT_TYPE</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+
+		<c_column_mask_file>masks/skipNulls.xml</c_column_mask_file>
+	</column>
+	<column name="SMP_COORDINATOR">
+		<c_sql_name>SMP_COORDINATOR</c_sql_name>
+		<c_title>SMP_COORDINATOR</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+
+		<c_column_mask_file>masks/skipNulls.xml</c_column_mask_file>
+	</column>
+	<column name="AGENT_SUBTYPE">
+		<c_sql_name>AGENT_SUBTYPE</c_sql_name>
+		<c_title>AGENT_SUBTYPE</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+
+		<c_column_mask_file>masks/skipNulls.xml</c_column_mask_file>
+	</column>
+	<column name="AGENT_STATE">
+		<c_sql_name>AGENT_STATE</c_sql_name>
+		<c_title>AGENT_STATE</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+
+		<c_column_mask_file>masks/skipNulls.xml</c_column_mask_file>
+	</column>
+	<column name="EVENT_TYPE">
+		<c_sql_name>EVENT_TYPE</c_sql_name>
+		<c_title>EVENT_TYPE</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+
+		<c_column_mask_file>masks/skipNulls.xml</c_column_mask_file>
+	</column>
+	<column name="EVENT_OBJECT">
+		<c_sql_name>EVENT_OBJECT</c_sql_name>
+		<c_title>EVENT_OBJECT</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+
+		<c_column_mask_file>masks/skipNulls.xml</c_column_mask_file>
+	</column>
+	<column name="EVENT_STATE">
+		<c_sql_name>EVENT_STATE</c_sql_name>
+		<c_title>EVENT_STATE</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+
+		<c_column_mask_file>masks/skipNulls.xml</c_column_mask_file>
+	</column>
+	<column name="REQUEST_ID">
+		<c_sql_name>REQUEST_ID</c_sql_name>
+		<c_title>REQUEST_ID</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+
+		<c_column_mask_file>masks/skipNulls.xml</c_column_mask_file>
+	</column>
+	<column name="REQUEST_TYPE">
+		<c_sql_name>REQUEST_TYPE</c_sql_name>
+		<c_title>REQUEST_TYPE</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+
+		<c_column_mask_file>masks/skipNulls.xml</c_column_mask_file>
+	</column>
+	<column name="NESTING_LEVEL">
+		<c_sql_name>NESTING_LEVEL</c_sql_name>
+		<c_title>NESTING_LEVEL</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+
+		<c_column_mask_file>masks/skipNulls.xml</c_column_mask_file>
+	</column>
+	<column name="INVOCATION_ID">
+		<c_sql_name>INVOCATION_ID</c_sql_name>
+		<c_title>INVOCATION_ID</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+
+		<c_column_mask_file>masks/skipNulls.xml</c_column_mask_file>
+	</column>
+	<column name="ROUTINE_ID">
+		<c_sql_name>ROUTINE_ID</c_sql_name>
+		<c_title>ROUTINE_ID</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+
+		<c_column_mask_file>masks/skipNulls.xml</c_column_mask_file>
+	</column>
+	<column name="EVENT_OBJECT_NAME">
+		<c_sql_name>EVENT_OBJECT_NAME</c_sql_name>
+		<c_title>EVENT_OBJECT_NAME</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+
+		<c_column_mask_file>masks/skipNulls.xml</c_column_mask_file>
+	</column>
+
+</table>

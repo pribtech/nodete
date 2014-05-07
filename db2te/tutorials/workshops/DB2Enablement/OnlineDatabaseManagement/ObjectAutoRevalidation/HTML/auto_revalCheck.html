@@ -1,0 +1,37 @@
+<H2>Database object dependencies</H2><HR>
+In DB2 database objects are dependent on each other. Like views depends on a table, 
+stored procedures depends on the table or views or functions and so on. So if you are trying to create a view 
+then ideally the corresponding table should exist on the database but if the table is not there and you want to create
+a view then how will you create a view ? Refer to the following table and view dependencies. 
+
+<img width="350" src="?BASE_DIRECTORY?HTML/dynamic_schema.PNG"/><br><br>
+<br><br><br><br><br><br><br><br><br><br><br><br>
+
+<BR><H2>Solution</H2><HR>
+<p>
+	Beginning with version 9.7 you can configure DB2 to allow creation of objects 
+	with certain types of warning such as missing dependent objects. 
+	This capability can be useful for database object creation, design,
+	and modification because it permits you to have a random order of 
+	CREATE commands. It also allows you to verify the syntax of new views
+	and procedures without creating the objects they depend on. 
+	With DB2 9.7 objects can be <a class="sourceCopiedFrom" onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v9r7/topic/com.ibm.db2.luw.admin.dbobj.doc/doc/c0055269.html');"><b>revalidated automatically</b></a>. <p class="sourceChange">With DB2 9.7 user can create the views and tables in any order they like, object revalidation will happen automatically.</p class="sourceChange">
+</p>
+
+<BR><H2>Prerequisites</H2><HR>
+<p>
+	This tutorial requires that the <b class="sourceChange">AUTO_REVAL</b> database configuration parameter be set to <b class="sourceChange">DEFERRED_FORCE</b>.
+</p>
+
+<p>
+<ul>
+<li class="sourceCopiedFrom">You can set this parameter to <b class="sourceChange">DEFERRED</b>. With this value all dependent objects are revalidated the next time that they are accessed.</li><br>
+<li class="sourceCopiedFrom">You can set this parameter to <b class="sourceChange">DEFERRED_FORCE</b>. This value behaves the same way as when it is set to DEFERRED and an additional CREATE with <span style="background-color: ORANGE"><b>warning</b></span> feature is enabled.</li><br>
+<li class="sourceCopiedFrom">You can set this parameter to <b class="sourceChange">IMMEDIATE</b>. With this value all dependent objects will be revalidated immediately after objects are invalidated. </li>
+</ul>
+</p>
+	
+<p>
+	The view to the right pane displays the current value. If it is not set to DEFERRED_FORCE, you can press
+	the change button and change it to DEFERRED_FORCE. 
+</p>

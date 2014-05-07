@@ -1,0 +1,21 @@
+<BR><H2><B>Lets try it !</B></H2><HR>
+<p>This page demonstrates creation of block indexes on the <b>second fact table</b>.</p>
+
+<H2><B>Operation</B></H2><HR>
+<p>
+<ol>
+<li>Create table 'subscriber_dedicated_account_usage_mdc' enabled with Multi-Dimensional Clustering</li>
+<li>Populate data into the table. Data is clustered along multiple dimensions depending on the clustering columns specified.</li>
+</ol>
+</p>
+
+<BR><H2><B>Best Practices</B></H2><HR>
+<p>
+<ol>
+<li>Start your selection for MDC candidates by looking for columns that are used as predicates for equality, inequality, range, and sorting.</li>
+<li>Strive for density! Remember, an extent is allocated for every existing cell regardless of the number of rows in that cell. To leverage MDC with optimal
+space utilization, strive for densely filled blocks.</li>
+<li>Constrain the number of cells in an MDC design to limit how much additional storage the table will require when converted to MDC form. 5% to 10% growth for any single table is a reasonable goal.</li>
+<li>Don't select too many dimensions. The more the dimensions, more exponential the increase in the cardinality of cells not only requiring more storage, but the gains of clustering might be lost due to the increase in doing I/O on partially filled blocks.</li>
+</ol>
+</p>

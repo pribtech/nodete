@@ -1,0 +1,331 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2009 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<command name="db2advis" title="db2 Advisor">
+<![CDATA[
+>>-db2advis--+- -d--+--database-name---------------------------->
+             '- -db-'                  
+]]>
+	<text>db2advis</text>
+	<select>
+		<option default="true"><text>-d</text></option> 
+		<option><text>-db</text></option> 
+	</select>
+	<clauseReference name="database-name"/>
+	<br statement='false'/>
+<![CDATA[
+>--+---------------------------------------------------------------------------------------------------------+-->
+   +- -w--workload-name--------------------------------------------------------------------------------------+   
+   +- -s--"statement"----------------------------------------------------------------------------------------+   
+   +- -i--filename-------------------------------------------------------------------------------------------+   
+   +- -g-----------------------------------------------------------------------------------------------------+   
+   +- -qp--+--------------------------+----------------------------------------------------------------------+   
+   |       '-start-time--+----------+-'                                                                      |   
+   |                     '-end-time-'                                                                        |   
+   '- -wlm--evmonname--+-----------------------------------------------------+--+--------------------------+-'   
+                       +-+-workloadname-+--workloadname----------------------+  '-start-time--+----------+-'     
+                       | '-wl-----------'                                    |                '-end-time-'       
+                       '-+-serviceclass-+--superclassname--+---------------+-'                                   
+                         '-sc-----------'                  '-,subclassname-'                                     
+]]>
+	<select>
+<!-- remove as manual says one is mandatory
+		<option default="true"><text></text></option>
+--> 
+		<option><text>-w</text><input size="32" title="workload name"/></option> 
+		<option><text spacepad="false">-s "</text><input size="32000" name="statement" title="statement" spacepad="false" addslashes='"'/><text>"</text></option> 
+		<option><text>-i</text><clauseReference name="file-name"/></option> 
+		<option><text>-g</text></option> 
+		<option>
+			<text>-gp</text>
+			<select>
+				<option default="true"><text></text></option> 
+				<option>
+					<input size="8" title="start time"/> 
+					<select>
+						<option default="true"><text></text></option> 
+						<option><input size="8" title="end time"/></option> 
+					</select>
+				</option>
+			</select>
+		</option>
+		<option>
+			<text>-wlm</text>
+			<clauseReference name="event-monitor-name"/>
+			<select>
+				<option default="true"><text></text></option> 
+				<option>
+					<select>
+						<option default="true"><text>workloadname</text></option> 
+						<option><text>wl</text></option>
+					</select>
+					<clauseReference name="workload-name"/>
+				</option>
+				<option>
+					<select>
+						<option default="true"><text>serviceclass</text></option> 
+						<option><text>serviceclass</text></option>
+					</select>
+					<clauseReference name="service-superclass-name"/>
+					<select>
+						<option default="true"><text></text></option> 
+						<option>
+							<text>,</text>
+							<clauseReference name="service-class-name"/>
+						</option>
+					</select>
+				</option>
+			</select>
+			<select>
+				<option default="true"><text></text></option> 
+				<option>
+					<input size="8" title="start time"/> 
+					<select>
+						<option default="true"><text></text></option> 
+						<option><input size="8" title="end time"/></option> 
+					</select>
+				</option>
+			</select>
+		</option>
+	</select>
+	<br statement='false'/>
+<![CDATA[
+>--+--------------------------+--+------------------+----------->
+   '- -a--userid--+---------+-'  '- -m--advise-type-'   
+                  '-/passwd-'                           
+
+output help from command 
+         [ -[user|a] <username> [/<password>] ] 
+         [ -[type|m] <advis_type> ]
+]]>
+	<select>
+		<option default="true"><note>default user</note></option> 
+		<option>
+			<select>
+				<option default="true"><text>-user</text></option> 
+				<option><text>-a</text></option> 
+			</select>
+			<input size="8" title="userid" spacepad="false"/>
+			<select>
+				<option default="true"><text> </text></option> 
+				<option><text spacepad="false">/</text>	<input size="16" title="password"/></option>
+			</select>
+		</option> 
+	</select>
+	<select>
+		<option default="true"><text></text></option> 
+		<option>
+			<select>
+				<option default="true"><text>-type</text></option> 
+				<option><text>-m</text></option> 
+			</select>
+			<input size="16" title="adviser type"/></option> 
+	</select>
+	<br statement='false'/>
+<![CDATA[
+>--+-----+--+-----+--+-----------------+------------------------>
+   '- -x-'  '- -u-'  '- -l--disk-limit-'   
+output help from command 
+         [ -[password|x] ]  [ -[deferred|u] ] [ -[drop|f] ]
+]]>
+	<select>
+		<option default="true"><text></text></option> 
+		<option>
+			<select>
+				<option default="true"><text>-password</text></option> 
+				<option><text>-x</text></option>
+			</select>
+		</option> 
+	</select>
+	<select>
+		<option default="true"><text></text></option> 
+		<option>
+			<select>
+				<option default="true"><text>-deferred</text></option> 
+				<option><text>-u</text></option>
+			</select>
+		</option> 
+	</select>
+	<select>
+		<option default="true"><text></text></option> 
+		<option><text>-l</text><input size="12" type="int" title="disk limit"/></option> 
+	</select>
+	<br statement='false'/>
+<![CDATA[
+>--+----------------------+--+---------------+--+-----+--------->
+   '- -t--max-advise-time-'  '- -k--+-HIGH-+-'  '- -f-'   
+                                    +-MED--+              
+                                    +-LOW--+              
+                                    '-OFF--'              
+output help from command 
+         [ -[compress|k] <compression level> ]
+         [ -[drop|f] ]
+
+]]>
+	<select>
+		<option default="true"><text></text></option> 
+		<option><text>-t</text><input size="12" type="int" title="max time"/></option> 
+	</select>
+	<select>
+		<option default="true"><note>compression medium</note></option> 
+		<option>
+			<select>
+				<option default="true"><text>-compress</text></option> 
+				<option><text>-k</text></option>
+			</select>
+			<select>
+				<option default="true"><text>MED</text></option> 
+				<option><text>HIGH</text></option>
+				<option><text>LOW</text></option>
+				<option><text>OFF</text></option>
+			</select>
+		</option> 
+	</select>
+	<select>
+		<option default="true"><text></text></option> 
+		<option>
+			<select>
+				<option default="true"><text>-drop</text></option> 
+				<option><text>-f</text></option>
+			</select>
+		</option> 
+	</select>
+	<br statement='false'/>
+<![CDATA[
+>--+-----+--+------------------+--+------------------+---------->
+   '- -r-'  '- -n--schema-name-'  '- -q--schema-name-'   
+
+output help from command 
+         [ -[password|x] ] [ -[sample|r] ] [ -[deferred|u] ] [ -nogen ] [ -[drop|f] ]
+         [ -[schema|n] <schema name> ]
+]]>
+	<select>
+		<option default="true"><text></text></option> 
+		<option>
+			<select>
+				<option default="true"><text>-sample</text></option> 
+				<option><text>-r</text></option>
+			</select>
+		</option> 
+	</select>
+	<select>
+		<option default="true"><text></text></option> 
+		<option>
+			<select>
+				<option default="true"><text>-schema</text></option> 
+				<option><text>-n</text></option>
+			</select>
+			<clauseReference name="schema-name"/>
+		</option> 
+	</select>
+	<select>
+		<option default="true"><text></text></option> 
+		<option>
+			<select>
+				<option default="true"><text>-qualifier</text></option> 
+				<option><text>-q</text></option>
+			</select>
+			<clauseReference name="schema-name"/>
+		</option> 
+	</select>
+	<br statement='false'/>
+<![CDATA[
+>--+----------------------+--+----------------------+----------->
+   '- -b--tablespace-name-'  '- -c--tablespace-name-'   
+
+output help from command 
+         [ -[tbsp|b] <MQT creation table space> ]
+         [ -[simtbsp|c] <simulation table space> ]
+]]>
+	<select>
+		<option default="true"><text></text></option> 
+		<option>
+			<select>
+				<option default="true"><text>-tbsp</text></option> 
+				<option><text>-b</text></option>
+			</select>
+			<clauseReference name="tablespace-name"/>
+		</option> 
+	</select>
+	<select>
+		<option default="true"><text></text></option> 
+		<option>
+			<select>
+				<option default="true"><text>-simtbsp</text></option> 
+				<option><text>-c</text></option>
+			</select>
+			<clauseReference name="tablespace-name"/>
+		</option> 
+	</select>
+	<br statement='false'/>
+<![CDATA[
+>--+-----+--+-----+--+--------------+--+---------+-------------->
+   '- -h-'  '- -p-'  '- -o--outfile-'  '- -nogen-'   
+output help from command 
+         [ -[keep|p] ] [ -delim <char> ]
+         [ -[script|o] <output script> ] 
+]]>
+	<select>
+		<option default="true"><text></text></option> 
+		<option><text>-h</text></option> 
+	</select>
+	<select>
+		<option default="true"><text></text></option> 
+		<option>
+			<select>
+				<option default="true"><text>-keep</text></option> 
+				<option><text>-p</text></option>
+			</select>
+		</option> 
+	</select>
+	<select>
+		<option default="true"><text></text></option> 
+		<option>
+			<select>
+				<option default="true"><text>-script</text></option> 
+				<option><text>-o</text></option>
+			</select>
+			<clauseReference name="file-name"/></option> 
+	</select>
+	<select>
+		<option default="true"><text></text></option> 
+		<option><text>-nogen</text></option> 
+	</select>
+	<br statement='false'/>
+<![CDATA[
+>--+---------------+--+----------------------------+------------>
+   '- -delim--char-'  '- -mdcpctinflation--percent-'   
+]]>
+	<select>
+		<option default="true"><note>delimiter ;</note></option> 
+		<option><text>-delim</text><input size="1"/></option> 
+	</select>
+	<select>
+		<option default="true"><text></text></option> 
+		<option><text>-mdcpctinflation</text><input size="8" type="int" title="percent"/></option> 
+	</select>
+	<br statement='false'/>
+<![CDATA[
+>--+----------------------------------+------------------------><
+   '- -tables--table-predicate-clause-'   
+]]>
+	<select>
+		<option default="true"><text></text></option> 
+		<option><text>-tables</text><input size="60" title="table predicate clause"/></option> 
+	</select>
+</command>
+        

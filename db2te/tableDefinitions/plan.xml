@@ -1,0 +1,434 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2012 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+<table name="plan">
+	<sql_name>SYSIBM.SYSPLAN</sql_name>
+	<singular_name>Plan</singular_name>
+	<plural_name>Plans</plural_name>
+	<description/>
+	<disableEdit/>
+	<output>
+		<type name="REBIND" destination="adhoc" title="Rebind" generator="XSL/compareTableUpdates.xsl">
+			<parameterList>
+				<parameter name="type" type="raw"><value>rebind</value></parameter>
+			</parameterList>
+		</type>
+	</output>
+	<order_by_index name="creator" direction="A"/>
+	<order_by_index name="name" direction="A"/>
+	<display_columns>
+		<col type="column" name="creator"/>
+		<col type="column" name="name"/>
+		<col type="column" name="valid"/>
+		<col type="reference" name="static"/>
+		<col type="column" name="ROUTINENAME"/>
+		<col type="column" name="boundby"/>
+		<col type="column" name="explicit_bind_time"/>
+		<col type="column" name="last_bind_time"/>
+		<col type="column" name="unique_id"/>
+		<col type="column" name="totalsect"/>
+		<col type="column" name="format"/>
+		<col type="column" name="isolation"/>
+		<col type="column" name="block"/>
+		<col type="column" name="standards_level"/>
+		<col type="column" name="func_path"/>
+		<col type="column" name="queryopt"/>
+		<col type="column" name="explain_level"/>
+		<col type="column" name="explain_mode"/>
+		<col type="column" name="explain_snapshot"/>
+		<col type="column" name="sqlwarn"/>
+		<col type="column" name="codepage"/>
+		<col type="column" name="sqlrules"/>
+		<col type="column" name="sqlrules_string"/>
+		<col type="column" name="insert_buf"/>
+		<col type="column" name="definer"/>
+		<col type="column" name="default_schema"/>
+		<col type="column" name="multinode_plans"/>
+		<col type="column" name="degree"/>
+		<col type="column" name="rds_level"/>
+		<col type="column" name="sqlmathwarn"/>
+		<col type="column" name="intra_parallel"/>
+		<col type="column" name="validate"/>
+		<col type="column" name="dynamicrules"/>
+		<col type="column" name="sqlerror"/>
+		<col type="column" name="refreshage"/>
+		<col type="column" name="pkg_create_time"/>
+		<col type="column" name="federated"/>
+		<col type="column" name="transformgroup"/>
+		<col type="column" name="pkgversion"/>
+		<col type="column" name="reoptvar"/>
+		<col type="column" name="os_ptr_size"/>
+		<col type="column" name="staticreadonly"/>
+		<col type="column" name="federated_asynchrony"/>
+		<col type="column" name="definertype"/>
+		<col type="column" name="boundbytype"/>
+		<col type="column" name="optprofileschema"/>
+		<col type="column" name="optprofilename"/>
+		<col type="column" name="collationid"/>
+		<col type="column" name="collationid_orderby"/>
+	</display_columns>
+	<reference name="static">
+		<title>Static</title>
+		<reftype>table</reftype>
+		<refvalue>staticStatements</refvalue>
+		<icon>images/icon-link-calendar.gif</icon>
+		<ref foreign_column_name="plcreator">
+			<local_column_name>creator</local_column_name>
+		</ref>
+		<ref foreign_column_name="plname">
+			<local_column_name>name</local_column_name>
+		</ref>
+	</reference>	
+	<reference name="Dependencies">
+		<title>Dependencies</title>
+		<reftype>table</reftype>
+		<refvalue>planDep</refvalue>
+		<icon>images/icon-link-calendar.gif</icon>
+		<ref foreign_column_name="dcreator">
+			<local_column_name>creator</local_column_name>
+		</ref>
+		<ref foreign_column_name="dname">
+			<local_column_name>name</local_column_name>
+		</ref>
+	</reference>
+	<reference name="routineDep">
+		<title>Routines</title>
+		<reftype>table</reftype>
+		<refvalue>DB2Catalog/routineDep</refvalue>
+		<icon>images/icon-column.gif</icon>
+		<ref foreign_column_name="BNAME">
+			<local_column_name>name</local_column_name>
+		</ref>
+		<ref foreign_column_name="BSCHEMA">
+			<local_column_name>creator</local_column_name>
+		</ref>
+	</reference>	
+	<column name="creator">
+		<sqlName>"CREATOR"</sqlName>
+		<title>Creator</title>
+		<type>s</type>
+		<drillEnable/>
+		<prefill>
+			<table>schema</table>
+			<column>SCHEMANAME</column>
+		</prefill>
+		<primaryKey/>
+	</column>
+	<column name="name">
+		<sqlName>"NAME"</sqlName>
+		<title>Name</title>
+		<type>s</type>
+		<drillEnable/>
+		<primaryKey/>
+	</column>
+	<column name="boundby">
+		<sqlName>"BOUNDBY"</sqlName>
+		<title>Boundby</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="valid">
+		<sqlName>"VALID"</sqlName>
+		<title>Valid</title>
+		<type>s</type>
+		<drillEnable/>
+		<prefillEnable/>
+	</column>
+	<column name="unique_id" DBMS="DB2">
+		<sqlName>"UNIQUE_ID"</sqlName>
+		<title>Unique Id</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="totalsect" DBMS="DB2">
+		<sqlName>"TOTALSECT"</sqlName>
+		<title>Total Sections</title>
+		<type>n</type>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="format">
+		<sqlName>"FORMAT"</sqlName>
+		<title>Format</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="isolation">
+		<sqlName>"ISOLATION"</sqlName>
+		<title>Isolation</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="block">
+		<sqlName>"BLOCK"</sqlName>
+		<title>Block</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="standards_level">
+		<sqlName>"STANDARDS_LEVEL"</sqlName>
+		<title>Standards Level</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="func_path">
+		<sqlName>"FUNC_PATH"</sqlName>
+		<title>Function Path</title>
+		<type>l</type>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="explicit_bind_time">
+		<sqlName>"EXPLICIT_BIND_TIME"</sqlName>
+		<title>Explicit Bind Time</title>
+		<type>n</type>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="last_bind_time">
+		<sqlName>"LAST_BIND_TIME"</sqlName>
+		<title>Last Bind Time</title>
+		<type>n</type>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="queryopt">
+		<sqlName>"QUERYOPT"</sqlName>
+		<title>Query Opt</title>
+		<type>n</type>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="explain_level">
+		<sqlName>"EXPLAIN_LEVEL"</sqlName>
+		<title>Explain Level</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="explain_mode">
+		<sqlName>"EXPLAIN_MODE"</sqlName>
+		<title>Explain Mode</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="explain_snapshot">
+		<sqlName>"EXPLAIN_SNAPSHOT"</sqlName>
+		<title>Explain Snapshot</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="sqlwarn">
+		<sqlName>"SQLWARN"</sqlName>
+		<title>SQLWARN</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="codepage">
+		<sqlName>"CODEPAGE"</sqlName>
+		<title>Code Page</title>
+		<type>n</type>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="Remarks">
+		<sqlName>"REMARKS"</sqlName>
+		<title>remarks</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="sqlrules">
+		<sqlName>"SQLRULES"</sqlName>
+		<title>SQL Rules</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="sqlrules_string">
+		<sqlName>"SQLRULES_STRING"</sqlName>
+		<title>SQL Rules String</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="insert_buf">
+		<sqlName>"INSERT_BUF"</sqlName>
+		<title>Insert Buffer</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="definer">
+		<sqlName>"DEFINER"</sqlName>
+		<title>Definer</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="default_schema">
+		<sqlName>"DEFAULT_SCHEMA"</sqlName>
+		<title>Default Schema</title>
+		<type>s</type>
+		<drillEnable/>
+		<prefill>
+			<table>schema</table>
+			<column>SCHEMANAME</column>
+		</prefill>
+	</column>
+	<column name="multinode_plans">
+		<sqlName>"MULTINODE_PLANS"</sqlName>
+		<title>Multinode Plans</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="degree">
+		<sqlName>"DEGREE"</sqlName>
+		<title>Degree</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="rds_level">
+		<sqlName>"RDS_LEVEL"</sqlName>
+		<title>RDS Level</title>
+		<type>n</type>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="sqlmathwarn">
+		<sqlName>"SQLMATHWARN"</sqlName>
+		<title>SQL Math Warn</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="intra_parallel">
+		<sqlName>"INTRA_PARALLEL"</sqlName>
+		<title>Intra Parallel</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="validate">
+		<sqlName>"VALIDATE"</sqlName>
+		<title>Validate</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="dynamicrules">
+		<sqlName>"DYNAMICRULES"</sqlName>
+		<title>Dynamic Rules</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="sqlerror">
+		<sqlName>"SQLERROR"</sqlName>
+		<title>SQL Error</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="refreshage">
+		<sqlName>"REFRESHAGE"</sqlName>
+		<title>Refreshage</title>
+		<type>n</type>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="pkg_create_time">
+		<sqlName>"PKG_CREATE_TIME"</sqlName>
+		<title>Create Time</title>
+		<type>n</type>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="federated">
+		<sqlName>"FEDERATED"</sqlName>
+		<title>Federated</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="transformgroup">
+		<sqlName>"TRANSFORMGROUP"</sqlName>
+		<title>Transform Group</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="pkgversion">
+		<sqlName>"PKGVERSION"</sqlName>
+		<title>Version</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="reoptvar">
+		<sqlName>"REOPTVAR"</sqlName>
+		<title>Reopt Var</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="os_ptr_size">
+		<sqlName>"OS_PTR_SIZE"</sqlName>
+		<title>OS PTR Size</title>
+		<type>n</type>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="staticreadonly">
+		<sqlName>"STATICREADONLY"</sqlName>
+		<title>Static Read Only</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="federated_asynchrony">
+		<sqlName>"FEDERATED_ASYNCHRONY"</sqlName>
+		<title>Federated Asynchrony</title>
+		<type>n</type>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="definertype">
+		<sqlName>"DEFINERTYPE"</sqlName>
+		<title>Definer Type</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="boundbytype">
+		<sqlName>"BOUNDBYTYPE"</sqlName>
+		<title>Bound By Type</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="optprofileschema">
+		<sqlName>"OPTPROFILESCHEMA"</sqlName>
+		<title>Opt Profile Schema</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="optprofilename">
+		<sqlName>"OPTPROFILENAME"</sqlName>
+		<title>Opt Profile Name</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="collationid">
+		<sqlName>"COLLATIONID"</sqlName>
+		<title>Collation Id.</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="collationid_orderby">
+		<sqlName>"COLLATIONID_ORDERBY"</sqlName>
+		<title>Collation Id. Orderby</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="SPECIFICNAME">
+		<sqlName>(SELECT SPECIFICNAME FROM SYSCAT.ROUTINEDEP WHERE BSCHEMA = SYSPLAN.CREATOR  AND BNAME = SYSPLAN.NAME )</sqlName>
+		<title>Specific Name</title>
+		<type>s</type>
+	</column>
+	<column name="ROUTINESCHEMA">
+		<sqlName>(SELECT ROUTINESCHEMA FROM SYSCAT.ROUTINEDEP WHERE BSCHEMA = SYSPLAN.CREATOR  AND BNAME = SYSPLAN.NAME )</sqlName>
+		<title>Routine Schema</title>
+		<type>s</type>
+	</column>
+	<column name="ROUTINENAME">
+		<sqlName>(SELECT ROUTINENAME FROM SYSCAT.ROUTINEDEP WHERE BSCHEMA = SYSPLAN.CREATOR  AND BNAME = SYSPLAN.NAME )</sqlName>
+		<title>Routine Name</title>
+		<type>s</type>
+	</column>
+</table>

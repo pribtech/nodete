@@ -1,0 +1,54 @@
+<p>Click on the action buttons in the action panel to compute the compression size and get the query execution times for tables with and 
+without compression and generate a graph comparing the same</p>
+
+<H2><B>Operation</B></H2><HR><BR>
+<h4>Get Compressed Size</h4>
+<p>Collects statistics for the FACT tables, retrieves their size and estimated compression ratio. The SQL used to collect this information are :
+<pre><code>
+
+CALL ADMIN_CMD
+   ('RUNSTATS ON TABLE SCHEMA.TABLE_NAME')
+
+-- Determines the size of a table
+SELECT CAST(CAST(NPAGES AS DOUBLE)/256 AS DECIMAL(5,3)) 
+  FROM SYSIBM.SYSTABLES 
+  WHERE CREATOR= 'SCHEMA' AND NAME='TABLE_NAME'
+  
+-- Estimates the compression size and compression ratio of an uncompressed table
+SELECT PAGES_SAVED_PERCENT, CAST (TABSIZE*(CAST(100 - PAGES_SAVED_PERCENT AS DOUBLE)/100) AS DECIMAL (5,3)) 
+  FROM TABLE(SELECT CAST(CAST(NPAGES AS DOUBLE)/256 AS DECIMAL(5,3)) AS TABSIZE FROM SYSIBM.SYSTABLES 
+  WHERE CREATOR= 'SCHEMA' AND NAME='TABLE_NAME') 
+	AS T1, TABLE (SYSPROC.ADMIN_GET_TAB_COMPRESS_INFO('SCHEMA', 'TABLE_NAME', 'ESTIMATE')) AS T2
+	
+</code></pre></p>
+
+<h4>Size Comparison</h4>
+<p>
+<ol>
+<li>A graph comparing the uncompressed table size, the estimated table size and the actual compressed size is generated.</li>
+<li>If you hover your cursor over the bars in the graph you will see the exact sizes of each table.</li>
+</ol>
+</p><br>
+
+<h4>Get Query Execution Times</h4>
+<p>Query execution time for tables with and without compression is computed</p> 
+
+<h4><u><FONT style="COLOR: red">Note :</FONT></u><p>Results may vary depending on the volume of data. 
+For optimal performance, use high volume of data.</p>
+<p>To increase the volume of data, load the fact tables 'te_temp.subscriber_rated_usage' and
+ 'te_temp.subscriber_dedicated_account_usage' with the corresponding .del files present in the LoadFiles directory.</p></h4>
+ 
+<h4>Performance Comparison</h4>
+<p>
+<ol>
+<li>A graph comparing the query execution time of tables with and without compression is generated.</li>
+<li>If you hover your cursor over the bars in the graph you will see the exact execution time for each run.</li>
+</ol>
+</p>
+
+<BR><H2><B>Result</B></H2><HR>
+<p>The tables size is considerably reduced after compression (depending on the number of rows in the table - more the no. of rows, better the compression ratio) resulting in reduced storage costs</p>
+<p>The query execution time would reduce even with compression enabled.</p>
+<h4><u><FONT style="COLOR: red">Note :</FONT></u></h4><p>The graph here might show an increase in the query execution time
+with Compression. This is because the amount of data in the tables is very low. The cost of retrieval of the data from the compressed table is not compensated by the amount of data.</p>
+

@@ -1,0 +1,268 @@
+<!--
+  Author: Peter Prib
+  Copyright Independent Systems Integrators Pty Ltd 2008 All rights reserved.
+  Updated by Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2010, 2012 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+
+<table name="SYSIBMADM.SNAPAPPL_INFO">
+	<sqlName>SYSIBMADM.SNAPAPPL_INFO</sqlName>
+	<singular_name>Application Information</singular_name>
+	<plural_name>Applications Information</plural_name>
+	<description />
+	<output>
+		<type name="DDL" destination="" title="" generator=""/>
+		<type name="ADHOC" destination="adhoc" title="Force" generator="XSL/compareForce.xsl"/>
+	</output>
+	<rowStyle interfaceColumn='appl_status'>
+		<option eq='LOCKWAIT' style='ERROR'/>
+		<option eq='LOAD' style='WARNING'/>
+		<option eq='UOWEXEC' style='INFO'/>
+		<option eq='COMMIT_ACT' style='INFO'/>
+		<option eq='ROLLBACK_ACT' style='INFO'/>
+	</rowStyle>	
+	<order_by_index name="primary_auth_id" direction="A"/>	
+	<display_columns>
+		<col type="action" name="force"/>
+		<col type="reference" name="stmt"/>
+		<col type="reference" name="locks"/>
+		<col type="column" name="AGENT_ID" />
+		<col type="column" name="appl_status" />
+		<col type="column" name="primary_auth_id" title="Primary Id." />
+		<col type="column" name="session_auth_id" title="Session Id."/>
+		<col type="column" name="num_assoc_agents"  title="Agents" />
+		<col type="column" name="coord_node_num" title="Co-Ord" />
+		<col type="column" name="client_pid" />
+		<col type="column" name="coord_agent_pid" title="Co-Ord PID" />
+		<col type="column" name="status_change_time" />
+		<col type="column" name="client_platform" />
+		<col type="column" name="client_protocol" />
+		<col type="column" name="territory_code" />
+		<col type="column" name="appl_id" />
+		<col type="column" name="sequence_no" title="Seq. No."/>
+		<col type="column" name="client_nname" />
+		<col type="column" name="client_prdid" />
+		<col type="column" name="appl_name" />
+		<col type="column" name="input_db_alias" />
+		<col type="column" name="client_db_alias" />
+		<col type="column" name="db_name" />
+		<col type="column" name="db_path" />
+		<col type="column" name="execution_id" />
+		<col type="column" name="corr_token" />
+		<col type="column" name="tpmon_client_userid" />
+		<col type="column" name="tpmon_client_wkstn" />
+		<col type="column" name="tpmon_client_app" />
+		<col type="column" name="tpmon_acc_str" />
+		<col type="column" name="dbpartitionnum" />
+		<col type="column" name="authority_lvl" />
+	</display_columns>
+	<disable_edit/>
+	<action name="force">
+		<title>Force</title>
+		<icon>images/cancel.gif</icon>   
+   		<actionScript>
+   			<task>
+		    	<assignSharedConstant name="AGENT_ID" type="blockValue">
+					<value>AGENT_ID</value>
+				</assignSharedConstant>
+	   			<callGlobalAction name="forceAgent"/>
+   			</task>
+   		</actionScript>
+   	</action>
+	<reference name="stmt">
+		<title>Stmt</title>
+		<reftype>table</reftype>
+		<refvalue>Performance/snapStmt</refvalue>
+		<icon>images/icon-application.gif</icon>
+		<ref foreign_column_name="AGENT_ID">
+			<local_column_name>AGENT_ID</local_column_name>
+		</ref>
+	</reference>
+	<reference name="applicationInfo">
+		<title>App.</title>
+		<reftype>displayRow</reftype>
+		<refvalue>Performance/snapApplicationInfo</refvalue>
+		<icon>images/icon-application.gif</icon>
+		<ref foreign_column_name="AGENT_ID">
+			<local_column_name>AGENT_ID</local_column_name>
+		</ref>
+	</reference>
+	<reference name="locks">
+		<title>Locks</title>
+		<reftype>table</reftype>
+		<refvalue>Performance/toplock</refvalue>
+		<icon>images/icon-application.gif</icon>
+		<ref foreign_column_name="AGENT_ID">
+			<local_column_name>AGENT_ID</local_column_name>
+		</ref>
+	</reference>
+	<column name="AGENT_ID">
+		<sqlName>AGENT_ID</sqlName>
+		<title>Agent Id</title>
+		<type>n</type>
+	</column>
+	<column name="appl_status">
+		<sqlName>APPL_STATUS</sqlName>
+		<title>Status</title>
+		<type>s</type>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="codepage_id">
+		<sqlName>CODEPAGE_ID</sqlName>
+		<title>Code Page</title>
+		<type>n</type>
+	</column>
+	<column name="num_assoc_agents">
+		<sqlName>NUM_ASSOC_AGENTS</sqlName>
+		<title>No. Associated Agents</title>
+		<type>n</type>
+	</column>
+	<column name="coord_node_num">
+		<sqlName>COORD_NODE_NUM</sqlName>
+		<title>Co-ord Node No.</title>
+		<type>n</type>
+	</column>
+	<column name="authority_lvl">
+		<sqlName>AUTHORITY_LVL</sqlName>
+		<title>Authority Level</title>
+		<type>s</type>
+	</column>
+	<column name="client_pid">
+		<sqlName>CLIENT_PID</sqlName>
+		<title>Client PID</title>
+		<type>n</type>
+	</column>
+	<column name="coord_agent_pid">
+		<sqlName>COORD_AGENT_PID</sqlName>
+		<title>Co-Ord. Agent PID</title>
+		<type>n</type>
+	</column>
+	<column name="status_change_time">
+		<sqlName>STATUS_CHANGE_TIME</sqlName>
+		<title>Status Change Time</title>
+		<type>n</type>
+	</column>
+	<column name="client_platform">
+		<sqlName>CLIENT_PLATFORM</sqlName>
+		<title>Client Platform</title>
+		<type>s</type>
+	</column>
+	<column name="client_protocol">
+		<sqlName>CLIENT_PROTOCOL</sqlName>
+		<title>Client Protocol</title>
+		<type>s</type>
+	</column>
+	<column name="territory_code">
+		<sqlName>TERRITORY_CODE</sqlName>
+		<title>Territory</title>
+		<type>n</type>
+	</column>
+	<column name="appl_name">
+		<sqlName>APPL_NAME</sqlName>
+		<title>Application Name</title>
+		<type>s</type>
+	</column>
+	<column name="appl_id">
+		<sqlName>APPL_ID</sqlName>
+		<title>App. Id.</title>
+		<type>s</type>
+	</column>
+	<column name="sequence_no">
+		<sqlName>SEQUENCE_NO</sqlName>
+		<title>Sequence No.</title>
+		<type>s</type>
+	</column>
+	<column name="primary_auth_id">
+		<sqlName>PRIMARY_AUTH_ID</sqlName>
+		<title>Primary Authority Id.</title>
+		<type>s</type>
+	</column>
+	<column name="session_auth_id">
+		<sqlName>SESSION_AUTH_ID</sqlName>
+		<title>Session Authority Id.</title>
+		<type>s</type>
+	</column>
+	<column name="client_nname">
+		<sqlName>CLIENT_NNAME</sqlName>
+		<title>Client Node Name</title>
+		<type>s</type>
+	</column>
+	<column name="client_prdid">
+		<sqlName>CLIENT_PRDID</sqlName>
+		<title>Client Product Id.</title>
+		<type>s</type>
+	</column>
+	<column name="input_db_alias">
+		<sqlName>INPUT_DB_ALIAS</sqlName>
+		<title>Input DB Alias</title>
+		<type>s</type>
+	</column>
+	<column name="client_db_alias">
+		<sqlName>CLIENT_DB_ALIAS</sqlName>
+		<title>Client DB Alias</title>
+		<type>s</type>
+	</column>
+	<column name="db_name">
+		<sqlName>DB_NAME</sqlName>
+		<title>DB Name</title>
+		<type>s</type>
+	</column>
+	<column name="db_path">
+		<sqlName>DB_PATH</sqlName>
+		<title>DB Path</title>
+		<type>s</type>
+	</column>
+	<column name="execution_id">
+		<sqlName>EXECUTION_ID</sqlName>
+		<title>Execution Id.</title>
+		<type>s</type>
+	</column>
+	<column name="corr_token">
+		<sqlName>CORR_TOKEN</sqlName>
+		<title>Correlation Token</title>
+		<type>s</type>
+	</column>
+	<column name="tpmon_client_userid">
+		<sqlName>TPMON_CLIENT_USERID</sqlName>
+		<title>TP Monitor Client User</title>
+		<type>s</type>
+	</column>
+	<column name="tpmon_client_wkstn">
+		<sqlName>TPMON_CLIENT_WKSTN</sqlName>
+		<title>TP Monitor Client Workstation</title>
+		<type>s</type>
+	</column>
+	<column name="tpmon_client_app">
+		<sqlName>TPMON_CLIENT_APP</sqlName>
+		<title>TP Monitor Client App.</title>
+		<type>s</type>
+	</column>
+	<column name="tpmon_acc_str">
+		<sqlName>TPMON_ACC_STR</sqlName>
+		<title>TP Monitor Account</title>
+		<type>s</type>
+	</column>
+	<column name="dbpartitionnum">
+		<sqlName>DBPARTITIONNUM</sqlName>
+		<title>DB Partition</title>
+		<type>n</type>
+	</column>
+	<column name="snapshot_timestamp">
+		<sqlName>SNAPSHOT_TIMESTAMP</sqlName>
+		<title>Snapshot Timestamp</title>
+		<type>n</type>
+	</column>
+</table>

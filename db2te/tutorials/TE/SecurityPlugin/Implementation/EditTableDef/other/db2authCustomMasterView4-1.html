@@ -1,0 +1,53 @@
+<div id="title">XML Table diff</div>
+<pre><table>
+<tr><td class="sourceChange"><font color="#ac008e">&lt;</font><font color="#2145f9">table</font> <font color="#009400">name</font><font color="#990000">=</font><font color="#6f0000">"db2authLab_masterView"</font><font color="#2145f9"></font><font color="#ac008e">&gt;</font><br/>
+<br/>&nbsp;&nbsp;<font color="#ac008e">&lt;</font><font color="#2145f9">sql_name</font><font color="#ac008e">&gt;</font>DB2AUTHLAB_MASTERVIEW</<font color="#ac008e">&lt;/</font><font color="#2145f9">sql_name</font><font color="#ac008e">&gt;</font><br/>
+&nbsp;&nbsp;<font color="#ac008e">&lt;</font><font color="#2145f9">singular_name</font><font color="#ac008e">&gt;</font>Master View<font color="#ac008e">&lt;/</font><font color="#2145f9">singular_name</font><font color="#ac008e">&gt;</font><br/>
+&nbsp;&nbsp;<font color="#ac008e">&lt;</font><font color="#2145f9">plural_name</font><font color="#ac008e">&gt;</font>Master View<font color="#ac008e">&lt;/</font><font color="#2145f9">plural_name</font><font color="#ac008e">&gt;</font><br/>
+<tr><td>
+&nbsp;&nbsp;<font color="#ac008e">&lt;</font><font color="#2145f9">inlinequery</font><font color="#ac008e">&gt;</font><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#A40093">&lt;![CDATA[</font><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SELECT<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DB2AUTH.USERS.USERID AS USERID,<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DB2AUTH.GROUPS.GROUPID AS GROUPID <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FROM<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DB2AUTH.USERS <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FULL OUTER JOIN <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(DB2AUTH.GROUP_MEMBERSHIP <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RIGHT OUTER JOIN <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DB2AUTH.GROUPS <br/> 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ON <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DB2AUTH.GROUPS.GROUPID = DB2AUTH.GROUP_MEMBERSHIP.GROUPID)  <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ON <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DB2AUTH.USERS.USERID = DB2AUTH.GROUP_MEMBERSHIP.USERID <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ORDER BY USERID<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#A40093">]]</font><font color="#ac008e">&gt;</font><br/>
+&nbsp;&nbsp;<font color="#ac008e">&lt;/</font><font color="#2145f9">inlinequery</font><font color="#ac008e">&gt;</font><br/>
+<tr><td class="sourceChange">&nbsp;&nbsp;<font color="#ac008e">&lt;</font><font color="#2145f9">description</font><font color="#ac008e">&gt;</font><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;A table listing all users and groups for the current instance.  This table is the result of joining the USERS, GROUPS, and GROUP_MEMBERSHIP tables from the DB2AUTH schema.<br/>
+&nbsp;&nbsp;<font color="#ac008e">&lt;/</font><font color="#2145f9">description</font><font color="#ac008e">&gt;</font><br/>
+<tr><td>&nbsp;&nbsp;<font color="#ac008e">&lt;</font><font color="#2145f9">rows_per_page</font><font color="#ac008e">&gt;</font>50<font color="#ac008e">&lt;/</font><font color="#2145f9">rows_per_page</font><font color="#ac008e">&gt;</font><br/>
+<tr><td class="sourceChange">&nbsp;&nbsp;<font color="#ac008e">&lt;</font><font color="#2145f9">order_by_index  <font color="#009400">name</font><font color="#990000">=</font><font color="#6f0000">"userid"</font> <font color="#009400">direction</font><font color="#990000">=</font><font color="#6f0000">"A"</font><font color="#ac008e">/</font><font color="#ac008e">&gt;</font><br/>
+<br/><tr><td>
+&nbsp;&nbsp;<font color="#ac008e">&lt;</font><font color="#2145f9">display_columns</font><font color="#ac008e">&gt;</font><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#ac008e">&lt;</font><font color="#2145f9">col</font> <font color="#009400">type</font><font color="#990000">=</font><font color="#6f0000">"column"</font> <font color="#009400">name</font><font color="#990000">=</font><font color="#6f0000">"USERID"</font><font color="#2145f9"></font><font color="#ac008e">/&gt;</font><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#ac008e">&lt;</font><font color="#2145f9">col</font> <font color="#009400">type</font><font color="#990000">=</font><font color="#6f0000">"column"</font> <font color="#009400">name</font><font color="#990000">=</font><font color="#6f0000">"GROUPID"</font><font color="#2145f9"></font><font color="#ac008e">/&gt;</font><br/>
+&nbsp;&nbsp;<font color="#ac008e">&lt;/</font><font color="#2145f9">display_columns</font><font color="#ac008e">&gt;</font><br/>
+<br/>
+&nbsp;&nbsp;<font color="#ac008e">&lt;</font><font color="#2145f9">column</font> <font color="#009400">name</font><font color="#990000">=</font><font color="#6f0000">"USERID"</font><font color="#2145f9"></font><font color="#ac008e">&gt;</font><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#ac008e">&lt;</font><font color="#2145f9">c_sql_name</font><font color="#ac008e">&gt;</font>USERID<font color="#ac008e">&lt;/</font><font color="#2145f9">c_sql_name</font><font color="#ac008e">&gt;</font></td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#ac008e">&lt;</font><font color="#2145f9">c_title</font><font color="#ac008e">&gt;</font>USERID<font color="#ac008e">&lt;/</font><font color="#2145f9">c_title</font><font color="#ac008e">&gt;</font><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#ac008e">&lt;</font><font color="#2145f9">c_presentation</font><font color="#ac008e">&gt;</font>s<font color="#ac008e">&lt;/</font><font color="#2145f9">c_presentation</font><font color="#ac008e">&gt;</font></td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#ac008e">&lt;</font><font color="#2145f9">c_drill</font><font color="#ac008e">&gt;</font>n<font color="#ac008e">&lt;/</font><font color="#2145f9">c_drill</font><font color="#ac008e">&gt;</font><br/>
+&nbsp;&nbsp;<font color="#ac008e">&lt;/</font><font color="#2145f9">column</font><font color="#ac008e">&gt;</font><br/>
+<br/>
+
+&nbsp;&nbsp;<font color="#ac008e">&lt;</font><font color="#2145f9">column</font> <font color="#009400">name</font><font color="#990000">=</font><font color="#6f0000">"GROUPID"</font><font color="#2145f9"></font><font color="#ac008e">&gt;</font><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#ac008e">&lt;</font><font color="#2145f9">c_sql_name</font><font color="#ac008e">&gt;</font>GROUPID<font color="#ac008e">&lt;/</font><font color="#2145f9">c_sql_name</font><font color="#ac008e">&gt;</font></td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#ac008e">&lt;</font><font color="#2145f9">c_title</font><font color="#ac008e">&gt;</font>GROUPID<font color="#ac008e">&lt;/</font><font color="#2145f9">c_title</font><font color="#ac008e">&gt;</font><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#ac008e">&lt;</font><font color="#2145f9">c_presentation</font><font color="#ac008e">&gt;</font>s<font color="#ac008e">&lt;/</font><font color="#2145f9">c_presentation</font><font color="#ac008e">&gt;</font></td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#ac008e">&lt;</font><font color="#2145f9">c_drill</font><font color="#ac008e">&gt;</font>y<font color="#ac008e">&lt;/</font><font color="#2145f9">c_drill</font><font color="#ac008e">&gt;</font><br/>
+&nbsp;&nbsp;<font color="#ac008e">&lt;/</font><font color="#2145f9">column</font><font color="#ac008e">&gt;</font><br/>
+<br/>
+<font color="#ac008e">&lt;/</font><font color="#2145f9">table</font><font color="#ac008e">&gt;</font><br/>
+</td></tr></table></pre>

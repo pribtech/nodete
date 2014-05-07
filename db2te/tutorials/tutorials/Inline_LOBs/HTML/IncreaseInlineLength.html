@@ -1,0 +1,33 @@
+<p>Select the three actions on this page in order.</p>
+
+
+<h4>Increase LOB inline length</h4>
+In the first step, we will increase the LOB inline length to 2000 btyes for the VIEW_TEXT column so that all LOBs in that column can be inlined. You may alter the LOB column to increase the inline length with the following command. Note that you cannot reduce the inline length.
+
+<pre><code>
+ALTER TABLE INLINELOBDATA
+      ALTER COLUMN VIEW_TEXT
+        SET INLINE LENGTH 2000
+</code></pre>
+
+<p></p>
+
+<h4>Reorg table</h4>
+Step two REORG table with the LONGLOBDATA option so that the new inline length can take in effect. This option converts any potential LOB descriptors into inlined LOB data.
+
+<pre><code>
+CALL ADMIN_CMD('REORG TABLE INLINELOBDATA LONGLOBDATA')
+</code></pre>
+
+<p></p>
+<h4>Retrieve Inline LOB data again</h4>
+The last step executes the same SQL query in the previous pages and observe the direct read and write activities.
+
+<pre><code>
+SELECT VIEW_TEXT, COLUMN_TEXT
+  FROM INLINELOBDATA
+</code></pre>
+
+<p>Taking the 104 direct reads overhead from TE, you should see that there is no more direct read and write activity because all LOBs in the INLINELOBDATA table are all inlined.</p>
+
+

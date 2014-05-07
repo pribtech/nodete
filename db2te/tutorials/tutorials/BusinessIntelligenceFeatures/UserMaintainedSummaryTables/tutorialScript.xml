@@ -1,0 +1,120 @@
+<tutorial name="User Maintained Summary tables">
+<globalCodeHighlightOptions highlightCode="true" /><flowRestriction>forwardexploration</flowRestriction>
+    <closeAction />
+    <openAction />
+    <pageList>
+    	<page name="User Maintained Summary tables" type="intro">
+            <entryAction />
+            <exitAction name="createEmployeeTable" type="serverAction">
+                <parameterList>
+                    <parameter name="action" type="fixed">
+                        <value>createTablesFromSampleDatabase</value>
+                    </parameter>
+                    <parameter name="schema" type="constant">
+                        <value>SCHEMA</value>
+                    </parameter>
+                    <parameter name="table" type="fixed">
+                        <value>EMPLOYEE</value>
+					</parameter>
+                </parameterList>
+                <followOnAction condition="false">
+                    <task>
+                        <action name="" type="alert">
+                            <message>Failed to create base tables for initial setup of tutorial. Cannot proceed further with tutorial.</message>
+                        </action>
+                    </task>
+                    <task>
+                        <setActionReturn>false</setActionReturn>
+                    </task>
+                </followOnAction>
+				<followOnAction condition="[0-9][0-9]*">
+                    <task>
+                        <assignLocalParameter name="ERROR_MESSAGE" type="returnObject">
+                            <value>createEmployeeTable.returnValue</value>
+                        </assignLocalParameter>
+						<action name="" type="alert">
+							<message>Failed to create base tables for initial setup of tutorial. Cannot proceed further with tutorial. SQLMSG: ?ERROR_MESSAGE?</message>
+						</action>
+                    </task>
+                    <task>
+                        <setActionReturn>false</setActionReturn>
+                    </task>
+                </followOnAction>
+            </exitAction>
+            <contentFile>01_User-MaintainedSummaryTables.html</contentFile>
+			<autoLoadLink>
+				<pageWindow target="informationWindow">
+					<panel name="main">
+						<URL>http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.dwe.cubeserv.doc/topics/coptsummarytbl.html</URL>
+					</panel>
+				</pageWindow>
+			</autoLoadLink>
+        </page>
+    <page name="Summarize Employee Table data" type="general">
+            <entryAction />
+            <exitAction />
+            <contentFile>02_SummarizeEmployeeTableData.html</contentFile>
+			<SQLFile>01_SummarizeEmployeeTableData.sql</SQLFile>
+        </page><page name="Create a User-Maintained Summary table based on this information" type="general">
+            <entryAction />
+            <exitAction />
+            <contentFile>03_CreateAUser-MaintainedSummaryTableBasedOnThisInformation.html</contentFile>
+            <SQLFile>02_CreateAUser-MaintainedSummaryTableBasedOnThisInformation.sql</SQLFile>
+        </page><page name="Turn off integrity and summary tables and insert the current statistics to the user-maintained summary table" type="general">
+            <entryAction name="checkForUMST_EMPLOYEE" type="serverAction">
+            	<parameterList>
+					<parameter name="action" type="fixed">
+						<value>checkForObject</value>
+					</parameter>
+					<parameter name="objectType" type="fixed">
+						<value>table</value>
+					</parameter>
+					<parameter name="object[schema]" type="constant">
+						<value>SCHEMA</value>
+					</parameter>
+					<parameter name="object[table]" type="raw">
+						<value>UMST_EMPLOYEE</value>
+					</parameter>
+				</parameterList>
+				<followOnAction condition="false"> 
+					<task>
+						<action name="alertTablesNotCreated" type="alert">
+							<message>The required tables must be created before proceeding with the tutorial.</message>
+						</action>
+							<setActionReturn value="false" />
+					</task>
+				</followOnAction>
+			</entryAction>
+            <exitAction />
+            <contentFile>04_TurnOffIntegrityOnTheTableSoThatWeLoadIntoIt.html</contentFile>
+            <SQLFile>03_TurnOffIntegrityOnTheTableSoThatWeLoadIntoIt.sql</SQLFile>
+        </page><page name="Turn on optimization and then query with the same attributes (All Employees and their salaries)" type="general">
+            <entryAction name="checkForInsert" type="serverAction">
+        		<parameterList>
+        			<parameter name="action" type="fixed">
+        				<value>checkForRow</value>
+        			</parameter>
+        			<parameter name="schema" type="constant">
+        				<value>SCHEMA</value>
+        			</parameter>
+        			<parameter name="name" type="fixed">
+        				<value>UMST_EMPLOYEE</value>
+        			</parameter>
+        		</parameterList>
+        		<followOnAction condition="true" negCondition="true">
+        			<task>
+        				<action name="displayMsgForFailedInsert" type="alert">
+        					<message>Data hasn't been inserted in the table. Please try this step again.</message>
+        				</action>
+        			</task>
+        			<task>
+        				<setActionReturn>false</setActionReturn>
+        			</task>
+        		</followOnAction>
+        	</entryAction>
+            <exitAction />
+            <contentFile>05_TurnOnOptimizationSoThatItCanUseThisSummaryTable.html</contentFile>
+			<SQLFile>04_TurnOnOptimizationSoThatItCanUseThisSummaryTable.sql</SQLFile>
+        </page>
+    </pageList>
+</tutorial>

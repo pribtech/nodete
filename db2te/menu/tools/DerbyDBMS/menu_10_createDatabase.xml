@@ -1,0 +1,93 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2011 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+<menu type="leaf" branchDirectory="" GUID="createDerbyDB">
+   <description>Create Derby Database</description>
+
+	<actionScript name="createDerbyDB" type="form">
+		<message>
+<![CDATA[
+<div style='width:500px'>
+<h1>Create Derby Database</h1>
+<table>
+	<tr><td>Host</td>		<td>:</td><td><input type="text" name="HOST" value="localhost" style="width:300px"/></td></tr>
+	<tr><td>Port</td>		<td>:</td><td><input type="text" name="PORT" value="1527" style="width:300px"/></td></tr>
+	<tr><td>Database</td>	<td>:</td><td><input type="text" name="DATABASE" style="width:300px"/></td></tr>
+	<tr><td>Database</td>	<td>:</td><td><input type="text" name="OPTIONS" value="ssl=basic;" style="width:300px"/></td></tr>
+</table>
+</div>
+]]>
+ 	   </message>
+		<parameterList>
+        	<parameter name="HOST" type="blockValue">
+				<value>HOST</value>
+			</parameter>
+    	    <parameter name="PORT" type="blockValue">
+				<value>PORT</value>
+			</parameter>
+    	   	 <parameter name="DATABASE" type="blockValue">
+				<value>DATABASE</value>
+			</parameter>
+    	   	 <parameter name="OPTIONS" type="blockValue">
+				<value>OPTIONS</value>
+			</parameter>
+			<parameter name="buttonOK" type="raw">
+				<value>Create DB</value>
+			</parameter>
+		</parameterList>
+		<if condition="true">
+			<task>
+				<action name="createDatabase" type="serverAction">
+					<parameterList>
+						<parameter name="action" type="fixed">
+							<value>DBConnectionSet</value>
+						</parameter>
+						<parameter name="databaseDriver" type="raw">
+							<value>Derby</value>
+						</parameter>
+						<parameter name="host" type="fixed">
+							<value>?HOST?</value>
+						</parameter>
+						<parameter name="port" type="fixed">
+							<value>?PORT?</value>
+						</parameter>
+						<parameter name="database" type="fixed">
+							<value>?DATABASE?</value>
+						</parameter>
+						<parameter name="options" type="fixed">
+							<value>create=true;?OPTIONS?</value>
+						</parameter>
+					</parameterList>
+					<if condition="true" negCondition="true">
+						<task>
+							<assignSharedConstant name="ERROR_MESSAGE" type="returnObject">
+								<value>createDatabase.returnValue</value>
+							</assignSharedConstant>
+							<alert>Failed to create ?DATABASE? : ?ERROR_MESSAGE?</alert>
+							<retry name="createDerbyDB"/>
+						</task>
+					</if>
+					<if condition="true">
+						<task>
+							<alert>Created Derby database ?DATABASE?</alert>
+						</task>
+					</if>
+				</action>
+			</task>
+		</if>
+	</actionScript>
+</menu>

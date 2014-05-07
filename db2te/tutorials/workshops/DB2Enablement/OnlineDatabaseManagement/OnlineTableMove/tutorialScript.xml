@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tutorial name="Online Table Move" useLongAdHoc="true">
+	<flowRestriction>forwardExploration</flowRestriction>
+	<globalCodeHighlightOptions  highlightCode="true" />
+	<closeAction/>
+	<openAction/>
+	<pageList>
+		<page name="Online Table Move" type="general">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>OnlineTableMove.html</contentFile>
+			<autoLoadLink>
+				<pageWindow target="informationWindow">
+					<panel name="main" PrimaryContainer="true">
+						<URL>http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.sql.rtn.doc/doc/r0055069.html</URL>
+					</panel>
+				</pageWindow>
+			</autoLoadLink>
+		</page>		
+
+		<page name="Create Tablespace " type="general">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>CreateTablespaces.html</contentFile>
+			<SQLFile>CreateTablespace.SQL</SQLFile>
+			<SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar="@"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+			<codeHighlightOptions highlightCode="true">
+				<changedHighlightTokens>
+					<text>CREATE TABLESPACE tbs2</text>
+					<text>CREATE TABLESPACE tbs3</text>
+					<text>DROP FOREIGN KEY</text>
+				</changedHighlightTokens>
+			</codeHighlightOptions>
+		</page>		
+
+		<page name="Online Table Move" type="general">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>MoveOnline.html</contentFile>
+			<autoLoadLink>
+			<pageWindow target="_final">
+			<title>Move and Fetch records from table ORDER_DETAILS simultaneously</title>
+			<splitPane direction="h" splitPercent="0.5">
+				<topPane>
+					<panel name="second" overflow="hidden">
+						<link type="action" target="_self" window="_self" connectionRequired="y">
+							<parameterList>
+								<parameter name="action">ADHOC</parameter>
+								<parameter name="AdHocLong">true</parameter>
+								<parameter name="schema">?SCHEMA?</parameter>
+								<parameter name="termChar">@</parameter>
+								<parameter name="numRowReturned">2000</parameter>
+								<parameter name="commitPerStmt">true</parameter>
+								<parameter name="LoadSQLData">
+CALL DBMS_OUTPUT.ENABLE(300000)@
+								
+BEGIN
+
+  DECLARE at_end INTEGER DEFAULT 0;
+  DECLARE v_order_id NUMBER(10);
+  DECLARE v_product_id NUMBER(10);
+  DECLARE v_product_quantity NUMBER(8);  
+  DECLARE at_end_F SMALLINT DEFAULT 0;
+  DECLARE not_found CONDITION for SQLSTATE '02000';
+
+  DECLARE Iterate CURSOR WITH HOLD FOR SELECT order_id, product_id, product_quantity FROM ?SCHEMA?.ORDER_DETAILS;
+  DECLARE CONTINUE HANDLER for not_found SET at_end_F = 1;
+
+  ins_loop: LOOP
+    IF at_end = 100 THEN
+      LEAVE ins_loop;
+    ELSE
+      SET at_end = at_end + 1;
+ OPEN Iterate;
+  ins_loop2: LOOP
+    IF at_end_F = 1 THEN
+      LEAVE ins_loop2;
+    ELSE
+	   FETCH Iterate INTO v_order_id, v_product_id, v_product_quantity;
+       CALL DBMS_OUTPUT.PUT_LINE('');
+       CALL DBMS_OUTPUT.PUT_LINE('');
+       CALL DBMS_OUTPUT.PUT_LINE('Order Details');
+       CALL DBMS_OUTPUT.PUT_LINE('--------------------------------------------------------');
+       CALL DBMS_OUTPUT.PUT_LINE('ORDER ID                   :' || v_order_id);
+       CALL DBMS_OUTPUT.PUT_LINE('PRODUCT ID                 :' || v_product_id);  
+       CALL DBMS_OUTPUT.PUT_LINE('PRODUCT QUANTITY           :' || v_product_quantity);
+       CALL DBMS_OUTPUT.PUT_LINE('--------------------------------------------------------'); 
+       ITERATE ins_loop2;
+    END IF;
+  END LOOP;
+  CLOSE Iterate;      
+    ITERATE ins_loop;
+    END IF;
+ END LOOP;
+END@
+
+call DBMS_OUTPUT.GET_TEXT(?!?)@
+								</parameter>
+							</parameterList>
+						</link>				
+					</panel>				
+				</topPane>
+				<bottomPane>
+					<panel name="first" overflow="hidden">
+						<link type="action" target="_self" window="_self" connectionRequired="y">
+							<parameterList>
+								<parameter name="action">ADHOC</parameter>
+								<parameter name="AdHocLong">true</parameter>
+								<parameter name="schema">?SCHEMA?</parameter>
+								<parameter name="commitPerStmt">true</parameter>
+								<parameter name="LoadSQLData">
+								CALL SYSPROC.ADMIN_MOVE_TABLE ('?SCHEMA?', 'ORDER_DETAILS', 'TBS2', 'TBS2', 'TBS2', '', '', '', '', '', 'MOVE')
+								</parameter>
+							</parameterList>
+						</link>				
+					</panel>
+				</bottomPane>
+		</splitPane>
+	</pageWindow>
+</autoLoadLink>
+</page>	
+	
+		
+<!--		<page name="Online Table Move with INSERT options" type="general">
+			<entryAction></entryAction>
+			<exitAction />
+			<contentFile>OnlineTableMovewithDefault.html</contentFile>
+			<loadActionScriptFile>
+				FetchOrderDetailsandMovetable.xml
+			</loadActionScriptFile>
+		</page>
+		
+		<page name="Online Table Move with LOAD option" type="general">
+			<entryAction></entryAction>
+			<exitAction />
+			<contentFile>OnlineTableMoveWithLoad.html</contentFile>
+			<loadActionScriptFile>
+				FetchOrderDetailsandMovetablewithLoad.xml
+			</loadActionScriptFile>
+		</page> -->
+		
+		<page name="Compare Performances" type="general">
+			<entryAction></entryAction>
+			<exitAction />
+			<contentFile>ComparePerformance.html</contentFile>
+			<loadActionScriptFile>
+				MoveTableandComprarePerformance.xml
+			</loadActionScriptFile>
+		</page>	
+		
+		<page name="Explore Tables" type="general">
+			<entryAction></entryAction>
+			<exitAction />
+			<contentFile>ExploreTables.html</contentFile>
+			<autoLoadLink>
+				<pageWindow target="informationWindow" raiseToTop="y">
+					<splitPane direction="h">
+						<topPane>
+							<panel name="main" PrimaryContainer="true">
+								<link type="action" target="_self" window="_self"
+									connectionRequired="y">
+									<parameterList>
+										<parameter name="table">tablecat</parameter>
+										<parameter name="action">list_table</parameter>
+										<parameter name="tabschema">?SCHEMA?</parameter>
+									</parameterList>
+								</link>
+							</panel>
+						</topPane>
+						<bottomPane>
+							<panel name="detail"/>
+						</bottomPane>
+					</splitPane>
+				</pageWindow>
+			</autoLoadLink>
+		</page>	
+		
+		<page name="Add keys again" type="general">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>AddKeys.html</contentFile>
+			<SQLFile>AddKeys.SQL</SQLFile>
+			<SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+		</page>			
+	
+	</pageList>
+</tutorial>

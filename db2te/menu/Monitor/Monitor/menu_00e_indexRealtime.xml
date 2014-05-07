@@ -1,0 +1,54 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2009 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+
+<menu type="leaf" branchDirectory=""  minVersion="9.7">
+	<description>Monitor Index Realtime</description>
+	<pageWindow target="_active">
+		<title>Monitor Index Activity</title> <info>Monitor Index Activity</info>
+		<panelHeaders refreshEnabled="true">
+          	<autoRefreshControls>
+            	<countdownVisible>true</countdownVisible>
+            	<timeVisible>true</timeVisible> 
+                <time>10</time>
+                <timeOptions>[1,5,10,20,60]</timeOptions>
+        	</autoRefreshControls> 
+		</panelHeaders>
+						<panel name="DB" >
+							<link type="action" target="_self" window="_self" connectionRequired="y">
+								<parameterList>
+									<parameter name="table">Monitor/monIndex</parameter>
+									<parameter name="action">chart</parameter>
+									<parameter name="refresh">append</parameter>
+									<parameter name="$chartName">IndexActivity</parameter>
+									<parameter name="$chartTitle">Index Activity</parameter>
+									<parameter name="$type">line</parameter>
+									<parameter name="$xAxis">SAMPLE_TS</parameter>
+									<parameter name="$yAxis">INDEX_SCANS</parameter>
+									<parameter name="$grouping">INDSCHEMA,INDNAME</parameter>
+									<parameter name="$legend">show</parameter>
+									<parameter name="$yScale">EXPONENTIAL</parameter>
+									<parameter name="$highlight">first</parameter>
+									<parameter name="maxResultsToFetch">1000</parameter>
+									<parameter name="INDEX_SCANS">0</parameter>
+									<parameter name="compareINDEX_SCANS">gt</parameter>
+								</parameterList>
+							</link>				
+						</panel>
+
+	</pageWindow>
+</menu>

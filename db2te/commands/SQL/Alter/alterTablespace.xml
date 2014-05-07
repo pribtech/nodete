@@ -1,0 +1,323 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2010 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<command name="alterTablespace" title="Alter Tablespace">
+<![CDATA[
+>>-ALTER TABLESPACE--tablespace-name---------------------------->
+]]>
+	<text>ALTER TABLESPACE</text>
+	<clauseReference name="tablespace-name"/>
+	<br/>
+<![CDATA[
+   .-----------------------------------------------------------------------------------------------------------.   
+   V                                                                                                           |   
+>----+-ADD--+-+--------------------------+--| database-container-clause |--+-----------------------------+-+-+-+-><
+     |      | '-TO STRIPE SET--stripeset-'                                 '-| on-db-partitions-clause |-' | |     
+     |      '-| system-container-clause |--| on-db-partitions-clause |-------------------------------------' |     
+     +-BEGIN NEW STRIPE SET--| database-container-clause |--+-----------------------------+------------------+     
+     |                                                      '-| on-db-partitions-clause |-'                  |     
+     +-DROP--| drop-container-clause |--+-----------------------------+--------------------------------------+     
+     |                                  '-| on-db-partitions-clause |-'                                      |     
+     +-REDUCE--+-------------------------------+--+-----------------------------+----------------------------+     
+     |         +-| database-container-clause |-+  '-| on-db-partitions-clause |-'                            |     
+     |         '-| all-containers-clause |-----'                                                             |     
+     +-+-EXTEND-+--+-| database-container-clause |-+--+-----------------------------+------------------------+     
+     | '-RESIZE-'  '-| all-containers-clause |-----'  '-| on-db-partitions-clause |-'                        |     
+     +-PREFETCHSIZE--+-AUTOMATIC-------+---------------------------------------------------------------------+     
+     |               +-number-of-pages-+                                                                     |     
+     |               '-integer--+-K-+--'                                                                     |     
+     |                          +-M-+                                                                        |     
+     |                          '-G-'                                                                        |     
+     +-BUFFERPOOL--bufferpool-name---------------------------------------------------------------------------+     
+     +-OVERHEAD--number-of-milliseconds----------------------------------------------------------------------+     
+     +-TRANSFERRATE--number-of-milliseconds------------------------------------------------------------------+     
+     +-+-FILE SYSTEM CACHING----+----------------------------------------------------------------------------+     
+     | '-NO FILE SYSTEM CACHING-'                                                                            |     
+     +-DROPPED TABLE RECOVERY--+-ON--+-----------------------------------------------------------------------+     
+     |                         '-OFF-'                                                                       |     
+     +-SWITCH ONLINE-----------------------------------------------------------------------------------------+     
+     +-AUTORESIZE--+-NO--+-----------------------------------------------------------------------------------+     
+     |             '-YES-'                                                                                   |     
+     +-INCREASESIZE--integer--+-PERCENT-+--------------------------------------------------------------------+     
+     |                        '-+-K-+---'                                                                    |     
+     |                          +-M-+                                                                        |     
+     |                          '-G-'                                                                        |     
+     +-MAXSIZE--+-integer--+-K-+-+---------------------------------------------------------------------------+     
+     |          |          +-M-+ |                                                                           |     
+     |          |          '-G-' |                                                                           |     
+     |          '-NONE-----------'                                                                           |     
+     '-CONVERT TO LARGE--------------------------------------------------------------------------------------'     
+]]>
+
+	<repeatable separator="">
+		<select>
+			<option default="true">
+				<text>ADD</text>
+				<select>
+					<option default="true">
+						<select>
+							<option default="true"></option>
+							<option><text>TO STRIPE SET</text><clauseReference name="stripeset"/></option>
+						</select>
+						<clauseReference name="on-db-partitions-clause"/>
+						<select>
+							<option default="true"></option>
+							<option><clauseReference name="on-db-partitions-clause"/></option>
+						</select>
+					</option>
+					<option><clauseReference name="system-container-clause"/><clauseReference name="on-db-partitions-clause"/></option>
+				</select>
+			</option> 
+			<option>
+				<text>BEGIN NEW STRIPE SET</text><clauseReference name="database-container-clause"/>
+				<select>
+					<option default="true"></option>
+					<option><clauseReference name="on-db-partitions-clause"/></option>
+				</select>
+			</option> 
+			<option>
+				<text>DROP</text><clauseReference name="drop-container-clause"/>
+				<select>
+					<option default="true"></option>
+					<option><clauseReference name="on-db-partitions-clause"/></option>
+				</select>
+			</option> 
+			<option>
+				<text>REDUCE</text>
+				<select>
+					<option default="true"></option>
+					<option><clauseReference name="database-container-clause"/></option>
+					<option><clauseReference name="all-containers-clause"/></option>
+				</select>
+				<select>
+					<option default="true"></option>
+					<option><clauseReference name="on-db-partitions-clause"/></option>
+				</select>
+			</option> 
+			<option>
+				<select>
+					<option default="true"><text>EXTEND</text></option>
+					<option><text>RESIZE</text></option>
+				</select>
+				<select>
+					<option default="true"><clauseReference name="database-container-clause"/></option>
+					<option><clauseReference name="all-containers-clause"/></option>
+				</select>
+				<select>
+					<option default="true"></option>
+					<option><clauseReference name="on-db-partitions-clause"/></option>
+				</select>
+			</option> 
+			<option>
+				<text>PREFETCHSIZE</text>
+				<select>
+					<option default="true"><text>AUTOMATIC</text></option>
+					<option><clauseReference name="number-of-pages"/></option>
+					<option>
+						<clauseReference name="integer-constant"/>
+						<select>
+							<option default="true"><text>K</text></option>
+							<option><text>M</text></option>
+							<option><text>G</text></option>
+						</select>
+					</option>
+				</select>
+			</option> 
+			<option>
+				<text>BUFFERPOOL</text><clauseReference name="bufferpool-name"/>
+			</option> 
+			<option>
+				<text>OVERHEAD</text><clauseReference name="number-of-milliseconds"/>
+			</option> 
+			<option>
+				<text>TRANSFERRATE</text><clauseReference name="number-of-milliseconds"/>
+			</option> 
+			<option>
+				<select>
+					<option default="true"><text>FILE SYSTEM CACHING</text></option>
+					<option><text>NO FILE SYSTEM CACHING</text></option>
+				</select>
+			</option> 
+			<option>
+				<text>DROPPED TABLE RECOVERY</text>
+				<select>
+					<option default="true"><text>ON</text></option>
+					<option><text>OFF</text></option>
+				</select>
+			</option> 
+			<option>
+				<text>SWITCH ONLINE</text>
+			</option> 
+			<option>
+				<text>AUTORESIZE</text>
+				<select>
+					<option default="true"><text>YES</text></option>
+					<option><text>NO</text></option>
+				</select>
+			</option> 
+			<option>
+				<text>INCREASESIZE</text>
+				<clauseReference name="integer-constant"/>
+				<select>
+					<option default="true"><text>PERCENT</text></option>
+					<option>
+						<select>
+							<option default="true"><text>K</text></option>
+							<option><text>M</text></option>
+							<option><text>G</text></option>
+						</select>
+					</option>
+				</select>
+			</option> 
+			<option>
+				<text>MAXSIZE</text>
+				<select>
+					<option default="true">
+						<clauseReference name="integer-constant"/>
+						<select>
+							<option default="true"><text>K</text></option>
+							<option><text>M</text></option>
+							<option><text>G</text></option>
+						</select>
+					</option>
+					<option><text>NONE</text></option>
+				</select>
+			</option> 
+			<option>
+				<text>CONVERT TO LARGE</text>
+			</option> 
+		</select>
+	</repeatable>
+
+	<clause name="database-container-clause">
+<![CDATA[
+      .-,---------------------------------------------------.      
+      V                                                     |      
+|--(----+-FILE---+--'container-string'--+-number-of-pages-+-+--)--|
+        '-DEVICE-'                      '-integer-constant--+-K-+--'        
+                                                   +-M-+           
+                                                   '-G-'           
+]]>
+		<text>(</text>
+		<repeatable>
+			<select>
+				<option default="true"><text>FILE</text></option>
+				<option><text>DEVICE</text></option>
+			</select>
+			<clauseReference name="container-string"/>
+			<select>
+				<option default="true"><clauseReference name="number-of-pages"/></option>
+				<option>
+					<clauseReference name="integer-constant"/>
+					<select>
+						<option default="true"><text>K</text></option>
+						<option><text>M</text></option>
+						<option><text>G</text></option>
+					</select>
+				</option>
+			</select>
+		</repeatable>
+		<text>)</text>
+	</clause>
+
+	<clause name="drop-container-clause">
+<![CDATA[
+      .-,------------------------------.      
+      V                                |      
+|--(----+-FILE---+--'container-string'-+--)---------------------|
+        '-DEVICE-'                            
+]]>
+		<text>(</text>
+			<repeatable>
+				<select>
+					<option default="true"><text>FILE</text></option>
+					<option><text>DEVICE</text></option>
+				</select>
+				<clauseReference name="container-string"/>
+			</repeatable>
+		<text>)</text>
+	</clause>
+
+	<clause name="system-container-clause">
+<![CDATA[
+      .-,------------------.      
+      V                    |      
+|--(----'container-string'-+--)---------------------------------|
+]]>
+		<text>(</text>
+		<repeatable>
+			<clauseReference name="container-string"/>
+		</repeatable>
+		<text>)</text>
+	</clause>
+
+	<clause name="on-db-partitions-clause">
+<![CDATA[
+|--ON--+-DBPARTITIONNUM--+-------------------------------------->
+       '-DBPARTITIONNUMS-'   
+
+      .-,--------------------------------------------------.      
+      V                                                    |      
+>--(----db-partition-number1--+--------------------------+-+--)--|
+                              '-TO--db-partition-number2-'        
+]]>
+		<text>ON</text>
+		<select>
+			<option default="true"><text>DBPARTITIONNUM</text></option>
+			<option><text>DBPARTITIONNUMS</text></option>
+		</select>
+		<text>(</text>
+		<repeatable>
+			<text>'</text>
+			<clauseReference name="db-partition-number"/>
+			<text>'</text>
+			<select>
+				<option default="true"></option>
+				<option><text>TO</text><clauseReference name="db-partition-number"/></option>
+			</select>
+		</repeatable>
+		<text>)</text>
+	</clause>
+
+	<clause name="all-containers-clause">
+<![CDATA[
+           .-CONTAINERS-.                           
+|--(--ALL--+------------+--+-number-of-pages-+--)---------------|
+                           '-integer-constant--+-K-+--'      
+                                      +-M-+         
+                                      '-G-'         
+]]>
+		<text>( ALL</text>
+		<select>
+			<option><text>CONTAINERS</text></option>
+			<option default="true"><note>CONTAINERS</note></option>
+		</select>
+		<select>
+			<option default="true"><clauseReference name="number-of-pages"/></option>
+			<option>
+				<clauseReference name="integer-constant"/>
+				<select>
+					<option default="true"><text>K</text></option>
+					<option><text>M</text></option>
+					<option><text>G</text></option>
+				</select>
+			</option>
+		</select>
+		<text>)</text>
+	</clause>
+</command>
+        

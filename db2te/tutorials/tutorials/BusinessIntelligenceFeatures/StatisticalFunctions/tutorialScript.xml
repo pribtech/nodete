@@ -1,0 +1,46 @@
+<tutorial name="Statistical Functions">
+    <globalCodeHighlightOptions highlightCode="true" /><flowRestriction>forwardexploration</flowRestriction>
+    <closeAction />
+    <openAction />
+    <pageList>
+    	<page name="Statistical Functions" type="intro">
+            <entryAction />
+            <exitAction />
+            <contentFile>01_StatisticalFunctions.html</contentFile>
+            <SQLFile>01_GenerateLinearData.sql</SQLFile>
+            <autoLoadLink />
+        </page>
+        <page name="Correlation" type="general">
+             <entryAction name="checkForInsert" type="serverAction">
+        		<parameterList>
+        			<parameter name="action" type="fixed">
+        				<value>checkForRow</value>
+        			</parameter>
+        			<parameter name="schema" type="constant">
+        				<value>SCHEMA</value>
+        			</parameter>
+        			<parameter name="name" type="fixed">
+        				<value>STATS</value>
+        			</parameter>
+        		</parameterList>
+        		<followOnAction condition="true" negCondition="true">
+        			<task>
+        				<action name="displayMsgForFailedInsert" type="alert">
+        					<message>Data hasn't been inserted in the table. Please try this step again.</message>
+        				</action>
+        			</task>
+        			<task>
+        				<setActionReturn>false</setActionReturn>
+        			</task>
+        		</followOnAction>
+        	</entryAction>
+            <exitAction />
+            <contentFile>02_Correlation.html</contentFile>
+            <SQLFile>02_Correlation.sql</SQLFile>
+        </page><page name="Standard Deviation" type="last">
+            <entryAction />
+            <exitAction />
+            <contentFile>03_StandardDeviation.html</contentFile>
+			<SQLFile>03_StandardDeviation.sql</SQLFile>
+        </page></pageList>
+</tutorial>

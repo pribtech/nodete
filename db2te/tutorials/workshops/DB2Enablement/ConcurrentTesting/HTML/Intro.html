@@ -1,0 +1,56 @@
+<H2><B>New concurrency semantics in DB2</B></H2><HR>
+<p>
+Many users access and change data in a relational database, the database manager 
+must allow users to make these changes while ensuring that data integrity is preserved. 
+In earlier DB2 versions, <b class="sourceCopiedFrom">Cursor Stability (CS)</b> isolation level prevented an application from reading any row that was changed 
+by other applications until the change was committed.
+This causes <b class="sourceChange"> Writers to block readers and Readers may block writers.</b>
+</p>
+
+DB2 9.7 offers a new <b class="sourceCopiedFrom">currently committed</b> semantics to significantly improve concurrency. 
+With the enhancement, <b class="sourceChange">Writers do not block readers and Readers do not block writers.</b> 	
+<br><br>	
+<table border="1">
+<tr>
+<th><b> Prior to DB2 9.7</b></th>
+<th><b> Blocks -></b></th>
+<th><b> Readers </b></th>
+<th><b> Writers </b></th>
+</tr>
+<tr>
+<td bgcolor="#4169E1"><b>Cursor Stability Isolation</b></td>
+<td> Readers</td>
+<td> NO </td>
+<td bgcolor="#FF0000"> MAY BE</td>
+</tr>
+<tr> 
+<td bgcolor="#4169E1"></td>
+<td> Writers </td>
+<td bgcolor="#FF0000"> YES</td>
+<td>YES</td>
+</tr>
+</table>
+<br>
+<table border="1">
+<tr>
+<th><b> In DB2 9.7 </b></th>
+<th><b> Blocks -></b></th>
+<th><b> Readers </b></th>
+<th><b> Writers </b></th>
+</tr>
+<tr>
+<td bgcolor="#4169E1"><b>Cursor Stability Isolation</b></td>
+<td> Readers</td>
+<td> NO </td>
+<td bgcolor="#00FF00"> NO </td>
+</tr>
+<tr> 
+<td bgcolor="#4169E1"></td>
+<td> Writers </td>
+<td bgcolor="#00FF00"> NO</td>
+<td>YES</td>
+</tr>
+</table>	
+<br><br>
+The currently committed behavior is controlled by the database configuration parameter <b class="sourceCopiedFrom">CUR_COMMIT</b>. You can find out the setting of the parameter from TE, go to View > Configuration > DB Config. 
+

@@ -1,0 +1,83 @@
+
+<action name="DBconnectionSetConnection" type="blank" lockScreen="true">
+	<if condition="SAVEFILE" compareOn="RUN_ACTION" compareOnType="constant" conditionCompairType="str">
+		<task>
+			<action name="saveFile" type="fileDialog">
+				<parameterList>
+					<parameter name="title" type="fixed">
+						<value>Save File</value>
+					</parameter>
+				</parameterList>
+				<followOnAction condition="true">
+					<task>
+						<action name="getFile" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="fixed">
+									<value>AdHocSQL/saveFile</value>
+								</parameter>
+								<parameter name="fileName" type="returnObject">
+									<value>saveFile.returnValue</value>
+								</parameter>
+								<parameter name="data" type="constant">
+									<value>SQL_TEXT</value>
+								</parameter>
+							</parameterList>
+							<followOnAction condition="true">
+								<task>
+									<alert>File saved</alert>
+								</task>
+							</followOnAction>
+							<followOnAction condition="false">
+								<task>
+									<alert>?RETURN_VALUE?</alert>
+									<gotoAction name="saveFile"/>
+								</task>
+							</followOnAction>
+							<followOnAction condition="error">
+								<task>
+									<alert>?RETURN_VALUE?</alert>
+								</task>
+							</followOnAction>
+						</action>
+					</task>
+				</followOnAction>
+			</action>
+		</task>
+	</if>
+	<if condition="OPENFILE" compareOn="RUN_ACTION" compareOnType="constant" conditionCompairType="str">
+		<task>
+			<action  name="fileOpen" type="fileDialog">
+				<parameterList>
+					<parameter name="title" type="fixed">
+						<value>Open File</value>
+					</parameter>
+				</parameterList>
+				<followOnAction condition="true">
+					<task>
+						<action name="getFile" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="fixed">
+									<value>AdHocSQL/openFile</value>
+								</parameter>
+								<parameter name="fileName" type="returnObject">
+									<value>fileOpen.returnValue</value>
+								</parameter>
+							</parameterList>
+							<followOnAction condition="true">
+								<task>
+									<blockUpdate/>
+								</task>
+							</followOnAction>
+							<followOnAction condition="false">
+								<task>
+									<alert>?RETURN_VALUE?</alert>
+									<gotoAction name="fileOpen"/>
+								</task>
+							</followOnAction>
+						</action>
+					</task>
+				</followOnAction>
+			</action>
+		</task>
+	</if>
+</action>

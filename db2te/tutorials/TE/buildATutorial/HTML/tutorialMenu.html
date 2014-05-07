@@ -1,0 +1,51 @@
+<p>The Technology Explorer for IBM DB2 uses an XML based menu system. For the tutorial to be loaded the menu item to the right will need to be created. </p>
+
+<p>Steps to complete:
+<ul>
+<li>Create a file called 'menu_30_tableJoinTutorial.xml' in the folder './tutorials/'</li>
+<li>Copy the contents of tab 'menu_30_tableJoinTutorial.xml ' located to the right into the new created file</li>
+<li>Save & close the file</li>
+<li>From the menu select 'File->Reload menu'</li>
+<li>Once the menu has reloaded open your tutorial from 'Learn->About table joins'</li>
+</ul></p>
+<p>Nothing Exciting will be shown as you have no pages in your tutorial yet.</p>
+
+<h2>Extra:</h2>
+
+<p>Menus are a tutorial in them selves below is a brief description of the menu structure presented to the right
+<br/>
+Root element 'menu' 
+<ul>
+<li>attribute 'type' <ul><li>Value option : 'leaf' (indicates that something is to be loaded, 'branch' (expect the attribute 'branchDirectory' that will be a sub directory where more menu files can be loaded), 'line' (will produce a line break with in the generated menu)</li></ul></li>
+<li>attribute 'branchDirectory' <ul><li>Value sub directory where to load more menu files from, will only be used when the type is 'branch'</li></ul></li>
+<li>element 'description' <ul><li>String value used as the title for the menu item</li></ul></li>
+<li>element 'pageWindow' <ul><li>This indicate that a page layout is to be loaded</li></ul>
+<ul><li>attribute 'target' <ul><li>This indicates the window name to open the layout in, special name '_blank' (opens a new tab), '_final' (opens a new tab, no history is saved, will not accept a new layout or load new content from outside of the tab</li></ul></li>
+<li>element 'panel' <ul><li>This is a basic component that will display content</li></ul>
+<ul><li>attribute 'name' <ul><li>This is a unique identifier for the panel, no two panels within a 'pageWindow' element can have the same name</li></ul></li>
+<li>attribute 'PrimaryContainer' <ul><li>This indicates if the panel has the rights to set the window title and use the space within the window title bar, only one panel within a 'pageWindow' element should have this set to true</li></ul></li>
+<li>element 'link' <ul><li>Defines a content type to be loaded</li></ul>
+<ul><li>attribute 'type' <ul><li>Indicates the type of the link content to load, in this case it will load a client or server action</li></ul>
+</li><li>element 'parameterList' <ul><li>Contains a list of element that are parameters to be sent back into the calling object</li></ul>
+<ul><li>element 'parameter' <ul><li>A signle parameter to send to the object that is being called, the value contained is sent</li></ul>
+<ul><li>attribute 'name' <ul><li>The name of the parameter that is to be sent</li></ul>
+</li><li>attribute 'value' <ul><li>Specifies a special registry variable to be sent in, this will be replaced when the menu is processed</li></ul>
+  </li>
+  </ul>
+  </li>
+  </ul>
+  </li>
+  </ul>
+  </li>
+  </ul>
+  </li>
+  </ul>
+  </li>
+</ul>
+
+</p>
+<p>Parameter that are sent Back
+<ul><li>action<ul><li>This is the action that is to be called</li></ul></li>
+<li>tutorialName<ul><li>this is the sub directory where the tutorial is stored</li></ul></li>
+<li>CurrentMenuLocation<ul><li>using the special registry variable CURRENT_MENU_LOCATION this will send back the location of where the menu item was loaded from.</li></ul></li>
+</ul></p>

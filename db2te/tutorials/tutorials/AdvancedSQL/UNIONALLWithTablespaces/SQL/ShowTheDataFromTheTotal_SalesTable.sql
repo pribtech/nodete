@@ -1,0 +1,1 @@
+select * from Total_Sales where tx_item='A40';

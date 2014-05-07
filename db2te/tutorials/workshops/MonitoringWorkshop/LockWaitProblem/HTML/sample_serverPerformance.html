@@ -1,0 +1,249 @@
+<PRE>
+
+  Result set 1
+  --------------
+
+  TEXT                                                                            
+  --------------------------------------------------------------------------------
+  -------------------------------------------------------------------------------- 
+  
+  Monitoring report - database summary                                             
+  
+  -------------------------------------------------------------------------------- 
+  Database:                                 SAMPLE                                 
+  Generated:                                09/18/2009 16:19:40                    
+  Interval monitored:                       10                                     
+  
+  ================================================================================ 
+  Part 1 - System performance                                                      
+
+  Work volume and throughput                                                       
+  -------------------------------------------------------------------------------- 
+                                    Per second             Total                   
+                                    ---------------------  ----------------------- 
+  TOTAL_APP_COMMITS                 0                      0                       
+  ACT_COMPLETED_TOTAL               0                      0                       
+  APP_RQSTS_COMPLETED_TOTAL         0                      0                       
+                                                                                  
+  TOTAL_CPU_TIME                    = 0                                            
+  TOTAL_CPU_TIME per request        = 0
+                                                                                   
+  Row processing                                                                   
+    ROWS_READ/ROWS_RETURNED         = 0 (0/0)                                      
+    ROWS_MODIFIED                   = 0                                            
+                                                                                   
+  Wait times                                                                       
+  -------------------------------------------------------------------------------- 
+   <B><font color='BLUE'>                                                                               
+  -- Wait time as a percentage of elapsed time --                                  
+                                                                                  
+                                           %    Wait time/Total time               
+                                           ---  ---------------------------------- 
+  For requests                             99   66415/66416                        
+  For activities                           100  66415/66415                        </B></FONT>
+                                                                                   
+  -- Time waiting for next client request --                                       
+                                                                                   
+  CLIENT_IDLE_WAIT_TIME               = 20000                                      
+  CLIENT_IDLE_WAIT_TIME per second    = 2000                                       
+                                                                                   
+  <B><font color='BLUE'>-- Detailed breakdown of TOTAL_WAIT_TIME --                                      
+                                                                                  
+                                %    Total                                         
+                                ---  --------------------------------------------- 
+  TOTAL_WAIT_TIME               100  66415                                         
+                                                                                   
+  I/O wait time                                                                    
+    POOL_READ_TIME              0    0                                             
+    POOL_WRITE_TIME             0    0                                             
+    DIRECT_READ_TIME            0    0                                             
+    DIRECT_WRITE_TIME           0    0                                             
+    LOG_DISK_WAIT_TIME          0    0                                             
+  LOCK_WAIT_TIME                100  66415                                         
+  AGENT_WAIT_TIME               0    0                                             
+  Network and FCM                                                                  
+    TCPIP_SEND_WAIT_TIME        0    0                                             
+    TCPIP_RECV_WAIT_TIME        0    0                                             
+    IPC_SEND_WAIT_TIME          0    0                                             
+    IPC_RECV_WAIT_TIME          0    0                                             
+    FCM_SEND_WAIT_TIME          0    0                                             
+    FCM_RECV_WAIT_TIME          0    0                                             
+  WLM_QUEUE_TIME_TOTAL          0    0                                             </B></FONT>
+                                                                                   
+  Component times                                                                  
+  -------------------------------------------------------------------------------- 
+  -- Detailed breakdown of processing time --                                      
+                                                                                   
+                                      %                 Total                      
+                                      ----------------  -------------------------- 
+  Total processing                    100               1                          
+                                                                                   
+  Section execution                                                                
+    TOTAL_SECTION_PROC_TIME           0                 0                          
+      TOTAL_SECTION_SORT_PROC_TIME    0                 0                          
+  Compile                                                                          
+    TOTAL_COMPILE_PROC_TIME           0                 0                          
+    TOTAL_IMPLICIT_COMPILE_PROC_TIME  0                 0                          
+  Transaction end processing                                                       
+    TOTAL_COMMIT_PROC_TIME            0                 0                          
+    TOTAL_ROLLBACK_PROC_TIME          0                 0                          
+  Utilities                                                                        
+    TOTAL_RUNSTATS_PROC_TIME          0                 0                          
+    TOTAL_REORGS_PROC_TIME            0                 0                          
+    TOTAL_LOAD_PROC_TIME              0                 0                          
+                                                                                   
+  Buffer pool                                                                      
+  -------------------------------------------------------------------------------- 
+  Buffer pool hit ratios                                                           
+                                                                                   
+  Type             Ratio            Reads (Logical/Physical)                       
+  ---------------  ---------------  ---------------------------------------------- 
+  Data             0                0/0                                            
+  Index            0                0/0                                            
+  XDA              0                0/0                                            
+  Temp data        0                0/0                                            
+  Temp index       0                0/0                                            
+  Temp XDA         0                0/0                                            
+                                                                                   
+  I/O                                                                              
+  -------------------------------------------------------------------------------- 
+  Buffer pool writes                                                               
+    POOL_DATA_WRITES      = 0                                                      
+    POOL_XDA_WRITES       = 0                                                      
+    POOL_INDEX_WRITES     = 0                                                      
+  Direct I/O                                                                       
+    DIRECT_READS          = 0                                                      
+    DIRECT_READ_REQS      = 0                                                      
+    DIRECT_WRITES         = 0                                                      
+    DIRECT_WRITE_REQS     = 0                                                      
+  Log I/O                                                                          
+    LOG_DISK_WAITS_TOTAL  = 0                                                      
+                                                                                   
+  Locking                                                                          
+  -------------------------------------------------------------------------------- 
+                          Per activity                    Total                    
+                          ------------------------------  ----------------------   
+  LOCK_WAIT_TIME          0                               66415                    
+  LOCK_WAITS              0                               0                        
+  LOCK_TIMEOUTS           0                               0                        
+  DEADLOCKS               0                               0                        
+  LOCK_ESCALS             0                               0                        
+                                                                                   
+  Routines                                                                         
+  -------------------------------------------------------------------------------- 
+                                Per activity              Total                    
+                                ------------------------  ------------------------ 
+  TOTAL_ROUTINE_INVOCATIONS     0                         0                        
+  TOTAL_ROUTINE_TIME            0                         0                        
+                                                                                   
+  TOTAL_ROUTINE_TIME per invocation   = 0                                          
+                                                                                   
+  Sort                                                                             
+  -------------------------------------------------------------------------------- 
+  TOTAL_SORTS                         = 0                                          
+  SORT_OVERFLOWS                      = 0                                          
+  POST_THRESHOLD_SORTS                = 0                                          
+  POST_SHRTHRESHOLD_SORTS             = 0                                          
+                                                                                   
+  Network                                                                          
+  -------------------------------------------------------------------------------- 
+  Communications with remote clients                                               
+  TCPIP_SEND_VOLUME per send          = 0          (0/0)                           
+  TCPIP_RECV_VOLUME per receive       = 0          (0/0)                           
+                                                                                   
+  Communications with local clients                                                
+  IPC_SEND_VOLUME per send            = 0          (0/0)                           
+  IPC_RECV_VOLUME per receive         = 0          (0/0)                           
+                                                                                   
+  Fast communications manager                                                      
+  FCM_SEND_VOLUME per send            = 0          (0/0)                           
+  FCM_RECV_VOLUME per receive         = 0          (0/0)                           
+                                                                                   
+  Other                                                                            
+  -------------------------------------------------------------------------------- 
+  Compilation                                                                      
+    TOTAL_COMPILATIONS                = 0                                          
+    PKG_CACHE_INSERTS                 = 0                                          
+    PKG_CACHE_LOOKUPS                 = 0                                          
+  Catalog cache                                                                    
+    CAT_CACHE_INSERTS                 = 0                                          
+    CAT_CACHE_LOOKUPS                 = 0                                          
+  Transaction processing                                                           
+    TOTAL_APP_COMMITS                 = 0                                          
+    INT_COMMITS                       = 0                                          
+    TOTAL_APP_ROLLBACKS               = 0                                          
+    INT_ROLLBACKS                     = 0                                          
+  Log buffer                                                                       
+    NUM_LOG_BUFFER_FULL               = 0                                          
+  Activities aborted/rejected                                                      
+    ACT_ABORTED_TOTAL                 = 0                                          
+    ACT_REJECTED_TOTAL                = 0                                          
+  Workload management controls                                                     
+    WLM_QUEUE_ASSIGNMENTS_TOTAL       = 0                                          
+    WLM_QUEUE_TIME_TOTAL              = 0                                          
+                                                                                   
+  DB2 utility operations                                                           
+  -------------------------------------------------------------------------------- 
+    TOTAL_RUNSTATS                    = 0                                          
+    TOTAL_REORGS                      = 0                                          
+    TOTAL_LOADS                       = 0                                          
+                                                                                   
+  ================================================================================ 
+  Part 2 - Application performance drill down                                      
+                                                                                   
+  Application performance database-wide                                            
+  -------------------------------------------------------------------------------- 
+  TOTAL_CPU_TIME          TOTAL_       TOTAL_APP_     ROWS_READ +                  
+  per request             WAIT_TIME %  COMMITS        ROWS_MODIFIED                
+  ----------------------  -----------  -------------  ---------------------------- 
+  0                       99           0              0                            
+                                                                                   
+  Application performance by connection                                            
+  -------------------------------------------------------------------------------- 
+  APPLICATION_   TOTAL_CPU_TIME        TOTAL_         TOTAL_APP_     ROWS_READ +   
+  HANDLE         per request           WAIT_TIME %    COMMITS        ROWS_MODIFIED 
+  -------------  -------------------   -----------    -------------  ------------- 
+  556            0                     0              0              0             
+  6242           0                     100            0              0             
+  6243           0                     0              0              0             
+  6244           0                     99             0              0             
+  6245           0                     100            0              0             
+  6246           0                     100            0              0             
+  6247           0                     100            0              0             
+  6248           0                     100            0              0             
+  6336           0                     0              0              0             
+                                                                                   
+  Application performance by service class                                         
+  -------------------------------------------------------------------------------- 
+  SERVICE_       TOTAL_CPU_TIME        TOTAL_         TOTAL_APP_     ROWS_READ +   
+  CLASS_ID       per request           WAIT_TIME %    COMMITS        ROWS_MODIFIED 
+  --------       -------------------   -----------    -------------  ------------- 
+  11             0                     0              0              0             
+  12             0                     0              0              0             
+  13             0                     99             0              0             
+                                                                                   
+  Application performance by workload                                              
+  -------------------------------------------------------------------------------- 
+  WORKLOAD_      TOTAL_CPU_TIME          TOTAL_       TOTAL_APP_     ROWS_READ +   
+  NAME           per request             WAIT_TIME %  COMMITS        ROWS_MODIFIED 
+  -------------  ----------------------  -----------  -------------  ------------- 
+  SYSDEFAULTADM  0                       0            0              0             
+  SYSDEFAULTUSE  0                       99           0              0             
+                                                                                   
+  ================================================================================ 
+  Part 3 - Member level information                                                
+                                                                                   
+  - I/O wait time is                                                               
+    (POOL_READ_TIME + POOL_WRITE_TIME + DIRECT_READ_TIME + DIRECT_WRITE_TIME).     
+                                                                                   
+          TOTAL_CPU_TIME          TOTAL_       RQSTS_COMPLETED_  I/O               
+  MEMBER  per request             WAIT_TIME %  TOTAL             wait time         
+  ------  ----------------------  -----------  ----------------  ----------------- 
+  0       0                       99           0                 0                 
+                                                                                   
+
+  234 record(s) selected.
+
+  Return Status = 0
+
+</PRE>

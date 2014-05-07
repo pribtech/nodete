@@ -1,0 +1,24 @@
+<BR><H2><B>Lets try it !</B></H2><HR>
+<p>This page demonstrates creation of ranges on the <b>second fact table</b></p>
+
+<H2><B>Operation</B></H2><HR>
+<p>
+<ol>
+<li>Create table 'subscriber_dedicated_account_usage_range' enabled with range partitioning</li>
+<li>Populate data into the table. Data is stored in separate ranges based on the partitioning key specified</li>
+</ol>
+</p>
+
+<BR><H2><B>Best Practices</B></H2><HR>
+<p>
+<ol>
+<li>Partition on DATE columns. Roll-in and roll-out scenarios are almost always based on dates. Improved query execution plan (QEP) selection, using partition
+elimination, and a significant set of those opportunities are also based on date predicates</li>
+<li>Use table (range) partitioning to rapidly delete (roll-out) ranges of data. Match range-partitioning periods to roll-in and roll-out ranges. For example, if you need to roll-in and roll-out data by month, range partitioning by month is a good strategy</li>
+<li>Limit the number of ranges. Remember that each range is a table object with a minimum of two extents. Make the size of your ranges match the size you typically rollout.</li>
+<li>Consider separating range partitions in separate table spaces to facilitate backup and recovery</li>
+<li>Ensure and maintain the clustering of data by making the range-partitioning key the leading column in a clustered index.</li>
+</ol>
+</p>
+
+

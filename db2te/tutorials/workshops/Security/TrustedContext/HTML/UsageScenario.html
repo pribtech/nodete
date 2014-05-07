@@ -1,0 +1,27 @@
+<h3>Usage Scenario </h3><hr><br>
+<p>J.K avro Superstore has a web - store front through which a customer can browse through the products and place his purchase order. After the customer checks out the products in his cart, he is given a form to fill in his details (which includes sensitive information like credit card number and confidential information like card holders details). Once submitted, this data is stored in 'credit_card' table and the purchase order placed by the customer is placed in 'PurchaseOrder' table. Every purchase order placed will have a corresponding entry in 'Sales' table.  </p>
+
+<p>The data in the 'credit_card' table, which belongs to the customer of the store, is confidential. The data in the table 'Sales', is monitored by sales managers of respective regions. </p>
+
+<p>To avoid any security threats, J.K avro Superstore decides to implement the Data Governance policies to get close to PCI compliance. They also decide to restrict access to the data to people with a business need to know. J.K avro Superstore Data Governance policy <br>
+
+<li>Protect stored data.</li>
+<li>Encrypt transmission of data across open, public network.</li>
+<li>Restrict access to data by business need-to-know.</li>
+<li>Assign unique ID to each person with computer access.</li>
+<li>Restrict physical access to data.</li>
+<li>Track and monitor all access to network resources and data.</li>
+</p>
+
+<p>To conform to the above data governance policies, J.K avro superstore implements the security solution from DB2.<br>
+
+Security features used by superstore are<br>
+      
+1)	Roles<br>
+2)	Trusted Context<br>
+3)	LBAC (Row-level & Column-level)<br>
+4)	Audit<br>
+5)	SSL support for Cobra 
+</p>
+ 
+

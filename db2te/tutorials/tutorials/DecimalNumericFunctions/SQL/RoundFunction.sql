@@ -1,0 +1,1 @@
+select number, round(number,0) from ?SCHEMA?.show_decimal;

@@ -1,0 +1,63 @@
+<!--
+  Updated by Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2010 All rights reserved.
+  Copyright IBM Canada Ltd 2008 All rights reserved.
+
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+<action name="forceAgent" type="confirm">
+	<message>
+	Force Agent: ?AGENT_ID?  
+	Select Ok to drop the connection for agent number ?AGENT_ID?. 
+	This will stop all active work for agent ?AGENT_ID? and roll back its active UOW.
+	</message>
+	<parameterList>
+		<parameter name="AGENT_ID" type="blockValue">
+			<value>AGENT_ID</value>
+		</parameter>
+	</parameterList>
+	<followOnAction condition="true">
+		<task>
+			<action name="forceApplication" type="serverAction">
+				<parameterList>
+					<parameter name="action" type="fixed">
+						<value>executeSQL</value>
+					</parameter>
+					<parameter name="SQL" type="fixed">
+						<value>CALL SYSPROC.ADMIN_CMD( 'force application ( ?AGENT_ID? )' )</value>
+					</parameter>
+					<parameter name="parameter[AGENT_ID]" type="blockValue">
+						<value>AGENT_ID</value>
+					</parameter>
+				</parameterList>
+				<followOnAction condition="true" negCondition="true">
+					<task>
+						<alert>Error: ?RETURN_VALUE?</alert>
+						<exit/>
+					</task>
+				</followOnAction>
+				<followOnAction condition="true">
+					<task>
+						<assignLocalParameter name="AGENT_ID" type="blockValue">
+							<value>AGENT_ID</value>
+						</assignLocalParameter>
+						<alert>Agent ?AGENT_ID? forced off the database</alert>
+						<panelReload/>
+					</task>
+				</followOnAction>
+			</action>
+		</task>
+	</followOnAction>
+</action>

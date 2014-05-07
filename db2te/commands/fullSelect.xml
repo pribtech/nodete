@@ -1,0 +1,131 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2009 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<clause name="fullSelect" title="full select">
+<![CDATA[
+>>-+-subselect---------+---------------------------------------->
+   +-(fullselect)------+   
+   '-| values-clause |-'   
+]]>
+	<select>
+		<option default="true"><clauseReference name="subSelect"/></option>
+		<option>
+			<text>(</text>
+				<clauseReference name="fullSelect"/>
+			<text>)</text>
+		</option>
+		<option><clauseReference name="values-clause"/></option>
+	</select>
+	<br/>
+<![CDATA[
+   .----------------------------------------------.   
+   V                                              |   
+>----+------------------------------------------+-+------------->
+     '-+-UNION---------+--+-subselect---------+-'     
+       +-UNION ALL-----+  +-(fullselect)------+       
+       +-EXCEPT--------+  '-| values-clause |-'       
+       +-EXCEPT ALL----+                              
+       +-INTERSECT-----+                              
+       '-INTERSECT ALL-'                              
+]]>
+	<select>
+		<option default="true"><text></text></option>
+		<option>
+			<repeatable separator="">
+				<select>
+					<option default="true"><text>UNION </text></option>
+					<option><text>UNION ALL </text></option>
+					<option><text>EXCEPT </text></option>
+					<option><text>EXCEPT ALL </text></option>
+					<option><text>INTERSECT </text></option>
+					<option><text>INTERSECT ALL </text></option>
+				</select>
+				<select>
+					<option default="true"><clauseReference name="subSelect"/></option>
+					<option>
+						<text>(</text>
+							<clauseReference name="fullSelect"/>
+						<text>)</text>
+					</option>
+					<option><clauseReference name="values-clause"/></option>
+				</select>
+			</repeatable>
+		</option>
+	</select>
+	<br/>
+
+<![CDATA[
+>--+-----------------+--+--------------------+-----------------><
+   '-order-by-clause-'  '-fetch-first-clause-'   
+]]>
+	<select>
+		<option default="true"><note>no order</note></option>
+		<option><clauseReference name="order-by-clause"/></option>
+	</select>
+	<br/>
+	<select>
+		<option default="true"><note>fetch all</note></option>
+		<option><clauseReference name="fetch-first-clause"/></option>
+	</select>
+	<br/>
+
+	<clause name="values-clause" title="values clause">
+<![CDATA[
+           .-,--------------.   
+           V                |   
+|--VALUES----| values-row |-+-----------------------------------|
+
+]]>
+		<text>VALUES </text>
+		<repeatable>
+			<clauseReference name="values-row"/>
+		</repeatable>
+ 	</clause>
+
+	<clause name="values-row">
+<![CDATA[
+|--+-+-expression-+-----------+---------------------------------|
+   | '-NULL-------'           |   
+   |    .-,--------------.    |   
+   |    V                |    |   
+   '-(----+-expression-+-+--)-'   
+          '-NULL-------'          
+]]>
+		<select>
+			<option default="true">
+				<clauseReference name="expression"/>
+		 	</option>
+		 	<option>
+				<text>NULL </text>
+		 	</option>
+		 	<option>
+				<text>( </text>
+				<select>
+					<option default="true">
+						<clauseReference name="expression"/>
+		 			</option>
+				 	<option>
+						<text>NULL </text>
+		 			</option>
+				</select>
+				<text>) </text>
+		 	</option>
+		</select>
+ 	</clause>
+</clause>
+	
+	

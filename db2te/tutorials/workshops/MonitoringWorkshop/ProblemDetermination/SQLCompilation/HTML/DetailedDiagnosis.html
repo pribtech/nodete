@@ -1,0 +1,27 @@
+<h2>Tutorial Flow:</h2><hr>
+<br>
+<ul>
+<li>Determining the problem category (completed)</li>
+<li class="sourceCopiedFrom">Performing detailed diagnosis of the problem</li>
+<li>Identifying the scope of the SQL statements involved</li>
+</ul>
+<BR>
+<H2>Performing a detailed diagnosis<HR></H2>
+<BR>
+<P align=justify>
+<font color=grey><B>The database administrator had localized the slowdown to occurring in some aspect of data server processing 
+before or after statement execution. The database administrator returns to the report generated 
+earlier to examine it in more detail, focusing on monitor data for these aspects of processing. The database 
+administrator compares this report to a baseline report obtained earlier during normal performance conditions.</b></font>
+<BR><BR>
+<B>Note: Set the refresh interval on the top right pane to 5 seconds.</B>
+<BR>
+<H2>Few processing time metrics for detailed aspects of data server processing before or after statement execution<HR></H2>
+
+<BR>
+<ul>
+<li><B>TOTAL_COMPILE_PROC_TIME</B> <I>(Reported value : Higher than normal)</I></li><BR>
+<li><B>TOTAL_COMMIT_PROC_TIME</B> <I>(Normal)</I></li><BR>
+</ul>
+<BR>
+This evidence suggests that SQL compilation warrants further investigation. The database administrator returns to the DBSUMMARY report to look at other metrics relevant to compilation.

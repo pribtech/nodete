@@ -1,0 +1,34 @@
+<p>Select the three actions on this page in order.</p>
+<p>
+	This step is to provide an example of how to
+	estimate compressed table size.
+</p>
+<h4>Estimate table size</h4>
+The first step collects statistics for the CUSTOMER_ADDRESS_WITHOUT_COMPRESSION table and retrieves an estimate of the the table size.
+The SQL used to collect statistics and determine the table size are:
+<p><pre><code>
+CALL ADMIN_CMD
+  ('RUNSTATS ON TABLE CUSTOMER_ADDRESS_WITHOUT_COMPRESSION')
+
+SELECT CAST(CAST(NPAGES AS DOUBLE)/256
+  AS DECIMAL(5,3))
+  FROM SYSIBM.SYSTABLES
+    WHERE CREATOR=?SCHEMA?
+      AND NAME='CUSTOMER_ADDRESS_WITHOUT_COMPRESSION'
+
+</code></pre></p>
+<h4>Estimate compression ratio</h4>
+The second step estimates the disk savings if you compress the CUSTOMER_ADDRESS_WITHOUT_COMPRESSION table.
+The SQL executed is:
+<p><pre><code>
+SELECT TABNAME AS NAME,
+  PAGES_SAVED_PERCENT AS SAVINGS
+  FROM TABLE
+  (ADMIN_GET_TAB_COMPRESS_INFO
+	('?SCHEMA?',
+  CUSTOMER_ADDRESS_WITHOUT_COMPRESSION,
+  'ESTIMATE'))
+
+</code></pre></p>
+<h4>Compare table sizes</h4>
+<p>The third step plots the current table size and the estimate table size (in MB) on a bar graph.</p>

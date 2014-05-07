@@ -1,0 +1,156 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2013 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+<table name="connections">
+	<sqlName>connections</sqlName>
+	<singularName>Connection</singularName>
+	<pluralName>Connections</pluralName>
+	<inlinequery>
+<![CDATA[
+MQCMD_INQUIRE_CONNECTION  ??
+]]>
+	</inlinequery>
+	<parameters>
+		<parm name="MQBACF_GENERIC_CONNECTION_ID">
+			<title>Connection Mask</title>
+			<type>null</type>
+		</parm>
+		<parm name="MQIACF_CONNECTION_ATTRS">
+			<title>Connection Mask</title>
+			<value>MQIACF_ALL</value>
+			<type>list</type>
+		</parm>
+	</parameters>
+	<displayColumns>
+		<col type="column" name="MQBACF_CONNECTION_ID"/>
+		<col type="column" name="MQBACF_GENERIC_CONNECTION_ID"/>
+		<col type="column" name="MQIACF_CONN_INFO_TYPE"/>
+		<col type="column" name="MQIACF_PROCESS_ID"/>
+		<col type="column" name="MQIACF_THREAD_ID"/>
+		<col type="column" name="MQCACF_APPL_DESC"/>
+		<col type="column" name="MQCACF_APPL_TAG"/>
+		<col type="column" name="MQIA_APPL_TYPE"/>
+		<col type="column" name="MQIACF_ASYNC_STATE"/>
+		<col type="column" name="MQCACH_CHANNEL_NAME"/>
+		<col type="column" name="MQCACH_CONNECTION_NAME"/>
+		<col type="column" name="MQIACF_CONNECT_OPTIONS"/>
+		<col type="column" name="MQCACF_USER_IDENTIFIER"/>
+		<col type="column" name="MQCACF_UOW_LOG_EXTENT_NAME"/>
+		<col type="column" name="MQCACF_UOW_START_DATE"/>
+		<col type="column" name="MQCACF_UOW_START_TIME"/>
+		<col type="column" name="MQCACF_UOW_LOG_START_DATE"/>
+		<col type="column" name="MQCACF_UOW_LOG_START_TIME"/>
+		<col type="column" name="MQIACF_UOW_TYPE"/>
+		<col type="column" name="MQBACF_EXTERNAL_UOW_ID"/>
+		<col type="column" name="MQBACF_Q_MGR_UOW_ID"/>
+		<col type="column" name="MQIACF_UOW_STATE"/>
+	</displayColumns>
+	<column name="MQBACF_CONNECTION_ID">
+		<sqlName>MQBACF_CONNECTION_ID</sqlName>
+		<title>Id</title>
+	</column>
+	<column name="MQBACF_GENERIC_CONNECTION_ID">
+		<sqlName>MQBACF_GENERIC_CONNECTION_ID</sqlName>
+		<title>Generic Connection Id</title>
+	</column>
+	<column name="MQIACF_CONN_INFO_TYPE">
+		<sqlName>MQIACF_CONN_INFO_TYPE</sqlName>
+		<title>Conn Info Type</title>
+		<type>n</type>
+	</column>
+	<column name="MQIACF_PROCESS_ID">
+		<sqlName>MQIACF_PROCESS_ID</sqlName>
+		<title>Process Id</title>
+		<type>n</type>
+	</column>
+	<column name="MQIACF_THREAD_ID">
+		<sqlName>MQIACF_THREAD_ID</sqlName>
+		<title>Thread Id</title>
+		<type>n</type>
+	</column>
+	<column name="MQCACF_APPL_DESC">
+		<sqlName>MQCACF_APPL_DESC</sqlName>
+		<title>Appl Description</title>
+	</column>
+	<column name="MQCACF_APPL_TAG">
+		<sqlName>MQCACF_APPL_TAG</sqlName>
+		<title>Appl Tag</title>
+	</column>
+	<column name="MQIA_APPL_TYPE">
+		<sqlName>MQIA_APPL_TYPE</sqlName>
+		<title>Appl Type</title>
+		<type>n</type>
+	</column>
+	<column name="MQIACF_ASYNC_STATE">
+		<sqlName>MQIACF_ASYNC_STATE</sqlName>
+		<title>Async State</title>
+	</column>
+	<column name="MQCACH_CHANNEL_NAME">
+		<sqlName>MQCACH_CHANNEL_NAME</sqlName>
+		<title>Channel Name</title>
+	</column>
+	<column name="MQCACH_CONNECTION_NAME">
+		<sqlName>MQCACH_CONNECTION_NAME</sqlName>
+		<title>Connection Name</title>
+	</column>
+	<column name="MQIACF_CONNECT_OPTIONS">
+		<sqlName>MQIACF_CONNECT_OPTIONS</sqlName>
+		<title>Connect Options</title>
+	</column>
+	<column name="MQCACF_USER_IDENTIFIER">
+		<sqlName>MQCACF_USER_IDENTIFIER</sqlName>
+		<title>User Identifier</title>
+	</column>
+	<column name="MQCACF_UOW_LOG_EXTENT_NAME">
+		<sqlName>MQCACF_UOW_LOG_EXTENT_NAME</sqlName>
+		<title>UOW Log Extent Name</title>
+	</column>
+	<column name="MQCACF_UOW_START_DATE">
+		<sqlName>MQCACF_UOW_START_DATE</sqlName>
+		<title>UOW Start Date</title>
+	</column>
+	<column name="MQCACF_UOW_START_TIME">
+		<sqlName>MQCACF_UOW_START_TIME</sqlName>
+		<title>UOW Start Time</title>
+	</column>
+	<column name="MQCACF_UOW_LOG_START_DATE">
+		<sqlName>MQCACF_UOW_LOG_START_DATE</sqlName>
+		<title>UOW Log Start Date</title>
+	</column>
+	<column name="MQCACF_UOW_LOG_START_TIME">
+		<sqlName>MQCACF_UOW_LOG_START_TIME</sqlName>
+		<title>UOW Log Start Time</title>
+	</column>
+	<column name="MQIACF_UOW_TYPE">
+		<sqlName>MQIACF_UOW_TYPE</sqlName>
+		<title>UOW Type</title>
+		<type>n</type>
+	</column>
+	<column name="MQBACF_EXTERNAL_UOW_ID">
+		<sqlName>MQBACF_EXTERNAL_UOW_ID</sqlName>
+		<title>External UOW Id</title>
+	</column>
+	<column name="MQBACF_Q_MGR_UOW_ID">
+		<sqlName>MQBACF_Q_MGR_UOW_ID</sqlName>
+		<title>Q Mgr UOW Id</title>
+	</column>
+	<column name="MQIACF_UOW_STATE">
+		<sqlName>MQIACF_UOW_STATE</sqlName>
+		<title>UOW State</title>
+		<type>n</type>
+	</column>
+</table>

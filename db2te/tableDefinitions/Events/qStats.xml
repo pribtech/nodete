@@ -1,0 +1,145 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2010 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+<table name="qStats">
+	<sql_name>qStats</sql_name>
+	<singular_name>Queue Stats</singular_name>
+	<plural_name>Queue Stats</plural_name>
+	<inlinequery>SELECT	* FROM "?"."?"</inlinequery>
+	<parameters>
+		<parm name="tabschema">
+			<title>tabschema</title>
+			<value>no schema</value>
+			<type>n</type>
+		</parm>
+		<parm name="tabname">
+			<title>tabname</title>
+			<value>no table</value>
+			<type>n</type>
+		</parm>
+	</parameters>
+	<description />	
+	<order_by_index name="STATISTICS_TIMESTAMP" direction="D"/>
+	<display_columns>
+		<col type="column" name="STATISTICS_TIMESTAMP"/>
+		<col type="column" name="PARTITION_KEY"/>
+		<col type="column" name="LAST_WLM_RESET"/>
+		<col type="column" name="PARTITION_NUMBER"/>
+		<col type="column" name="QUEUE_ASSIGNMENTS_TOTAL"/>
+		<col type="column" name="QUEUE_SIZE_TOP"/>
+		<col type="column" name="QUEUE_TIME_TOTAL"/>
+		<col type="column" name="SERVICE_SUBCLASS_NAME"/>
+		<col type="column" name="SERVICE_SUPERCLASS_NAME"/>
+		<col type="column" name="THRESHOLD_DOMAIN"/>
+		<col type="column" name="THRESHOLD_NAME"/>
+		<col type="column" name="THRESHOLD_PREDICATE"/>
+		<col type="column" name="THRESHOLDID"/>
+		<col type="column" name="WORK_ACTION_SET_NAME"/>
+		<col type="column" name="WORK_CLASS_NAME"/>
+	</display_columns>
+	<column name="PARTITION_KEY" minVersion="9.7">
+		<c_sql_name>PARTITION_KEY</c_sql_name>
+		<c_title>Partition Key</c_title>
+		<c_presentation/>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="LAST_WLM_RESET">
+		<c_sql_name>LAST_WLM_RESET</c_sql_name>
+		<c_title>Last Reset</c_title>
+		<c_presentation/>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="PARTITION_NUMBER" minVersion="9.7">
+		<c_sql_name>PARTITION_NUMBER</c_sql_name>
+		<c_title>Partition</c_title>
+		<c_presentation/>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="QUEUE_ASSIGNMENTS_TOTAL">
+		<c_sql_name>QUEUE_ASSIGNMENTS_TOTAL</c_sql_name>
+		<c_title>Assignments</c_title>
+		<c_presentation/>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="QUEUE_SIZE_TOP">
+		<c_sql_name>QUEUE_SIZE_TOP</c_sql_name>
+		<c_title>Size</c_title>
+		<c_presentation/>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="QUEUE_TIME_TOTAL">
+		<c_sql_name>QUEUE_TIME_TOTAL</c_sql_name>
+		<c_title>Time</c_title>
+		<c_presentation/>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="SERVICE_SUBCLASS_NAME">
+		<c_sql_name>SERVICE_SUBCLASS_NAME</c_sql_name>
+		<c_title>Service Sub Class</c_title>
+		<c_presentation/>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="SERVICE_SUPERCLASS_NAME">
+		<c_sql_name>SERVICE_SUPERCLASS_NAME</c_sql_name>
+		<c_title>Service Super Class</c_title>
+		<c_presentation/>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="STATISTICS_TIMESTAMP">
+		<c_sql_name>STATISTICS_TIMESTAMP</c_sql_name>
+		<c_title>Timestamp</c_title>
+		<c_presentation/>
+		<c_drill>n</c_drill>
+		<c_pkey>p</c_pkey>
+	</column>
+	<column name="THRESHOLD_DOMAIN">
+		<c_sql_name>THRESHOLD_DOMAIN</c_sql_name>
+		<c_title>Threshold Domain</c_title>
+		<c_presentation/>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="THRESHOLD_NAME">
+		<c_sql_name>THRESHOLD_NAME</c_sql_name>
+		<c_title>Threshold</c_title>
+		<c_presentation/>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="THRESHOLD_PREDICATE">
+		<c_sql_name>THRESHOLD_PREDICATE</c_sql_name>
+		<c_title>Threshold Predicate</c_title>
+		<c_presentation/>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="THRESHOLDID">
+		<c_sql_name>THRESHOLDID</c_sql_name>
+		<c_title>Threshold Id.</c_title>
+		<c_presentation/>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="WORK_ACTION_SET_NAME">
+		<c_sql_name>WORK_ACTION_SET_NAME</c_sql_name>
+		<c_title>Work Action Set</c_title>
+		<c_presentation/>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="WORK_CLASS_NAME">
+		<c_sql_name>WORK_CLASS_NAME</c_sql_name>
+		<c_title>Work Class</c_title>
+		<c_presentation/>
+		<c_drill>y</c_drill>
+	</column>
+</table>

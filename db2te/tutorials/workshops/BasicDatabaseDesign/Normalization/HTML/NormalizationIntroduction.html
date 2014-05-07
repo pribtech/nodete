@@ -1,0 +1,26 @@
+<p>This tutorial introduces the concept and principles of <b>database normalization</b> and takes you through the most common normal forms.</p>
+
+<H2><B>Problem Description</B></H2><HR>
+<p>The store contains a "customer_order" table that has the complete details of all transactions made by the customers in the store like transaction order, product and customer information. The table has duplicate entries for customer and product information.</p>
+<p>Disorganized and redundant data leads to performance degradation as well as difficulties in administration of the database. It also leads to anomalies during insert, update, delete operations and hence data corruption.</p>
+
+<H2><B>Operation</B></H2><HR>
+<p>In order to eliminate data redundancy and assist in database administration and maintainence, the "customer_order" table is subjected to <b>normalization</b>.</p>
+
+<H2><B>Solution</B></H2><HR>
+<p>Normalization is a process in which an initial DB design is transformed, or decomposed, into a different, but equivalent, design. The resulting schema is equivalent to the original one in the sense that no information is lost when going from one to the other. There are a few goals for deploying a normalized design :</p>
+<ol>
+<li>Eliminate redundant data, for example, storing the same data in more than one table</li>
+<li>Enforce valid data dependencies by only storing related data in a table, and dividing relational data into multiple related tables</li>
+<li>Maximize the flexibility of the system for future growth in data structures</li>
+</ol>
+<p>It is possible to transform an original schema into a resulting one that satisfies certain conditions, known as Normal Forms :</p>
+<ol>
+<li><b>First Normal Form (1NF)</b> - No repeating elements or groups of elements</li>
+<li><b>Second Normal Form (2NF)</b> - No partial dependency on a composite key. <br>(A <code>key</code> uniquely determines a record. A <code>composite key</code> is one consisting of several fields or columns)</li>
+<li><b>Third Normal Form (2NF)</b> - No dependencies on non-key attributes <br>(In other words, no non-key field functionally depends on any other non-key field. Such indirect dependencies are known as transitive dependencies)</li>
+</ol>
+<p>There are three more normal forms namely the Boyce-Codd Normal form (BCNF), Fourth Normal form (4NF) and Fifth Normal form (5NF). These are rarely used, hence not discussed in this tutorial.</p>
+
+
+

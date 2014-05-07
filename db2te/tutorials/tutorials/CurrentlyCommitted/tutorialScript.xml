@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	Copyright IBM Corp. 2007 All rights reserved.
+	
+	Licensed under the Apache License, Version 2.0 (the "License");
+	you may not use this file except in compliance with the License.
+	You may obtain a copy of the License at
+	
+	http://www.apache.org/licenses/LICENSE-2.0
+	
+	Unless required by applicable law or agreed to in writing, software
+	distributed under the License is distributed on an "AS IS" BASIS,
+	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	See the License for the specific language governing permissions and
+	limitations under the License.
+-->
+<tutorial name="Currently Committed" autoCloseWindowsInRightStage="true" autoClearAdhocResults="true">
+	<flowRestriction>forwardexploration</flowRestriction>
+	<globalCodeHighlightOptions  highlightCode="true">
+
+	</globalCodeHighlightOptions>	
+	<WMDConfig>
+		<load>
+			<workload name="writes" profile="wmd/workload_profile_writes" taskset="wmd/task_set_writes"/>
+			<workload name="reads" profile="wmd/workload_profile_reads" taskset="wmd/task_set_reads"/>
+			<workload name="reads_cc" profile="wmd/workload_profile_reads_cc" taskset="wmd/task_set_reads_cc"/>
+		</load>
+	</WMDConfig>
+	<closeAction/>
+	
+	<closeAction/>
+	<openAction />
+	<pageList>
+		<page name="Introduction" type="intro">
+			<entryAction />
+			<exitAction />			
+			<contentFile>CurrentlyCommitted.html</contentFile>
+			<autoLoadLink>
+				<pageWindow target="informationWindow">
+					<panel name="main" PrimaryContainer="true">
+						<URL>
+							http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.admin.config.doc/doc/r0053556.html?noframes=true
+						</URL>
+					</panel>
+				</pageWindow>
+			</autoLoadLink>
+		</page>		
+		<page name="Set the cur_commit configuration parameter (upgrade only)" type="general">
+			<entryAction />
+			<exitAction />			
+			<contentFile>SettingConfigParam.html</contentFile>
+			<autoLoadLink>
+                <pageWindow target="ddbcfg" raiseToTop="true">
+                    <splitPane direction="h" splitPercent="0.5" allowResize="false">
+                        <topPane>
+                            <panel name="main" PrimaryContainer="true">
+                                <link type="action" target="_self" window="_self" connectionRequired="y">
+                                    <parameterList>
+                                        <parameter name="table">dbcfg</parameter>
+                                        <parameter name="action">list_table</parameter>
+                                    </parameterList>
+                                </link>
+                            </panel>
+                        </topPane>
+                        <bottomPane>
+                            <panel name="detail"/>
+                        </bottomPane>
+                    </splitPane>
+                </pageWindow>
+            </autoLoadLink>
+		</page>
+		<page name="Create test table and data" type="general">
+			<entryAction />
+			<exitAction />			
+			<contentFile>CreateTestTable.html</contentFile>
+            <SQLFile>CreateData.sql</SQLFile>
+            <SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar=";"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>			
+		</page>
+		<page name="Compare performance of using currently committed vs non currently committed" type="general">
+			<entryAction name="checkForInsert" type="serverAction">
+				<parameterList>
+					<parameter name="action" type="fixed">
+						<value>checkForRow</value>
+					</parameter>
+					<parameter name="schema" type="fixed">
+						<value>CURRCOMMTUT</value>
+					</parameter>
+					<parameter name="name" type="fixed">
+						<value>CC_TEST</value>
+					</parameter>
+				</parameterList>
+				<followOnAction condition="true" negCondition="true">
+					<task>
+						<action name="displayMsgForFailedInsert"
+							type="alert">
+							<message>
+							The CC_TEST table has not been created or has no data. Please complete the previous step.
+							</message>
+						</action>
+					</task>
+					<task>
+						<setActionReturn>false</setActionReturn>
+					</task>
+				</followOnAction>
+
+			</entryAction>
+			<exitAction />
+			<contentFile>
+				RunCurrentlyCommitted.html
+			</contentFile>			
+            <autoLoadLink>
+            	<pageWindow target="_blank">
+					
+							<panel name="Workload Driver" PrimaryContainer="true">
+								<link type="action" target="main" window="mainLayout" connectionRequired="y">
+									<parameterList>
+										<parameter name="action">WMDTutorialBootstrap</parameter>
+										<parameter name="workload">writes</parameter>
+										<parameter name="controlerID">?TUTORIAL_ID?</parameter>
+										<parameter name="controlerType">?TUTORIAL_TYPE?</parameter>
+										<parameter name="connection">active</parameter>
+										<parameter name="compactView">false</parameter>
+									</parameterList>
+								</link>
+							</panel>
+				</pageWindow>
+				<pageWindow target="_blank">
+					<splitPane direction="h" splitPercent="0.5">
+						<topPane>
+							<panel name="Workload Driver" PrimaryContainer="true">
+								<link type="action" target="main" window="mainLayout" connectionRequired="y">
+									<parameterList>
+										<parameter name="action">WMDTutorialBootstrap</parameter>
+										<parameter name="workload">reads</parameter>
+										<parameter name="controlerID">?TUTORIAL_ID?</parameter>
+										<parameter name="controlerType">?TUTORIAL_TYPE?</parameter>
+										<parameter name="connection">active</parameter>
+										<parameter name="compactView">true</parameter>
+									</parameterList>
+								</link>
+							</panel>
+						</topPane>
+						<bottomPane>
+							<panel name="Workload Driver 2">
+								<link type="action" target="workload" window="mainLayout" connectionRequired="y">
+									<parameterList>
+										<parameter name="action">WMDTutorialBootstrap</parameter>
+										<parameter name="workload">reads_cc</parameter>
+										<parameter name="controlerID">?TUTORIAL_ID?</parameter>
+										<parameter name="controlerType">?TUTORIAL_TYPE?</parameter>
+										<parameter name="connection">active</parameter>
+										<parameter name="compactView">true</parameter>
+									</parameterList>
+								</link>
+							</panel>
+						</bottomPane>
+					</splitPane>
+				</pageWindow>
+			</autoLoadLink>
+        </page>
+        <page name="Restrictions for currently committed semantics" type="last">
+            <contentFile>CurrentlyCommittedNotes.html</contentFile>
+            <!-- <SQLFile>blank.sql</SQLFile>-->
+			<autoLoadLink>
+				<pageWindow target="informationWindow">
+					<panel name="main" PrimaryContainer="true">
+						<URL>
+							http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.admin.perf.doc/doc/c0053760.html?noframes=true
+						</URL>
+					</panel>
+				</pageWindow>
+			</autoLoadLink>
+        </page>
+	</pageList>
+</tutorial>

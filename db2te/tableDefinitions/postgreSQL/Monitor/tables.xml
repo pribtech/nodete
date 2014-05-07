@@ -1,0 +1,163 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2013 All rights reserved.
+  
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+<table name="statsTables">
+	<sqlName>pg_stat_all_tables</sqlName>
+	<singularName>Stats Table</singularName>
+	<pluralName>Stats Tables</pluralName>
+	<description>
+For each table in the current database (including TOAST tables), the table OID, schema and table name, number of sequential scans initiated, number of live rows fetched by sequential scans, number of index scans initiated (over all indexes belonging to the table), number of live rows fetched by index scans, numbers of row insertions, updates, and deletions, number of row updates that were HOT (i.e., no separate index update), numbers of live and dead rows, the last time the table was vacuumed manually, the last time it was vacuumed by the autovacuum daemon, the last time it was analyzed manually, and the last time it was analyzed by the autovacuum daemon.
+	</description>
+	<orderBy name="seq_tup_read" direction="D"/>
+	<disableEdit/>
+	<output>
+		<type name="DDL" destination="" title="" generator=""/>
+	</output>
+	<displayColumns titleDepth="2">
+		<col type="column" name="relid"/>
+		<col type="column" name="schemaname"/>
+		<col type="column" name="relname"/>
+		<col type="column" name="seq_scan"/>
+		<col type="column" name="seq_tup_read"/>
+		<col type="column" name="idx_scan"/>
+		<col type="column" name="idx_tup_fetch"/>
+		<col type="column" name="n_tup_ins"/>
+		<col type="column" name="n_tup_upd"/>
+		<col type="column" name="n_tup_del"/>
+		<col type="column" name="n_tup_hot_upd"/>
+		<col type="column" name="n_live_tup"/>
+		<col type="column" name="n_dead_tup"/>
+		<col type="column" name="last_vacuum"/>
+		<col type="column" name="last_autovacuum"/>
+		<col type="column" name="last_analyze"/>
+		<col type="column" name="last_autoanalyze"/>
+		<col type="column" name="vacuum_count"/>
+		<col type="column" name="autovacuum_count"/>
+		<col type="column" name="analyze_count"/>
+		<col type="column" name="autoanalyze_count"/>
+	</displayColumns>
+	<history depth="10" time="SAMPLE_TS"/>
+	<column name="SAMPLE_TS">
+		<generated>timestamp</generated>
+		<title>Time</title>
+		<type>s</type>
+	</column>
+	<column name="relid">
+		<sqlName>relid</sqlName>
+		<title>Relid</title>
+		<type>n</type>
+		<primaryKey/>
+	</column>
+	<column name="schemaname">
+		<sqlName>schemaname</sqlName>
+		<title>Schema</title>
+	</column>
+	<column name="relname">
+		<sqlName>relname</sqlName>
+		<title>Relname</title>
+	</column>
+	<column name="seq_scan" accumulation="y">
+		<sqlName>seq_scan</sqlName>
+		<title>Seq Scans</title>
+		<type>n</type>
+	</column>
+	<column name="seq_tup_read" accumulation="y">
+		<sqlName>seq_tup_read</sqlName>
+		<title>Seq Reads</title>
+		<type>n</type>
+	</column>
+	<column name="idx_scan" accumulation="y">
+		<sqlName>idx_scan</sqlName>
+		<title>Index Scans</title>
+		<type>n</type>
+	</column>
+	<column name="idx_tup_fetch" accumulation="y">
+		<sqlName>idx_tup_fetch</sqlName>
+		<title>Index Fetches</title>
+		<type>n</type>
+	</column>
+	<column name="n_tup_ins" accumulation="y">
+		<sqlName>n_tup_ins</sqlName>
+		<title>Inserts</title>
+		<type>n</type>
+	</column>
+	<column name="n_tup_upd" accumulation="y">
+		<sqlName>n_tup_upd</sqlName>
+		<title>Updates</title>
+		<type>n</type>
+	</column>
+	<column name="n_tup_del" accumulation="y">
+		<sqlName>n_tup_del</sqlName>
+		<title>Deletes</title>
+		<type>n</type>
+	</column>
+	<column name="n_tup_hot_upd" accumulation="y">
+		<sqlName>n_tup_hot_upd</sqlName>
+		<title>Hot Updates</title>
+		<type>n</type>
+	</column>
+	<column name="n_live_tup" accumulation="y">
+		<sqlName>n_live_tup</sqlName>
+		<title>Live</title>
+		<type>n</type>
+	</column>
+	<column name="n_dead_tup" accumulation="y">
+		<sqlName>n_dead_tup</sqlName>
+		<title>Dead</title>
+		<type>n</type>
+	</column>
+	<column name="last_vacuum">
+		<sqlName>last_vacuum</sqlName>
+		<title>Last Vacuum</title>
+		<type>n</type>
+	</column>
+	<column name="last_autovacuum">
+		<sqlName>last_autovacuum</sqlName>
+		<title>Last Autovacuum</title>
+		<type>n</type>
+	</column>
+	<column name="last_analyze">
+		<sqlName>last_analyze</sqlName>
+		<title>Last Analyze</title>
+		<type>n</type>
+	</column>
+	<column name="last_autoanalyze">
+		<sqlName>last_autoanalyze</sqlName>
+		<title>Last Autoanalyze</title>
+		<type>n</type>
+	</column>
+	<column name="vacuum_count" accumulation="y">
+		<sqlName>vacuum_count</sqlName>
+		<title>Vacuum Count</title>
+		<type>n</type>
+	</column>
+	<column name="autovacuum_count" accumulation="y">
+		<sqlName>autovacuum_count</sqlName>
+		<title>Autovacuum Count</title>
+		<type>n</type>
+	</column>
+	<column name="analyze_count" accumulation="y">
+		<sqlName>analyze_count</sqlName>
+		<title>Analyze Count</title>
+		<type>n</type>
+	</column>
+	<column name="autoanalyze_count" accumulation="y">
+		<sqlName>autoanalyze_count</sqlName>
+		<title>Autoanalyze Count</title>
+		<type>n</type>
+	</column>
+</table>

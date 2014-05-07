@@ -1,0 +1,24 @@
+<BR><H2><B>Types of Indexes</B></H2><HR><BR> 
+
+<h4>Unique and Non-Unique Indexes</h4>
+<p>Unique indexes enforce the constraint of uniqueness in your index keys. They help maintain data integrity by ensuring that no two rows of data in a table have identical key values</p>
+<p>Non-unique indexes, on the other hand, are not used to enforce constraints on the tables with which they are associated. Instead, non-unique indexes are used solely to improve query performance by maintaining a sorted order of data values that are used frequently</p>
+
+<h4>Composite Indexes</h4>
+<p>A composite index is an index made up of combined values from multiple columns in a table. If multiple columns in a table will often be accessed together a composite index will be efficient</p>
+
+<h4>Clustered and Non-clustered Indexes</h4>
+<p>Index architectures are classified as clustered or non-clustered. Clustered indexes are indexes whose order of the rows in the data pages correspond to the order of the rows in the index. The database manager will attempt to insert rows with similar keys onto the same pages. Only one clustered index can exist for a given table</p>
+<p>A clustered index is most useful for columns that have range predicates because it allows better sequential access of data in the table. This results in fewer page fetches, since like values are on the same data page. Clustering indexes can improve the performance of most query operations because they provide a more linear access path to data, which has been stored in pages. In addition, because rows with similar index key values are stored together, prefetching is usually more efficient when clustering indexes are used</p>
+
+<h4>Bidirectional Indexes</h4>
+<p>Bidirectional indexes allow scans in both the forward and reverse directions. This facilitates :</p>
+<ol>
+<li>MIN and MAX functions</li>
+<li>Fetching previous keys</li>
+<li>Eliminates the need for the database manager to create a temporary table for the reverse scan</li>
+</ol>
+<br>
+
+<h4>Partitioned and Non Partitioned Indexes</h4>
+<p>Partitioned data can have indexes that are nonpartitioned, existing in a single table space within a database partition, indexes that are themselves partitioned across one or more table spaces within a database partition, or a combination of the two</p>

@@ -1,0 +1,475 @@
+<!--
+  Peter Prib, Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2012 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<table name="sqlArea">
+	<sqlName>v$sqlarea</sqlName>
+	<singularName>SQL Area</singularName>
+	<pluralName>SQL Area</pluralName>
+	<description></description>
+	<orderBy name="FETCHES" direction="A"/>
+	<displayColumns>
+		<col type="column" name="SQL_TEXT"/>
+		<col type="column" name="SHARABLE_MEM"/>
+		<col type="column" name="PERSISTENT_MEM"/>
+		<col type="column" name="RUNTIME_MEM"/>
+		<col type="column" name="SORTS"/>
+		<col type="column" name="USERS_OPENING"/>
+		<col type="column" name="FETCHES"/>
+		<col type="column" name="EXECUTIONS"/>
+		<col type="column" name="PX_SERVERS_EXECUTIONS"/>
+		<col type="column" name="END_OF_FETCH_COUNT"/>
+		<col type="column" name="USERS_EXECUTING"/>
+		<col type="column" name="LOADS"/>
+		<col type="column" name="FIRST_LOAD_TIME"/>
+		<col type="column" name="INVALIDATIONS"/>
+		<col type="column" name="PARSE_CALLS"/>
+		<col type="column" name="DISK_READS"/>
+		<col type="column" name="DIRECT_WRITES"/>
+		<col type="column" name="BUFFER_GETS"/>
+		<col type="column" name="APPLICATION_WAIT_TIME"/>
+		<col type="column" name="CONCURRENCY_WAIT_TIME"/>
+		<col type="column" name="CLUSTER_WAIT_TIME"/>
+		<col type="column" name="USER_IO_WAIT_TIME"/>
+		<col type="column" name="PLSQL_EXEC_TIME"/>
+		<col type="column" name="JAVA_EXEC_TIME"/>
+		<col type="column" name="ROWS_PROCESSED"/>
+		<col type="column" name="COMMAND_TYPE"/>
+		<col type="column" name="OPTIMIZER_MODE"/>
+		<col type="column" name="OPTIMIZER_COST"/>
+		<col type="column" name="OPTIMIZER_ENV"/>
+		<col type="column" name="OPTIMIZER_ENV_HASH_VALUE"/>
+		<col type="column" name="PARSING_USER_ID"/>
+		<col type="column" name="PARSING_SCHEMA_ID"/>
+		<col type="column" name="PARSING_SCHEMA_NAME"/>
+		<col type="column" name="PLAN_HASH_VALUE"/>
+		<col type="column" name="MODULE"/>
+		<col type="column" name="ACTION"/>
+		<col type="column" name="SERIALIZABLE_ABORTS"/>
+		<col type="column" name="OUTLINE_CATEGORY"/>
+		<col type="column" name="CPU_TIME"/>
+		<col type="column" name="ELAPSED_TIME"/>
+		<col type="column" name="OUTLINE_SID"/>
+		<col type="column" name="LAST_ACTIVE_CHILD_ADDRESS"/>
+		<col type="column" name="REMOTE"/>
+		<col type="column" name="OBJECT_STATUS"/>
+		<col type="column" name="LAST_LOAD_TIME"/>
+		<col type="column" name="IS_OBSOLETE"/>
+		<col type="column" name="IS_BIND_SENSITIVE"/>
+		<col type="column" name="IS_BIND_AWARE"/>
+		<col type="column" name="CHILD_LATCH"/>
+		<col type="column" name="SQL_PROFILE"/>
+		<col type="column" name="SQL_PATCH"/>
+		<col type="column" name="SQL_PLAN_BASELINE"/>
+		<col type="column" name="PROGRAM_ID"/>
+		<col type="column" name="PROGRAM_LINE#"/>
+		<col type="column" name="EXACT_MATCHING_SIGNATURE"/>
+		<col type="column" name="FORCE_MATCHING_SIGNATURE"/>
+		<col type="column" name="LAST_ACTIVE_TIME"/>
+		<col type="column" name="BIND_DATA"/>
+		<col type="column" name="TYPECHECK_MEM"/>
+		<col type="column" name="IO_CELL_OFFLOAD_ELIGIBLE_BYTES"/>
+		<col type="column" name="IO_INTERCONNECT_BYTES"/>
+		<col type="column" name="IO_DISK_BYTES"/>
+	</displayColumns>
+	<column name="SQL_TEXT">
+		<sqlName>SQL_TEXT</sqlName>
+		<title>Sql Text</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="SQL_FULLTEXT">
+		<sqlName>SQL_FULLTEXT</sqlName>
+		<title>Sql Fulltext</title>
+		<type>l</type>
+	</column>
+	<column name="SQL_ID">
+		<sqlName>SQL_ID</sqlName>
+		<title>Sql Id</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="SHARABLE_MEM">
+		<sqlName>SHARABLE_MEM</sqlName>
+		<title>Sharable Mem</title>
+		<type>n</type>
+	</column>
+	<column name="PERSISTENT_MEM">
+		<sqlName>PERSISTENT_MEM</sqlName>
+		<title>Persistent Mem</title>
+		<type>n</type>
+	</column>
+	<column name="RUNTIME_MEM">
+		<sqlName>RUNTIME_MEM</sqlName>
+		<title>Runtime Mem</title>
+		<type>n</type>
+	</column>
+	<column name="SORTS">
+		<sqlName>SORTS</sqlName>
+		<title>Sorts</title>
+		<type>n</type>
+	</column>
+	<column name="VERSION_COUNT">
+		<sqlName>VERSION_COUNT</sqlName>
+		<title>Version Count</title>
+		<type>n</type>
+	</column>
+	<column name="LOADED_VERSIONS">
+		<sqlName>LOADED_VERSIONS</sqlName>
+		<title>Loaded Versions</title>
+		<type>n</type>
+	</column>
+	<column name="OPEN_VERSIONS">
+		<sqlName>OPEN_VERSIONS</sqlName>
+		<title>Open Versions</title>
+		<type>n</type>
+	</column>
+	<column name="USERS_OPENING">
+		<sqlName>USERS_OPENING</sqlName>
+		<title>Users Opening</title>
+		<type>n</type>
+	</column>
+	<column name="FETCHES">
+		<sqlName>FETCHES</sqlName>
+		<title>Fetches</title>
+		<type>n</type>
+	</column>
+	<column name="EXECUTIONS">
+		<sqlName>EXECUTIONS</sqlName>
+		<title>Executions</title>
+		<type>n</type>
+	</column>
+	<column name="PX_SERVERS_EXECUTIONS">
+		<sqlName>PX_SERVERS_EXECUTIONS</sqlName>
+		<title>Px Servers Executions</title>
+		<type>n</type>
+	</column>
+	<column name="END_OF_FETCH_COUNT">
+		<sqlName>END_OF_FETCH_COUNT</sqlName>
+		<title>End Of Fetch Count</title>
+		<type>n</type>
+	</column>
+	<column name="USERS_EXECUTING">
+		<sqlName>USERS_EXECUTING</sqlName>
+		<title>Users Executing</title>
+		<type>n</type>
+	</column>
+	<column name="LOADS">
+		<sqlName>LOADS</sqlName>
+		<title>Loads</title>
+		<type>n</type>
+	</column>
+	<column name="FIRST_LOAD_TIME">
+		<sqlName>FIRST_LOAD_TIME</sqlName>
+		<title>First Load Time</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="INVALIDATIONS">
+		<sqlName>INVALIDATIONS</sqlName>
+		<title>Invalidations</title>
+		<type>n</type>
+	</column>
+	<column name="PARSE_CALLS">
+		<sqlName>PARSE_CALLS</sqlName>
+		<title>Parse Calls</title>
+		<type>n</type>
+	</column>
+	<column name="DISK_READS">
+		<sqlName>DISK_READS</sqlName>
+		<title>Disk Reads</title>
+		<type>n</type>
+	</column>
+	<column name="DIRECT_WRITES">
+		<sqlName>DIRECT_WRITES</sqlName>
+		<title>Direct Writes</title>
+		<type>n</type>
+	</column>
+	<column name="BUFFER_GETS">
+		<sqlName>BUFFER_GETS</sqlName>
+		<title>Buffer Gets</title>
+		<type>n</type>
+	</column>
+	<column name="APPLICATION_WAIT_TIME">
+		<sqlName>APPLICATION_WAIT_TIME</sqlName>
+		<title>Application Wait Time</title>
+		<type>n</type>
+	</column>
+	<column name="CONCURRENCY_WAIT_TIME">
+		<sqlName>CONCURRENCY_WAIT_TIME</sqlName>
+		<title>Concurrency Wait Time</title>
+		<type>n</type>
+	</column>
+	<column name="CLUSTER_WAIT_TIME">
+		<sqlName>CLUSTER_WAIT_TIME</sqlName>
+		<title>Cluster Wait Time</title>
+		<type>n</type>
+	</column>
+	<column name="USER_IO_WAIT_TIME">
+		<sqlName>USER_IO_WAIT_TIME</sqlName>
+		<title>User Io Wait Time</title>
+		<type>n</type>
+	</column>
+	<column name="PLSQL_EXEC_TIME">
+		<sqlName>PLSQL_EXEC_TIME</sqlName>
+		<title>Plsql Exec Time</title>
+		<type>n</type>
+	</column>
+	<column name="JAVA_EXEC_TIME">
+		<sqlName>JAVA_EXEC_TIME</sqlName>
+		<title>Java Exec Time</title>
+		<type>n</type>
+	</column>
+	<column name="ROWS_PROCESSED">
+		<sqlName>ROWS_PROCESSED</sqlName>
+		<title>Rows Processed</title>
+		<type>n</type>
+	</column>
+	<column name="COMMAND_TYPE">
+		<sqlName>COMMAND_TYPE</sqlName>
+		<title>Command Type</title>
+		<type>n</type>
+	</column>
+	<column name="OPTIMIZER_MODE">
+		<sqlName>OPTIMIZER_MODE</sqlName>
+		<title>Optimizer Mode</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="OPTIMIZER_COST">
+		<sqlName>OPTIMIZER_COST</sqlName>
+		<title>Optimizer Cost</title>
+		<type>n</type>
+	</column>
+	<column name="OPTIMIZER_ENV">
+		<sqlName>OPTIMIZER_ENV</sqlName>
+		<title>Optimizer Env</title>
+		<type>n</type>
+	</column>
+	<column name="OPTIMIZER_ENV_HASH_VALUE">
+		<sqlName>OPTIMIZER_ENV_HASH_VALUE</sqlName>
+		<title>Optimizer Env Hash Value</title>
+		<type>n</type>
+	</column>
+	<column name="PARSING_USER_ID">
+		<sqlName>PARSING_USER_ID</sqlName>
+		<title>Parsing User Id</title>
+		<type>n</type>
+	</column>
+	<column name="PARSING_SCHEMA_ID">
+		<sqlName>PARSING_SCHEMA_ID</sqlName>
+		<title>Parsing Schema Id</title>
+		<type>n</type>
+	</column>
+	<column name="PARSING_SCHEMA_NAME">
+		<sqlName>PARSING_SCHEMA_NAME</sqlName>
+		<title>Parsing Schema Name</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="KEPT_VERSIONS">
+		<sqlName>KEPT_VERSIONS</sqlName>
+		<title>Kept Versions</title>
+		<type>n</type>
+	</column>
+	<column name="ADDRESS">
+		<sqlName>rawtonhex(ADDRESS)</sqlName>
+		<title>Address</title>
+		<type>s</type>
+	</column>
+	<column name="HASH_VALUE">
+		<sqlName>HASH_VALUE</sqlName>
+		<title>Hash Value</title>
+		<type>n</type>
+	</column>
+	<column name="OLD_HASH_VALUE">
+		<sqlName>OLD_HASH_VALUE</sqlName>
+		<title>Old Hash Value</title>
+		<type>n</type>
+	</column>
+	<column name="PLAN_HASH_VALUE">
+		<sqlName>PLAN_HASH_VALUE</sqlName>
+		<title>Plan Hash Value</title>
+		<type>n</type>
+	</column>
+	<column name="MODULE">
+		<sqlName>MODULE</sqlName>
+		<title>Module</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="MODULE_HASH">
+		<sqlName>MODULE_HASH</sqlName>
+		<title>Module Hash</title>
+		<type>n</type>
+	</column>
+	<column name="ACTION">
+		<sqlName>ACTION</sqlName>
+		<title>Action</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="ACTION_HASH">
+		<sqlName>ACTION_HASH</sqlName>
+		<title>Action Hash</title>
+		<type>n</type>
+	</column>
+	<column name="SERIALIZABLE_ABORTS">
+		<sqlName>SERIALIZABLE_ABORTS</sqlName>
+		<title>Serializable Aborts</title>
+		<type>n</type>
+	</column>
+	<column name="OUTLINE_CATEGORY">
+		<sqlName>OUTLINE_CATEGORY</sqlName>
+		<title>Outline Category</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="CPU_TIME">
+		<sqlName>CPU_TIME</sqlName>
+		<title>Cpu Time</title>
+		<type>n</type>
+	</column>
+	<column name="ELAPSED_TIME">
+		<sqlName>ELAPSED_TIME</sqlName>
+		<title>Elapsed Time</title>
+		<type>n</type>
+	</column>
+	<column name="OUTLINE_SID">
+		<sqlName>OUTLINE_SID</sqlName>
+		<title>Outline Sid</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="LAST_ACTIVE_CHILD_ADDRESS">
+		<sqlName>LAST_ACTIVE_CHILD_ADDRESS</sqlName>
+		<title>Last Active Child Address</title>
+		<type>n</type>
+	</column>
+	<column name="REMOTE">
+		<sqlName>REMOTE</sqlName>
+		<title>Remote</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="OBJECT_STATUS">
+		<sqlName>OBJECT_STATUS</sqlName>
+		<title>Object Status</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="LITERAL_HASH_VALUE">
+		<sqlName>LITERAL_HASH_VALUE</sqlName>
+		<title>Literal Hash Value</title>
+		<type>n</type>
+	</column>
+	<column name="LAST_LOAD_TIME">
+		<sqlName>LAST_LOAD_TIME</sqlName>
+		<title>Last Load Time</title>
+		<type>n</type>
+		<drillEnable/>
+	</column>
+	<column name="IS_OBSOLETE">
+		<sqlName>IS_OBSOLETE</sqlName>
+		<title>Is Obsolete</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="IS_BIND_SENSITIVE">
+		<sqlName>IS_BIND_SENSITIVE</sqlName>
+		<title>Is Bind Sensitive</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="IS_BIND_AWARE">
+		<sqlName>IS_BIND_AWARE</sqlName>
+		<title>Is Bind Aware</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="CHILD_LATCH">
+		<sqlName>CHILD_LATCH</sqlName>
+		<title>Child Latch</title>
+		<type>n</type>
+	</column>
+	<column name="SQL_PROFILE">
+		<sqlName>SQL_PROFILE</sqlName>
+		<title>Sql Profile</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="SQL_PATCH">
+		<sqlName>SQL_PATCH</sqlName>
+		<title>Sql Patch</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="SQL_PLAN_BASELINE">
+		<sqlName>SQL_PLAN_BASELINE</sqlName>
+		<title>Sql Plan Baseline</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="PROGRAM_ID">
+		<sqlName>PROGRAM_ID</sqlName>
+		<title>Program Id</title>
+		<type>n</type>
+	</column>
+	<column name="PROGRAM_LINE#">
+		<sqlName>PROGRAM_LINE#</sqlName>
+		<title>Program Line#</title>
+		<type>n</type>
+	</column>
+	<column name="EXACT_MATCHING_SIGNATURE">
+		<sqlName>EXACT_MATCHING_SIGNATURE</sqlName>
+		<title>Exact Matching Signature</title>
+		<type>n</type>
+	</column>
+	<column name="FORCE_MATCHING_SIGNATURE">
+		<sqlName>FORCE_MATCHING_SIGNATURE</sqlName>
+		<title>Force Matching Signature</title>
+		<type>n</type>
+	</column>
+	<column name="LAST_ACTIVE_TIME">
+		<sqlName>LAST_ACTIVE_TIME</sqlName>
+		<title>Last Active Time</title>
+		<type>n</type>
+		<drillEnable/>
+	</column>
+	<column name="BIND_DATA">
+		<sqlName>BIND_DATA</sqlName>
+		<title>Bind Data</title>
+		<type>n</type>
+	</column>
+	<column name="TYPECHECK_MEM">
+		<sqlName>TYPECHECK_MEM</sqlName>
+		<title>Typecheck Mem</title>
+		<type>n</type>
+	</column>
+	<column name="IO_CELL_OFFLOAD_ELIGIBLE_BYTES">
+		<sqlName>IO_CELL_OFFLOAD_ELIGIBLE_BYTES</sqlName>
+		<title>Io Cell Offload Eligible Bytes</title>
+		<type>n</type>
+	</column>
+	<column name="IO_INTERCONNECT_BYTES">
+		<sqlName>IO_INTERCONNECT_BYTES</sqlName>
+		<title>Io Interconnect Bytes</title>
+		<type>n</type>
+	</column>
+	<column name="IO_DISK_BYTES">
+		<sqlName>IO_DISK_BYTES</sqlName>
+		<title>Io Disk Bytes</title>
+		<type>n</type>
+	</column>
+</table>

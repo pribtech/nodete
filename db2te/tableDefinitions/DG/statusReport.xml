@@ -1,0 +1,60 @@
+<table name="statusReport">
+	<sql_name>statusReport</sql_name>
+	<singular_name>Status Report</singular_name>
+	<plural_name>Status Reports</plural_name>
+	<dataRetrievalAction name="DGproxy"/>
+	<messages>
+		<SQL_NO_DATA>No report returned</SQL_NO_DATA>
+	</messages>
+	<reloadIndicator threshHold="5"/>
+	<rows_per_page>50</rows_per_page>
+	<parameters>
+		<parm name="DGSystemName">
+			<title>System</title>
+			<value>localhost</value>
+			<type>s</type>
+		</parm>
+		<parm name="DGMethod">
+			<title>Method</title>
+			<value>GET</value>
+			<type>s</type>
+		</parm>
+		<parm name="DGAction">
+			<title>Action</title>
+			<value>report/</value>
+			<type>s</type>
+		</parm>
+	</parameters>
+	
+	<disable_search/>
+	<disable_edit/>
+	<disable_sort/>
+	<disable_filter/>
+	
+	<display_columns>
+		<col type="column" name="CURRENT_STAGE"/>
+		<col type="column" name="CURRENT_TABLE"/>
+		<col type="column" name="COMPLETED_TABLES"/>
+	</display_columns>
+
+	<column name="CURRENT_STAGE">
+		<c_sql_name>CURRENT_STAGE</c_sql_name>
+		<c_title>Current Stage</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="CURRENT_TABLE">
+		<c_sql_name>CURRENT_TABLE</c_sql_name>
+		<c_title>Current Table</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="COMPLETED_TABLES">
+		<c_sql_name>COMPLETED_TABLES</c_sql_name>
+		<c_title>Completed Tables</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+</table>
+
+

@@ -1,0 +1,183 @@
+<!--
+  Author: Peter Prib
+  
+  Copyright Independent Systems Integrators Pty Ltd 2008 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+<table name="healthDbmHi">
+	<sql_name>healthDbmHi</sql_name>
+	<singular_name>Database Manager Health Indicator</singular_name>
+	<plural_name>Database Manager Health Indicators</plural_name>
+	<inlinequery>
+<![CDATA[
+select dbm.*,i.* 
+from table(HEALTH_DBM_HI(-2)) dbm
+join table(HEALTH_GET_IND_DEFINITION(cast(null as VARCHAR(33) ))) i
+  on dbm.hi_id=i.id
+]]>
+	</inlinequery>
+	<description></description>
+	<rows_per_page>50</rows_per_page>
+	<order_by_index name="HI_ALERT_STATE" direction="D"/>
+	<display_columns>
+   		<col type="column" name="HI_ALERT_STATE"/>
+		<col type="reference" name="History"/>
+		<col type="column" name="SHORT_DESCRIPTION"/>
+		<col type="column" name="SERVER_INSTANCE_NAME"/>
+		<col type="column" name="HI_VALUE"/>
+		<col type="column" name="HI_TIMESTAMP"/>
+	</display_columns>
+	
+	<rowStyleFile fileName="rowStyle/healthState.xml" interfaceColumn='HI_ALERT_STATE'/>
+	
+	<action name="recommendation" >
+		<icon>images/icon-help-contextual-light.gif</icon>
+		<actionScript name="getRecommendation" type="serverAction" lockScreen="true">
+			<parameterList>
+				<parameter name="action" type="raw">
+					<value>executeSQL</value>
+				</parameter>
+				<parameter name="SQL" type="fixed">
+					<value>
+						<![CDATA[
+							call HEALTH_HI_REC(8020000,?HI_ID?,'',0,'',-2,'',?!name=recommendation&type=DB2_PARAM_OUT?)
+						]]>
+					</value>
+				</parameter>
+				<parameter name="parameter[HI_ID]" type="blockValue">
+						<value>HI_ID</value>
+				</parameter>
+			</parameterList>
+			<followOnAction condition="true" negCondition="true">
+				<task>
+					<assignLocalParameter name="ERROR_MSG" type="returnObject">
+						<value>getRecommendation.returnValue.STMTMSG</value>
+					</assignLocalParameter>
+					<alert>Error: ?ERROR_MSG?</alert>
+				</task>
+			</followOnAction>
+			<followOnAction condition="true">
+				<task>
+					<unlockScreen/>
+<!--
+					<assignLocalParameter   name="MESSAGE" type="returnObject">
+						<value>getRecommendation.returnValue.parameters.recommendation</value>
+					</assignLocalParameter  >
+-->
+					<action  name="displayMessage" type="form">
+						<parameterList>
+<!--
+							<parameter name="MESSAGE" type="returnObject">
+								<value>getRecommendation.returnValue.parameters.recommendation</value>
+							</parameter>
+-->
+						</parameterList>
+						<message><![CDATA[
+							<div style='width:500px'> 
+								<h1>Help</h1>
+								 ?MESSAGE1?
+							</div>
+							]]>
+    					</message>
+					</action>
+				</task>
+			</followOnAction>
+		</actionScript>
+	</action>
+
+	<reference name="History">
+			<c_title>History</c_title>
+			<reftype>table</reftype>
+			<refvalue>Health/healthDbmHiHist</refvalue>
+			<icon>images/icon-histo.gif</icon>
+			<ref foreign_column_name="SERVER_INSTANCE_NAME">
+				<local_column_name>SERVER_INSTANCE_NAME</local_column_name>
+			</ref>
+			<ref foreign_column_name="HI_ID">
+				<local_column_name>HI_ID</local_column_name>
+			</ref>
+	</reference>
+	
+	<column name="SHORT_DESCRIPTION">
+		<c_sql_name>SHORT_DESCRIPTION</c_sql_name>
+		<c_title>Description</c_title>
+		<c_presentation/>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="HI_ID">
+		<c_sql_name>HI_ID</c_sql_name>
+		<c_title>Id. No.</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+		<c_pkey>p</c_pkey>
+	</column>
+	<column name="SERVER_INSTANCE_NAME">
+		<c_sql_name>SERVER_INSTANCE_NAME</c_sql_name>
+		<c_title>Instance</c_title>
+		<c_presentation/>
+		<c_drill>y</c_drill>
+		<c_pkey>p</c_pkey>
+	</column>
+	<column name="HI_VALUE">
+		<c_sql_name>HI_VALUE</c_sql_name>
+		<c_title>Value</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="HI_TIMESTAMP">
+		<c_sql_name>HI_TIMESTAMP</c_sql_name>
+		<c_title>Timestamp</c_title>
+		<c_presentation/>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="HI_ALERT_STATE">
+		<c_sql_name>HI_ALERT_STATE</c_sql_name>
+		<c_title>State</c_title>
+		<c_presentation>html</c_presentation>
+		<c_drill>n</c_drill>
+		<c_column_mask_file>masks/healthState.xml</c_column_mask_file>
+		<c_title>Recommendation</c_title>
+	</column>
+	<column name="HI_ALERT_STATE_DETAIL">
+		<c_sql_name>HI_ALERT_STATE_DETAIL</c_sql_name>
+		<c_title>State Details</c_title>
+		<c_presentation/>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="HI_FORMULA">
+		<c_sql_name>HI_FORMULA</c_sql_name>
+		<c_title>Formula Calculated</c_title>
+		<c_presentation/>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="FORMULA">
+		<c_sql_name>FORMULA</c_sql_name>
+		<c_title>Formula</c_title>
+		<c_presentation/>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="HI_ADDITIONAL_INFO">
+		<c_sql_name>HI_ADDITIONAL_INFO</c_sql_name>
+		<c_title>Addition Information</c_title>
+		<c_presentation/>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="SNAPSHOT_TIMESTAMP">
+		<c_sql_name>SNAPSHOT_TIMESTAMP</c_sql_name>
+		<c_title>Snapshot Timestamp</c_title>
+		<c_presentation/>
+		<c_drill>n</c_drill>
+	</column>
+</table>

@@ -1,0 +1,134 @@
+<!--
+  Peter Prib, Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2012 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<table name="mqLinks">
+	<sqlName>SYS.MGW$_MQSERIES_LINKS</sqlName>
+	<singularName>MQ Link</singularName>
+	<pluralName>MQ Links</pluralName>
+	<description></description>
+	<disable_edit/>
+	<orderBy name="LINK_NAME" direction="A"/>
+	<displayColumns>
+		<col type="column" name="LINK_NAME"/>
+		<col type="reference" name="foreignQueues"/>
+		<col type="column" name="QUEUE_MANAGER"/>
+		<col type="column" name="HOSTNAME"/>
+		<col type="column" name="PORT"/>
+		<col type="column" name="CHANNEL"/>
+		<col type="column" name="INTERFACE_TYPE"/>
+		<col type="column" name="MAX_CONNECTIONS"/>
+		<col type="column" name="USERNAME"/>
+		<col type="column" name="PASSWORD"/>
+		<col type="column" name="INBOUND_LOG_QUEUE"/>
+		<col type="column" name="OUTBOUND_LOG_QUEUE"/>
+		<col type="column" name="ENC_PASSWORD"/>
+	</displayColumns>
+	<reference name="foreignQueues">
+		<title>Foreign Queues</title>
+		<reftype>table</reftype>
+		<refvalue>Oracle/mgwForeignQueues</refvalue>
+		<icon>images/icon-column.gif</icon>
+		<ref foreign_column_name="LINK_NAME">
+			<local_column_name>LINK_NAME</local_column_name>
+		</ref>
+	</reference>
+	<column name="LINK_NAME">
+		<sqlName>LINK_NAME</sqlName>
+		<title>Link Name</title>
+		<type>s</type>
+		<primaryKey/>
+	</column>
+	<column name="QUEUE_MANAGER">
+		<sqlName>QUEUE_MANAGER</sqlName>
+		<title>Queue Manager</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="HOSTNAME">
+		<sqlName>HOSTNAME</sqlName>
+		<title>Host Name</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="PORT">
+		<sqlName>PORT</sqlName>
+		<title>Port</title>
+		<type>n</type>
+	</column>
+	<column name="CHANNEL">
+		<sqlName>CHANNEL</sqlName>
+		<title>Channel</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="INTERFACE_TYPE">
+		<sqlName>INTERFACE_TYPE</sqlName>
+		<title>Interface Type</title>
+		<type>n</type>
+	</column>
+	<column name="MAX_CONNECTIONS">
+		<sqlName>MAX_CONNECTIONS</sqlName>
+		<title>Max Connections</title>
+		<type>n</type>
+	</column>
+	<column name="USERNAME">
+		<sqlName>USERNAME</sqlName>
+		<title>Username</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="PASSWORD">
+		<sqlName>PASSWORD</sqlName>
+		<title>Password</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="INBOUND_LOG_QUEUE">
+		<sqlName>INBOUND_LOG_QUEUE</sqlName>
+		<title>Inbound Log Queue</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="OUTBOUND_LOG_QUEUE">
+		<sqlName>OUTBOUND_LOG_QUEUE</sqlName>
+		<title>Outbound Log Queue</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="ENC_PASSWORD">
+		<sqlName>ENC_PASSWORD</sqlName>
+		<title>Enc Password</title>
+		<type>n</type>
+	</column>
+	<action name="Drop">
+		<title>Drop</title>
+		<icon>images/trash.gif</icon>   
+    	<actionScript>
+    		<task>
+				<assignSharedConstant name="sql" type="fixed">
+					<value>
+<![CDATA[
+begin
+ dbms_mgwadm.remove_msgsystem_link('?LINK_NAME?');
+end;
+]]>
+					</value>
+				</assignSharedConstant>
+		   		<callGlobalAction name="sqlExecution"/>
+	   		</task>
+    	</actionScript>
+    </action>
+
+</table>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tutorial name="Canceling an Ongoing Activity">
+	<flowRestriction>forwardexploration</flowRestriction>
+	<globalCodeHighlightOptions  highlightCode="true" />
+	<closeAction/>
+	<openAction/>
+    <pageList>
+    	<page name="Canceling an Ongoing Activity" type="intro">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>CancelingAnOngoingActivity.html</contentFile>
+            <autoLoadLink>
+                <pageWindow target="informationWindow">
+                    <panel name="main">
+                        <URL>http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.sql.rtn.doc/doc/r0052912.html?noframes=true</URL>
+                    </panel>
+                </pageWindow>
+            </autoLoadLink>
+        </page>  
+    	<page name="Start a long running query, then cancel it" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>StartALongRunningQuery.html</contentFile>
+            <SQLFile>CancelActivity.sql</SQLFile>
+            <autoLoadLink>
+                <pageWindow target="informationWindow">
+                    <panel name="main">
+                        <link type="action" target="_self" window="_self"
+						connectionRequired="y">
+						<parameterList>
+							<parameter name="action">ADHOC</parameter>
+							<parameter name="LoadSQLData"><![CDATA[SELECT COUNT(*) FROM SYSCAT.TABLES, SYSCAT.TABLES, SYSCAT.TABLES;]]></parameter>
+						</parameterList>
+					</link>
+                    </panel>
+                </pageWindow>
+            </autoLoadLink>
+        </page>
+	</pageList>
+</tutorial>

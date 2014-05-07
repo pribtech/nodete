@@ -1,0 +1,105 @@
+<!--
+  Peter Prib, Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2012 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<table name="schema">
+	<sql_name>schema</sql_name>
+	<singular_name>Schema</singular_name>
+	<plural_name>Schemas</plural_name>
+	<inlinequery>
+<![CDATA[
+select distinct owner from dba_objects
+]]>
+	</inlinequery>
+	<order_by_index name="OWNER" direction="A"/>
+	<display_columns>
+		<col type="column" name="OWNER"/>
+		<col type="reference" name="constraints"/>
+		<col type="reference" name="procedures"/>
+		<col type="reference" name="sequences"/>
+		<col type="reference" name="synonyms"/>
+		<col type="reference" name="tables"/>
+		<col type="reference" name="triggers"/>
+		<col type="reference" name="views"/>
+	</display_columns>
+	<reference name="constraints">
+		<title>Constraints</title>
+		<reftype>table</reftype>
+		<refvalue>Oracle/constraint</refvalue>
+		<icon>images/icon-column.gif</icon>
+		<ref foreign_column_name="OWNER">
+			<local_column_name>OWNER</local_column_name>
+		</ref>
+	</reference>
+	<reference name="procedures">
+		<title>Procedures</title>
+		<reftype>table</reftype>
+		<refvalue>Oracle/procedure</refvalue>
+		<icon>images/icon-column.gif</icon>
+		<ref foreign_column_name="SEQUENCE_OWNER">
+			<local_column_name>OWNER</local_column_name>
+		</ref>
+	</reference>
+	<reference name="sequences">
+		<title>Sequences</title>
+		<reftype>table</reftype>
+		<refvalue>Oracle/sequence</refvalue>
+		<icon>images/icon-column.gif</icon>
+		<ref foreign_column_name="SEQUENCE_OWNER">
+			<local_column_name>OWNER</local_column_name>
+		</ref>
+	</reference>
+	<reference name="synonyms">
+		<title>Synonyms</title>
+		<reftype>table</reftype>
+		<refvalue>Oracle/synonym</refvalue>
+		<icon>images/icon-column.gif</icon>
+		<ref foreign_column_name="OWNER">
+			<local_column_name>OWNER</local_column_name>
+		</ref>
+	</reference>
+	<reference name="tables">
+		<title>Tables</title>
+		<reftype>table</reftype>
+		<refvalue>Oracle/table</refvalue>
+		<icon>images/icon-column.gif</icon>
+		<ref foreign_column_name="OWNER">
+			<local_column_name>OWNER</local_column_name>
+		</ref>
+	</reference>
+	<reference name="triggers">
+		<title>Triggers</title>
+		<reftype>table</reftype>
+		<refvalue>Oracle/trigger</refvalue>
+		<icon>images/icon-column.gif</icon>
+		<ref foreign_column_name="OWNER">
+			<local_column_name>OWNER</local_column_name>
+		</ref>
+	</reference>
+	<reference name="views">
+		<title>Views</title>
+		<reftype>table</reftype>
+		<refvalue>Oracle/view</refvalue>
+		<icon>images/icon-column.gif</icon>
+		<ref foreign_column_name="OWNER">
+			<local_column_name>OWNER</local_column_name>
+		</ref>
+	</reference>
+	<column name="OWNER">
+		<sql_name>OWNER</sql_name>
+		<title>Schema</title>
+		<type>s</type>
+	</column>
+</table>

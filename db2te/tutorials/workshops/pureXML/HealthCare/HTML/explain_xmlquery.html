@@ -1,0 +1,367 @@
+<PRE>
+<b>Explain Plan</b>
+
+DB2 Universal Database Version 9.7, 5622-044 (c) Copyright IBM Corp. 1991, 2008
+Licensed Material - Program Property of IBM
+IBM DATABASE 2 Explain Table Format Tool
+
+
+
+******************** EXPLAIN INSTANCE ********************
+
+DB2_VERSION:       09.07.0
+SOURCE_NAME:       SQLC2H20
+SOURCE_SCHEMA:     NULLID
+SOURCE_VERSION:
+EXPLAIN_TIME:      2009-10-19-15.02.59.226001
+EXPLAIN_REQUESTER: CLARALIU
+
+Database Context:
+----------------
+	Parallelism:          None
+	CPU Speed:            3.818116e-007
+	Comm Speed:           100
+	Buffer Pool size:     6250
+	Sort Heap size:       256
+	Database Heap size:   600
+	Lock List size:       4096
+	Maximum Lock List:    22
+	Average Applications: 1
+	Locks Available:      28835
+
+Package Context:
+---------------
+	SQL Type:           Dynamic
+	Optimization Level: 5
+	Blocking:           Block All Cursors
+	Isolation Level:    Cursor Stability
+
+
+
+---------------- STATEMENT 1  SECTION 201 ----------------
+	QUERYNO:       3
+	QUERYTAG:      CLP
+	Statement Type:   Select
+	Updatable:        No
+	Deletable:        No
+	Query Degree:     1
+
+Original Statement:
+------------------
+SELECT patient_id,date_of_consultancy,
+XMLQUERY('$i/ClinicalDocument/component/structuredBody/component/section/text'
+        PASSING GRP1255977523782_12.out_patient_data.PMD as "i") as
+        Past_Medical_Details
+FROM GRP1255977523782_12.out_patient_data
+WHERE
+xmlexists('$i/ClinicalDocument/recordTarget/patientRole/patient/name[given =
+        "James"]' passing PMD as "i")
+
+
+Optimized Statement:
+-------------------
+SELECT Q2.PATIENT_ID AS "PATIENT_ID", Q2.DATE_OF_CONSULTANCY AS
+        "DATE_OF_CONSULTANCY", Q1.$C1 AS "PAST_MEDICAL_DETAILS"
+FROM $INTERNAL_FOR$ ((TABLE ($INTERNAL_XPATH$
+        ('($INTERNAL_XMLTOXML_NIEO$(Q2.PMD))/{(.[ $INTERNAL_EBV_BOOLEAN$(Clinic
+alDocument/recordTarget/patientRole/patient/name[(given =
+        "James")])])(:-->$C0:),
+ClinicalDocument/component/structuredBody/component/section/(text)(:-->$C1:)}'
+        ))) AS Q1), GRP1255977523782_12.OUT_PATIENT_DATA AS Q2
+
+Access Plan:
+-----------
+	Total Cost: 		53055.1
+	Query Degree:		1
+
+                 Rows
+                RETURN
+                (   1)
+                 Cost
+                  I/O
+                  |
+                  10
+                NLJOIN
+                (   2)
+                53055.1
+                 7084
+                /-+--\
+             1000     0.01
+            TBSCAN   XSCAN
+            (   3)   (   4)
+            95.7278  52.9593
+              84        7
+              |
+             1000
+ DP-TABLE: GRP1255977523782_12
+       OUT_PATIENT_DATA
+              Q2
+
+
+
+Extended Diagnostic Information:
+--------------------------------
+
+Diagnostic Identifier: 	1
+Diagnostic Details: 	EXP0020W  Table has no statistics.  The table
+			"GRP1255977523782_12"."OUT_PATIENT_DATA" has not
+			had runstats run on it.  This may result in a
+			sub-optimal access plan and poor performance.
+
+Plan Details:
+-------------
+
+
+	1) RETURN: (Return Result)
+		Cumulative Total Cost: 		53055.1
+		Cumulative CPU Cost: 		1.04801e+008
+		Cumulative I/O Cost: 		7084
+		Cumulative Re-Total Cost: 	53055
+		Cumulative Re-CPU Cost: 	1.04789e+008
+		Cumulative Re-I/O Cost: 	7084
+		Cumulative First Row Cost: 	5312.23
+		Estimated Bufferpool Buffers: 	1.26008e+006
+
+		Arguments:
+		---------
+		BLDLEVEL: (Build level)
+			DB2 v9.7.0.441 : s090521
+		HEAPUSE : (Maximum Statement Heap Usage)
+			144 Pages
+		PREPTIME: (Statement prepare time)
+			         2 milliseconds
+		STMTHEAP: (Statement heap size)
+			2048
+
+		Input Streams:
+		-------------
+			4) From Operator #2
+
+				Estimated number of rows: 	10
+				Number of columns: 		3
+				Subquery predicate ID: 		Not Applicable
+
+				Column Names:
+				------------
+				+Q3.PAST_MEDICAL_DETAILS
+				+Q3.DATE_OF_CONSULTANCY+Q3.PATIENT_ID
+
+				Expected Sequence Sizes:
+				------------------------
+				1.000000,NA,NA
+
+
+	2) NLJOIN: (Nested Loop Join)
+		Cumulative Total Cost: 		53055.1
+		Cumulative CPU Cost: 		1.04801e+008
+		Cumulative I/O Cost: 		7084
+		Cumulative Re-Total Cost: 	53055
+		Cumulative Re-CPU Cost: 	1.04789e+008
+		Cumulative Re-I/O Cost: 	7084
+		Cumulative First Row Cost: 	5312.23
+		Estimated Bufferpool Buffers: 	1.26008e+006
+
+		Arguments:
+		---------
+		EARLYOUT: (Early Out flag)
+			NONE
+		FETCHMAX: (Override for FETCH MAXPAGES)
+			IGNORE
+		ISCANMAX: (Override for ISCAN MAXPAGES)
+			IGNORE
+
+		Input Streams:
+		-------------
+			2) From Operator #3
+
+				Estimated number of rows: 	1000
+				Number of columns: 		3
+				Subquery predicate ID: 		Not Applicable
+
+				Column Names:
+				------------
+				+Q2.DATE_OF_CONSULTANCY+Q2.PATIENT_ID+Q2.PMD
+
+				Expected Sequence Sizes:
+				------------------------
+				NA,NA,1.000000
+
+			3) From Operator #4
+
+				Estimated number of rows: 	0.01
+				Number of columns: 		1
+				Subquery predicate ID: 		Not Applicable
+
+				Column Names:
+				------------
+				+Q1.$C1
+
+				Expected Sequence Sizes:
+				------------------------
+				1.000000
+
+
+		Output Streams:
+		--------------
+			4) To Operator #1
+
+				Estimated number of rows: 	10
+				Number of columns: 		3
+				Subquery predicate ID: 		Not Applicable
+
+				Column Names:
+				------------
+				+Q3.PAST_MEDICAL_DETAILS
+				+Q3.DATE_OF_CONSULTANCY+Q3.PATIENT_ID
+
+				Expected Sequence Sizes:
+				------------------------
+				1.000000,NA,NA
+
+
+	3) TBSCAN: (Table Scan)
+		Cumulative Total Cost: 		95.7278
+		Cumulative CPU Cost: 		1.80138e+006
+		Cumulative I/O Cost: 		84
+		Cumulative Re-Total Cost: 	0.478162
+		Cumulative Re-CPU Cost: 	1.25235e+006
+		Cumulative Re-I/O Cost: 	0
+		Cumulative First Row Cost: 	7.56563
+		Estimated Bufferpool Buffers: 	84
+
+		Arguments:
+		---------
+		CUR_COMM: (Currently Committed)
+			TRUE
+		DPNUMPRT: (Number of data partitions accessed)
+			4
+		GLOBLOCK: (Global Lock intent)
+			INTENT SHARE
+		JN INPUT: (Join input leg)
+			OUTER
+		LCKAVOID: (Lock Avoidance)
+			TRUE
+		MAXPAGES: (Maximum pages for prefetch)
+			ALL
+		PREFETCH: (Type of Prefetch)
+			SEQUENTIAL
+		ROWLOCK : (Row Lock intent)
+			SHARE (CS/RS)
+		SCANDIR : (Scan Direction)
+			FORWARD
+		SKIP_INS: (Skip Inserted Rows)
+			TRUE
+		SPEED   : (Assumed speed of scan, in sharing structures)
+			SLOW
+		TABLOCK : (Table Lock intent)
+			INTENT SHARE
+		TBISOLVL: (Table access Isolation Level)
+			CURSOR STABILITY
+		THROTTLE: (Scan may be throttled, for scan sharing)
+			TRUE
+		VISIBLE : (May be included in scan sharing structures)
+			TRUE
+		WRAPPING: (Scan may start anywhere and wrap)
+			TRUE
+
+		Input Streams:
+		-------------
+			1) From Object GRP1255977523782_12.OUT_PATIENT_DATA
+
+				Estimated number of rows: 	1000
+				Number of columns: 		4
+				Subquery predicate ID: 		Not Applicable
+
+				Column Names:
+				------------
+				+Q2.$RID$+Q2.DATE_OF_CONSULTANCY+Q2.PATIENT_ID
+				+Q2.PMD
+
+				Expected Sequence Sizes:
+				------------------------
+				NA,NA,NA,1.000000
+
+
+		Output Streams:
+		--------------
+			2) To Operator #2
+
+				Estimated number of rows: 	1000
+				Number of columns: 		3
+				Subquery predicate ID: 		Not Applicable
+
+				Column Names:
+				------------
+				+Q2.DATE_OF_CONSULTANCY+Q2.PATIENT_ID+Q2.PMD
+
+				Expected Sequence Sizes:
+				------------------------
+				NA,NA,1.000000
+
+
+	4) XSCAN : (XML Doc Navigation)
+		Cumulative Total Cost: 		52.9593
+		Cumulative CPU Cost: 		103000
+		Cumulative I/O Cost: 		7
+		Cumulative Re-Total Cost: 	52.9547
+		Cumulative Re-CPU Cost: 	91000
+		Cumulative Re-I/O Cost: 	7
+		Cumulative First Row Cost: 	52.9593
+		Estimated Bufferpool Buffers: 	1260
+
+		Arguments:
+		---------
+		INPUTXID: (Context Node)
+			PMD
+		JN INPUT: (Join input leg)
+			INNER
+		XPATH   : (Internal XPath Expression)
+			($INTERNAL_XMLTOXML_NIEO$(Q2.PMD))/{(.[ $INTERNAL_EBV_B
+OOLEAN$(ClinicalDocument/recordTarget/patientRole/patient/name[(given
+			        = "James")])])(:-->$C0:),
+ClinicalDocument/component/structuredBody/component/section/(text)(:-->$C1:)}
+
+		Output Streams:
+		--------------
+			3) To Operator #2
+
+				Estimated number of rows: 	0.01
+				Number of columns: 		1
+				Subquery predicate ID: 		Not Applicable
+
+				Column Names:
+				------------
+				+Q1.$C1
+
+				Expected Sequence Sizes:
+				------------------------
+				1.000000
+
+
+Objects Used in Access Plan:
+---------------------------
+
+	Schema: GRP1255977523782_12
+	Name: 	OUT_PATIENT_DATA
+	Type: 	Data Partitioned Table
+			Time of creation: 		2009-10-19-14.41.46.758003
+			Last statistics update:
+			Number of columns: 		4
+			Number of rows: 		1000
+			Width of rows: 			284
+			Number of buffer pool pages: 	84
+			Number of data partitions: 	4
+			Distinct row values: 		No
+			Tablespace name: 		<VARIOUS>
+			Tablespace overhead: 		7.500000
+			Tablespace transfer rate: 	0.060000
+			Source for statistics: 		Single Node
+			Prefetch page count: 		32
+			Container extent page count: 	32
+			Table overflow record count: 	0
+			Table Active Blocks: 		-1
+			Average Row Compression Ratio: 	-1
+			Percentage Rows Compressed: 	-1
+			Average Compressed Row Size: 	-1
+
+</PRE>

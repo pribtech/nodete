@@ -1,0 +1,42 @@
+<p>
+DB2 Text Search is an integrated component of DB2 available starting from V9.5 FP1. It is powered by the IBM OmniFind Text Search server. This tutorial explores the basic DB2 Text Search features to search in plain text and XML documents stored in the database.
+</p>
+
+<p>DB2 Text Search supports the following document formats.</p>
+<ul>
+<li>Text: Plain text document format</li>
+<li>HTML: Hypertext Markup Language</li>
+<li>XML:  Extensible Markup Language</li>
+</ul>
+
+<p>
+In this tutorial, you will complete the following steps to discover the power of DB2 Text Search:<br>
+<ol>
+<li>Prepare a database for text search.</li>
+<li>Create and populate a base table.</li>
+<li>Create text indexes for text data and XML documents. Populate the text indexes.</li>
+<li>Perform searches in plain text.</li>
+<li>Perform searches in XML documents.</li>
+<li>Make some changes to the data. Update the text indexes to pick up the changes.</li>
+<li>Drop text indexes and disable database for text search if you wish.</li>
+</ol>
+</p>
+
+<BR>
+<h4>Prequisites</h4>
+<ul>
+<li>DB2 Text Search component should be installed on the DB2 database server.</li>
+<li>Start the text search instance service using the following command.</li>
+<pre><code>
+db2ts "START FOR TEXT"
+</code></pre>
+</ul>
+
+<BR>
+<p>On Linux and UNIX operating systems, this command starts a daemon. This daemon controls the scheduling of text search index updates on the DB2 database server. The IBM OmniFind Text Search server is also started and runs as an independent process. the daemon and the IBM OmniFind Text Search server are started under the authorization name of the DB2 instance owner.</p>
+
+<p>On windows operating systems, this command starts the DB2TS service. This service starts the IBM OmniFind Text Search server and henceforth controls the scheduling of text search index updates. The user running the command must meet the Windows requirements for starting the service.</p>
+
+<h4>Acknowledgements</h4>
+<p>This tutorial is based on the article <a onclick="OpenURLInFloatingWindow
+('http://www.ibm.com/developerworks/edu/dm-dw-dm-0810shettar-i.html');">Full-text search with DB2 Text Search </a>. Thanks to Prashant Shettar, Marion Behnen, and Shantanu Mundkur for producing a great article.</p>

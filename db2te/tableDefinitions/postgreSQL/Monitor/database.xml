@@ -1,0 +1,145 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2013 All rights reserved.
+  
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+<table name="statsDatabase">
+	<sqlName>pg_stat_database</sqlName>
+	<singularName>Stats Database</singularName>
+	<pluralName>Stats Databases</pluralName>
+	<description>
+One row per database, showing database OID, database name, number of active server processes connected to that database, number of transactions committed and rolled back in that database, total disk blocks read, total buffer hits (i.e., block read requests avoided by finding the block already in buffer cache), number of rows returned, fetched, inserted, updated and deleted.
+	</description>
+	<orderBy name="datname" direction="A"/>
+	<disableEdit/>
+	<output>
+		<type name="DDL" destination="" title="" generator=""/>
+	</output>
+	<displayColumns titleDepth="2">
+		<col type="column" name="datname"/>
+		<col type="column" name="numbackends"/>
+		<col type="column" name="xact_commit"/>
+		<col type="column" name="xact_rollback"/>
+		<col type="column" name="blks_read"/>
+		<col type="column" name="blks_hit"/>
+		<col type="column" name="tup_returned"/>
+		<col type="column" name="tup_fetched"/>
+		<col type="column" name="tup_inserted"/>
+		<col type="column" name="tup_updated"/>
+		<col type="column" name="tup_deleted"/>
+		<col type="column" name="conflicts"/>
+		<col type="column" name="temp_files"/>
+		<col type="column" name="temp_bytes"/>
+		<col type="column" name="deadlocks"/>
+		<col type="column" name="blk_read_time"/>
+		<col type="column" name="blk_write_time"/>
+		<col type="column" name="stats_reset"/>
+	</displayColumns>
+	<column name="datid">
+		<sqlName>datid</sqlName>
+		<title>Id</title>
+		<type>n</type>
+		<primaryKey/>
+	</column>
+	<column name="datname">
+		<sqlName>datname</sqlName>
+		<title>Database</title>
+	</column>
+	<column name="numbackends">
+		<sqlName>numbackends</sqlName>
+		<title>No. Backends</title>
+		<type>n</type>
+	</column>
+	<column name="xact_commit">
+		<sqlName>xact_commit</sqlName>
+		<title>Commits</title>
+		<type>n</type>
+	</column>
+	<column name="xact_rollback">
+		<sqlName>xact_rollback</sqlName>
+		<title>Rollbacks</title>
+		<type>n</type>
+	</column>
+	<column name="blks_read" accumulation="y">
+		<sqlName>blks_read</sqlName>
+		<title>Blks Read</title>
+		<type>n</type>
+	</column>
+	<column name="blks_hit" accumulation="y">
+		<sqlName>blks_hit</sqlName>
+		<title>Blks Hit</title>
+		<type>n</type>
+	</column>
+	<column name="tup_returned" accumulation="y">
+		<sqlName>tup_returned</sqlName>
+		<title>Returned</title>
+		<type>n</type>
+	</column>
+	<column name="tup_fetched" accumulation="y">
+		<sqlName>tup_fetched</sqlName>
+		<title>Fetches</title>
+		<type>n</type>
+	</column>
+	<column name="tup_inserted" accumulation="y">
+		<sqlName>tup_inserted</sqlName>
+		<title>Inserts</title>
+		<type>n</type>
+	</column>
+	<column name="tup_updated" accumulation="y">
+		<sqlName>tup_updated</sqlName>
+		<title>Updates</title>
+		<type>n</type>
+	</column>
+	<column name="tup_deleted" accumulation="y">
+		<sqlName>tup_deleted</sqlName>
+		<title>Deletes</title>
+		<type>n</type>
+	</column>
+	<column name="conflicts" accumulation="y">
+		<sqlName>conflicts</sqlName>
+		<title>Conflicts</title>
+		<type>n</type>
+	</column>
+	<column name="temp_files" accumulation="y">
+		<sqlName>temp_files</sqlName>
+		<title>Temp Files</title>
+		<type>n</type>
+	</column>
+	<column name="temp_bytes" accumulation="y">
+		<sqlName>temp_bytes</sqlName>
+		<title>Temp Bytes</title>
+		<type>n</type>
+	</column>
+	<column name="deadlocks" accumulation="y">
+		<sqlName>deadlocks</sqlName>
+		<title>Deadlocks</title>
+		<type>n</type>
+	</column>
+	<column name="blk_read_time" accumulation="y">
+		<sqlName>blk_read_time</sqlName>
+		<title>Blk Read Time</title>
+		<type>n</type>
+	</column>
+	<column name="blk_write_time" accumulation="y">
+		<sqlName>blk_write_time</sqlName>
+		<title>Blk Write Time</title>
+		<type>n</type>
+	</column>
+	<column name="stats_reset">
+		<sqlName>stats_reset</sqlName>
+		<title>Stats Reset</title>
+		<type>n</type>
+	</column>
+</table>

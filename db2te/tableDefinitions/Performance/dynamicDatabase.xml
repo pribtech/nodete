@@ -1,0 +1,1277 @@
+<table name="dynamicDatabase">
+<sql_name>SYSIBMADM.SNAPDB</sql_name>
+<singular_name>Database</singular_name>
+<plural_name>Databases</plural_name>
+<description>Query from ad hoc</description>
+<rows_per_page>50</rows_per_page>
+<order_by_index/>
+
+<display_columns>
+<col type="column" name="SNAPSHOT_TIMESTAMP"/>
+<col type="column" name="DB_NAME"/>
+<col type="column" name="DB_PATH"/>
+<col type="column" name="INPUT_DB_ALIAS"/>
+<col type="column" name="DB_STATUS"/>
+<col type="column" name="CATALOG_PARTITION"/>
+<col type="column" name="CATALOG_PARTITION_NAME"/>
+<col type="column" name="SERVER_PLATFORM"/>
+<col type="column" name="DB_LOCATION"/>
+<col type="column" name="DB_CONN_TIME"/>
+<col type="column" name="LAST_RESET"/>
+<col type="column" name="LAST_BACKUP"/>
+<col type="column" name="CONNECTIONS_TOP"/>
+<col type="column" name="TOTAL_CONS"/>
+<col type="column" name="TOTAL_SEC_CONS"/>
+<col type="column" name="APPLS_CUR_CONS"/>
+<col type="column" name="APPLS_IN_DB2"/>
+<col type="column" name="NUM_ASSOC_AGENTS"/>
+<col type="column" name="AGENTS_TOP"/>
+<col type="column" name="COORD_AGENTS_TOP"/>
+<col type="column" name="LOCKS_HELD"/>
+<col type="column" name="LOCK_WAITS"/>
+<col type="column" name="LOCK_WAIT_TIME"/>
+<col type="column" name="LOCK_LIST_IN_USE"/>
+<col type="column" name="DEADLOCKS"/>
+<col type="column" name="LOCK_ESCALS"/>
+<col type="column" name="X_LOCK_ESCALS"/>
+<col type="column" name="LOCKS_WAITING"/>
+<col type="column" name="LOCK_TIMEOUTS"/>
+<col type="column" name="NUM_INDOUBT_TRANS"/>
+<col type="column" name="SORT_HEAP_ALLOCATED"/>
+<col type="column" name="SORT_SHRHEAP_ALLOCATED"/>
+<col type="column" name="SORT_SHRHEAP_TOP"/>
+<col type="column" name="POST_SHRTHRESHOLD_SORTS"/>
+<col type="column" name="TOTAL_SORTS"/>
+<col type="column" name="TOTAL_SORT_TIME"/>
+<col type="column" name="SORT_OVERFLOWS"/>
+<col type="column" name="ACTIVE_SORTS"/>
+<col type="column" name="POOL_DATA_L_READS"/>
+<col type="column" name="POOL_DATA_P_READS"/>
+<col type="column" name="POOL_TEMP_DATA_L_READS"/>
+<col type="column" name="POOL_TEMP_DATA_P_READS"/>
+<col type="column" name="POOL_ASYNC_DATA_READS"/>
+<col type="column" name="POOL_DATA_WRITES"/>
+<col type="column" name="POOL_ASYNC_DATA_WRITES"/>
+<col type="column" name="POOL_INDEX_L_READS"/>
+<col type="column" name="POOL_INDEX_P_READS"/>
+<col type="column" name="POOL_TEMP_INDEX_L_READS"/>
+<col type="column" name="POOL_TEMP_INDEX_P_READS"/>
+<col type="column" name="POOL_ASYNC_INDEX_READS"/>
+<col type="column" name="POOL_INDEX_WRITES"/>
+<col type="column" name="POOL_ASYNC_INDEX_WRITES"/>
+<col type="column" name="POOL_XDA_P_READS"/>
+<col type="column" name="POOL_XDA_L_READS"/>
+<col type="column" name="POOL_XDA_WRITES"/>
+<col type="column" name="POOL_ASYNC_XDA_READS"/>
+<col type="column" name="POOL_ASYNC_XDA_WRITES"/>
+<col type="column" name="POOL_TEMP_XDA_P_READS"/>
+<col type="column" name="POOL_TEMP_XDA_L_READS"/>
+<col type="column" name="POOL_READ_TIME"/>
+<col type="column" name="POOL_WRITE_TIME"/>
+<col type="column" name="POOL_ASYNC_READ_TIME"/>
+<col type="column" name="POOL_ASYNC_WRITE_TIME"/>
+<col type="column" name="POOL_ASYNC_DATA_READ_REQS"/>
+<col type="column" name="POOL_ASYNC_INDEX_READ_REQS"/>
+<col type="column" name="POOL_ASYNC_XDA_READ_REQS"/>
+<col type="column" name="POOL_NO_VICTIM_BUFFER"/>
+<col type="column" name="POOL_LSN_GAP_CLNS"/>
+<col type="column" name="POOL_DRTY_PG_STEAL_CLNS"/>
+<col type="column" name="POOL_DRTY_PG_THRSH_CLNS"/>
+<col type="column" name="PREFETCH_WAIT_TIME"/>
+<col type="column" name="UNREAD_PREFETCH_PAGES"/>
+<col type="column" name="DIRECT_READS"/>
+<col type="column" name="DIRECT_WRITES"/>
+<col type="column" name="DIRECT_READ_REQS"/>
+<col type="column" name="DIRECT_WRITE_REQS"/>
+<col type="column" name="DIRECT_READ_TIME"/>
+<col type="column" name="DIRECT_WRITE_TIME"/>
+<col type="column" name="FILES_CLOSED"/>
+<col type="column" name="ELAPSED_EXEC_TIME_S"/>
+<col type="column" name="ELAPSED_EXEC_TIME_MS"/>
+<col type="column" name="COMMIT_SQL_STMTS"/>
+<col type="column" name="ROLLBACK_SQL_STMTS"/>
+<col type="column" name="DYNAMIC_SQL_STMTS"/>
+<col type="column" name="STATIC_SQL_STMTS"/>
+<col type="column" name="FAILED_SQL_STMTS"/>
+<col type="column" name="SELECT_SQL_STMTS"/>
+<col type="column" name="UID_SQL_STMTS"/>
+<col type="column" name="DDL_SQL_STMTS"/>
+<col type="column" name="INT_AUTO_REBINDS"/>
+<col type="column" name="INT_ROWS_DELETED"/>
+<col type="column" name="INT_ROWS_INSERTED"/>
+<col type="column" name="INT_ROWS_UPDATED"/>
+<col type="column" name="INT_COMMITS"/>
+<col type="column" name="INT_ROLLBACKS"/>
+<col type="column" name="INT_DEADLOCK_ROLLBACKS"/>
+<col type="column" name="ROWS_DELETED"/>
+<col type="column" name="ROWS_INSERTED"/>
+<col type="column" name="ROWS_UPDATED"/>
+<col type="column" name="ROWS_SELECTED"/>
+<col type="column" name="ROWS_READ"/>
+<col type="column" name="BINDS_PRECOMPILES"/>
+<col type="column" name="TOTAL_LOG_AVAILABLE"/>
+<col type="column" name="TOTAL_LOG_USED"/>
+<col type="column" name="SEC_LOG_USED_TOP"/>
+<col type="column" name="TOT_LOG_USED_TOP"/>
+<col type="column" name="SEC_LOGS_ALLOCATED"/>
+<col type="column" name="LOG_READS"/>
+<col type="column" name="LOG_READ_TIME_S"/>
+<col type="column" name="LOG_READ_TIME_NS"/>
+<col type="column" name="LOG_WRITES"/>
+<col type="column" name="LOG_WRITE_TIME_S"/>
+<col type="column" name="LOG_WRITE_TIME_NS"/>
+<col type="column" name="NUM_LOG_WRITE_IO"/>
+<col type="column" name="NUM_LOG_READ_IO"/>
+<col type="column" name="NUM_LOG_PART_PAGE_IO"/>
+<col type="column" name="NUM_LOG_BUFFER_FULL"/>
+<col type="column" name="NUM_LOG_DATA_FOUND_IN_BUFFER"/>
+<col type="column" name="APPL_ID_OLDEST_XACT"/>
+<col type="column" name="LOG_TO_REDO_FOR_RECOVERY"/>
+<col type="column" name="LOG_HELD_BY_DIRTY_PAGES"/>
+<col type="column" name="PKG_CACHE_LOOKUPS"/>
+<col type="column" name="PKG_CACHE_INSERTS"/>
+<col type="column" name="PKG_CACHE_NUM_OVERFLOWS"/>
+<col type="column" name="PKG_CACHE_SIZE_TOP"/>
+<col type="column" name="APPL_SECTION_LOOKUPS"/>
+<col type="column" name="APPL_SECTION_INSERTS"/>
+<col type="column" name="CAT_CACHE_LOOKUPS"/>
+<col type="column" name="CAT_CACHE_INSERTS"/>
+<col type="column" name="CAT_CACHE_OVERFLOWS"/>
+<col type="column" name="CAT_CACHE_SIZE_TOP"/>
+<col type="column" name="PRIV_WORKSPACE_SIZE_TOP"/>
+<col type="column" name="PRIV_WORKSPACE_NUM_OVERFLOWS"/>
+<col type="column" name="PRIV_WORKSPACE_SECTION_INSERTS"/>
+<col type="column" name="PRIV_WORKSPACE_SECTION_LOOKUPS"/>
+<col type="column" name="SHR_WORKSPACE_SIZE_TOP"/>
+<col type="column" name="SHR_WORKSPACE_NUM_OVERFLOWS"/>
+<col type="column" name="SHR_WORKSPACE_SECTION_INSERTS"/>
+<col type="column" name="SHR_WORKSPACE_SECTION_LOOKUPS"/>
+<col type="column" name="TOTAL_HASH_JOINS"/>
+<col type="column" name="TOTAL_HASH_LOOPS"/>
+<col type="column" name="HASH_JOIN_OVERFLOWS"/>
+<col type="column" name="HASH_JOIN_SMALL_OVERFLOWS"/>
+<col type="column" name="POST_SHRTHRESHOLD_HASH_JOINS"/>
+<col type="column" name="ACTIVE_HASH_JOINS"/>
+<col type="column" name="NUM_DB_STORAGE_PATHS"/>
+<col type="column" name="DBPARTITIONNUM"/>
+<col type="column" name="SMALLEST_LOG_AVAIL_NODE"/>
+<col type="column" name="TOTAL_OLAP_FUNCS"/>
+<col type="column" name="OLAP_FUNC_OVERFLOWS"/>
+<col type="column" name="ACTIVE_OLAP_FUNCS"/>
+<col type="column" name="STATS_CACHE_SIZE"/>
+<col type="column" name="STATS_FABRICATIONS"/>
+<col type="column" name="SYNC_RUNSTATS"/>
+<col type="column" name="ASYNC_RUNSTATS"/>
+<col type="column" name="STATS_FABRICATE_TIME"/>
+<col type="column" name="SYNC_RUNSTATS_TIME"/>
+<col type="column" name="NUM_THRESHOLD_VIOLATIONS"/>
+</display_columns>
+
+<disable_edit/>
+
+<column name="SNAPSHOT_TIMESTAMP">
+<c_sql_name>SNAPSHOT_TIMESTAMP</c_sql_name>
+<c_title>SNAPSHOT_TIMESTAMP</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="DB_NAME">
+<c_sql_name>DB_NAME</c_sql_name>
+<c_title>DB_NAME</c_title>
+<c_presentation/>
+<c_drill>y</c_drill>
+</column>
+
+<column name="DB_PATH">
+<c_sql_name>DB_PATH</c_sql_name>
+<c_title>DB_PATH</c_title>
+<c_presentation/>
+<c_drill>y</c_drill>
+</column>
+
+<column name="INPUT_DB_ALIAS">
+<c_sql_name>INPUT_DB_ALIAS</c_sql_name>
+<c_title>INPUT_DB_ALIAS</c_title>
+<c_presentation/>
+<c_drill>y</c_drill>
+</column>
+
+<column name="DB_STATUS">
+<c_sql_name>DB_STATUS</c_sql_name>
+<c_title>DB_STATUS</c_title>
+<c_presentation/>
+<c_drill>y</c_drill>
+</column>
+
+<column name="CATALOG_PARTITION">
+<c_sql_name>CATALOG_PARTITION</c_sql_name>
+<c_title>CATALOG_PARTITION</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="CATALOG_PARTITION_NAME">
+<c_sql_name>CATALOG_PARTITION_NAME</c_sql_name>
+<c_title>CATALOG_PARTITION_NAME</c_title>
+<c_presentation/>
+<c_drill>y</c_drill>
+</column>
+
+<column name="SERVER_PLATFORM">
+<c_sql_name>SERVER_PLATFORM</c_sql_name>
+<c_title>SERVER_PLATFORM</c_title>
+<c_presentation/>
+<c_drill>y</c_drill>
+</column>
+
+<column name="DB_LOCATION">
+<c_sql_name>DB_LOCATION</c_sql_name>
+<c_title>DB_LOCATION</c_title>
+<c_presentation/>
+<c_drill>y</c_drill>
+</column>
+
+<column name="DB_CONN_TIME">
+<c_sql_name>DB_CONN_TIME</c_sql_name>
+<c_title>DB_CONN_TIME</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="LAST_RESET">
+<c_sql_name>LAST_RESET</c_sql_name>
+<c_title>LAST_RESET</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="LAST_BACKUP">
+<c_sql_name>LAST_BACKUP</c_sql_name>
+<c_title>LAST_BACKUP</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="CONNECTIONS_TOP">
+<c_sql_name>CONNECTIONS_TOP</c_sql_name>
+<c_title>CONNECTIONS_TOP</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="TOTAL_CONS">
+<c_sql_name>TOTAL_CONS</c_sql_name>
+<c_title>TOTAL_CONS</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="TOTAL_SEC_CONS">
+<c_sql_name>TOTAL_SEC_CONS</c_sql_name>
+<c_title>TOTAL_SEC_CONS</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="APPLS_CUR_CONS">
+<c_sql_name>APPLS_CUR_CONS</c_sql_name>
+<c_title>APPLS_CUR_CONS</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="APPLS_IN_DB2">
+<c_sql_name>APPLS_IN_DB2</c_sql_name>
+<c_title>APPLS_IN_DB2</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="NUM_ASSOC_AGENTS">
+<c_sql_name>NUM_ASSOC_AGENTS</c_sql_name>
+<c_title>NUM_ASSOC_AGENTS</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="AGENTS_TOP">
+<c_sql_name>AGENTS_TOP</c_sql_name>
+<c_title>AGENTS_TOP</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="COORD_AGENTS_TOP">
+<c_sql_name>COORD_AGENTS_TOP</c_sql_name>
+<c_title>COORD_AGENTS_TOP</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="LOCKS_HELD">
+<c_sql_name>LOCKS_HELD</c_sql_name>
+<c_title>LOCKS_HELD</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="LOCK_WAITS">
+<c_sql_name>LOCK_WAITS</c_sql_name>
+<c_title>LOCK_WAITS</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="LOCK_WAIT_TIME">
+<c_sql_name>LOCK_WAIT_TIME</c_sql_name>
+<c_title>LOCK_WAIT_TIME</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="LOCK_LIST_IN_USE">
+<c_sql_name>LOCK_LIST_IN_USE</c_sql_name>
+<c_title>LOCK_LIST_IN_USE</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="DEADLOCKS">
+<c_sql_name>DEADLOCKS</c_sql_name>
+<c_title>DEADLOCKS</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="LOCK_ESCALS">
+<c_sql_name>LOCK_ESCALS</c_sql_name>
+<c_title>LOCK_ESCALS</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="X_LOCK_ESCALS">
+<c_sql_name>X_LOCK_ESCALS</c_sql_name>
+<c_title>X_LOCK_ESCALS</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="LOCKS_WAITING">
+<c_sql_name>LOCKS_WAITING</c_sql_name>
+<c_title>LOCKS_WAITING</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="LOCK_TIMEOUTS">
+<c_sql_name>LOCK_TIMEOUTS</c_sql_name>
+<c_title>LOCK_TIMEOUTS</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="NUM_INDOUBT_TRANS">
+<c_sql_name>NUM_INDOUBT_TRANS</c_sql_name>
+<c_title>NUM_INDOUBT_TRANS</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="SORT_HEAP_ALLOCATED">
+<c_sql_name>SORT_HEAP_ALLOCATED</c_sql_name>
+<c_title>SORT_HEAP_ALLOCATED</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="SORT_SHRHEAP_ALLOCATED">
+<c_sql_name>SORT_SHRHEAP_ALLOCATED</c_sql_name>
+<c_title>SORT_SHRHEAP_ALLOCATED</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="SORT_SHRHEAP_TOP">
+<c_sql_name>SORT_SHRHEAP_TOP</c_sql_name>
+<c_title>SORT_SHRHEAP_TOP</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="POST_SHRTHRESHOLD_SORTS">
+<c_sql_name>POST_SHRTHRESHOLD_SORTS</c_sql_name>
+<c_title>POST_SHRTHRESHOLD_SORTS</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="TOTAL_SORTS">
+<c_sql_name>TOTAL_SORTS</c_sql_name>
+<c_title>TOTAL_SORTS</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="TOTAL_SORT_TIME">
+<c_sql_name>TOTAL_SORT_TIME</c_sql_name>
+<c_title>TOTAL_SORT_TIME</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="SORT_OVERFLOWS">
+<c_sql_name>SORT_OVERFLOWS</c_sql_name>
+<c_title>SORT_OVERFLOWS</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="ACTIVE_SORTS">
+<c_sql_name>ACTIVE_SORTS</c_sql_name>
+<c_title>ACTIVE_SORTS</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="POOL_DATA_L_READS">
+<c_sql_name>POOL_DATA_L_READS</c_sql_name>
+<c_title>POOL_DATA_L_READS</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="POOL_DATA_P_READS">
+<c_sql_name>POOL_DATA_P_READS</c_sql_name>
+<c_title>POOL_DATA_P_READS</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="POOL_TEMP_DATA_L_READS">
+<c_sql_name>POOL_TEMP_DATA_L_READS</c_sql_name>
+<c_title>POOL_TEMP_DATA_L_READS</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="POOL_TEMP_DATA_P_READS">
+<c_sql_name>POOL_TEMP_DATA_P_READS</c_sql_name>
+<c_title>POOL_TEMP_DATA_P_READS</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="POOL_ASYNC_DATA_READS">
+<c_sql_name>POOL_ASYNC_DATA_READS</c_sql_name>
+<c_title>POOL_ASYNC_DATA_READS</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="POOL_DATA_WRITES">
+<c_sql_name>POOL_DATA_WRITES</c_sql_name>
+<c_title>POOL_DATA_WRITES</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="POOL_ASYNC_DATA_WRITES">
+<c_sql_name>POOL_ASYNC_DATA_WRITES</c_sql_name>
+<c_title>POOL_ASYNC_DATA_WRITES</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="POOL_INDEX_L_READS">
+<c_sql_name>POOL_INDEX_L_READS</c_sql_name>
+<c_title>POOL_INDEX_L_READS</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="POOL_INDEX_P_READS">
+<c_sql_name>POOL_INDEX_P_READS</c_sql_name>
+<c_title>POOL_INDEX_P_READS</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="POOL_TEMP_INDEX_L_READS">
+<c_sql_name>POOL_TEMP_INDEX_L_READS</c_sql_name>
+<c_title>POOL_TEMP_INDEX_L_READS</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="POOL_TEMP_INDEX_P_READS">
+<c_sql_name>POOL_TEMP_INDEX_P_READS</c_sql_name>
+<c_title>POOL_TEMP_INDEX_P_READS</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="POOL_ASYNC_INDEX_READS">
+<c_sql_name>POOL_ASYNC_INDEX_READS</c_sql_name>
+<c_title>POOL_ASYNC_INDEX_READS</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="POOL_INDEX_WRITES">
+<c_sql_name>POOL_INDEX_WRITES</c_sql_name>
+<c_title>POOL_INDEX_WRITES</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="POOL_ASYNC_INDEX_WRITES">
+<c_sql_name>POOL_ASYNC_INDEX_WRITES</c_sql_name>
+<c_title>POOL_ASYNC_INDEX_WRITES</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="POOL_XDA_P_READS">
+<c_sql_name>POOL_XDA_P_READS</c_sql_name>
+<c_title>POOL_XDA_P_READS</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="POOL_XDA_L_READS">
+<c_sql_name>POOL_XDA_L_READS</c_sql_name>
+<c_title>POOL_XDA_L_READS</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="POOL_XDA_WRITES">
+<c_sql_name>POOL_XDA_WRITES</c_sql_name>
+<c_title>POOL_XDA_WRITES</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="POOL_ASYNC_XDA_READS">
+<c_sql_name>POOL_ASYNC_XDA_READS</c_sql_name>
+<c_title>POOL_ASYNC_XDA_READS</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="POOL_ASYNC_XDA_WRITES">
+<c_sql_name>POOL_ASYNC_XDA_WRITES</c_sql_name>
+<c_title>POOL_ASYNC_XDA_WRITES</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="POOL_TEMP_XDA_P_READS">
+<c_sql_name>POOL_TEMP_XDA_P_READS</c_sql_name>
+<c_title>POOL_TEMP_XDA_P_READS</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="POOL_TEMP_XDA_L_READS">
+<c_sql_name>POOL_TEMP_XDA_L_READS</c_sql_name>
+<c_title>POOL_TEMP_XDA_L_READS</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="POOL_READ_TIME">
+<c_sql_name>POOL_READ_TIME</c_sql_name>
+<c_title>POOL_READ_TIME</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="POOL_WRITE_TIME">
+<c_sql_name>POOL_WRITE_TIME</c_sql_name>
+<c_title>POOL_WRITE_TIME</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="POOL_ASYNC_READ_TIME">
+<c_sql_name>POOL_ASYNC_READ_TIME</c_sql_name>
+<c_title>POOL_ASYNC_READ_TIME</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="POOL_ASYNC_WRITE_TIME">
+<c_sql_name>POOL_ASYNC_WRITE_TIME</c_sql_name>
+<c_title>POOL_ASYNC_WRITE_TIME</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="POOL_ASYNC_DATA_READ_REQS">
+<c_sql_name>POOL_ASYNC_DATA_READ_REQS</c_sql_name>
+<c_title>POOL_ASYNC_DATA_READ_REQS</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="POOL_ASYNC_INDEX_READ_REQS">
+<c_sql_name>POOL_ASYNC_INDEX_READ_REQS</c_sql_name>
+<c_title>POOL_ASYNC_INDEX_READ_REQS</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="POOL_ASYNC_XDA_READ_REQS">
+<c_sql_name>POOL_ASYNC_XDA_READ_REQS</c_sql_name>
+<c_title>POOL_ASYNC_XDA_READ_REQS</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="POOL_NO_VICTIM_BUFFER">
+<c_sql_name>POOL_NO_VICTIM_BUFFER</c_sql_name>
+<c_title>POOL_NO_VICTIM_BUFFER</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="POOL_LSN_GAP_CLNS">
+<c_sql_name>POOL_LSN_GAP_CLNS</c_sql_name>
+<c_title>POOL_LSN_GAP_CLNS</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="POOL_DRTY_PG_STEAL_CLNS">
+<c_sql_name>POOL_DRTY_PG_STEAL_CLNS</c_sql_name>
+<c_title>POOL_DRTY_PG_STEAL_CLNS</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="POOL_DRTY_PG_THRSH_CLNS">
+<c_sql_name>POOL_DRTY_PG_THRSH_CLNS</c_sql_name>
+<c_title>POOL_DRTY_PG_THRSH_CLNS</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="PREFETCH_WAIT_TIME">
+<c_sql_name>PREFETCH_WAIT_TIME</c_sql_name>
+<c_title>PREFETCH_WAIT_TIME</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="UNREAD_PREFETCH_PAGES">
+<c_sql_name>UNREAD_PREFETCH_PAGES</c_sql_name>
+<c_title>UNREAD_PREFETCH_PAGES</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="DIRECT_READS">
+<c_sql_name>DIRECT_READS</c_sql_name>
+<c_title>DIRECT_READS</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="DIRECT_WRITES">
+<c_sql_name>DIRECT_WRITES</c_sql_name>
+<c_title>DIRECT_WRITES</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="DIRECT_READ_REQS">
+<c_sql_name>DIRECT_READ_REQS</c_sql_name>
+<c_title>DIRECT_READ_REQS</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="DIRECT_WRITE_REQS">
+<c_sql_name>DIRECT_WRITE_REQS</c_sql_name>
+<c_title>DIRECT_WRITE_REQS</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="DIRECT_READ_TIME">
+<c_sql_name>DIRECT_READ_TIME</c_sql_name>
+<c_title>DIRECT_READ_TIME</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="DIRECT_WRITE_TIME">
+<c_sql_name>DIRECT_WRITE_TIME</c_sql_name>
+<c_title>DIRECT_WRITE_TIME</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="FILES_CLOSED">
+<c_sql_name>FILES_CLOSED</c_sql_name>
+<c_title>FILES_CLOSED</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="ELAPSED_EXEC_TIME_S">
+<c_sql_name>ELAPSED_EXEC_TIME_S</c_sql_name>
+<c_title>ELAPSED_EXEC_TIME_S</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="ELAPSED_EXEC_TIME_MS">
+<c_sql_name>ELAPSED_EXEC_TIME_MS</c_sql_name>
+<c_title>ELAPSED_EXEC_TIME_MS</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="COMMIT_SQL_STMTS">
+<c_sql_name>COMMIT_SQL_STMTS</c_sql_name>
+<c_title>COMMIT_SQL_STMTS</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="ROLLBACK_SQL_STMTS">
+<c_sql_name>ROLLBACK_SQL_STMTS</c_sql_name>
+<c_title>ROLLBACK_SQL_STMTS</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="DYNAMIC_SQL_STMTS">
+<c_sql_name>DYNAMIC_SQL_STMTS</c_sql_name>
+<c_title>DYNAMIC_SQL_STMTS</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="STATIC_SQL_STMTS">
+<c_sql_name>STATIC_SQL_STMTS</c_sql_name>
+<c_title>STATIC_SQL_STMTS</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="FAILED_SQL_STMTS">
+<c_sql_name>FAILED_SQL_STMTS</c_sql_name>
+<c_title>FAILED_SQL_STMTS</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="SELECT_SQL_STMTS">
+<c_sql_name>SELECT_SQL_STMTS</c_sql_name>
+<c_title>SELECT_SQL_STMTS</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="UID_SQL_STMTS">
+<c_sql_name>UID_SQL_STMTS</c_sql_name>
+<c_title>UID_SQL_STMTS</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="DDL_SQL_STMTS">
+<c_sql_name>DDL_SQL_STMTS</c_sql_name>
+<c_title>DDL_SQL_STMTS</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="INT_AUTO_REBINDS">
+<c_sql_name>INT_AUTO_REBINDS</c_sql_name>
+<c_title>INT_AUTO_REBINDS</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="INT_ROWS_DELETED">
+<c_sql_name>INT_ROWS_DELETED</c_sql_name>
+<c_title>INT_ROWS_DELETED</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="INT_ROWS_INSERTED">
+<c_sql_name>INT_ROWS_INSERTED</c_sql_name>
+<c_title>INT_ROWS_INSERTED</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="INT_ROWS_UPDATED">
+<c_sql_name>INT_ROWS_UPDATED</c_sql_name>
+<c_title>INT_ROWS_UPDATED</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="INT_COMMITS">
+<c_sql_name>INT_COMMITS</c_sql_name>
+<c_title>INT_COMMITS</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="INT_ROLLBACKS">
+<c_sql_name>INT_ROLLBACKS</c_sql_name>
+<c_title>INT_ROLLBACKS</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="INT_DEADLOCK_ROLLBACKS">
+<c_sql_name>INT_DEADLOCK_ROLLBACKS</c_sql_name>
+<c_title>INT_DEADLOCK_ROLLBACKS</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="ROWS_DELETED">
+<c_sql_name>ROWS_DELETED</c_sql_name>
+<c_title>ROWS_DELETED</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="ROWS_INSERTED">
+<c_sql_name>ROWS_INSERTED</c_sql_name>
+<c_title>ROWS_INSERTED</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="ROWS_UPDATED">
+<c_sql_name>ROWS_UPDATED</c_sql_name>
+<c_title>ROWS_UPDATED</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="ROWS_SELECTED">
+<c_sql_name>ROWS_SELECTED</c_sql_name>
+<c_title>ROWS_SELECTED</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="ROWS_READ">
+<c_sql_name>ROWS_READ</c_sql_name>
+<c_title>ROWS_READ</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="BINDS_PRECOMPILES">
+<c_sql_name>BINDS_PRECOMPILES</c_sql_name>
+<c_title>BINDS_PRECOMPILES</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="TOTAL_LOG_AVAILABLE">
+<c_sql_name>TOTAL_LOG_AVAILABLE</c_sql_name>
+<c_title>TOTAL_LOG_AVAILABLE</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="TOTAL_LOG_USED">
+<c_sql_name>TOTAL_LOG_USED</c_sql_name>
+<c_title>TOTAL_LOG_USED</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="SEC_LOG_USED_TOP">
+<c_sql_name>SEC_LOG_USED_TOP</c_sql_name>
+<c_title>SEC_LOG_USED_TOP</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="TOT_LOG_USED_TOP">
+<c_sql_name>TOT_LOG_USED_TOP</c_sql_name>
+<c_title>TOT_LOG_USED_TOP</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="SEC_LOGS_ALLOCATED">
+<c_sql_name>SEC_LOGS_ALLOCATED</c_sql_name>
+<c_title>SEC_LOGS_ALLOCATED</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="LOG_READS">
+<c_sql_name>LOG_READS</c_sql_name>
+<c_title>LOG_READS</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="LOG_READ_TIME_S">
+<c_sql_name>LOG_READ_TIME_S</c_sql_name>
+<c_title>LOG_READ_TIME_S</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="LOG_READ_TIME_NS">
+<c_sql_name>LOG_READ_TIME_NS</c_sql_name>
+<c_title>LOG_READ_TIME_NS</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="LOG_WRITES">
+<c_sql_name>LOG_WRITES</c_sql_name>
+<c_title>LOG_WRITES</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="LOG_WRITE_TIME_S">
+<c_sql_name>LOG_WRITE_TIME_S</c_sql_name>
+<c_title>LOG_WRITE_TIME_S</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="LOG_WRITE_TIME_NS">
+<c_sql_name>LOG_WRITE_TIME_NS</c_sql_name>
+<c_title>LOG_WRITE_TIME_NS</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="NUM_LOG_WRITE_IO">
+<c_sql_name>NUM_LOG_WRITE_IO</c_sql_name>
+<c_title>NUM_LOG_WRITE_IO</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="NUM_LOG_READ_IO">
+<c_sql_name>NUM_LOG_READ_IO</c_sql_name>
+<c_title>NUM_LOG_READ_IO</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="NUM_LOG_PART_PAGE_IO">
+<c_sql_name>NUM_LOG_PART_PAGE_IO</c_sql_name>
+<c_title>NUM_LOG_PART_PAGE_IO</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="NUM_LOG_BUFFER_FULL">
+<c_sql_name>NUM_LOG_BUFFER_FULL</c_sql_name>
+<c_title>NUM_LOG_BUFFER_FULL</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="NUM_LOG_DATA_FOUND_IN_BUFFER">
+<c_sql_name>NUM_LOG_DATA_FOUND_IN_BUFFER</c_sql_name>
+<c_title>NUM_LOG_DATA_FOUND_IN_BUFFER</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="APPL_ID_OLDEST_XACT">
+<c_sql_name>APPL_ID_OLDEST_XACT</c_sql_name>
+<c_title>APPL_ID_OLDEST_XACT</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="LOG_TO_REDO_FOR_RECOVERY">
+<c_sql_name>LOG_TO_REDO_FOR_RECOVERY</c_sql_name>
+<c_title>LOG_TO_REDO_FOR_RECOVERY</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="LOG_HELD_BY_DIRTY_PAGES">
+<c_sql_name>LOG_HELD_BY_DIRTY_PAGES</c_sql_name>
+<c_title>LOG_HELD_BY_DIRTY_PAGES</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="PKG_CACHE_LOOKUPS">
+<c_sql_name>PKG_CACHE_LOOKUPS</c_sql_name>
+<c_title>PKG_CACHE_LOOKUPS</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="PKG_CACHE_INSERTS">
+<c_sql_name>PKG_CACHE_INSERTS</c_sql_name>
+<c_title>PKG_CACHE_INSERTS</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="PKG_CACHE_NUM_OVERFLOWS">
+<c_sql_name>PKG_CACHE_NUM_OVERFLOWS</c_sql_name>
+<c_title>PKG_CACHE_NUM_OVERFLOWS</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="PKG_CACHE_SIZE_TOP">
+<c_sql_name>PKG_CACHE_SIZE_TOP</c_sql_name>
+<c_title>PKG_CACHE_SIZE_TOP</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="APPL_SECTION_LOOKUPS">
+<c_sql_name>APPL_SECTION_LOOKUPS</c_sql_name>
+<c_title>APPL_SECTION_LOOKUPS</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="APPL_SECTION_INSERTS">
+<c_sql_name>APPL_SECTION_INSERTS</c_sql_name>
+<c_title>APPL_SECTION_INSERTS</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="CAT_CACHE_LOOKUPS">
+<c_sql_name>CAT_CACHE_LOOKUPS</c_sql_name>
+<c_title>CAT_CACHE_LOOKUPS</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="CAT_CACHE_INSERTS">
+<c_sql_name>CAT_CACHE_INSERTS</c_sql_name>
+<c_title>CAT_CACHE_INSERTS</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="CAT_CACHE_OVERFLOWS">
+<c_sql_name>CAT_CACHE_OVERFLOWS</c_sql_name>
+<c_title>CAT_CACHE_OVERFLOWS</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="CAT_CACHE_SIZE_TOP">
+<c_sql_name>CAT_CACHE_SIZE_TOP</c_sql_name>
+<c_title>CAT_CACHE_SIZE_TOP</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="PRIV_WORKSPACE_SIZE_TOP">
+<c_sql_name>PRIV_WORKSPACE_SIZE_TOP</c_sql_name>
+<c_title>PRIV_WORKSPACE_SIZE_TOP</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="PRIV_WORKSPACE_NUM_OVERFLOWS">
+<c_sql_name>PRIV_WORKSPACE_NUM_OVERFLOWS</c_sql_name>
+<c_title>PRIV_WORKSPACE_NUM_OVERFLOWS</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="PRIV_WORKSPACE_SECTION_INSERTS">
+<c_sql_name>PRIV_WORKSPACE_SECTION_INSERTS</c_sql_name>
+<c_title>PRIV_WORKSPACE_SECTION_INSERTS</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="PRIV_WORKSPACE_SECTION_LOOKUPS">
+<c_sql_name>PRIV_WORKSPACE_SECTION_LOOKUPS</c_sql_name>
+<c_title>PRIV_WORKSPACE_SECTION_LOOKUPS</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="SHR_WORKSPACE_SIZE_TOP">
+<c_sql_name>SHR_WORKSPACE_SIZE_TOP</c_sql_name>
+<c_title>SHR_WORKSPACE_SIZE_TOP</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="SHR_WORKSPACE_NUM_OVERFLOWS">
+<c_sql_name>SHR_WORKSPACE_NUM_OVERFLOWS</c_sql_name>
+<c_title>SHR_WORKSPACE_NUM_OVERFLOWS</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="SHR_WORKSPACE_SECTION_INSERTS">
+<c_sql_name>SHR_WORKSPACE_SECTION_INSERTS</c_sql_name>
+<c_title>SHR_WORKSPACE_SECTION_INSERTS</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="SHR_WORKSPACE_SECTION_LOOKUPS">
+<c_sql_name>SHR_WORKSPACE_SECTION_LOOKUPS</c_sql_name>
+<c_title>SHR_WORKSPACE_SECTION_LOOKUPS</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="TOTAL_HASH_JOINS">
+<c_sql_name>TOTAL_HASH_JOINS</c_sql_name>
+<c_title>TOTAL_HASH_JOINS</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="TOTAL_HASH_LOOPS">
+<c_sql_name>TOTAL_HASH_LOOPS</c_sql_name>
+<c_title>TOTAL_HASH_LOOPS</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="HASH_JOIN_OVERFLOWS">
+<c_sql_name>HASH_JOIN_OVERFLOWS</c_sql_name>
+<c_title>HASH_JOIN_OVERFLOWS</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="HASH_JOIN_SMALL_OVERFLOWS">
+<c_sql_name>HASH_JOIN_SMALL_OVERFLOWS</c_sql_name>
+<c_title>HASH_JOIN_SMALL_OVERFLOWS</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="POST_SHRTHRESHOLD_HASH_JOINS">
+<c_sql_name>POST_SHRTHRESHOLD_HASH_JOINS</c_sql_name>
+<c_title>POST_SHRTHRESHOLD_HASH_JOINS</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="ACTIVE_HASH_JOINS">
+<c_sql_name>ACTIVE_HASH_JOINS</c_sql_name>
+<c_title>ACTIVE_HASH_JOINS</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="NUM_DB_STORAGE_PATHS">
+<c_sql_name>NUM_DB_STORAGE_PATHS</c_sql_name>
+<c_title>NUM_DB_STORAGE_PATHS</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="DBPARTITIONNUM">
+<c_sql_name>DBPARTITIONNUM</c_sql_name>
+<c_title>DBPARTITIONNUM</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="SMALLEST_LOG_AVAIL_NODE">
+<c_sql_name>SMALLEST_LOG_AVAIL_NODE</c_sql_name>
+<c_title>SMALLEST_LOG_AVAIL_NODE</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="TOTAL_OLAP_FUNCS">
+<c_sql_name>TOTAL_OLAP_FUNCS</c_sql_name>
+<c_title>TOTAL_OLAP_FUNCS</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="OLAP_FUNC_OVERFLOWS">
+<c_sql_name>OLAP_FUNC_OVERFLOWS</c_sql_name>
+<c_title>OLAP_FUNC_OVERFLOWS</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="ACTIVE_OLAP_FUNCS">
+<c_sql_name>ACTIVE_OLAP_FUNCS</c_sql_name>
+<c_title>ACTIVE_OLAP_FUNCS</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="STATS_CACHE_SIZE">
+<c_sql_name>STATS_CACHE_SIZE</c_sql_name>
+<c_title>STATS_CACHE_SIZE</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="STATS_FABRICATIONS">
+<c_sql_name>STATS_FABRICATIONS</c_sql_name>
+<c_title>STATS_FABRICATIONS</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="SYNC_RUNSTATS">
+<c_sql_name>SYNC_RUNSTATS</c_sql_name>
+<c_title>SYNC_RUNSTATS</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="ASYNC_RUNSTATS">
+<c_sql_name>ASYNC_RUNSTATS</c_sql_name>
+<c_title>ASYNC_RUNSTATS</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="STATS_FABRICATE_TIME">
+<c_sql_name>STATS_FABRICATE_TIME</c_sql_name>
+<c_title>STATS_FABRICATE_TIME</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="SYNC_RUNSTATS_TIME">
+<c_sql_name>SYNC_RUNSTATS_TIME</c_sql_name>
+<c_title>SYNC_RUNSTATS_TIME</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="NUM_THRESHOLD_VIOLATIONS">
+<c_sql_name>NUM_THRESHOLD_VIOLATIONS</c_sql_name>
+<c_title>NUM_THRESHOLD_VIOLATIONS</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+</table>

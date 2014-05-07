@@ -1,0 +1,79 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2010 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<command name="alterTablespace" title="Alter Tablespace">
+<![CDATA[
+>>-ALTER TABLESPACE--tablespace-name---------------------------->
+]]>
+	<text>ALTER TABLESPACE</text>
+	<clauseReference name="tablespace-name"/>
+	<br/>
+<![CDATA[
+     +-DROP--| drop-container-clause |--+-----------------------------+--------------------------------------+     
+     |                                  '-| on-db-partitions-clause |-'                                      |     
+
+drop-container-clause
+      .-,------------------------------.      
+      V                                |      
+|--(----+-FILE---+--'container-string'-+--)---------------------|
+        '-DEVICE-'                            
+
+]]>
+
+		<text>DROP</text>
+		<text>(</text>
+		<select>
+			<option default="true"><text>FILE</text></option>
+			<option><text>DEVICE</text></option>
+		</select>
+		<clauseReference name="container-string"/>
+		<text>)</text>
+		<select>
+			<option default="true"></option>
+			<option><clauseReference name="on-db-partitions-clause"/></option>
+		</select>
+
+	<clause name="on-db-partitions-clause">
+<![CDATA[
+|--ON--+-DBPARTITIONNUM--+-------------------------------------->
+       '-DBPARTITIONNUMS-'   
+
+      .-,--------------------------------------------------.      
+      V                                                    |      
+>--(----db-partition-number1--+--------------------------+-+--)--|
+                              '-TO--db-partition-number2-'        
+]]>
+		<text>ON</text>
+		<select>
+			<option default="true"><text>DBPARTITIONNUM</text></option>
+			<option><text>DBPARTITIONNUMS</text></option>
+		</select>
+		<text>(</text>
+		<repeatable>
+			<text>'</text>
+			<clauseReference name="db-partition-number"/>
+			<text>'</text>
+			<select>
+				<option default="true"></option>
+				<option><text>TO</text><clauseReference name="db-partition-number"/></option>
+			</select>
+		</repeatable>
+		<text>)</text>
+	</clause>
+
+</command>
+        

@@ -1,0 +1,19 @@
+/* This script removes all tutorial schemas.
+It then selects all tutorial schemas currently exsisting and all 
+table with in the error schema schema of errors that occurred while
+dropping the schemas.
+*/
+
+BEGIN ATOMIC
+DECLARE ERRORSCHEMA VARCHAR(128);
+DECLARE ERRORTABLE VARCHAR(128);
+FOR schemasToDrop AS SELECT SCHEMANAME FROM SYSCAT.SCHEMATA WHERE SCHEMANAME like 'TUT%' DO
+   SET ERRORSCHEMA = 'ERRORSCHEMA';
+   SET ERRORTABLE = schemasToDrop.SCHEMANAME;
+   call SYSPROC.ADMIN_DROP_SCHEMA( schemasToDrop.SCHEMANAME, NULL, ERRORSCHEMA,  ERRORTABLE);
+END FOR;
+
+END#
+
+SELECT schemaname FROM SYSCAT.SCHEMATA WHERE schemaname like 'TUT%'#
+SELECT TABSCHEMA, TABNAME, CARD, TYPE, STATUS, TBSPACEID, TBSPACE FROM SYSCAT.TABLES  WHERE TABSCHEMA = 'ERRORSCHEMA'  ORDER BY  TABSCHEMA ASC, TABNAME ASC#

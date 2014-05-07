@@ -1,0 +1,40 @@
+<H2>Currently committed enabled Scenario</H2><HR>
+
+<p>
+In a typical two-users scenario, User A and User B perform UPDATEs on two different tables. Before they commit the transaction, 
+they perform a SELECT on the table the other person is updating. Upon successful retrieval of the information, they commit the transaction.
+</p>
+
+<table border="1">
+<tr>
+<th bgcolor="grey"><b> Step </b></th>
+<th bgcolor="grey"><b> Application A</b></th>
+<th bgcolor="grey"><b> Application B</b></th>
+</tr>
+<tr>
+<td> Step 1</td>
+<td> <b class="sourceChange">USER A UPDATEs customer</b> table</td>
+<td> <b class="sourceChange">USER B UPDATEs product</b> table</td>
+</tr>
+<tr> 
+<td> Step 2</td>
+<td> <b class="sourceChange">USER A SELECTs rows from product</b> table</td>
+<td> <b class="sourceChange">USER B SELECTs rows from customer</b> table</td>
+</tr>
+<tr>
+<td> Step 3</td>
+<td> <b class="sourceChange">USER A COMMITs </b>the transaction</td>
+<td> <b class="sourceChange">USER B COMMITs </b>the transaction</td>
+</tr>
+</table>
+
+
+<BR><H2>Problem</H2><HR>
+In the above scenario User A will wait for USER B and USER B will wait for USER A causing a <span style="background-color: red">deadlock</span>.
+
+<BR><BR><BR><H2>Solution</H2><HR>
+<p>	
+With the new currently committed semantics in DB2 9.7, only committed data is returned even though there is a pending transaction on the same set of data. Readers do not have to wait for completion of the pending transaction, hence avoiding deadlocks. Refer to the table above for the scenario. You may also use the buttons on the right pane to try out the transactions yourself. 
+</p>
+
+<span style="background-color: green"><b>Note:-</b></span> Please click on the buttons in order.

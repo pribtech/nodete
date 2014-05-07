@@ -1,0 +1,10 @@
+<p>Run the four statements in the Ad Hoc command window to the right and review the runtimes in the console window.</p>
+<p>The first two statements compare a select statement with an 'order by' clause. 
+Including the 'order by' ensures that each row in the table is loaded into memory for sorting
+and that each row is uncompressed. 
+Even in this case you will usually see that the compressed table runs faster than the uncompressed.</p>
+<p>The second set of two statements compare a COUNT(*).
+While the COUNT(*) touches every row in the table it does not require them to be decompressed.
+It also doesn't require the in-memory sort that comes with the 'order by'.
+You should see that the COUNT(*) is dramatically faster with compression.</p>
+

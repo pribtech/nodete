@@ -1,0 +1,36 @@
+<p>DB2 Text Search also supports searches in SQL/XML and XQuery. By using a subset of the XPath language with extensions for text search, XML search allows you to index and search XML documents. This page shows you several options to search in XML documents.</p>
+
+<h4>Text search with SQL/XML</h4>
+<p>This example uses the text search functionality in combination with XMLQUERY(). It returns the value of the <code>author</code> tag if the bookinfo contains the word 'range'.</p>
+<pre><code>
+SELECT xmlquery('$bi//author' passing bookinfo as "bi")
+  FROM books
+ WHERE CONTAINS(bookinfo, 'range') = 1
+</code></pre>
+
+<BR>
+<h4>Text search with XQuery</h4>
+<p>This example performs the same search as the previous example except that XQuery is used instead.</p>
+<pre><code>
+xquery db2-fn:xmlcolumn-contains
+  ('MYSCHEMA.BOOKS.BOOKINFO', 'range')/bookinfo/author
+</code></pre>
+
+<BR>
+<h4>Text search with XPath expression</h4>
+<p>This example performs the same search as the previous example except that XPath expression is used instead.</p>
+<pre><code>
+SELECT author, year, substr(title,1,30)
+  FROM books
+ WHERE CONTAINS( bookinfo
+               , '@xpath:''/bookinfo/story [.contains("range")]''') = 1
+</code></pre>
+
+<BR>
+<h4>Text search with XQuery and XPath expression</h4>
+<p>This example shows the use of XPath expression in an XQuery to perform a text search.</p>
+<pre><code>
+xquery db2-fn:xmlcolumn-contains
+  ( 'MYSCHEMA.BOOKS.BOOKINFO'
+  , '@xpath:''/bookinfo/story[.contains("range")]''')/bookinfo/author
+</code></pre>

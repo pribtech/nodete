@@ -1,0 +1,80 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2009 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<command name="createAuditPolicy" title="Create Audit Policy">
+<![CDATA[
+>>-CREATE AUDIT POLICY--policy-name--●--CATEGORIES-------------->
+
+   .-,--------------------------------------------------------.   
+   V  (1)                                                     |   
+>----------+-ALL-----------------------+--STATUS--+-BOTH----+-+-->
+           +-AUDIT---------------------+          +-FAILURE-+     
+           +-CHECKING------------------+          +-NONE----+     
+           +-CONTEXT-------------------+          '-SUCCESS-'     
+           |          .-WITHOUT DATA-. |                          
+           +-EXECUTE--+--------------+-+                          
+           |          '-WITH DATA----' |                          
+           +-OBJMAINT------------------+                          
+           +-SECMAINT------------------+                          
+           +-SYSADMIN------------------+                          
+           '-VALIDATE------------------'                          
+
+>--●--ERROR TYPE--+-NORMAL-+--●--------------------------------><
+                  '-AUDIT--'  
+ ]]>
+
+	<text>CREATE AUDIT POLICY</text>
+	<clauseReference name="policy-name"/>
+	<text>CATEGORIES</text>
+	<br/>
+	<repeatable>
+		<select>
+			<option default="true"><text>ALL</text></option> 
+			<option><text>AUDIT</text></option> 
+			<option><text>AUDIT</text></option> 
+			<option><text>CHECKING</text></option> 
+			<option>
+				<text>EXECUTE</text>
+				<select>
+					<option><text>WITHOUT DATA</text></option> 
+					<option default="true"><note>WITHOUT DATA</note></option> 
+					<option><text>WITH DATA</text></option> 
+				</select>
+			</option> 
+			<option><text>OBJMAINT</text></option> 
+			<option><text>SECMAINT</text></option> 
+			<option><text>SYSADMIN</text></option> 
+			<option><text>VALIDATE</text></option> 
+		</select>
+		<text>STATUS</text>
+		<select>
+			<option default="true"><text>BOTH</text></option> 
+			<option><text>FAILURE</text></option> 
+			<option><text>NONE</text></option> 
+			<option><text>SUCCESS</text></option> 
+		</select>
+	</repeatable>
+
+	<br/>
+	<text>ERROR TYPE</text>
+	<select>
+		<option default="true"><text>NORMAL</text></option> 
+		<option><text>AUDIT</text></option> 
+	</select>
+
+</command>
+        

@@ -1,0 +1,42 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2011 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+<table name="userGroups">
+	<sql_name>userGroups</sql_name>
+	<singular_name>User Groups</singular_name>
+	<plural_name>User Group</plural_name>
+	<inlinequery>
+select * from table(AUTH_LIST_GROUPS_FOR_AUTHID(?)) a
+	</inlinequery>
+	<parameters>
+		<parm name="user">
+			<title>User</title>
+			<type>s</type>
+			<value>current user</value>
+		</parm>
+	</parameters>	
+	<description></description>
+	<order_by_index/>
+	<display_columns>
+		<col type="column" name="GROUP"/>
+	</display_columns>
+	<column name="GROUP">
+		<sql_name>GROUP</sql_name>
+		<title>Group</title>
+		<type>s</type>
+	</column>
+</table>

@@ -1,0 +1,113 @@
+<table name="dynamicDatabase">
+<sql_name>SYSIBMADM.SNAPDB</sql_name>
+<singular_name>Database</singular_name>
+<plural_name>Databases</plural_name>
+<description>Query from ad hoc</description>
+<rows_per_page>50</rows_per_page>
+<order_by_index/>
+
+<display_columns>
+<col type="column" name="DB_STATUS"/>
+<col type="dynamiccolumn" name="logicalreadrate"/>		
+<col type="dynamiccolumn" name="physicalreadrate"/>		
+<col type="column" name="POOL_DATA_L_READS"/>
+<col type="column" name="POOL_DATA_P_READS"/>
+</display_columns>
+<disable_edit/>
+
+<dynamicColumn name="logicalreadrate" type="DELTA_NORMALIZED" column="POOL_DATA_L_READS" title="Logical read rate"/>	
+<dynamicColumn name="physicalreadrate" type="DELTA_NORMALIZED" column="POOL_DATA_P_READS" title="Physical read rate"/>	
+
+<column name="DB_NAME">
+<c_sql_name>DB_NAME</c_sql_name>
+<c_title>Database</c_title>
+<c_presentation/>
+<primary_key/>		
+<c_drill>y</c_drill>
+</column>
+
+<column name="DB_PATH">
+<c_sql_name>DB_PATH</c_sql_name>
+<c_title>Path</c_title>
+<c_presentation/>
+<c_drill>y</c_drill>
+</column>
+
+<column name="INPUT_DB_ALIAS">
+<c_sql_name>INPUT_DB_ALIAS</c_sql_name>
+<c_title>Input Alias</c_title>
+<c_presentation/>
+<c_drill>y</c_drill>
+</column>
+
+<column name="DB_STATUS">
+<c_sql_name>DB_STATUS</c_sql_name>
+<c_title>Status</c_title>
+<c_presentation/>
+<c_drill>y</c_drill>
+</column>
+
+<column name="CATALOG_PARTITION">
+<c_sql_name>CATALOG_PARTITION</c_sql_name>
+<c_title>Catalog Partition</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="CATALOG_PARTITION_NAME">
+<c_sql_name>CATALOG_PARTITION_NAME</c_sql_name>
+<c_title>Catalog Partition Name</c_title>
+<c_presentation/>
+<c_drill>y</c_drill>
+</column>
+
+<column name="SERVER_PLATFORM">
+<c_sql_name>SERVER_PLATFORM</c_sql_name>
+<c_title>Server Platform</c_title>
+<c_presentation/>
+<c_drill>y</c_drill>
+</column>
+
+<column name="DB_LOCATION">
+<c_sql_name>DB_LOCATION</c_sql_name>
+<c_title>Location</c_title>
+<c_presentation/>
+<c_drill>y</c_drill>
+</column>
+
+<column name="DB_CONN_TIME">
+<c_sql_name>DB_CONN_TIME</c_sql_name>
+<c_title>Connection Time</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="LAST_RESET">
+<c_sql_name>LAST_RESET</c_sql_name>
+<c_title>Last Reset</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="LAST_BACKUP">
+<c_sql_name>LAST_BACKUP</c_sql_name>
+<c_title>Last Backup</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="POOL_DATA_L_READS">
+<c_sql_name>POOL_DATA_L_READS</c_sql_name>
+<c_title>Logical Reads</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+<column name="POOL_DATA_P_READS">
+<c_sql_name>POOL_DATA_P_READS</c_sql_name>
+<c_title>Physical Reads</c_title>
+<c_presentation/>
+<c_drill>n</c_drill>
+</column>
+
+</table>

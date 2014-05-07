@@ -1,0 +1,304 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2011 All rights reserved.
+  Copyright IBM Corp. 2007 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<table name="histSnapDynSql">
+	<sql_name>histSnapDynSql</sql_name>
+	<singular_name>Dynamic Statement</singular_name>
+	<plural_name>Dynamic Statements</plural_name>
+	<messages><SQL0204N>Not installed. Please install "DB2TE Dynamic Cache Sampling" in Tools-> Installed Components</SQL0204N></messages>
+	<inlinequery>
+<![CDATA[
+	SELECT 
+		"s#db2mc".HashSqlSimilar(stmt_text) as hash,
+		SAMPLE_TS,
+		database,
+		count(*) as variations,
+    	sum(NUM_EXECUTIONS) as NUM_EXECUTIONS, 
+		sum(TOTAL_EXEC_TIME) as TOTAL_EXEC_TIME,
+		sum(TOTAL_SYS_CPU_TIME + TOTAL_USR_CPU_TIME) as TOTAL_CPU_TIME,
+		sum(TOTAL_SYS_CPU_TIME) as TOTAL_SYS_CPU_TIME,
+		sum(TOTAL_USR_CPU_TIME) as TOTAL_USR_CPU_TIME,
+		DBPARTITIONNUM, 
+   	 	sum(NUM_COMPILATIONS) as NUM_COMPILATIONS,
+		MAX(PREP_TIME_WORST) as PREP_TIME_WORST,
+		AVG(PREP_TIME_BEST) as PREP_TIME_BEST,
+		sum(INT_ROWS_DELETED) as INT_ROWS_DELETED,
+		sum(INT_ROWS_INSERTED) as INT_ROWS_INSERTED,
+		sum(INT_ROWS_UPDATED) as INT_ROWS_UPDATED,
+		sum(ROWS_READ) as ROWS_READ,
+		sum(ROWS_WRITTEN) as ROWS_WRITTEN,
+		sum(STMT_SORTS) as STMT_SORTS,
+		sum(SORT_OVERFLOWS) as SORT_OVERFLOWS,
+		sum(TOTAL_SORT_TIME) as TOTAL_SORT_TIME,
+		sum(POOL_DATA_L_READS) as POOL_DATA_L_READS,
+		sum(POOL_DATA_P_READS) as POOL_DATA_P_READS,
+		sum(POOL_TEMP_DATA_L_READS) as POOL_TEMP_DATA_L_READS,
+		sum(POOL_TEMP_DATA_P_READS) as POOL_TEMP_DATA_P_READS,
+		sum(POOL_INDEX_L_READS) as POOL_INDEX_L_READS,
+		sum(POOL_INDEX_P_READS) as POOL_INDEX_P_READS,
+		sum(POOL_TEMP_INDEX_L_READS) as POOL_TEMP_INDEX_L_READS,
+		sum(POOL_TEMP_INDEX_P_READS) as POOL_TEMP_INDEX_P_READS,
+		sum(POOL_XDA_L_READS) as POOL_XDA_L_READS,
+		sum(POOL_XDA_P_READS) as POOL_XDA_P_READS,
+		sum(POOL_TEMP_XDA_L_READS) as POOL_TEMP_XDA_L_READS,
+		sum(POOL_TEMP_XDA_P_READS) as POOL_TEMP_XDA_P_READS 
+	FROM "s#db2mc".HIST_SNAP_GET_DYN_SQL_DELTA 
+		,(select case when upper(startTs) = 'CURRENT' then current timestamp else timestamp(startTs) end as startTS 
+			,duration
+			from (values(cast('?' as varchar(26)),cast(? as int))) as timePeriod(startTs,duration)
+	 	) period
+	where sample_ts between period.startTS - period.duration hours and period.startTS
+	group by "s#db2mc".HashSqlSimilar(stmt_text) 
+		,SAMPLE_TS
+		,database
+		,DBPARTITIONNUM
+]]>
+	</inlinequery>
+	<parameters>
+		<parm name="start">
+			<title>Start</title>
+			<value>current</value>
+			<type>timestamp</type>
+		</parm>
+		<parm name="Period">
+			<title>Period (hours)</title>
+			<value>3</value>
+			<type>n</type>
+		</parm>
+	</parameters>
+	<description>This returns the top &lt;a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.admin.dbobj.doc/doc/c0021364.html?noframes=true');"&gt;dynamic SQL or XQuery&lt;/a&gt;		
+		&lt;a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.admin.dbobj.doc/doc/r0011049.html?noframes=true');"&gt;statement&lt;/a&gt;.
+		sortable by number of executions, average execution time, number of sorts, or sorts per statement. 
+		These are the queries that should get focus to ensure they are well tuned.
+		This list is based on the &lt;a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.admin.dbobj.doc/doc/r0022005.html?noframes=true');"&gt;SYSIBMADM.SNAPDYN_SQL&lt;/a&gt; administrative view.
+		</description>		
+		<order_by_index name="sample_ts" direction="D"/>
+		<order_by_index name="average_execution_time" direction="D"/>
+
+	<display_columns>
+		<col type="column" name="sample_ts" break="column"/>
+		<col type="column" name="database"/>
+		<col type="column" name="numexec"/>
+		<col type="column" name="variations"/>
+		<col type="column" name="average_execution_time"/>
+		<col type="column" name="stmt_sorts"/>
+		<col type="column" name="sorts_per_execution"/>
+		<col type="column" name="rowsread"/>
+		<col type="column" name="rowsread_per_execution"/>
+		<col type="column" name="rowwrite"/>
+		<col type="column" name="exectime"/>
+		<col type="column" name="totcputime"/>
+	</display_columns>
+	<column name="variations">
+		<sql_name>variations</sql_name>
+		<title>Variations</title>
+		<type>n</type>			
+	</column>
+	<column name="average_execution_time">
+		<sql_name>coalesce(cast(TOTAL_EXEC_TIME as double) / nullif(NUM_EXECUTIONS,0),0)</sql_name>
+		<title>Avg Elapse(s)</title>
+		<type>n</type>
+		<formatNumber round="true" toFixedVal="6"/>									
+	</column>
+	<column name="sample_ts">
+		<sql_name>sample_ts</sql_name>
+		<title>Sample Timestamp</title>
+		<type>s</type>
+		<sort>n</sort>
+	</column>
+	<column name="database">
+		<sql_name>DATABASE</sql_name>
+		<title>Database</title>
+		<type>s</type>			
+		<drill>y</drill>
+	</column>
+	<column name="numexec">
+		<sql_name>NUM_EXECUTIONS</sql_name>
+		<title>Executions</title>
+		<type>n</type>			
+	</column>
+	<column name="stmt_sorts">
+		<sql_name>STMT_SORTS</sql_name>
+		<title>Avg Stmt Sorts</title>
+		<type>n</type>
+	</column>
+	<column name="sorts_per_execution">
+		<sql_name>coalesce( cast(STMT_SORTS as double) / nullif(NUM_EXECUTIONS,0),0)</sql_name>
+		<title>Avg Sorts</title>
+		<type>n</type>
+		<formatNumber round="true" toFixedVal="1"/>									
+		<sort>n</sort>			
+	</column>
+	<column name="rowsread_per_execution">
+		<sql_name>coalesce(cast(ROWS_READ as double) / nullif(NUM_EXECUTIONS,0),0)</sql_name>
+		<title>Avg Rows Read</title>
+		<type>n</type>
+		<drill>n</drill>									
+	</column>
+	<column name="rowsread">
+		<sql_name>ROWS_READ</sql_name>
+		<title>Rows Read</title>
+		<formatNumber round="true" toFixedVal="1"/>									
+		<type>n</type>
+	</column>
+	<column name="rowwrite">
+		<sql_name>ROWS_WRITTEN</sql_name>
+		<title>Rows Written</title>
+		<type>n</type>
+	</column>		
+	<column name="exectime">
+		<sql_name>TOTAL_EXEC_TIME</sql_name>
+		<title>Total Elapse(s)</title>
+		<type>n</type>
+	</column>
+	<column name="totcputime">
+		<sql_name>TOTAL_CPU_TIME</sql_name>
+		<title>Total CPU (s)</title>
+		<type>n</type>
+	</column>
+	<column name="totusercputime">
+		<sql_name>TOTAL_USR_CPU_TIME</sql_name>
+		<title>Total User CPU (s)</title>
+		<type>n</type>
+	</column>
+	<column name="totsyscputime">
+		<sql_name>TOTAL_SYS_CPU_TIME</sql_name>
+		<title>Total System CPU (s)</title>
+		<type>n</type>
+	</column>
+	<column name="dbpartitionnum">
+		<sql_name>DBPARTITIONNUM</sql_name>
+		<title>Partition Number</title>
+		<type>n</type>
+	</column>
+	<column name="NUM_COMPILATIONS">
+		<sql_name>NUM_COMPILATIONS</sql_name>
+		<title>Compiles</title>
+		<type>n</type>			
+	</column>
+	<column name="PREP_TIME_WORST">
+		<sql_name>PREP_TIME_WORST</sql_name>
+		<title>Prep Time Worst</title>
+		<type>n</type>			
+	</column>
+	<column name="PREP_TIME_BEST">
+		<sql_name>PREP_TIME_BEST</sql_name>
+		<title>Prep Time Best</title>
+		<type>n</type>			
+	</column>
+	<column name="INT_ROWS_DELETED">
+		<sql_name>INT_ROWS_DELETED</sql_name>
+		<title>Internal Rows Delete</title>
+		<type>n</type>			
+	</column>
+	<column name="INT_ROWS_INSERTED">
+		<sql_name>INT_ROWS_INSERTED</sql_name>
+		<title>Internal Rows Inserted</title>
+		<type>n</type>			
+	</column>
+	<column name="INT_ROWS_UPDATED">
+		<sql_name>INT_ROWS_UPDATED</sql_name>
+		<title>Internal Rows Updated</title>
+		<type>n</type>			
+	</column>
+	<column name="ROWS_READ">
+		<sql_name>ROWS_READ</sql_name>
+		<title>Rows Read</title>
+		<type>n</type>			
+	</column>
+	<column name="ROWS_WRITTEN">
+		<sql_name>ROWS_WRITTEN</sql_name>
+		<title>Rows Written</title>
+		<type>n</type>			
+	</column>
+	<column name="STMT_SORTS">
+		<sql_name>STMT_SORTS</sql_name>
+		<title>Statement Sorts</title>
+		<type>n</type>			
+	</column>
+	<column name="SORT_OVERFLOWS">
+		<sql_name>SORT_OVERFLOWS</sql_name>
+		<title>Sort Overflows</title>
+		<type>n</type>			
+	</column>
+	<column name="TOTAL_SORT_TIME">
+		<sql_name>TOTAL_SORT_TIME</sql_name>
+		<title>Total Sort Time</title>
+		<type>n</type>			
+	</column>
+	<column name="POOL_DATA_L_READS">
+		<sql_name>POOL_DATA_L_READS</sql_name>
+		<title>Pool Data Logical Reads</title>
+		<type>n</type>			
+	</column>
+	<column name="POOL_DATA_P_READS">
+		<sql_name>POOL_DATA_P_READS</sql_name>
+		<title>Pool Data Physical Reads</title>
+		<type>n</type>			
+	</column>
+	<column name="POOL_TEMP_DATA_L_READS">
+		<sql_name>POOL_TEMP_DATA_L_READS</sql_name>
+		<title>Pool Temp Data Logical Reads</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_TEMP_DATA_P_READS">
+		<sql_name>POOL_TEMP_DATA_P_READS</sql_name>
+		<title>Pool Temp Data Physical Reads</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_INDEX_L_READS">
+		<sql_name>POOL_INDEX_L_READS</sql_name>
+		<title>Pool Index Logical Reads</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_INDEX_P_READS">
+		<sql_name>POOL_INDEX_P_READS</sql_name>
+		<title>Pool Index Physical Reads</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_TEMP_INDEX_L_READS">
+		<sql_name>POOL_TEMP_INDEX_L_READS</sql_name>
+		<title>Pool Temp Index Logical Reads</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_TEMP_INDEX_P_READS">
+		<sql_name>POOL_TEMP_INDEX_P_READS</sql_name>
+		<title>Pool Temp Index Physical Reads</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_XDA_L_READS">
+		<sql_name>POOL_XDA_L_READS</sql_name>
+		<title>Pool XDA Logical Reads</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_XDA_P_READS">
+		<sql_name>POOL_XDA_P_READS</sql_name>
+		<title>Pool XDA Physical Reads</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_TEMP_XDA_L_READS">
+		<sql_name>POOL_TEMP_XDA_L_READS</sql_name>
+		<title>Pool Temp XDA Logical Reads</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_TEMP_XDA_P_READS">
+		<sql_name>POOL_TEMP_XDA_P_READS</sql_name>
+		<title>Pool Temp XDA Physical Reads</title>
+		<type>n</type>
+	</column>
+</table>

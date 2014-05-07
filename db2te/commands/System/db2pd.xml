@@ -1,0 +1,938 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2009 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<command name="db2pd" title="db2pd">
+<![CDATA[
+>>-db2pd--+------------------------------------------+---------->
+          '- -activestatements--+------------------+-'   
+                                +-apphdl=appHandle-+     
+                                '-file=filename----'     
+]]>
+	<text>db2pd</text>
+	<select>
+		<option default="true"><text></text></option> 
+		<option>
+			<text>-activestatements</text>
+			<select>
+				<option default="true"><text></text></option> 
+				<option><text spacepad="false">apphdl=</text><input size="8" type="int" title="handle"/></option> 
+				<option><clauseReference name="file=filename"/></option> 
+			</select>
+		</option> 
+	</select>
+	<br statement='false'/>
+<![CDATA[
+>--+----------------------------------------+------------------->
+   '- -addnode--+-------------+--+--------+-'   
+                '-oldviewapps-'  '-detail-'     
+]]>
+	<select>
+		<option default="true"><text></text></option> 
+		<option>
+			<text>-addnode</text>
+			<select>
+				<option default="true"><text></text></option> 
+				<option><text>oldviewapps</text></option> 
+			</select>
+			<select>
+				<option default="true"><text></text></option> 
+				<option><text>detail</text></option> 
+			</select>
+		</option> 
+	</select>
+	<br statement='false'/>
+<![CDATA[
+>--+----------------+--+----------------------+----------------->
+   +- -alldatabases-+  '- -alldbpartitionnums-'   
+   '- -alldbs-------'                             
+]]>
+	<select>
+		<option default="true"><text></text></option> 
+		<option><text>-alldatabases</text></option> 
+		<option><text>-alldbs</text></option> 
+	</select>
+	<select>
+		<option default="true"><text></text></option> 
+		<option><text>-alldbpartitionnums</text></option> 
+	</select>
+	<br statement='false'/>
+<![CDATA[
+>--+----------------------------------------------------------------+-->
+   '- -agents--+-------------+--+--------------+--+---------------+-'   
+               '-db=database-'  +-AgentId------+  '-file=filename-'     
+                                '-app=AppHandl-'                        
+]]>
+	<select>
+		<option default="true"><text></text></option> 
+		<option>
+			<text>-agents</text>
+			<select>
+				<option default="true"><text></text></option> 
+				<option><text spacepad="false">db=</text><input size="8" title="database"/></option> 
+			</select>
+			<select>
+				<option default="true"><input size="8" type="int" title="AgentId"/></option> 
+				<option><text spacepad="false">app=</text><input size="8" type="int" title="AppHandl"/></option> 
+			</select>
+			<clauseReference name="select-file=filename"/> 
+		</option> 
+	</select>
+	<br statement='false'/>
+<![CDATA[
+>--+--------------------------------------------------------+--->
+   |           .-all------.  .-all-----.                    |   
+   '- -apinfo--+----------+--+---------+--+---------------+-'   
+               '-AppHandl-'  '-MaxStmt-'  '-file=filename-'     
+]]>
+	<select>
+		<option default="true"><text></text></option> 
+		<option>
+			<text>-apinfo</text>
+			<select>
+				<option><text>all</text></option> 
+				<option default="true"><note>all</note></option> 
+				<option><input size="8" type="int" title="AppHandl"/></option> 
+			</select>
+			<select>
+				<option><text>all</text></option> 
+				<option default="true"><note>all</note></option> 
+				<option><input size="8" type="int" title="MaxStmt"/></option> 
+			</select>
+			<clauseReference name="select-file=filename"/> 
+		</option> 
+	</select>
+	<br statement='false'/>
+<![CDATA[
+>--+------------------------------------------------------+----->
+   '- -applications--+---------------+--+---------------+-'   
+                     +-AppHandl------+  '-file=filename-'     
+                     '-agent=AgentId-'                        
+]]>
+	<select>
+		<option default="true"><text></text></option> 
+		<option>
+			<text>-applications</text>
+			<select>
+				<option><text>all</text></option> 
+				<option default="true"><note>all</note></option> 
+				<option><input size="8" type="int" title="AppHandl"/></option> 
+			</select>
+			<clauseReference name="select-file=filename"/> 
+		</option> 
+	</select>
+	<br statement='false'/>
+<![CDATA[
+>--+--------------------------------------------+--------------->
+   '- -bufferpools--+------+--+---------------+-'   
+                    '-bpID-'  '-file=filename-'     
+]]>
+	<select>
+		<option default="true"><text></text></option> 
+		<option>
+			<text>-bufferpools</text>
+			<select>
+				<option><text>all</text></option> 
+				<option default="true"><note>all</note></option> 
+				<option><input size="4" type="int" title="bpID"/></option> 
+			</select>
+			<clauseReference name="select-file=filename"/> 
+		</option> 
+	</select>
+	<br statement='false'/>
+<![CDATA[
+>--+-----------------------------------+------------------------>
+   '- -catalogcache--+---------------+-'   
+                     '-file=filename-'     
+]]>
+	<select>
+		<option default="true"><text></text></option> 
+		<option>
+			<text>-catalogcache</text>
+			<clauseReference name="select-file=filename"/> 
+		</option> 
+	</select>
+	<br statement='false'/>
+<![CDATA[
+>--+---------------------+-------------------------------------->
+   '- -command--filename-'   
+]]>
+	<select>
+		<option default="true"><text></text></option> 
+		<option>
+			<text>-command</text>
+			<input size="32" title="filename"/> 
+		</option> 
+	</select>
+	<br statement='false'/>
+<![CDATA[
+>--+----------------------------------+------------------------->
+   |                 .-,------------. |   
+   |                 V              | |   
+   '-+- -database-+----databasename-+-'   
+     '- -db-------'                       
+]]>
+	<select>
+		<option default="true"><text></text></option> 
+		<option>
+			<select>
+				<option default="true"><text>-database</text></option> 
+				<option><text>-db</text></option> 
+			</select>
+			<repeatable>
+				<input size="8" title="database"/> 
+			</repeatable>
+		</option> 
+	</select>
+	<br statement='false'/>
+<![CDATA[
+
+>--+----------------------------+------------------------------->
+   '- -dbcfg--+---------------+-'   
+              '-file=filename-'     
+]]>
+	<select>
+		<option default="true"><text></text></option> 
+		<option>
+			<text>-dbcfg</text>
+			<clauseReference name="select-file=filename"/> 
+		</option> 
+	</select>
+	<br statement='false'/>
+<![CDATA[
+>--+-----------------------------+------------------------------>
+   '- -dbmcfg--+---------------+-'   
+               '-file=filename-'     
+]]>
+	<select>
+		<option default="true"><text></text></option> 
+		<option>
+			<text>-dbmcfg</text>
+			<clauseReference name="select-file=filename"/> 
+		</option> 
+	</select>
+	<br statement='false'/>
+<![CDATA[
+>--+------------------------------+--+------------+------------->
+   |                   .-,------. |  '- -dbptnmem-'   
+   |                   V        | |                   
+   '- -dbpartitionnum----number-+-'                   
+]]>
+	<select>
+		<option default="true"><text></text></option> 
+		<option>
+			<text>-dbpartitionnum</text>
+			<repeatable>
+				<input size="4" type="int"/> 
+			</repeatable>
+		</option> 
+	</select>
+	<select>
+		<option default="true"><text></text></option> 
+		<option><text>-dbptnmem</text></option> 
+	</select>
+	<br statement='false'/>
+<![CDATA[
+>--+------------------------------+--+-----------------+-------->
+   '- -dmpftbl--+---------------+-'  '- -dump--+-----+-'   
+                '-file=filename-'              +-all-+     
+                                               '-pid-'     
+]]>
+	<select>
+		<option default="true"><text></text></option> 
+		<option>
+			<text>-dmpftbl</text>
+			<clauseReference name="select-file=filename"/> 
+		</option> 
+	</select>
+	<select>
+		<option default="true"><text></text></option> 
+		<option>
+			<text>-dump</text>
+			<select>
+				<option default="true"><text></text></option> 
+				<option><text>-all</text></option> 
+				<option><input size="4" type="int" title="pid"/> </option> 
+			</select>
+		</option> 
+	</select>
+	<br statement='false'/>
+<![CDATA[
+>--+------------------------------+--+--------+----------------->
+   '- -dynamic--+---------------+-'  '- -edus-'   
+                +-anch=anchID---+                 
+                '-file=filename-'                 
+]]>
+	<select>
+		<option default="true"><text></text></option> 
+		<option>
+			<text>-dynamic</text>
+			<select>
+				<option default="true"><text></text></option> 
+				<option><text spacepad="false">anch=</text><input size="8" type="int" title="anchID"/></option> 
+				<option><clauseReference name="file=filename"/></option> 
+			</select>
+		</option> 
+	</select>
+	<select>
+		<option default="true"><text></text></option> 
+		<option><text>-edus</text></option> 
+	</select>
+	<br statement='false'/>
+<![CDATA[
+>--+--------------+--------------------------------------------->
+   '- -everything-'   
+]]>
+	<select>
+		<option default="true"><text></text></option> 
+		<option><text>-everything</text></option> 
+	</select>
+	<br statement='false'/>
+<![CDATA[
+>--+------------------------------------------------+----------->
+   '- -fcm--+-----+--+---------+--+---------------+-'   
+            '-hwm-'  '-numApps-'  '-file=filename-'     
+]]>
+	<select>
+		<option default="true"><text></text></option> 
+		<option>
+			<text>-fcm</text>
+			<select>
+				<option default="true"><text></text></option> 
+				<option><text>hwm</text></option>
+			</select>
+			<select>
+				<option default="true"><text></text></option> 
+				<option><text>numApps</text></option>
+			</select>
+			<clauseReference name="select-file=filename"/> 
+		</option> 
+	</select>
+	<br statement='false'/>
+<![CDATA[
+>--+------------------+--+-------+--+--------+------------------>
+   '- -file--filename-'  '- -fmp-'  '- -full-'   
+]]>
+	<clauseReference name="select-file=filename"/> 
+	<select>
+		<option default="true"><text></text></option> 
+		<option><text>-fmp</text></option> 
+	</select>
+	<select>
+		<option default="true"><text></text></option> 
+		<option><text>-full</text></option> 
+	</select>
+	<br statement='false'/>
+<![CDATA[
+>--+-----------------------------------------------------+------>
+   '- -fvp--+-agent eduid-+--+------+--+---------------+-'   
+            +-LAM1--------+  '-term-'  '-file=filename-'     
+            +-LAM2--------+                                  
+            '-LAM3--------'                                  
+]]>
+	<br statement='false'/>
+<![CDATA[
+>--+-------+--+------+--+---------------------------+----------->
+   '- -gfw-'  '- -ha-'  '- -hadr--+---------------+-'   
+                                  '-file=filename-'     
+]]>
+	<select>
+		<option default="true"><text></text></option> 
+		<option><text>-gfw</text></option> 
+	</select>
+	<select>
+		<option default="true"><text></text></option> 
+		<option><text>-ha</text></option> 
+	</select>
+	<select>
+		<option default="true"><text></text></option> 
+		<option>
+			<text>-hadr</text>
+			<clauseReference name="select-file=filename"/> 
+		</option> 
+	</select>
+	<br statement='false'/>
+<![CDATA[
+>--+--------+--+--------+--+---------------+-------------------->
+   '- -help-'  '- -inst-'  '- -interactive-'   
+]]>
+	<select>
+		<option default="true"><text></text></option> 
+		<option><text>-help</text></option> 
+	</select>
+	<select>
+		<option default="true"><text></text></option> 
+		<option><text>-inst</text></option> 
+	</select>
+	<select>
+		<option default="true"><text></text></option> 
+		<option><text>-interactive</text></option> 
+	</select>
+	<br statement='false'/>
+<![CDATA[
+>--+-----------------------------------------+------------------>
+   '- -latches--+-------+--+---------------+-'   
+                '-group-'  '-file=filename-'     
+]]>
+	<select>
+		<option default="true"><text></text></option> 
+		<option>
+			<text>-latches</text>
+			<select>
+				<option default="true"><text></text></option> 
+				<option><text>group</text></option>
+			</select>
+			<clauseReference name="select-file=filename"/> 
+		</option> 
+	</select>
+	<br statement='false'/>
+<![CDATA[
+>--+------------------------------------------------------------------+-->
+   '- -locks--+---------+--+---------------+--+-----------+--+------+-'   
+              '-TranHdl-'  '-file=filename-'  '-showlocks-'  '-wait-'     
+]]>
+	<select>
+		<option default="true"><text></text></option> 
+		<option>
+			<text>-locks</text>
+			<select>
+				<option default="true"><text></text></option> 
+				<option><text>TranHdl</text></option>
+			</select>
+			<clauseReference name="select-file=filename"/> 
+			<select>
+				<option default="true"><text></text></option> 
+				<option><text>showlocks</text></option>
+			</select>
+			<select>
+				<option default="true"><text></text></option> 
+				<option><text>wait</text></option>
+			</select>
+		</option> 
+	</select>
+	<br statement='false'/>
+<![CDATA[
+>--+---------------------------+-------------------------------->
+   '- -logs--+---------------+-'   
+             '-file=filename-'     
+]]>
+	<select>
+		<option default="true"><text></text></option> 
+		<option>
+			<text>-logs</text>
+			<clauseReference name="select-file=filename"/> 
+		</option> 
+	</select>
+	<br statement='false'/>
+<![CDATA[
+>--+-----------------------------------------------------------------------------------------+-->
+   |              .-,--------------.                                                         |   
+   |              V                |                                                         |   
+   '- -memblocks----+-+-----+----+-+--+-----+--+--------+--+------+--+--------+--+---------+-'   
+                    | '-all-'    |    '-top-'  '-blocks-'  '-sort-'  '-PoolID-'  '-pid=pid-'     
+                    +-dbms-------+                                                               
+                    +-fcm--------+                                                               
+                    +-fmp--------+                                                               
+                    +-appctl--id-+                                                               
+                    '-private----'                                                               
+]]>
+	<select>
+		<option default="true"><text></text></option> 
+		<option>
+			<text>-memblocks</text>
+			<select>
+				<option default="true"><text></text></option> 
+				<option><text>all</text></option>
+				<option>
+					<repeatable>
+						<select>
+							<option default="true"><text>dbms</text></option> 
+							<option><text>fcm</text></option>
+							<option><text>fmp</text></option>
+							<option><text>appctl</text><input size="4" type="int" title="id"/></option>
+							<option><text>private</text></option>
+						</select>
+					</repeatable>
+				</option>
+			</select>
+			<select>
+				<option default="true"><text></text></option> 
+				<option><text>top</text></option>
+			</select>
+			<select>
+				<option default="true"><text></text></option> 
+				<option><text>blocks</text></option>
+			</select>
+			<select>
+				<option default="true"><text></text></option> 
+				<option><text>sort</text></option>
+			</select>
+			<select>
+				<option default="true"><text></text></option> 
+				<option><input size="6" type="int" title="PoolID"/></option>
+			</select>
+			<select>
+				<option default="true"><text></text></option> 
+				<option><text spacepad="false">pid=</text><input size="6" type="int" title="pid"/></option>
+			</select>
+		</option> 
+	</select>
+	<br statement='false'/>
+<![CDATA[
+>--+-------------------------------+---------------------------->
+   '- -mempools--+---------------+-'   
+                 '-file=filename-'     
+]]>
+	<select>
+		<option default="true"><text></text></option> 
+		<option>
+			<text>-mempools</text>
+			<clauseReference name="select-file=filename"/> 
+		</option> 
+	</select>
+	<br statement='false'/>
+<![CDATA[
+>--+------------------------------+----------------------------->
+   '- -memsets--+---------------+-'   
+                '-file=filename-'     
+]]>
+	<select>
+		<option default="true"><text></text></option> 
+		<option>
+			<text>-memsets</text>
+			<clauseReference name="select-file=filename"/> 
+		</option> 
+	</select>
+	<br statement='false'/>
+<![CDATA[
+>--+---------------------------------------+-------------------->
+   '- -osinfo--+------+--+---------------+-'   
+               '-disk-'  '-file=filename-'     
+]]>
+	<select>
+		<option default="true"><text></text></option> 
+		<option>
+			<text>-osinfo</text>
+			<select>
+				<option default="true"><text></text></option> 
+				<option><text>disk</text></option>
+			</select>
+			<clauseReference name="select-file=filename"/> 
+		</option> 
+	</select>
+	<br statement='false'/>
+<![CDATA[
+>--+---------------------------------------------------+-------->
+   '- -pages--+------+--+---------+--+---------------+-'   
+              '-bpID-'  '-summary-'  '-file=filename-'     
+]]>
+	<select>
+		<option default="true"><text></text></option> 
+		<option>
+			<text>-pages</text>
+			<select>
+				<option default="true"><text></text></option> 
+				<option><input size="4" type="int" title="bpID"/></option>
+			</select>
+			<select>
+				<option default="true"><text></text></option> 
+				<option><text>summary</text></option>
+			</select>
+			<clauseReference name="select-file=filename"/> 
+		</option> 
+	</select>
+	<br statement='false'/>
+<![CDATA[
+>--+--------+--+-------------------------------+---------------->
+   +- -q----+  '- -recovery--+---------------+-'   
+   +- -quit-+                '-file=filename-'     
+   +-q------+                                      
+   '-quit---'                                      
+]]>
+	<select>
+		<option default="true"><text></text></option> 
+		<option>
+			<text>-recovery</text>
+			<clauseReference name="select-file=filename"/> 
+		</option> 
+	</select>
+	<br statement='false'/>
+<![CDATA[
+>--+----------------------------+------------------------------->
+   '- -reopt--+---------------+-'   
+              '-file=filename-'     
+]]>
+	<select>
+		<option default="true"><text></text></option> 
+		<option>
+			<text>-reopt</text>
+			<clauseReference name="select-file=filename"/> 
+		</option> 
+	</select>
+	<br statement='false'/>
+<![CDATA[
+>--+-----------------------------+------------------------------>
+   '- -reorgs--+---------------+-'   
+               '-file=filename-'     
+]]>
+	<select>
+		<option default="true"><text></text></option> 
+		<option>
+			<text>-reorgs</text>
+			<clauseReference name="select-file=filename"/> 
+		</option> 
+	</select>
+	<br statement='false'/>
+<![CDATA[
+>--+----------------------------------+------------------------->
+   '- -repeat--+---------+--+-------+-'   
+               '-num sec-'  '-count-'     
+]]>
+	<select>
+		<option default="true"><text></text></option> 
+		<option>
+			<text>-repeat</text>
+			<select>
+				<option default="true"><text></text></option> 
+				<option><input size="4" type="int" title="num"/><text>sec</text></option>
+			</select>
+			<select>
+				<option default="true"><text></text></option> 
+				<option><input size="8" type="int" title="count"/></option>
+			</select>
+		</option> 
+	</select>
+	<br statement='false'/>
+<![CDATA[
+>--+---------------------------------------------------------------------------+-->
+   '--- -scansharing----+----------------------------------------------------+-'   
+                        '-obj=objectID--pool=poolID--+---------------------+-'     
+                                                     +-all-----------------+       
+                                                     '-index=--+-indexID-+-'       
+                                                               '-all-----'         
+]]>
+	<select>
+		<option default="true"><text></text></option> 
+		<option>
+			<text>-scansharing</text>
+			<select>
+				<option default="true"><text></text></option> 
+				<option>
+					<text spacepad="false">obj=</text><input size="8" title="objectID"/>
+					<text spacepad="false">pool=</text><input size="32" title="poolID"/>
+					<select>
+						<option default="true"><text></text></option> 
+						<option><text>all</text></option>
+						<option>
+							<text spacepad="false">index=</text>
+							<select>
+								<option default="true"><input size="32" title="indexID"/></option> 
+								<option><text>all</text></option>
+							</select>
+						</option>
+					</select>
+				</option> 
+			</select>
+		</option> 
+	</select>
+	<br statement='false'/>
+<![CDATA[
+>--+--------------------------------------+--------------------->
+   '- -serviceclasses--+----------------+-'   
+                       '-serviceclassID-'     
+]]>
+	<select>
+		<option default="true"><text></text></option> 
+		<option>
+			<text>-serviceclasses</text>
+			<select>
+				<option default="true"><text></text></option> 
+				<option><input size="32" title="serviceclassID"/></option> 
+			</select>
+		</option> 
+	</select>
+	<br statement='false'/>
+<![CDATA[
+>--+--------------------+--+-----------------------------+------>
+   '- -stack--+-------+-'  '- -static--+---------------+-'   
+              +-all---+                '-file=filename-'     
+              '-eduid-'                                      
+]]>
+	<select>
+		<option default="true"><text></text></option> 
+		<option>
+			<text>-stack</text>
+			<select>
+				<option default="true"><text></text></option> 
+				<option><text>all</text></option> 
+				<option><text>eduid</text></option> 
+			</select>
+		</option> 
+	</select>
+	<select>
+		<option default="true"><text></text></option> 
+		<option>
+			<text>-static</text>
+			<clauseReference name="select-file=filename"/> 
+		</option> 
+	</select>
+	<br statement='false'/>
+<![CDATA[
+>--+-----------------------------------------------------------------------------------------------------+-->
+   '- -statisticscache--+--------------------+--+---------------+--+-----------------------------------+-'   
+                        +- -db--databasename-+  '-file=filename-'  +-summary---------------------------+     
+                        '- -alldbs-----------'                     +-detail----------------------------+     
+                                                                   '-find schema=schema--object=object-'     
+]]>
+	<select>
+		<option default="true"><text></text></option> 
+		<option>
+			<text>-statisticscache</text>
+			<select>
+				<option default="true"><text></text></option> 
+				<option><text>-db</text><input size="8" title="database"/></option> 
+				<option><text>-alldbs</text></option> 
+			</select>
+			<clauseReference name="select-file=filename"/>
+			<select>
+				<option default="true"><text></text></option> 
+				<option><text>summary</text></option> 
+				<option><text>detail</text></option> 
+				<option>
+					<text spacepad="false">find schema=</text><input size="8" title="schema"/>
+					<text spacepad="false">object=</text><input size="32" title="object"/>
+				</option> 
+			</select>
+		</option> 
+	</select>
+	<br statement='false'/>
+<![CDATA[
+>--+----------------+------------------------------------------->
+   '- -storagepaths-'   
+]]>
+	<select>
+		<option default="true"><text></text></option> 
+		<option>
+			<text>-storagepaths</text>
+		</option> 
+	</select>
+	<br statement='false'/>
+<![CDATA[
+>--+-----------------------------------------------+------------>
+   '- -sysplex--+-------------+--+---------------+-'   
+                '-db=database-'  '-file=filename-'     
+]]>
+	<select>
+		<option default="true"><text></text></option> 
+		<option>
+			<text>-sysplex</text>
+			<select>
+				<option default="true"><text></text></option> 
+				<option><text spacepad="false">db=</text><input size="8" title="database"/></option> 
+			</select>
+			<clauseReference name="select-file=filename"/> 
+		</option> 
+	</select>
+	<br statement='false'/>
+<![CDATA[
+>--+----------------------------------------------------------------+-->
+   '- -tablespaces--+---------------+--+-------+--+---------------+-'   
+                    '-Tablespace ID-'  '-group-'  '-file=filename-'     
+]]>
+	<select>
+		<option default="true"><text></text></option> 
+		<option>
+			<text>-tablespaces</text>
+			<select>
+				<option default="true"><text></text></option> 
+				<option><input size="16" title="Tablespace ID"/></option> 
+			</select>
+			<select>
+				<option default="true"><text></text></option> 
+				<option><text>group</text></option> 
+			</select>
+			<clauseReference name="select-file=filename"/> 
+		</option> 
+	</select>
+	<br statement='false'/>
+<![CDATA[
+>--+---------------------------------------------------------------------------------------------+-->
+   '- -tcbstats--+-------+--+-----------------------------------------------+--+---------------+-'   
+                 +-all---+  '-TbspaceID=tablespace_ID--+------------------+-'  '-file=filename-'     
+                 '-index-'                             '-TableID=table_ID-'                          
+]]>
+	<select>
+		<option default="true"><text></text></option> 
+		<option>
+			<text>-tcbstats</text>
+			<select>
+				<option default="true"><text></text></option> 
+				<option><text>all</text></option> 
+				<option><text>index</text></option> 
+			</select>
+			<select>
+				<option default="true"><text></text></option> 
+				<option>
+					<text spacepad="false">TbspaceID=</text>
+					<input size="16" title="tablespace_ID"/>
+					<select>
+						<option default="true"><text></text></option> 
+						<option>
+							<text spacepad="false">TableID=</text>
+							<input size="16" title="table_ID"/>
+						</option> 
+					</select>
+				</option> 
+			</select>
+			<clauseReference name="select-file=filename"/> 
+		</option> 
+	</select>
+	<br statement='false'/>
+<![CDATA[
+>--+-------------+--+-------------------------------+----------->
+   '- -temptable-'  '- -thresholds--+-------------+-'   
+                                    '-thresholdID-'     
+]]>
+	<select>
+		<option default="true"><text></text></option> 
+		<option><text>-temptable</text></option> 
+	</select>
+	<select>
+		<option default="true"><text></text></option> 
+		<option>
+			<text>-thresholds</text>
+			<input size="16" title="thresholdID"/>
+		</option> 
+	</select>
+	<br statement='false'/>
+<![CDATA[
+>--+-----------------------------------------------------+------>
+   '- -transactions--+--------------+--+---------------+-'   
+                     +-TranHdl------+  '-file=filename-'     
+                     '-app=AppHandl-'                        
+]]>
+	<select>
+		<option default="true"><text></text></option> 
+		<option>
+			<text>-transactions</text>
+			<select>
+				<option default="true"><text></text></option> 
+				<option><input size="8" title="TranHdl"/></option> 
+				<option><text spacepad="false">app=</text><input size="12" title="AppHandl"/></option> 
+			</select>
+			<clauseReference name="select-file=filename"/> 
+		</option> 
+	</select>
+	<br statement='false'/>
+<![CDATA[
+>--+--------------------------------+--+-----------+------------>
+   '- -utilities--+---------------+-'  '- -version-'   
+                  '-file=filename-'                    
+]]>
+	<select>
+		<option default="true"><text></text></option> 
+		<option>
+			<text>-utilities</text>
+			<clauseReference name="select-file=filename"/> 
+		</option> 
+	</select>
+	<text>-version</text><note>although option added to prevent interactive mode</note>
+	<br statement='false'/>
+<![CDATA[
+>--+-----------------------------+------------------------------>
+   '- -wlocks--+---------------+-'   
+               '-file=filename-'     
+]]>
+	<select>
+		<option default="true"><text></text></option> 
+		<option>
+			<text>-wlocks</text>
+			<clauseReference name="select-file=filename"/> 
+		</option> 
+	</select>
+	<br statement='false'/>
+<![CDATA[
+>--+--------------------------------------------------+--------->
+   '- -workactionsets--+-----------------+--+-------+-'   
+                       '-workactionsetID-'  '-group-'     
+]]>
+	<select>
+		<option default="true"><text></text></option> 
+		<option>
+			<text>-workactionsets</text>
+			<select>
+				<option default="true"><text></text></option> 
+				<option><input size="16" title="workactionsetID"/></option> 
+			</select>
+			<select>
+				<option default="true"><text></text></option> 
+				<option><text>group</text></option> 
+			</select>
+		</option> 
+	</select>
+	<br statement='false'/>
+<![CDATA[
+>--+------------------------------------------------+----------->
+   '- -workclasssets--+----------------+--+-------+-'   
+                      '-workclasssetID-'  '-group-'     
+]]>
+	<select>
+		<option default="true"><text></text></option> 
+		<option>
+			<text>-workclasssets</text>
+			<select>
+				<option default="true"><text></text></option> 
+				<option><input size="16" title="workloadID"/></option> 
+			</select>
+			<select>
+				<option default="true"><text></text></option> 
+				<option><text>group</text></option> 
+			</select>
+		</option> 
+	</select>
+	<br statement='false'/>
+<![CDATA[
+>--+----------------------------------------+------------------><
+   '- -workloads--+------------+--+-------+-'   
+                  '-workloadID-'  '-group-'     
+]]>
+	<select>
+		<option default="true"><text></text></option> 
+		<option>
+			<text>-workloads</text>
+			<select>
+				<option default="true"><text></text></option> 
+				<option><input size="12" title="workloadID"/></option> 
+			</select>
+			<select>
+				<option default="true"><text></text></option> 
+				<option><text>group</text></option> 
+			</select>
+		</option> 
+	</select>
+
+	<clause name="select-file=filename">
+		<select>
+			<option default="true"><text></text></option> 
+			<option><text spacepad="true">file=</text><input size="32" title="filename"/></option> 
+		</select>
+	</clause>
+	<clause name="file=filename">
+		<text spacepad="true">file=</text><input size="32" title="filename"/> 
+	</clause>
+
+</command>
+        

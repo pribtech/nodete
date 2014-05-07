@@ -1,0 +1,2 @@
+ALTER WORK ACTION SET work1_was
+    ADD WORK ACTION count_large_reads ON WORK CLASS large_wc COUNT ACTIVITY

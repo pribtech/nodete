@@ -1,0 +1,68 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2009 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<command name="db2look-table" title="db2look Table">
+	<text>db2look -d</text>
+	<clauseReference name="database-name"/>
+	<select>
+		<option default="true"><text>-e</text><note>extract</note></option> 
+		<option><note>no extract</note></option> 
+	</select>
+	<text>-z</text><clauseReference name="schema-name"/>
+	<text> -t</text><clauseReference name="table-name"/>
+	<br statement='false'/>
+	<select>
+		<option default="true"><note>no audit DDL</note></option> 
+		<option><text>-ap</text><note>Generate audit</note></option> 
+	</select>
+	<select>
+		<option default="true"><note>limited objects</note></option> 
+		<option><text>-a</text><note>all objects</note></option> 
+	</select>
+	<select>
+		<option default="true"><note>no statistics</note></option> 
+		<option>
+			<text>-m</text><note>Generates the required UPDATE statements to replicate the statistics on tables, statistical views, columns and indexes. </note>
+			<select>
+				<option default="true"><note>commits</note></option> 
+				<option><text>-c</text><note>no commits</note></option> 
+			</select>
+			<select>
+				<option default="true"><note>runstats</note></option> 
+				<option><text>-r</text><note>no runstats</note></option> 
+			</select>
+		</option> 
+	</select>
+	<br statement='false'/>
+	<select>
+		<option default="true"><note>no authorizations</note></option> 
+		<option><text>-x</text><note>generate authorization DDL</note></option> 
+	</select>
+	<select>
+		<option default="true"><note>no authorizations</note></option> 
+		<option><text>-xd</text><note>generate all authorization DDL's</note></option> 
+	</select>
+	<select>
+		<option default="true"><note>generate views</note></option> 
+		<option><text>-noview</text><note>don't generate views</note></option> 
+	</select>
+	<select>
+		<option default="true"><note>no CREATE OR REPLACE clause</note></option> 
+		<option><text>-cor</text><note>Generate CREATE OR REPLACE clause</note></option> 
+	</select>
+</command>
+        

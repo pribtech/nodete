@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tutorial name="Introduction" autoCloseWindowsInRightStage="true" autoClearAdhocResults="true">
+	
+	<globalCodeHighlightOptions  highlightCode="true">
+	</globalCodeHighlightOptions>	
+	<closeAction/>
+	<openAction />
+	<pageList>
+
+		<page name="Introduction" type="general">
+			<contentFile>
+				Intro.html
+			</contentFile>
+			<autoLoadLink>
+				<pageWindow target="informationWindow">
+					<panel name="main" PrimaryContainer="true">
+						<URL>?BASE_DIRECTORY?/HTML/WorkshopIntro.html</URL>
+						<!--<raw><![CDATA[<div id='healthcarescenario'><Title of </div><img src='?BASE_DIRECTORY?/HTML/clip_image002.jpg'/>]]></raw>-->
+					</panel>
+				</pageWindow>
+			</autoLoadLink>
+		</page>
+
+	
+
+	</pageList>
+</tutorial>

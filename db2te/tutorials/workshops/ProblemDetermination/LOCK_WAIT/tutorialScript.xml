@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tutorial name="Lock Wait" useLongAdHoc="true">
+	<globalCodeHighlightOptions highlightCode="true" />
+	<WMDConfig>
+		<load>
+			<workload name="lockwait" profile="wmd/workload_lock_wait" taskset="wmd/update_counter"/>
+		</load>
+	</WMDConfig>
+	<defaultLayout  target="mainLayout">
+		<title>Work Panel</title>
+		<panelHeaders refreshEnabled="true" showRefreshControl="true">
+			<autoRefreshControls>
+				<timeOptions>[1,2,3,4,5,7,10]</timeOptions>
+			</autoRefreshControls>
+		</panelHeaders>
+		<splitPane direction="v" maxSize="200" allowResize="false">
+			<leftPane>
+				<splitPane direction="h" splitPercent="0.5" allowResize="false">
+					<topPane>
+						<panel name="AverageLockWaitTime" overflow="hidden">
+							<panelHeaders refreshEnabled="true"/>
+							<link type="action" target="_self" window="_self" connectionRequired="y">
+								<parameterList>
+									<parameter name="table">Performance/lockWaitTimePercent</parameter>
+									<parameter name="action">indicator</parameter>
+									<parameter name="type">dial</parameter>										
+									<parameter name="image_dir">./images/indicator/dial/</parameter>
+									<parameter name="unit">%</parameter>
+									<parameter name="monitor">percent</parameter>
+									<parameter name="threshold_min">0</parameter>
+									<parameter name="threshold_warning">50</parameter>
+									<parameter name="threshold_danger">75</parameter>
+									<parameter name="threshold_max">100</parameter>
+								</parameterList>
+							</link>
+						</panel>
+					</topPane>
+					<bottomPane>
+						<panel name="Lockwaits" overflow="hidden">
+							<panelHeaders refreshEnabled="true"/>
+							<link type="action" target="_self" window="_self" connectionRequired="y">
+								<parameterList>
+									<parameter name="table">Performance/lockWaits</parameter>
+									<parameter name="action">indicator</parameter>
+									<parameter name="type">dial</parameter>										
+									<parameter name="image_dir">./images/indicator/dial/</parameter>
+									<parameter name="unit"></parameter>
+									<parameter name="monitor">lock_waits</parameter>
+									<parameter name="threshold_min">0</parameter>
+									<parameter name="threshold_warning">50</parameter>
+									<parameter name="threshold_danger">75</parameter>
+									<parameter name="threshold_max">100</parameter>
+								</parameterList>
+							</link>
+						</panel>
+					</bottomPane>
+				</splitPane>
+			</leftPane>
+			<rightPane>
+			<splitPane direction="h" splitPercent="0.5" allowResize="true">
+					<topPane>
+						<panel name="main" PrimaryContainer="true" overflow="hidden">
+							<link type="action" target="_self" window="_self"
+								connectionRequired="y">
+								<parameterList>
+									<parameter name="action">ADHOC</parameter>
+									<parameter name="AdHocLong">true</parameter>
+									<parameter name="controlerID">
+										?TUTORIAL_ID?
+									</parameter>
+									<parameter name="controlerType">
+										?TUTORIAL_TYPE?
+									</parameter>
+								</parameterList>
+							</link>
+						</panel>
+					</topPane>
+					<bottomPane>
+						<panel name="WMD" overflow="hidden"/>
+					</bottomPane>
+				</splitPane>
+			</rightPane>
+		</splitPane>
+	</defaultLayout>
+	<pageList>
+		<page name="Application slow response problem found" type="intro">
+			<entryAction />
+			<exitAction />
+			<contentFile>LockWaitIntro.html</contentFile>
+			<!--<autoLoadLink>
+				<pageWindow target="informationWindow">
+					<panel name="main" PrimaryContainer="true">
+						<URL>
+							http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.admin.trb.doc/doc/t0055234.html
+						</URL>
+					</panel>
+				</pageWindow>
+			</autoLoadLink>-->
+		</page>
+		<page name="Initial state" type="general">
+			<entryAction />
+			<exitAction />
+			<contentFile>LockInit.html</contentFile>
+			<SQLFile>LockWait.SQL</SQLFile>
+			<SQLExecutionOptions xml="false" clob="false"
+				blob="false" dbclob="false" termChar="@" cursor="forward"
+				commitPerStmt="true" numRowReturned="100" />
+			<codeHighlightOptions highlightCode="true">
+				<changedHighlightTokens>
+					<text>LOCK_WAIT_TIME_PERCENT</text>
+					<text>LOCK_WAITS</text>
+				</changedHighlightTokens>
+			</codeHighlightOptions>
+		</page>
+
+		<page name="Create table" type="general">
+			<entryAction />
+			<exitAction />
+			<contentFile>CreateTable.html</contentFile>
+			<SQLFile>CreateTable.SQL</SQLFile>
+			<SQLExecutionOptions xml="false" clob="false"
+				blob="false" dbclob="false" termChar="@" cursor="forward"
+				commitPerStmt="true" numRowReturned="100" />
+		</page>
+
+		<page name="Simulation" type="general">
+			<entryAction />
+			<exitAction />
+			<contentFile>Simulation.html</contentFile>
+			<autoLoadLink>
+				<linkList>
+					<link type="action" target="WMD" window="mainLayout" connectionRequired="y">
+						<parameterList>
+							<parameter name="action">WMDTutorialBootstrap</parameter>
+							<parameter name="workload">lockwait</parameter>
+							<parameter name="controlerID">?TUTORIAL_ID?</parameter>
+							<parameter name="controlerType">?TUTORIAL_TYPE?</parameter>
+							<parameter name="parameters[SCHEMA]">?SCHEMA?</parameter>
+							<parameter name="connection">active</parameter>
+							<parameter name="compactView">true</parameter>
+						</parameterList>
+					</link>
+				</linkList>
+			</autoLoadLink>
+		</page>
+		<page name="Conclusion" type="general">
+			<entryAction />
+			<exitAction />
+			<contentFile>Conclusion.html</contentFile>
+			<!--<autoLoadLink>
+				<pageWindow target="informationWindow">
+					<panel name="main" PrimaryContainer="true">
+						<URL>
+							http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.admin.trb.doc/doc/t0055073.html
+						</URL>
+					</panel>
+				</pageWindow>
+			</autoLoadLink>-->
+		</page>
+	</pageList>
+</tutorial>

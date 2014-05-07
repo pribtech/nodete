@@ -1,0 +1,141 @@
+<!--
+  Author: Peter Prib
+  
+  Copyright Independent Systems Integrators Pty Ltd 2008 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+<table name="stmgDbGroup">
+	<sql_name>stmgDbGroup</sql_name>
+	<singular_name>Data Partition Group</singular_name>
+	<plural_name>Data Partition Groups</plural_name>
+	<description />
+	<messages>
+		<SQL0204N> Not installed. Please install "Storage Management Object" in Tools-> Installed Components </SQL0204N>
+	</messages>
+	<rows_per_page>50</rows_per_page>
+	<inlinequery>
+<![CDATA[
+	select s.*,o.obj_name,o.obj_schema,o.ts_name
+	from SYSTOOLS.STMG_DBPGROUP s
+	join systools.stmg_object o
+		on o.obj_id=s.obj_id
+		and o.obj_type=1
+		and o.stmg_timestamp=s.stmg_timestamp
+	where s.stmg_timestamp = (select max(stmg_timestamp)
+							from systools.stmg_object mo
+							where mo.obj_name=o.obj_name
+							  and mo.obj_type=o.obj_type
+							)
+]]></inlinequery>
+	<order_by_index name="obj_name" direction="A"/>
+	<display_columns>
+		<col type="reference" name="History"/>
+		<col type="reference" name="graphHistory"/>
+		<col type="column" name="obj_name" />
+		<col type="column" name="partition_count" />
+		<col type="column" name="target_level" />
+		<col type="column" name="data_skew" />
+		<col type="column" name="total_size" />
+		<col type="column" name="data_size" />
+		<col type="column" name="percent_used" />
+	</display_columns>
+	<reference name="History">
+		<c_title>History</c_title>
+		<reftype>table</reftype>
+		<refvalue>StorageManagement/stmgDbpGroupHist</refvalue>
+		<icon>images/icon-histo.gif</icon>
+		<ref foreign_column_name="obj_name">
+			<local_column_name>obj_name</local_column_name>
+		</ref>
+	</reference>
+	<reference name="graphHistory">
+		<c_title>Graph History</c_title>
+		<reftype>graph</reftype>
+		<refvalue>StorageManagement/stmgDbpGroupHist</refvalue>
+		<icon>images/icon-histo.gif</icon>
+		<ref foreign_column_name="obj_name">
+			<local_column_name>obj_name</local_column_name>
+		</ref>
+	</reference>
+	<column name="stmg_timestamp">
+		<c_sql_name>STMG_TIMESTAMP</c_sql_name>
+		<c_title>Timestamp</c_title>
+		<c_presentation>s</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="obj_id">
+		<c_sql_name>OBJ_ID</c_sql_name>
+		<c_title>Object Id.</c_title>
+		<c_presentation>s</c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="obj_name">
+		<c_sql_name>OBJ_NAME</c_sql_name>
+		<c_title>DB Partition Group</c_title>
+		<c_presentation>s</c_presentation>
+		<c_drill>y</c_drill>
+		<c_pkey>p</c_pkey>
+	</column>
+	<column name="complete_timestamp">
+		<c_sql_name>COMPLETE_TIMESTAMP</c_sql_name>
+		<c_title>Complete Timestamp</c_title>
+		<c_presentation>s</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="partition_count">
+		<c_sql_name>PARTITION_COUNT</c_sql_name>
+		<c_title>Partition Count</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="target_level">
+		<c_sql_name>TARGET_LEVEL</c_sql_name>
+		<c_title>Target Level</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="data_skew">
+		<c_sql_name>DATA_SKEW</c_sql_name>
+		<c_title>Data Skew</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="total_size">
+		<c_sql_name>TOTAL_SIZE</c_sql_name>
+		<c_title>Total Size</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="data_size">
+		<c_sql_name>DATA_SIZE</c_sql_name>
+		<c_title>Data Size</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="percent_used">
+		<c_sql_name>PERCENT_USED</c_sql_name>
+		<c_title>Percent Used</c_title>
+        <c_presentation>bg</c_presentation>
+		<graphattributes>		
+			<value>100.0</value>
+	  </graphattributes>	
+	</column>
+	<column name="remarks">
+		<c_sql_name>REMARKS</c_sql_name>
+		<c_title>Remarks</c_title>
+		<c_presentation>s</c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+</table>

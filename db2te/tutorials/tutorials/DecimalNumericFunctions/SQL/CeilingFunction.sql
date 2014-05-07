@@ -1,0 +1,1 @@
+select number, ceil(number) from ?SCHEMA?.show_decimal;

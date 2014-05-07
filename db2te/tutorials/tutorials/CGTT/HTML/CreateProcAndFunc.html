@@ -1,0 +1,49 @@
+<p>
+	Run the command script to the right.
+</p>
+<p>
+	You will now create a set of stored procedures and functions using the CGTT.
+	This is not possible with DGTTs.  This new support provided by CGTT allows
+	for much more complicated tasks to be accomplished using a temporary table.
+</p>
+<p>
+	As you have seen in the last step, a DGTT definition does not persist between
+	sessions. This means that a DGTT will need to be declared in each session before
+	use.  Furthermore, application objects such as Stored Procedures (SPs) and User Defined
+	Functions (UDFs) cannot be created against a DGTT.
+</p>
+
+<table style="text-align: center; border-collapse: collapse;">
+	<tr id="ResultHeader">
+		<td style="border: solid 1px black">&nbsp;</td>
+		<td style="border: solid 1px black">Isolation</td>
+		<td style="border: solid 1px black">Automatic cleanup</td>
+		<td style="border: solid 1px black">Application Object Support</td>
+		<td style="border: solid 1px black">Performance</td>
+	</tr>
+	<tr>
+		<td style="border: solid 1px black">Static Table</td>
+		<td style="border: solid 1px black"></td>
+		<td style="border: solid 1px black"></td>
+		<td style="border: solid 1px black" bgcolor="#ffff99"><img style="display:inline;" src="?IMAGE_BASE_DIRECTORY?/typevalue_ok.gif" /></td>
+		<td style="border: solid 1px black"><img style="display:inline;" src="?IMAGE_BASE_DIRECTORY?/typevalue_ok.gif" /></td>
+	</tr>
+	<tr>
+		<td style="border: solid 1px black">DGTT</td>
+		<td style="border: solid 1px black"><img style="display:inline;" src="?IMAGE_BASE_DIRECTORY?/typevalue_ok.gif" /></td>
+		<td style="border: solid 1px black"><img style="display:inline;" src="?IMAGE_BASE_DIRECTORY?/typevalue_ok.gif" /></td>
+		<td style="border: solid 1px black" bgcolor="#ffff99"></td>
+		<td style="border: solid 1px black"></td>
+	</tr>
+	<tr>
+		<td style="border: solid 1px black">CGTT</td>
+		<td style="border: solid 1px black"><img style="display:inline;" src="?IMAGE_BASE_DIRECTORY?/typevalue_ok.gif" /></td>
+		<td style="border: solid 1px black"><img style="display:inline;" src="?IMAGE_BASE_DIRECTORY?/typevalue_ok.gif" /></td>
+		<td style="border: solid 1px black" bgcolor="#ffff99"><img style="display:inline;" src="?IMAGE_BASE_DIRECTORY?/typevalue_ok.gif" /></td>
+		<td style="border: solid 1px black"><img style="display:inline;" src="?IMAGE_BASE_DIRECTORY?/typevalue_ok.gif" /></td>
+	</tr>
+</table>
+<br />
+<p>
+	You should see successful statements in the lower right panel.
+</p>

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tutorial name="Implementation: Setting up a stage" autoCloseWindowsInRightStage="true" autoClearAdhocResults="true">
+	<!--flowRestriction>forwardexploration</flowRestriction-->
+	<pageList>
+		
+		<page name="Stages: What is a stage? " type="general">
+			<contentFile>stages1.html</contentFile>
+            <SQLFile>blank.sql</SQLFile>
+		</page>
+		<page name="Stages: Basic set-up" type="general">
+			<contentFile>stages2.html</contentFile>
+			<autoLoadLink>
+				<pageWindow target="tabledef" raiseToTop="y">
+					<panel name="top" PrimaryContainer="true">
+		   				<link type="other" target="_self" window="_self" connectionRequired="y">
+							<address>
+								?BASE_DIRECTORY?/other/db2AuthOverviewLab2.html
+							</address>
+						</link>
+					</panel>
+				</pageWindow>
+			</autoLoadLink>
+		</page>
+		<page name="Stages: Defining the stage layout" type="general">
+			<contentFile>stages3.html</contentFile>
+			<autoLoadLink>
+				<pageWindow target="tabledef" raiseToTop="y">
+					<panel name="top" PrimaryContainer="true">
+		   				<link type="other" target="_self" window="_self" connectionRequired="y">
+							<address>
+								?BASE_DIRECTORY?/other/db2AuthOverviewLab3.html
+							</address>
+						</link>
+					</panel>
+				</pageWindow>
+			</autoLoadLink>
+		</page>
+        <page name="Stages: Loading the Users page" type="general">
+            <contentFile>stages4.html</contentFile>
+            <autoLoadLink>
+                <pageWindow target="tabledef" raiseToTop="y">
+                    <panel name="top" PrimaryContainer="true">
+                        <link type="other" target="_self" window="_self" connectionRequired="y">
+                            <address>
+                                ?BASE_DIRECTORY?/other/db2AuthOverviewLab4.html
+                            </address>
+                        </link>
+                    </panel>
+                </pageWindow>
+            </autoLoadLink>
+        </page>		
+        <page name="Stages: Loading the Users page (cont)" type="general">
+            <contentFile>stages5.html</contentFile>
+            <autoLoadLink>
+                <pageWindow target="tabledef" raiseToTop="y">
+                    <panel name="top" PrimaryContainer="true">
+                        <link type="other" target="_self" window="_self" connectionRequired="y">
+                            <address>
+                                ?BASE_DIRECTORY?/other/db2AuthOverviewLab5.html
+                            </address>
+                        </link>
+                    </panel>
+                </pageWindow>
+            </autoLoadLink>
+        </page> 
+        <page name="Stages: Loading the Groups, Memberships, and MasterView pages" type="general">
+            <contentFile>stages6.html</contentFile>
+            <autoLoadLink>
+                <pageWindow target="tabledef" raiseToTop="y">
+                    <panel name="top" PrimaryContainer="true">
+                        <link type="other" target="_self" window="_self" connectionRequired="y">
+                            <address>
+                                ?BASE_DIRECTORY?/other/db2AuthOverviewLab6.html
+                            </address>
+                        </link>
+                    </panel>
+                </pageWindow>
+            </autoLoadLink>
+        </page>         
+        <page name="Stages: Load the stage from your menu item" type="general">
+            <contentFile>menuLoadStages.html</contentFile>
+            <autoLoadLink>
+                <pageWindow target="tabledef" raiseToTop="y">
+                    <panel name="top" PrimaryContainer="true">
+                        <link type="other" target="_self" window="_self" connectionRequired="y">
+                            <address>
+                                ?BASE_DIRECTORY?/other/menuItemViewLoad5.html
+                            </address>
+                        </link>
+                    </panel>
+                </pageWindow>
+            </autoLoadLink>
+        </page>
+	</pageList>	
+</tutorial>

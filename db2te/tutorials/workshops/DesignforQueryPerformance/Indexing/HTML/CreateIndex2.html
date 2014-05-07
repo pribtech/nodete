@@ -1,0 +1,23 @@
+<BR><H2><B>Lets try it !</B></H2><HR>
+<p>This page demonstrates creation of indexes on the <b>third fact table and dimension table</b> to improve query processing by 
+reducing the need for full table scans and repeated sorting of data for queries.</p>
+
+<H2><B>Operation</B></H2><HR>
+<p>
+<ol>
+<li>Create fact table 'subscriber_msisdn_history_ind' and dimension table 'dedicated_account_ind'</li>
+<li>Create a regular index on the 'subscriber_msisdn' column as it is used in the join between tables</li>
+</ol>
+</p>
+
+<BR><H2><B>Best Practices</B></H2><HR>
+<p>
+<ol>
+<li>Index every Primary Key (PK) and most Foreign Keys (FK) in a database. Most joins occur between PKs and FKs</li>
+<li>Columns frequently referenced in WHERE clauses are good candidates for an index. An exception to this rule is when the predicate provides minimal filtering (for eg. inequalities)</li>
+<li>Specify indexes on columns used for equality and range queries</li>
+<li>Add indexes only when absolutely necessary. Remember that indexes significantly impact INSERT, UPDATE, and DELETE performance, and they also require storage</li>
+<li>Examine queries with range or with ORDER BY clauses to identify clustering dimensions</li>
+<li>Avoid or remove redundant indexes</li>
+</ol>
+</p>

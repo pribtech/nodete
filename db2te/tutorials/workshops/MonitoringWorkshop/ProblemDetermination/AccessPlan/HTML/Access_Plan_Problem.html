@@ -1,0 +1,143 @@
+<html>
+<head>
+    <style type="text/css">
+	.titleboxcontent {
+        background-color: #000000;
+		color:#ffffff;
+        padding: 2px;
+        overflow: hidden;
+        border-top: solid 1px #336699; }
+	.linkboxcontent {
+        background-color: #999999;
+		color:#ffffff;
+        padding: 2px;
+        overflow: hidden;
+        border-top: solid 1px #336699; }
+
+    .displayboxcontent {
+        background-color: #f5f5f5;
+        padding: 2px;
+        overflow: hidden;
+        border-top: solid 1px #336699; }
+    </style>
+</head>
+<body>
+
+<h2>Operation</h2><hr><BR>
+The database administrator follows a step by step approach to troubleshoot the query slowdown problems.  <BR><BR>
+<ul>
+<li>Executes the SQL in the adhoc sql window on the right pane. </li>
+<li>Determines the problem category.</li>
+<li>Performs detailed diagnosis of the problem.</li>
+<li>Identifies the scope of SQLs involved in the problem.</li>
+</ul>
+<Br>
+
+The three TE views on the right pane display the required information to troubleshoot the query slowdown problem using the above steps. The views are :<BR><BR>
+<ul type=i>
+<li>Monitor Connections</li>
+<li>Detail diagnostic information</li>
+<li>SQL statements</li>
+</ul>
+<BR>
+<H4>Before you begin troubleshooting, complete the below steps :<HR></H4><BR>
+<B>Step 1 :</B> Turn on refresh for 5 seconds. Find the option for refresh on the right end of the top right pane. <BR>
+<B>Step 2 :</B> Set the 'number of rows returned' for the adhoc sql to 20000. Find the option for setting the rows returned under 'options' tab in the adhoc sql window.<BR>
+<B>Step 3 :</B> Note the elements to be monitored mentioned in section 'Highlights'.<BR>
+<B>Step 4 :</B> Execute the SQL in the adhoc sql window. To do so, click on 'run' button in the adhoc sql window.<BR>
+<BR>
+<B>Note: <font color=grey>The SQL query in the adhoc SQL window, is designed to run for long duration. If query takes long, reduce the number of tables involved in the join and remove the corresponding join from the query.</B></font>
+<BR>
+
+
+<BR>
+<H2>Highlights</H2><HR><BR>
+<ul>
+<li><div class="titleboxcontent">View 1 : "<B>Monitor Connections</B>"</div> <B>- Mid-left pane.</B><BR>
+    The view displays, all the connections to the database and details for each connection like CPU rate, wait time etc. </li>
+	<ul>
+	    <li>Make a note of the <B>CPU rate</B> for the <i>php-cgi.exe</i> or <i>httpd.exe</i> process corresponding to the SQL statement being executed.</li>
+		<li>The CPU rate displayed in the view is the rate of change in TOTAL_CPU_TIME metric the moment the view is loaded.</li>
+		<li><B>Higher the CPU rate, greater the response time of the query</B></li>
+    </ul>
+<BR>
+For more details on determining the problem category, click on the below highlighted panel.	<BR><BR>
+		<span style="height:30px; cursor: pointer;" onclick="MinimizeWindow('showmePC');"><div class="linkboxcontent"><H4>Determining the Problem category</H4></div></span>
+		<div id="showmePC" style="display:none">
+		<div class="displayboxcontent">
+        <BR>
+		<font color=grey><B> As part of the initial diagnosis, the database administrator looks for familiar
+			patterns of symptoms to categorize the problem at a high level. The database administrator
+			views the report to identify abnormal values. The database administrator focuses on key
+			indicators that can rule-in or rule-out common, general problems.</B></font>
+		<BR><BR>
+		<H4>Few metrics that indicate some general problem categories<HR></H4>
+		<BR>
+		<ul>
+			<li><B>TOTAL_CPU_TIME <I>(Higher than normal)</I></B> :: High processor usage is a good indicator that the slowdown is located within data server processing. The data server is working harder than normal to handle application requests.<BR></li><BR>
+			<li><B>CLIENT_IDLE_WAIT_TIME <I>(Normal)</I></B> :: The slowdown is NOT located in the client.<BR></li><BR>
+			<li><B>TOTAL_WAIT_TIME <I>(Normal)</I></B> :: Requests are NOT spending more time waiting for resources needed such as locks or for input and output.<BR></li><BR>
+			<li><B>TOTAL_SECTION_PROC_TIME <I>(Higher than normal)</I></B> :: The cost of SQL statements (access plan sections) has increased.</li><BR>
+		</ul>
+		<font color=grey><B>From this evidence, the database administrator concludes that slowdown is localized in statement processing. </B></font>
+		</div>
+		</div>
+
+</ul>
+	<BR>
+<ul>
+<li><div class="titleboxcontent">View 2 : "<B>Detail diagnostic information</B>"</div> <B>- Mid-right pane.</B><BR>
+    The view displays the statistics like rows read, rows returned etc for all the queries executed under every service class.</li>
+	<ul>
+	    <li>Note the <B>rows read</B> and the <B>rows returned</B> for the query.</li>
+		<li><B>Higher ratio of rows read to rows returned</B> indicates a table scan operation being performed to fetch the result set for the query.
+		    Unless the ratio is expected, recomendation is to create an appropriate index to reduces the number of rows read for fetching the result set.</li>
+	</ul>
+	<BR>
+For more details on diagnosis of the problem, click on the below highlighted panel.	<BR><BR>
+		<span style="height:30px; cursor: pointer;" onclick="MinimizeWindow('showme_DD');"><div class="linkboxcontent"><H4>Performing Detailed Diagnosis</H4></div></span>
+		<div id="showme_DD" style="display:none">
+		<div class="displayboxcontent">
+        <BR>
+		<font color=grey><B>Recall that the database administrator has localized the slowdown is in SQL statement processing.
+			A common approach is to explain the SQL statement and analyze the access plan. The database administrator
+			looks at the monitoring report generated to get a quick, initial indication of why the statements are so expensive.</B></font><BR><BR>
+		<H4>Few monitor elements useful for analyzing expensive access plan operations<HR></H4>
+		<BR>
+		<ul>
+			<li><B>ROWS_READ/ROWS_RETURNED <I>(Worse than normal)</I></B> :: This often indicates that indexes are not being used extensively.</li><BR>
+			<li><B>Total sorts and other sort metrics <I>(Normal)</I></B> :: Excessive sorting is NOT the problem.</li><BR>
+		</ul>
+		<font color=grey><B>The evidence suggests that the slow statements are scanning table rows rather than using an index, because no suitable index is available. </B></font>
+		</div>
+		</div>
+</ul>
+<BR>
+<ul>
+<li><div class="titleboxcontent">View 3 : "<B>SQL statements</B>"</div> <B>- Bottom pane.</B><BR>
+    The view displays the SQL statements which are being processed at that instant. The SQL statements are ordered by the CPU consumption.</li>
+	<ul>
+	    <li>Check to see if the SQL executed is one among the SQLs being displayed.</li>
+	</ul>
+	<BR>
+For conclusion, click on the below highlighted panel.	<BR><BR>
+<span style="height:30px; cursor: pointer;" onclick="MinimizeWindow('showmeR');"><div class="linkboxcontent"><H4>Conclusion</H4></div></span>
+<div id="showmeR" style="display:none">
+<div class="displayboxcontent">
+
+<BR>
+<P align=justify>
+The SQLs listed on the right pane are the top statements accumulated in the package cache as
+measured by various metrics. <BR><BR>
+<font color=grey><B>As a part of the initial diagnosis, the database administrator tries to determine the
+part of the user workload impacted by the slowdown. Given the nature of this
+problem, a suitable approach is to view the "top 10" statements, as these
+statements are likely the statements involved in the problem.
+</B></font>
+
+</div>
+</div>
+</ul>
+
+</body>
+</html>

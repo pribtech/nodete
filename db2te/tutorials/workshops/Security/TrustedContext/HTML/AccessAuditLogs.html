@@ -1,0 +1,26 @@
+<br><h2>Access audit data</h2><hr><br>
+<p><b>You must log into the database as Pat before proceeding with this page.</b></p>
+
+<p>Audit data is stored in active log files until they are being archived. Once archived, data can be extracted into delimited ASCII file. You can then import the file into tables for analysis.</p>
+
+<BR>
+<h4>Operation</h4>
+<p> The SECADM archives and extracts the audit data to audit tables.</p>
+
+<p>For SECADM to work with audit data collected, DB2 provides the following routines:</p>
+<ul>
+<li>SYSPROC.AUDIT_ARCHIVE       - to archive audit logs</li>
+<li>SYSPROC.AUDIT_LIST_LOGS     - to locate logs of interest</li>
+<li>SYSPROC.AUDIT_DELIM_EXTRACT - to extract data into delimited files for analysis</li>
+</ul>
+<br><FONT style="BACKGROUND-COLOR: yellow">On the right pane,click Edit Query to match location that user chose in the previous page
+</FONT></p><br><br>
+
+<br><h4>Solution</h4><br>
+<p>Example on the right pane shows that Pat:</p>
+<ol>
+<li>uses SYSPROC.AUDIT_ARCHIVE to archive audit logs</li>
+<li>uses SYSPROC.AUDIT_DELIM_EXTRACT to extracts data into delimited ASCII files</li>
+<li>Imports the files into the audit tables accordingly</li>
+<li>Analyzes the audit data using regular SQL statements</li>
+</ol>

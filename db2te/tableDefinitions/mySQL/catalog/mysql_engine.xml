@@ -1,0 +1,68 @@
+<!--
+  Copyright IBM Corp. 2007 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<table name="mysql_engine">
+	<sql_name>INFORMATION_SCHEMA.ENGINES</sql_name>
+	<singular_name>Engine</singular_name>
+	<plural_name>Engines</plural_name>
+	<description/>
+	<disable_edit/>
+	<order_by_index name="ENGINE"  direction="A"/>
+	<display_columns>
+		<col type="column" name="ENGINE"/>
+		<col type="column" name="SUPPORT"/>
+		<col type="column" name="COMMENT"/>
+		<col type="column" name="TRANSACTIONS"/>
+		<col type="column" name="XA"/>
+		<col type="column" name="SAVEPOINTS"/>
+	</display_columns>
+	<column name="ENGINE">
+		<c_sql_name>ENGINE</c_sql_name>
+		<c_title>Engine</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>y</c_drill>
+		<c_pkey>p</c_pkey>
+	</column>
+	<column name="SUPPORT">
+		<c_sql_name>SUPPORT</c_sql_name>
+		<c_title>Support</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="COMMENT">
+		<c_sql_name>COMMENT</c_sql_name>
+		<c_title>Comment</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="TRANSACTIONS">
+		<c_sql_name>TRANSACTIONS</c_sql_name>
+		<c_title>Transactions</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="XA">
+		<c_sql_name>XA</c_sql_name>
+		<c_title>XA</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="SAVEPOINTS">
+		<c_sql_name>SAVEPOINTS</c_sql_name>
+		<c_title>Save Points</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+</table>

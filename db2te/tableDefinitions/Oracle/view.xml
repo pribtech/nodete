@@ -1,0 +1,123 @@
+<!--
+  Peter Prib, Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2012 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<table name="view">
+	<sql_name>ALL_VIEWS</sql_name>
+	<singular_name>View</singular_name>
+	<plural_name>Views</plural_name>
+	<description></description>
+	<order_by_index name="OWNER" direction="A"/>
+	<order_by_index name="VIEW_NAME" direction="A"/>
+	<display_columns>
+		<col type="reference" name="contents"/>
+		<col type="column" name="OWNER"/>
+		<col type="column" name="VIEW_NAME"/>
+		<col type="column" name="TEXT_LENGTH"/>
+		<col type="column" name="TEXT"/>
+		<col type="column" name="TYPE_TEXT_LENGTH"/>
+		<col type="column" name="TYPE_TEXT"/>
+		<col type="column" name="OID_TEXT_LENGTH"/>
+		<col type="column" name="OID_TEXT"/>
+		<col type="column" name="VIEW_TYPE_OWNER"/>
+		<col type="column" name="VIEW_TYPE"/>
+		<col type="column" name="SUPERVIEW_NAME"/>
+		<col type="column" name="EDITIONING_VIEW"/>
+		<col type="column" name="READ_ONLY"/>
+	</display_columns>
+	<reference name="contents">
+		<title>Contents</title>
+		<reftype>table</reftype>
+		<refvalue></refvalue>
+		<frame>main</frame>
+		<window>_blank</window>
+		<icon>images/icon-link-calendar.gif</icon>
+		<ref foreign_column_name="schema">
+			<local_column_name>OWNER</local_column_name>
+		</ref>
+		<ref foreign_column_name="table">
+			<local_column_name>VIEW_NAME</local_column_name>
+		</ref>
+	</reference>
+	<column name="OWNER">
+		<sql_name>OWNER</sql_name>
+		<title>Owner</title>
+		<type>s</type>
+		<drill_enable/>
+		<prefillEnable/>
+	</column>
+	<column name="VIEW_NAME">
+		<sql_name>VIEW_NAME</sql_name>
+		<title>Name</title>
+		<type>s</type>
+		<drill_enable/>
+	</column>
+	<column name="TEXT_LENGTH">
+		<sql_name>TEXT_LENGTH</sql_name>
+		<title>Text Length</title>
+		<type>n</type>
+	</column>
+	<column name="TEXT">
+		<sql_name>TEXT</sql_name>
+		<title>Text</title>
+		<type>l</type>
+	</column>
+	<column name="TYPE_TEXT_LENGTH">
+		<sql_name>TYPE_TEXT_LENGTH</sql_name>
+		<title>Type_text_length</title>
+		<type>n</type>
+	</column>
+	<column name="TYPE_TEXT">
+		<sql_name>TYPE_TEXT</sql_name>
+		<title>Type Text</title>
+		<type>s</type>
+	</column>
+	<column name="OID_TEXT_LENGTH">
+		<sql_name>OID_TEXT_LENGTH</sql_name>
+		<title>OID Text Length</title>
+		<type>n</type>
+	</column>
+	<column name="OID_TEXT">
+		<sql_name>OID_TEXT</sql_name>
+		<title>OID Text</title>
+		<type>s</type>
+	</column>
+	<column name="VIEW_TYPE_OWNER">
+		<sql_name>VIEW_TYPE_OWNER</sql_name>
+		<title>Type Owner</title>
+		<type>s</type>
+		<drill_enable/>
+	</column>
+	<column name="VIEW_TYPE">
+		<sql_name>VIEW_TYPE</sql_name>
+		<title>Type</title>
+		<type>s</type>
+	</column>
+	<column name="SUPERVIEW_NAME">
+		<sql_name>SUPERVIEW_NAME</sql_name>
+		<title>Superview_name</title>
+		<type>s</type>
+		<drill_enable/>
+	</column>
+	<column name="EDITIONING_VIEW">
+		<sql_name>EDITIONING_VIEW</sql_name>
+		<title>Editioning View</title>
+		<type>s</type>
+	</column>
+	<column name="READ_ONLY">
+		<sql_name>READ_ONLY</sql_name>
+		<title>Read_only</title>
+		<type>s</type>
+	</column>
+</table>

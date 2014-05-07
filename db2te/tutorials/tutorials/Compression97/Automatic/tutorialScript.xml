@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	Copyright IBM Corp. 2007 All rights reserved.
+	
+	Licensed under the Apache License, Version 2.0 (the "License");
+	you may not use this file except in compliance with the License.
+	You may obtain a copy of the License at
+	
+	http://www.apache.org/licenses/LICENSE-2.0
+	
+	Unless required by applicable law or agreed to in writing, software
+	distributed under the License is distributed on an "AS IS" BASIS,
+	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	See the License for the specific language governing permissions and
+	limitations under the License.
+-->
+<tutorial name="Automatic Compression" autoCloseWindowsInRightStage="true" autoClearAdhocResults="true">
+	<flowRestriction>forwardexploration</flowRestriction>
+	<globalCodeHighlightOptions  highlightCode="true">
+
+	</globalCodeHighlightOptions>	
+	<closeAction/>
+	
+	<closeAction/>
+	<openAction />
+	<pageList>
+		<page name="Introduction" type="intro">
+			<entryAction />
+			<exitAction />
+			<contentFile>AutomaticCompression.html</contentFile>
+			<autoLoadLink>
+				<pageWindow target="informationWindow">
+					<panel name="main" PrimaryContainer="true">
+						<URL>
+							http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.admin.dbobj.doc/doc/c0052331.html?noframes=true
+						</URL>
+					</panel>
+				</pageWindow>
+			</autoLoadLink>
+		</page>
+
+		<page name="Create and populate a regular table" type="general">
+			<entryAction />
+			<exitAction />
+			<contentFile>
+				CreateTableWITHOUT_COMPRESSIONForTestingCompression.html
+			</contentFile>
+			<SQLFile>
+				CreateTableWITHOUT_COMPRESSIONForTestingCompression.sql
+			</SQLFile>
+			<SQLExecutionOptions xml="false" clob="false" blob="false"
+				dbclob="false" termChar=";" cursor="forward" commitPerStmt="false"
+				numRowReturned="100" />
+		</page>
+		<page name="Estimate Disk Space Saving" type="general">
+			<entryAction name="checkForInsert" type="serverAction">
+				<parameterList>
+					<parameter name="action" type="fixed">
+						<value>checkForRow</value>
+					</parameter>
+					<parameter name="schema" type="constant">
+						<value>SCHEMA</value>
+					</parameter>
+					<parameter name="name" type="fixed">
+						<value>customer_address_without_compression</value>
+					</parameter>
+				</parameterList>
+				<followOnAction condition="true" negCondition="true">
+					<task>
+						<action name="displayMsgForFailedInsert"
+							type="alert">
+							<message>
+								Data hasn't been inserted in the table.  Please try this step again.
+							</message>
+						</action>
+					</task>
+					<task>
+						<setActionReturn>false</setActionReturn>
+					</task>
+				</followOnAction>
+				<followOnAction condition="true">
+					<task>
+						<action name="checkForTable" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="serverAction">
+									<value>checkForObject</value>
+								</parameter>
+								<parameter name="objectType" type="raw">
+									<value>table</value>
+								</parameter>
+								<parameter name="object[schema]" type="constant">
+									<value>SCHEMA</value>
+								</parameter>
+								<parameter name="object[table]" type="fixed">
+									<value>customer_address_without_compression</value>
+								</parameter>
+							</parameterList>
+							<followOnAction condition="false">
+								<task>
+									<action name="displayMsgForFailedInsert"
+										type="alert">
+										<message>
+											Table required hasn't been created.
+											Please execute this step again.
+										</message>
+									</action>
+								</task>
+								<task>
+									<setActionReturn>false</setActionReturn>
+								</task>
+							</followOnAction>
+						</action>
+					</task>
+				</followOnAction>
+			</entryAction>
+			<exitAction />
+			<contentFile>
+				RunstatsAndInspect.html
+			</contentFile>
+			<loadActionScriptFile>
+				getSizeUncompressed.xml
+			</loadActionScriptFile>
+		</page>
+
+		<page name="Compress Table" type="general">
+			<entryAction />
+			<exitAction />
+			<contentFile>AlterTableCompressOn.html</contentFile>
+			<SQLFile>AlterTableCompressOn.sql</SQLFile>
+		</page>
+
+		<page name="Compare Estimate to Actual Savings" type="general">
+			<entryAction name="checkForInsert" type="serverAction">
+				<parameterList>
+					<parameter name="action" type="fixed">
+						<value>checkForRow</value>
+					</parameter>
+					<parameter name="schema" type="constant">
+						<value>SCHEMA</value>
+					</parameter>
+					<parameter name="name" type="fixed">
+						<value>customer_address_with_compression</value>
+					</parameter>
+				</parameterList>
+				<followOnAction condition="true" negCondition="true">
+					<task>
+						<action name="displayMsgForFailedInsert"
+							type="alert">
+							<message>
+								Data hasn't been inserted in the table.  Please try this step again.
+							</message>
+						</action>
+					</task>
+					<task>
+						<setActionReturn>false</setActionReturn>
+					</task>
+				</followOnAction>
+			</entryAction>
+			<exitAction />
+			<contentFile>CompareEstimateToActual.html</contentFile>
+			<loadActionScriptFile>
+				compareEstimateToActual.xml
+			</loadActionScriptFile>
+		</page>
+
+		<page name="Create Table with Automatic Compression"
+			type="general">
+			<entryAction />
+			<exitAction />
+			<contentFile>CreateTableAUTO_COMPRESSION.html</contentFile>
+			<SQLFile>CreateTableAUTO_COMPRESSION.sql</SQLFile>
+		</page>
+
+		<page name="Disk Savings with Automatic Compression"
+			type="general">
+			<entryAction name="checkForInsert" type="serverAction">
+				<parameterList>
+					<parameter name="action" type="fixed">
+						<value>checkForRow</value>
+					</parameter>
+					<parameter name="schema" type="constant">
+						<value>SCHEMA</value>
+					</parameter>
+					<parameter name="name" type="fixed">
+						<value>customer_address_with_auto_compression</value>
+					</parameter>
+				</parameterList>
+				<followOnAction condition="true" negCondition="true">
+					<task>
+						<action name="displayMsgForFailedInsert"
+							type="alert">
+							<message>
+								Data hasn't been inserted in the table.
+								Please try this step again.
+							</message>
+						</action>
+					</task>
+					<task>
+						<setActionReturn>false</setActionReturn>
+					</task>
+				</followOnAction>
+			</entryAction>
+			<exitAction />
+			<contentFile>CompareAutoToCompressed.html</contentFile>
+			<loadActionScriptFile>
+				compareAutoToCompressed.xml
+			</loadActionScriptFile>
+		</page>
+
+		<page name="Compress missing rows"
+			type="general">
+			<entryAction />
+			<exitAction />
+			<contentFile>ReorgAutoCompression.html</contentFile>
+			<SQLFile>ReorgAutoCompression.sql</SQLFile>
+		</page>
+
+		<page name="Automatic after REORG"
+			type="general">
+			<entryAction name="checkForInsert" type="serverAction">
+				<parameterList>
+					<parameter name="action" type="fixed">
+						<value>checkForRow</value>
+					</parameter>
+					<parameter name="schema" type="constant">
+						<value>SCHEMA</value>
+					</parameter>
+					<parameter name="name" type="fixed">
+						<value>CUSTOMER_ADDRESS_WITH_AUTO_COMPRESSION</value>
+					</parameter>
+				</parameterList>
+				<followOnAction condition="true" negCondition="true">
+					<task>
+						<action name="displayMsgForFailedInsert"
+							type="alert">
+							<message>
+								Data hasn't been inserted in the table.
+								Please try this step again.
+							</message>
+						</action>
+					</task>
+					<task>
+						<setActionReturn>false</setActionReturn>
+					</task>
+				</followOnAction>
+			</entryAction>
+			<exitAction />
+			<contentFile>CompareAutoWithReorg.html</contentFile>
+			<loadActionScriptFile>
+				compareAutoWithReorg.xml
+			</loadActionScriptFile>
+		</page>
+
+		<page name="Compress indexes"
+			type="general">
+			<entryAction />
+			<exitAction />
+			<contentFile>CreateIndex.html</contentFile>
+			<SQLFile>CreateIndex.sql</SQLFile>
+		</page>
+
+	</pageList>
+</tutorial>

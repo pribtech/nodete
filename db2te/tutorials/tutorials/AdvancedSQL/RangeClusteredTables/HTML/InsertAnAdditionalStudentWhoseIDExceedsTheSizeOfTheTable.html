@@ -1,0 +1,31 @@
+This SQL will attempt to <a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v9r7/topic/com.ibm.db2.luw.sql.ref.doc/doc/r0000970.html');">INSERT</a> a student that is outside the range of the table. This will result
+  in an error message since the table has not been defined to hold this much data. Note that you 
+  cannot alter the table to accept more records. You must re-create the table at this point in time
+  if you run out of "slots".
+  <P>You control the behavior of a range-clustered table (RCT) that allows
+  overflow records by using the <a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v9r7/topic/com.ibm.db2.luw.sql.ref.doc/doc/r0000927.html');">CREATE TABLE</a> statement and the ALLOW OVERFLOW
+  option. In this way, you ensure that all of the pages required by the
+  table within the defined range are allocated immediately.
+  </P>
+  <P>Once created, any records with keys that fall into the defined range work
+  the same way, regardless of whether the table is created with the overflow
+  option allowed or disallowed. The difference occurs when there is a
+  record with a key that falls outside of the defined range. In this
+  case, when the table allows overflow records, the record is placed in the
+  overflow area, which is dynamically allocated. As more records are
+  added from outside the defined range, they are placed into the growing
+  overflow area. Actions against the table that involve this overflow
+  area will require longer processing time because the overflow area must be
+  accessed as part of the action. The larger the overflow area, the
+  longer it will take to access the overflow area. After prolonged use of
+  the overflow area, consider reducing its size by exporting the data from the
+  table to a new range-clustered table that you have defined using new, extended
+  ranges.
+  </P>
+  <P>There might be times when you do not want records placed into a
+  range-clustered table to have record key values falling outside of an allowed
+  or defined range. For this type of RCT to exist, you must use the
+  DISALLOW OVERFLOW option on the CREATE TABLE statement. Once you have
+  created this type of RCT, you might have to accept error messages if a record
+  key value falls outside of the allowed or defined range.
+  </P>

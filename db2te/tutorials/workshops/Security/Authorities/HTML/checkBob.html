@@ -1,0 +1,14 @@
+<br><h2>Least privileges Sam has</h2><hr><br>
+<p><b>You must log into the database as Sam before proceeding with this page.</b></p>
+<p>Sam holds DBADM authority. Check if he can access 'customer' table data and if he can grant/revoke privileges to/from users.
+
+
+<br><h4>Operation</h4><hr><br>
+<p>Sam only has DBADM authority but not ACCESSCTRL and DATAACCESS. Sam executes the SELECT and GRANT statements as shown on the right pane, which should both fail.</p>
+
+<br><h4>Solution</h4><hr><br>
+<p>Sam cannot access the 'customer' table.
+He also cannot grant any privileges to other users. He has given the least privileges to perform only database administrator
+tasks.</p>
+
+

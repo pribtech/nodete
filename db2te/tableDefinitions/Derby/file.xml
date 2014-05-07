@@ -1,0 +1,56 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2011 All rights reserved.
+  
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+
+<table name="file">
+	<sql_name>SYS.SYSFILES</sql_name>
+	<singular_name>File</singular_name>
+	<plural_name>Files</plural_name>
+	<description/>
+	<order_by_index name="FILENAME" direction="A"/>
+	<display_columns>
+		<col type="column" name="SCHEMANAME"/>
+		<col type="column" name="FILENAME"/>
+		<col type="column" name="GENERATIONID"/>
+		<col type="column" name="FILEID"/>
+	</display_columns>
+	<column name="SCHEMANAME">
+		<sql_name>(SELECT s.SCHEMANAME from sys.SYSSCHEMAS s where s.SCHEMAID=SYSFILES.SCHEMAID)</sql_name>
+		<title>Schema</title>
+		<type>s</type>
+	</column>
+	<column name="FILEID">
+		<sql_name>FILEID</sql_name>
+		<title>File Id</title>
+		<type>s</type>
+	</column>
+	<column name="SCHEMAID">
+		<sql_name>SCHEMAID</sql_name>
+		<title>Schema Id</title>
+		<type>s</type>
+	</column>
+	<column name="FILENAME">
+		<sql_name>FILENAME</sql_name>
+		<title>File</title>
+		<type>s</type>
+	</column>
+	<column name="GENERATIONID">
+		<sql_name>GENERATIONID</sql_name>
+		<title>Generation Id</title>
+		<type>s</type>
+	</column>
+</table>

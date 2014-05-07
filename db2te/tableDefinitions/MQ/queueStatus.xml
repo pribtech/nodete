@@ -1,0 +1,114 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2013 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+<table name="queueStatus">
+	<sqlName>queueStatus</sqlName>
+	<singularName>Queue Status</singularName>
+	<pluralName>Queue Status</pluralName>
+	<inlinequery>
+<![CDATA[
+MQCMD_INQUIRE_Q_STATUS  ?
+]]>
+	</inlinequery>
+	<parameters>
+		<parm name="MQCA_Q_NAME">
+			<title>Queue Mask</title>
+			<value>*</value>
+			<type>s</type>
+		</parm>
+	</parameters>
+	<description></description>
+	<displayColumns>
+		<col type="column" name="MQCA_Q_NAME"/>
+		<col type="column" name="MQIACF_Q_STATUS_TYPE"/>
+		<col type="column" name="MQIA_CURRENT_Q_DEPTH"/>
+		<col type="column" name="MQIA_OPEN_INPUT_COUNT"/>
+		<col type="column" name="MQCACF_LAST_GET_DATE"/>
+		<col type="column" name="MQCACF_LAST_GET_TIME"/>
+		<col type="column" name="MQCACF_LAST_PUT_DATE"/>
+		<col type="column" name="MQCACF_LAST_PUT_TIME"/>
+		<col type="column" name="MQCACF_MEDIA_LOG_EXTENT_NAME"/>
+		<col type="column" name="MQIA_MONITORING_Q"/>
+		<col type="column" name="MQIACF_OLDEST_MSG_AGE"/>
+		<col type="column" name="MQIA_OPEN_OUTPUT_COUNT"/>
+		<col type="column" name="MQIACF_Q_TIME_INDICATOR"/>
+		<col type="column" name="MQIACF_UNCOMMITTED_MSGS"/>
+	</displayColumns>
+	<column name="MQCA_Q_NAME">
+		<sqlName>MQCA_Q_NAME</sqlName>
+		<title>Name</title>
+	</column>
+	<column name="MQIACF_Q_STATUS_TYPE">
+		<sqlName>MQIACF_Q_STATUS_TYPE</sqlName>
+		<title>Status Type</title>
+		<type>n</type>
+	</column>
+	<column name="MQIA_CURRENT_Q_DEPTH">
+		<sqlName>MQIA_CURRENT_Q_DEPTH</sqlName>
+		<title>Current Depth</title>
+		<type>n</type>
+	</column>
+	<column name="MQIA_OPEN_INPUT_COUNT">
+		<sqlName>MQIA_OPEN_INPUT_COUNT</sqlName>
+		<title>Open Input Count</title>
+		<type>n</type>
+	</column>
+	<column name="MQCACF_LAST_GET_DATE">
+		<sqlName>MQCACF_LAST_GET_DATE</sqlName>
+		<title>Last Get Date</title>
+	</column>
+	<column name="MQCACF_LAST_GET_TIME">
+		<sqlName>MQCACF_LAST_GET_TIME</sqlName>
+		<title>Last Get Time</title>
+	</column>
+	<column name="MQCACF_LAST_PUT_DATE">
+		<sqlName>MQCACF_LAST_PUT_DATE</sqlName>
+		<title>Last Put Date</title>
+	</column>
+	<column name="MQCACF_LAST_PUT_TIME">
+		<sqlName>MQCACF_LAST_PUT_TIME</sqlName>
+		<title>Last Put Time</title>
+	</column>
+	<column name="MQCACF_MEDIA_LOG_EXTENT_NAME">
+		<sqlName>MQCACF_MEDIA_LOG_EXTENT_NAME</sqlName>
+		<title>Media Log Extent Name</title>
+	</column>
+	<column name="MQIA_MONITORING_Q">
+		<sqlName>MQIA_MONITORING_Q</sqlName>
+		<title>Monitoring Q</title>
+	</column>
+	<column name="MQIACF_OLDEST_MSG_AGE">
+		<sqlName>MQIACF_OLDEST_MSG_AGE</sqlName>
+		<title>Oldest Msg Age</title>
+		<type>n</type>
+	</column>
+	<column name="MQIA_OPEN_OUTPUT_COUNT">
+		<sqlName>MQIA_OPEN_OUTPUT_COUNT</sqlName>
+		<title>Open Output Count</title>
+		<type>n</type>
+	</column>
+	<column name="MQIACF_Q_TIME_INDICATOR">
+		<sqlName>MQIACF_Q_TIME_INDICATOR</sqlName>
+		<title>Time Indicator</title>
+		<type>n</type>
+	</column>
+	<column name="MQIACF_UNCOMMITTED_MSGS">
+		<sqlName>MQIACF_UNCOMMITTED_MSGS</sqlName>
+		<title>Uncommitted Msgs</title>
+		<type>n</type>
+	</column>
+</table>

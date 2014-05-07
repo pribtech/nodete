@@ -1,0 +1,62 @@
+<table name="statsIOindices">
+	<sqlName>pg_statio_all_indexes</sqlName>
+	<singularName>Stats IO Indices</singularName>
+	<pluralName>Stats IO Indices</pluralName>
+	<description>
+	For each index in the current database, the table and index OID, schema, table and index name, numbers of disk blocks read and buffer hits in that index.
+	</description>
+	<orderBy name="idx_blks_read" direction="D"/>
+	<disableEdit/>
+	<output>
+		<type name="DDL" destination="" title="" generator=""/>
+	</output>
+	<displayColumns>
+		<col type="column" name="relid"/>
+		<col type="column" name="indexrelid"/>
+		<col type="column" name="schemaname"/>
+		<col type="column" name="relname"/>
+		<col type="column" name="indexrelname"/>
+		<col type="column" name="idx_blks_read"/>
+		<col type="column" name="idx_blks_hit"/>
+	</displayColumns>
+	<history depth="10" time="SAMPLE_TS"/>
+	<column name="SAMPLE_TS">
+		<generated>timestamp</generated>
+		<title>Time</title>
+		<type>s</type>
+	</column>
+	<column name="relid">
+		<sqlName>relid</sqlName>
+		<title>Relid</title>
+		<type>n</type>
+		<primaryKey/>
+	</column>
+	<column name="indexrelid">
+		<sqlName>indexrelid</sqlName>
+		<title>Indexrelid</title>
+		<type>n</type>
+		<primaryKey/>
+	</column>
+	<column name="schemaname">
+		<sqlName>schemaname</sqlName>
+		<title>Schemaname</title>
+	</column>
+	<column name="relname">
+		<sqlName>relname</sqlName>
+		<title>Relname</title>
+	</column>
+	<column name="indexrelname">
+		<sqlName>indexrelname</sqlName>
+		<title>Indexrelname</title>
+	</column>
+	<column name="idx_blks_read" accumulation="y">
+		<sqlName>idx_blks_read</sqlName>
+		<title>Reads</title>
+		<type>n</type>
+	</column>
+	<column name="idx_blks_hit" accumulation="y">
+		<sqlName>idx_blks_hit</sqlName>
+		<title>Hits</title>
+		<type>n</type>
+	</column>
+</table>

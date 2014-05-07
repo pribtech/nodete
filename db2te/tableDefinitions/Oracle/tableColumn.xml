@@ -1,0 +1,259 @@
+<!--
+  Peter Prib, Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2012 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<!-- XML table definition was generated from the table: SYS.DBA_TAB_COLUMNS -->
+
+
+<table name="SYS.DBA_TAB_COLUMNS">
+	<sqlName>SYS.DBA_TAB_COLUMNS</sqlName>
+	<singularName>SYS.DBA_TAB_COLUMNS</singularName>
+	<pluralName>SYS.DBA_TAB_COLUMNS</pluralName>
+	<description/>
+	<orderBy name="OWNER" direction="A"/>
+	<orderBy name="TABLE_NAME" direction="A"/>
+	<orderBy name="COLUMN_ID" direction="A"/>
+	<displayColumns>
+		<col type="column" name="OWNER"/>
+		<col type="column" name="TABLE_NAME"/>
+		<col type="column" name="COLUMN_NAME"/>
+		<col type="column" name="DATA_TYPE"/>
+		<col type="column" name="DATA_TYPE_MOD"/>
+		<col type="column" name="DATA_TYPE_OWNER"/>
+		<col type="column" name="DATA_LENGTH"/>
+		<col type="column" name="DATA_PRECISION"/>
+		<col type="column" name="DATA_SCALE"/>
+		<col type="column" name="NULLABLE"/>
+		<col type="column" name="COLUMN_ID"/>
+		<col type="column" name="DEFAULT_LENGTH"/>
+		<col type="column" name="DATA_DEFAULT"/>
+		<col type="column" name="NUM_DISTINCT"/>
+		<col type="column" name="LOW_VALUE"/>
+		<col type="column" name="HIGH_VALUE"/>
+		<col type="column" name="DENSITY"/>
+		<col type="column" name="NUM_NULLS"/>
+		<col type="column" name="NUM_BUCKETS"/>
+		<col type="column" name="LAST_ANALYZED"/>
+		<col type="column" name="SAMPLE_SIZE"/>
+		<col type="column" name="CHARACTER_SET_NAME"/>
+		<col type="column" name="CHAR_COL_DECL_LENGTH"/>
+		<col type="column" name="GLOBAL_STATS"/>
+		<col type="column" name="USER_STATS"/>
+		<col type="column" name="AVG_COL_LEN"/>
+		<col type="column" name="CHAR_LENGTH"/>
+		<col type="column" name="CHAR_USED"/>
+	</displayColumns>
+	<displayColumns name="table">
+		<col type="column" name="COLUMN_NAME"/>
+		<col type="column" name="DATA_TYPE"/>
+		<col type="column" name="DATA_TYPE_MOD"/>
+		<col type="column" name="DATA_TYPE_OWNER"/>
+		<col type="column" name="DATA_LENGTH"/>
+		<col type="column" name="DATA_PRECISION"/>
+		<col type="column" name="DATA_SCALE"/>
+		<col type="column" name="NULLABLE"/>
+		<col type="column" name="COLUMN_ID"/>
+		<col type="column" name="DEFAULT_LENGTH"/>
+		<col type="column" name="DATA_DEFAULT"/>
+		<col type="column" name="NUM_DISTINCT"/>
+		<col type="column" name="LOW_VALUE"/>
+		<col type="column" name="HIGH_VALUE"/>
+		<col type="column" name="DENSITY"/>
+		<col type="column" name="NUM_NULLS"/>
+		<col type="column" name="NUM_BUCKETS"/>
+		<col type="column" name="LAST_ANALYZED"/>
+		<col type="column" name="SAMPLE_SIZE"/>
+		<col type="column" name="CHARACTER_SET_NAME"/>
+		<col type="column" name="CHAR_COL_DECL_LENGTH"/>
+		<col type="column" name="GLOBAL_STATS"/>
+		<col type="column" name="USER_STATS"/>
+		<col type="column" name="AVG_COL_LEN"/>
+		<col type="column" name="CHAR_LENGTH"/>
+		<col type="column" name="CHAR_USED"/>
+	</displayColumns>
+	<column name="OWNER">
+		<sqlName>OWNER</sqlName>
+		<title>Owner</title>
+		<type>s</type>
+		<drillEnable/>
+		<prefillEnable/>
+		<primaryKey/>
+	</column>
+	<column name="TABLE_NAME">
+		<sqlName>TABLE_NAME</sqlName>
+		<title>Table</title>
+		<type>s</type>
+		<drillEnable/>
+		<primaryKey/>
+	</column>
+	<column name="COLUMN_NAME">
+		<sqlName>COLUMN_NAME</sqlName>
+		<title>Column</title>
+		<type>s</type>
+		<drillEnable/>
+		<primaryKey/>
+	</column>
+	<column name="DATA_TYPE">
+		<sqlName>DATA_TYPE</sqlName>
+		<title>Type</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="DATA_TYPE_MOD">
+		<sqlName>DATA_TYPE_MOD</sqlName>
+		<title>Type Mod</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="DATA_TYPE_OWNER">
+		<sqlName>DATA_TYPE_OWNER</sqlName>
+		<title>Type Owner</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="DATA_LENGTH">
+		<sqlName>DATA_LENGTH</sqlName>
+		<title>Length</title>
+		<type>n</type>
+	</column>
+	<column name="DATA_PRECISION">
+		<sqlName>DATA_PRECISION</sqlName>
+		<title>Precision</title>
+		<type>n</type>
+	</column>
+	<column name="DATA_SCALE">
+		<sqlName>DATA_SCALE</sqlName>
+		<title>Scale</title>
+		<type>n</type>
+	</column>
+	<column name="NULLABLE">
+		<sqlName>NULLABLE</sqlName>
+		<title>Nullable</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="COLUMN_ID">
+		<sqlName>COLUMN_ID</sqlName>
+		<title>Id</title>
+		<type>n</type>
+	</column>
+	<column name="DEFAULT_LENGTH">
+		<sqlName>DEFAULT_LENGTH</sqlName>
+		<title>Default Length</title>
+		<type>n</type>
+	</column>
+	<column name="DATA_DEFAULT">
+		<sqlName>DATA_DEFAULT</sqlName>
+		<title>Default</title>
+		<type>n</type>
+	</column>
+	<column name="NUM_DISTINCT">
+		<sqlName>NUM_DISTINCT</sqlName>
+		<title>No. Distinct</title>
+		<type>n</type>
+	</column>
+	<column name="LOW_VALUE">
+		<sqlName>LOW_VALUE</sqlName>
+		<title>Low Value</title>
+		<type>n</type>
+	</column>
+	<column name="HIGH_VALUE">
+		<sqlName>HIGH_VALUE</sqlName>
+		<title>High Value</title>
+		<type>n</type>
+	</column>
+	<column name="DENSITY">
+		<sqlName>DENSITY</sqlName>
+		<title>Density</title>
+		<type>n</type>
+	</column>
+	<column name="NUM_NULLS">
+		<sqlName>NUM_NULLS</sqlName>
+		<title>No. Nulls</title>
+		<type>n</type>
+	</column>
+	<column name="NUM_BUCKETS">
+		<sqlName>NUM_BUCKETS</sqlName>
+		<title>No Buckets</title>
+		<type>n</type>
+	</column>
+	<column name="LAST_ANALYZED">
+		<sqlName>LAST_ANALYZED</sqlName>
+		<title>Last Analyzed</title>
+		<type>n</type>
+		<drillEnable/>
+	</column>
+	<column name="SAMPLE_SIZE">
+		<sqlName>SAMPLE_SIZE</sqlName>
+		<title>Sample Size</title>
+		<type>n</type>
+	</column>
+	<column name="CHARACTER_SET_NAME">
+		<sqlName>CHARACTER_SET_NAME</sqlName>
+		<title>Character Set Name</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="CHAR_COL_DECL_LENGTH">
+		<sqlName>CHAR_COL_DECL_LENGTH</sqlName>
+		<title>Char Col Decl Length</title>
+		<type>n</type>
+	</column>
+	<column name="GLOBAL_STATS">
+		<sqlName>GLOBAL_STATS</sqlName>
+		<title>Global Stats</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="USER_STATS">
+		<sqlName>USER_STATS</sqlName>
+		<title>User Stats</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="AVG_COL_LEN">
+		<sqlName>AVG_COL_LEN</sqlName>
+		<title>Avg Len</title>
+		<type>n</type>
+	</column>
+	<column name="CHAR_LENGTH">
+		<sqlName>CHAR_LENGTH</sqlName>
+		<title>Length</title>
+		<type>n</type>
+	</column>
+	<column name="CHAR_USED">
+		<sqlName>CHAR_USED</sqlName>
+		<title>Used</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="V80_FMT_IMAGE">
+		<sqlName>V80_FMT_IMAGE</sqlName>
+		<title>V80 Fmt Image</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="DATA_UPGRADED">
+		<sqlName>DATA_UPGRADED</sqlName>
+		<title>Upgraded</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="HISTOGRAM">
+		<sqlName>HISTOGRAM</sqlName>
+		<title>Histogram</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+</table>

@@ -1,0 +1,11 @@
+<task_set autocommit="false" isolation_level="CS" currently_committed="ON">
+    <statement type="statement" group="write">  
+            <text>LOCK TABLE WLMTUT.EXITDEMO IN EXCLUSIVE MODE</text>
+    </statement>
+    <statement type="statement" group="write">  
+            <text>INSERT INTO WLMTUT.EXITDEMO VALUES (1)</text>
+    </statement>
+    <statement type="statement" group="write">  
+            <text>CALL WLMTUT.WAIT(1000)</text>
+    </statement>
+</task_set>

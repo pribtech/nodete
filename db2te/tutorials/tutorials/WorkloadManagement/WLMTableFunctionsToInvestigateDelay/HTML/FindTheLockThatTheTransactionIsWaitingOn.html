@@ -1,0 +1,11 @@
+<p>From the previous output, we can tell which transaction handle (TranHdl) app2.  
+We can now find which locks this transaction is waiting on
+  by issuing the <a onclick="OpenURLInFloatingWindow
+('http://publib.boulder.ibm.com/infocenter/db2luw/v9r7/topic/com.ibm.db2.luw.admin.cmd.doc/doc/r0011729.html?noframes=true');">
+db2pd</a> locks command for that transaction handle.</p>
+<ol>
+  	<li>Issue the command (replace Y with the trasaction handle #): 
+  	<pre><code>db2pd -db sample -locks Y wait</code></pre>
+	<ul><li>Look for the Type field and Owner field.</li></ul></li>
+	<li>Keep the CLP or terminal open</li>
+</ol>    

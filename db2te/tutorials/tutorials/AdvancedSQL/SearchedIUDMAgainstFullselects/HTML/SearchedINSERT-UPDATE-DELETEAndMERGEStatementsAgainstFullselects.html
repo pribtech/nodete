@@ -1,0 +1,9 @@
+As of DB2 Version 8.1.4 you can issue searched <a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v9r7/topic/com.ibm.db2.luw.sql.ref.doc/doc/r0000970.html');">INSERT</a>,
+  <a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v9r7/topic/com.ibm.db2.luw.sql.ref.doc/doc/r0001022.html');">UPDATE</a>, <a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v9r7/topic/com.ibm.db2.luw.sql.ref.doc/doc/r0000939.html');">DELETE</a>, and <a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v9r7/topic/com.ibm.db2.luw.sql.ref.doc/doc/r0010873.html');">MERGE</a> statements on the results of fullselects.
+  This feature enables you to reduce work that might otherwise require two
+  statements (a fullselect and an INSERT, UPDATE, DELETE, or MERGE on the
+  results of the fullselect) to a single statement. By combining this
+  work into a single statement, you can reduce the potential for deadlocks and
+  possibly eliminate the need for view and cursor definitions. Any query
+  that can be used to produce an insertable, updatable, or deletable view can be
+  the target of searched INSERT, UPDATE, DELETE, or MERGE statements.

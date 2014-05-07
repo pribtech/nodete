@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tutorial name="Object Auto Revalidation" useLongAdHoc="true">
+	<flowRestriction>forwardExploration</flowRestriction>
+	<globalCodeHighlightOptions  highlightCode="true" />
+	<closeAction/>
+	<openAction/>
+	<pageList>
+		<page name="AUTO_REVAL setting" type="general">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>auto_revalCheck.html</contentFile>
+			<autoLoadLink>
+				<pageWindow target="informationWindow">
+					<panel name="main" PrimaryContainer="true">
+						<link type="action" target="_self" window="_self" connectionRequired="y">
+							<parameterList>
+								<parameter name="table">dbcfg</parameter>
+								<parameter name="action">list_table</parameter>
+								<parameter name="name">auto_reval</parameter>
+							</parameterList>
+						</link>
+					</panel>
+				</pageWindow>
+			</autoLoadLink>
+			<SQLExecutionOptions commitPerStmt="true"/>
+		</page>
+		
+		<page name="Create Views" type="general">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>CreateViews.html</contentFile>
+			<SQLFile>CreateViews.SQL</SQLFile>
+			<SQLExecutionOptions commitPerStmt="true"/>
+				<codeHighlightOptions highlightCode="true">
+					<changedHighlightTokens>
+						<text>CREATE VIEW month_customer</text>
+						<text>CREATE OR REPLACE VIEW registered_customers</text>
+						<text>CREATE OR REPLACE function full_name</text>
+						<text>ADD COLUMN</text>
+						<text>ADD COLUMN</text>
+						<text>ADD COLUMN</text>
+					</changedHighlightTokens>
+				</codeHighlightOptions>
+		</page>
+		
+		<page name="Explore the Views" type="general">
+			<entryAction name="checkForInsert" type="serverAction">
+				<parameterList>
+					<parameter name="action" type="fixed">
+						<value>checkForRow</value>
+					</parameter>
+					<parameter name="schema" type="constant">
+						<value>SCHEMA</value>
+					</parameter>
+					<parameter name="name" type="fixed">
+						<value>random_registered_customer</value>
+					</parameter>
+				</parameterList>
+			</entryAction>
+			<exitAction/>
+			<contentFile>showViews.html</contentFile>
+			<autoLoadLink>
+				<pageWindow target="informationWindow" raiseToTop="y">
+					<splitPane direction="h">
+						<topPane>
+							<panel name="main" PrimaryContainer="true">
+								<link type="action" target="_self" window="_self"
+									connectionRequired="y">
+									<parameterList>
+										<parameter name="table">viewcat</parameter>
+										<parameter name="action">list_table</parameter>
+										<parameter name="viewschema">?SCHEMA?</parameter>
+									</parameterList>
+								</link>
+							</panel>
+						</topPane>
+						<bottomPane>
+							<panel name="detail"/>
+						</bottomPane>
+					</splitPane>
+				</pageWindow>
+			</autoLoadLink>
+		</page>
+		
+		<page name="Validate the Views" type="general">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>validateViews.html</contentFile>
+			<SQLFile>validateViews.SQL</SQLFile>
+			<SQLExecutionOptions commitPerStmt="true"/>
+		</page>
+		
+		<page name="Explore Views Again" type="general">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>showViewsAgain.html</contentFile>
+			<autoLoadLink>
+				<pageWindow target="informationWindow" raiseToTop="y">
+					<splitPane direction="h">
+						<topPane>
+							<panel name="main" PrimaryContainer="true">
+								<link type="action" target="_self" window="_self"
+									connectionRequired="y">
+									<parameterList>
+										<parameter name="table">viewcat</parameter>
+										<parameter name="action">list_table</parameter>
+										<parameter name="viewschema">?SCHEMA?</parameter>
+									</parameterList>
+								</link>
+							</panel>
+						</topPane>
+						<bottomPane>
+							<panel name="detail"/>
+						</bottomPane>
+					</splitPane>
+				</pageWindow>
+			</autoLoadLink>
+		</page>		
+	</pageList>
+</tutorial>

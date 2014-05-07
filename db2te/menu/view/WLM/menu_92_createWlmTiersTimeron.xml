@@ -1,0 +1,394 @@
+<!--
+  Author: Peter Prib
+  
+  Copyright Independent Systems Integrators Pty Ltd 2008 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+<menu type="leaf" branchDirectory="">
+   <description>Create WLM Timeron Tiers</description>
+
+<actionScript name="wlmCreateWLMTables" type="form" lockScreen="true">
+
+	<message>
+<![CDATA[
+<div style='width:500px'>
+<h1>WLM Timeron Tiers</h1>
+<p>You are about to create the WLM timeron tiers.
+<p>
+<h1>USAGE</h1>
+<p><ol>
+<li>Connect to your database at the catalog partition. You must connect
+at the catalog partition for this script to run successfully.
+You must have DBADM or WLMADM authority.
+<li>In order to capture threshold violation events, create WLM event
+>monitors.
+</ol>
+<p>
+
+<h1>Description</h1>
+<p>
+This script sets up a DB2 Workload Manager (WLM) tiered service
+      class configuration for a database. Use this tiered service class
+      configuration to help improve database throughput in response to the
+      elapsed execution time of incoming activities. This script also
+      demonstrates the use of service classes, workloads, work action sets
+      and thresholds. This script differs from wlmtiersdefault.db2 in that
+      the estimated cost is taken into account when initially mapping
+      DML activities to service classes.
+<p>
+<h2>Actions performed by this script:</h2>
+<p><ol>
+<li>Create the service superclass WLM_TIERS and three service subclasses
+within it, WLM_SHORT, WLM_MEDIUM and WLM_LONG.
+<li>Create threshold WLM_TIERS_REMAP_SHORT_TO_MEDIUM to remap
+      activities from service subclass WLM_SHORT to WLM_MEDIUM after
+      activities consume a certain amount of processor time in WLM_SHORT.
+      Create threshold WLM_TIERS_REMAP_MEDIUM_TO_LONG to remap
+      activities from service subclass WLM_MEDIUM to WLM_LONG after
+      activities consume a certain amount of processor time in WLM_MEDIUM.
+      For activities that cannot be remapped using a CPUTIMEINSC threshold
+      are mapped to the WLM_MEDIUM service subclass.  These activities
+      will stay in the WLM_MEDIUM service subclass and will not get 
+      remapped.
+<li>Create work class set WLM_TIERS_WCS to differentiate DML activities 
+      with small, medium and large estimated costs in timerons.
+<li>Create work action set WLM_TIERS_WAS to map the work classes in
+      WLM_TIERS_WCS to service classes WLM_SHORT, WLM_MEDIUM and
+      WLM_LONG.
+<li>Set the service class properties for the service classes created.
+      For service class properties and instructions on how to modify these
+      properties to suit your environment, see the next section.
+<li>Set the threshold properties for the thresholds created. For
+      threshold properties and instructions on how to modify these
+      properties to suit your environment, see the next section.
+<li>Set work class properties for the work class set created. For
+      work class set properties and instructions on how to customize the
+      threshold properties to suit your environment, see the next section.
+<li>Alter the the default user workload SYSDEFAULTUSERWORKLOAD to map
+      incoming connections to service class WLM_TIERS. Any connection that
+      does not belong to a user defined workload is placed in
+      SYSDEFAULTUSERWORKLOAD.
+</ol>
+<p>
+With this configuration, DML activities are evaluated based on their
+estimated cost and placed into service class WLM_SHORT, WLM_MEDIUM or
+WLM_LONG accordingly. Service class WLM_SHORT has higher resource priority
+settings than WLM_MEDIUM, which has higher resource priority settings than
+WLM_LONG. Non-DML activities enter service class WLM_SHORT. Short activities
+will complete in WLM_SHORT unless they exceed the maximum amount of processor
+time specified in threshold WLM_TIERS_REMAP_SHORT_TO_MEDIUM. Longer
+activities are remapped to WLM_MEDIUM where they will complete unless they
+exceed the maximum amount of CPU time specified in threshold
+WLM_TIERS_REMAP_MEDIUM_TO_LONG. The longest running activities are remapped
+to WLM_LONG, where they will execute until they complete.
+<p>
+<h1>WLM TIERS SERVICE CLASS, THRESHOLD AND WORK CLASS SET PROPERTIES</h1>
+<p>
+Following are the service class, threshold and work class set properties set
+by this script. You can customize these properties to better fit your
+environment.
+<p>
+Note: Repeat runs of this script will return the SQL0601N message for the
+CREATE SERVICE CLASS, CREATE THRESHOLD and CREATE WORK CLASS SET DDL
+statements. Repeat runs will also return the SQL4704N message for the CREATE
+WORK ACTION SET statement. This is expected because these WLM objects are
+already created.
+<h2>Service class properties:</h2>
+<p>
+<table border="1">
+<tr><th>Service Class</th><th>Agent Priority (UNIX / Win)</th><th>Prefetch Priority</th></tr>
+<tr><td>WLM_SHORT </td><td>       -10 /  3    </td><td>     High</td></tr>
+<tr><td>WLM_MEDIUM </td><td>       0  /  0     </td><td>    Medium</td></tr>
+<tr><td>WLM_LONG   </td><td>       10 / -3    </td><td>     Low</td></tr>
+<tr><td>Default System  </td><td> -15 /  5     </td><td>    High</td></tr>
+<tr><td>Default Maint. </td><td>   15 / -5    </td><td>     Low</td></tr>
+</table>
+<p>
+<h2>Threshold properties:</h2>
+<p>
+<table border="1">
+<tr><th>Threshold</th><th>CPU Time Used in Service Class Before Remap</th></tr>
+<tr><td>WLM_TIERS_REMAP_SHORT_TO_MEDIUM </td><td>  30 seconds</td></tr>
+<tr><td>WLM_TIERS_REMAP_MEDIUM_TO_LONG</td><td>    30 seconds</td></tr>
+</table>
+<p>
+<h2>Work class set properties:</h2>
+<table border="1">
+<tr><th>Work Class</th><th>Estimated Cost in Timerons (From/To)</th></tr>
+<tr><td>WLM_SHORT_DML_WC</td><td>        0/999</td></tr>
+<tr><td>WLM_MEDIUM_DML_WC</td><td>    1000/99999</td></tr>
+<tr><td>WLM_LONG_DML_WC</td><td>    100000/infinity</td></tr>
+<tr><td>WLM_CALL_WC</td><td>*see note below*</td></tr>
+<tr><td>WLM_OTHER_WC</td><td>      *see note below*</td></tr>
+</table>
+<p>
+<h2>Note:</h2>
+<p>
+Work classes WLM_CALL_WC and WLM_OTHER_WC contain CALL activities and other
+activities that do not have cost estimates.  Estimated cost is available
+only for DML statements. Non-DML activities such as DDL and LOAD will fall
+under the WLM_OTHER_WC work class. Activities grouped under WLM_CALL_WC are
+mapped to service class WLM_SHORT initially.  Activities grouped under
+WLM_OTHER_WC are mapped to service class WLM_MEDIUM and will not get
+remapped.
+
+</div>
+]]>
+    </message>
+    <parameterList>
+		<parameter name="buttonOK" type="raw">
+			<value>Create WLM Tiers</value>
+		</parameter>
+	</parameterList>
+	<if condition="true">
+		<task>
+			<action name="createWlmTiers" type="serverAction">
+				<parameterList>
+					<parameter name="action" type="fixed">
+						<value>executeSQL</value>
+					</parameter>
+					<parameter name="STMTermChar" type="fixed">
+						<value>@</value>
+					</parameter>
+					<parameter name="commitPerSTMT" type="fixed">
+						<value>true</value>
+					</parameter>
+					<parameter name="abortOnFailure" type="fixed">
+						<value>true</value>
+					</parameter>
+					<parameter name="SQL[1]" type="fixed">
+						<value>
+CREATE SERVICE CLASS WLM_TIERS
+						</value>
+					</parameter>
+					<parameter name="SQL[2]" type="fixed">
+						<value>
+CREATE SERVICE CLASS WLM_SHORT UNDER WLM_TIERS
+						</value>
+					</parameter>
+					<parameter name="SQL[3]" type="fixed">
+						<value>
+CREATE SERVICE CLASS WLM_MEDIUM UNDER WLM_TIERS
+						</value>
+					</parameter>
+					<parameter name="SQL[4]" type="fixed">
+						<value>
+CREATE SERVICE CLASS WLM_LONG UNDER WLM_TIERS
+						</value>
+					</parameter>
+					<parameter name="SQL[5]" type="fixed">
+						<value>
+CREATE THRESHOLD WLM_TIERS_REMAP_SHORT_TO_MEDIUM FOR
+  SERVICE CLASS WLM_SHORT UNDER WLM_TIERS ACTIVITIES
+  ENFORCEMENT DATABASE PARTITION WHEN
+  CPUTIMEINSC > 10 SECONDS CHECKING EVERY 5 SECONDS
+  REMAP ACTIVITY TO WLM_MEDIUM
+						</value>
+					</parameter>
+					<parameter name="SQL[6]" type="fixed">
+						<value>
+CREATE THRESHOLD WLM_TIERS_REMAP_MEDIUM_TO_LONG FOR
+  SERVICE CLASS WLM_MEDIUM UNDER WLM_TIERS ACTIVITIES
+  ENFORCEMENT DATABASE PARTITION WHEN
+  CPUTIMEINSC > 10 SECONDS CHECKING EVERY 5 SECONDS
+  REMAP ACTIVITY TO WLM_LONG
+						</value>
+					</parameter>
+					<parameter name="SQL[7]" type="fixed">
+						<value>
+CREATE WORK CLASS SET WLM_TIERS_WCS
+  ( WORK CLASS WLM_SHORT_DML_WC WORK TYPE DML,
+    WORK CLASS WLM_MEDIUM_DML_WC WORK TYPE DML,
+    WORK CLASS WLM_LONG_DML_WC WORK TYPE DML,
+    WORK CLASS WLM_CALL_WC WORK TYPE CALL,
+    WORK CLASS WLM_OTHER_WC WORK TYPE ALL)
+						</value>
+					</parameter>
+					<parameter name="SQL[8]" type="fixed">
+						<value>
+CREATE WORK ACTION SET WLM_TIERS_WAS FOR SERVICE CLASS WLM_TIERS
+  USING WORK CLASS SET WLM_TIERS_WCS
+  ( WORK ACTION WLM_SHORT_DML_WA ON WORK CLASS WLM_SHORT_DML_WC
+      MAP ACTIVITY TO WLM_SHORT,
+    WORK ACTION WLM_MEDIUM_DML_WA ON WORK CLASS WLM_MEDIUM_DML_WC
+      MAP ACTIVITY TO WLM_MEDIUM,
+    WORK ACTION WLM_LONG_DML_WA ON WORK CLASS WLM_LONG_DML_WC
+      MAP ACTIVITY TO WLM_LONG,
+    WORK ACTION WLM_CALL_WA ON WORK CLASS WLM_CALL_WC
+      MAP ACTIVITY TO WLM_SHORT,
+    WORK ACTION WLM_OTHER_WA ON WORK CLASS WLM_OTHER_WC
+      MAP ACTIVITY TO WLM_MEDIUM )
+      						</value>
+					</parameter>
+					<parameter name="SQL[9]" type="fixed">
+						<value>
+CREATE PROCEDURE checkPlatformAndSetAgentPriority()
+  LANGUAGE SQL
+  BEGIN
+
+    DECLARE isWindows VARCHAR(256);
+    DECLARE stmt VARCHAR(300);
+
+    SELECT os_name INTO isWindows
+      FROM SYSIBMADM.ENV_SYS_INFO
+      WHERE UCASE(os_name) LIKE '%WIN%' OR UCASE(os_name) LIKE '%NT%';
+    IF isWindows IS NULL
+      THEN
+        SET stmt = 'ALTER SERVICE CLASS WLM_SHORT UNDER WLM_TIERS AGENT PRIORITY -10';
+        PREPARE s1 FROM stmt;
+        EXECUTE s1;
+        COMMIT;
+
+        SET stmt = 'ALTER SERVICE CLASS WLM_MEDIUM UNDER WLM_TIERS AGENT PRIORITY 0';
+        PREPARE s1 FROM stmt;
+        EXECUTE s1;
+        COMMIT;
+
+        SET stmt = 'ALTER SERVICE CLASS WLM_LONG UNDER WLM_TIERS AGENT PRIORITY 10';
+        PREPARE s1 FROM stmt;
+        EXECUTE s1;
+        COMMIT;
+
+        SET stmt = 'ALTER SERVICE CLASS SYSDEFAULTSYSTEMCLASS AGENT PRIORITY -15 ';
+        PREPARE s1 FROM stmt;
+        EXECUTE s1;
+        COMMIT;
+
+        SET stmt = 'ALTER SERVICE CLASS SYSDEFAULTMAINTENANCECLASS AGENT PRIORITY 15';
+        PREPARE s1 FROM stmt;
+        EXECUTE s1;
+        COMMIT;
+    ELSE
+        SET stmt = 'ALTER SERVICE CLASS WLM_SHORT UNDER WLM_TIERS AGENT PRIORITY 3';
+        PREPARE s1 FROM stmt;
+        EXECUTE s1;
+        COMMIT;
+
+        SET stmt = 'ALTER SERVICE CLASS WLM_MEDIUM UNDER WLM_TIERS AGENT PRIORITY 0';
+        PREPARE s1 FROM stmt;
+        EXECUTE s1;
+        COMMIT;
+
+        SET stmt = 'ALTER SERVICE CLASS WLM_LONG UNDER WLM_TIERS AGENT PRIORITY -3';
+        PREPARE s1 FROM stmt;
+        EXECUTE s1;
+        COMMIT;
+
+        SET stmt = 'ALTER SERVICE CLASS SYSDEFAULTSYSTEMCLASS AGENT PRIORITY 5 ';
+        PREPARE s1 FROM stmt;
+        EXECUTE s1;
+        COMMIT;
+
+        SET stmt = 'ALTER SERVICE CLASS SYSDEFAULTMAINTENANCECLASS AGENT PRIORITY -5';
+        PREPARE s1 FROM stmt;
+        EXECUTE s1;
+        COMMIT;
+
+    END IF;
+
+  END						</value>
+					</parameter>
+					<parameter name="SQL[10]" type="fixed">
+						<value>
+CALL checkPlatformAndSetAgentPriority()
+						</value>
+					</parameter>
+					<parameter name="SQL[11]" type="fixed">
+						<value>
+DROP PROCEDURE checkPlatformAndSetAgentPriority
+						</value>
+					</parameter>
+					<parameter name="SQL[12]" type="fixed">
+						<value>
+ALTER SERVICE CLASS WLM_SHORT UNDER WLM_TIERS PREFETCH PRIORITY HIGH
+						</value>
+					</parameter>
+					<parameter name="SQL[13]" type="fixed">
+						<value>
+ALTER SERVICE CLASS WLM_MEDIUM UNDER WLM_TIERS PREFETCH PRIORITY MEDIUM
+						</value>
+					</parameter>
+					<parameter name="SQL[14]" type="fixed">
+						<value>
+ALTER SERVICE CLASS WLM_LONG UNDER WLM_TIERS PREFETCH PRIORITY LOW
+						</value>
+					</parameter>
+					<parameter name="SQL[15]" type="fixed">
+						<value>
+ALTER SERVICE CLASS SYSDEFAULTSYSTEMCLASS PREFETCH PRIORITY HIGH
+						</value>
+					</parameter>
+					<parameter name="SQL[16]" type="fixed">
+						<value>
+ALTER SERVICE CLASS SYSDEFAULTMAINTENANCECLASS PREFETCH PRIORITY LOW
+						</value>
+					</parameter>
+					<parameter name="SQL[17]" type="fixed">
+						<value>
+ALTER THRESHOLD WLM_TIERS_REMAP_SHORT_TO_MEDIUM WHEN
+  CPUTIMEINSC > 10 SECONDS CHECKING EVERY 5 SECONDS
+  REMAP ACTIVITY TO WLM_MEDIUM LOG EVENT MONITOR RECORD
+  						</value>
+					</parameter>
+					<parameter name="SQL[18]" type="fixed">
+						<value>
+ALTER THRESHOLD WLM_TIERS_REMAP_MEDIUM_TO_LONG WHEN
+  CPUTIMEINSC > 10 SECONDS CHECKING EVERY 5 SECONDS
+  REMAP ACTIVITY TO WLM_LONG LOG EVENT MONITOR RECORD
+  						</value>
+					</parameter>
+					<parameter name="SQL[19]" type="fixed">
+						<value>
+ALTER WORK CLASS SET WLM_TIERS_WCS
+  ALTER WORK CLASS WLM_SHORT_DML_WC FOR TIMERONCOST FROM 0 TO 999
+  ALTER WORK CLASS WLM_MEDIUM_DML_WC FOR TIMERONCOST FROM 1000 TO 99999
+  ALTER WORK CLASS WLM_LONG_DML_WC FOR TIMERONCOST FROM 100000 TO UNBOUNDED
+						</value>
+					</parameter>
+					<parameter name="SQL[20]" type="fixed">
+						<value>
+ALTER WORKLOAD SYSDEFAULTUSERWORKLOAD SERVICE CLASS WLM_TIERS
+						</value>
+					</parameter>
+				</parameterList>
+				<if condition="true" negCondition="true">
+					<task>
+						<assignSharedConstant name="STMTRun" type="returnObject">
+							<value>createWlmTiers.returnValue.STMTRun</value>
+						</assignSharedConstant>
+						<assignSharedConstant name="STMT" type="returnObject">
+							<value>createWlmTiers.returnValue.STMT</value>
+						</assignSharedConstant>
+						<assignSharedConstant name="STMTMSG" type="returnObject">
+							<value>createWlmTiers.returnValue.STMTMSG</value>
+						</assignSharedConstant>
+						<alert>Failed to create WLM Tiers, statement ?STMTRun? 
+						
+						?STMTMSG?
+						
+						?STMT?
+						</alert>
+					</task>
+				</if>
+				<if condition="true">
+					<task>
+						<alert>WLM Tiers created</alert>
+					</task>
+				</if>
+			</action>
+		</task>
+	</if>
+</actionScript>
+</menu>

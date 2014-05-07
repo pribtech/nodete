@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2011 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+ limitations under the License.
+
+-->
+<table name="Event">
+	<sql_name>Event</sql_name>
+	<singular_name>Event</singular_name>
+	<plural_name>Events</plural_name>
+	<messages><SQL0204N>Apply replication not installed or its schema is not the default ASN</SQL0204N></messages>
+	<inlinequery>
+<![CDATA[
+select e.EVENT_NAME,(select max(EVENT_TIME) from ASN.IBMSNAP_SUBS_EVENT m where m.EVENT_NAME=EVENT_NAME ) as LAST_TRIGGERED
+from (
+	SELECT DISTINCT EVENT_NAME  
+	FROM ASN.IBMSNAP_SUBS_SET
+	WHERE EVENT_NAME is not null
+UNION   
+	SELECT DISTINCT EVENT_NAME
+	FROM ASN.IBMSNAP_SUBS_EVENT
+) e
+]]>
+	</inlinequery>
+	<description></description>
+	<disable_edit/>
+	<order_by_index name="EVENT_NAME" direction="A"/>  
+	<display_columns>
+		<col type="column" name="EVENT_NAME"/>
+		<col type="column" name="LAST_TRIGGERED"/>
+		<col type="reference" name="Subscription"/>
+		<col type="reference" name="Triggered"/>
+		<col type="action" name="Trigger"/>
+	</display_columns>
+	<column name="EVENT_NAME">
+		<c_sql_name>EVENT_NAME</c_sql_name>
+		<c_title>event_name</c_title>
+		<c_presentation>s</c_presentation>
+		<c_pkey>p</c_pkey>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="LAST_TRIGGERED">
+		<c_sql_name>LAST_TRIGGERED</c_sql_name>
+		<c_title>Latest Trigger</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<reference name="Subscription">
+		<c_title>Subscriptions</c_title>
+		<reftype>table</reftype>
+		<refvalue>Replication/subscriptionSet</refvalue>
+		<icon>images/icon-link-calendar.gif</icon>
+		<ref foreign_column_name="EVENT_NAME">
+			<local_column_name>EVENT_NAME</local_column_name>
+		</ref>
+	</reference>
+	<reference name="Triggered">
+		<c_title>Triggered</c_title>
+		<reftype>table</reftype>
+		<refvalue>Replication/subscriptionEvent</refvalue>
+		<icon>images/icon-link-calendar.gif</icon>
+		<ref foreign_column_name="evenet_name">
+			<local_column_name>EVENT_NAME</local_column_name>
+		</ref>
+	</reference>
+	<action name="trigger">
+		<c_title>Trigger</c_title>
+		<icon>images/icon-count.gif</icon>			
+		<actionScript name="triggerEvent" type="serverAction">
+			<parameterList>
+				<parameter name="action" type="fixed">
+					<value>executeSQL</value>
+				</parameter>
+				<parameter name="SQL" type="fixed">
+					<value>
+<![CDATA[
+INSERT INTO ASN.IBMSNAP_SUBS_EVENT 
+       (EVENT_NAME, EVENT_TIME)
+       VALUES (?!name=EVENT_NAME?, CURRENT TIMESTAMP + 1 MINUTES)
+]]>
+					</value>
+				</parameter>
+				<parameter name="parameter[EVENT_NAME]" type="blockValue">
+					<value>EVENT_NAME</value>
+				</parameter>
+			</parameterList>
+			<followOnAction condition="true">
+				<task>	
+					<reload/>
+					<action name="raiseError" type="alert">
+						<message>Triggered</message>
+					</action>
+				</task>
+			</followOnAction>
+			<followOnAction condition="true" negCondition="true">
+				<task>
+					<action name="raiseError" type="alert">
+						<message>Trigger Evennt failed: ?ERROR_MESSAGE?</message>
+						<parameterList>
+							<parameter name="ERROR_MESSAGE" type="returnObject">
+								<value>triggerEvent.returnValue.STMTMSG</value>
+							</parameter>
+						</parameterList>
+					</action>
+				</task>
+			</followOnAction>
+		</actionScript>
+	</action>
+</table>

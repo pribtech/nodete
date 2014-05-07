@@ -1,0 +1,82 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2014 All rights reserved.
+  
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+<!-- XML table definition was generated from the table: SYSIBMADM.ENV_INST_INFO -->
+
+
+<table name="instanceInformation">
+	<sqlName>SYSIBMADM.ENV_INST_INFO</sqlName>
+	<singularName>Instance Information</singularName>
+	<pluralName>Instance Information</pluralName>
+	<description/>
+	<displayColumns>
+		<col type="column" name="INST_NAME"/>
+		<col type="column" name="IS_INST_PARTITIONABLE"/>
+		<col type="column" name="NUM_DBPARTITIONS"/>
+		<col type="column" name="INST_PTR_SIZE"/>
+		<col type="column" name="RELEASE_NUM"/>
+		<col type="column" name="SERVICE_LEVEL"/>
+		<col type="column" name="BLD_LEVEL"/>
+		<col type="column" name="PTF"/>
+		<col type="column" name="FIXPACK_NUM"/>
+		<col type="column" name="NUM_MEMBERS"/>
+	</displayColumns>
+	<column name="INST_NAME">
+		<sqlName>INST_NAME</sqlName>
+		<title>Inst Name</title>
+	</column>
+	<column name="IS_INST_PARTITIONABLE">
+		<sqlName>IS_INST_PARTITIONABLE</sqlName>
+		<title>Partitionable</title>
+	</column>
+	<column name="NUM_DBPARTITIONS">
+		<sqlName>NUM_DBPARTITIONS</sqlName>
+		<title>Partitions</title>
+		<type>n</type>
+	</column>
+	<column name="INST_PTR_SIZE">
+		<sqlName>INST_PTR_SIZE</sqlName>
+		<title>Pointer Size</title>
+		<type>n</type>
+	</column>
+	<column name="RELEASE_NUM">
+		<sqlName>RELEASE_NUM</sqlName>
+		<title>Release</title>
+	</column>
+	<column name="SERVICE_LEVEL">
+		<sqlName>SERVICE_LEVEL</sqlName>
+		<title>Service Level</title>
+		<type/>
+	</column>
+	<column name="BLD_LEVEL">
+		<sqlName>BLD_LEVEL</sqlName>
+		<title>Build Level</title>
+	</column>
+	<column name="PTF">
+		<sqlName>PTF</sqlName>
+		<title>PTF</title>
+	</column>
+	<column name="FIXPACK_NUM">
+		<sqlName>FIXPACK_NUM</sqlName>
+		<title>Fixpack</title>
+	</column>
+	<column name="NUM_MEMBERS">
+		<sqlName>NUM_MEMBERS</sqlName>
+		<title>No. Members</title>
+		<type>n</type>
+	</column>
+</table>

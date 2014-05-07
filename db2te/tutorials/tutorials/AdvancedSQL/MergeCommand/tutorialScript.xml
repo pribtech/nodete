@@ -1,0 +1,417 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tutorial name="Merge Command">
+	<FlowRestriction>forwardExploration</FlowRestriction>
+	<closeAction/>
+	<openAction />
+    <globalCodeHighlightOptions highlightCode = "true" />
+	<pageList>
+		<page name="Merge Command" type="intro">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>MergeCommand.html</contentFile>
+			<autoLoadLink>
+				<pageWindow target="informationWindow">
+					<panel name="main">
+						<URL>http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.dwe.sqw.doc/designing/data_flow/copmergetarget.html?noframes=true</URL>
+					</panel>
+				</pageWindow>
+			</autoLoadLink>			
+		</page>
+		
+		<page name="Create product table" type="general">
+			<entryAction/>  
+			<exitAction/>
+			<contentFile>CreateProductTable.html</contentFile>
+			<SQLFile>CreateProductTable.sql</SQLFile>
+		</page>
+		
+		<page name="Create Transaction Table" type="general">
+			<entryAction name="checkForProductTable" type="serverAction">
+				<parameterList>
+					<parameter name="action" type="serverAction">
+						<value>checkForObject</value>
+					</parameter>
+					
+					<parameter name="objectType" type="raw">
+						<value>table</value>
+					</parameter>
+					
+					<parameter name="object[schema]" type="constant">
+						<value>SCHEMA</value>
+					</parameter>
+					
+					<parameter name="object[table]" type="fixed">
+						<value>PRODUCTS</value>
+					</parameter>
+				</parameterList>
+				
+				<followOnAction condition="false">
+					<task>
+						<action name="displayMsg" type="alert">
+							<message>Required table "PRODUCTS" hasn't been created. Please execute this step again.</message>
+						</action>
+					</task>
+					
+					<task>
+						<setActionReturn>false</setActionReturn>
+					</task>
+				</followOnAction>
+				
+				<followOnAction condition="true">
+					<task>
+						<action name="checkForProductInsert" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="fixed">
+									<value>checkForRow</value>
+								</parameter>
+								<parameter name="schema" type="constant">
+									<value>SCHEMA</value>
+								</parameter>
+								<parameter name="name" type="fixed">
+									<value>PRODUCTS</value>
+								</parameter>
+							</parameterList>
+							<followOnAction condition="true"  negCondition="true">
+								<task>
+									<action name="displayMsgForFailedInsert" type="alert">
+										<message>Data hasn't been inserted in table "PRODUCTS". Please try this step again.</message>
+									</action>
+								</task>
+								<task>
+									<setActionReturn>false</setActionReturn>
+								</task>
+							</followOnAction>
+							
+						</action>
+					</task>
+				</followOnAction>
+			</entryAction>     
+			<exitAction/>
+			<contentFile>CreateTransactionTable.html</contentFile>
+			<SQLFile>CreateTransactionTable.sql</SQLFile>
+		</page>
+		
+		<page name="Merge transactions into product table" type="general">
+			<entryAction name="checkForTransactionTable" type="serverAction">
+				<parameterList>
+					<parameter name="action" type="serverAction">
+						<value>checkForObject</value>
+					</parameter>
+					
+					<parameter name="objectType" type="raw">
+						<value>table</value>
+					</parameter>
+					
+					<parameter name="object[schema]" type="constant">
+						<value>SCHEMA</value>
+					</parameter>
+					
+					<parameter name="object[table]" type="fixed">
+						<value>product_txs</value>
+					</parameter>
+				</parameterList>
+				
+				<followOnAction condition="false">
+					<task>
+						<action name="displayMsg" type="alert">
+							<message>Required table "product_txs" hasn't been created. Please execute this step again.</message>
+						</action>
+					</task>
+					
+					<task>
+						<setActionReturn>false</setActionReturn>
+					</task>
+				</followOnAction>
+				
+				<followOnAction condition="true">
+					<task>
+						<action name="checkForProductInsert" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="fixed">
+									<value>checkForRow</value>
+								</parameter>
+								<parameter name="schema" type="constant">
+									<value>SCHEMA</value>
+								</parameter>
+								<parameter name="name" type="fixed">
+									<value>product_txs</value>
+								</parameter>
+							</parameterList>
+							<followOnAction condition="true"  negCondition="true">
+								<task>
+									<action name="displayMsgForFailedInsert" type="alert">
+										<message>Data hasn't been inserted in table "product_txs". Please try this step again.</message>
+									</action>
+								</task>
+								<task>
+									<setActionReturn>false</setActionReturn>
+								</task>
+							</followOnAction>
+							
+						</action>
+					</task>
+				</followOnAction>
+				
+			</entryAction>       
+			<exitAction/>
+			<contentFile>MergeTransactionsIntoProductTable.html</contentFile>
+			<SQLFile>MergeTransactionsIntoProductTable.sql</SQLFile>
+		</page>
+		
+		<page name="Re-create product table" type="general">
+			       
+			<exitAction/>
+			<contentFile>Re-createProductTable.html</contentFile>
+			<SQLFile>Re-createProductTable.sql</SQLFile>
+		</page>
+		
+		<page name="Create transaction table with Insert_Delete_Update" type="general">
+			<entryAction name="checkForProductTable" type="serverAction">
+				<parameterList>
+					<parameter name="action" type="serverAction">
+						<value>checkForObject</value>
+					</parameter>
+					
+					<parameter name="objectType" type="raw">
+						<value>table</value>
+					</parameter>
+					
+					<parameter name="object[schema]" type="constant">
+						<value>SCHEMA</value>
+					</parameter>
+					
+					<parameter name="object[table]" type="fixed">
+						<value>PRODUCTS</value>
+					</parameter>
+				</parameterList>
+				
+				<followOnAction condition="false">
+					<task>
+						<action name="displayMsg" type="alert">
+							<message>Required table "PRODUCTS" hasn't been created. Please execute this step again.</message>
+						</action>
+					</task>
+					
+					<task>
+						<setActionReturn>false</setActionReturn>
+					</task>
+				</followOnAction>
+				
+				<followOnAction condition="true">
+					<task>
+						<action name="checkForProductInsert" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="fixed">
+									<value>checkForRow</value>
+								</parameter>
+								<parameter name="schema" type="constant">
+									<value>SCHEMA</value>
+								</parameter>
+								<parameter name="name" type="fixed">
+									<value>PRODUCTS</value>
+								</parameter>
+								<parameter name="minrow" type="fixed">
+									<value>5</value>
+								</parameter>
+							</parameterList>
+							<followOnAction condition="true"  negCondition="true">
+								<task>
+									<action name="displayMsgForFailedInsert" type="alert">
+										<message>Data hasn't been initialized in table "PRODUCTS". Please try this step again.</message>
+									</action>
+								</task>
+								<task>
+									<setActionReturn>false</setActionReturn>
+								</task>
+							</followOnAction>
+							
+						</action>
+					</task>
+				</followOnAction>
+				
+			</entryAction>
+			<exitAction/>
+			<contentFile>CreateTransactionTableWithInsert_Delete_Update.html</contentFile>
+			<SQLFile>CreateTransactionTableWithInsert_Delete_Update.sql</SQLFile>
+		</page>
+		
+		<page name="Try Merge again " type="general">
+			<entryAction name="checkForTransactionTable" type="serverAction">
+				<parameterList>
+					<parameter name="action" type="serverAction">
+						<value>checkForObject</value>
+					</parameter>
+					
+					<parameter name="objectType" type="raw">
+						<value>table</value>
+					</parameter>
+					
+					<parameter name="object[schema]" type="constant">
+						<value>SCHEMA</value>
+					</parameter>
+					
+					<parameter name="object[table]" type="fixed">
+						<value>product_txs</value>
+					</parameter>
+					
+					
+				</parameterList>
+				
+				
+				
+			</entryAction>       
+			<exitAction/>
+			<contentFile>TryMergeAgain.html</contentFile>
+			<SQLFile>TryMergeAgain.sql</SQLFile>
+		</page>
+		
+		<page name="Re-create product table" type="general">
+			
+			<entryAction name="checkForTransactionTable" type="serverAction">
+				<parameterList>
+					<parameter name="action" type="serverAction">
+						<value>checkForObject</value>
+					</parameter>
+					
+					<parameter name="objectType" type="raw">
+						<value>table</value>
+					</parameter>
+					
+					<parameter name="object[schema]" type="constant">
+						<value>SCHEMA</value>
+					</parameter>
+					
+					<parameter name="object[table]" type="fixed">
+						<value>product_txs</value>
+					</parameter>
+					
+					
+				</parameterList>
+				
+				<followOnAction condition="false">
+					<task>
+						<action name="displayMsg" type="alert">
+							<message>Required table "product_txs" hasn't been created. Please execute this step again.</message>
+						</action>
+					</task>
+					
+					<task>
+						<setActionReturn>false</setActionReturn>
+					</task>
+				</followOnAction>
+				
+				<followOnAction condition="true">
+					<task>
+						<action name="checkForProductInsert" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="fixed">
+									<value>checkForRow</value>
+								</parameter>
+								<parameter name="schema" type="constant">
+									<value>SCHEMA</value>
+								</parameter>
+								<parameter name="name" type="fixed">
+									<value>product_txs</value>
+								</parameter>
+								<parameter name="minrow" type="fixed">
+									<value>4</value>
+								</parameter>
+							</parameterList>
+							<followOnAction condition="true"  negCondition="true">
+								<task>
+									<action name="displayMsgForFailedInsert" type="alert">
+										<message>Data hasn't been initialized in table "product_txs". Please try this step again.</message>
+									</action>
+								</task>
+								<task>
+									<setActionReturn>false</setActionReturn>
+								</task>
+							</followOnAction>
+							
+						</action>
+					</task>
+				</followOnAction>
+				
+			</entryAction>       
+			<exitAction/>
+			<contentFile>Re-createProductTable.html</contentFile>
+			<SQLFile>Re-createProductTable.sql</SQLFile>
+		</page>
+		
+		<page name="Try Merge again with Insert of bad entry" type="general">
+			<entryAction name="checkForTransactionTable" type="serverAction">
+				<parameterList>
+					<parameter name="action" type="serverAction">
+						<value>checkForObject</value>
+					</parameter>
+					
+					<parameter name="objectType" type="raw">
+						<value>table</value>
+					</parameter>
+					
+					<parameter name="object[schema]" type="constant">
+						<value>SCHEMA</value>
+					</parameter>
+					
+					<parameter name="object[table]" type="fixed">
+						<value>products</value>
+					</parameter>
+				</parameterList>
+				
+				<followOnAction condition="false">
+					<task>
+						<action name="displayMsg" type="alert">
+							<message>Required table "products" hasn't been created. Please execute this step again.</message>
+						</action>
+					</task>
+					
+					<task>
+						<setActionReturn>false</setActionReturn>
+					</task>
+				</followOnAction>
+				
+				<followOnAction condition="true">
+					<task>
+						<action name="checkForProductInsert" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="fixed">
+									<value>checkForRow</value>
+								</parameter>
+								<parameter name="schema" type="constant">
+									<value>SCHEMA</value>
+								</parameter>
+								<parameter name="name" type="fixed">
+									<value>products</value>
+								</parameter>
+								<parameter name="minrow" type="fixed">
+									<value>5</value>
+								</parameter>
+							</parameterList>
+							<followOnAction condition="true"  negCondition="true">
+								<task>
+									<action name="displayMsgForFailedInsert" type="alert">
+										<message>Data hasn't been inserted in table "products". Please try this step again.</message>
+									</action>
+								</task>
+								<task>
+									<setActionReturn>false</setActionReturn>
+								</task>
+							</followOnAction>
+							
+						</action>
+					</task>
+				</followOnAction>
+				
+			</entryAction>     
+			<exitAction/>
+			<contentFile>TryMergeAgainWithInsertOfBadEntry.html</contentFile>
+			<SQLFile>TryMergeAgainWithInsertOfBadEntry.sql</SQLFile>
+		</page>
+		
+		<page name="Try Merge again with delete of a non-existing entry" type="last">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>TryMergeAgainWithDeleteOfANon-existingEntry.html</contentFile>
+			<SQLFile>TryMergeAgainWithDeleteOfANon-existingEntry.sql</SQLFile>
+		</page></pageList>
+</tutorial>

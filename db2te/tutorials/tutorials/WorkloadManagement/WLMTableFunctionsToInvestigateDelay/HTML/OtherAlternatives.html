@@ -1,0 +1,16 @@
+Alternatively, you may also force off 'WLM_tut_app1' by
+  issuing FORCE APPLICATION on application handle A.
+  <pre><code>
+  db2 force application (A)</code></pre><br>
+  <p>
+  Another way to diagnose hanging applications due to lock contention is to use the 
+  <a onclick="OpenURLInFloatingWindow
+('http://publib.boulder.ibm.com/infocenter/db2luw/v9r7/topic/com.ibm.db2.luw.sql.rtn.doc/doc/r0007097.html?noframes=true');">
+  SNAPSHOT_LOCKWAIT</a> monitor table function. 
+  This table function provides information on lock holders and waiters. 
+  To use this table function, the 
+  <a onclick="OpenURLInFloatingWindow
+('http://publib.boulder.ibm.com/infocenter/db2luw/v9r7/topic/com.ibm.db2.luw.admin.config.doc/doc/r0000297.html?noframes=true');">
+  DFT_MON_LOCK</a> monitor switch configuration parameter must be turned on before 
+  the database is started. This switch affects all databases on an instance.
+  </p>

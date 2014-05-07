@@ -1,0 +1,245 @@
+<actionPanel>
+	<flow>controlled</flow>
+	<useConsole>yes</useConsole>
+	<overview>
+	</overview>
+	<taskList>
+		<task name="Increase LOB inline length">
+			<discription>
+				This increases the VIEW_TEXT column LOB inline length to 2000 bytes so that all LOBs in that column can be inlined.
+			</discription>
+			<action name="alterTable" type="blank">
+				<followOnAction condition="true" compareOn="true" compareOnType="raw">
+					<task>
+						<echo>Altering table to increase LOB inline length to 2000 bytes...</echo>
+						<action name="alterColumn" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="raw">
+									<value>executeSQL</value>
+								</parameter>
+								<parameter name="SQL" type="fixed">
+									<value>
+										ALTER TABLE ?SCHEMA?.INLINELOBDATA ALTER COLUMN VIEW_TEXT SET INLINE LENGTH 2000
+									</value>
+								</parameter>
+							</parameterList>
+							<followOnAction condition="true">
+								<task>
+									<echo>Done.</echo>
+									<echo></echo>
+								</task>
+							</followOnAction>
+							<followOnAction condition="false">
+								<task>
+									<echo>Error in run!</echo>
+								</task>
+							</followOnAction>
+						</action>
+					</task>
+				</followOnAction>
+			</action>
+		</task>
+		<task name="Reorg table">
+			<discription>
+				This reorganizes the table so that the new LOB inline length can take effect.
+			</discription>
+			<action name="reorgTab" type="blank">
+				<followOnAction condition="true" compareOn="true" compareOnType="raw">
+					<task>
+						<echo> Reorganizing table... </echo>
+						<action name="longlobdata" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="raw">
+									<value>executeSQL</value>
+								</parameter>
+								<parameter name="SQL" type="fixed">
+									<value>
+										CALL ADMIN_CMD('REORG TABLE ?SCHEMA?.INLINELOBDATA LONGLOBDATA')
+									</value>
+								</parameter>
+							</parameterList>
+							<followOnAction condition="true">
+								<task>
+									<echo>Done.</echo>
+									<echo></echo>
+								</task>
+							</followOnAction>
+							<followOnAction condition="false">
+								<task>
+									<echo>Error in run!</echo>
+								</task>
+							</followOnAction>						
+						</action>							
+					</task>
+				</followOnAction>
+			</action>
+		</task>
+
+		<task name="Retrieve Inline LOB data">
+			<discription>
+				This selects two inline LOB columns from the INLINELOBDATA table. You should now see no direct read or write operations because all LOBs are inlined with table rows and cached in the buffer pool. 
+			</discription>
+			<action name="queryInlineLOB" type="blank">
+				<followOnAction condition="true" compareOn="true" compareOnType="raw">
+					<task>
+						<action name="primeLOB" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="raw">
+									<value>executeSQL</value>
+								</parameter>
+								<parameter name="SQL" type="fixed">
+									<value>
+									SELECT VIEW_TEXT, COLUMN_TEXT FROM ?SCHEMA?.INLINELOBDATA
+									</value>
+								</parameter>
+							</parameterList>
+							<followOnAction condition="false">
+								<task>
+									<echo>Error in run!</echo>
+								</task>
+							</followOnAction>						
+						</action>						
+					</task>				
+					<task>
+						<action name="runSnapDB" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="raw">
+									<value>executeSQL</value>
+								</parameter>
+								<parameter name="SQL" type="fixed">
+									<value>
+										SELECT DIRECT_READS, DIRECT_WRITES FROM SYSIBMADM.SNAPDB
+									</value>
+								</parameter>
+							</parameterList>
+							<followOnAction condition="true">
+								<task>
+									<assignSharedConstant name="direct_reads_before" type="returnObject">
+										<value>
+											runSnapDB.returnValue.resultSet.0.data.0.0
+										</value>
+									</assignSharedConstant>
+									<assignSharedConstant name="direct_writes_before" type="returnObject">
+										<value>
+											runSnapDB.returnValue.resultSet.0.data.0.1
+										</value>
+									</assignSharedConstant>	
+									<echo>Collecting direct read and write statistics...</echo>
+									<echo> Number of Direct Reads :  ?direct_reads_before?</echo>									
+									<echo> Number of Direct Writes: ?direct_writes_before?</echo>		
+									<echo></echo>
+								</task>
+							</followOnAction>
+							<followOnAction condition="false">
+								<task>
+									<echo>Error in run!</echo>
+								</task>
+							</followOnAction>
+						</action>
+						<action name="sqlInlineLOB" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="raw">
+									<value>executeSQL</value>
+								</parameter>
+								<parameter name="SQL" type="fixed">
+									<value>
+										SELECT VIEW_TEXT, COLUMN_TEXT FROM ?SCHEMA?.INLINELOBDATA
+									</value>
+								</parameter>
+							</parameterList>
+							<followOnAction condition="true">
+								<task>
+									<assignSharedConstant name="numRows" type="returnObject">
+										<value>
+											sqlInlineLOB.returnValue.resultSet.0.data.length
+										</value>
+									</assignSharedConstant>
+									<echo>Retrieving inline LOB data...</echo>
+									<echo> Number of rows read: ?numRows? </echo>
+									<echo></echo>
+								</task>
+							</followOnAction>							
+							<followOnAction condition="false">
+								<task>
+									<echo>Error in run!</echo>
+								</task>
+							</followOnAction>						
+						</action>							
+						<action name="runSnapDB" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="raw">
+									<value>executeSQL</value>
+								</parameter>
+								<parameter name="SQL" type="fixed">
+									<value>
+										SELECT DIRECT_READS, DIRECT_WRITES FROM SYSIBMADM.SNAPDB
+									</value>
+								</parameter>
+							</parameterList>
+							<followOnAction condition="true">
+								<task>
+									<assignSharedConstant name="direct_reads_after" type="returnObject">
+										<value>
+											runSnapDB.returnValue.resultSet.0.data.0.0
+										</value>
+									</assignSharedConstant>							
+									<assignSharedConstant name="direct_writes_after" type="returnObject">
+										<value>
+											runSnapDB.returnValue.resultSet.0.data.0.1
+										</value>
+									</assignSharedConstant>	
+									<echo>Collecting direct read and write statistics...</echo>
+									<echo> Number of Direct Reads : ?direct_reads_after? - 104 direct reads overhead from TE</echo>									
+									<echo> Number of Direct Writes: ?direct_writes_after?</echo>																		
+								</task>
+							</followOnAction>
+							<followOnAction condition="false">
+								<task>
+									<echo>Error in run!</echo>
+								</task>
+							</followOnAction>
+						</action>	
+						<action name="calDirectReads" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="raw">
+									<value>executeSQL</value>
+								</parameter>
+								<parameter name="SQL" type="fixed">
+									<value>
+										SELECT ?direct_reads_after? - 104 - ?direct_reads_before?, ?direct_writes_after? - ?direct_writes_before? 
+										FROM SYSIBM.SYSDUMMY1
+									</value>
+								</parameter>
+							</parameterList>
+							<followOnAction condition="true">
+								<task>
+									<assignSharedConstant name="total_direct_reads" type="returnObject">
+										<value>
+											calDirectReads.returnValue.resultSet.0.data.0.0
+										</value>
+									</assignSharedConstant>							
+									<assignSharedConstant name="total_direct_writes" type="returnObject">
+										<value>
+											calDirectReads.returnValue.resultSet.0.data.0.1
+										</value>
+									</assignSharedConstant>	
+									<echo> </echo>
+									<echo>----------------------------------------------------</echo>
+									<echo> Total number of Direct Reads for retrieving the inline LOB : ?total_direct_reads?</echo>
+									<echo> Total number of Direct Writes for retrieving the inline LOB: ?total_direct_writes?</echo>									
+								</task>
+							</followOnAction>
+							<followOnAction condition="false">
+								<task>
+									<echo>Error in run!</echo>
+								</task>
+							</followOnAction>
+						</action>						
+						
+					</task>
+				</followOnAction>
+			</action>
+		</task>	
+	</taskList>
+</actionPanel>
+

@@ -1,0 +1,89 @@
+<!--
+  Copyright IBM Corp. 2007 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+  SELECT row_number() 
+OVER() as IDNUM, POOL_ID,  SUM(DECIMAL((POOL_CUR_SIZE/1024.0/1024.0),10,2)) AS CUR_MB,  SUM(DECIMAL((POOL_WATERMARK/1024.0/1024.0),10,2)) AS WATERMARK_MB FROM SYSIBMADM.SNAPDB_MEMORY_POOL  	GROUP BY POOL_ID 	ORDER BY CUR_MB
+	
+	
+-->
+<table name="memorygraph">
+  <sql_name>DB_MEMORY_POOL</sql_name>
+  <queryfile>predefined/MemoryGraph.SQL</queryfile>
+  <messages><SQL0551N>Security issue. Please install "Monitoring Switches/Security" in Tools -> Installed Components</SQL0551N></messages>
+  <display_columns>
+	<col type="column" name="pool_id"/>
+	<col type="column" name="pool_cur_size"/>
+	<col type="column" name="pool_watermark"/>	
+  </display_columns>  
+  <graph>
+		<prefix>_gr_memory</prefix>
+		<title>Memory</title>
+		<imageHeight>600</imageHeight>
+		<imageWidth>800</imageWidth>
+		<sizeRatio>0.3</sizeRatio>
+		<xTitle>Component</xTitle>
+		<xTitleDistFromAxis>130</xTitleDistFromAxis>
+		<forceXBaseline>false</forceXBaseline>
+		<xBaseline></xBaseline>
+		<yTitleLeft>Memory (MB)</yTitleLeft>
+		<legendWidth>200</legendWidth>
+		<forceYBaseline>true</forceYBaseline>
+		<yBaseline></yBaseline>
+		<xNumOfTicks>5</xNumOfTicks>
+		<yNumOfTicks>5</yNumOfTicks>
+		<datasetType>xyPlot</datasetType>
+		<showGrid>true</showGrid>
+		<sortData>true</sortData>
+		<enableMarkers>false</enableMarkers>
+  </graph>
+
+   <column name="pool_id">
+    <c_sql_name>POOL_ID</c_sql_name>
+    <c_title>ID</c_title>
+    <c_presentation>s</c_presentation>
+    <c_sort>y</c_sort>
+		<c_graph>
+			<g_x_categories>y</g_x_categories>
+		</c_graph>
+  </column>
+  
+  <column name="pool_cur_size">
+    <c_sql_name>CUR_MB</c_sql_name>
+    <c_title>Current Size (MB)</c_title>
+    <c_sort>y</c_sort>
+	<c_graph>
+		<g_description>Current Size</g_description>
+		<g_color>#00CC00</g_color>
+		<g_marker>cross</g_marker>
+		<g_yAxisUsed>left</g_yAxisUsed>
+		<g_x_scale>n</g_x_scale>
+		<g_type>bar</g_type>				
+	</c_graph>
+  </column>
+  <column name="pool_watermark">
+    <c_sql_name>WATERMARK_MB</c_sql_name>
+    <c_title>High Watermark Size (MB)</c_title>
+    <c_sort>y</c_sort>
+	<c_graph>
+		<g_description>High Watermark Size</g_description>
+		<g_color>#0000CC</g_color>
+		<g_marker>cross</g_marker>
+		<g_yAxisUsed>left</g_yAxisUsed>
+		<g_x_scale>n</g_x_scale>
+		<g_type>bar</g_type>				
+	</c_graph>
+  </column>  
+ 
+</table>

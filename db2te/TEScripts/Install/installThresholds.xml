@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2011 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<tutorial name="installThreshold">
+    <closeAction />
+    <openAction />
+    <globalCodeHighlightOptions highlightCode = "true" />
+    <WMDConfig/>
+    <pageList>
+		<page name="Create Threshold" type="general">
+    	 	<entryAction/>
+    	 	<exitAction/>
+            <contentText>
+<![CDATA[
+Create a standard set of threshholds.  
+<p/>
+Note, you must have the correct licensing level to complete these actions.
+]]>
+			</contentText>
+            <SQLText>
+<![CDATA[
+CREATE THRESHOLD CPU_OVER_1_SECOND 
+	FOR DATABASE ACTIVITIES 
+	ENFORCEMENT DATABASE PARTITION ENABLE 
+	WHEN CPUTIME > 1 SECOND CHECKING EVERY 60 SECONDS
+		COLLECT ACTIVITY DATA  ON ALL DATABASE PARTITIONS WITH DETAILS 
+		CONTINUE 
+@
+CREATE EVENT MONITOR THRESHOLD_VIOLATIONS 
+	FOR THRESHOLD VIOLATIONS 
+	WRITE TO TABLE
+	THRESHOLDVIOLATIONS (
+		TABLE  "s#db2mc".THRESHOLDVIOLATIONS
+        IN SYSTOOLSPACE
+        PCTDEACTIVATE 80
+        ),
+    CONTROL (
+    	TABLE  "s#db2mc".THRESHOLDVIOLATIONS_CONTROL
+        IN SYSTOOLSPACE
+       PCTDEACTIVATE 80
+    )
+	AUTOSTART
+@
+SET EVENT MONITOR THRESHOLD_VIOLATIONS STATE 1
+@
+]]>
+			</SQLText>
+            <SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar="@"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+        </page>
+
+		<page name="Uninstall" type="last">
+            <contentText>
+<![CDATA[
+Uninstall thresholds.
+]]>
+			</contentText>
+            <SQLText>
+<![CDATA[
+DROP EVENT MONITOR THRESHOLD_VIOLATIONS@
+DROP TABLE  "s#db2mc".THRESHOLDVIOLATIONS@
+DROP TABLE  "s#db2mc".THRESHOLDVIOLATIONS_CONTROL@
+DROP THRESHOLD CPU_OVER_1_SECOND @
+]]>
+            </SQLText>
+            <SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar="@"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+        </page>
+    </pageList>
+</tutorial>

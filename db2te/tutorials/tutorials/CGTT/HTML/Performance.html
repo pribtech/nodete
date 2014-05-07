@@ -1,0 +1,60 @@
+<p>
+	Run the actions to the right in descending order.
+</p>
+<p>
+	When writing an application, SPs and UDFs can greatly improve application performance
+	by eliminating the need to compute query access plans.  However, a DGTT does not support
+	such application objects.
+</p>
+<p>
+	Application object support is provided by a regular table.  However, if the application
+	requires a temporary work area to process a large amount of data 
+	a regular table is not suitable for concurrency because it does not 
+	provide the necessary data isolation.
+</p>
+<p>
+	The addition of the new CGTT type allows DB2 to support both.  Follow each of the action
+	steps on this page to see CGTT's performance benefit over a DGTT.
+</p>
+<p>
+	This example populates each temporary table with similar data 100 times.  The performance
+	difference is in favor of CGTTs because unlike DGTTs, they do not need to be recreated
+	for each new connection.
+</p>
+<table style="text-align: center; border-collapse: collapse;">
+	<tr id="ResultHeader">
+		<td style="border: solid 1px black">&nbsp;</td>
+		<td style="border: solid 1px black">Isolation</td>
+		<td style="border: solid 1px black">Automatic cleanup</td>
+		<td style="border: solid 1px black">Application Object Support</td>
+		<td style="border: solid 1px black">Performance</td>
+	</tr>
+	<tr>
+		<td style="border: solid 1px black">Static Table</td>
+		<td style="border: solid 1px black"></td>
+		<td style="border: solid 1px black"></td>
+		<td style="border: solid 1px black"><img style="display:inline;" src="?IMAGE_BASE_DIRECTORY?/typevalue_ok.gif" /></td>
+		<td style="border: solid 1px black" bgcolor="#ffff99"><img style="display:inline;" src="?IMAGE_BASE_DIRECTORY?/typevalue_ok.gif" /></td>
+	</tr>
+	<tr>
+		<td style="border: solid 1px black">DGTT</td>
+		<td style="border: solid 1px black"><img style="display:inline;" src="?IMAGE_BASE_DIRECTORY?/typevalue_ok.gif" /></td>
+		<td style="border: solid 1px black"><img style="display:inline;" src="?IMAGE_BASE_DIRECTORY?/typevalue_ok.gif" /></td>
+		<td style="border: solid 1px black"></td>
+		<td style="border: solid 1px black" bgcolor="#ffff99"></td>
+	</tr>
+	<tr>
+		<td style="border: solid 1px black">CGTT</td>
+		<td style="border: solid 1px black"><img style="display:inline;" src="?IMAGE_BASE_DIRECTORY?/typevalue_ok.gif" /></td>
+		<td style="border: solid 1px black"><img style="display:inline;" src="?IMAGE_BASE_DIRECTORY?/typevalue_ok.gif" /></td>
+		<td style="border: solid 1px black"><img style="display:inline;" src="?IMAGE_BASE_DIRECTORY?/typevalue_ok.gif" /></td>
+		<td style="border: solid 1px black" bgcolor="#ffff99"><img style="display:inline;" src="?IMAGE_BASE_DIRECTORY?/typevalue_ok.gif" /></td>
+	</tr>
+</table>
+<br />
+<p>
+	You should see statement run times after the first action and a graph after the second action.
+</p>
+<p>
+	Please note that if you would like to drop a schema containing a CGTT, you must first manually drop the CGTT.  The stored procedure to drop all objects before dropping the schema will not work with CGTT.
+</p>

@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tutorial name="Tutorial Template Title" autoCloseWindowsInRightStage="true" autoClearAdhocResults="true">
+	<!--
+	Flow restriction dictates how the user is allowed to move through a tutorial.
+	possibly flow restriction values:
+		free - no error checking done between pages.  free to go to any page
+		freewithchecks - checks will be done when user exits and enters any page.  free to go to any page.
+		forwardexploration - checks done each step forward first time only.  Can only progess one step at a time unless step has been completed
+		forwardsequential - checks done each step forward.  If user jumps back, checks will be done again moving forward.
+		strictsequential - checks are done always.  User can only move to the next step or previous step.
+	-->
+	<flowRestriction>free</flowRestriction>
+	<!--
+		If you want anything down when the tutorial closes, include it in the closeAction.
+	-->
+	<closeAction/>
+	<!--
+		openAction will be performed each time  the tutorial is opened.
+	-->
+	<openAction/>
+	<pageList>
+		<!--BEGIN: basic tutorial page-->
+		<page name="Page 1 title - loading a webpage" type="intro">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>page1.html</contentFile>
+			<autoLoadLink/>
+		</page>
+		<!-- END: basic tutorial page -->
+		<!-- BEGIN: Basic page with SQL -->
+		<page name="Page 2 title - including sql" type="general">
+			<entryAction/>
+			<exitAction/>
+			<contentFile>page2.html</contentFile>
+			<SQLFile>page2.SQL</SQLFile>
+			<SQLExecutionOptions xml="false" clob="false" xmlinline="false" clobinline="false" blob="false" dbclob="false" termChar="#" cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+		</page>
+		<!-- END: basic page with SQL -->
+		<!-- BEGIN: Check previous table creation -->
+		<page name="Page 3 title - checking previous work" type="general">
+			<!--
+				This entryAction will check that a table named table5k was created in the previous step.
+			-->
+			<entryAction name="checkForTable5k" type="serverAction">
+				<parameterList>
+					<parameter name="action" type="fixed">
+						<value>checkForObject</value>
+					</parameter>
+					<parameter name="objectType" type="fixed">
+						<value>table</value>
+					</parameter>
+					<parameter name="object[schema]" type="constant">
+						<value>SCHEMA</value>
+					</parameter>
+					<parameter name="object[table]" type="raw">
+						<value>table5k</value>
+					</parameter>
+				</parameterList>
+				<!--
+					This followOnAction will display an error message.
+				-->
+				<followOnAction condition="0" compareOn="checkForTable5k.returnValue">
+					<task>
+						<action name="alertTablesNotCreated" type="alert">
+							<message>The required tables must be created before proceeding with the tutorial.</message>
+						</action>
+						<setActionReturn value='false'/>
+					</task>
+				</followOnAction>
+			</entryAction>
+			<exitAction/>
+			<contentFile>page3.html</contentFile>
+		</page>
+		<!-- END: check previous table creation -->
+		<!-- BEGIN: including a view -->
+		<page name="Page 4 title - including a view" type="general">
+			<entryAction />
+			<exitAction/>
+			<contentFile>page4.html</contentFile>
+			<!--autoLoadLink will bring in a view from the TE -->
+			<autoLoadLink>
+				<pageWindow target="informationWindow" raiseToTop="y">
+					<splitPane direction="h">
+						<topPane>
+							<panel name="main" PrimaryContainer="true">
+								<link type="action" target="_self" window="_self" connectionRequired="y">
+									<parameterList>
+										<parameter name="table">tablecat</parameter>
+										<parameter name="action">list_table</parameter>
+										<parameter name="tabschema">?SCHEMA?</parameter>
+									</parameterList>
+								</link>
+							</panel>
+						</topPane>
+						<bottomPane>
+							<panel name="detail"/>
+						</bottomPane>
+					</splitPane>
+				</pageWindow>
+			</autoLoadLink>
+		</page>
+		<!-- END: including a view -->
+		<!-- BEGIN: graph -->
+		<page name="Page 5 title - graphing" type="general">
+			<entryAction />
+			<exitAction/>
+			<contentFile>page5.html</contentFile>
+			<loadActionScriptFile>graph.xml</loadActionScriptFile>
+		</page>
+		<!-- END: graph -->
+	</pageList>
+</tutorial>

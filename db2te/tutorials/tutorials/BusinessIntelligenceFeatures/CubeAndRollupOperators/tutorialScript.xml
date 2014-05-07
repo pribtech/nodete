@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tutorial name="Cube and Rollup Operators">
+<globalCodeHighlightOptions highlightCode = "true" /> 
+<flowRestriction>forwardexploration</flowRestriction>
+    <closeAction/>
+    <openAction/>
+    <pageList>
+    	<page name="Cube and Rollup Operators" type="intro">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>01_CubeAndRollupOperators.html</contentFile>
+                <autoLoadLink>
+                    <pageWindow target="informationWindow">
+                        <panel name="main">
+                            <URL>http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.sql.ref.doc/doc/r0000875.html</URL>
+                        </panel>
+                    </pageWindow>
+                </autoLoadLink>
+        </page>
+    <page name="Generate Transaction Tables" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>02_GenerateTransactionTables.html</contentFile>
+			<SQLFile>01_GenerateTransactionTables.sql</SQLFile>
+        </page><page name="Regular SUM Examples" type="general">
+            <entryAction name="checkForInsert" type="serverAction">
+        		<parameterList>
+        			<parameter name="action" type="fixed">
+        				<value>checkForRow</value>
+        			</parameter>
+        			<parameter name="schema" type="constant">
+        				<value>SCHEMA</value>
+        			</parameter>
+        			<parameter name="name" type="fixed">
+        				<value>TRANSACTIONS</value>
+        			</parameter>
+        		</parameterList>
+        		<followOnAction condition="true"  negCondition="true">
+        			<task>
+        				<action name="displayMsgForFailedInsert" type="alert">
+        					<message>Data hasn't been inserted in the table. Please try this step again.</message>
+        				</action>
+        			</task>
+        			<task>
+        				<setActionReturn>false</setActionReturn>
+        			</task>
+        		</followOnAction>
+        	</entryAction>
+            <exitAction/>
+            <contentFile>03_RegularSUMExamples.html</contentFile>
+            <SQLFile>02_RegularSUMExamples.sql</SQLFile>
+        </page><page name="SUM with Rollup" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>04_SUMWithRollup.html</contentFile>
+            <SQLFile>03_SUMWithRollup.sql</SQLFile>
+        </page><page name="SUM with CUBE" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>05_SUMWithCUBE.html</contentFile>
+            <SQLFile>04_SUMWithCUBE.sql</SQLFile>
+        </page><page name="Group by Grouping Sets" type="last">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>06_GroupByGroupingSets.html</contentFile>
+            <SQLFile>05_GroupByGroupingSets.sql</SQLFile>
+        </page></pageList>
+</tutorial>

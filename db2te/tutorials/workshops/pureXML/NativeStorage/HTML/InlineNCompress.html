@@ -1,0 +1,24 @@
+<H4>Inlined and compressed XML storage</H4>
+<BR>
+<P align="justify">
+If some or all of your XML documents are small enough to fit into their corresponding row on the base table page in the DAT objects, they can be inlined into the relational data row. This provides more direct access to the XML data and avoids the redirected access to the XDA objects. In case of XML documents are too large to be inlined, they are stored in the XDA objects as usual. </p>
+
+<H4>Advantages of replacing the XML tags with an integer includes:</H4>
+<BR>
+<ul>
+<li>Inlined documents do not require any region index entries hence reducing size of region index dramatically.</li>
+<li>Inlined documents can be compressed with DB2 row compression feature.</li>
+</ul>
+
+<BR>
+<H4>Operations</H4>
+<BR>
+<p>Refer to the example on the right.</p>
+<ul>
+<li>Defines the XML column with the option INLINE LENGTH 3000. Any document in 3000 bytes or less are inlined.</li>
+<li>Both the relational data and the inlined XML documents are compressed because COMPRESS YES is specified.</li>
+</ul>
+
+<br>
+<b>Note that the CREATE TABLESPACE statements may fail if they already exist in the database. If that's the case, you may ignore those errors.</b>
+

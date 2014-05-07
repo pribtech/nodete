@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xa="panel.xsd" xmlns:xb="stage.xsd">
+    <xs:include schemaLocation="panel.xsd"/>
+    <xs:include schemaLocation="stage.xsd"/>
+    <xs:element name="splitPane">
+        <xs:annotation>
+            <xs:documentation><![CDATA[
+                    . 
+                    ]]></xs:documentation>
+        </xs:annotation>
+                <xs:complexType>
+                    <xs:choice>
+                        <xs:sequence>
+                            <xs:element name="topPane">
+                                <xs:annotation>
+                                    <xs:documentation><![CDATA[
+                    . 
+                    ]]></xs:documentation>
+                                </xs:annotation>
+                                <xs:complexType>
+                                    <xs:choice>
+                                        <xs:element ref="panel">
+                                            <xs:annotation>
+                                                <xs:documentation><![CDATA[
+                    . 
+                    ]]></xs:documentation>
+                                            </xs:annotation></xs:element>
+                                        <xs:element ref="stage">
+                                            <xs:annotation>
+                                                <xs:documentation><![CDATA[
+                    . 
+                    ]]></xs:documentation>
+                                            </xs:annotation></xs:element>
+                                        <xs:element ref="splitPane">
+                                            <xs:annotation>
+                                                <xs:documentation><![CDATA[
+                    . 
+                    ]]></xs:documentation>
+                                            </xs:annotation></xs:element>
+                                    </xs:choice>
+                                </xs:complexType>
+                            </xs:element>
+                            <xs:element name="bottomPane">
+                                <xs:annotation>
+                                    <xs:documentation><![CDATA[
+                    . 
+                    ]]></xs:documentation>
+                                </xs:annotation>
+                                <xs:complexType>
+                                    <xs:choice>
+                                        <xs:element ref="panel">
+                                            <xs:annotation>
+                                                <xs:documentation><![CDATA[
+                    . 
+                    ]]></xs:documentation>
+                                            </xs:annotation></xs:element>
+                                        <xs:element ref="stage">
+                                            <xs:annotation>
+                                                <xs:documentation><![CDATA[
+                    . 
+                    ]]></xs:documentation>
+                                            </xs:annotation></xs:element>
+                                        <xs:element ref="splitPane">
+                                            <xs:annotation>
+                                                <xs:documentation><![CDATA[
+                    . 
+                    ]]></xs:documentation>
+                                            </xs:annotation></xs:element>
+                                    </xs:choice>
+                                </xs:complexType>
+                            </xs:element>       
+                        </xs:sequence>
+                        <xs:sequence>
+                            <xs:element name="leftPane">
+                                <xs:annotation>
+                                    <xs:documentation><![CDATA[
+                    . 
+                    ]]></xs:documentation>
+                                </xs:annotation>
+                                <xs:complexType>
+                                    <xs:choice>
+                                        <xs:element ref="panel"/>
+                                        <xs:element ref="stage"/>
+                                        <xs:element ref="splitPane"/>
+                                    </xs:choice>
+                                </xs:complexType>
+                            </xs:element>
+                            <xs:element name="rightPane">
+                                <xs:annotation>
+                                    <xs:documentation><![CDATA[
+                    . 
+                    ]]></xs:documentation>
+                                </xs:annotation>
+                                <xs:complexType>
+                                    <xs:choice>
+                                        <xs:element ref="panel"/>
+                                        <xs:element ref="stage"/>
+                                        <xs:element ref="splitPane"/>
+                                    </xs:choice>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:choice>
+                    <xs:attribute name="direction"  use="required">
+                        <xs:annotation>
+                            <xs:documentation><![CDATA[
+                    . 
+                    ]]></xs:documentation>
+                        </xs:annotation>
+                        <xs:simpleType>
+                            <xs:restriction base="xs:string">
+                                <xs:pattern value="([hH](orizontal)?)|([vV](ertical)?)"/>
+                            </xs:restriction>
+                        </xs:simpleType>
+                    </xs:attribute>
+                    <xs:attribute name="splitPercent"  use="optional">
+                        <xs:annotation>
+                            <xs:documentation><![CDATA[
+                    . 
+                    ]]></xs:documentation>
+                        </xs:annotation>
+                        <xs:simpleType>
+                            <xs:restriction base="xs:float">
+                               <xs:maxExclusive value="1"/>
+                                <xs:minExclusive value="0"/>
+                            </xs:restriction>
+                        </xs:simpleType>
+                    </xs:attribute>
+                    <xs:attribute name="allowResize"  use="optional">
+                        <xs:annotation>
+                            <xs:documentation><![CDATA[
+                    . 
+                    ]]></xs:documentation>
+                        </xs:annotation>
+                        <xs:simpleType>
+                            <xs:restriction base="xs:string">
+                                <xs:pattern value="(true|false)"/>
+                            </xs:restriction>
+                        </xs:simpleType>
+                    </xs:attribute>
+                    <xs:attribute name="maxSize"  use="optional">
+                        <xs:annotation>
+                            <xs:documentation><![CDATA[
+                    . 
+                    ]]></xs:documentation>
+                        </xs:annotation>
+                        <xs:simpleType>
+                            <xs:restriction base="xs:int"/>
+                        </xs:simpleType>
+                    </xs:attribute>
+                </xs:complexType>
+            </xs:element>
+</xs:schema>

@@ -1,0 +1,32 @@
+<br><h3>Usage Scenario</h3><hr><br>
+
+<p>J.K Avro Superstore has a web-store front which a customer can browse through the products and place a purchase order.
+After the customer checks out the products in his cart, he is given a form to fill in sensitive information like credit card number and other
+confidential information. Once submitted, this data is stored in the <font face="Courier">'credit_card'</font> table and the purchase order placed by the customer is stored
+in the <font face="Courier">'PurchaseOrder'</font> table. Every purchase order placed will have a corresponding entry in the <font face="Courier">'sales'</font> table.  </p>
+
+<p>Data in the <font face="Courier">'credit_card'</font> table contains confidential customer information which should be accessed by authorized users only.
+The data in the <font face="Courier">'sales'</font> table is monitored by sales managers of respective regions.  J.K Avro Superstore has different users with restricted access to the <font face="Courier">'credit_card'</font> table
+based on the
+authorities and privileges granted to them. The different users are <ul>
+<li>Bob - Employee of customer service department</li>
+<li>Pat - Security administrator</li>
+<li>Sam - Database administrator</li>
+<li>Joe - Manager</li>
+<li>Sue - Manager</li>
+<li>Mark - Vice President</li>
+<li>Administrator - System administrator</li></ul></p>
+
+<br><b>Note: These users must be created on the operating system before proceed further with this workshop.</b><br><br>
+
+<p>To become more PCI compliant, J.K Avro Superstore decides to implement the following PCI DSS requirements :
+<ul>
+<li>Protect stored data.</li>
+<li>Encrypt transmission of data across open, public network.</li>
+<li>Restrict access to data by business need-to-know.</li>
+<li>Assign unique ID to each person with computer access.</li>
+<li>Restrict physical access to data.</li>
+<li>Track and monitor all access to network resources and data.</li>
+</ul>
+</p><br>
+

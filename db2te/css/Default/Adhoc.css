@@ -1,0 +1,146 @@
+/*******************************************************************************
+ *  Copyright IBM Corp. 2007 All rights reserved.
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *********************************************************************************/
+
+.ADHOC_TEXTBOX {
+	width:50px;
+	height:50px;
+	padding-left:5px;
+	font-family:"Everson Mono Unicode", "Andale Mono", monospace;
+	font-size:12px;
+	white-space:pre;
+	}
+.ADHOC_HTMLBOX {
+	width:50px;
+	height:50px;
+	padding-left:5px;
+	border-style:inset;
+	border-width:2px;
+	overflow:auto;
+	font-family:"Everson Mono Unicode", "Andale Mono", monospace;
+	font-size:12px;
+	white-space:pre;
+	}
+	
+ .AdhocBase {
+	background-color:#e1e1e1;
+	border: 1px solid #e1e1e1;
+}
+	
+.ADHOC_CONFIGURATION {
+	position:static; 
+	border: 1px solid #a2b7cc; 
+}
+
+.SQL_RESULTS_THIS_RUN {
+	width:95%;
+	padding:5px;
+	white-space: pre-wrap;
+	white-space: -moz-pre-wrap;
+	white-space: -pre-wrap; 
+	white-space: -o-pre-wrap; 
+	word-wrap: break-word;  
+}
+
+.SQL_RESULTS_OLD {
+	width:95%;
+	background-color:#F0F0F0;
+	padding:5px;
+	white-space: pre-wrap;
+	white-space: -moz-pre-wrap;
+	white-space: -pre-wrap; 
+	white-space: -o-pre-wrap; 
+	word-wrap: break-word;  
+}
+
+.SQL_RESULTS_THIS_RUN a{
+	color:blue;
+	
+}
+.SQL_RESULTS_OLD a{
+	color:blue;
+	
+}
+.adhocErrorTable {
+width:100%;
+height:40px;
+background-color:FFDDDD;
+}
+
+.adhocReturnTable {
+	vertical-align: top;
+	font-family:"Everson Mono Unicode", "Andale Mono", monospace;
+	font-size:12px;
+	white-space:pre;
+	width:95%;
+	border-width: 3px ;
+	border-spacing: 1px;
+	border-style: solid;
+	border-color: gray;
+	background-color: #e8e8e8;
+
+}
+
+.adhocReturnTable tr {
+	vertical-align: top;
+	font-family:"Everson Mono Unicode", "Andale Mono", monospace;
+	font-size:12px;
+	white-space:pre;
+}
+
+.adhocInnerLine {
+	width:95%;
+	text-align:left;
+	margin: 0 auto 1em 1em;
+	
+}
+
+.adhocStmt {
+	width:95%;
+	margin-left:1em;
+	margin-top:0.5em;
+	margin-bottom:0.5em;
+}
+
+.adhocStmtDisplay {
+	margin-left:1em;
+	margin-top:0.5em;
+	margin-bottom:0.5em;
+}
+
+.AdhocExecutionHistory {
+	margin-top:0;
+	margin-bottom:0;
+	list-style-type:disc;
+	list-style-position:outside;
+	font-family: "Everson Mono Unicode", "Andale Mono", monospace;
+	font-size:12px;
+}
+.AdhocExecutionHistory li{
+	margin:0 0 0 -20;
+	list-style-type:disc;
+}
+
+.AdhocExecutionHistory a{
+	cursor: pointer;
+	color:#000000;
+}
+
+.AdhocExecutionHistory a:hover{
+	background-color: #a2b7cc;
+	border: 1px solid #b5b7ff;
+	color:#FFFFFF;
+	text-decoration: none;
+}

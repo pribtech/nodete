@@ -1,0 +1,33 @@
+<p>This page demonstrates creation of appropriate indexes on the database tables, based on certain best practices</p>
+
+<H2><B>Problem Description</B></H2><HR>
+<p>A query run against the normalized tables of the electronics store to retrieve information takes a long time due to high I/O involved in complete table scans.</p>
+
+<H2><B>Operation</B></H2><HR>
+<p>Indexes are created on the tables to minimize I/O for complete table scans as well as to improve query processing time :
+<ol>
+<li>Unique indexes are created on all Primary Keys (PK) and Foreign Keys (FK) as most queries address these columns invariably.
+<BR><p><h4><B><u><FONT style="COLOR: red">Note :</FONT></u>If the table has been created with PK and FK constraints specified,
+an index on them is created by default and an attempt to create another index on it will fail.</B></h4></p>
+</li>
+<br><li>A composite index is created on the order_details_ID and product_ID columns of the 'order_details' table as possible candidates for frequent access in the WHERE clause of queries</li>
+<li>A clustered index is specified on the 'order_date' column of the 'order_master' table as most queries are likely to be based on the date column</li>
+</ol>
+</p>
+
+<BR><H2><B>Result</B></H2><HR>
+<p>Unique and non unique, composite and clustered indexes are created on the tables in the database.</p>
+
+<H2><B>Best Practices</B></H2><HR>
+<p>
+<ol>
+<li>Index every PK and most FKs in a database. Most joins occur between PKs and FKs</li>
+<li>Columns frequently referenced in WHERE clauses are good candidates for an index. An exception to this rule is when the predicate provides minimal filtering (for eg. inequalities)</li>
+<li>Specify indexes on columns used for equality and range queries</li>
+<li>Add indexes only when absolutely necessary. Remember that indexes significantly impact INSERT, UPDATE, and DELETE performance, and they also require storage</li>
+<li>Examine queries with range or with ORDER BY clauses to identify clustering dimensions</li>
+<li>Avoid or remove redundant indexes</li>
+</ol>
+</p>
+
+

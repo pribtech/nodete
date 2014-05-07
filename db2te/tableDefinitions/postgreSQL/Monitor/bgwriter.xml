@@ -1,0 +1,109 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2013 All rights reserved.
+  
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+<table name="bgwriter">
+	<sqlName>pg_stat_bgwriter</sqlName>
+	<singularName>Background Writer</singularName>
+	<pluralName>Background Writer</pluralName>
+	<description>
+	One row per server process, showing database OID, database name, process ID, user OID, user name, current query, query's waiting status, time at which the current transaction and current query began execution, time at which the process was started, and client's address and port number. The columns that report data on the current query are available unless the parameter track_activities has been turned off. Furthermore, these columns are only visible if the user examining the view is a superuser or the same as the user owning the process being reported on.
+	</description>
+	<disableEdit/>
+	<output>
+		<type name="DDL" destination="" title="" generator=""/>
+	</output>
+	<displayColumns titleDepth="2">
+		<col type="column" name="checkpoints_timed"/>
+		<col type="column" name="checkpoints_req"/>
+		<col type="column" name="checkpoint_write_time"/>
+		<col type="column" name="checkpoint_sync_time"/>
+		<col type="column" name="buffers_checkpoint"/>
+		<col type="column" name="buffers_clean"/>
+		<col type="column" name="maxwritten_clean"/>
+		<col type="column" name="buffers_backend"/>
+		<col type="column" name="buffers_backend_fsync"/>
+		<col type="column" name="buffers_alloc"/>
+		<col type="column" name="stats_reset"/>
+	</displayColumns>
+	<history depth="10" time="SAMPLE_TS"/>
+	<column name="SAMPLE_TS">
+		<generated>timestamp</generated>
+		<title>Time</title>
+		<type>s</type>
+	</column>
+	<column name="connection">
+		<generated>connection</generated>
+		<title>Connection</title>
+		<type>s</type>
+		<primaryKey/>
+	</column>
+	<column name="checkpoints_timed" accumulation="y">
+		<sqlName>checkpoints_timed</sqlName>
+		<title>Checkpoints Timed</title>
+		<type>n</type>
+	</column>
+	<column name="checkpoints_req" accumulation="y">
+		<sqlName>checkpoints_req</sqlName>
+		<title>Checkpoints Req</title>
+		<type>n</type>
+	</column>
+	<column name="checkpoint_write_time" accumulation="y">
+		<sqlName>checkpoint_write_time</sqlName>
+		<title>Checkpoint Write Time</title>
+		<type>n</type>
+	</column>
+	<column name="checkpoint_sync_time" accumulation="y">
+		<sqlName>checkpoint_sync_time</sqlName>
+		<title>Checkpoint Sync Time</title>
+		<type>n</type>
+	</column>
+	<column name="buffers_checkpoint" accumulation="y">
+		<sqlName>buffers_checkpoint</sqlName>
+		<title>Buffers Checkpoint</title>
+		<type>n</type>
+	</column>
+	<column name="buffers_clean" accumulation="y">
+		<sqlName>buffers_clean</sqlName>
+		<title>Buffers Clean</title>
+		<type>n</type>
+	</column>
+	<column name="maxwritten_clean">
+		<sqlName>maxwritten_clean</sqlName>
+		<title>Maxwritten Clean</title>
+		<type>n</type>
+	</column>
+	<column name="buffers_backend" accumulation="y">
+		<sqlName>buffers_backend</sqlName>
+		<title>Buffers Backend</title>
+		<type>n</type>
+	</column>
+	<column name="buffers_backend_fsync" accumulation="y">
+		<sqlName>buffers_backend_fsync</sqlName>
+		<title>Buffers Backend Fsync</title>
+		<type>n</type>
+	</column>
+	<column name="buffers_alloc">
+		<sqlName>buffers_alloc</sqlName>
+		<title>Buffers Alloc</title>
+		<type>n</type>
+	</column>
+	<column name="stats_reset">
+		<sqlName>stats_reset</sqlName>
+		<title>Stats Reset</title>
+		<type>n</type>
+	</column>
+</table>

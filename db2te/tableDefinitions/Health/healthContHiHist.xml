@@ -1,0 +1,120 @@
+<!--
+  Author: Peter Prib
+  
+  Copyright Independent Systems Integrators Pty Ltd 2008 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+<table name="healthContHiHist">
+	<sql_name>healthContHiHist</sql_name>
+	<singular_name>Container Health Indicator History</singular_name>
+	<plural_name>Container Health Indicator History</plural_name>
+	<inlinequery>
+<![CDATA[
+select c.*,i.* 
+from table(HEALTH_CONT_HI_HIS('',-2)) c
+join table(HEALTH_GET_IND_DEFINITION(cast(null as VARCHAR(33) ))) i
+  on c.hi_id=i.id
+]]>
+	</inlinequery>
+	<description></description>
+	<rows_per_page>50</rows_per_page>
+	<order_by_index name="HI_ALERT_STATE" direction="D"/>
+	<order_by_index name="HI_TIMESTAMP" direction="D"/>
+	<display_columns>
+   		<col type="column" name="HI_ALERT_STATE"/>
+		<col type="column" name="SHORT_DESCRIPTION"/>
+		<col type="column" name="CONTAINER_NAME"/>
+		<col type="column" name="NODE_NUMBER"/>
+		<col type="column" name="HI_TIMESTAMP"/>
+		<col type="column" name="HI_VALUE"/>
+	</display_columns>
+
+	<column name="SHORT_DESCRIPTION">
+		<c_sql_name>SHORT_DESCRIPTION</c_sql_name>
+		<c_title>Description</c_title>
+		<c_presentation/>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="HI_ID">
+		<c_sql_name>HI_ID</c_sql_name>
+		<c_title>Id. No.</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+		<c_pkey>p</c_pkey>
+	</column>
+	<column name="CONTAINER_NAME">
+		<c_sql_name>CONTAINER_NAME</c_sql_name>
+		<c_title>Tablespace</c_title>
+		<c_presentation/>
+		<c_drill>n</c_drill>
+		<c_pkey>p</c_pkey>
+	</column>
+	<column name="NODE_NUMBER">
+		<c_sql_name>NODE_NUMBER</c_sql_name>
+		<c_title>Node</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="HI_TIMESTAMP">
+		<c_sql_name>HI_TIMESTAMP</c_sql_name>
+		<c_title>Timestamp</c_title>
+		<c_presentation/>
+		<c_drill>n</c_drill>
+		<c_pkey>p</c_pkey>
+	</column>
+	<column name="HI_ALERT_STATE">
+		<c_sql_name>HI_ALERT_STATE</c_sql_name>
+		<c_title>State</c_title>
+		<c_presentation>html</c_presentation>
+		<c_drill>n</c_drill>
+		<c_column_mask_file>masks/healthStateHtmlColor.xml</c_column_mask_file>
+	</column>
+	<column name="HI_VALUE">
+		<c_sql_name>HI_VALUE</c_sql_name>
+		<c_title>Value</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="HI_ALERT_STATE_DETAIL">
+		<c_sql_name>HI_ALERT_STATE_DETAIL</c_sql_name>
+		<c_title>State Details</c_title>
+		<c_presentation/>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="HI_FORMULA">
+		<c_sql_name>HI_FORMULA</c_sql_name>
+		<c_title>Formula Calculated</c_title>
+		<c_presentation/>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="FORMULA">
+		<c_sql_name>FORMULA</c_sql_name>
+		<c_title>Formula</c_title>
+		<c_presentation/>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="HI_ADDITIONAL_INFO">
+		<c_sql_name>HI_ADDITIONAL_INFO</c_sql_name>
+		<c_title>Addition Information</c_title>
+		<c_presentation/>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="SNAPSHOT_TIMESTAMP">
+		<c_sql_name>SNAPSHOT_TIMESTAMP</c_sql_name>
+		<c_title>Snapshot Timestamp</c_title>
+		<c_presentation/>
+		<c_drill>n</c_drill>
+	</column>
+</table>

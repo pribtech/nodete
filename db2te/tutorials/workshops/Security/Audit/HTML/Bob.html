@@ -1,0 +1,22 @@
+<BR><H2><B>Audit access to "credit_card" table by employee Bob</B></H2><HR><P>
+<?php
+  $baseDIR = $_POST["BASE_DIR"];
+?>
+
+<img src="?BASE_DIRECTORY?HTML/bob.png" />
+
+<p><b>You must log into the database as Bob before proceeding with this page.</b></p>
+
+<h4>Operation</h4><br>
+Execute the SQL statements in the right pane.
+
+<br><br><h4>Solution</h4><br>
+Bob is granted with SELECT, INSERT, and UPDATE privileges on <font face="courier"> 'credit_card' </font> table through role 'custService'.
+When he executes SQL statements, he will be able to retrieve data from <font face="courier"> 'credit_card' </font> table.
+SELECT, INSERT, UPDATE statement succeeds and DELETE statement fails. An entry will be made in audit log files.
+</p>
+
+
+
+
+

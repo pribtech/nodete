@@ -1,0 +1,23 @@
+<p><b>Scenario</b></p>
+<p>
+	The health care provider is asked to provide a report in XML format with patient's personal information together with their PMD document. The challenge is that patient's personal information is stored in a relational format unlike the PMD documents which are already in XML format.
+</p>
+<p><b>Operation</b></p>
+<p>
+	The SQL/XML function XMLELEMENT takes relational data and returns XML values as XQuery element nodes. XMLELEMENT has an opposite effect to XMLTABLE function which returns XML data to relational format.
+</p>
+<p><b>Solution</b></p>
+<p>
+	The patient information stored in the patient master table in relational format is returned as XML documents and sent to the requester.
+</p>
+<p><b>Best Practices</b></p>
+<p>
+<ul>
+<li>Use a fully specified XML path rather than the wildcard
+characters * or // to navigate to the desired XML elements. This
+can help provide better performance because DB2 can navigate
+directly to the desired XML elements, skipping over non-relevant
+parts of the XML document.</li>
+
+</ul>
+</p>

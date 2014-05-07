@@ -1,0 +1,88 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2009 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+
+<table name="histDbMemory">
+	<sql_name>histDbMemory</sql_name>
+	<singular_name>DB Memory</singular_name>
+	<plural_name>DB Memory History</plural_name>
+	<messages><SQL0204N>Not installed. Please install "DB2TE add monitoring tables V95" in Tools-> Installed Components</SQL0204N></messages>
+	<inlinequery>
+<![CDATA[
+SELECT 
+	SNAPSHOT_TIMESTAMP 
+	,DB_NAME AS DB_NAME
+	,sum(POOL_CUR_SIZE) AS POOL_CUR_SIZE
+	,DBPARTITIONNUM AS DBPARTITIONNUM
+FROM "s#db2mc".hist_snapDBmem 
+,(select case when upper(startTs) = 'CURRENT' then current timestamp else timestamp(startTs) end as startTS 
+	,duration
+	from (values(cast('?' as varchar(26)),cast(? as int))) as timePeriod(startTs,duration)
+ ) period
+where SNAPSHOT_TIMESTAMP between period.startTS - period.duration hours and period.startTS
+group by
+	SNAPSHOT_TIMESTAMP  
+	,DB_NAME  
+	,DBPARTITIONNUM  
+]]>
+	</inlinequery>
+	<parameters>
+		<parm name="start">
+			<title>Start</title>
+			<value>current</value>
+			<type>timestamp</type>
+		</parm>
+		<parm name="Period">
+			<title>Period (hours)</title>
+			<value>3</value>
+			<type>n</type>
+		</parm>
+	</parameters>
+	<description></description>
+	<rows_per_page>50</rows_per_page>
+	<order_by_index name="SNAPSHOT_TIMESTAMP" direction="D"/>
+	<display_columns>
+		<col type="column" name="SNAPSHOT_TIMESTAMP"/>
+		<col type="column" name="DB_NAME"/>
+		<col type="column" name="POOL_CUR_SIZE"/>
+		<col type="column" name="DBPARTITIONNUM"/>
+	</display_columns>
+	<column name="SNAPSHOT_TIMESTAMP">
+		<c_sql_name>SNAPSHOT_TIMESTAMP</c_sql_name>
+		<c_title>Timestamp</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="DB_NAME">
+		<c_sql_name>DB_NAME</c_sql_name>
+		<c_title>Database</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="POOL_CUR_SIZE">
+		<c_sql_name>POOL_CUR_SIZE</c_sql_name>
+		<c_title>Size</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="DBPARTITIONNUM">
+		<c_sql_name>DBPARTITIONNUM</c_sql_name>
+		<c_title>Partition</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+</table>

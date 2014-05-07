@@ -1,0 +1,47 @@
+<p>Before being able to monitor I/O easily, you will need to discover the upperbound I/O limits of your system.</p>
+
+<p>In order to do that, you will need to:</p>
+<p>
+	<ol>
+		<li>Check the initial state of your system</li>
+		<li>Start a workload profile to saturate the system's I/O using the <a onclick="OpenURLInFloatingWindow('http://sourceforge.net/apps/mediawiki/db2mc/index.php?title=Workload_Multiuser_Driver');">Workload Multiuser Driver</a></li>
+		<li>Wait for the system to be saturated and the values to stabilize</li>
+		<li>Obtain average values for the upperbound I/O limits</li>
+		<li>Update the Server Monitoring Dashboard with the values found</li>
+	</ol>
+</p>
+
+<p><strong>Initial state</strong></p>
+
+<p>First of all, modify the value of the refresh time at the top of the right panel so you can see the values changing over time. You need to look at the columns <strong>I/O Intensity</strong> and <strong>Delta Reads</strong>. The <strong>I/O Intensity</strong> displays the number of seconds required to complete one I/O request. The <strong>Delta Reads</strong> column shows the number of direct reads performed on disk. For more information on direct reads, you can visit the following page: <a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v9/topic/com.ibm.db2.udb.admin.doc/doc/r0001260.htm?noframes=true');">Direct Reads from Database monitor element</a>.</p>
+
+<p><em>Note: The I/O Intensity may be fluctuating too much even if no queries are currently running on the system. This situation happens on some configurations. Keep in mind that the values in this column shouldn't change as much. Theorically, it should stay around zero. We are currently investigating the issue.</em></p>
+
+
+<p><strong>Saturation of the system's I/O</strong></p>
+
+<p>To saturate the system, we need to use a workload profile that will execute a query that reads every LOB on the disk and sort them alphabetically. Since those values are never kept in bufferpools, DB2 will always read them directly on the disk. When enough queries are executed, the system's I/O will be saturated.</p>
+
+<p>To perform the I/O saturation, click on <strong>workload_profile_IO</strong> in the bottom panel on your right. Once selected, you should be able to start the profile. Before doing so, in the newly appeared panel, change the number of connections to 50 and then start the workload profile.</p>
+
+<p>What we want here is to saturate the system quickly. It is possible that 50 connections won't be enough to obtain saturation depending on your system. Try to increase this number until you reach a peak in both columns (<strong>I/O Intensity</strong> and <strong>Delta Reads</strong>). It could take some time for those values to stabilize so be patient and wait until they stop fluctuating too much. When the number of connections will be too high, <strong>I/O Intensity</strong> and <strong>Direct Reads</strong> will drop again because the CPU won't be able to manage the connections. When this happens, lower the number of connections.</p>
+
+<p>Once you reached a peak, write down those numbers and stop the workload profile.</p>
+
+<p><strong>Updating the Server Monitoring Dashboard</strong></p>
+
+<p>The last step is to update some configuration files so the indicators we are going to use know how to monitor your system in a proper way.</p>
+
+<p>You need to modify the following files inside the Technology Explorer install path:</p>
+<p>
+	<ul>
+		<li>/tutorials/UCOSP/IO/tutorialScript.xml</li>
+		<li>/menu/tools/Monitor/menu_40_ServerMonitor.xml</li>
+	</ul>
+</p>
+
+<p>Look for the parameter <strong>threshold_max</strong> in both panels <em>IO Intensity</em> and <em>Direct Reads over time</em>. Update those values accordingly to what you wrote down in the preceding step. Note that it may be possible that the values you found are not the highest possible limits so you may want to specify higher values here.</p>
+
+<p>Depending on the value you got at peak time, you can also update the <strong>threshold_warning</strong> and <strong>threshold_danger</strong> to suit your system performance. Those thresholds will change the way the indicators look like when your system exceeds those values. This visual difference will help in diagnosing I/O problems quickly. As a rule of thumb, you can set the warning threshold to 50% of your maximum value and to 75% for the danger threshold.</p>
+
+<p>Once it is done, proceed to the next step of this tutorial.</p>

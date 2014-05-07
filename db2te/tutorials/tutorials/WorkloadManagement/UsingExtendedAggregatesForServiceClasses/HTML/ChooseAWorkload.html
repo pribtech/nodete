@@ -1,0 +1,19 @@
+Now some activities can be run. After the activities have finished,
+  the WLM_COLLECT_STATS stored procedure is called to send the
+  statistics (including the activity lifetime, execution time and queue
+  time histograms for the default user service class) to the active
+  statistics event monitor. These histograms contain data about all
+  activities that executed in the default user service class since
+  aggregate activity statistics were enabled. Calling this stored
+  procedure also resets the statistics. To show changes in database
+  activity over time, three collection intervals are created.  
+  <p>
+  Choose from one of the three workloads and then run the histogram examples.
+  </p>
+  <p>
+  Collecting data periodically like this allows you to watch how work on
+  your system changes over time. Collecting data periodically does not need to
+  be a manual operation. Using the WLM_COLLECT_INT database
+  configuration parameter, one can set the interval in minutes after
+  which statistics collection and reset automatically occurs.
+  </p>

@@ -1,0 +1,21 @@
+<H4>Storing XML as Character Large OBject (CLOB)</H4>
+<P align="justify">
+<BR>
+Before DB2 9, CLOB columns were a common choice to store XML data.
+A fundamental difference between CLOB storage and pureXML processing lies in
+XML parsing and its significant impact on insert and query performance.
+<BR><BR>
+
+Refer to the example on the right to see how XML documents can be stored in CLOB.
+
+<br><br>
+<b>Note that the CREATE TABLESPACE statements may fail if they already exist in the database. If that's the case, you may ignore those errors.</b>
+
+<!--
+CLOB storage offers good performance for insert and full document retrieval, typically
+at the cost of poor search and extract performance. The XML data type in DB2 9 sacrifices some of the
+insert and retrieval performance for much higher search and extract performance. This is a reasonable
+trade-off because business data is more often searched and analyzed than inserted. Typically, there is
+one insert and multiple searches. Additionally, the potential overhead of XML columns is often outweighed
+by the fact that XML columns are buffered in the buffer pool while CLOB columns are not.
+-->

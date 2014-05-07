@@ -1,0 +1,205 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2009 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<command name="select" title="Select">
+<![CDATA[
+>>-+-----------------------------------+--fullselect--●--------- >
+   |       .-,-----------------------. |                  
+   |       V                         | |                  
+   '-WITH----common-table-expression-+-'                  
+]]>
+	<select>
+		<option default="true"><note>with</note></option>
+		<option>
+			<text>WITH</text>
+			<repeatable>
+				<clauseReference name="common-table-expression"/>
+			</repeatable>
+		</option>
+	</select>
+	<br/>
+	<clauseReference name="fullSelect"/>
+	<br/>
+
+<![CDATA[
+>--+------------------+--●--+---------------------+--●---------- >
+   +-read-only-clause-+     '-optimize-for-clause-'      
+   '-update-clause----'                                  
+]]>
+	<select>
+		<option default="true"><note>read/update</note></option>
+		<option><clauseReference name="read-only-clause"/></option>
+		<option><clauseReference name="update-clause"/></option>
+	</select>
+	<br/>
+	<select>
+		<option default="true"><note>optimize</note></option>
+		<option><clauseReference name="optimize-for-clause"/></option>
+	</select>
+	<br/>
+<![CDATA[
+>--+------------------+---------------------------------------- ><
+   '-isolation-clause-'   
+]]>
+	<clauseReference name="isolation-clause"/>
+
+	<clause name="common-table-expression">
+<![CDATA[
+>>-table-name--+---------------------------+-------------------- >
+               |    .-,-----------.        |   
+               |    V             |    (1) |   
+               '-(----column-name-+--)-----'   
+]]>
+		<input size="30" />
+		<select>
+			<option default="true"><note>columns</note></option>
+			<option>
+				<text> (</text>
+					<repeatable>
+						<input size="30" />
+					</repeatable>
+				<text> )</text>
+			</option>
+		</select>
+		<br/>
+<![CDATA[
+>--AS--(--fullselect--)---------------------------------------- ><
+]]>
+		<text>AS (</text>
+		<clauseReference name="fullSelect"/>
+		<br/>
+		<text> )</text>
+	</clause>
+
+	<clause name="update-clause">
+<![CDATA[
+>>-FOR UPDATE--+---------------------+------------------------- ><
+               |     .-,-----------. |   
+               |     V             | |   
+               '-OF----column-name-+-'   
+]]>
+		<text>FOR UPDATE</text>
+		<select>
+			<option default="true"><note>all columns</note></option>
+			<option>
+				<text>OF</text>
+				<repeatable>
+					<input size="32" />
+				</repeatable>
+			</option>	
+		</select>
+	</clause>
+
+	<clause name="read-only-clause">
+<![CDATA[
+>>-FOR--+-READ--+--ONLY---------------------------------------- ><
+        '-FETCH-'         
+]]>
+		<text>FOR</text>
+		<select>
+			<option default="true">
+				<text>READ</text>
+			</option>
+			<option>
+				<text>FETCH</text>
+			</option>
+		</select>
+		<text>ONLY</text>
+	</clause>
+
+	<clause name="optimize-for-clause">
+<![CDATA[
+>>-OPTIMIZE FOR--integer--+-ROWS-+----------------------------- ><
+                          '-ROW--'  
+]]>
+		<text>OPTIMIZE FOR</text>
+		<input type="int" size="12" />
+		<select>
+			<option default="true">
+				<text>ROWS</text>
+			</option>
+			<option>
+				<text>ROW</text>
+			</option>
+		</select>
+	</clause>
+
+	<clause name="isolation-clause">
+<![CDATA[
+>>-+---------------------------------------+------------------- ><
+   '-WITH--+-RR--+---------------------+-+-'   
+           |     '-lock-request-clause-' |     
+           +-RS--+---------------------+-+     
+           |     '-lock-request-clause-' |     
+           +-CS--------------------------+     
+           '-UR--------------------------' 	
+]]>
+		<select>
+			<option default="true"><note>isolation</note></option>
+			<option>
+				<text>WITH</text>
+				<select>
+					<option  default="true">
+						<text>RR</text>
+						<select>
+							<option default="true"><note>lock request</note></option>
+						 	<option>
+						 		<clauseReference name="lock-request-clause"/>
+						 	</option>
+						 </select>
+					</option>
+					<option>
+						<text>RS</text>
+						<select>
+							<option default="true"><note>lock request</note></option>
+						 	<option>
+						 		<clauseReference name="lock-request-clause"/>
+						 	</option>
+						 </select>
+					</option>
+					<option>
+						<text>CS</text>
+					</option>
+					<option>
+						<text>UR</text>
+					</option>
+				</select>
+			</option>
+		</select>
+ 	</clause>
+
+	<clause name="lock-request-clause">
+<![CDATA[
+>>-USE AND KEEP--+-SHARE-----+--LOCKS-------------------------- ><
+                 +-UPDATE----+          
+                 '-EXCLUSIVE-'  
+]]>
+		<text>USE AND KEEP</text>
+		<select>
+			<option default="true">
+				<text>SHARE</text>
+		 	</option>
+		 	<option>
+				<text>UPDATE</text>
+		 	</option>
+		 	<option>
+				<text>EXCLUSIVE</text>
+		 	</option>
+		</select>
+		<text>LOCKS</text>
+ 	</clause>
+</command>

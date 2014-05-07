@@ -1,0 +1,55 @@
+<div id="title">Db2auth Plugin table definition changes</div>
+<pre>
+<table width="100%" cellpadding="0px" cellspacing="0px">
+<tr><td><font size="2" face="Courier New" color="black"><font color="#ac008e">&#60;</font><font color="#2145f9">menu</font> <font color="#009400">type</font><font color="#ac008e">="leaf"</font> <font color="#009400">branchDirectory</font><font color="#ac008e">=""</font><font color="#ac008e">&#62;</font></td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;<font color="#ac008e">&#60;</font><font color="#2145f9">description</font><font color="#ac008e">&#62;</font>Db2auth Plug-in Control<font color="#ac008e">&#60;/</font><font color="#2145f9">description</font><font color="#ac008e">&#62;</font></td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;<font color="#ac008e">&#60;</font><font color="#2145f9">actionScript</font> <font color="#009400">name</font><font color="#ac008e">="CheckForDb2authProcNum"</font> <font color="#009400">type</font><font color="#ac008e">="serverAction"</font> <font color="#009400">lockScreen</font><font color="#ac008e">="true"</font><font color="#ac008e">&#62;</font>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#ac008e">&#60;</font><font color="#2145f9">parameterList&#62;</font>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#ac008e">&#60;</font><font color="#2145f9">parameter</font> <font color="#009400">name</font><font color="#ac008e">="action"</font> <font color="#009400">type</font><font color="#ac008e">="fixed"</font><font color="#ac008e">&#62;</font>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#ac008e">&#60;</font><font color="#2145f9">value</font><font color="#ac008e">&#62;</font>rowCount<font color="#ac008e">&#60;/</font><font color="#2145f9">value</font><font color="#ac008e">&#62;</font>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#ac008e">&#60;/</font><font color="#2145f9">parameter</font><font color="#ac008e">&#62;</font><
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#ac008e">&#60;</font><font color="#2145f9">parameter</font> <font color="#009400">name</font><font color="#ac008e">="schema"</font> <font color="#009400">type</font><font color="#ac008e">="fixed"</font><font color="#ac008e">&#62;</font>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#ac008e">&#60;</font><font color="#2145f9">value</font><font color="#ac008e">&#62;</font>SYSCAT<font color="#ac008e">&#60;/</font><font color="#2145f9">value</font><font color="#ac008e">&#62;</font>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#ac008e">&#60;/</font><font color="#2145f9">parameter</font><font color="#ac008e">&#62;</font>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#ac008e">&#60;</font><font color="#2145f9">parameter</font> <font color="#009400">name</font><font color="#ac008e">="name"</font> <font color="#009400">type</font><font color="#ac008e">="fixed"</font><font color="#ac008e">&#62;</font>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#ac008e">&#60;</font><font color="#2145f9">value</font><font color="#ac008e">&#62;</font>PROCEDURES WHERE PROCSCHEMA = 'DB2AUTH'<font color="#ac008e">&#60;/</font><font color="#2145f9">value</font><font color="#ac008e">&#62;</font>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#ac008e">&#60;/</font><font color="#2145f9">parameter</font><font color="#ac008e">&#62;</font>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#ac008e">&#60;</font><font color="#2145f9">parameter</font> <font color="#009400">name</font><font color="#ac008e">="minRows"</font> <font color="#009400">type</font><font color="#ac008e">="fixed"</font><font color="#ac008e">&#62;</font>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#ac008e">&#60;</font><font color="#2145f9">value</font><font color="#ac008e">&#62;</font>7<font color="#ac008e">&#60;/</font><font color="#2145f9">value</font><font color="#ac008e">&#62;</font>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#ac008e">&#60;/</font><font color="#2145f9">parameter</font><font color="#ac008e">&#62;</font>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#ac008e">&#60;/</font><font color="#2145f9">parameterList</font><font color="#ac008e">&#62;</font></td></tr>
+
+<tr><td class="sourceAdd">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#ac008e">&#60;</font><font color="#2145f9">if</font> <font color="#009400">condition</font><font color="#ac008e">="false"</font><font color="#ac008e">&#62;</font>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#ac008e">&#60;</font><font color="#2145f9">task&#62;</font>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#ac008e">&#60;</font><font color="#2145f9">alert&#62;</font>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Error: <br>
+Either the db2auth security plugin is not installed,<br>
+you do not have the proper authority,<br>
+or there is no connection to the authorization database.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#ac008e">&#60;/</font><font color="#2145f9">alert</font><font color="#ac008e">&#62;</font>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#ac008e">&#60;/</font><font color="#2145f9">task</font><font color="#ac008e">&#62;</font>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#ac008e">&#60;/</font><font color="#2145f9">if</font><font color="#ac008e">&#62;</font>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#ac008e">&#60;</font><font color="#2145f9">if</font> <font color="#009400">condition</font><font color="#ac008e">="true"</font><font color="#ac008e">&#62;</font>
+
+
+</td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;<font color="#ac008e">&#60;</font><font color="#2145f9">pageWindow</font> <font color="#009400">target</font><font color="#ac008e">="_blank"</font><font color="#ac008e">&#62;</font></td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#ac008e">&#60;</font><font color="#2145f9">panel</font> <font color="#009400">name</font><font color="#ac008e">="main"</font> <font color="#009400">PrimaryContainer</font><font color="#ac008e">="true"</font><font color="#ac008e">&#62;</font>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#ac008e">&#60;</font><font color="#2145f9">link</font> <font color="#009400">type</font><font color="#ac008e">="action"</font> <font color="#009400">target</font><font color="#ac008e">="_self"</font> <font color="#009400">window</font><font color="#ac008e">="_self"</font> <font color="#009400">connectionRequired</font><font color="#ac008e">="y"</font><font color="#ac008e">&#62;</font></td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#ac008e">&#60;</font><font color="#2145f9">parameterList</font><font color="#ac008e">&#62;</font></td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#ac008e">&#60;</font><font color="#2145f9">parameter</font> <font color="#009400">name</font><font color="#ac008e">="action"</font><font color="#ac008e">&#62;</font>db2AuthOverviewLab<font color="#ac008e">&#60;/</font><font color="#2145f9">parameter</font><font color="#ac008e">&#62;</font></td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#ac008e">&#60;/</font><font color="#2145f9">parameterList</font><font color="#ac008e">&#62;</font></td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#ac008e">&#60;/</font><font color="#2145f9">link</font><font color="#ac008e">&#62;</font>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#ac008e">&#60;/</font><font color="#2145f9">panel</font><font color="#ac008e">&#62;</font></td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;<font color="#ac008e">&#60;/</font><font color="#2145f9">pageWindow</font><font color="#ac008e">&#62;</font></td></tr>
+
+<tr><td class="sourceAdd">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#ac008e">&#60;/</font><font color="#2145f9">if</font><font color="#ac008e">&#62;</font>
+</td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;<font color="#ac008e">&#60;/</font><font color="#2145f9">actionScript</font><font color="#ac008e">&#62;</font></td></tr>
+<tr><td><font color="#ac008e">&#60;/</font><font color="#2145f9">menu</font><font color="#ac008e">&#62;</font></font></td></tr>
+
+</table>
+</pre>

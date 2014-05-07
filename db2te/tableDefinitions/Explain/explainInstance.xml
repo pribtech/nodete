@@ -1,0 +1,399 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2009 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<table name="explainInstance">
+	<sql_name>explainInstance</sql_name>
+	<singular_name>Explain Instance</singular_name>
+	<plural_name>Explain Instance</plural_name>
+	<inlinequery>SELECT	'?' as tabSchema,i.* FROM "?".EXPLAIN_INSTANCE i</inlinequery>
+	<parameters>
+		<parm name="tabSchema">
+			<title>Schema</title>
+			<value>no schema</value>
+			<type>n</type>
+		</parm>
+		<parm name="tabSchema">
+			<title>Schema</title>
+			<value>no schema</value>
+			<type>n</type>
+		</parm>
+	</parameters>
+	<description></description>
+	<rows_per_page>50</rows_per_page>
+	<order_by_index name="EXPLAIN_TIME" direction="D"/>
+	<order_by_index name="EXPLAIN_REQUESTER" direction="A"/>
+	<display_columns>
+		<col type="column" name="EXPLAIN_REQUESTER"/>
+		<col type="column" name="EXPLAIN_TIME"/>
+		<col type="reference" name="statement"/>
+		<col type="action" name="DeleteExplainInstance"/>
+		<col type="column" name="SOURCE_SCHEMA"/>
+		<col type="column" name="SOURCE_NAME"/>
+		<col type="column" name="SOURCE_VERSION"/>
+		<col type="column" name="EXPLAIN_OPTION"/>
+		<col type="column" name="SNAPSHOT_TAKEN"/>
+		<col type="column" name="SQL_TYPE"/>
+		<col type="column" name="QUERYOPT"/>
+		<col type="column" name="BLOCK"/>
+		<col type="column" name="ISOLATION"/>
+		<col type="column" name="BUFFPAGE"/>
+		<col type="column" name="AVG_APPLS"/>
+		<col type="column" name="SORTHEAP"/>
+		<col type="column" name="LOCKLIST"/>
+		<col type="column" name="MAXLOCKS"/>
+		<col type="column" name="LOCKS_AVAIL"/>
+		<col type="column" name="CPU_SPEED"/>
+		<col type="column" name="DBHEAP"/>
+		<col type="column" name="COMM_SPEED"/>
+		<col type="column" name="PARALLELISM"/>
+		<col type="column" name="DATAJOINER"/>
+	</display_columns>
+	<reference name="statement">
+		<title>Statement</title>
+		<reftype>table</reftype>
+		<refvalue>Explain/explainStatementSummary</refvalue>
+		<icon>images/icon-histo.gif</icon>
+		<ref foreign_column_name="tabSchema">
+			<local_column_name>tabSchema</local_column_name>
+		</ref>
+		<ref foreign_column_name="EXPLAIN_REQUESTER">
+			<local_column_name>EXPLAIN_REQUESTER</local_column_name>
+		</ref>
+		<ref foreign_column_name="EXPLAIN_TIME">
+			<local_column_name>EXPLAIN_TIME</local_column_name>
+		</ref>
+		<ref foreign_column_name="SOURCE_SCHEMA">
+			<local_column_name>SOURCE_SCHEMA</local_column_name>
+		</ref>
+		<ref foreign_column_name="SOURCE_NAME">
+			<local_column_name>SOURCE_NAME</local_column_name>
+		</ref>
+		<ref foreign_column_name="SOURCE_VERSION">
+			<local_column_name>SOURCE_VERSION</local_column_name>
+		</ref>
+	</reference>
+
+	<action name="DeleteExplainInstance">
+		<title>Remove</title>
+		<icon>images/trash.gif</icon>   
+		<actionScript name="deleteExplainInstanceScript" type="blank">
+			<followOnAction condition="true">
+				<task>
+					<assignSharedConstant name="tabSchema" type="blockValue">
+						<value>tabSchema</value>
+					</assignSharedConstant>
+					<assignSharedConstant name="EXPLAIN_REQUESTER" type="blockValue">
+						<value>EXPLAIN_REQUESTER</value>
+					</assignSharedConstant>
+					<assignSharedConstant name="EXPLAIN_TIME" type="blockValue">
+						<value>EXPLAIN_TIME</value>
+					</assignSharedConstant>
+					<assignSharedConstant name="SOURCE_NAME" type="blockValue">
+						<value>SOURCE_NAME</value>
+					</assignSharedConstant>
+					<assignSharedConstant name="SOURCE_SCHEMA" type="blockValue">
+						<value>SOURCE_SCHEMA</value>
+					</assignSharedConstant>
+					<assignSharedConstant name="SOURCE_VERSION" type="blockValue">
+						<value>SOURCE_VERSION</value>
+					</assignSharedConstant>
+					<action name="confirmDeleteExplainInstance" type="confirm">
+						<message>
+							Confirm deletion
+							
+							Explain tables schema: ?tabSchema?
+							Requestor: ?EXPLAIN_REQUESTER?
+							Time: ?EXPLAIN_TIME?
+							Name: ?SOURCE_NAME?
+							Schema: ?SOURCE_SCHEMA?
+							Version: ?SOURCE_VERSION?
+						</message>
+						<followOnAction condition="true">
+							<task>
+								<action name="deleteExplainInstance" type="serverAction">
+									<parameterList>
+										<parameter name="action" type="raw">
+											<value>executeSQL</value>
+										</parameter>
+										<parameter name="SQL" type="raw">
+											<value>
+<![CDATA[
+BEGIN ATOMIC
+	FOR ROW AS
+		SELECT EXPLAIN_REQUESTER,EXPLAIN_TIME,SOURCE_NAME,SOURCE_SCHEMA,SOURCE_VERSION
+		from "?tabSchema?".explain_statement
+		 where (EXPLAIN_REQUESTER,EXPLAIN_TIME,SOURCE_NAME,SOURCE_SCHEMA,SOURCE_VERSION)
+		 	= ('?EXPLAIN_REQUESTER?',timestamp('?EXPLAIN_TIME?'),'?SOURCE_NAME?','?SOURCE_SCHEMA?','?SOURCE_VERSION?')
+	DO
+		delete from "?tabSchema?".EXPLAIN_ARGUMENT
+			where ( EXPLAIN_REQUESTER,EXPLAIN_TIME,SOURCE_NAME,SOURCE_SCHEMA,SOURCE_VERSION)
+				= ( row.EXPLAIN_REQUESTER,row.EXPLAIN_TIME,row.SOURCE_NAME,row.SOURCE_SCHEMA,row.SOURCE_VERSION);
+		delete from "?tabSchema?".EXPLAIN_DIAGNOSTIC_DATA
+			where ( EXPLAIN_REQUESTER,EXPLAIN_TIME,SOURCE_NAME,SOURCE_SCHEMA,SOURCE_VERSION)
+				= ( row.EXPLAIN_REQUESTER,row.EXPLAIN_TIME,row.SOURCE_NAME,row.SOURCE_SCHEMA,row.SOURCE_VERSION);
+		delete from "?tabSchema?".EXPLAIN_DIAGNOSTIC
+			where ( EXPLAIN_REQUESTER,EXPLAIN_TIME,SOURCE_NAME,SOURCE_SCHEMA,SOURCE_VERSION)
+				= ( row.EXPLAIN_REQUESTER,row.EXPLAIN_TIME,row.SOURCE_NAME,row.SOURCE_SCHEMA,row.SOURCE_VERSION);
+		delete from "?tabSchema?".EXPLAIN_INSTANCE
+			where ( EXPLAIN_REQUESTER,EXPLAIN_TIME,SOURCE_NAME,SOURCE_SCHEMA,SOURCE_VERSION)
+				= ( row.EXPLAIN_REQUESTER,row.EXPLAIN_TIME,row.SOURCE_NAME,row.SOURCE_SCHEMA,row.SOURCE_VERSION);
+		delete from "?tabSchema?".EXPLAIN_OBJECT
+			where ( EXPLAIN_REQUESTER,EXPLAIN_TIME,SOURCE_NAME,SOURCE_SCHEMA,SOURCE_VERSION)
+				= ( row.EXPLAIN_REQUESTER,row.EXPLAIN_TIME,row.SOURCE_NAME,row.SOURCE_SCHEMA,row.SOURCE_VERSION);
+		delete from "?tabSchema?".EXPLAIN_OPERATOR
+			where ( EXPLAIN_REQUESTER,EXPLAIN_TIME,SOURCE_NAME,SOURCE_SCHEMA,SOURCE_VERSION)
+				= ( row.EXPLAIN_REQUESTER,row.EXPLAIN_TIME,row.SOURCE_NAME,row.SOURCE_SCHEMA,row.SOURCE_VERSION);
+		delete from "?tabSchema?".EXPLAIN_PREDICATE
+			where ( EXPLAIN_REQUESTER,EXPLAIN_TIME,SOURCE_NAME,SOURCE_SCHEMA,SOURCE_VERSION)
+				= ( row.EXPLAIN_REQUESTER,row.EXPLAIN_TIME,row.SOURCE_NAME,row.SOURCE_SCHEMA,row.SOURCE_VERSION);
+		delete from "?tabSchema?".EXPLAIN_STATEMENT
+			where ( EXPLAIN_REQUESTER,EXPLAIN_TIME,SOURCE_NAME,SOURCE_SCHEMA,SOURCE_VERSION)
+				= ( row.EXPLAIN_REQUESTER,row.EXPLAIN_TIME,row.SOURCE_NAME,row.SOURCE_SCHEMA,row.SOURCE_VERSION);
+		delete from "?tabSchema?".EXPLAIN_STREAM
+			where ( EXPLAIN_REQUESTER,EXPLAIN_TIME,SOURCE_NAME,SOURCE_SCHEMA,SOURCE_VERSION)
+				= ( row.EXPLAIN_REQUESTER,row.EXPLAIN_TIME,row.SOURCE_NAME,row.SOURCE_SCHEMA,row.SOURCE_VERSION);
+		delete from "?tabSchema?".ADVISE_INDEX
+			where ( EXPLAIN_REQUESTER,EXPLAIN_TIME,SOURCE_NAME,SOURCE_SCHEMA,SOURCE_VERSION)
+				= ( row.EXPLAIN_REQUESTER,row.EXPLAIN_TIME,row.SOURCE_NAME,row.SOURCE_SCHEMA,row.SOURCE_VERSION);
+		delete from "?tabSchema?".ADVISE_PARTITION
+			where ( EXPLAIN_REQUESTER,EXPLAIN_TIME,SOURCE_NAME,SOURCE_SCHEMA,SOURCE_VERSION)
+				= ( row.EXPLAIN_REQUESTER,row.EXPLAIN_TIME,row.SOURCE_NAME,row.SOURCE_SCHEMA,row.SOURCE_VERSION);
+		delete from "?tabSchema?".ADVISE_MQT
+			where ( EXPLAIN_REQUESTER,EXPLAIN_TIME,SOURCE_NAME,SOURCE_SCHEMA,SOURCE_VERSION)
+				= ( row.EXPLAIN_REQUESTER,row.EXPLAIN_TIME,row.SOURCE_NAME,row.SOURCE_SCHEMA,row.SOURCE_VERSION);
+	END FOR;
+END
+]]>
+											</value>
+										</parameter>
+										<parameter name="parameter[tabSchema]" type="blockValue">
+											<value>tabSchema</value>
+										</parameter>
+										<parameter name="parameter[EXPLAIN_REQUESTER]" type="blockValue">
+											<value>EXPLAIN_REQUESTER</value>
+										</parameter>
+										<parameter name="parameter[EXPLAIN_TIME]" type="blockValue">
+											<value>EXPLAIN_TIME</value>
+										</parameter>
+										<parameter name="parameter[SOURCE_NAME]" type="blockValue">
+											<value>SOURCE_NAME</value>
+										</parameter>
+										<parameter name="parameter[SOURCE_SCHEMA]" type="blockValue">
+											<value>SOURCE_SCHEMA</value>
+										</parameter>
+										<parameter name="parameter[SOURCE_VERSION]" type="blockValue">
+											<value>SOURCE_VERSION</value>
+										</parameter>
+									</parameterList>
+									<followOnAction condition="false">
+										<task>
+											<assignLocalParameter name="ERROR_MSG" type="returnObject">
+												<value>deleteExplainInstance.returnValue.STMTMSG</value>
+											</assignLocalParameter>
+											<alert>An error has occurred: ?ERROR_MSG?</alert>
+											<panelReload/>
+										</task>
+									</followOnAction>
+									<followOnAction condition="true">
+										<task>
+											<panelReload/>
+										</task>
+									</followOnAction>
+								</action>
+							</task>
+						</followOnAction>
+					</action>
+				</task>
+			</followOnAction>
+		</actionScript>
+	</action>    
+
+	<column name="tabSchema">
+		<sqlName>tabSchema</sqlName>
+		<title>Explain Tables Schema</title>
+		<type/>
+	</column>
+	<column name="EXPLAIN_REQUESTER">
+		<sqlName>EXPLAIN_REQUESTER</sqlName>
+		<title>Requester</title>
+		<type/>
+		<primaryKey/>			
+	</column>
+	<column name="EXPLAIN_TIME">
+		<sqlName>EXPLAIN_TIME</sqlName>
+		<title>Time</title>
+		<type/>
+		<c_drill>n</c_drill>
+		<primaryKey/>			
+	</column>
+	<column name="SOURCE_NAME">
+		<sqlName>SOURCE_NAME</sqlName>
+		<title>Name</title>
+		<type/>
+		<primaryKey/>			
+	</column>
+	<column name="SOURCE_SCHEMA">
+		<sqlName>SOURCE_SCHEMA</sqlName>
+		<title>Schema</title>
+		<type/>
+		<primaryKey/>			
+	</column>
+	<column name="SOURCE_VERSION">
+		<sqlName>SOURCE_VERSION</sqlName>
+		<title>Version</title>
+		<type/>
+		<primaryKey/>			
+	</column>
+	<column name="EXPLAIN_OPTION">
+		<sqlName>EXPLAIN_OPTION</sqlName>
+		<title>Option</title>
+		<type/>
+   		<column_mask>
+			<value_mask value="P"><mask>Plan Selection</mask></value_mask>
+   		</column_mask>
+	</column>
+	<column name="SNAPSHOT_TAKEN">
+		<sqlName>SNAPSHOT_TAKEN</sqlName>
+		<title>Snapshot Taken</title>
+		<type/>
+		<column_mask>
+			<value_mask value="Y"><mask>Yes</mask></value_mask>
+			<value_mask value="N"><mask>No</mask></value_mask>
+			<value_mask value="O"><mask>Yes, no regular explain</mask></value_mask>
+   		</column_mask>
+	</column>
+	<column name="DB2_VERSION">
+		<sqlName>DB2_VERSION</sqlName>
+		<title>DB2 Version</title>
+		<type/>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="SQL_TYPE">
+		<sqlName>SQL_TYPE</sqlName>
+		<title>SQL Type</title>
+   		<column_mask>
+			<value_mask value="S"><mask>Static</mask></value_mask>
+			<value_mask value="D"><mask>Dynamic</mask></value_mask>
+   		</column_mask>
+	</column>
+	<column name="QUERYOPT">
+		<sqlName>QUERYOPT</sqlName>
+		<title>Query Opt</title>
+		<type/>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="BLOCK">
+		<sqlName>BLOCK</sqlName>
+		<title>Block</title>
+		<type/>
+   		<column_mask>
+			<value_mask value="N"><mask>No Blocking</mask></value_mask>
+			<value_mask value="U"><mask>Block Unambiguous Cursors</mask></value_mask>
+			<value_mask value="B"><mask>Block All Cursors</mask></value_mask>
+   		</column_mask>
+	</column>
+	<column name="ISOLATION">
+		<sqlName>ISOLATION</sqlName>
+		<title>Isolation</title>
+		<type/>
+   		<column_mask>
+			<value_mask value="RR"><mask>Repeatable Read</mask></value_mask>
+			<value_mask value="RS"><mask>Read Stability</mask></value_mask>
+			<value_mask value="CS"><mask>Cursor Stability</mask></value_mask>
+			<value_mask value="UR"><mask>Uncommitted Read</mask></value_mask>
+   		</column_mask>
+	</column>
+	<column name="BUFFPAGE">
+		<sqlName>BUFFPAGE</sqlName>
+		<title>Buffer Page</title>
+		<type/>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="AVG_APPLS">
+		<sqlName>AVG_APPLS</sqlName>
+		<title>Avg Appls</title>
+		<type/>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="SORTHEAP">
+		<sqlName>SORTHEAP</sqlName>
+		<title>Sort Heap</title>
+		<type/>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="LOCKLIST">
+		<sqlName>LOCKLIST</sqlName>
+		<title>Lock List</title>
+		<type/>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="MAXLOCKS">
+		<sqlName>MAXLOCKS</sqlName>
+		<title>Max Locks</title>
+		<type/>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="LOCKS_AVAIL">
+		<sqlName>LOCKS_AVAIL</sqlName>
+		<title>Lock Available</title>
+		<type/>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="CPU_SPEED">
+		<sqlName>CPU_SPEED</sqlName>
+		<title>CPU Speed</title>
+		<type/>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="REMARKS">
+		<sqlName>REMARKS</sqlName>
+		<title>Remarks</title>
+		<type/>
+	</column>
+	<column name="DBHEAP">
+		<sqlName>DBHEAP</sqlName>
+		<title>DB Heap</title>
+		<type/>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="COMM_SPEED">
+		<sqlName>COMM_SPEED</sqlName>
+		<title>Comm. Speed</title>
+		<type/>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="PARALLELISM">
+		<sqlName>PARALLELISM</sqlName>
+		<title>Parallelism</title>
+		<type/>
+   		<column_mask>
+			<value_mask value="N"><mask>None </mask></value_mask>
+			<value_mask value="P"><mask>Intra-partition</mask></value_mask>
+			<value_mask value="IP"><mask>Inter-partition</mask></value_mask>
+			<value_mask value="BP"><mask>Intra+inter partition</mask></value_mask>
+   		</column_mask>
+	</column>
+	<column name="DATAJOINER">
+		<sqlName>DATAJOINER</sqlName>
+		<title>Datat Joiner</title>
+		<type/>
+   		<column_mask>
+			<value_mask value="N"><mask>Non-federated</mask></value_mask>
+			<value_mask value="Y"><mask>Federated</mask></value_mask>
+   		</column_mask>
+	</column>
+</table>

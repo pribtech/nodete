@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tutorial name="Recursive SQL">
+<FlowRestriction>forwardExploration</FlowRestriction>
+<closeAction/>
+    <openAction />
+    <globalCodeHighlightOptions highlightCode = "true" />
+    <pageList>
+    	<page name="Recursive SQL" type="intro">
+            <entryAction/>
+    	    <exitAction name="createDEPARTMENTTable" type="serverAction">
+    	        <parameterList>
+    	            <parameter name="action" type="fixed">
+    	                <value>createTablesFromSampleDatabase</value>
+    	            </parameter>
+    	            <parameter name="schema" type="constant">
+    	                <value>SCHEMA</value>
+    	            </parameter>
+    	            <parameter name="table" type="fixed">
+    	                <value>DEPARTMENT</value>
+    	            </parameter>
+    	        </parameterList>
+    	        <followOnAction condition="false"   >
+    	            <task>
+    	                <action name="" type="alert">
+    	                    <message>Failed to create base tables for initial setup of tutorial. Cannot proceed further with tutorial.</message>
+    	                </action>
+    	            </task>
+    	            <task>
+    	                <setActionReturn>false</setActionReturn>
+    	            </task>
+    	        </followOnAction>
+    	        <followOnAction condition="[0-9][0-9]*"   >
+    	            <task>
+    	                <assignLocalParameter name="ERROR_MESSAGE" type="returnObject">
+    	                    <value>createDEPARTMENTTable.returnValue</value>
+    	                </assignLocalParameter>
+    	                <alert>Failed to create base tables for initial setup of tutorial. Cannot proceed further with tutorial.  
+    	                    SQLMSG: ?ERROR_MESSAGE?</alert>
+    	            </task>
+    	            <task>
+    	                <setActionReturn>false</setActionReturn>
+    	            </task>
+    	            <task>
+    	                
+    	            </task>
+    	        </followOnAction>
+    	    </exitAction>
+            <contentFile>RecursiveSQL.html</contentFile>
+    		<autoLoadLink>
+    			<pageWindow target="informationWindow">
+    				<panel name="main">
+    					<URL>http://publib.boulder.ibm.com/infocenter/iseries/v5r4/topic/rzajq/rzajqrcteexample.html?noframes=true</URL>
+    				</panel>
+    			</pageWindow>
+    		</autoLoadLink>
+        </page>
+        
+    <page name="Show Department Table" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>ShowDepartmentTable.html</contentFile>
+        <SQLFile>ShowDepartmentTable.sql</SQLFile>
+        </page><page name="Find department that works under department A00" type="last">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>FindDepartmentThatWorksUnderDepartmentA00.html</contentFile>
+            <SQLFile>FindDepartmentThatWorksUnderDepartmentA00.sql</SQLFile>
+        </page></pageList>
+</tutorial>

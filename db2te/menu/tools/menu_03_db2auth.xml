@@ -1,0 +1,77 @@
+<menu type="leaf" branchDirectory="" DBMS="DB2">
+    <description>Db2auth Plugin Control</description>
+    <actionScript name="CheckForDb2authPlugin" type="serverAction" lockScreen="true">
+        <parameterList>
+            <parameter name="action" type="fixed">
+                <value>checkForRow</value>
+            </parameter>
+            <parameter name="schema" type="fixed">
+                <value>SYSIBMADM</value>
+            </parameter>
+            <parameter name="name" type="fixed">
+                <value>DBMCFG</value>
+            </parameter>
+            <parameter name="column[NAME]" type="fixed">
+                <value>group_plugin</value>
+            </parameter>
+            <parameter name="column[VALUE]" type="fixed">
+                <value>DB2AUTH</value>
+            </parameter>
+        </parameterList>
+        <if condition="false">
+            <task>
+                <alert>Error: a
+Either the db2auth security plugin is not installed,
+you do not have the proper authority,
+or there is no connection to the authorization database.
+Please see http://www.ibm.com/developerworks/data/library/techarticle/dm-0802kligerman/
+for more information about this plugin.</alert>
+            </task>
+        </if>
+        <if condition="true">
+            <task>
+                <action name="CheckForDb2authSchemaUsersTable" type="serverAction">
+                     <parameterList>
+                         <parameter name="action" type="fixed">
+                             <value>checkForObject</value>
+                         </parameter>
+                         <parameter name="objectType" type="fixed">
+                             <value>table</value>
+                         </parameter>
+                         <parameter name="object[schema]" type="fixed">
+                             <value>DB2AUTH</value>
+                         </parameter>
+                         <parameter name="object[table]" type="fixed">
+                             <value>USERS</value>
+                         </parameter>
+                     </parameterList>
+                     <if condition="false">
+                         <task>
+                             <alert>Error: 
+Either the db2auth security plugin is not installed,
+you do not have the proper authority,
+or there is no connection to the authorization database.
+Please see http://www.ibm.com/developerworks/data/library/techarticle/dm-0802kligerman/
+for more information about this plugin.</alert>
+                         </task>
+                     </if>
+                     <if condition="true">
+                         <task>
+                             <loadPage>
+                                 <pageWindow target="_blank">
+                                     <panel name="main" PrimaryContainer="true">
+                                         <link type="action" target="_self" window="_self" connectionRequired="y">
+                                             <parameterList>
+                                                 <parameter name="action">db2AuthOverview</parameter>
+                                             </parameterList>
+                                         </link>         
+                                     </panel>
+                                 </pageWindow>				
+                             </loadPage>
+                        </task>
+                    </if>
+                </action>
+            </task>
+        </if>
+    </actionScript>
+</menu>

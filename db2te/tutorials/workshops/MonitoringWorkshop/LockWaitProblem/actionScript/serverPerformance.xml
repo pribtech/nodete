@@ -1,0 +1,49 @@
+<actionPanel>
+	<flow>free</flow>
+	<useConsole>yes</useConsole>
+	<overview>
+<![CDATA[
+<p><b>Run DBSUMMARY Report</b></p>
+]]>
+	</overview>
+	<taskList>
+		<task name="MONREPORT.DBSUMMARY">
+			<discription>
+				This will call MONREPORT.DBSUMMARY report. This will collect the monitoring data for 10 seconds (default).
+			</discription>
+			<action  name="runReport" type="blank">
+				<followOnAction condition="true" compareOn="true" compareOnType="raw">
+					<task>
+						<echo>Report Output</echo>
+							<action  name="getReportText" type="serverAction">
+								<parameterList>
+									<parameter name="action" type="fixed">
+										<value>getResult</value>
+									</parameter>
+									<parameter name="query" type="fixed">
+										<value>call monreport.dbsummary</value>
+									</parameter>
+								</parameterList>
+								<followOnAction condition="true">
+									<task>
+										<assignSharedConstant name="report_output" type="returnObject">
+											<value>getReportText.returnValue</value>
+										</assignSharedConstant>
+										<echo>?report_output?</echo>
+									</task>
+								</followOnAction>
+								<followOnAction condition="false">
+									<task>										
+										<assignSharedConstant name="error_text" type="returnObject">
+											<value>getReportText.returnValue</value>
+										</assignSharedConstant>
+										<echo>Error: ?error_text?</echo>
+									</task>
+								</followOnAction>
+							</action>
+					</task>
+				</followOnAction>
+			</action>
+		</task>
+	</taskList>
+</actionPanel>

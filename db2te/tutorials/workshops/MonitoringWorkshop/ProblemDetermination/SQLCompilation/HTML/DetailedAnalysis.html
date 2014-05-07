@@ -1,0 +1,25 @@
+<h2>Tutorial Flow:</h2><hr>
+<BR>
+<ul>
+<li>Determining the problem category (completed)</li>
+<li>Performing detailed diagnosis of the problem (completed)</li>
+<li class="sourceCopiedFrom">Identifying the scope of the SQL statements involved</li>
+</ul>
+<BR>
+<H2>Detailed Analysis<HR></H2>
+<BR>
+<P align=justify>
+<font color=grey><B>The detailed diagnosis of the problem suggests that a larger portion of SQL statements are
+being compiled rather than retrieving their access plans from the package cache. To analyse the problem further
+database administrator monitors elements for SQL compilation.</B></font>
+<BR><BR>
+<B>Note: Set the refresh interval on the top right pane to 5 seconds.</B>
+<BR>
+<H2>Few metrics related to SQL compilation<HR></H2>
+<BR>
+<ul>
+<li>TOTAL_COMPILATIONS <I>(Value keeps increasing unexpectedly, make a note of this value)</I></li>
+<li>PKG_CACHE_INSERTS <I>(Value keeps increasing unexpectedly, make a note of this value)</I></li>
+<li>PKG_CACHE_LOOKUPS <I>(Value is unexpectedly low, make a note of this value)</I></li>
+</ul>
+<p>Ideally, we would like to see very minimal compilations and package cache inserts. At the same time, package cache lookups should be high to indicate package is being reused. The above evidence suggests that a larger portion of SQL statements are being compiled rather than retrieving their access plans from the package cache.</p>

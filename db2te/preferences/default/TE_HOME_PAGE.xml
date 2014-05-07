@@ -1,0 +1,35 @@
+<pageWindow target="_active" >
+	<splitPane direction="v" splitPercent="0.3">
+				<leftPane>
+					<splitPane direction="h" splitPercent="0.5">
+						<topPane>
+							<panel name="connection" PrimaryContainer="false">
+								<link type="action" target="_self" window="_self" connectionRequired="y">
+									<parameterList>
+										<parameter name="action">connectionManager</parameter>
+									</parameterList>
+								</link>				
+							</panel>
+						</topPane>
+						<bottomPane>
+							<panel name="feedReader" PrimaryContainer="false">
+								<link type="action" target="_self" window="_self" connectionRequired="y">
+									<parameterList>
+										<parameter name="action">feedReader</parameter>
+									</parameterList>
+								</link>				
+							</panel>
+						</bottomPane>
+					</splitPane>
+				</leftPane>
+				<rightPane>
+					<panel name="main" PrimaryContainer="true">
+						<link type="action" target="_self" window="_self" connectionRequired="y">
+							<parameterList>
+								<parameter name="action">welcome</parameter>
+							</parameterList>
+						</link>				
+					</panel>
+			</rightPane>
+	</splitPane>
+</pageWindow>

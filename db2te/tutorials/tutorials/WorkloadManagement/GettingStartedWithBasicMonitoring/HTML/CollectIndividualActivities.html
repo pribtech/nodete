@@ -1,0 +1,20 @@
+<p>This step enables collection of individual activities using the
+  <a onclick="OpenURLInFloatingWindow
+('http://publib.boulder.ibm.com/infocenter/db2luw/v9r7/topic/com.ibm.db2.luw.admin.wlm.doc/doc/t0052786.html?noframes=true');">COLLECT ACTIVITY DATA</a>
+  clause on the <a onclick="OpenURLInFloatingWindow
+('http://publib.boulder.ibm.com/infocenter/db2luw/v9r7/topic/com.ibm.db2.luw.sql.ref.doc/doc/r0050554.html?noframes=true');">CREATE WORKLOAD</a> or <a onclick="OpenURLInFloatingWindow
+('http://publib.boulder.ibm.com/infocenter/db2luw/v9r7/topic/com.ibm.db2.luw.sql.ref.doc/doc/r0050555.html?noframes=true');">ALTER WORKLOAD</a> statement. 
+</p><p>When the
+  COLLECT ACTIVITY DATA clause is specified for a workload,
+  information about any activity submitted by an occurrence of
+  that workload will be sent to the active
+  ACTIVITIES event monitor when the activity completes. The
+  COLLECT ACTIVITY DATA clause allows you to specify how much
+  information should be collected by
+  applying one of the following options:</p>
+  <ul>
+  <li>WITHOUT DETAILS - Collect activity information without statement and compilation environment. </li>
+  <li>WITH DETAILS - Collect activity information including statement and compilation environment. </li>
+  <li>WITH DETAILS AND VALUES - Collect activity information including statement and compilation environment,
+  and input data values. </li>
+  </ul>

@@ -1,0 +1,214 @@
+<!--
+  Copyright IBM Corp. 2007 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+	<table name="tabauth">
+		<sql_name>SYSCAT.TABAUTH</sql_name>
+		<singular_name>Table Privilege</singular_name>
+		<plural_name>Table Privileges</plural_name>
+		<description>
+		Each line is a table
+		&lt;a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.admin.sec.doc/doc/c0005478.html?noframes=true');"&gt;privilege&lt;/a&gt;
+		granted to a user, group or role.		
+		This list is generated from the &lt;a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.sql.ref.doc/doc//r0001061.html?noframes=true');"&gt;SYSCAT.TABAUTH&lt;/a&gt; view.
+		</description>
+		<output>
+			<type name="DDL" destination="adhoc" title="Revokes/Grants" generator="XSL/compareGrantsTable.xsl"/>
+		</output>
+		<display_columns>
+				<col type="reference" name="table"/>		
+				<col type="action" name="authChain"/>		
+				<col type="column" name="tabschema"/>
+				<col type="column" name="tabname"/>
+				<col type="reference" name="granteelink"/>
+				<col type="column" name="grantee"/>
+				<col type="column" name="granteetype"/>
+				<col type="reference" name="grantorlink"/>			
+				<col type="column" name="grantor"/>
+				<!--<col type="column" name="grantortype"/>-->		
+				<col type="column" name="controlauth"/>
+				<col type="column" name="alterauth"/>
+				<col type="column" name="deleteauth"/>
+				<col type="column" name="indexauth"/>
+				<col type="column" name="insertauth"/>
+				<col type="column" name="refauth"/>
+				<col type="column" name="selectauth"/>
+				<col type="column" name="updateauth"/>
+		</display_columns>		
+	<disable_edit/>
+		<order_by_index name="tabschema" direction="A"/>
+		<order_by_index name="tabname" direction="A"/>
+ <!-- added peter prib, Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2009 All rights reserved. -->
+ 	<action name="revoke">
+		<c_title>Revoke</c_title>
+    	<actionScript>
+    		<task>
+		    	<assignSharedConstant name="table-name" type="fixed">
+					<value>"?tabschema?"."?tabname?"</value>
+				</assignSharedConstant>
+		    	<assignSharedConstant name="authorization-name" type="fixed">
+					<value>"?grantee?"</value>
+				</assignSharedConstant>
+		    	<assignSharedConstant name="command" type="raw">
+					<value>SQL/Revoke/revokeTable</value>
+				</assignSharedConstant>
+		   		<callGlobalAction name="commandExecution"/>
+	   		</task>
+    	</actionScript>
+    </action>	
+	<action name="authChain">
+		<c_title>Auth. Chain</c_title>
+		<icon>images/icon-workload.gif</icon>  
+		<actionScript name="authChainChart" type="blank">
+			<task>
+				<assignLocalParameter name="tabschema" type="blockValue">
+					<value>tabschema</value>
+				</assignLocalParameter>
+				<assignLocalParameter name="tabname" type="blockValue">
+					<value>tabname</value>
+				</assignLocalParameter>
+				<assignLocalParameter name="grantor" type="blockValue">
+					<value>grantor</value>
+				</assignLocalParameter>
+				<assignLocalParameter name="grantortype" type="blockValue">
+					<value>grantortype</value>
+				</assignLocalParameter>
+				<loadPage>
+					<linkList>
+						<link type="action" target="detail" window="_self" connectionRequired="y">
+							<parameterList>
+								<parameter name="action">chartNodal</parameter>
+								<parameter name="$chartTitle">Table Authorisation Chain</parameter>
+								<parameter name="$sourceType">SQL</parameter>
+								<parameter name="$source">
+<![CDATA[
+values("s#db2mc".tabAuthTree(cast('?grantor?'as VARCHAR(128)),cast('?grantortype?'as CHAR(1)),cast('?tabschema?'as VARCHAR(128)),cast('?tabname?'as VARCHAR(128)),cast(null as int)))
+]]>
+								</parameter>
+							</parameterList>
+						</link>
+					</linkList>
+				</loadPage>
+			</task>
+		</actionScript>
+	</action>
+<!-- end added -->
+				
+		<reference name="granteelink">
+			<title>Grantee</title>
+			<reftype>displayRow</reftype>
+			<refvalue>Authority/authids</refvalue>
+			<icon>images/icon-user.gif</icon>						
+			<ref foreign_column_name="authid">
+				<local_column_name>grantee</local_column_name>
+			</ref>
+		</reference>			
+		<reference name="grantorlink">
+			<title>Grantor</title>
+			<reftype>displayRow</reftype>
+			<refvalue>Authority/authids</refvalue>
+			<icon>images/icon-user.gif</icon>						
+			<ref foreign_column_name="authid">
+				<local_column_name>grantor</local_column_name>
+			</ref>
+		</reference>			
+		<reference name="table">
+			<title>Table</title>
+			<reftype>displayRow</reftype>
+			<refvalue>tablecat</refvalue>
+			<icon>images/icon-link-calendar.gif</icon>								
+			<ref foreign_column_name="tabschema">
+				<local_column_name>tabschema</local_column_name>
+			</ref>
+			<ref foreign_column_name="tabname">
+				<local_column_name>tabname</local_column_name>
+			</ref>			
+		</reference>  				
+		<column name="tabschema">
+			<c_sql_name>TABSCHEMA</c_sql_name>
+			<c_title>Schema</c_title>
+			<c_pkey>p</c_pkey>
+			<c_prefill>
+				<table>schema</table>
+				<column>SCHEMANAME</column>
+			</c_prefill>                			
+		</column>
+		<column name="tabname">
+			<c_sql_name>TABNAME</c_sql_name>
+			<c_title>Table</c_title>
+			<c_pkey>p</c_pkey>
+		</column>
+		<column name="grantee">
+			<c_sql_name>GRANTEE</c_sql_name>
+			<c_title>Grantee</c_title>
+			<c_pkey>p</c_pkey>
+		</column>
+		<column name="granteetype">
+			<c_sql_name>GRANTEETYPE</c_sql_name>
+			<c_title>Type</c_title>
+			<c_pkey>p</c_pkey>
+	   	 	 <c_column_mask>
+				  <value_mask value="G"><mask>Group</mask></value_mask>
+				  <value_mask value="R"><mask>Role</mask></value_mask>
+				  <value_mask value="U"><mask>User</mask></value_mask>
+	   	  	</c_column_mask>						        			
+		</column>
+		<column name="grantor">
+			<c_sql_name>GRANTOR</c_sql_name>
+			<c_title>Grantor</c_title>
+			<c_pkey>p</c_pkey>
+		</column>
+    	<!--column name="grantortype">
+        	<c_sql_name>GRANTORTYPE</c_sql_name>
+        	<c_title>Type</c_title>
+        	<c_presentation>s</c_presentation>
+        	<c_sort>y</c_sort>
+	   	  	<c_column_mask>
+				  <value_mask value="S"><mask>System</mask></value_mask>
+				  <value_mask value="U"><mask>User</mask></value_mask>
+	   	  	</c_column_mask>						                    
+ 	  	</column-->
+		<column name="alterauth">
+			<c_sql_name>ALTERAUTH</c_sql_name>
+			<c_title>Alter</c_title>
+		</column>
+		<column name="controlauth">
+			<c_sql_name>CONTROLAUTH</c_sql_name>
+			<c_title>Control</c_title>
+		</column>
+		<column name="deleteauth">
+			<c_sql_name>DELETEAUTH</c_sql_name>
+			<c_title>Delete</c_title>
+		</column>
+		<column name="indexauth">
+			<c_sql_name>INDEXAUTH</c_sql_name>
+			<c_title>Index</c_title>
+		</column>
+		<column name="insertauth">
+			<c_sql_name>INSERTAUTH</c_sql_name>
+			<c_title>Insert</c_title>
+		</column>
+		<column name="refauth">
+			<c_sql_name>REFAUTH</c_sql_name>
+			<c_title>Reference</c_title>
+		</column>
+		<column name="selectauth">
+			<c_sql_name>SELECTAUTH</c_sql_name>
+			<c_title>Select</c_title>
+		</column>
+		<column name="updateauth">
+			<c_sql_name>UPDATEAUTH</c_sql_name>
+			<c_title>Update</c_title>
+		</column>
+	</table>

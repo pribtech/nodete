@@ -1,0 +1,18 @@
+<p>On the right, the table view has been reloaded. You should not see anything different from the last page. 
+(Nothing changes since we are just pointing to a copy of the automatically generated profile that was used before.)</p>
+
+<p><h3>Goal:</h3>
+Check that your change to the Dependencies page is working correctly.
+</p>
+<p><h3>Steps to complete:</h3>
+If you see the updated Table page, look for the 'Dependencies' reference. 
+It should now be using the XML table definition file 'tableDependCat.xml'. 
+You can check this by selecting the dependencies icon for either 'DEMOADM.EMP' or 'DEMOADM.DEPT'. 
+The dependencies for that table should be loaded into the lower panel. 
+If nothing appears, go back to the tablecat.xml document and ensure you have correctly entered the proper table name specified in the previous step.
+</p>
+<p><h3>Troubleshooting:</h3>
+You may need to right click on the browser and reload TE.  If you see a blank page to the right it is possible that you have made an error with your editing. 
+Open a new tab in the browser and load the table definition file (http://localhost/tableDefinitions/tablecat.xml). 
+If there is an XML parsing error, Firefox should highlight the problem for you. 
+</p>

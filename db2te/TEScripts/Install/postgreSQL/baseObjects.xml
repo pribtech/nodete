@@ -1,0 +1,220 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2013 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+<tutorial name="Setup DB2mc Base Objects"  autoPlayTime="5">
+	<flowRestriction>forwardexploration</flowRestriction>
+    <closeAction />
+    <openAction />
+    <globalCodeHighlightOptions highlightCode = "true" />
+    <WMDConfig/>
+    <pageList>
+       	<page name="Overview" type="intro">
+	    	<entryAction/>
+    	 	<exitAction/>
+            <contentText>
+<![CDATA[
+This tutorial creates the various base objects used within db2 Technology Explorer.
+These include such things as the control tables and generic data prune process.
+]]>
+			</contentText>
+        </page>
+    	<page name="Create Control Tables" type="general">
+			<exitAction/>
+            <contentText>
+<![CDATA[
+<p/>Setup the environment for the db2mc history monitors
+<p/>The default tablespace is SYSTOOLSPACE.  This can be changed to any tablespace and the tablespace defined.
+]]>
+            </contentText>
+            <SQLText><![CDATA[
+create schema IF NOT EXISTS  "s#db2mc"
+@    
+
+create table "s#db2mc".parameter 
+	(parameter varchar(128) not null
+	,value     varchar(3800) 
+	)
+@
+create unique index parameter_pk 
+	on "s#db2mc".parameter  (parameter)
+@
+insert into "s#db2mc".parameter (parameter,value)
+  values('tablespace','SYSTOOLSPACE')
+       ,('defaultDataRentionPeriodDays','14')
+       ,('targetCommitIntervalSeconds','10')
+@
+create table "s#db2mc".prune_control 
+	(schema	varchar(128) not null default 's#db2mc'
+	,tablename 	varchar(128) not null
+	,status char(1) not null default 'A'
+	,timestampColumn varchar(128) not null
+	,retentionDays int not null default 14
+	,commitFrequency int not null default 1000
+	,lastPruneTimestamp timestamp not null default '0001-01-01 00:00:00.00000'
+	,statement text
+	,message_timestamp timestamp
+	,message text
+	)
+@
+create unique index prune_control_pk 
+	on "s#db2mc".prune_control  (schema,tablename)
+@
+]]>
+			</SQLText>
+            <SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar="@"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+        </page>
+    	 <page name="Create Prune Stored Procedure " type="general">
+            <contentText>
+<![CDATA[
+Create the prune stored procedure.
+This deletes aged entries acording to the parameters set and in pruned control list.
+]]>
+ 			</contentText>
+            <SQLText>
+<![CDATA[
+CREATE OR REPLACE FUNCTION "s#db2mc"."pruneData" () RETURNS void AS $$
+--/******************************************************************************	
+--  Author: Peter Prib
+--  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2013 All rights reserved.
+--
+--  Licensed under the Apache License, Version 2.0 (the "License");
+--  you may not use this file except in compliance with the License.
+--  You may obtain a copy of the License at
+--
+--      http://www.apache.org/licenses/LICENSE-2.0
+--
+--  Unless required by applicable law or agreed to in writing, software
+--  distributed under the License is distributed on an "AS IS" BASIS,
+--  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+--  See the License for the specific language governing permissions and
+--  limitations under the License.
+--******************************************************************************/
+	DECLARE stmt varchar(4000);
+	DECLARE lastExecution timestamp;
+	DECLARE messageOut varchar(32000);
+	DECLARE retainTimestamp timestamp;
+	DECLARE rowCount INTEGER  default 0;
+	DECLARE rowsPerCommit INTEGER  default 0;
+	DECLARE targetCommitIntervalSeconds int;
+	DECLARE schemaControl varchar(128);
+	DECLARE tableControl varchar(128);
+	DECLARE cntl_row record ; 
+begin
+	targetCommitIntervalSeconds := (select cast(value as int) from "s#db2mc".parameter where parameter='defaultDataRentionPeriodDays');
+	
+	FOR cntl_row IN (select * from "s#db2mc".prune_control) 
+	LOOP 
+		begin
+			retainTimestamp := current_timestamp - retentionDays days;
+			lastExecution := current_timestamp - 99 days;
+			rowsPerCommit :=  commitFrequency;
+			update "s#db2mc".prune_control set lastPruneTimestamp=retainTimestamp where schema=cntl_row.schema and tablename = cntl_row.tablename;	
+			loop 
+				if (lastExecution + targetCommitIntervalSeconds * interval '1 second' < current_timestamp ) then
+					if rowCount > 0 then
+						rowsPerCommit :=  rowsPerCommit * 0.9;
+						if rowsPerCommit < 1 then
+							rowsPerCommit :=  1;
+						end if;
+					end if;
+					stmt := 'prepare s1 from  delete from (select * from "'||cntl_row.schema||'"."'||cntl_row.tablename||'" where "'||timestampColumn||'" < ? order by '||timestampColumn||' asc fetch first '||rowsPerCommit||' rows only)';
+					update "s#db2mc".prune_control set statement=stmt where schema=cntl_row.schema and tablename = cntl_row.tablename;	
+					execute stmt;
+				end if;
+				lastExecution := current_timestamp;
+				execute s1 using retainTimestamp;
+				GET DIAGNOSTICS rowCount = ROW_COUNT;
+--				commit;
+			exit when rowCount <= 0;
+			end loop;
+		EXCEPTION
+		   WHEN OTHERS THEN
+		    	GET STACKED DIAGNOSTICS messageOut = MESSAGE_TEXT;
+				update "s#db2mc".prune_control set status='E', message=messageOut, message_timestamp=current_timestamp where schema=cntl_row.schema and tablename = cntl_row.tablename;	
+--				commit;
+		end;
+    END LOOP;
+EXCEPTION
+   WHEN OTHERS THEN
+end
+$$ LANGUAGE plpgsql
+@
+]]>
+			</SQLText>
+            <SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar="@"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+        </page>
+    	 <page name="Test Prune " type="general">
+            <contentText>Test the pruning stored procedure.  The final test should only show 3 rows</contentText>
+            <SQLText>
+<![CDATA[
+insert into "s#db2mc".prune_control
+	     (schema 	,tablename							,timestampColumn 			,retentionDays	,commitFrequency)
+values   ('s#db2mc'	,upper('prune_control_test')		,upper('timestampColumn')	,3				,10)
+ 		,('s#db2mc'	,upper('prune_control_testdummy')	,upper('timestampColumn')	,3				,10)
+@
+create table "s#db2mc".prune_control_test 
+	(test	varchar(128) not null default 's#db2mc'
+	,timestampColumn timestamp not null
+	)
+@
+insert into "s#db2mc".prune_control_test 
+values('t1', current_timestamp)
+     ,('t2', current_timestamp - 2 * interval '1 day' )
+     ,('t3', current_timestamp - 3 * interval '1 day')
+     ,('t4', current_timestamp - 4 * interval '1 day')
+@
+select "s#db2mc"."pruneData" ()
+@
+select * from "s#db2mc".prune_control
+@
+select * from "s#db2mc".prune_control_test 
+@
+drop table "s#db2mc".prune_control_test 
+@
+]]>
+            </SQLText>
+            <SQLExecutionOptions xml="false" clob="true" clobinline="true" blob="false" dbclob="false" termChar="@"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+        </page>
+    	<page name="Schedule Prune " type="general">
+            <contentText>Schedule the data pruning stored procedure.  Set to prune once a day at 6:10am.
+            crontab 
+            10 6 * * *  ??? select "s#db2mc"."pruneData"()
+            </contentText>
+            <SQLText>
+<![CDATA[
+]]>
+            </SQLText>
+            <SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar="@"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+        </page>
+    	<page name="Uninstall" type="last"  autoPlay="false">
+            <contentText>Uninstall base objects.</contentText>
+            <SQLText>
+<![CDATA[
+drop function "s#db2mc"."pruneData"()@
+drop table "s#db2mc".prune_control@
+drop table "s#db2mc".parameter@
+]]>
+            </SQLText>
+            <SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar="@"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+        </page>
+    </pageList>
+</tutorial>

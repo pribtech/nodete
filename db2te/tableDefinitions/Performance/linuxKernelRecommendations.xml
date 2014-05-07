@@ -1,0 +1,141 @@
+ <!--
+  Author: Peter Prib
+  
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2010 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+
+<table name="linuxKernelRecommendations">
+	<sql_name>linuxKernelRecommendations</sql_name>
+	<singular_name>Linux Kernel Minimum Gudiance</singular_name>
+	<plural_name>Linux Kernel Minimum Gudiance</plural_name>
+	<inlinequery>
+<![CDATA[
+select 
+  operational
+, mem_MB
+,256*mem_GB as SHMMNI
+,case when 1024*1024*mem_MB < 268435456  then 268435456 when 1024*1024*mem_MB < 1073741824   then 1073741824  else 1024*1024*mem_MB end as SHMMAX
+,1024*mem_MB/2 as SHNALL
+,case when mem_GB < 4 then 1024 else 256*mem_GB end as SEMMNI
+,250   as SEMMSL
+,256000 as SEMMNS
+,32 as SEMOPM
+,1024*mem_GB as MSGMNI
+,65536 as MSGMAX
+,65536 as MSGMNB
+FROM (
+SELECT 'active' as operational 
+,cast(VALUE as bigint) as mem_MB
+,cast(VALUE as int)/1024+1 as mem_GB
+FROM SYSIBMADM.ENV_SYS_RESOURCES
+where NAME='MEMORY_TOTAL'
+union select ' ' as operational , 1024*g as mem_MB,g as mem_GB from (values(1),(2),(3),(4),(5),(6),(7),(8),(9),(10),(20),(30),(40)) as t(g)
+)
+]]>
+	</inlinequery>
+	<description>Minimun guidinance for linux based on real memory size.</description>
+	<order_by_index name="mem_MB" direction="A"/>
+	<rowStyle interfaceColumn='operational'>
+		<option eq='active' style='INFORMATION'/>
+	</rowStyle>		
+	<display_columns>
+		<col type="column" name="operational"/>
+		<col type="column" name="mem_MB"/>
+		<col type="column" name="SHMMNI"/>
+		<col type="column" name="SHMMAX"/>
+		<col type="column" name="SHNALL"/>
+		<col type="column" name="SEMMNI"/>
+		<col type="column" name="SEMMSL"/>
+		<col type="column" name="SEMMNS"/>
+		<col type="column" name="SEMOPM"/>
+		<col type="column" name="MSGMNI"/>
+		<col type="column" name="MSGMAX"/>
+		<col type="column" name="MSGMNB"/>
+	</display_columns>
+	<disable_edit/>
+	<column name="operational">
+		<c_sql_name>operational</c_sql_name>
+		<c_title>Active</c_title>
+		<c_presentation>s</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="mem_MB">
+		<c_sql_name>mem_MB</c_sql_name>
+		<c_title>Real Memory (MB)</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="SHMMNI">
+		<c_sql_name>SHMMNI</c_sql_name>
+		<c_title>SHMMNI</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="SHMMAX">
+		<c_sql_name>SHMMAX</c_sql_name>
+		<c_title>SHMMAX</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="SHNALL">
+		<c_sql_name>SHNALL</c_sql_name>
+		<c_title>SHNALL</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="SEMMNI">
+		<c_sql_name>SEMMNI</c_sql_name>
+		<c_title>SEMMNI</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="SEMMSL">
+		<c_sql_name>SEMMSL</c_sql_name>
+		<c_title>SEMMSL</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="SEMMNS">
+		<c_sql_name>SEMMNS</c_sql_name>
+		<c_title>SEMMNS</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="SEMOPM">
+		<c_sql_name>SEMOPM</c_sql_name>
+		<c_title>SEMOPM</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="MSGMNI">
+		<c_sql_name>MSGMNI</c_sql_name>
+		<c_title>MSGMNI</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="MSGMAX">
+		<c_sql_name>MSGMAX</c_sql_name>
+		<c_title>MSGMAX</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="MSGMNB">
+		<c_sql_name>MSGMNB</c_sql_name>
+		<c_title>MSGMNB</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+</table>

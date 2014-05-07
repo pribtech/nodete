@@ -1,0 +1,61 @@
+<p><b>Scenario</b></p>
+<p align = "justify">
+	On a daily basis, the clinic moves data to a data warehouse for data mining.
+	The business intelligence team runs reports on the clinical data to mine for statistics.
+</p>
+
+<B>Pre-requistes</B><BR><BR>
+<b>On Windows</b>
+	<ul><li>
+	Create directory 'XMLDataMoved_OPD' and
+					 'XMLDataMoved_PD' in drive C:\ or in a path you like.
+    </li></ul>
+<BR>
+<b>On UNIX/Linux</b>
+	<ul>
+	<li>
+	Create directory 'XMLDataMoved_OPD' and
+					 'XMLDataMoved_PD' in a path you like, e.g. /home/db2inst1/tmp.
+	</li>
+	<li>
+	Give groups and others write and execute permission to these directory. e.g. On the console, enter <b>chmod -R 774 /home/db2inst1/tmp</b>.
+	</li>
+	<li> On the right pane, example of both Windows and Linux/UNIX based commands are shown. Click Edit Query, enable the commands you need by ensuring they are NOT commented by --, remove the other commands you don't need. Update the path accordingly.</li>
+	</ul>
+<BR>
+<BR><BR>
+<p><b>Operation</b></p>
+<p>
+	DB2 data movement utilities such as EXPORT and IMPORT utilities are used to export and
+	import regular and XML data.
+</p>
+
+
+<p><b>Solution</b></p>
+<p align = "justify">
+	<ul>
+		<li>
+<B>Exporting XML data</B>
+<P align = "justify">
+XML data is moved into flat files in directories 'XMLDataMoved_OPD' and 'XMLDataMoved_PD' using the EXPORT utility.
+<BR><BR>
+The destination paths and base names of the exported XML files can be specified with the XML TO and XMLFILE
+options. By default, exported XML files are written to the path of the exported data file. The default base name for
+exported XML files is the name of the exported data file, with an appending 3-digit sequence number,
+and the .xml extension.
+<BR><BR>
+		</li>
+	<BR>
+		<li>
+<H4>Importing XML data</H4>
+<P align = "justify">
+The import utility is used to import XML data into an XML table column using either the table name or
+a nickname for a DB2 Database for Linux, UNIX, and Windows source data object. When importing data into
+an XML table column, you can use the XML FROM option to specify the paths of the input XML data file or files.
+		</li>
+	</ul>
+</p>
+<P>
+
+
+

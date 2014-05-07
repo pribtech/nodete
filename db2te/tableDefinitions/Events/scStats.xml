@@ -1,0 +1,248 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2011 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+<table name="scStats">
+	<sql_name>scStats</sql_name>
+	<singular_name>Service Class Stats</singular_name>
+	<plural_name>Service Class Stats</plural_name>
+	<inlinequery>SELECT	* FROM "?"."?"</inlinequery>
+	<parameters>
+		<parm name="tabschema">
+			<title>tabschema</title>
+			<value>no schema</value>
+			<type>n</type>
+		</parm>
+		<parm name="tabname">
+			<title>tabname</title>
+			<value>no table</value>
+			<type>n</type>
+		</parm>
+	</parameters>
+	<description />
+	<order_by_index name="STATISTICS_TIMESTAMP" direction="D"/>
+	<order_by_index name="SERVICE_SUPERCLASS_NAME" direction="A"/>
+	<order_by_index name="SERVICE_SUBCLASS_NAME" direction="A"/>
+	<display_columns>
+		<col type="column" name="STATISTICS_TIMESTAMP"/>
+		<col type="column" name="SERVICE_SUPERCLASS_NAME"/>
+		<col type="column" name="SERVICE_SUBCLASS_NAME"/>
+		<col type="column" name="PARTITION_KEY"/>
+		<col type="column" name="ACT_CPU_TIME_TOP"/>
+		<col type="column" name="ACT_REMAPPED_IN"/>
+		<col type="column" name="ACT_REMAPPED_OUT"/>
+		<col type="column" name="ACT_ROWS_READ_TOP"/>
+		<col type="column" name="AGG_TEMP_TABLESPACE_TOP"/>
+		<col type="column" name="CONCURRENT_ACT_TOP"/>
+		<col type="column" name="CONCURRENT_CONNECTION_TOP"/>
+		<col type="column" name="COORD_ACT_ABORTED_TOTAL"/>
+		<col type="column" name="COORD_ACT_COMPLETED_TOTAL"/>
+		<col type="column" name="COORD_ACT_EST_COST_AVG"/>
+		<col type="column" name="COORD_ACT_EXEC_TIME_AVG"/>
+		<col type="column" name="COORD_ACT_INTERARRIVAL_TIME_AVG"/>
+		<col type="column" name="COORD_ACT_LIFETIME_AVG"/>
+		<col type="column" name="COORD_ACT_LIFETIME_TOP"/>
+		<col type="column" name="COORD_ACT_QUEUE_TIME_AVG"/>
+		<col type="column" name="COORD_ACT_REJECTED_TOTAL"/>
+		<col type="column" name="COST_ESTIMATE_TOP"/>
+		<col type="column" name="LAST_WLM_RESET"/>
+		<col type="column" name="PARTITION_NUMBER"/>
+		<col type="column" name="REQUEST_EXEC_TIME_AVG"/>
+		<col type="column" name="ROWS_RETURNED_TOP"/>
+		<col type="column" name="TEMP_TABLESPACE_TOP"/>
+	</display_columns>
+	<charts>
+		<chart>
+			<type>line</type><title>Service Class Statistics</title>
+			<axis>
+				<x><column name="STATISTICS_TIMESTAMP"/></x>
+				<y>
+					<column name="COORD_ACT_EXEC_TIME_AVG"/>
+					<column name="COORD_ACT_QUEUE_TIME_AVG"/>
+				</y>
+			</axis>
+		</chart>
+	</charts>
+	<graph>
+		<title>Service Class Statistics</title>
+		<type>line</type>
+ 		<style>
+ 			<legend>
+ 			 	<display>right</display>
+ 			</legend>
+ 			<animationEnabled>false</animationEnabled>
+ 		</style>
+	</graph>
+	<column name="PARTITION_KEY" minVersion="9.7">
+		<sql_name>PARTITION_KEY</sql_name>
+		<title>Partition Key</title>
+	</column>
+	<column name="ACT_CPU_TIME_TOP" minVersion="9.7">
+		<sql_name>ACT_CPU_TIME_TOP</sql_name>
+		<title>Activity CPU Time Top</title>
+		<type>n</type>
+	</column>
+	<column name="ACT_REMAPPED_IN" minVersion="9.7">
+		<sql_name>ACT_REMAPPED_IN</sql_name>
+		<title>Activity Remapped In</title>
+	</column>
+	<column name="ACT_REMAPPED_OUT" minVersion="9.7">
+		<sql_name>ACT_REMAPPED_OUT</sql_name>
+		<title>Activity Remapped Out</title>
+	</column>
+	<column name="ACT_ROWS_READ_TOP" minVersion="9.7">
+		<sql_name>ACT_ROWS_READ_TOP</sql_name>
+		<title>Activity Rows Read Top</title>
+		<type>n</type>
+	</column>
+	<column name="AGG_TEMP_TABLESPACE_TOP" minVersion="9.7">
+		<sql_name>AGG_TEMP_TABLESPACE_TOP</sql_name>
+		<title>Agg Temp Tablespace Top</title>
+		<type>n</type>
+	</column>
+	<column name="CONCURRENT_ACT_TOP">
+		<sql_name>CONCURRENT_ACT_TOP</sql_name>
+		<title>Concurrent Top</title>
+		<type>n</type>
+	</column>
+	<column name="CONCURRENT_CONNECTION_TOP">
+		<sql_name>CONCURRENT_CONNECTION_TOP</sql_name>
+		<title>Concurrent Connections Top</title>
+		<type>n</type>
+	</column>
+	<column name="COORD_ACT_ABORTED_TOTAL">
+		<sql_name>COORD_ACT_ABORTED_TOTAL</sql_name>
+		<title>Co-ord. Activity Aborted</title>
+		<type>n</type>
+	</column>
+	<column name="COORD_ACT_COMPLETED_TOTAL">
+		<sql_name>COORD_ACT_COMPLETED_TOTAL</sql_name>
+		<title>Co-ord. Activity Completed</title>
+		<type>n</type>
+	</column>
+	<column name="COORD_ACT_EST_COST_AVG">
+		<sql_name>COORD_ACT_EST_COST_AVG</sql_name>
+		<title>Co-ord. Activity Estimated Cost Average</title>
+		<type>n</type>
+	</column>
+	<column name="COORD_ACT_EXEC_TIME_AVG">
+		<sql_name>nullif(COORD_ACT_EXEC_TIME_AVG,-1)</sql_name>
+		<title>Co-ord. Activity Execution Average</title>
+		<type>n</type>
+		<c_graph>
+			<g_description>Exec. Avg.</g_description>
+			<datastyle>
+				<graph_type>line</graph_type>
+					<color>0x4169E1</color>
+					<size>2</size>
+					<lineSize>1</lineSize>
+				</datastyle>
+		</c_graph>
+	</column>
+	<column name="COORD_ACT_INTERARRIVAL_TIME_AVG">
+		<sql_name>COORD_ACT_INTERARRIVAL_TIME_AVG</sql_name>
+		<title>Co-ord. Activity Inter-Arrival Average</title>
+		<type>n</type>
+	</column>
+	<column name="COORD_ACT_LIFETIME_AVG">
+		<sql_name>COORD_ACT_LIFETIME_AVG</sql_name>
+		<title>Co-ord. Activity LifeTime Average</title>
+		<type>n</type>
+	</column>
+	<column name="COORD_ACT_LIFETIME_TOP">
+		<sql_name>COORD_ACT_LIFETIME_TOP</sql_name>
+		<title>Co-ord. Activity LifeTime Top</title>
+		<type>n</type>
+	</column>
+	<column name="COORD_ACT_QUEUE_TIME_AVG">
+		<sql_name>nullif(COORD_ACT_QUEUE_TIME_AVG,-1)</sql_name>
+		<title>Co-ord. Activity Queue Time Average</title>
+		<type>n</type>
+		<c_graph>
+			<g_description>Queue. Avg.</g_description>
+			<datastyle>
+				<graph_type>line</graph_type>
+					<color>0xADFF2F</color>
+					<size>2</size>
+					<lineSize>1</lineSize>
+				</datastyle>
+		</c_graph>
+	</column>
+	<column name="COORD_ACT_REJECTED_TOTAL">
+		<sql_name>COORD_ACT_REJECTED_TOTAL</sql_name>
+		<title>Co-ord. Activity Rejected</title>
+		<type>n</type>
+	</column>
+	<column name="COST_ESTIMATE_TOP">
+		<sql_name>COST_ESTIMATE_TOP</sql_name>
+		<title>Cost Estimate Top</title>
+		<type>n</type>
+	</column>
+	<column name="DETAILS_XML" minVersion="9.7">
+		<sql_name>DETAILS_XML</sql_name>
+		<title>Details</title>
+		<c_presentation>s</c_presentation>
+	</column>
+	<column name="LAST_WLM_RESET">
+		<sql_name>LAST_WLM_RESET</sql_name>
+		<title>Last Reset</title>
+		<type>n</type>
+	</column>
+	<column name="PARTITION_NUMBER" minVersion="9.7">
+		<sql_name>PARTITION_NUMBER</sql_name>
+		<title>Partition</title>
+		<type>n</type>
+	</column>
+	<column name="REQUEST_EXEC_TIME_AVG">
+		<sql_name>REQUEST_EXEC_TIME_AVG</sql_name>
+		<title>Request Exec. Average</title>
+		<type>n</type>
+	</column>
+	<column name="ROWS_RETURNED_TOP">
+		<sql_name>ROWS_RETURNED_TOP</sql_name>
+		<title>Rows Returned Top</title>
+		<type>n</type>
+	</column>
+	<column name="SERVICE_CLASS_ID">
+		<sql_name>SERVICE_CLASS_ID</sql_name>
+		<title>Service Class</title>
+		<primaryKey/>
+	</column>
+	<column name="SERVICE_SUBCLASS_NAME">
+		<sql_name>SERVICE_SUBCLASS_NAME</sql_name>
+		<title>Service Sub Class</title>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="SERVICE_SUPERCLASS_NAME">
+		<sql_name>SERVICE_SUPERCLASS_NAME</sql_name>
+		<title>Service Super Class</title>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="STATISTICS_TIMESTAMP">
+		<sql_name>STATISTICS_TIMESTAMP</sql_name>
+		<title>Time</title>
+		<primaryKey/>
+		<c_graph>
+			<g_x_categories>y</g_x_categories>
+			<label>Time</label>
+		</c_graph>
+	</column>
+	<column name="TEMP_TABLESPACE_TOP">
+		<sql_name>TEMP_TABLESPACE_TOP</sql_name>
+		<title>Temp Tablespace Top</title>
+		<type>n</type>
+	</column>
+</table>

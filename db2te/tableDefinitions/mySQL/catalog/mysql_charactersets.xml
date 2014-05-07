@@ -1,0 +1,49 @@
+<!--
+  Copyright IBM Corp. 2007 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<table name="mysql_charactersets">
+	<sql_name>INFORMATION_SCHEMA.CHARACTER_SETS</sql_name>
+	<singular_name>CharacterSet</singular_name>
+	<plural_name>CharacterSets</plural_name>
+	<order_by_index name="CHARACTER_SET_NAME" direction="A"/>
+	<disable_edit/>
+	<display_columns>
+		<col type="column" name="CHARACTER_SET_NAME"/>
+		<col type="column" name="DEFAULT_COLLATE_NAME"/>
+		<col type="column" name="DESCRIPTION"/>
+		<col type="column" name="MAXLEN"/>
+	</display_columns>
+	<column name="CHARACTER_SET_NAME">
+		<c_sql_name>CHARACTER_SET_NAME</c_sql_name>
+		<c_title>Character Set</c_title>
+		<c_presentation></c_presentation>
+		<c_pkey>p</c_pkey>		
+	</column>
+	<column name="DEFAULT_COLLATE_NAME">
+		<c_sql_name>DEFAULT_COLLATE_NAME</c_sql_name>
+		<c_title>Default Collate</c_title>
+		<c_presentation></c_presentation>
+	</column>
+	<column name="DESCRIPTION">
+		<c_sql_name>DESCRIPTION</c_sql_name>
+		<c_title>Description</c_title>
+		<c_presentation></c_presentation>
+	</column>
+	<column name="MAXLEN">
+		<c_sql_name>MAXLEN</c_sql_name>
+		<c_title>Max. Length.</c_title>
+		<c_presentation></c_presentation>
+	</column>
+</table>

@@ -1,0 +1,108 @@
+<table name="INDEXCOLUSE">
+		<inlinequery><![CDATA[ SELECT ic.*,i.TABSCHEMA,i.TABNAME FROM SYSCAT.INDEXCOLUSE ic join SYSCAT.INDEXES i on (ic.INDSCHEMA,ic.INDNAME)=(i.INDSCHEMA,i.INDNAME)]]></inlinequery>
+	<sqlName>SYSCAT.INDEXCOLUSE</sqlName>
+	<singularName>Column in index</singularName>
+	<pluralName>Columns in indexes</pluralName>
+	<description>Each row represents a column that participates in an index.</description>
+	<orderByIndex name="indschema" direction="A"/>
+	<orderByIndex name="indname" direction="A"/>
+	<orderByIndex name="colseq" direction="A"/>
+	<display_columns>
+		<col type="column" name="indschema" break="column"/>
+		<col type="column" name="indname" break="column"/>
+		<col type="column" name="colname"/>
+		<col type="column" name="colseq"/>
+		<col type="column" name="colorder"/>
+	</display_columns>
+	<disableEdit/>
+	<output>
+		<type name="DDL" destination="" title="" generator=""/>
+	</output>
+	<column name="tabschema">
+		<sqlName>TABSCHEMA</sqlName>
+		<title>Table Schema</title>
+		<prefill>
+			<table>schema</table>
+			<column>SCHEMANAME</column>
+		</prefill>
+	</column>
+	<column name="tabname">
+		<sqlName>TABNAME</sqlName>
+		<title>Table</title>
+		<prefill>
+			<table>tablecat</table>
+			<column>TABNAME</column>
+		</prefill>
+		<reference name="tab">
+			<title>Tables</title>
+			<reftype>table</reftype>
+			<refvalue>tablecat</refvalue>
+			<icon>images/icon-link-calendar.gif</icon>		
+			<ref foreignColumnName="tabschema">
+				<localColumnName>tabschema</localColumnName>
+			</ref>
+			<ref foreignColumnName="tabname">
+				<localColumnName>tabname</localColumnName>
+			</ref>
+		</reference>
+	</column>
+	<column name="indschema">
+		<sqlName>INDSCHEMA</sqlName>
+		<title>Index schema</title>
+		<primaryKey/>
+		<drillEnabled/>
+		<prefill>
+			<table>schema</table>
+			<column>SCHEMANAME</column>
+		</prefill>
+	</column>
+	<column name="indname">
+		<sqlName>INDNAME</sqlName>
+		<title>Index name</title>
+		<primaryKey/>
+		<drillEnabled/>
+	</column>
+	<column name="colname">
+		<sqlName>COLNAME</sqlName>
+		<title>Name</title>
+		<primaryKey/>
+		<drillEnabled/>
+		<reference name="col">
+			<title>Column</title>
+			<reftype>table</reftype>
+			<refvalue>columns</refvalue>
+			<icon>images/icon-link-calendar.gif</icon>								
+			<ref foreignColumnName="colname">
+				<localColumnName>colname</localColumnName>
+			</ref>
+		</reference>
+	</column>
+	<column name="colseq">
+		<sqlName>COLSEQ</sqlName>
+		<title>Position</title>
+	</column>
+	<column name="colorder">
+		<sqlName>COLORDER</sqlName>
+		<title>Order</title>
+		<drillEnabled/>
+   		<columnMask>
+			<valueMask value="A"><mask>Ascending</mask></valueMask>
+			<valueMask value="D"><mask>Descending</mask></valueMask>
+			<valueMask value="I"><mask>Included</mask></valueMask>
+   		</columnMask>
+	</column>
+	<column name="collationschema" DBMS="DB2">
+		<sqlName>COLLATIONSCHEMA</sqlName>
+		<title>Collation schema</title>
+		<drillEnabled/>
+		<prefill>
+			<table>schema</table>
+			<column>SCHEMANAME</column>
+		</prefill>
+	</column>
+	<column name="collationname" DBMS="DB2">
+		<sqlName>COLLATIONNAME</sqlName>
+		<title>Collation name</title>
+		<drillEnabled/>
+	</column>
+</table>

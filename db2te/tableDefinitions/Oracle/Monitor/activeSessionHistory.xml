@@ -1,0 +1,472 @@
+<!--
+  Peter Prib, Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2012 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<table name="activeSessionHistory">
+	<sqlName>V$ACTIVE_SESSION_HISTORY</sqlName>
+	<singularName>Active Session History</singularName>
+	<pluralName>Active Session History</pluralName>
+	<description>Query from ad hoc</description>
+	<output>
+		<type name="DDL" destination="" title="" generator=""/>
+	</output>
+   	<disable_edit/>
+	<orderBy name="SAMPLE_ID" direction="A"/> -->
+	<orderBy name="SAMPLE_TIME" direction="A"/> -->
+	<displayColumns>
+		<col type="column" name="SAMPLE_ID"/>
+		<col type="column" name="SAMPLE_TIME"/>
+		<col type="column" name="SESSION_ID"/>
+		<col type="column" name="SESSION_SERIAL#"/>
+		<col type="column" name="SESSION_TYPE"/>
+		<col type="column" name="FLAGS"/>
+		<col type="column" name="USER_ID"/>
+		<col type="column" name="SQL_ID"/>
+		<col type="column" name="SQL_CHILD_NUMBER"/>
+		<col type="column" name="SQL_OPCODE"/>
+		<col type="column" name="FORCE_MATCHING_SIGNATURE"/>
+		<col type="column" name="TOP_LEVEL_SQL_ID"/>
+		<col type="column" name="TOP_LEVEL_SQL_OPCODE"/>
+		<col type="column" name="SQL_PLAN_HASH_VALUE"/>
+		<col type="column" name="SQL_PLAN_LINE_ID"/>
+		<col type="column" name="SQL_PLAN_OPERATION"/>
+		<col type="column" name="SQL_PLAN_OPTIONS"/>
+		<col type="column" name="SQL_EXEC_ID"/>
+		<col type="column" name="SQL_EXEC_START"/>
+		<col type="column" name="PLSQL_ENTRY_OBJECT_ID"/>
+		<col type="column" name="PLSQL_ENTRY_SUBPROGRAM_ID"/>
+		<col type="column" name="PLSQL_OBJECT_ID"/>
+		<col type="column" name="PLSQL_SUBPROGRAM_ID"/>
+		<col type="column" name="QC_INSTANCE_ID"/>
+		<col type="column" name="QC_SESSION_ID"/>
+		<col type="column" name="QC_SESSION_SERIAL#"/>
+		<col type="column" name="EVENT"/>
+		<col type="column" name="EVENT_ID"/>
+		<col type="column" name="EVENT#"/>
+		<col type="column" name="SEQ#"/>
+		<col type="column" name="P1TEXT"/>
+		<col type="column" name="P1"/>
+		<col type="column" name="P2TEXT"/>
+		<col type="column" name="P2"/>
+		<col type="column" name="P3TEXT"/>
+		<col type="column" name="P3"/>
+		<col type="column" name="WAIT_CLASS"/>
+		<col type="column" name="WAIT_CLASS_ID"/>
+		<col type="column" name="WAIT_TIME"/>
+		<col type="column" name="SESSION_STATE"/>
+		<col type="column" name="TIME_WAITED"/>
+		<col type="column" name="BLOCKING_SESSION_STATUS"/>
+		<col type="column" name="BLOCKING_SESSION"/>
+		<col type="column" name="BLOCKING_SESSION_SERIAL#"/>
+		<col type="column" name="BLOCKING_INST_ID"/>
+		<col type="column" name="BLOCKING_HANGCHAIN_INFO"/>
+		<col type="column" name="CURRENT_OBJ#"/>
+		<col type="column" name="CURRENT_FILE#"/>
+		<col type="column" name="CURRENT_BLOCK#"/>
+		<col type="column" name="CURRENT_ROW#"/>
+		<col type="column" name="CONSUMER_GROUP_ID"/>
+		<col type="column" name="XID"/>
+		<col type="column" name="REMOTE_INSTANCE#"/>
+		<col type="column" name="IN_CONNECTION_MGMT"/>
+		<col type="column" name="IN_PARSE"/>
+		<col type="column" name="IN_HARD_PARSE"/>
+		<col type="column" name="IN_SQL_EXECUTION"/>
+		<col type="column" name="IN_PLSQL_EXECUTION"/>
+		<col type="column" name="IN_PLSQL_RPC"/>
+		<col type="column" name="IN_PLSQL_COMPILATION"/>
+		<col type="column" name="IN_JAVA_EXECUTION"/>
+		<col type="column" name="IN_BIND"/>
+		<col type="column" name="IN_CURSOR_CLOSE"/>
+		<col type="column" name="SERVICE_HASH"/>
+		<col type="column" name="PROGRAM"/>
+		<col type="column" name="MODULE"/>
+		<col type="column" name="ACTION"/>
+		<col type="column" name="CLIENT_ID"/>
+		<col type="column" name="ECID"/>
+	</displayColumns>
+	<column name="SAMPLE_ID">
+		<sqlName>SAMPLE_ID</sqlName>
+		<title>Sample Id</title>
+		<type>n</type>
+	</column>
+	<column name="SAMPLE_TIME">
+		<sqlName>SAMPLE_TIME</sqlName>
+		<title>Sample Time</title>
+		<type>n</type>
+	</column>
+	<column name="SESSION_ID">
+		<sqlName>SESSION_ID</sqlName>
+		<title>Session Id</title>
+		<type>n</type>
+	</column>
+	<column name="SESSION_SERIAL#">
+		<sqlName>SESSION_SERIAL#</sqlName>
+		<title>Session Serial No.</title>
+		<type>n</type>
+	</column>
+	<column name="SESSION_TYPE">
+		<sqlName>SESSION_TYPE</sqlName>
+		<title>Session Type</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="FLAGS">
+		<sqlName>FLAGS</sqlName>
+		<title>Flags</title>
+		<type>n</type>
+	</column>
+	<column name="USER_ID">
+		<sqlName>USER_ID</sqlName>
+		<title>User Id</title>
+		<type>n</type>
+	</column>
+	<column name="SQL_ID">
+		<sqlName>SQL_ID</sqlName>
+		<title>Sql Id</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="SQL_CHILD_NUMBER">
+		<sqlName>SQL_CHILD_NUMBER</sqlName>
+		<title>Sql Child Number</title>
+		<type>n</type>
+	</column>
+	<column name="SQL_OPCODE">
+		<sqlName>SQL_OPCODE</sqlName>
+		<title>Sql Opcode</title>
+		<type>n</type>
+	</column>
+	<column name="FORCE_MATCHING_SIGNATURE">
+		<sqlName>FORCE_MATCHING_SIGNATURE</sqlName>
+		<title>Force Matching Signature</title>
+		<type>n</type>
+	</column>
+	<column name="TOP_LEVEL_SQL_ID">
+		<sqlName>TOP_LEVEL_SQL_ID</sqlName>
+		<title>Top Level Sql Id</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="TOP_LEVEL_SQL_OPCODE">
+		<sqlName>TOP_LEVEL_SQL_OPCODE</sqlName>
+		<title>Top Level SQL Opcode</title>
+		<type>n</type>
+	</column>
+	<column name="SQL_PLAN_HASH_VALUE">
+		<sqlName>SQL_PLAN_HASH_VALUE</sqlName>
+		<title>Sql Plan Hash Value</title>
+		<type>n</type>
+	</column>
+	<column name="SQL_PLAN_LINE_ID">
+		<sqlName>SQL_PLAN_LINE_ID</sqlName>
+		<title>Sql Plan Line Id</title>
+		<type>n</type>
+	</column>
+	<column name="SQL_PLAN_OPERATION">
+		<sqlName>SQL_PLAN_OPERATION</sqlName>
+		<title>Sql Plan Operation</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="SQL_PLAN_OPTIONS">
+		<sqlName>SQL_PLAN_OPTIONS</sqlName>
+		<title>Sql Plan Options</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="SQL_EXEC_ID">
+		<sqlName>SQL_EXEC_ID</sqlName>
+		<title>Sql Exec Id</title>
+		<type>n</type>
+	</column>
+	<column name="SQL_EXEC_START">
+		<sqlName>SQL_EXEC_START</sqlName>
+		<title>Sql Exec Start</title>
+		<type>n</type>
+		<drillEnable/>
+	</column>
+	<column name="PLSQL_ENTRY_OBJECT_ID">
+		<sqlName>PLSQL_ENTRY_OBJECT_ID</sqlName>
+		<title>PL/SQL Entry Object Id</title>
+		<type>n</type>
+	</column>
+	<column name="PLSQL_ENTRY_SUBPROGRAM_ID">
+		<sqlName>PLSQL_ENTRY_SUBPROGRAM_ID</sqlName>
+		<title>PL/SQL Entry Subprogram Id</title>
+		<type>n</type>
+	</column>
+	<column name="PLSQL_OBJECT_ID">
+		<sqlName>PLSQL_OBJECT_ID</sqlName>
+		<title>PL/SQL Object Id</title>
+		<type>n</type>
+	</column>
+	<column name="PLSQL_SUBPROGRAM_ID">
+		<sqlName>PLSQL_SUBPROGRAM_ID</sqlName>
+		<title>PL/SQL Subprogram Id</title>
+		<type>n</type>
+	</column>
+	<column name="QC_INSTANCE_ID">
+		<sqlName>QC_INSTANCE_ID</sqlName>
+		<title>QC Instance Id</title>
+		<type>n</type>
+	</column>
+	<column name="QC_SESSION_ID">
+		<sqlName>QC_SESSION_ID</sqlName>
+		<title>QC Session Id</title>
+		<type>n</type>
+	</column>
+	<column name="QC_SESSION_SERIAL#">
+		<sqlName>QC_SESSION_SERIAL#</sqlName>
+		<title>QC Session Serial#</title>
+		<type>n</type>
+	</column>
+	<column name="EVENT">
+		<sqlName>EVENT</sqlName>
+		<title>Event</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="EVENT_ID">
+		<sqlName>EVENT_ID</sqlName>
+		<title>Event Id</title>
+		<type>n</type>
+	</column>
+	<column name="EVENT#">
+		<sqlName>EVENT#</sqlName>
+		<title>Event No.</title>
+		<type>n</type>
+	</column>
+	<column name="SEQ#">
+		<sqlName>SEQ#</sqlName>
+		<title>Seq. No.</title>
+		<type>n</type>
+	</column>
+	<column name="P1TEXT">
+		<sqlName>P1TEXT</sqlName>
+		<title>P1text</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="P1">
+		<sqlName>P1</sqlName>
+		<title>P1</title>
+		<type>n</type>
+	</column>
+	<column name="P2TEXT">
+		<sqlName>P2TEXT</sqlName>
+		<title>P2text</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="P2">
+		<sqlName>P2</sqlName>
+		<title>P2</title>
+		<type>n</type>
+	</column>
+	<column name="P3TEXT">
+		<sqlName>P3TEXT</sqlName>
+		<title>P3text</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="P3">
+		<sqlName>P3</sqlName>
+		<title>P3</title>
+		<type>n</type>
+	</column>
+	<column name="WAIT_CLASS">
+		<sqlName>WAIT_CLASS</sqlName>
+		<title>Wait Class</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="WAIT_CLASS_ID">
+		<sqlName>WAIT_CLASS_ID</sqlName>
+		<title>Wait Class Id</title>
+		<type>n</type>
+	</column>
+	<column name="WAIT_TIME">
+		<sqlName>WAIT_TIME</sqlName>
+		<title>Wait Time</title>
+		<type>n</type>
+	</column>
+	<column name="SESSION_STATE">
+		<sqlName>SESSION_STATE</sqlName>
+		<title>Session State</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="TIME_WAITED">
+		<sqlName>TIME_WAITED</sqlName>
+		<title>Time Waited</title>
+		<type>n</type>
+	</column>
+	<column name="BLOCKING_SESSION_STATUS">
+		<sqlName>BLOCKING_SESSION_STATUS</sqlName>
+		<title>Blocking Session Status</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="BLOCKING_SESSION">
+		<sqlName>BLOCKING_SESSION</sqlName>
+		<title>Blocking Session</title>
+		<type>n</type>
+	</column>
+	<column name="BLOCKING_SESSION_SERIAL#">
+		<sqlName>BLOCKING_SESSION_SERIAL#</sqlName>
+		<title>Blocking Session Serial#</title>
+		<type>n</type>
+	</column>
+	<column name="BLOCKING_INST_ID">
+		<sqlName>BLOCKING_INST_ID</sqlName>
+		<title>Blocking Inst Id</title>
+		<type>n</type>
+	</column>
+	<column name="BLOCKING_HANGCHAIN_INFO">
+		<sqlName>BLOCKING_HANGCHAIN_INFO</sqlName>
+		<title>Blocking Hangchain Info</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="CURRENT_OBJ#">
+		<sqlName>CURRENT_OBJ#</sqlName>
+		<title>Current Obj. No.</title>
+		<type>n</type>
+	</column>
+	<column name="CURRENT_FILE#">
+		<sqlName>CURRENT_FILE#</sqlName>
+		<title>Current File#</title>
+		<type>n</type>
+	</column>
+	<column name="CURRENT_BLOCK#">
+		<sqlName>CURRENT_BLOCK#</sqlName>
+		<title>Current Block#</title>
+		<type>n</type>
+	</column>
+	<column name="CURRENT_ROW#">
+		<sqlName>CURRENT_ROW#</sqlName>
+		<title>Current Row#</title>
+		<type>n</type>
+	</column>
+	<column name="CONSUMER_GROUP_ID">
+		<sqlName>CONSUMER_GROUP_ID</sqlName>
+		<title>Consumer Group Id</title>
+		<type>n</type>
+	</column>
+	<column name="XID">
+		<sqlName>XID</sqlName>
+		<title>Xid</title>
+		<type>n</type>
+	</column>
+	<column name="REMOTE_INSTANCE#">
+		<sqlName>REMOTE_INSTANCE#</sqlName>
+		<title>Remote Instance#</title>
+		<type>n</type>
+	</column>
+	<column name="IN_CONNECTION_MGMT">
+		<sqlName>IN_CONNECTION_MGMT</sqlName>
+		<title>In Connection Mgmt</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="IN_PARSE">
+		<sqlName>IN_PARSE</sqlName>
+		<title>In Parse</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="IN_HARD_PARSE">
+		<sqlName>IN_HARD_PARSE</sqlName>
+		<title>In Hard Parse</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="IN_SQL_EXECUTION">
+		<sqlName>IN_SQL_EXECUTION</sqlName>
+		<title>In Sql Execution</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="IN_PLSQL_EXECUTION">
+		<sqlName>IN_PLSQL_EXECUTION</sqlName>
+		<title>In Plsql Execution</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="IN_PLSQL_RPC">
+		<sqlName>IN_PLSQL_RPC</sqlName>
+		<title>In Plsql Rpc</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="IN_PLSQL_COMPILATION">
+		<sqlName>IN_PLSQL_COMPILATION</sqlName>
+		<title>In Plsql Compilation</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="IN_JAVA_EXECUTION">
+		<sqlName>IN_JAVA_EXECUTION</sqlName>
+		<title>In Java Execution</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="IN_BIND">
+		<sqlName>IN_BIND</sqlName>
+		<title>In Bind</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="IN_CURSOR_CLOSE">
+		<sqlName>IN_CURSOR_CLOSE</sqlName>
+		<title>In Cursor Close</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="SERVICE_HASH">
+		<sqlName>SERVICE_HASH</sqlName>
+		<title>Service Hash</title>
+		<type>n</type>
+	</column>
+	<column name="PROGRAM">
+		<sqlName>PROGRAM</sqlName>
+		<title>Program</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="MODULE">
+		<sqlName>MODULE</sqlName>
+		<title>Module</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="ACTION">
+		<sqlName>ACTION</sqlName>
+		<title>Action</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="CLIENT_ID">
+		<sqlName>CLIENT_ID</sqlName>
+		<title>Client Id</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="ECID">
+		<sqlName>ECID</sqlName>
+		<title>ECID</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+</table>

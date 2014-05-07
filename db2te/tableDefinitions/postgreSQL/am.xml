@@ -1,0 +1,194 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2013 All rights reserved.
+  
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+<table name="am">
+	<sqlName>pg_am</sqlName>
+	<singularName>Access Method</singularName>
+	<pluralName>Access Method</pluralName>
+	<description>The catalog pg_am stores information about index access methods. There is one row for each index access method supported by the system.</description>
+	<!-- <orderBy name="acolumn" direction="A"/> -->
+	<displayColumns>
+		<col type="column" name="amname"/>
+		<col type="column" name="amstrategies"/>
+		<col type="column" name="amsupport"/>
+		<col type="column" name="amcanorder"/>
+		<col type="column" name="amcanorderbyop"/>
+		<col type="column" name="amcanbackward"/>
+		<col type="column" name="amcanunique"/>
+		<col type="column" name="amcanmulticol"/>
+		<col type="column" name="amoptionalkey"/>
+		<col type="column" name="amsearcharray"/>
+		<col type="column" name="amsearchnulls"/>
+		<col type="column" name="amstorage"/>
+		<col type="column" name="amclusterable"/>
+		<col type="column" name="ampredlocks"/>
+		<col type="column" name="keytype"/>
+		<col type="column" name="aminsert"/>
+		<col type="column" name="ambeginscan"/>
+		<col type="column" name="amgettuple"/>
+		<col type="column" name="amgetbitmap"/>
+		<col type="column" name="amrescan"/>
+		<col type="column" name="amendscan"/>
+		<col type="column" name="ammarkpos"/>
+		<col type="column" name="amrestrpos"/>
+		<col type="column" name="ambuild"/>
+		<col type="column" name="ambuildempty"/>
+		<col type="column" name="ambulkdelete"/>
+		<col type="column" name="amvacuumcleanup"/>
+		<col type="column" name="amcanreturn"/>
+		<col type="column" name="amcostestimate"/>
+		<col type="column" name="amoptions"/>
+	</displayColumns>
+	<column name="amname">
+		<sqlName>amname</sqlName>
+		<title>Name</title>
+	</column>
+	<column name="amstrategies">
+		<sqlName>amstrategies</sqlName>
+		<title>Strategies</title>
+		<type>n</type>
+	</column>
+	<column name="amsupport">
+		<sqlName>amsupport</sqlName>
+		<title>Support</title>
+		<type>n</type>
+	</column>
+	<column name="amcanorder">
+		<sqlName>amcanorder</sqlName>
+		<title>Order</title>
+		<type>boolean</type>
+	</column>
+	<column name="amcanorderbyop">
+		<sqlName>amcanorderbyop</sqlName>
+		<title>Order By Op</title>
+		<type>boolean</type>
+	</column>
+	<column name="amcanbackward">
+		<sqlName>amcanbackward</sqlName>
+		<title>Backward Scanning</title>
+		<type>boolean</type>
+	</column>
+	<column name="amcanunique">
+		<sqlName>amcanunique</sqlName>
+		<title>Unique</title>
+		<type>boolean</type>
+	</column>
+	<column name="amcanmulticol">
+		<sqlName>amcanmulticol</sqlName>
+		<title>Multi Column Indexes</title>
+		<type>boolean</type>
+	</column>
+	<column name="amoptionalkey">
+		<sqlName>amoptionalkey</sqlName>
+		<title>Optional Key</title>
+		<type>boolean</type>
+	</column>
+	<column name="amsearcharray">
+		<sqlName>amsearcharray</sqlName>
+		<title>Search Array</title>
+		<type>boolean</type>
+	</column>
+	<column name="amsearchnulls">
+		<sqlName>amsearchnulls</sqlName>
+		<title>Search Nulls</title>
+		<type>boolean</type>
+	</column>
+	<column name="amstorage">
+		<sqlName>amstorage</sqlName>
+		<title>Storage</title>
+		<type>boolean</type>
+	</column>
+	<column name="amclusterable">
+		<sqlName>amclusterable</sqlName>
+		<title>Clusterable</title>
+		<type>boolean</type>
+	</column>
+	<column name="ampredlocks">
+		<sqlName>ampredlocks</sqlName>
+		<title>Pred. Locks</title>
+		<type>boolean</type>
+	</column>
+	<column name="amkeytype">
+		<sqlName>amkeytype</sqlName>
+		<title>Key Typeid</title>
+		<type>n</type>
+	</column>
+	<column name="keytype">
+		<sqlName>(select typname from pg_type t where t.oid=amkeytype)</sqlName>
+		<title>Key Type</title>
+	</column>
+	<column name="aminsert">
+		<sqlName>aminsert</sqlName>
+		<title>Insert</title>
+	</column>
+	<column name="ambeginscan">
+		<sqlName>ambeginscan</sqlName>
+		<title>Begin Scan</title>
+	</column>
+	<column name="amgettuple">
+		<sqlName>amgettuple</sqlName>
+		<title>Get Tuple</title>
+	</column>
+	<column name="amgetbitmap">
+		<sqlName>amgetbitmap</sqlName>
+		<title>Get Bitmap</title>
+	</column>
+	<column name="amrescan">
+		<sqlName>amrescan</sqlName>
+		<title>Rescan</title>
+	</column>
+	<column name="amendscan">
+		<sqlName>amendscan</sqlName>
+		<title>End Scan</title>
+	</column>
+	<column name="ammarkpos">
+		<sqlName>ammarkpos</sqlName>
+		<title>Mark Pos.</title>
+	</column>
+	<column name="amrestrpos">
+		<sqlName>amrestrpos</sqlName>
+		<title>Restore Pos.</title>
+	</column>
+	<column name="ambuild">
+		<sqlName>ambuild</sqlName>
+		<title>Build</title>
+	</column>
+	<column name="ambuildempty">
+		<sqlName>ambuildempty</sqlName>
+		<title>Build Empty</title>
+	</column>
+	<column name="ambulkdelete">
+		<sqlName>ambulkdelete</sqlName>
+		<title>Bulk Delete</title>
+	</column>
+	<column name="amvacuumcleanup">
+		<sqlName>amvacuumcleanup</sqlName>
+		<title>Vacuum Cleanup</title>
+	</column>
+	<column name="amcanreturn">
+		<sqlName>amcanreturn</sqlName>
+		<title>Can Return</title>
+	</column>
+	<column name="amcostestimate">
+		<sqlName>amcostestimate</sqlName>
+		<title>Cost Estimate</title>
+	</column>
+	<column name="amoptions">
+		<sqlName>amoptions</sqlName>
+		<title>Options</title>
+	</column>
+</table>

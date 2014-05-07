@@ -1,0 +1,388 @@
+<table name="SYSCAT.PACKAGES">
+    <sql_name>SYSCAT.PACKAGES</sql_name>
+    <singular_name>Package</singular_name>
+    <plural_name>Packages</plural_name>
+    <description>Each row represents a 
+    &lt;a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.admin.explain.doc/doc/c0021371.html?noframes=true');"&gt;package&lt;/a&gt;
+    that has been created by binding an application program.    
+	This list is generated from the &lt;a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.sql.ref.doc/doc/r0001053.html?noframes=true');"&gt;SYSCAT.PACKAGES&lt;/a&gt; catalog view.    
+    </description>
+	<disableEdit/>
+	<output>
+		<type name="DDL" destination="" title="" generator=""/>
+	</output>
+    <display_columns>
+        <col type="column" name="pkgschema"></col>
+        <col type="column" name="pkgname"></col>
+        <col type="reference" name="boundbylink"></col>        
+        <col type="column" name="boundby"></col>
+        <col type="column" name="boundbytype"></col>
+        <col type="reference" name="ownerlink"></col>       
+        <col type="column" name="owner"></col>
+        <col type="column" name="ownertype"></col>
+        <col type="reference" name="auth"></col>                
+        <col type="reference" name="definerlink"></col>                        
+        <col type="column" name="definer"></col>        
+        <col type="column" name="default_schema"></col>
+        <col type="column" name="valid"></col>
+        <col type="column" name="isolation"></col>
+        <col type="column" name="queryopt"></col>
+        <col type="column" name="validate"></col>
+        <col type="column" name="last_bind_time"></col>
+    </display_columns>
+	<order_by_index name="pkgschema" direction="A"/>
+	<order_by_index name="pkgname" direction="A"/>    
+	<reference name="StaticSQL">
+		<title>Static SQL</title>
+		<reftype>table</reftype>
+		<refvalue>staticStatements</refvalue>
+		<icon>images/icon-privilege.gif</icon>
+		<ref foreign_column_name="plcreator">
+			<local_column_name>pkgschema</local_column_name>
+		</ref>
+		<ref foreign_column_name="plname">
+			<local_column_name>pkgname</local_column_name>
+		</ref>
+	</reference>		
+	<reference name="auth">
+		<title>Privileges</title>
+		<reftype>table</reftype>
+		<refvalue>Authority/packageauth</refvalue>
+		<icon>images/icon-privilege.gif</icon>
+		<ref foreign_column_name="pkgschema">
+			<local_column_name>pkgschema</local_column_name>
+		</ref>
+		<ref foreign_column_name="pkgname">
+			<local_column_name>pkgname</local_column_name>
+		</ref>
+   	    <prefillEnable/>	        		
+	</reference>		
+    <column name="pkgschema">
+        <sqlName>PKGSCHEMA</sqlName>
+        <title>Schema</title>
+        <type>s</type>
+        <drillEnable/>
+		<primaryKey/>        
+		<prefill>
+			<table>schema</table>
+			<column>SCHEMANAME</column>
+		</prefill>                		      
+    </column>
+    <column name="pkgname">
+        <sqlName>PKGNAME</sqlName>
+        <title>Name</title>
+        <type>s</type>
+        <drillEnable/>
+		<primaryKey/>        
+    </column>
+	<reference name="boundbylink">
+		<title>Bound by</title>
+		<reftype>table</reftype>
+		<refvalue>Authority/authids</refvalue>
+		<icon>images/icon-user.gif</icon>						
+		<ref foreign_column_name="authid">
+			<local_column_name>boundby</local_column_name>
+		</ref>
+	</reference>	    
+    <column name="boundby">
+        <sqlName>BOUNDBY</sqlName>
+        <title>Bound by</title>
+        <type>s</type>
+        <drillEnable/>
+    </column>
+    <column name="boundbytype">
+        <sqlName>BOUNDBYTYPE</sqlName>
+        <title>Type</title>
+        <type>s</type>
+        <drillEnable/>
+    </column>
+	<reference name="ownerlink">
+		<title>Owner</title>
+		<reftype>table</reftype>
+		<refvalue>Authority/authids</refvalue>
+		<icon>images/icon-user.gif</icon>						
+		<ref foreign_column_name="authid">
+			<local_column_name>owner</local_column_name>
+		</ref>
+	</reference>	    
+    <column name="owner">
+        <sqlName>OWNER</sqlName>
+        <title>Owner</title>
+        <type>s</type>
+        <drillEnable/>
+    </column>
+    <column name="ownertype">
+        <sqlName>OWNERTYPE</sqlName>
+        <title>Type</title>
+        <type>s</type>
+        <drillEnable/>
+    </column>
+    <column name="default_schema">
+        <sqlName>DEFAULT_SCHEMA</sqlName>
+        <title>Default Schema</title>
+        <type>s</type>
+        <drillEnable/>
+		<c_prefill>
+			<table>schema</table>
+			<column>SCHEMANAME</column>
+		</c_prefill>                        
+    </column>
+    <column name="valid">
+        <sqlName>VALID</sqlName>
+        <title>Valid</title>
+        <type>s</type>
+        <drillEnable/>
+   	    <prefillEnable/>	                
+    </column>
+    <column name="unique_id">
+        <sqlName>UNIQUE_ID</sqlName>
+        <title>Unique Id</title>
+        <type>s</type>
+        <drillEnable/>
+    </column>
+    <column name="total_sect">
+        <sqlName>TOTAL_SECT</sqlName>
+        <title>Sections</title>
+        <type>n</type>
+        <c_drill>n</c_drill>
+    </column>
+    <column name="format">
+        <sqlName>FORMAT</sqlName>
+        <title>Format</title>
+        <type>s</type>
+        <drillEnable/>
+   	    <prefillEnable/>	                
+    </column>
+    <column name="isolation">
+        <sqlName>ISOLATION</sqlName>
+        <title>Isolation</title>
+        <type>s</type>
+        <drillEnable/>
+   	    <column_mask>
+			  <value_mask value="CS"><mask>Cursor Stability</mask></value_mask>
+			  <value_mask value="RR"><mask>Repeatable Read</mask></value_mask>
+			  <value_mask value="RS"><mask>Read Stability</mask></value_mask>
+			  <value_mask value="UR"><mask>Uncommitted Read</mask></value_mask>				  
+   	    </column_mask>	
+   	    <prefillEnable/>	        
+    </column>
+    <column name="blocking">
+        <sqlName>BLOCKING</sqlName>
+        <title>Blocking</title>
+        <type>s</type>
+        <drillEnable/>
+   	    <prefillEnable/>	                
+    </column>
+    <column name="insert_buf">
+        <sqlName>INSERT_BUF</sqlName>
+        <title>Insert Buffered</title>
+        <type>s</type>
+        <drillEnable/>
+    </column>
+    <column name="lang_level">
+        <sqlName>LANG_LEVEL</sqlName>
+        <title>Language Level</title>
+        <type>s</type>
+        <drillEnable/>
+   	    <prefillEnable/>	        
+    </column>
+    <column name="func_path">
+        <sqlName>FUNC_PATH</sqlName>
+        <title>SQL Path</title>
+        <type>l</type>
+    </column>
+    <column name="queryopt">
+        <sqlName>QUERYOPT</sqlName>
+        <title>Optimization</title>
+        <type>s</type>
+    </column>
+    <column name="explain_level">
+        <sqlName>EXPLAIN_LEVEL</sqlName>
+        <title>Explain</title>
+        <type>s</type>
+        <drillEnable/>
+    </column>
+    <column name="explain_mode">
+        <sqlName>EXPLAIN_MODE</sqlName>
+        <title>Explain Mode</title>
+        <type>s</type>
+        <drillEnable/>
+    </column>
+    <column name="explain_snapshot">
+        <sqlName>EXPLAIN_SNAPSHOT</sqlName>
+        <title>Explain Snapshot</title>
+        <type>s</type>
+        <drillEnable/>
+    </column>
+    <column name="sqlwarn">
+        <sqlName>SQLWARN</sqlName>
+        <title>SQLWARN</title>
+        <type>s</type>
+        <drillEnable/>
+    </column>
+    <column name="sqlmathwarn">
+        <sqlName>SQLMATHWARN</sqlName>
+        <title>SQLMATHWARN</title>
+        <type>s</type>
+        <drillEnable/>
+    </column>
+    <column name="explicit_bind_time">
+        <sqlName>EXPLICIT_BIND_TIME</sqlName>
+        <title>Explicit Bind</title>
+        <type>n</type>
+    </column>
+    <column name="last_bind_time">
+        <sqlName>LAST_BIND_TIME</sqlName>
+        <title>Last Bind</title>
+        <type>n</type>
+    </column>
+    <column name="codepage">
+        <sqlName>CODEPAGE</sqlName>
+        <title>Codepage</title>
+        <type>n</type>
+    </column>
+    <column name="collationschema">
+        <sqlName>COLLATIONSCHEMA</sqlName>
+        <title>Collation Schema</title>
+        <type>s</type>
+        <drillEnable/>
+    </column>
+    <column name="collationname">
+        <sqlName>COLLATIONNAME</sqlName>
+        <title>Collation Name</title>
+        <type>s</type>
+        <drillEnable/>
+    </column>
+    <column name="collationschema_orderby">
+        <sqlName>COLLATIONSCHEMA_ORDERBY</sqlName>
+        <title>Collation Schema Order by</title>
+        <type>s</type>
+        <drillEnable/>
+    </column>
+    <column name="collationname_orderby">
+        <sqlName>COLLATIONNAME_ORDERBY</sqlName>
+        <title>Collation Name Order by</title>
+        <type>s</type>
+        <drillEnable/>
+    </column>
+    <column name="degree">
+        <sqlName>DEGREE</sqlName>
+        <title>Degree</title>
+        <type>s</type>
+        <drillEnable/>
+    </column>
+    <column name="multinode_plans">
+        <sqlName>MULTINODE_PLANS</sqlName>
+        <title>Multinode Plans</title>
+        <type>s</type>
+        <drillEnable/>
+    </column>
+    <column name="intra_parallel">
+        <sqlName>INTRA_PARALLEL</sqlName>
+        <title>Intra Parallel</title>
+        <type>s</type>
+        <drillEnable/>
+    </column>
+    <column name="validate">
+        <sqlName>VALIDATE</sqlName>
+        <title>Validate</title>
+        <type>s</type>
+        <drillEnable/>
+    </column>
+    <column name="dynamicrules">
+        <sqlName>DYNAMICRULES</sqlName>
+        <title>Dynamic Rules</title>
+        <type>s</type>
+        <drillEnable/>
+    </column>
+    <column name="sqlerror">
+        <sqlName>SQLERROR</sqlName>
+        <title>SQLERROR</title>
+        <type>s</type>
+        <drillEnable/>
+    </column>
+    <column name="refreshage">
+        <sqlName>REFRESHAGE</sqlName>
+        <title>Refersh Age</title>
+        <type>n</type>
+        <c_drill>n</c_drill>
+    </column>
+    <column name="federated">
+        <sqlName>FEDERATED</sqlName>
+        <title>Federated</title>
+        <type>s</type>
+        <drillEnable/>
+    </column>
+    <column name="transformgroup">
+        <sqlName>TRANSFORMGROUP</sqlName>
+        <title>Transform Group</title>
+        <type>s</type>
+        <drillEnable/>
+    </column>
+    <column name="reoptvar">
+        <sqlName>REOPTVAR</sqlName>
+        <title>Reoptimize</title>
+        <type>s</type>
+        <drillEnable/>
+    </column>
+    <column name="os_ptr_size">
+        <sqlName>OS_PTR_SIZE</sqlName>
+        <title>Word Size</title>
+        <type>n</type>
+    </column>
+    <column name="pkgversion">
+        <sqlName>PKGVERSION</sqlName>
+        <title>Version</title>
+        <type>s</type>
+        <drillEnable/>
+    </column>
+    <column name="pkg_create_time">
+        <sqlName>PKG_CREATE_TIME</sqlName>
+        <title>Creation</title>
+        <type>n</type>
+    </column>
+    <column name="staticreadonly">
+        <sqlName>STATICREADONLY</sqlName>
+        <title>Static Ready Only</title>
+        <type>s</type>
+        <drillEnable/>
+    </column>
+    <column name="federated_asynchrony">
+        <sqlName>FEDERATED_ASYNCHRONY</sqlName>
+        <title>Federated Asynchrony</title>
+        <type>n</type>
+    </column>
+    <column name="optprofileschema">
+        <sqlName>OPTPROFILESCHEMA</sqlName>
+        <title>Optimization Profile Schema</title>
+        <type>s</type>
+        <drillEnable/>
+    </column>
+    <column name="optprofilename">
+        <sqlName>OPTPROFILENAME</sqlName>
+        <title>Optimization Profile Name</title>
+        <type>s</type>
+        <drillEnable/>
+    </column>
+	<reference name="definerlink">
+		<title>Definer</title>
+		<reftype>table</reftype>
+		<refvalue>Authority/authids</refvalue>
+		<icon>images/icon-user.gif</icon>						
+		<ref foreign_column_name="authid">
+			<local_column_name>definer</local_column_name>
+		</ref>
+	</reference>	    
+    <column name="definer">
+        <sqlName>DEFINER</sqlName>
+        <title>Definer</title>
+        <type>s</type>
+        <drillEnable/>
+    </column>
+    <column name="remarks">
+        <sqlName>REMARKS</sqlName>
+        <title>Remarks</title>
+        <type>s</type>
+        <drillEnable/>
+    </column>
+</table>

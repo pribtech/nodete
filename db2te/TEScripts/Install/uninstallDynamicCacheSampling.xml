@@ -1,0 +1,80 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2010 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+
+<actionScript name="uninstallDynamicCacheSamplingV95" type="form">
+	<message><![CDATA[
+<div style='width:500px'>
+<p>Drop the objects required for Dynamic Cache Sampling</p>
+</div>
+]]>
+    </message>
+    <parameterList>
+		<parameter name="buttonOK" type="raw">
+			<value>remove</value>
+		</parameter>
+	</parameterList>
+	<if condition="true">
+		<task>
+			<action name="removeDb2Monitors" type="serverAction">
+				<parameterList>
+					<parameter name="action" type="fixed">
+						<value>executeSQL</value>
+					</parameter>
+					<parameter name="commitPerSTMT" type="raw">
+						<value>true</value>
+					</parameter>
+					<parameter name="abortOnFailure" type="raw">
+						<value>false</value>
+					</parameter>
+					<parameter name="SQL[0]" type="fixed">
+						<value>drop FUNCTION "s#db2mc".Hashstring(clob(1M))</value>
+					</parameter>
+					<parameter name="SQL[1]" type="fixed">
+						<value>drop PROCEDURE "s#db2mc"."gatherDynSQL"</value>
+					</parameter>
+					<parameter name="SQL[2]" type="fixed">
+						<value>drop table "s#db2mc".hist_SNAP_GET_DYN_SQL_delta</value>
+					</parameter>
+					<parameter name="SQL[3]" type="fixed">
+						<value>drop table "s#db2mc".hist_SNAP_GET_DYN_SQL</value>
+					</parameter>
+				</parameterList>
+				<if condition="true" negCondition="true">
+					<task>
+						<assignSharedConstant name="STMTRun" type="returnObject">
+							<value>removeDb2Monitors.returnValue.STMTRun</value>
+						</assignSharedConstant>
+						<assignSharedConstant name="STMT" type="returnObject">
+							<value>removeDb2Monitors.returnValue.STMT</value>
+						</assignSharedConstant>
+						<assignSharedConstant name="STMTMSG" type="returnObject">
+							<value>removeDb2Monitors.returnValue.STMTMSG</value>
+						</assignSharedConstant>
+						<alert>Failure(s) in remove db2mc Dynamic Cache Sampling, statement ?STMTRun? 
+						</alert>
+					</task>
+				</if>
+				<if condition="true">
+					<task>
+						<alert>db2mc Dynamic Cache Sampling removed</alert>
+					</task>
+				</if>
+			</action>
+		</task>
+	</if>
+</actionScript>

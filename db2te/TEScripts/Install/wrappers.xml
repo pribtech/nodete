@@ -1,0 +1,246 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2012 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+
+<tutorial name="wrappers" disableSetSchema="true">
+	<flowRestriction>forwardexploration</flowRestriction>
+    <closeAction />
+    <openAction />
+    <globalCodeHighlightOptions highlightCode = "true" />
+    <WMDConfig/>
+    <pageList>
+		<page name="SOAP UDF" type="general">
+    	 	<entryAction/>
+    	 	<exitAction/>
+            <contentText>
+<![CDATA[
+This installs the commponents to use the SOAP feature
+]]>
+			</contentText>
+            <SQLText>
+<![CDATA[
+]]>
+            </SQLText>
+            <SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar="@"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+        </page>
+		<page name="Install SOAP UDF" type="general">
+			<entryAction name="checkFordb2mcOscmd" type="serverAction">
+				<parameterList>
+					<parameter name="action" type="raw">
+						<value>checkForObjectWithCase</value>
+					</parameter>
+					<parameter name="objectType" type="raw">
+						<value>function</value>
+					</parameter>
+					<parameter name="object[schema]" type="raw">
+						<value><![CDATA[s#db2mc]]></value>
+					</parameter>
+					<parameter name="object[function]" type="raw">
+						<value>OSCMD</value>
+					</parameter>
+				</parameterList>
+				<followOnAction condition="0" compareOn="checkFordb2mcOscmd.returnValue">
+					<task>
+						<action name="alertTablesNotCreated" type="alert">
+							<message>prerequisite in installing tools-&gt;installed components-&gt;DB2TE added functions</message>
+						</action>
+						<setActionReturn value='false'/>
+					</task>
+				</followOnAction>
+			</entryAction>
+    	 	<exitAction/>
+            <contentText>
+<![CDATA[
+<p>Create the objects required for SOAP UDF</p>
+]]>
+			</contentText>
+            <SQLText>
+<![CDATA[
+CALL SYSPROC.ADMIN_CMD ('update dbm cfg using federated YES IMMEDIATE');
+
+db2stop 
+db2start
+
+CREATE WRAPPER JDBC;
+CREATE WRAPPER ODBC; 
+CREATE WRAPPER NET8 ; -- oracle
+CREATE WRAPPER DRDA ; -- db2
+CREATE WRAPPER MSSQLODBC3; - ms sql
+CREATE WRAPPER CTLIB ; -- Sybase
+CREATE WRAPPER TERADATA; 
+CREATE WRAPPER INFORMIX; 
+
+-- own java wrapper	
+		
+CREATE WRAPPER MyWrapper LIBRARY 'db2qgjava.dll' 
+  options (UNFENCED_WRAPPER_CLASS 'my.package.MyUnfencedWrapper')
+	MODULE '/opt/IBM/DB2IIClassic82/cli/lib/cacsqlcli.so') 
+	
+	 db2qgjava.dll for Windows
+    libdb2qgjava.a for AIX®
+    libdb2qgjava.so for other UNIX operating systems
+	
+	
+
+
+CREATE WRAPPER xml_wrapper LIBRARY 'libdb2lsxml.a'; 
+
+xml_wrapper
+    A name that you assign to the XML wrapper. Duplicate wrapper names are not allowed.
+LIBRARY 'libdb2lsxml.a'
+    The name of the wrapper library file for federated servers that use AIX® operating systems. 
+
+Registering a wrapper for an HTTP proxy server
+To register a wrapper and specify an HTTP proxy server, use the following statement:
+
+CREATE WRAPPER xml_wrapper LIBRARY 'libdb2lsxml.a' 
+    OPTIONS (PROXY_TYPE 'HTTP', PROXY_SERVER_NAME 'proxy_http', 
+        PROXY_SERVER_PORT '8080'); 
+
+PROXY_TYPE 'HTTP'
+    Specifies the proxy type that is used to access the Internet when behind a firewall. The valid values are 'NONE', 'HTTP', or 'SOCKS'. 
+PROXY_SERVER_NAME 'proxy_http'
+    Specifies the proxy server name or IP address. This option is required if the value for the PROXY_TYPE server option is 'HTTP' or 'SOCKS'. 
+PROXY_SERVER_PORT '8080'
+    Specifies the proxy server port number. This option is required if the value for the PROXY_TYPE server option is 'HTTP' or 'SOCKS'. 
+
+Registering a wrapper for a SOCKS proxy server
+To register a wrapper and specify a SOCKS proxy server without authentication information, use the following statement:
+
+CREATE WRAPPER xml_wrapper LIBRARY 'libdb2lsxml.so' 
+    OPTIONS (PROXY_TYPE 'SOCKS', PROXY_SERVER_NAME 'proxy_socks', 
+        PROXY_SERVER_PORT '1081'); 
+
+LIBRARY 'libdb2lsxml.so'
+    Specifies the name of the wrapper library file for federated servers that use Linux and Solaris operating systems. 
+PROXY_TYPE 'SOCKS'
+    Specifies the proxy type that is used to access the Internet when behind a firewall. The valid values are 'NONE', 'HTTP', or 'SOCKS'. 
+PROXY_SERVER_NAME 'proxy_socks'
+    Specifies the proxy server name or IP address. This option is required if the value for the PROXY_TYPE server option is 'HTTP' or 'SOCKS'. 
+PROXY_SERVER_PORT '1081'
+    Specifies the proxy server port number. This option is required if the value for the PROXY_TYPE server option is 'HTTP' or 'SOCKS'. 
+
+
+
+
+
+
+
+CREATE WRAPPER excel_wrapper 
+LIBRARY 'db2lsxls.dll'; 
+
+Operating system 	Directory path 	Wrapper library file name
+AIX 	
+
+/usr/opt/<install_path>/lib32/
+/usr/opt/<install_path>/lib64/
+	libdb2lsxml.a
+Linux 	
+
+/opt/IBM/db2/<install_path>/lib32
+/opt/IBM/db2/<install_path>/lib64
+	libdb2lsxml.so
+Solaris 	
+
+/opt/IBM/db2/<install_path>/lib32
+/opt/IBM/db2/<install_path>/lib64
+	libdb2lsxml.so
+Windows 	%DB2PATH%\bin 	db2lsxml.dll
+
+
+
+CREATE WRAPPER flat_files_wrapper 
+LIBRARY 'libdb2lsfile.a';
+
+Table 1. Table-structured files client library locations and file namesOperating system 	Directory path 	Wrapper library file names
+AIX 	
+
+/usr/opt/<install_path>/lib32/
+/usr/opt/<install_path>/lib64/
+	libdb2lsfile.a
+Linux 	
+
+/opt/IBM/db2/<install_path>/lib32
+/opt/IBM/db2/<install_path>/lib64
+	libdb2lsfile.so
+Solaris 	
+
+/opt/IBM/db2/<install_path>/lib32
+/opt/IBM/db2/<install_path>/lib64
+	libdb2lsfile.so
+Windows 	%DB2PATH%\bin 	db2lsfile.dll
+
+
+
+CREATE WRAPPER websr_wrapper LIBRARY 'db2ws.dll';  
+AIX 	
+
+/usr/opt/<install_path>/lib32/
+/usr/opt/<install_path>/lib64/
+	libdb2ws.a
+Linux 	
+
+/opt/IBM/db2/<install_path>/lib32
+/opt/IBM/db2/<install_path>/lib64
+	libsb2ws.so
+Solaris 	
+
+/opt/IBM/db2/<install_path>/lib32
+/opt/IBM/db2/<install_path>/lib64
+	libdb2ws.so
+Windows 	%DB2PATH%\bin 	db2ws.dll
+CREATE NICKNAME GETTEMP ( 
+ 	ZIPCODE VARCHAR (48) OPTIONS(TEMPLATE '&column'),
+   RETURN VARCHAR (48) OPTIONS(XPATH './return/text()')
+   )
+  FOR SERVER "EHPWSSERV" 
+   OPTIONS(URL 'http://services.xmethods.net:80/soap/servlet/rpcrouter',  
+           SOAPACTION ' ' , 
+           TEMPLATE '<soapenv:Envelope>
+                       <soapenv:Body>
+                          <ns2:getTemp>
+                            <zipcode>&zipcode[1,1]</zipcode>
+                          </ns2:getTemp>
+                       </soapenv:Body>
+                     </soapenv:Envelope>', 
+           XPATH '/soapenv:Envelope/soapenv:Body/*' , 
+           NAMESPACES ' ns1="http://www.xmethods.net/sd/TemperatureService.wsdl", 
+                        ns2="urn:xmethods-Temperature" , 
+                          soapenv="http://schemas.xmlsoap.org/soap/envelope/"');
+
+]]>
+			</SQLText>
+            <SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar="@"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+        </page>
+		<page name="Uninstall" type="last">
+            <contentText>
+<![CDATA[
+Uninstall objects.
+]]>
+			</contentText>
+            <SQLText>
+<![CDATA[
+]]>
+            </SQLText>
+            <SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar="@"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+        </page>
+
+    </pageList>
+</tutorial>

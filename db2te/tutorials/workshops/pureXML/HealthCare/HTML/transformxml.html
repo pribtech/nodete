@@ -1,0 +1,26 @@
+<p><b>Scenario</b></p>
+<p>
+A patient, Oliver, returns to the hospital for a medical follow up. The doctor recommends for additional examination. Any changes to the patients medical status will trigger an additional PMD document for the patient.  
+A copy of the existing PMD document together with the additional details will be created. 
+This helps the health care provider to maintain the complete medical history of a patient in such a way that any 
+point in time medical status can be easily retrieved. 
+</p>
+<p><b>Operation</b></p>
+<p>
+	Insert a new PMD document with the TRANSFORM function. This function fetches an existing XML document, modifies the virtual copy of the document, and then inserts the updates, all in one statement.
+	The output will show a additional component added at the end of the PMD (See result tab).
+</p>
+<p>
+<ul>
+<li>The  XMLQUERY function fetches the PMD document.</li>
+<li>The TRANSFORM function can do an INSERT, REPLACE or DELETE operation in a XML document.</li>
+<li><b><code>do insert</code></b> inserts a node to the existing PMD document.</li>
+<li><b><code>do replace</code></b> replace a part of the node or edits a node.</li>
+</ul>
+</p>
+<p><b>Solution</b></p>
+<p>
+ 	A new PMD is created for Oliver with all the medical history and the latest recommendations from the doctor.
+</p>
+<p><b>Best Practices</b></p>
+<li>When updating multiple elements of an XML document, combine the updates into a single transform expression (insert and replace in our example) to help obtain significantly increased update performance.</li>

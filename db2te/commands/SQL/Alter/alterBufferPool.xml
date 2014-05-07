@@ -1,0 +1,76 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2009 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<command name="alterBufferPool" title="Alter Buffer Pool">
+<![CDATA[
+>>-ALTER BUFFERPOOL--bufferpool-name---------------------------->
+]]>
+	<text>ALTER BUFFERPOOL</text>
+	<clauseReference name="bufferpool-name"/>
+	<br/>
+
+<![CDATA[
+     .-IMMEDIATE-.                                                                                        
+>--+-+-----------+--+-------------------------------------+--SIZE--+-number-of-pages----------------+-+-><
+   | '-DEFERRED--'  '-DBPARTITIONNUM--db-partition-number-'        '-+-----------------+--AUTOMATIC-' |   
+   |                                                                 '-number-of-pages-'              |   
+   +-ADD DATABASE PARTITION GROUP--db-partition-group-name--------------------------------------------+   
+   +-NUMBLOCKPAGES--number-of-pages--+----------------------------+-----------------------------------+   
+   |                                 '-BLOCKSIZE--number-of-pages-'                                   |   
+   '-BLOCKSIZE--number-of-pages-----------------------------------------------------------------------'   
+]]>
+	<select>
+		<option default="true">
+			<select>
+				<option><text>IMMEDIATE</text></option> 
+				<option default="true"><note>IMMEDIATE</note></option> 
+				<option><text>DEFERRED</text></option> 
+			</select>
+			<select>
+				<option default="true"><note>DBPARTITIONNUM</note></option> 
+				<option><text>DBPARTITIONNUM</text><clauseReference name="db-partition-number"/></option> 
+			</select>
+			<text>SIZE</text>
+			<select>
+				<option default="true"><input type="int" size="8" name="npages"/></option>
+				<option> 
+					<select>
+						<option default="true"><note>pages</note></option> 
+			 			<option><input type="int" size="8" name="npages"/></option> 
+					</select>
+					<text>AUTOMATIC</text>
+				</option> 
+			</select>
+
+		</option>
+		<option>
+			<text>ADD DATABASE PARTITION GROUP</text>
+			<clauseReference name="db-partition-group-name"/>
+		</option> 
+		<option>
+			<text>NUMBLOCKPAGES</text>
+			<clauseReference name="number-of-pages"/>
+			<select>
+				<option default="true"><note>block size</note></option> 
+				<option><text>BLOCKSIZE</text><clauseReference name="number-of-pages"/></option> 
+			</select>
+		</option> 
+		<option><text>BLOCKSIZE</text><clauseReference name="number-of-pages"/></option> 
+	</select>
+
+</command>
+        

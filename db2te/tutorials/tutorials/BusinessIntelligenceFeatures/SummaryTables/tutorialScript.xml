@@ -1,0 +1,106 @@
+<tutorial name="Summary Tables">
+<globalCodeHighlightOptions highlightCode="true" /><flowRestriction>forwardexploration</flowRestriction>
+    <closeAction />
+	<openAction />
+    <pageList>
+    	<page name="Summary Tables" type="intro">
+            <entryAction />
+            <exitAction />
+            <contentFile>01_SummaryTables.html</contentFile>
+			<autoLoadLink>
+                    <pageWindow target="informationWindow">
+                        <panel name="main">
+                            <URL>http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.dwe.cubeserv.doc/topics/coptsummarytbl.html?noframes=true</URL>
+                        </panel>
+                    </pageWindow>
+            </autoLoadLink>
+		</page><page name="Generate Transaction Tables" type="intro">
+            <entryAction />
+            <exitAction />
+            <contentFile>02_GenerateTransactionTables.html</contentFile>
+			<SQLFile>01_GenerateTransactionTables.sql</SQLFile>
+        </page><page name="Create summary table" type="general">
+			<entryAction name="checkForInsert" type="serverAction">
+        		<parameterList>
+        			<parameter name="action" type="fixed">
+        				<value>checkForRow</value>
+        			</parameter>
+        			<parameter name="schema" type="constant">
+        				<value>SCHEMA</value>
+        			</parameter>
+        			<parameter name="name" type="fixed">
+        				<value>TRANSACTIONS</value>
+        			</parameter>
+        		</parameterList>
+        		<followOnAction condition="true" negCondition="true">
+        			<task>
+        				<action name="displayMsgForFailedInsert" type="alert">
+        					<message>Data hasn't been inserted in the table. Please try this step again.</message>
+        				</action>
+        			</task>
+        			<task>
+        				<setActionReturn>false</setActionReturn>
+        			</task>
+        		</followOnAction>
+        	</entryAction> 
+            <exitAction />
+            <contentFile>03_CreateSummaryTable.html</contentFile>
+            <SQLFile>02_CreateSummaryTable.sql</SQLFile>
+        </page><page name="Refresh the table" type="general">
+			<entryAction name="checkForStoresum" type="serverAction">
+            	<parameterList>
+					<parameter name="action" type="fixed">
+						<value>checkForObject</value>
+					</parameter>
+					<parameter name="objectType" type="fixed">
+						<value>table</value>
+					</parameter>
+					<parameter name="object[schema]" type="constant">
+						<value>SCHEMA</value>
+					</parameter>
+					<parameter name="object[table]" type="raw">
+						<value>storesum</value>
+					</parameter>
+				</parameterList>
+				<followOnAction condition="false"> 
+					<task>
+						<action name="alertTablesNotCreated" type="alert">
+							<message>The required tables must be created before proceeding with the tutorial.</message>
+						</action>
+							<setActionReturn value="false" />
+					</task>
+				</followOnAction>
+			</entryAction> 
+            <exitAction />
+            <contentFile>04_RefreshTheTable.html</contentFile>
+			<SQLFile>03_RefreshTheTable.sql</SQLFile>
+        </page><page name="Select from Summary table" type="general">
+            <entryAction />
+            <exitAction />
+            <contentFile>05_SelectFromSummaryTable.html</contentFile>
+            <SQLFile>04_SelectFromSummaryTable.sql</SQLFile>
+        </page><page name="Setting Optimizer not to use Summary Tables" type="general">
+            <entryAction />
+            <exitAction />
+            <contentFile>06_AvoidingSummaryTables.html</contentFile>
+			<SQLFile>05_SelectData(WithoutSummaryTables).sql</SQLFile>
+        </page><page name="Compare SELECT speed" type="general">
+            <entryAction />
+            <exitAction />
+            <contentFile>07_SelectData.html</contentFile>
+			 <loadActionScriptFile>01_insertAndGraph1.xml</loadActionScriptFile>
+        </page>
+        <page name="Alternative Use of Summary tables" type="general">
+            <entryAction />
+            <exitAction />
+            <contentFile>08_AlternativeUseOfSummaryTables.html</contentFile>
+			<SQLFile>07_AlternativeUseOfSummaryTables.sql</SQLFile>
+        </page>
+        <page name="Compare CUBE Performance" type="general">
+            <entryAction />
+            <exitAction />
+            <contentFile>09_CUBECompare.html</contentFile>
+			 <loadActionScriptFile>02_insertAndGraph3.xml</loadActionScriptFile>
+        </page>
+    </pageList>
+</tutorial>

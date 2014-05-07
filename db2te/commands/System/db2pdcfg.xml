@@ -1,0 +1,199 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2010 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<command name="db2pdcfg" title="db2pdcfg">
+<![CDATA[
+>>-db2pdcfg----------------------------------------------------->
+]]>
+	<text>db2pdcfg</text>
+	<br statement='false'/>
+<![CDATA[
+>--+-------------------------------------------------------------+-->
+   '- -catch--+-----------+--| Action options |--+-------------+-'   
+              +-clear-----+                      '-count=count-'     
+              +-status----+                                          
+              '-errorCode-'                                          
+]]>
+	<select>
+		<option default="true"><note>no catch</note></option> 
+		<option>
+			<text>-catch</text>
+			<select>
+				<option default="true"><note></note></option> 
+				<option><text>clear</text></option> 
+				<option><text>status</text></option> 
+				<option><text>errorCode</text></option> 
+			</select>
+			<clauseReference name="Action options"/>
+			<select>
+				<option default="true"><note></note></option> 
+				<option><text>count=</text><input size="8" type="int" title="num" /></option> 
+			</select>
+		</option> 
+	</select>
+	<br statement='false'/>
+<![CDATA[
+>--+---------------------------+-------------------------------->
+   '- -cos--+----------------+-'   
+            +-status---------+     
+            +-on-------------+     
+            +-off------------+     
+            +-sleep=numsec---+     
+            +-timeout=numsec-+     
+            +-count=count----+     
+            '-SQLO_SIG_DUMP--'     
+]]>
+	<select>
+		<option default="true"><note>no cos</note></option> 
+		<option>
+			<text>-cos</text>
+			<select>
+				<option default="true"><note></note></option> 
+				<option><text>status</text></option> 
+				<option><text>on</text></option> 
+				<option><text>errorCode</text></option> 
+				<option><text>sleep=</text><input size="8" type="int" title="num" /></option> 
+				<option><text>timeout=</text><input size="8" type="int" title="num" /></option> 
+				<option><text>count=</text><input size="8" type="int" title="num" /></option> 
+				<option><text>SQLO_SIG_DUMP</text></option> 
+			</select>
+		</option> 
+	</select>
+	<br statement='false'/>
+<![CDATA[
+>--+---------------------------+-------------------------------->
+   '- -dbmcfg--+-------------+-'   
+               |       .-0-. |     
+               '-xml=--+---+-'     
+                       '-1-'       
+]]>
+	<select>
+		<option default="true"><note></note></option> 
+		<option>
+			<text>-dbmcfg</text>
+			<select>
+				<option default="true"><note></note></option> 
+				<option>
+					<text>xml=</text>
+					<select>
+						<option><text>0</text></option>
+						<option default="true"><note>0</note></option> 
+						<option><text>1</text></option>
+					</select>
+				</option> 
+			</select>
+		</option> 
+	</select>
+	<br statement='false'/>
+<![CDATA[
+>--+--------------------------------------------------+--------->
+   '- -dbcfg--+-------------+--+--------------------+-'   
+              |       .-0-. |  +-database--database-+     
+              '-xml=--+---+-'  '-alldatabases-------'     
+                      '-1-'                               
+]]>
+	<select>
+		<option default="true"><note></note></option> 
+		<option>
+			<text>-dbcfg</text>
+			<select>
+				<option default="true"><note></note></option> 
+				<option>
+					<text>xml=</text>
+					<select>
+						<option><text>0</text></option>
+						<option default="true"><note>0</note></option> 
+						<option><text>1</text></option>
+					</select>
+				</option> 
+			</select>
+			<select>
+				<option default="true"><note></note></option> 
+				<option><text>database</text><clauseReference name="database-name"/></option>
+				<option><text>alldatabases</text></option>
+			</select>
+		</option> 
+	</select>
+	<br statement='false'/>
+<![CDATA[
+>--+-------------------------------+---------------------------><
+   |         .-status------------. |   
+   '- -fodc--+-------------------+-'   
+             +-reset-------------+     
+             +-DUMPDIR=--dirpath-+     
+             '-CORELIMIT=--size--'     
+]]>
+	<select>
+		<option default="true"><note></note></option> 
+		<option>
+			<text>-fodc</text>
+			<select>
+				<option><text>status</text></option>
+				<option default="true"><note></note></option> 
+				<option><text>reset</text></option>
+				<option><text>DUMPDIR=</text><input size="8" type="text" title="dirpath" /></option>
+				<option><text>CORELIMIT=</text><input size="8" type="int" title="size" /></option>
+			</select>
+		</option> 
+	</select>
+	<br statement='false'/>
+
+	<clause name="Action options" title="Action options">
+<![CDATA[
+   .-stack-.  .-db2cos-.                                      
+|--+-------+--+--------+--+------------+--+---------------+----->
+                          '-stopdb2trc-'  '-dumpcomponent-'   
+
+>--+-----------------------+--+-------------------+------------->
+   '-component=componentID-'  '-lockname=lockname-'   
+
+>--+-------------------+----------------------------------------|
+   '-locktype=locktype-'   
+]]>
+		<select>
+			<option><text>stack</text></option> 
+			<option default="true"><note>stack</note></option> 
+		</select>
+		<select>
+			<option><text>db2cos</text></option> 
+			<option default="true"><note>db2cos</note></option> 
+		</select>
+		<select>
+			<option default="true"><note></note></option> 
+			<option><text>stopdb2trc</text></option> 
+		</select>
+		<select>
+			<option default="true"><note></note></option> 
+			<option><text>dumpcomponent</text></option> 
+		</select>
+		<br statement='false'/>
+		<select>
+			<option default="true"><note></note></option> 
+			<option><text>component=</text><input size="8" type="text"/></option> 
+		</select>
+		<select>
+			<option default="true"><note></note></option> 
+			<option><text>lockname=</text><input size="8" type="text"/></option> 
+		</select>
+		<br statement='false'/>
+		<select>
+			<option default="true"><note></note></option> 
+			<option><text>locktype=</text><input size="8" type="text"/></option> 
+		</select>
+	</clause>
+</command>
+        

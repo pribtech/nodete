@@ -1,0 +1,70 @@
+<!--
+  Peter Prib, Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2012 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<table name="sqlWorkAreaHistory">
+	<sqlName>V$SQL_WORKAREA_HISTOGRAM</sqlName>
+	<singularName>SQL Work Area History</singularName>
+	<pluralName>SQL Work Area History</pluralName>
+	<description></description>
+	<output>
+		<type name="DDL" destination="" title="" generator=""/>
+	</output>
+   	<disable_edit/>
+	<orderBy name="LOW_OPTIMAL_SIZE" direction="A"/> 
+	<displayColumns>
+		<col type="column" name="LOW_OPTIMAL_SIZE"/>
+		<col type="column" name="HIGH_OPTIMAL_SIZE"/>
+		<col type="column" name="OPTIMAL_EXECUTIONS"/>
+		<col type="column" name="ONEPASS_EXECUTIONS"/>
+		<col type="column" name="MULTIPASSES_EXECUTIONS"/>
+		<col type="column" name="TOTAL_EXECUTIONS"/>
+	</displayColumns>
+	<column name="LOW_OPTIMAL_SIZE">
+		<sqlName>LOW_OPTIMAL_SIZE</sqlName>
+		<title>Low Optimal Size</title>
+		<type>n</type>
+		<formatNumber toAbbreviated="4"/> 
+	</column>
+	<column name="HIGH_OPTIMAL_SIZE">
+		<sqlName>HIGH_OPTIMAL_SIZE</sqlName>
+		<title>High Optimal Size</title>
+		<type>n</type>
+		<formatNumber toAbbreviated="4"/> 
+	</column>
+	<column name="OPTIMAL_EXECUTIONS">
+		<sqlName>OPTIMAL_EXECUTIONS</sqlName>
+		<title>Optimal Executions</title>
+		<type>n</type>
+		<formatNumber toAbbreviated="4"/> 
+	</column>
+	<column name="ONEPASS_EXECUTIONS">
+		<sqlName>ONEPASS_EXECUTIONS</sqlName>
+		<title>Onepass Executions</title>
+		<type>n</type>
+		<formatNumber toAbbreviated="4"/> 
+	</column>
+	<column name="MULTIPASSES_EXECUTIONS">
+		<sqlName>MULTIPASSES_EXECUTIONS</sqlName>
+		<title>Multipasses Executions</title>
+		<type>n</type>
+		<formatNumber toAbbreviated="4"/> 
+	</column>
+	<column name="TOTAL_EXECUTIONS">
+		<sqlName>TOTAL_EXECUTIONS</sqlName>
+		<title>Total Executions</title>
+		<type>n</type>
+		<formatNumber toAbbreviated="4"/> 
+	</column>
+</table>

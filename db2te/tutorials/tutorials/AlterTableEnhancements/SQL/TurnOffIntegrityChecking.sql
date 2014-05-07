@@ -1,0 +1,1 @@
+set integrity for ?SCHEMA?.employee_salary off;

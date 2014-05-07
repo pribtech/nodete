@@ -1,0 +1,241 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2013 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+<table name="channelStatus">
+	<sqlName>channelStatus</sqlName>
+	<singularName>Channel Status</singularName>
+	<pluralName>Channel Status</pluralName>
+	<inlinequery>
+<![CDATA[
+MQCMD_INQUIRE_CHANNEL_STATUS  ?
+]]>
+	</inlinequery>
+	<parameters>
+		<parm name="MQCACH_CHANNEL_NAME">
+			<title>Channel Mask</title>
+			<value>*</value>
+			<type>s</type>
+		</parm>
+	</parameters>
+	<description></description>
+	<displayColumns>
+		<col type="column" name="MQCACH_CHANNEL_NAME"/>
+		<col type="column" name="MQIACH_CHANNEL_TYPE"/>
+		<col type="column" name="MQIACH_BUFFERS_RCVD/MQIACH_BUFFERS_RECEIVED"/>
+		<col type="column" name="MQIACH_BUFFERS_SENT"/>
+		<col type="column" name="MQIACH_BYTES_RCVD/MQIACH_BYTES_RECEIVED"/>
+		<col type="column" name="MQIACH_BYTES_SENT"/>
+		<col type="column" name="MQCACH_CHANNEL_START_DATE"/>
+		<col type="column" name="MQCACH_CHANNEL_START_TIME"/>
+		<col type="column" name="MQIACH_HDR_COMPRESSION"/>
+		<col type="column" name="MQIACH_MSG_COMPRESSION"/>
+		<col type="column" name="MQIACH_COMPRESSION_RATE"/>
+		<col type="column" name="MQIACH_COMPRESSION_TIME"/>
+		<col type="column" name="MQCACH_CONNECTION_NAME"/>
+		<col type="column" name="MQIACH_CHANNEL_INSTANCE_TYPE"/>
+		<col type="column" name="MQIACH_EXIT_TIME_INDICATOR"/>
+		<col type="column" name="MQIACH_HB_INTERVAL"/>
+		<col type="column" name="MQCACH_MCA_JOB_NAME"/>
+		<col type="column" name="MQCACH_LOCAL_ADDRESS"/>
+		<col type="column" name="MQCACH_LAST_MSG_DATE"/>
+		<col type="column" name="MQCACH_LAST_MSG_TIME"/>
+		<col type="column" name="MQIACH_MCA_STATUS"/>
+		<col type="column" name="MQCACH_MCA_USER_ID"/>
+		<col type="column" name="MQIA_MONITORING_CHANNEL"/>
+		<col type="column" name="MQIACH_MSGS"/>
+		<col type="column" name="MQCACH_REMOTE_APPL_TAG"/>
+		<col type="column" name="MQCACH_SSL_CERT_ISSUER_NAME"/>
+		<col type="column" name="MQCACH_SSL_KEY_RESET_DATE"/>
+		<col type="column" name="MQCACH_SSL_KEY_RESET_TIME"/>
+		<col type="column" name="MQCACH_SSL_SHORT_PEER_NAME"/>
+		<col type="column" name="MQIACH_SSL_KEY_RESETS"/>
+		<col type="column" name="MQIACH_CHANNEL_STATUS"/>
+		<col type="column" name="MQIACH_STOP_REQUESTED"/>
+		<col type="column" name="MQIACH_CHANNEL_SUBSTATE"/>
+		<col type="column" name="MQIACH_CURRENT_SHARING_CONVS"/>
+		<col type="column" name="MQIACH_MAX_SHARING_CONVS"/>
+		<col type="column" name="MQCACH_REMOTE_VERSION"/>
+		<col type="column" name="MQCACH_REMOTE_PRODUCT"/>
+	</displayColumns>
+	
+	<column name="MQCACH_CHANNEL_NAME">
+		<sqlName>MQCACH_CHANNEL_NAME</sqlName>
+		<title>Name</title>
+	</column>
+	<column name="MQIACH_CHANNEL_TYPE">
+		<sqlName>MQIACH_CHANNEL_TYPE</sqlName>
+		<title>Type</title>
+		<type>n</type>
+	</column>
+	<column name="MQIACH_BUFFERS_RCVD/MQIACH_BUFFERS_RECEIVED">
+		<sqlName>MQIACH_BUFFERS_RCVD/MQIACH_BUFFERS_RECEIVED</sqlName>
+		<title>Buffers Rcvd/Buffers Received</title>
+		<type>n</type>
+	</column>
+	<column name="MQIACH_BUFFERS_SENT">
+		<sqlName>MQIACH_BUFFERS_SENT</sqlName>
+		<title>Buffers Sent</title>
+		<type>n</type>
+	</column>
+	<column name="MQIACH_BYTES_RCVD/MQIACH_BYTES_RECEIVED">
+		<sqlName>MQIACH_BYTES_RCVD/MQIACH_BYTES_RECEIVED</sqlName>
+		<title>Bytes Rcvd/Bytes Received</title>
+		<type>n</type>
+	</column>
+	<column name="MQIACH_BYTES_SENT">
+		<sqlName>MQIACH_BYTES_SENT</sqlName>
+		<title>Bytes Sent</title>
+		<type>n</type>
+	</column>
+	<column name="MQCACH_CHANNEL_START_DATE">
+		<sqlName>MQCACH_CHANNEL_START_DATE</sqlName>
+		<title>Start Date</title>
+	</column>
+	<column name="MQCACH_CHANNEL_START_TIME">
+		<sqlName>MQCACH_CHANNEL_START_TIME</sqlName>
+		<title>Start Time</title>
+	</column>
+	<column name="MQIACH_HDR_COMPRESSION">
+		<sqlName>MQIACH_HDR_COMPRESSION</sqlName>
+		<title>Hdr Compression</title>
+	</column>
+	<column name="MQIACH_MSG_COMPRESSION">
+		<sqlName>MQIACH_MSG_COMPRESSION</sqlName>
+		<title>Msg Compression</title>
+		<type>n</type>
+	</column>
+	<column name="MQIACH_COMPRESSION_RATE">
+		<sqlName>MQIACH_COMPRESSION_RATE</sqlName>
+		<title>Compression Rate</title>
+		<type>n</type>
+	</column>
+	<column name="MQIACH_COMPRESSION_TIME">
+		<sqlName>MQIACH_COMPRESSION_TIME</sqlName>
+		<title>Compression Time</title>
+		<type>n</type>
+	</column>
+	<column name="MQCACH_CONNECTION_NAME">
+		<sqlName>MQCACH_CONNECTION_NAME</sqlName>
+		<title>Connection Name</title>
+	</column>
+	<column name="MQIACH_CHANNEL_INSTANCE_TYPE">
+		<sqlName>MQIACH_CHANNEL_INSTANCE_TYPE</sqlName>
+		<title>Channel Instance Type</title>
+		<type>n</type>
+	</column>
+	<column name="MQIACH_EXIT_TIME_INDICATOR">
+		<sqlName>MQIACH_EXIT_TIME_INDICATOR</sqlName>
+		<title>Exit Time Indicator</title>
+		<type>n</type>
+	</column>
+	<column name="MQIACH_HB_INTERVAL">
+		<sqlName>MQIACH_HB_INTERVAL</sqlName>
+		<title>HB Interval</title>
+	</column>
+	<column name="MQCACH_MCA_JOB_NAME">
+		<sqlName>MQCACH_MCA_JOB_NAME</sqlName>
+		<title>MCA Job Name</title>
+	</column>
+	<column name="MQCACH_LOCAL_ADDRESS">
+		<sqlName>MQCACH_LOCAL_ADDRESS</sqlName>
+		<title>Local Address</title>
+	</column>
+	<column name="MQCACH_LAST_MSG_DATE">
+		<sqlName>MQCACH_LAST_MSG_DATE</sqlName>
+		<title>Last Msg Date</title>
+	</column>
+	<column name="MQCACH_LAST_MSG_TIME">
+		<sqlName>MQCACH_LAST_MSG_TIME</sqlName>
+		<title>Last Msg Time</title>
+	</column>
+	<column name="MQIACH_MCA_STATUS">
+		<sqlName>MQIACH_MCA_STATUS</sqlName>
+		<title>MCA Status</title>
+		<type>n</type>
+	</column>
+	<column name="MQCACH_MCA_USER_ID">
+		<sqlName>MQCACH_MCA_USER_ID</sqlName>
+		<title>MCA User Id</title>
+	</column>
+	<column name="MQIA_MONITORING_CHANNEL">
+		<sqlName>MQIA_MONITORING_CHANNEL</sqlName>
+		<title>Mqia Monitoring Channel</title>
+	</column>
+	<column name="MQIACH_MSGS">
+		<sqlName>MQIACH_MSGS</sqlName>
+		<title>Msgs</title>
+	</column>
+	<column name="MQCACH_REMOTE_APPL_TAG">
+		<sqlName>MQCACH_REMOTE_APPL_TAG</sqlName>
+		<title>Remote Appl Tag</title>
+	</column>
+	<column name="MQCACH_SSL_CERT_ISSUER_NAME">
+		<sqlName>MQCACH_SSL_CERT_ISSUER_NAME</sqlName>
+		<title>ssl Cert Issuer Name</title>
+	</column>
+	<column name="MQCACH_SSL_KEY_RESET_DATE">
+		<sqlName>MQCACH_SSL_KEY_RESET_DATE</sqlName>
+		<title>Ssl Key Reset Date</title>
+	</column>
+	<column name="MQCACH_SSL_KEY_RESET_TIME">
+		<sqlName>MQCACH_SSL_KEY_RESET_TIME</sqlName>
+		<title>ssl Key Reset Time</title>
+		<type>n</type>
+	</column>
+	<column name="MQCACH_SSL_SHORT_PEER_NAME">
+		<sqlName>MQCACH_SSL_SHORT_PEER_NAME</sqlName>
+		<title>ssl Short Peer Name</title>
+		<type>n</type>
+	</column>
+	<column name="MQIACH_SSL_KEY_RESETS">
+		<sqlName>MQIACH_SSL_KEY_RESETS</sqlName>
+		<title>Ssl Key Resets</title>
+		<type>n</type>
+	</column>
+	<column name="MQIACH_CHANNEL_STATUS">
+		<sqlName>MQIACH_CHANNEL_STATUS</sqlName>
+		<title>Channel Status</title>
+		<type>n</type>
+	</column>
+	<column name="MQIACH_STOP_REQUESTED">
+		<sqlName>MQIACH_STOP_REQUESTED</sqlName>
+		<title>Stop Requested</title>
+		<type>n</type>
+	</column>
+	<column name="MQIACH_CHANNEL_SUBSTATE">
+		<sqlName>MQIACH_CHANNEL_SUBSTATE</sqlName>
+		<title>Channel Substate</title>
+		<type>n</type>
+	</column>
+	<column name="MQIACH_CURRENT_SHARING_CONVS">
+		<sqlName>MQIACH_CURRENT_SHARING_CONVS</sqlName>
+		<title>Current Sharing Convs</title>
+		<type>n</type>
+	</column>
+	<column name="MQIACH_MAX_SHARING_CONVS">
+		<sqlName>MQIACH_MAX_SHARING_CONVS</sqlName>
+		<title>Max Sharing Convs</title>
+	</column>
+	<column name="MQCACH_REMOTE_VERSION">
+		<sqlName>MQCACH_REMOTE_VERSION</sqlName>
+		<title>Remote Version</title>
+	</column>
+	<column name="MQCACH_REMOTE_PRODUCT">
+		<sqlName>MQCACH_REMOTE_PRODUCT</sqlName>
+		<title>Remote Product</title>
+	</column>
+</table>

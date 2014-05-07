@@ -1,0 +1,165 @@
+<actionPanel>
+	<flow>controlled</flow>
+	<useConsole>yes</useConsole>
+	<overview>
+	</overview>
+	<taskList>
+
+<!--	
+	<task name="Explain Snapshot">
+			<discription>
+				This shows the access plan for the XML Query executed.
+			</discription>
+			<action name="runExplain" type="blank">
+				<followOnAction condition="true" compareOn="true"
+					compareOnType="raw">
+					<task>
+						<echo>
+							Running db2expln command for :: 
+SELECT patient_id,date_of_consultancy,
+	   XMLQUERY('$i/ClinicalDocument/component/structuredBody/component/section/text' PASSING ?SCHEMA?.out_patient_data.PMD as "i") as Past_Medical_Details
+   FROM ?SCHEMA?.out_patient_data 
+   WHERE xmlexists('$i/ClinicalDocument/recordTarget/patientRole/patient/name[given = "James"]' passing PMD as "i")
+.....
+						</echo>
+						<action name="runXQuery" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="fixed">
+									<value>executeCMD</value>
+								</parameter>
+								<parameter name="SHELL" type="fixed">
+									<value>db2expln -database SAMPLE -u teuser workshops -statement "SELECT patient_id, date_of_consultancy, XMLQUERY('$i/ClinicalDocument/component/structuredBody/component/section/text' PASSING ?SCHEMA?.out_patient_data.PMD as ""i"") as Past_Medical_Details FROM ?SCHEMA?.out_patient_data WHERE xmlexists('$i/ClinicalDocument/recordTarget/patientRole/patient/name[given = ""James""]' passing PMD as ""i"")"  -terminal -graph</value>
+								</parameter>
+							</parameterList>
+						</action>
+							<followOnAction condition="true">
+								<task>
+								<assignSharedConstant name="xquery" type="returnObject">
+									<value>runXQuery.returnValue</value>
+								</assignSharedConstant>
+									<echo>?xquery?</echo>
+								</task>
+							</followOnAction>
+							<followOnAction condition="false">
+								<task>
+									<echo>Error in run!</echo>
+								</task>
+							</followOnAction>
+
+			  		</task>	
+				</followOnAction>
+			</action>
+		</task>
+-->		
+		<task name="Average query time with index">
+			<discription>
+				This finds the average execution time of the XML Query with index.
+			</discription>
+			<action name="runXQuery" type="blank">
+				<followOnAction condition="true" compareOn="true"
+					compareOnType="raw">
+					<task>
+						<echo>
+							Running the XML Query with index 5 times...
+						</echo>
+						<action name="runBase" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="fixed">
+									<value>statementThroughput</value>
+								</parameter>
+								<parameter name="SQL" type="fixed">
+									<value>
+									SELECT PATIENT_ID,DATE_OF_CONSULTANCY, XMLQUERY('$i/patient_document/patient/name' passing PMD as ""i"" ) as Name, XMLQUERY('$i/patient_document/patient/visit_info/visited_date/checkup_details/symptoms[1]/text()' passing PMD as ""i"") as Past_Medical_Records FROM ?SCHEMA?.OUT_PATIENT_DATA WHERE XMLEXISTS('$i/patient_document/patient/name[first = ""James""]' passing PMD as ""i"")
+									</value>
+								</parameter>								
+								<parameter name="Period" type="fixed">
+									<value>10</value>
+								</parameter>
+								<parameter name="MinRunAmount" type="fixed">
+									<value>5</value>
+								</parameter>								
+								<parameter name="retrieveAllData" type="fixed">
+									<value>true</value>
+								</parameter>
+							</parameterList>
+							
+							<followOnAction condition="true">
+								<task>
+								<assignSharedConstant name="avgBaseTableIND" type="returnObject">
+									<value>runBase.returnValue.avgRunTime</value>
+								</assignSharedConstant>
+									<echo>Average Run time: ?avgBaseTableIND? s</echo>
+								</task>
+							</followOnAction>
+							<followOnAction condition="false">
+								<task>
+									<echo>Error in run!</echo>
+								</task>
+							</followOnAction>
+						</action>
+					</task>
+				</followOnAction>
+			</action>
+		</task>
+		
+		<task name="Graph and compare query times of XML Query with and without index">
+			<discription>
+				Plot the query times of XML Query with and without index on graph. You should see better performance with index and much higher throughput as the amount of data gets larger. Check also the two explain plans captured, the one without index has a total cost of 53055.1 and the one with index has a total cost of only 37.86.
+			</discription>
+			<action  name="runDelete" type="blank">
+				<followOnAction condition="true" compareOn="true" compareOnType="raw">
+					<task>
+						<echo>Graphing times</echo>
+						<loadPage>
+							<pageWindow target="informationWindow">
+						    	<panel name="main">
+						       		<link type="action" target="_self" window="_self" connectionRequired="y">
+						       			<parameterList>
+						       				<parameter name="action">graphYUI</parameter>
+						       				<parameter name="graph">	
+											
+
+
+	<![CDATA[					       				
+					       				
+ {
+	"Graph":
+	{
+		"title": "Time (ms) taken to SELECT",
+		"graphType": "column",
+		"xField": "Column Type",
+		"xTitle": "XML queries with and without index",
+		"yTitle": "Time (ms) taken to SELECT",
+		"dataSourceType": "data_from_raw",
+		"responseSchema": {"fields": ["Column Type","CPU"]},
+		"style":{	"legend": { "display": "right" }, "animationEnabled" : "false"},
+		"seriesDef": [{ "displayName": "Average time taken to SELECT", "yField": "CPU", "style": {"color": "0x454586"}}],
+		"datasets":
+		 [ 
+			    { "Column Type": "Without INDEX", "CPU": ?avgBaseTable? * 1000 },
+			    { "Column Type": "With INDEX", "CPU": ?avgBaseTableIND? * 1000}
+			]
+	}
+
+
+}
+							
+
+]]>
+											</parameter>
+						       			</parameterList>
+						       		</link>				
+						       	</panel>
+						      </pageWindow>
+						</loadPage>
+					</task>	
+				</followOnAction>
+			</action>
+		</task>
+
+		
+	</taskList>
+</actionPanel>
+
+
+

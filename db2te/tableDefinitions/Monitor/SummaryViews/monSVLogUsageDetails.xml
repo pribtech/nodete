@@ -1,0 +1,93 @@
+<!--
+   
+  
+  Copyright Independent Systems Integrators Pty Ltd 2008 All rights reserved.
+  
+  Updated by Author: Peter Kohlmann
+  Copyright IBM Canada Ltd 2008 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+ -->
+<table name="monWorkload">
+	<sql_name>monTest</sql_name>
+	<singular_name>Log Space Usage</singular_name>
+	<plural_name>Log Space Usage</plural_name>
+	<inlinequery>
+<![CDATA[
+SELECT DB_NAME, LOG_UTILIZATION_PERCENT, TOTAL_LOG_USED_KB, TOTAL_LOG_AVAILABLE_KB, TOTAL_LOG_USED_TOP_KB, DBPARTITIONNUM 
+	FROM SYSIBMADM.LOG_UTILIZATION
+]]>
+	</inlinequery>
+	<messages><SQL0551N>Security issue. Please install "Monitoring Switches/Security" in Tools -> Installed Components</SQL0551N></messages>
+	<description></description>
+	<order_by_index/>
+	<display_columns>
+		<col type="column" name="DB_NAME"/>	
+		<col type="column" name="LOG_UTILIZATION_PERCENT"/>	
+		<col type="column" name="TOTAL_LOG_USED_KB"/>	
+		<col type="column" name="TOTAL_LOG_AVAILABLE_KB"/>	
+		<col type="column" name="TOTAL_LOG_USED_TOP_KB"/>	
+		<col type="column" name="DBPARTITIONNUM"/>	
+		
+	</display_columns>
+	<column name="DB_NAME">
+		<c_sql_name>DB_NAME</c_sql_name>
+		<c_title>DB Name</c_title>
+		<c_presentation/>
+		<c_drill>n</c_drill>
+		
+		<c_column_mask_file>masks/skipNulls.xml</c_column_mask_file>
+	</column>
+		<column name="LOG_UTILIZATION_PERCENT">
+		<c_sql_name>LOG_UTILIZATION_PERCENT</c_sql_name>
+		<c_title>Percent Log Utilization</c_title>
+		<c_presentation/>
+		<c_drill>n</c_drill>
+		
+		<c_column_mask_file>masks/skipNulls.xml</c_column_mask_file>
+	</column>
+		<column name="TOTAL_LOG_USED_KB">
+		<c_sql_name>TOTAL_LOG_USED_KB</c_sql_name>
+		<c_title>Total Log Used</c_title>
+		<c_presentation/>
+		<c_drill>n</c_drill>
+		
+		<c_column_mask_file>masks/skipNulls.xml</c_column_mask_file>
+	</column>
+		<column name="TOTAL_LOG_AVAILABLE_KB">
+		<c_sql_name>TOTAL_LOG_AVAILABLE_KB</c_sql_name>
+		<c_title>Total Log Available</c_title>
+		<c_presentation/>
+		<c_drill>n</c_drill>
+		
+		<c_column_mask_file>masks/skipNulls.xml</c_column_mask_file>
+	</column>
+		<column name="TOTAL_LOG_USED_TOP_KB">
+		<c_sql_name>TOTAL_LOG_USED_TOP_KB</c_sql_name>
+		<c_title>Total Log Used Top</c_title>
+		<c_presentation/>
+		<c_drill>n</c_drill>
+		
+		<c_column_mask_file>masks/skipNulls.xml</c_column_mask_file>
+	</column>
+		<column name="DBPARTITIONNUM">
+		<c_sql_name>DBPARTITIONNUM</c_sql_name>
+		<c_title>DB Partition</c_title>
+		<c_presentation/>
+		<c_drill>n</c_drill>
+		
+		<c_column_mask_file>masks/skipNulls.xml</c_column_mask_file>
+	</column>
+
+
+</table>

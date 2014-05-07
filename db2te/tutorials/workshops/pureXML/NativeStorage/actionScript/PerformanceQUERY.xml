@@ -1,0 +1,167 @@
+<actionPanel>
+	<flow>controlled</flow>
+	<useConsole>yes</useConsole>
+	<overview>
+	</overview>
+	<taskList>
+
+	
+		<task name="Average query time for table having XML data">
+			<discription>
+				This finds the average execution time of the sample XML QUERY.
+			</discription>
+			<action name="runXQuery" type="blank">
+				<followOnAction condition="true" compareOn="true"
+					compareOnType="raw">
+					<task>
+						<echo>
+							Query XML node data from XML column 5 times...
+						</echo>
+						<action name="runBase" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="fixed">
+									<value>statementThroughput</value>
+								</parameter>
+								<parameter name="SQL" type="fixed">
+									<value><![CDATA[SELECT PATIENT_ID,DATE_OF_CONSULTANCY, XMLQUERY('$i/patient_document/patient/name' passing PMD as ""i"" ) as Name, XMLQUERY('$i/patient_document/patient/visit_info/visited_date/checkup_details/symptoms[1]/text()' passing PMD as ""i"") as Past_Medical_Records FROM ?SCHEMA?.OUT_PATIENT_DATA WHERE XMLEXISTS('$i/patient_document/patient/name[first = ""James""]' passing PMD as ""i"")]]>
+									</value>
+								</parameter>								
+								<parameter name="Period" type="fixed">
+									<value>10</value>
+								</parameter>
+								<parameter name="MinRunAmount" type="fixed">
+									<value>5</value>
+								</parameter>								
+								<parameter name="retrieveAllData" type="fixed">
+									<value>true</value>
+								</parameter>
+							</parameterList>
+							
+							<followOnAction condition="true">
+								<task>
+								<assignSharedConstant name="avgBaseTableXML" type="returnObject">
+									<value>runBase.returnValue.avgRunTime</value>
+								</assignSharedConstant>
+									<echo>Average Run time: ?avgBaseTableXML? s</echo>
+								</task>
+							</followOnAction>
+							<followOnAction condition="false">
+								<task>
+									<echo>Error in run!</echo>
+								</task>
+							</followOnAction>
+						</action>
+					</task>
+				</followOnAction>
+			</action>
+		</task>
+		
+		<task name="Average query time for table having CLOB data">
+			<discription>
+				This finds the average execution time of the sample XML QUERY.
+			</discription>
+			<action name="runXQuery" type="blank">
+				<followOnAction condition="true" compareOn="true"
+					compareOnType="raw">
+					<task>
+						<echo>
+							Query XML node data from CLOB column 5 times...
+						</echo>
+						<action name="runBase" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="fixed">
+									<value>statementThroughput</value>
+								</parameter>
+								<parameter name="SQL" type="fixed">
+									<value><![CDATA[SELECT PATIENT_ID,DATE_OF_CONSULTANCY, XMLQUERY('$i/patient_document/patient/name' passing PMD as ""i"" ) as Name, XMLQUERY('$i/patient_document/patient/visit_info/visited_date/checkup_details/symptoms[1]/text()' passing PMD as ""i"") as Past_Medical_Records FROM ?SCHEMA?.OUT_PATIENT_DATA WHERE XMLEXISTS('$i/patient_document/patient/name[first = ""James""]' passing PMD as ""i"")]]>
+									</value>
+								</parameter>								
+								<parameter name="Period" type="fixed">
+									<value>10</value>
+								</parameter>
+								<parameter name="MinRunAmount" type="fixed">
+									<value>5</value>
+								</parameter>								
+								<parameter name="retrieveAllData" type="fixed">
+									<value>true</value>
+								</parameter>
+							</parameterList>
+							
+							<followOnAction condition="true">
+								<task>
+								<assignSharedConstant name="avgBaseTableCLOB" type="returnObject">
+									<value>runBase.returnValue.avgRunTime</value>
+								</assignSharedConstant>
+									<echo>Average Run time: ?avgBaseTableCLOB? s</echo>
+								</task>
+							</followOnAction>
+							<followOnAction condition="false">
+								<task>
+									<echo>Error in run!</echo>
+								</task>
+							</followOnAction>
+						</action>
+					</task>
+				</followOnAction>
+			</action>
+		</task>
+		
+		<task name="Graph plotting Query performance">
+			<discription>
+				Plot the query performance data on the graph.
+			</discription>
+			<action  name="runDelete" type="blank">
+				<followOnAction condition="true" compareOn="true" compareOnType="raw">
+					<task>
+						<echo>Graphing times</echo>
+						<loadPage>
+							<pageWindow target="informationWindow">
+						    	<panel name="main">
+						       		<link type="action" target="_self" window="_self" connectionRequired="y">
+						       			<parameterList>
+						       				<parameter name="action">graphYUI</parameter>
+						       				<parameter name="graph">	
+												<![CDATA[					       				
+					       				
+ {
+	"Graph":
+	{
+		"title": "Time taken to SELECT",
+		"graphType": "column",
+		"xField": "Column Type",
+		"xTitle": "SELECT from XML and CLOB column",
+		"yTitle": "Time taken to SELECT",
+		"dataSourceType": "data_from_raw",
+		"responseSchema": {"fields": ["Column Type","CPU"]},
+		"style":{	"legend": { "display": "right" }, "animationEnabled" : "false"},
+		"seriesDef": [{ "displayName": "Average time (ms) taken to SELECT", "yField": "CPU", "style": {"color": "0x454586"}}],
+		"datasets":
+		 [ 
+		 	    { "Column Type": "XML", "CPU": ?avgBaseTableXML? * 1000},
+			    { "Column Type": "CLOB", "CPU": ?avgBaseTableCLOB? * 1000 }
+			    
+			]
+	}
+
+
+}
+							
+
+]]>
+											</parameter>
+						       			</parameterList>
+						       		</link>				
+						       	</panel>
+						      </pageWindow>
+						</loadPage>
+					</task>	
+				</followOnAction>
+			</action>
+		</task>
+
+		
+	</taskList>
+</actionPanel>
+
+
+

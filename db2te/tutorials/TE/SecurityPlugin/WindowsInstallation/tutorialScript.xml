@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tutorial name="Db2auth Installation on Windows">
+
+    <globalCodeHighlightOptions highlightCode = "true" />
+	<pageList>
+	<page name="Download the Plug-in" type="intro">
+            <contentFile>PartOne.html</contentFile>
+            <SQLFile>blank.sql</SQLFile>
+    </page>
+    <page name="Check the Task Manager" type="intro">
+            <contentFile>PartOneB.html</contentFile>
+            <SQLFile>blank.sql</SQLFile>
+    </page>
+    <page name="Check Your Privileges" type="intro">
+            <contentFile>PartOnec.html</contentFile>
+            <SQLFile>
+               ViewAuthorities.SQL
+            </SQLFile>
+            <SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar=";"
+                cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+            <autoLoadLink>
+                <pageWindow target="connectionLoader" raiseToTop="true">
+                    <splitPane direction="h" splitPercent="0.8" allowResize="false">
+                        <topPane>
+                            <panel name="main" PrimaryContainer="true">
+                                <RAW><![CDATA[
+<div id="title">Connection Manager</div>
+Connect to the database where you want authorization data to be stored, then check your privileges in the 'Ad hoc SQL' tab.
+                                ]]></RAW>
+                            </panel>
+                        </topPane>
+                        <bottomPane>
+                            <panel name="connection" PrimaryContainer="false">
+                                <link type="action" target="_self" window="_self" connectionRequired="y">
+                                    <parameterList>
+                                        <parameter name="action">connectionManager</parameter>
+                                    </parameterList>
+                                </link>             
+                            </panel>
+                        </bottomPane>
+                    </splitPane>
+                </pageWindow>
+            </autoLoadLink>
+
+    </page>
+    <page name="Configure the db2auth_key.txt" type="general">
+            <contentFile>PartTwo.html</contentFile>
+            <SQLFile>blank.sql</SQLFile>
+    </page>
+    <page name="Hide/Encrypt the db2auth_key.txt (optional)" type="general">
+            <contentFile>PartTwoB.html</contentFile>
+            <autoLoadLink>
+                <pageWindow target="tabledef" raiseToTop="y">
+                    <panel name="top" PrimaryContainer="true">
+                        <link type="other" target="_self" window="_self" connectionRequired="y">
+                            <address>
+                                ?BASE_DIRECTORY?/other/ProtectFile.php                               
+                            </address>
+                            <parameterList>
+                                <parameter name="BASE_DIR">
+                                    ?BASE_DIRECTORY?
+                                </parameter>
+                            </parameterList>
+                        </link>
+                    </panel>
+                </pageWindow>
+            </autoLoadLink>
+    </page>
+    
+    <page name="Preparing the Database" type="general">
+            <contentFile>PartThree.html</contentFile>
+            <SQLFile>blank.sql</SQLFile>
+    </page>
+
+    <page name="Setting Administrator User and Group" type="general">
+            <contentFile>PartFour.html</contentFile>
+            <autoLoadLink>
+                <pageWindow target="tabledef" raiseToTop="y">
+                    <panel name="top" PrimaryContainer="true">
+                        <link type="other" target="_self" window="_self" connectionRequired="y">
+                            <address>
+                                ?BASE_DIRECTORY?/other/Interaction.php                               
+                            </address>
+                            <parameterList>
+                                <parameter name="BASE_DIR">
+                                    ?BASE_DIRECTORY?
+                                </parameter>
+                            </parameterList>
+                        </link>
+                    </panel>
+                </pageWindow>
+            </autoLoadLink>
+    </page>
+    
+    <page name="Setting Environment Variables" type="general">
+            <contentFile>PartFive.html</contentFile>
+            <SQLFile>blank.sql</SQLFile>
+    </page>
+	</pageList>
+</tutorial>

@@ -1,0 +1,105 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2011 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+
+<table name="explain">
+	<sql_name>explain</sql_name>
+	<singular_name>Explain</singular_name>
+	<plural_name>Explain</plural_name>
+	<inlinequery>
+<![CDATA[
+explain extended ?
+]]>
+	</inlinequery>
+	<parameters>
+		<parm name="statement">
+			<title>Statement</title>
+			<type>s</type>
+		</parm>
+	</parameters>
+	<order_by_index></order_by_index>
+	<display_columns>
+		<col type="column" name="id"/>
+		<col type="column" name="select_type"/>
+		<col type="column" name="table"/>
+		<col type="column" name="type"/>
+		<col type="column" name="possible_keys"/>
+		<col type="column" name="key"/>
+		<col type="column" name="key_len"/>
+		<col type="column" name="ref"/>
+		<col type="column" name="rows"/>
+		<col type="column" name="filtered"/>
+		<col type="column" name="Extra"/>
+	</display_columns>
+	<column name="id">
+		<sql_name>id</sql_name>
+		<title>Id</title>
+		<type>n</type>
+	</column>
+	<column name="select_type">
+		<sql_name>select_type</sql_name>
+		<title>Select_type</title>
+		<type>s</type>
+	</column>
+	<column name="table">
+		<sql_name>table</sql_name>
+		<title>Table</title>
+		<type>s</type>
+	</column>
+	<column name="type">
+		<sql_name>type</sql_name>
+		<title>Type</title>
+		<type>s</type>
+	</column>
+	<column name="possible_keys">
+		<sql_name>possible_keys</sql_name>
+		<title>Possible Keys</title>
+		<type>s</type>
+	</column>
+	<column name="key">
+		<sql_name>key</sql_name>
+		<title>Key</title>
+		<type>s</type>
+	</column>
+	<column name="key_len">
+		<sql_name>key_len</sql_name>
+		<title>Key Length</title>
+		<type>s</type>
+		<drill_enable/>
+	</column>
+	<column name="ref">
+		<sql_name>ref</sql_name>
+		<title>Ref</title>
+		<type>s</type>
+	</column>
+	<column name="rows">
+		<sql_name>rows</sql_name>
+		<title>Rows</title>
+		<type>n</type>
+	</column>
+	<column name="filtered">
+		<sql_name>filtered</sql_name>
+		<title>Filtered</title>
+		<type>s</type>
+		<drill_enable/>
+	</column>
+	<column name="Extra">
+		<sql_name>Extra</sql_name>
+		<title>Extra</title>
+		<type>s</type>
+	</column>
+</table>

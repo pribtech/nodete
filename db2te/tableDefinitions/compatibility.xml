@@ -1,0 +1,98 @@
+<table name="SYSIBMADM.ADMINTABINFO" ignoreSQLWarnings="true">
+	<commontableexpressions>
+	
+	  <inline><![CDATA[
+		rec(l,val, hexval) AS 
+		((SELECT 0,0, REG_VAR_VALUE FROM SYSIBMADM.REG_VARIABLES WHERE REG_VAR_NAME = 'DB2_COMPATIBILITY_VECTOR')
+		UNION ALL
+		 SELECT l+1,val * 16 + CASE SUBSTR(hexval, 1, 1)
+		                   WHEN '0' THEN 0
+		                   WHEN '1' THEN 1
+		                   WHEN '2' THEN 2
+		                   WHEN '3' THEN 3
+		                   WHEN '4' THEN 4
+		                   WHEN '5' THEN 5
+		                   WHEN '6' THEN 6
+		                   WHEN '7' THEN 7
+		                   WHEN '8' THEN 8
+		                   WHEN '9' THEN 9
+		                   WHEN 'A' THEN 10
+		                   WHEN 'B' THEN 11
+		                   WHEN 'C' THEN 12
+		                   WHEN 'D' THEN 13
+		                   WHEN 'E' THEN 14
+		                   WHEN 'F' THEN 15 END,
+		       SUBSTR(hexval, 2, LENGTH(hexval) -1)
+		 FROM rec WHERE LENGTH(hexval) > 0 and l<1000)
+]]>
+	  </inline>
+	
+	</commontableexpressions>
+		<inlinequery><![CDATA[
+SELECT 'Instance Registry' as type,'RONUM' as name,CASE WHEN BITAND(max(val),1)=1 THEN 'ON' ELSE 'OFF' END as value FROM rec
+UNION
+SELECT 'Instance Registry','Outer Join Operator',CASE WHEN BITAND(max(val),4)=4 THEN 'ON' ELSE 'OFF' END FROM rec
+UNION
+SELECT 'Instance Registry','Hierachical Queries',CASE WHEN BITAND(max(val),8)=8 THEN 'ON' ELSE 'OFF' END FROM rec
+UNION
+SELECT 'Instance Registry','Number data type',CASE WHEN BITAND(max(val),16)=16 THEN 'ON' ELSE 'OFF' END FROM rec
+UNION
+SELECT 'Instance Registry','Varchar2 data type',CASE WHEN BITAND(max(val),32)=32 THEN 'ON' ELSE 'OFF' END FROM rec
+UNION
+SELECT 'Instance Registry','Date data type',CASE WHEN BITAND(max(val),64)=64 THEN 'ON' ELSE 'OFF' END FROM rec
+UNION
+SELECT 'Instance Registry','Truncate Table',CASE WHEN BITAND(max(val),128)=128 THEN 'ON' ELSE 'OFF' END FROM rec
+UNION
+SELECT 'Instance Registry','Character Literals',CASE WHEN BITAND(max(val),256)=256 THEN 'ON' ELSE 'OFF' END FROM rec
+UNION
+SELECT 'Instance Registry','Collection Methods',CASE WHEN BITAND(max(val),512)=512 THEN 'ON' ELSE 'OFF' END FROM rec
+UNION
+SELECT 'Instance Registry','Data Dictionary Compatible Views',CASE WHEN BITAND(max(val),1024)=1024 THEN 'ON' ELSE 'OFF' END FROM rec
+UNION
+SELECT 'Instance Registry','PL/SQL compilation',CASE WHEN BITAND(max(val),2048)=2048 THEN 'ON' ELSE 'OFF' END FROM rec
+UNION
+SELECT 'Database Catalog','Data Dictionary Compatible Views', CASE COUNT(*) WHEN 0 THEN 'OFF' WHEN 1 THEN 'ON' END FROM SYSCAT.VIEWS WHERE VIEWNAME = 'DICTIONARY' AND VIEWSCHEMA = 'SYSIBMADM'
+UNION 
+SELECT 'Database Configuration',CASE NAME
+                   WHEN 'date_compat' THEN 'Date data type'
+                   WHEN 'number_compat' THEN 'Number data type'
+                   WHEN 'varchar2_compat' THEN 'Varchar2 data type'
+		   END, VALUE FROM SYSIBMADM.DBCFG WHERE NAME LIKE '%_compat' 
+]]>
+		</inlinequery>
+    <sql_name></sql_name>
+    <singular_name>Compatibility (DB2 9.7)</singular_name>
+    <plural_name>Compatibility (DB2 9.7)</plural_name>
+		<description>
+		Before you can take advantage of all the compatibility features built into the DB2 data server you need to 
+    &lt;a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.apdv.porting.doc/doc/t0054729.html?noframes=true');"&gt;enable Oracle application compatibility&lt;/a&gt;		
+    using the 
+    &lt;a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.apdv.porting.doc/doc/r0052867.html?noframes=true');"&gt;DB2_COMPATIBILITY_VECTOR registry variable&lt;/a&gt;.		
+	</description>
+	<disableEdit/>
+	<output>
+		<type name="DDL" destination="" title="" generator=""/>
+	</output>
+
+    <display_columns>
+        <col type="column" name="type"/>
+        <col type="column" name="name"/>        
+        <col type="column" name="value"/>
+    </display_columns>
+		
+    <column name="type">
+        <c_sql_name>type</c_sql_name>
+        <c_title>Type</c_title>
+        <c_drill>n</c_drill>
+    </column>
+    <column name="name">
+        <c_sql_name>name</c_sql_name>
+        <c_title>Type</c_title>
+        <c_drill>n</c_drill>
+    </column>
+    <column name="value">
+        <c_sql_name>value</c_sql_name>
+        <c_title>Value</c_title>
+        <c_drill>n</c_drill>
+    </column>
+</table>

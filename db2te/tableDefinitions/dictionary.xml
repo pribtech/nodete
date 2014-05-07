@@ -1,0 +1,117 @@
+<table name="SYSIBMADM.DICTIONARY">
+    <sql_name>SYSIBMADM.DICTIONARY</sql_name>
+    <singular_name>Dictionary</singular_name>
+    <plural_name>Dictionary</plural_name>
+    <description>
+    This list is generated from an &lt;a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.apdv.porting.doc/doc/c0054440.html?noframes=true');"&gt;Oracle data dictionary-compatible view&lt;/a&gt;.    
+		Before you can take advantage of all the compatibility features built into the DB2 data server you need to 
+    &lt;a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.apdv.porting.doc/doc/t0054729.html?noframes=true');"&gt;enable Oracle application compatibility&lt;/a&gt;		
+    using the 
+    &lt;a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.apdv.porting.doc/doc/r0052867.html?noframes=true');"&gt;DB2_COMPATIBILITY_VECTOR registry variable&lt;/a&gt;.		
+    </description>	
+
+	<messages>
+		<SQL0204N>Please make sure Oracle Application Compatibility is enabled in the connected database. For more information, please visit the Info icon at the top menu.</SQL0204N>
+	</messages>
+
+	<order_by_index name="table_name" direction="A"/>
+    <display_columns>
+			  <col type="reference" name="contents"/>
+			  <col type="action" name="xmlgen"/>    
+        <col type="column" name="table_name"/>
+        <col type="column" name="comments"/>
+  			<col type="reference" name="auth"/>			
+	  		<col type="reference" name="cols"/>
+    </display_columns>
+	<disableEdit/>
+	<output>
+		<type name="DDL" destination="" title="" generator=""/>
+	</output>
+>
+    
+		<reference name="auth">
+			<c_title>Privilege</c_title>
+			<reftype>table</reftype>
+			<refvalue>Authority/tabauth</refvalue>
+			<icon>images/icon-privilege.gif</icon>
+			<ref foreign_column_name="tabschema">
+				<local_column_name>table_schema</local_column_name>
+			</ref>
+			<ref foreign_column_name="tabname">
+				<local_column_name>table_name</local_column_name>
+			</ref>
+		</reference>
+
+		<reference name="contents">
+			<c_title>Contents</c_title>
+			<reftype>table</reftype>
+			<refvalue></refvalue>
+			<icon>images/icon-link-calendar.gif</icon>
+			<ref foreign_column_name="schema">
+				<local_column_name>table_schema</local_column_name>
+			</ref>
+			<ref foreign_column_name="table">
+				<local_column_name>table_name</local_column_name>
+			</ref>
+		</reference>
+		<action name="xmlgen">
+			<c_title>XML</c_title>
+			<icon>images/icon-xml.gif</icon>
+			<actionScript name="helloworld" type="block">
+					<followOnAction condition="">
+						<task>	
+							<assignLocalParameter name="TABLENAME" type="blockValue">
+								<value>table_name</value>
+							</assignLocalParameter>
+							<assignLocalParameter name="SCHEMANAME" type="blockValue">
+								<value>table_schema</value>
+							</assignLocalParameter>
+							<loadPage>
+								<pageWindow target="_blank">
+									<panel name="main"  PrimaryContainer="true">
+										<URL>
+<![CDATA[
+http://?DB2MC_SERVER?/?ACTION_PROCESSOR??action=xmlgen&schemanameparm=?SCHEMANAME?&tablenameparm=?TABLENAME?&USE_CONNECTION=?ACTIVE_DATABASE_CONNECTION?
+]]>
+										</URL>				
+									</panel>
+								</pageWindow>
+							</loadPage>
+						</task>
+					</followOnAction>
+			</actionScript>
+		</action>
+		<reference name="cols">
+			<c_title>Columns</c_title>
+			<reftype>table</reftype>
+			<refvalue>colcatdetail</refvalue>
+			<icon>images/icon-column.gif</icon>
+			<ref foreign_column_name="tabschema">
+				<local_column_name>table_schema</local_column_name>
+			</ref>
+			<ref foreign_column_name="tabname">
+				<local_column_name>table_name</local_column_name>
+			</ref>
+		</reference>    
+    
+    
+    
+    <column name="table_schema">
+        <c_sql_name>TABLE_SCHEMA</c_sql_name>
+        <c_title>Schema</c_title>
+        <c_presentation>s</c_presentation>
+        <c_drill>y</c_drill>
+    </column>
+    <column name="table_name">
+        <c_sql_name>TABLE_NAME</c_sql_name>
+        <c_title>Name</c_title>
+        <c_presentation>s</c_presentation>
+        <c_drill>y</c_drill>
+    </column>
+    <column name="comments">
+        <c_sql_name>COMMENTS</c_sql_name>
+        <c_title>Comments</c_title>
+        <c_presentation>s</c_presentation>
+        <c_drill>y</c_drill>
+    </column>
+</table>

@@ -1,0 +1,64 @@
+<table name="mqReadAll">
+	<sqlName>mqReadAll</sqlName>
+	<singularName>MQ Message</singularName>
+	<pluralName>MQ Read All</pluralName>
+	<function>db2mq.MQREADALL</function>
+   <parameters>
+        <parm name="servicename" ordinal="1" mode="IN">
+            <title>Service</title>
+            <type>VARCHAR</type>
+            <value>NULL</value>
+        </parm>
+        <parm name="policyname" ordinal="2" mode="IN">
+            <title>Policy</title>
+            <type>VARCHAR</type>
+            <value>NULL</value>
+        </parm>
+        <parm name="Rows" ordinal="3" mode="IN">
+            <title>No. Rows</title>
+            <type>integer</type>
+            <value>NULL</value>
+        </parm>
+   </parameters>
+	<description></description>
+	<displayColumns>
+		<col type="column" name="MSG"/>
+		<col type="column" name="CORRELID"/>
+		<col type="column" name="TOPIC"/>
+		<col type="column" name="QNAME"/>
+		<col type="column" name="MSGID"/>
+		<col type="column" name="MSGFORMAT"/>
+	</displayColumns>
+	<column name="MSG">
+		<sqlName>MSG</sqlName>
+		<title>Message</title>
+		<type>s</type>
+	</column>
+	<column name="CORRELID">
+		<sqlName>CORRELID</sqlName>
+		<title>Correl Id</title>
+		<type>s</type>
+	</column>
+	<column name="TOPIC">
+		<sqlName>TOPIC</sqlName>
+		<title>Topic</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="QNAME">
+		<sqlName>QNAME</sqlName>
+		<title>Queue</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="MSGID">
+		<sqlName>MSGID</sqlName>
+		<title>Msg Id</title>
+		<type>s</type>
+	</column>
+	<column name="MSGFORMAT">
+		<sqlName>MSGFORMAT</sqlName>
+		<title>Msg Format</title>
+		<type>s</type>
+	</column>
+</table>

@@ -1,0 +1,73 @@
+<!--
+  Author: Peter Prib
+  
+  Copyright Independent Systems Integrators Pty Ltd 2008 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+
+<menu type="leaf" minVersion="9.7">
+	<description>Connections</description>
+	<pageWindow target="_active">
+		<splitPane direction="h" splitPercent="0.5">
+			<topPane>
+				<panel name="main" PrimaryContainer="true">
+					<link type="action" target="_self" window="_self" connectionRequired="y">
+						<parameterList>
+							<parameter name="table">Monitor/monConnection</parameter>
+							<parameter name="action">list_table</parameter>
+						</parameterList>
+					</link>				
+				</panel>
+			</topPane>
+			<bottomPane>
+				<splitPane direction="v" splitPercent="0.5">
+					<leftPane>
+						<panel name="componentProcessPercentage">
+							<link type="action" target="_self" window="_self" connectionRequired="y">
+								<parameterList>
+									<parameter name="table">Performance/componentPercentage</parameter>
+									<parameter name="action">chart</parameter>
+									<parameter name="$chartName">componentProcessPercentage</parameter>
+									<parameter name="$chartTitle">Component Process Percentage</parameter>
+									<parameter name="$type">bar</parameter>
+									<parameter name="$yScale">FIXED</parameter>
+									<parameter name="$yAxisUpperBound">100</parameter>
+									<parameter name="$yAxisLowerBound">0</parameter>
+									<parameter name="$yAxis">SECT_PROC_PCT,COMPILE_PROC_PCT,IMPL_COMPILE_PROC_PCT,ROLLBACK_PROC_PCT,COMMIT_PROC_PCT,RUNSTATS_PROC_PCT,REORG_PROC_PCT,LOAD_PROC_PCT</parameter>
+									<parameter name="$legend">show</parameter>
+								</parameterList>
+							</link>
+						</panel>				
+					</leftPane>
+					<rightPane>
+						<panel name="ratioProcessTime">
+							<link type="action" target="_self" window="_self" connectionRequired="y">
+								<parameterList>
+									<parameter name="table">Performance/componentPercentage</parameter>
+									<parameter name="action">chart</parameter>
+									<parameter name="$chartName">ratioProcessTime</parameter>
+									<parameter name="$chartTitle">Ratio Process Time</parameter>
+									<parameter name="$type">pie</parameter>
+									<parameter name="$yAxis">WAIT,SECT_PROC_TIME,COMP_PROC_TIME,IMP_C_PROC_TIME,ROLLBACK_PROC_TIME,COMMIT_PROC_TIME,RUNSTATS_PROC_TIME,REORG_PROC_TIME,LOAD_PROC_TIME</parameter>
+									<parameter name="$slices">column</parameter>
+								</parameterList>
+							</link>
+						</panel>				
+					</rightPane>
+				</splitPane>
+			</bottomPane>
+		</splitPane>
+	</pageWindow>
+</menu>

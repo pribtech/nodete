@@ -1,0 +1,125 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2013 All rights reserved.
+  
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+<table name="database">
+	<sqlName>pg_database</sqlName>
+	<singularName>Database</singularName>
+	<pluralName>Databases</pluralName>
+	<description></description>
+	<orderBy name="datname" direction="A"/>
+	<disableEdit/>
+	<output>
+		<type name="DDL" destination="" title="" generator=""/>
+	</output>
+	<displayColumns titleDepth="2">
+		<col type="column" name="datname"/>
+		<col type="column" name="comment"/>
+		<col type="column" name="dbaName"/>
+		<col type="column" name="encoding"/>
+		<col type="column" name="datcollate"/>
+		<col type="column" name="datctype"/>
+		<col type="column" name="datistemplate"/>
+		<col type="column" name="datallowconn"/>
+		<col type="column" name="datconnlimit"/>
+		<col type="column" name="datlastsysoid"/>
+		<col type="column" name="datfrozenxid"/>
+		<col type="column" name="datminmxid"/>
+		<col type="column" name="tablespace"/>
+		<col type="column" name="datacl"/>
+	</displayColumns>
+	<column name="datname">
+		<sqlName>datname</sqlName>
+		<title>Name</title>
+		<type>s</type>
+	</column>
+	<column name="comment">
+		<sqlName>(SELECT description FROM pg_shdescription where oid=objoid AND classoid='pg_database'::regclass)</sqlName>
+		<title>Comment</title>
+	</column>
+	<column name="datdba">
+		<sqlName>datdba</sqlName>
+		<title>dba id</title>
+		<type>n</type>
+	</column>
+	<column name="dbaName">
+		<sqlName>(select usename from pg_user t where t.usesysid=datdba)</sqlName>
+		<title>DBA</title>
+	</column>
+	<column name="encoding">
+		<sqlName>encoding</sqlName>
+		<title>Encoding Id</title>
+		<type>n</type>
+	</column>
+	<column name="encoding">
+		<sqlName>pg_encoding_to_char(encoding)</sqlName>
+		<title>Encoding</title>
+	</column>
+	<column name="datcollate">
+		<sqlName>datcollate</sqlName>
+		<title>Collate</title>
+		<type>n</type>
+	</column>
+	<column name="datctype">
+		<sqlName>datctype</sqlName>
+		<title>Type</title>
+		<type>n</type>
+	</column>
+	<column name="datistemplate">
+		<sqlName>datistemplate</sqlName>
+		<title>Template</title>
+		<type>boolean</type>
+	</column>
+	<column name="datallowconn">
+		<sqlName>datallowconn</sqlName>
+		<title>Allow Connection</title>
+		<type>boolean</type>
+	</column>
+	<column name="datconnlimit">
+		<sqlName>datconnlimit</sqlName>
+		<title>Connection Limit</title>
+		<type>n</type>
+	</column>
+	<column name="datlastsysoid">
+		<sqlName>datlastsysoid</sqlName>
+		<title>Last System oid</title>
+		<type>n</type>
+	</column>
+	<column name="datfrozenxid">
+		<sqlName>datfrozenxid</sqlName>
+		<title>Frozen xid</title>
+		<type>n</type>
+	</column>
+	<column name="datminmxid">
+		<sqlName>datminmxid</sqlName>
+		<title>Min. xid</title>
+		<type>n</type>
+	</column>
+	<column name="dattablespace">
+		<sqlName>dattablespace</sqlName>
+		<title>Tablespace ID</title>
+		<type>n</type>
+	</column>
+	<column name="tablespace">
+		<sqlName>(select spcname from pg_tablespace t where t.oid=dattablespace)</sqlName>
+		<title>Tablespace</title>
+	</column>
+	<column name="datacl">
+		<sqlName>datacl</sqlName>
+		<title>ACL</title>
+		<type>n</type>
+	</column>
+</table>

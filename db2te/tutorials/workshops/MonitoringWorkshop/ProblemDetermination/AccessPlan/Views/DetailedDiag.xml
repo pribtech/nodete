@@ -1,0 +1,53 @@
+<table name="Unknown">
+	<sql_name>DetailedDiagINFO</sql_name>
+	<singular_name>Detailed Diagnostic information</singular_name>
+	<plural_name>Detailed Diagnostic information</plural_name>
+	<inlinequery>
+<![CDATA[
+SELECT SERVICE_SUBCLASS_NAME,
+       SUM(ROWS_READ) ROWS_READ,
+       SUM(ROWS_RETURNED) ROWS_RETURNED,
+       SUM(TOTAL_SORTS) TOTAL_SORTS
+FROM TABLE(MON_GET_SERVICE_SUBCLASS('','',-2)) as t GROUP BY SERVICE_SUBCLASS_NAME
+]]>
+	</inlinequery>
+	<description>Details showing why performance of SQL statements are slow</description>
+	<rows_per_page>50</rows_per_page>
+	<order_by_index></order_by_index>
+	<display_columns>
+		<col type="column" name="SERVICE_SUBCLASS_NAME"/>
+		<col type="dynamiccolumn" name="ROWS_READ_FOR"/>
+		<col type="dynamiccolumn" name="ROWS_RETURNED"/>
+		<col type="column" name="TOTAL_SORTS"/>
+	</display_columns>
+	<column name="SERVICE_SUBCLASS_NAME">
+		<c_sql_name>SERVICE_SUBCLASS_NAME</c_sql_name>
+		<c_title>SERVICE_SUBCLASS_NAME</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>n</c_drill>
+		<c_pkey>p</c_pkey>
+	</column>
+	
+	<column name="ROWS_READ">
+		<c_sql_name>ROWS_READ</c_sql_name>
+		<c_title>ROWS_READ</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<dynamicColumn name="ROWS_READ_FOR" type="FROM_POINT" column="ROWS_READ" title="Rows read from this point"/>
+	<column name="ROWS_RETURNED">
+		<c_sql_name>ROWS_RETURNED</c_sql_name>
+		<c_title>ROWS_RETURNED</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>n</c_drill>
+		
+	</column>
+	<dynamicColumn name="ROWS_RETURNED" type="FROM_POINT" column="ROWS_RETURNED" title="Rows returned from this point"/>
+	<column name="TOTAL_SORTS">
+		<c_sql_name>TOTAL_SORTS</c_sql_name>
+		<c_title>TOTAL_SORTS</c_title>
+		<c_presentation></c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	
+</table>

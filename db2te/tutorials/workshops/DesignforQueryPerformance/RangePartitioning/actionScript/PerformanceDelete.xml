@@ -1,0 +1,241 @@
+<actionPanel>
+	<flow>controlled</flow>
+	<useConsole>yes</useConsole>
+	<overview>
+	</overview>
+	<taskList>
+
+	
+		<task name="Get Execution Times of Delete and Detach">
+			<discription>
+				This computes the time taken for DELETE operation vs DETACH of a data range from a Range Partitioned table.</discription>
+				<action name="runDetach" type="blank">
+				<followOnAction condition="true" compareOn="true"
+				compareOnType="raw">
+						
+					<task>
+						<echo></echo>
+						<echo>
+							Running the delete command on the Range Partitioned table...
+						</echo>
+						<echo></echo>
+						<echo>DELETE FROM ?SCHEMA?.SUBSCRIBER_RATED_USAGE_DET WHERE EVENT_START_DT = '2009-06-02' </echo>
+						<action name="runDel" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="fixed">
+									<value>run_workload</value>
+								</parameter>
+								<parameter name="SQL[1]" type="fixed">
+									<value>
+										DELETE FROM ?SCHEMA?.SUBSCRIBER_RATED_USAGE_DET WHERE EVENT_START_DT = '2009-06-02' </value>
+								</parameter>
+								<parameter name="Repetition" type="fixed">
+									<value>1</value>
+								</parameter>
+								<parameter name="SampleRate" type="fixed">
+									<value>1</value>
+								</parameter>
+							</parameterList>
+							<followOnAction condition="true">
+								<task>
+								<assignSharedConstant name="timeDel" type="returnObject">
+									<value>runDel.returnValue.SQL.1</value>
+								</assignSharedConstant>
+						<echo></echo>
+									<echo>Delete time: ?timeDel? s</echo>
+						<echo></echo>
+						<echo></echo>
+								</task>
+							</followOnAction>
+							<followOnAction condition="false">
+								<task>
+									<echo>Error in run!</echo>
+								</task>
+							</followOnAction>
+						</action>
+					</task>
+
+					<task>
+						<echo></echo>
+						<echo>DELETE FROM ?SCHEMA?.SUBSCRIBER_RATED_USAGE_DET</echo>
+						<action name="runDel" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="fixed">
+									<value>run_workload</value>
+								</parameter>
+								<parameter name="SQL[1]" type="fixed">
+									<value>DELETE FROM ?SCHEMA?.SUBSCRIBER_RATED_USAGE_DET</value>
+								</parameter>
+								<parameter name="Repetition" type="fixed">
+									<value>1</value>
+								</parameter>
+								<parameter name="SampleRate" type="fixed">
+									<value>1</value>
+								</parameter>
+							</parameterList>
+							
+							<followOnAction condition="true">
+								<task>
+									<echo>Delete completed successfully!</echo>
+								</task>
+							</followOnAction>							
+							
+							<followOnAction condition="false">
+								<task>
+									<echo>Error in run!</echo>
+								</task>
+							</followOnAction>
+						</action>
+					</task>	
+
+					<task>
+						<echo>INSERT INTO ?SCHEMA?.SUBSCRIBER_RATED_USAGE_DET (SELECT * FROM TE_TEMP.SUBSCRIBER_RATED_USAGE)</echo>
+						<action name="runDet" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="fixed">
+									<value>run_workload</value>
+								</parameter>
+								<parameter name="SQL[1]" type="fixed">
+									<value>
+										INSERT INTO ?SCHEMA?.SUBSCRIBER_RATED_USAGE_DET (SELECT * FROM TE_TEMP.SUBSCRIBER_RATED_USAGE)
+									</value>
+								</parameter>
+								<parameter name="Repetition" type="fixed">
+									<value>1</value>
+								</parameter>
+								<parameter name="SampleRate" type="fixed">
+									<value>1</value>
+								</parameter>
+							</parameterList>
+
+							<followOnAction condition="true">
+								<task>
+									<echo>Insert completed succesfully!</echo>
+								</task>
+							</followOnAction>
+							
+							<followOnAction condition="false">
+								<task>
+									<echo>Error in run!</echo>
+								</task>
+							</followOnAction>
+						</action>
+					</task>
+					  
+					<task>
+						<echo></echo>
+						<echo></echo>
+					  	<echo>Running the DETACH command on the Range Partitioned table...</echo>
+						<echo></echo>
+						<echo>ALTER TABLE ?SCHEMA?.SUBSCRIBER_RATED_USAGE_DET DETACH PARTITION PART4 INTO ?SCHEMA?.SUBSCRIBER_RATED_USAGE_PART</echo>
+						<action name="runDet" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="fixed">
+									<value>run_workload</value>
+								</parameter>
+								<parameter name="SQL[1]" type="fixed">
+									<value>
+										ALTER TABLE ?SCHEMA?.SUBSCRIBER_RATED_USAGE_DET DETACH PARTITION PART4 INTO ?SCHEMA?.SUBSCRIBER_RATED_USAGE_PART
+									</value>
+								</parameter>
+								<parameter name="Repetition" type="fixed">
+									<value>1</value>
+								</parameter>
+								<parameter name="SampleRate" type="fixed">
+									<value>1</value>
+								</parameter>
+							</parameterList>
+							<followOnAction condition="true">
+								<task>
+								<assignSharedConstant name="timeDet" type="returnObject">
+									<value>runDet.returnValue.SQL.1</value>
+								</assignSharedConstant>
+						<echo></echo>
+									<echo>Detach time: ?timeDet? s</echo>
+						<echo></echo>
+						<echo></echo>
+								</task>
+							</followOnAction>
+							<followOnAction condition="false">
+								<task>
+									<echo>Error in run!</echo>
+								</task>
+							</followOnAction>
+
+							<followOnAction condition="false">
+								<task>
+									<echo>Error in run!</echo>
+								</task>
+							</followOnAction>
+						</action>
+			  		</task>	
+
+				</followOnAction>
+			</action>
+		</task>	
+					
+		<task name="Graph of Delete vs Detach">
+			<discription>This generates a graph comparing the times taken by the Delete vs the Detach operation.
+			</discription>
+				<action name="getGraph" type="blank">
+				<followOnAction condition="true" compareOn="true"
+				compareOnType="raw">
+
+				<task>
+						<loadPage>
+							<pageWindow target="informationWindow">
+								<panel name="main" PrimaryContainer="true">
+									<link type="action" target="_self"
+										window="_self" connectionRequired="y">
+
+
+
+										<parameterList>
+											<parameter name="action">
+												graphYUI
+											</parameter>
+											<parameter name="graph">
+												<![CDATA[					       				
+					       				
+ {
+	"Graph":
+	{
+		"title": "Delete and Detach Runtime (in milliseconds)",
+		"graphType": "column",
+		"xField": "TableState",
+		"xTitle": "Number of Pages",
+		"yTitle": "Un Table",
+		"dataSourceType": "data_from_raw",
+		"responseSchema": {"fields": ["TableState","TableSize"]},
+		"style":{	"legend": { "display": "right" }, "animationEnabled" : "false"},
+		"seriesDef": [{ "displayName": "Time (ms)", "yField": "TableSize", "style": {"color": "0x454586"}}],
+		"datasets":
+		 [ 
+				{ "TableState": "Delete", "TableSize": (?timeDel? * 1000) },
+			    { "TableState": "Detach", "TableSize": (?timeDet? * 1000) }
+
+			]
+	}
+
+
+}
+							
+
+]]>
+
+											</parameter>
+										</parameterList>
+									</link>
+								</panel>
+							</pageWindow>
+						</loadPage>
+					</task>
+				</followOnAction>
+			</action>
+		</task>
+	</taskList>
+</actionPanel>
+
+
+
+

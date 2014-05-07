@@ -1,0 +1,28 @@
+<p>Now that you have isolated the activities issued by these
+  two scripts into separate service classes, you can assign
+  resources to the service classes or monitor the activities
+  that run in those service classes. 
+  </p>
+  <p>
+  For example, if you wanted to capture details about every individual
+  activity that executes
+  in the WORK2_SC service class, you could enable activity
+  collection for that service class using an <a onclick="OpenURLInFloatingWindow
+('http://publib.boulder.ibm.com/infocenter/db2luw/v9r7/topic/com.ibm.db2.luw.sql.ref.doc/doc/r0050551.html?noframes=true');">
+ALTER SERVICE CLASS</a> statement as shown on the right. 
+  </p>
+  <p>
+  If the work performed by WLM_tutorial_wl2 is more
+  important than the work performed by the script work1.db2,
+  you could increase the priority of agents running in the
+  WORK2_SC service class using a ALTER SERVICE CLASS statement like:
+  </p>
+  <ul>
+  <li><i>On UNIX:</i> ALTER SERVICE CLASS WORK2_SC AGENT PRIORITY -6 (On
+  UNIX, a negative value specifies a higher priority)
+  </li>
+  <li>
+  <i>On Windows:</i> ALTER SERVICE CLASS WORK2_SC AGENT PRIORITY 6
+(On Windows a positive value specifies a higher priority)</li>
+  </ul>
+  <br>

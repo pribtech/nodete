@@ -1,0 +1,30 @@
+<menu type="leaf" branchDirectory=""   minVersion="9.8" DBMS="DB2">
+	<pageWindow target="_active">
+		<panelHeaders refreshEnabled="true" showRefreshControl="true">
+			<autoRefreshControls>
+				<timeVisible>true</timeVisible>
+				<time>1</time>
+				<timeOptions>[1,2,3,4,5,6,7,8,9,10]</timeOptions>
+			</autoRefreshControls>
+		</panelHeaders>
+		<splitPane direction="h">
+			<topPane>
+				<panel name="main" PrimaryContainer="true">
+					<link type="action" target="_self" window="_self" connectionRequired="y">
+						<parameterList>
+							<parameter name="table">pureScale/memberOverview</parameter>
+							<parameter name="action">list_table</parameter>
+							<parameter name="$displayCharts">detail</parameter>
+						</parameterList>
+					</link>				
+				</panel>
+			</topPane>
+			<bottomPane>
+				<panel name="detail"/>
+			</bottomPane>
+		</splitPane>
+	</pageWindow>
+	<description>
+		Member overview
+	</description>
+</menu>

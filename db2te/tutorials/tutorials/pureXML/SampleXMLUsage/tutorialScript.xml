@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tutorial name="Sample XML usage" autoCloseWindowsInRightStage="true" autoClearAdhocResults="true">
+    <flowRestriction>forwardExploration</flowRestriction>
+    <closeAction/>
+    <openAction />
+    <globalCodeHighlightOptions highlightCode = "true" />
+    <pageList>
+    	<page name="Sample XML usage" type="intro">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>01_SampleXMLUsage.html</contentFile>
+            <autoLoadLink/>
+        </page>
+        
+    <page name="Create Doctor and Patient Tables" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>02_CreateDoctorAndPatientTables.html</contentFile>
+            <SQLFile>01_CreateDoctorAndPatientTables.sql</SQLFile>
+        </page>
+   <page name="Show Patient Table" type="general">
+            <entryAction name="checkForInsert" type="serverAction">
+	                <parameterList>
+	                	<parameter name="action" type="fixed">
+	                		<value>checkForRow</value>
+	                	</parameter>
+	                    <parameter name="schema" type="constant">
+	                        <value>SCHEMA</value>
+	                    </parameter>
+	                	<parameter name="name" type="fixed">
+	                	<value>patients</value>
+	                	</parameter>
+	                </parameterList>
+	                <followOnAction condition="true"  negCondition="true">
+	                    <task>
+	                        <action name="displayMsgForFailedInsert" type="alert">
+	                            <message>Data hasn't been inserted in the table. Please try this step again.</message>
+	                        </action>
+	                    </task>
+	                    <task>
+	                        <setActionReturn>false</setActionReturn>
+	                    </task>
+	                </followOnAction>
+	                <followOnAction condition="true">
+	                	<task>
+	                		<action name="checkForInsert" type="serverAction">
+						                <parameterList>
+						                	<parameter name="action" type="fixed">
+						                		<value>checkForRow</value>
+						                	</parameter>
+						                    <parameter name="schema" type="constant">
+						                        <value>SCHEMA</value>
+						                    </parameter>
+						                	<parameter name="name" type="fixed">
+						                	<value>doctors</value>
+						                	</parameter>
+						                </parameterList>
+						                <followOnAction condition="true"  negCondition="true">
+						                    <task>
+						                        <action name="displayMsgForFailedInsert" type="alert">
+						                            <message>Data hasn't been inserted in the table. Please try this step again.</message>
+						                        </action>
+						                    </task>
+						                    <task>
+						                        <setActionReturn>false</setActionReturn>
+						                    </task>
+	                </followOnAction>
+	                </action>
+	                </task>
+	                </followOnAction>
+	            </entryAction> 
+
+            <exitAction/>
+            <contentFile>03_ShowPatientTable.html</contentFile>
+            <SQLFile>02_ShowPatientTable.sql</SQLFile>
+        </page><page name="Show Patients in an XML structure" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>04_ShowPatientsInAnXMLStructure.html</contentFile>
+            <SQLFile>03_ShowPatientsInAnXMLStructure.sql</SQLFile>
+            <SQLExecutionOptions xmlinline="true" xml="true" clobinline="true" clob="true" blob="false" dbclob="false" termChar="#" cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+        </page><page name="Show Doctors as an XML structure" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>05_ShowDoctorsAsAnXMLStructure.html</contentFile>
+            <SQLFile>04_ShowDoctorsAsAnXMLStructure.sql</SQLFile>
+            <SQLExecutionOptions xmlinline="true" xml="true" clobinline="true" clob="true" blob="false" dbclob="false" termChar="#" cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+        </page><page name="Create a Patient-Doctor View" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>06_CreateAPatient-DoctorView.html</contentFile>
+            <SQLFile>05_CreateAPatient-DoctorView.sql</SQLFile>
+        </page><page name="Select from the PatientDoctor View" type="general">
+            <entryAction name="checkForInsert" type="serverAction">
+	    	                <parameterList>
+	    	                	<parameter name="action" type="fixed">
+	    	                		<value>checkForRow</value>
+	    	                	</parameter>
+	    	                    <parameter name="schema" type="constant">
+	    	                        <value>SCHEMA</value>
+	    	                    </parameter>
+	    	                	<parameter name="name" type="fixed">
+	    	                	<value>patientDoctor</value>
+	    	                	</parameter>
+	    	                </parameterList>
+	    	                <followOnAction condition="true"  negCondition="true">
+	    	                    <task>
+	    	                        <action name="displayMsgForFailedInsert" type="alert">
+	    	                            <message>Data hasn't been inserted in the table. Please try this step again.</message>
+	    	                        </action>
+	    	                    </task>
+	    	                    <task>
+	    	                        <setActionReturn>false</setActionReturn>
+	    	                    </task>
+	                </followOnAction>
+	     </entryAction>
+            <exitAction/>
+            <contentFile>07_SelectFromThePatientDoctorView.html</contentFile>
+            <SQLFile>06_SelectFromThePatientDoctorView.sql</SQLFile>
+            <SQLExecutionOptions xmlinline="true" xml="true" clobinline="true" clob="true" blob="false" dbclob="false" termChar="#" cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+        </page><page name="Create an Alternate View" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>08_CreateAnAlternateView.html</contentFile>
+            <SQLFile>07_CreateAnAlternateView.sql</SQLFile>
+        </page><page name="Select from the DoctorPatient view" type="general">
+            <entryAction name="checkForInsert" type="serverAction">
+	    	                <parameterList>
+	    	                	<parameter name="action" type="fixed">
+	    	                		<value>checkForRow</value>
+	    	                	</parameter>
+	    	                    <parameter name="schema" type="constant">
+	    	                        <value>SCHEMA</value>
+	    	                    </parameter>
+	    	                	<parameter name="name" type="fixed">
+	    	                	<value>Doctorpatient</value>
+	    	                	</parameter>
+	    	                </parameterList>
+	    	                <followOnAction condition="true"  negCondition="true">
+	    	                    <task>
+	    	                        <action name="displayMsgForFailedInsert" type="alert">
+	    	                            <message>Data hasn't been inserted in the table. Please try this step again.</message>
+	    	                        </action>
+	    	                    </task>
+	    	                    <task>
+	    	                        <setActionReturn>false</setActionReturn>
+	    	                    </task>
+	                </followOnAction>
+	                </entryAction>
+            <exitAction/>
+            <contentFile>09_SelectFromTheDoctorPatientView.html</contentFile>
+            <SQLFile>08_SelectFromTheDoctorPatientView.sql</SQLFile>
+            <SQLExecutionOptions xmlinline="true" xml="true" clobinline="true" clob="true" blob="false" dbclob="false" termChar="#" cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+        </page><page name="Specific Doctor request" type="last">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>10_SpecificDoctorRequest.html</contentFile>
+            <SQLFile>09_SpecificDoctorRequest.sql</SQLFile>
+            <SQLExecutionOptions xmlinline="true" xml="true" clobinline="true" clob="true" blob="false" dbclob="false" termChar="#" cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+            </page>
+        </pageList>
+</tutorial>

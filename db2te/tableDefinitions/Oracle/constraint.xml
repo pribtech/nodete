@@ -1,0 +1,158 @@
+<!--
+  Peter Prib, Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2012 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<table name="constraint">
+	<sql_name>SYS.DBA_CONSTRAINTS</sql_name>
+	<singular_name>Constraint</singular_name>
+	<plural_name>Constraints</plural_name>
+	<description></description>
+	<display_columns>
+		<col type="column" name="OWNER"/>
+		<col type="column" name="CONSTRAINT_NAME"/>
+		<col type="column" name="CONSTRAINT_TYPE"/>
+		<col type="column" name="TABLE_NAME"/>
+		<col type="column" name="SEARCH_CONDITION"/>
+		<col type="column" name="R_OWNER"/>
+		<col type="column" name="R_CONSTRAINT_NAME"/>
+		<col type="column" name="DELETE_RULE"/>
+		<col type="column" name="STATUS"/>
+		<col type="column" name="DEFERRABLE"/>
+		<col type="column" name="DEFERRED"/>
+		<col type="column" name="VALIDATED"/>
+		<col type="column" name="GENERATED"/>
+		<col type="column" name="BAD"/>
+		<col type="column" name="RELY"/>
+		<col type="column" name="LAST_CHANGE"/>
+		<col type="column" name="INDEX_OWNER"/>
+		<col type="column" name="INDEX_NAME"/>
+		<col type="column" name="INVALID"/>
+		<col type="column" name="VIEW_RELATED"/>
+	</display_columns>
+	<column name="OWNER">
+		<sql_name>OWNER</sql_name>
+		<title>Owner</title>
+		<type>s</type>
+		<primaryKey/>
+		<prefillEnable/>
+	</column>
+	<column name="CONSTRAINT_NAME">
+		<sql_name>CONSTRAINT_NAME</sql_name>
+		<title>Name</title>
+		<type>s</type>
+		<primaryKey/>
+	</column>
+	<column name="CONSTRAINT_TYPE">
+		<sql_name>CONSTRAINT_TYPE</sql_name>
+		<title>Type</title>
+		<type>s</type>
+		<prefillEnable/>
+	</column>
+	<column name="TABLE_NAME">
+		<sql_name>TABLE_NAME</sql_name>
+		<title>Table</title>
+		<type>s</type>
+	</column>
+	<column name="SEARCH_CONDITION">
+		<sql_name>SEARCH_CONDITION</sql_name>
+		<title>Search Condition</title>
+		<type>l</type>
+	</column>
+	<column name="R_OWNER">
+		<sql_name>R_OWNER</sql_name>
+		<title>R Owner</title>
+		<type>s</type>
+		<prefill>
+			<table>Oracle/schema</table>
+			<column>OWNER</column>
+		</prefill>
+	</column>
+	<column name="R_CONSTRAINT_NAME">
+		<sql_name>R_CONSTRAINT_NAME</sql_name>
+		<title>R Constraint Name</title>
+		<type>s</type>
+		<drill_enable/>
+	</column>
+	<column name="DELETE_RULE">
+		<sql_name>DELETE_RULE</sql_name>
+		<title>Delete Rule</title>
+		<type>s</type>
+	</column>
+	<column name="STATUS">
+		<sql_name>STATUS</sql_name>
+		<title>Status</title>
+		<type>s</type>
+	</column>
+	<column name="DEFERRABLE">
+		<sql_name>DEFERRABLE</sql_name>
+		<title>Deferrable</title>
+		<type>s</type>
+	</column>
+	<column name="DEFERRED">
+		<sql_name>DEFERRED</sql_name>
+		<title>Deferred</title>
+		<type>s</type>
+	</column>
+	<column name="VALIDATED">
+		<sql_name>VALIDATED</sql_name>
+		<title>Validated</title>
+		<type>s</type>
+		<drill_enable/>
+	</column>
+	<column name="GENERATED">
+		<sql_name>GENERATED</sql_name>
+		<title>Generated</title>
+		<type>s</type>
+	</column>
+	<column name="BAD">
+		<sql_name>BAD</sql_name>
+		<title>Bad</title>
+		<type>s</type>
+	</column>
+	<column name="RELY">
+		<sql_name>RELY</sql_name>
+		<title>Rely</title>
+		<type>s</type>
+	</column>
+	<column name="LAST_CHANGE">
+		<sql_name>LAST_CHANGE</sql_name>
+		<title>Last Change</title>
+		<type>n</type>
+	</column>
+	<column name="INDEX_OWNER">
+		<sql_name>INDEX_OWNER</sql_name>
+		<title>Index Owner</title>
+		<type>s</type>
+		<prefill>
+			<table>Oracle/schema</table>
+			<column>OWNER</column>
+		</prefill>
+	</column>
+	<column name="INDEX_NAME">
+		<sql_name>INDEX_NAME</sql_name>
+		<title>Index Name</title>
+		<type>s</type>
+	</column>
+	<column name="INVALID">
+		<sql_name>INVALID</sql_name>
+		<title>Invalid</title>
+		<type>s</type>
+	</column>
+	<column name="VIEW_RELATED">
+		<sql_name>VIEW_RELATED</sql_name>
+		<title>View Related</title>
+		<type>s</type>
+	</column>
+</table>

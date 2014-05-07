@@ -1,0 +1,266 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2009 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<command name="adminCmdReorg" title="Reorg">
+<![CDATA[
+>>-REORG-------------------------------------------------------->
+]]>
+	<text spacepad="false">CALL SYSPROC.ADMIN_CMD ('</text>
+	<text>REORG</text>
+	<br/>
+<![CDATA[
+>--+-TABLE--table-name--| Table clause |---------------------------------+-->
+   +-+-INDEXES ALL FOR TABLE--table-name------------+--| Index clause |--+   
+   | '-INDEX--index-name--+-----------------------+-'                    |   
+   |                      '-FOR TABLE--table-name-'                      |   
+   |                                              .-ALLOW WRITE ACCESS-. |   
+   '-TABLE--mdc-table-name--RECLAIM EXTENTS ONLY--+--------------------+-'   
+                                                  +-ALLOW READ ACCESS--+     
+                                                  '-ALLOW NO ACCESS----'     
+]]>
+	<select>
+		<option default="true">
+			<text>TABLE</text>
+			<clauseReference name="table-name"/>
+			<clauseReference name="Table clause"/>
+		</option>
+		<option>
+			<select>
+				<option default="true">
+					<text>INDEXES ALL FOR TABLE</text>
+					<clauseReference name="table-name"/>
+				</option>
+				<option>
+					<text>INDEX</text>
+					<clauseReference name="index-name"/>
+					<select>
+						<option default="true"></option>
+						<option><text>FOR TABLE</text><clauseReference name="table-name"/></option>
+					</select>
+				</option>
+			</select>
+			<clauseReference name="Index clause"/>
+		</option>
+		<option>
+			<text>TABLE</text>
+			<clauseReference name="mdc-table-name"/>
+			<text>RECLAIM EXTENTS ONLY</text>
+			<select>
+				<option default="true"><text>ALLOW WRITE ACCESS</text></option>
+				<option><note>ALLOW WRITE ACCESS</note></option>
+				<option><text>ALLOW READ ACCESS</text></option>
+				<option><text>ALLOW NO ACCESS</text></option>
+			</select>
+		</option>
+	</select>
+	<br/>
+<![CDATA[
+>--+-------------------------------+---------------------------->
+   '-| Table partitioning clause |-'   
+]]>
+	<select>
+		<option default="true"><note>all table partitions</note></option>
+		<option><clauseReference name="Table partitioning clause"/></option>
+	</select>
+	<br/>
+<![CDATA[
+>--+-------------------------------+---------------------------><
+   '-| Database partition clause |-'   
+]]>
+	<select>
+		<option default="true"><note>no database partition clause</note></option>
+		<option><clauseReference name="Database partition clause"/></option>
+	</select>
+    <text>')</text>
+
+
+	<clause name="Table clause" title="Table clause">
+<![CDATA[
+|--+-------------------+---------------------------------------->
+   '-INDEX--index-name-'   
+
+                                                                                                              .-KEEPDICTIONARY--.     
+>--+-+-------------------+--+-------------------+--+-----------+--+----------------------------------------+--+-----------------+-+--|
+   | +-ALLOW NO ACCESS---+  '-USE--tbspace-name-'  '-INDEXSCAN-'  '-LONGLOBDATA--+-----------------------+-'  '-RESETDICTIONARY-' |   
+   | '-ALLOW READ ACCESS-'                                                       '-USE--longtbspace-name-'                        |   
+   |            .-ALLOW WRITE ACCESS-.                        .-START--.                                                          |   
+   '-INPLACE--+-+--------------------+--+------------------+--+--------+-+--------------------------------------------------------'   
+              | '-ALLOW READ ACCESS--'  '-NOTRUNCATE TABLE-'  '-RESUME-' |                                                            
+              '-+-STOP--+------------------------------------------------'                                                            
+                '-PAUSE-'                                                                                                             
+]]>
+		<select>
+			<option default="true"><note>no cluster index</note></option>
+			<option><text>INDEX</text><clauseReference name="index-name"/></option>
+		</select>
+
+		<select>
+			<option default="true">
+				<select>
+					<option default="true"><note>read access</note></option>
+					<option><text>ALLOW NO ACCESS</text></option>
+					<option><text>ALLOW READ ACCESS</text></option>
+				</select>
+				<select>
+					<option default="true"><note>use tempspace</note></option>
+					<option><text>USE</text><clauseReference name="tablespace-name"/></option>
+				</select>
+				<select>
+					<option default="true"><note>no index scan</note></option>
+					<option><text>INDEXSCAN</text></option>
+				</select>
+				<select>
+					<option default="true"><note>not LONGLOBDATA</note></option>
+					<option>
+						<text>LONGLOBDATA</text>
+						<select>
+							<option default="true"><note>use tempspace</note></option>
+							<option><text>USE</text><clauseReference name="tablespace-name"/></option>
+						</select>
+					</option>
+				</select>
+				<select>
+					<option><text>KEEPDICTIONARY</text></option>
+					<option default="true"><note>KEEPDICTIONARY</note></option>
+					<option><text>RESETDICTIONARY</text></option>
+				</select>
+			</option>
+			<option>
+				<text>INPLACE</text>
+				<select>
+					<option default="true">
+						<select>
+							<option><text>ALLOW WRITE ACCESS</text></option>
+							<option default="true"><note>ALLOW WRITE ACCESS</note></option>
+							<option><text>ALLOW READ ACCESS</text></option>
+						</select>
+						<select>
+							<option default="true"><note>TRUNCATE TABLE</note></option>
+							<option><text>NOTRUNCATE TABLE</text></option>
+						</select>
+						<select>
+							<option><text>START</text></option>
+							<option default="true"><note>START</note></option>
+							<option><text>RESUME</text></option>
+						</select>
+					</option>
+					<option>
+						<select>
+							<option default="true"><text>STOP</text></option>
+							<option><text>PAUSE</text></option>
+						</select>
+					</option>
+				</select>
+			</option>
+		</select>
+	</clause>
+
+	<clause name="Index clause" title="Index clause">
+<![CDATA[
+|--+--------------------+--+-------------------------+----------|
+   +-ALLOW NO ACCESS----+  |               .-ALL---. |   
+   +-ALLOW WRITE ACCESS-+  +-CLEANUP ONLY--+-------+-+   
+   '-ALLOW READ ACCESS--'  |               '-PAGES-' |   
+                           '-CONVERT-----------------'   
+]]>
+		<select>
+			<option default="true"><note>access</note></option>
+			<option><text>ALLOW NO ACCESS</text></option>
+			<option><text>ALLOW WRITE ACCESS</text></option>
+			<option><text>ALLOW READ ACCESS</text></option>
+		</select>
+		<select>
+			<option default="true"><note>cleanup/convert options</note></option>
+			<option>
+				<text>CLEANUP ONLY</text>
+				<select>
+					<option><text>ALL</text></option>
+					<option default="true"><note>ALL</note></option>
+					<option><text>PAGES</text></option>
+				</select>
+			</option>
+			<option><text>CONVERT</text></option>
+		</select>
+	</clause>
+
+	<clause name="Table partitioning clause" title="Table partitioning clause">
+<![CDATA[
+|--ON DATA PARTITION--partition-name----------------------------|
+]]>
+		<text>ON DATA PARTITION</text><clauseReference name="partition-name"/>
+	</clause>
+
+	<clause name="Database partition clause" title="Database partition clause">
+<![CDATA[
+
+|--ON----------------------------------------------------------->
+
+                             .-,--------------------------------------------------.                                         
+                             V                                                    |                                         
+>--+-+-DBPARTITIONNUM--+--(----db-partition-number1--+--------------------------+-+--)----------------------------------+--|
+   | '-DBPARTITIONNUMS-'                             '-TO--db-partition-number2-'                                       |   
+   '-ALL DBPARTITIONNUMS--+-------------------------------------------------------------------------------------------+-'   
+                          |                                 .-,--------------------------------------------------.    |     
+                          |                                 V                                                    |    |     
+                          '-EXCEPT--+-DBPARTITIONNUM--+--(----db-partition-number1--+--------------------------+-+--)-'     
+                                    '-DBPARTITIONNUMS-'                             '-TO--db-partition-number2-'            
+
+]]>
+		<text>ON</text>
+		<br/>
+		<select>
+			<option default="true">
+				<select>
+					<option default="true"><text>DBPARTITIONNUM</text></option>
+					<option><text>DBPARTITIONNUMS</text></option>
+				</select>
+				<text>(</text>
+				<repeatable>		
+					<clauseReference name="db-partition-number"/>
+					<select>
+						<option default="true"><note>no range</note></option>
+						<option><text>TO</text><clauseReference name="db-partition-number"/></option>
+					</select>
+				</repeatable>		
+				<text>)</text>
+			</option>
+			<option>
+				<text>ALL DBPARTITIONNUMS</text>
+				<select>
+					<option default="true"><note>no exceptions</note></option>
+					<option>
+						<text>EXCEPT</text>
+						<select>
+							<option default="true"><text>DBPARTITIONNUM</text></option>
+							<option><text>DBPARTITIONNUMS</text></option>
+						</select>
+						<text>(</text>
+						<repeatable>		
+							<clauseReference name="db-partition-number"/>
+							<select>
+								<option default="true"><note>no range</note></option>
+								<option><text>TO</text><clauseReference name="db-partition-number"/></option>
+							</select>
+						</repeatable>		
+						<text>)</text>
+					</option>
+				</select>
+			</option>
+		</select>
+	</clause>
+	
+</command>

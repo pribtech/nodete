@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tutorial name="Implementation: Base Table Definitions" autoCloseWindowsInRightStage="true" autoClearAdhocResults="true">
+	<!--flowRestriction>forwardexploration</flowRestriction-->
+	<globalCodeHighlightOptions highlightCode = "true" />
+	<pageList>
+		
+	    <page name="Introduction" type="intro">
+			<contentFile>Intro.html</contentFile>
+			         <autoLoadLink>
+                <pageWindow target="connectionLoader" raiseToTop="true">
+                    <splitPane direction="h" splitPercent="0.8" allowResize="false">
+                        <topPane>
+                            <panel name="main" PrimaryContainer="true">
+                                <RAW><![CDATA[
+<div id="title">Connection Manager</div>
+Connect to the database where the authorization information is stored, using the db2auth dadministrator account.
+                                ]]></RAW>
+                            </panel>
+                        </topPane>
+                        <bottomPane>
+                            <panel name="connection" PrimaryContainer="false">
+                                <link type="action" target="_self" window="_self" connectionRequired="y">
+                                    <parameterList>
+                                        <parameter name="action">connectionManager</parameter>
+                                    </parameterList>
+                                </link>             
+                            </panel>
+                        </bottomPane>
+                    </splitPane>
+                </pageWindow>
+            </autoLoadLink>
+		</page>
+		
+		<page name="View the tables created by the db2auth plug-in" type="general">
+			<contentFile>viewDb2authSchemaTables.html</contentFile>
+			<autoLoadLink>
+				<pageWindow target="db2authTables" raiseToTop="y">
+					<splitPane direction="h" splitPercent="0.3">
+						<topPane>
+						  <splitPane direction="h" splitPercent="0.5">
+						    <topPane>
+							  <panel name="users">
+				   				<link type="action" target="_self" window="_self" connectionRequired="y">
+									<parameterList>
+										<parameter name="table">DB2AUTH.USERS</parameter>
+										<parameter name="action">list_table</parameter>
+									</parameterList>
+								</link>
+							  </panel>
+							</topPane>
+							<bottomPane>
+							  <panel name="group">
+                                <link type="action" target="_self" window="_self" connectionRequired="y">
+                                    <parameterList>
+                                        <parameter name="table">DB2AUTH.GROUPS</parameter>
+                                        <parameter name="action">list_table</parameter>
+                                    </parameterList>
+                                </link>
+                              </panel>
+							</bottomPane>
+						  </splitPane>
+						</topPane>
+						<bottomPane>
+                            <panel name="membership">
+                                <link type="action" target="_self" window="_self" connectionRequired="y">
+                                    <parameterList>
+                                        <parameter name="table">DB2AUTH.GROUP_MEMBERSHIP</parameter>
+                                        <parameter name="action">list_table</parameter>
+                                    </parameterList>
+                                </link>
+                            </panel>
+                         </bottomPane>
+					</splitPane>
+				</pageWindow>
+			</autoLoadLink>
+		</page>
+				
+		<page name="Create a customized view of DB2AUTH.USERS" type="general">
+			<contentFile>createUsersTabDef.html</contentFile>
+			<SQLFile>createUsersTabDef.sql</SQLFile>
+		</page>
+
+        <page name="View the table definition" type="general">
+            <contentFile>viewUsersTable.html</contentFile>
+            <autoLoadLink>
+                <pageWindow target="db2authCustomUsers" raiseToTop="y">
+                    <panel name="users" PrimaryContainer="true">
+                        <link type="action" target="_self" window="_self" connectionRequired="y">
+                            <parameterList>
+                                <parameter name="table">db2AuthLab/db2authCustomUsers</parameter>
+                                <parameter name="action">list_table</parameter>      
+                            </parameterList>                  
+                        </link>
+                    </panel>
+                </pageWindow>
+            </autoLoadLink>
+        </page> 
+		
+		<page name="Create a customized view of DB2AUTH.GROUPS" type="general">
+            <contentFile>createGroupsTabDef.html</contentFile>
+            <SQLFile>createGroupsTabDef.sql</SQLFile>
+        </page>
+
+        <page name="View the table definition" type="general">
+            <contentFile>viewGroupsTable.html</contentFile>
+            <autoLoadLink>
+                <pageWindow target="db2authCustomGroups" raiseToTop="y">
+                    <panel name="groups" PrimaryContainer="true">
+                        <link type="action" target="_self" window="_self" connectionRequired="y">
+                            <parameterList>
+                                <parameter name="table">db2AuthLab/db2authCustomGroups</parameter>
+                                <parameter name="action">list_table</parameter>      
+                            </parameterList>                  
+                        </link>
+                    </panel>
+                </pageWindow>
+            </autoLoadLink>
+        </page> 
+        
+        <page name="Create a customized view of DB2AUTH.GROUP_MEMBERSHIP" type="general">
+            <contentFile>createMembershipsTabDef.html</contentFile>
+            <SQLFile>createMembershipsTabDef.sql</SQLFile>
+        </page>     
+
+        <page name="View the table definition" type="general">
+            <contentFile>viewMembershipsTable.html</contentFile>
+            <autoLoadLink>
+                <pageWindow target="db2authCustomMemberships" raiseToTop="y">
+                    <panel name="memberships" PrimaryContainer="true">
+                        <link type="action" target="_self" window="_self" connectionRequired="y">
+                            <parameterList>
+                                <parameter name="table">db2AuthLab/db2authCustomMemberships</parameter>
+                                <parameter name="action">list_table</parameter>      
+                            </parameterList>                  
+                        </link>
+                    </panel>
+                </pageWindow>
+            </autoLoadLink>
+        </page> 
+        
+        <page name="Create a base master view" type="general">
+            <contentFile>createMasterViewTabDef.html</contentFile>
+            <SQLFile>createMasterViewTabDef.sql</SQLFile>
+        </page>  
+        
+		<page name="View the table definition" type="general">
+			<contentFile>viewMasterViewTable.html</contentFile>
+			<autoLoadLink>
+                <pageWindow target="db2authCustomMasterView" raiseToTop="y">
+                    <panel name="master_view" PrimaryContainer="true">
+                        <link type="action" target="_self" window="_self" connectionRequired="y">
+                            <parameterList>
+                                <parameter name="table">db2AuthLab/db2authCustomMasterView</parameter>
+                                <parameter name="action">list_table</parameter>      
+                            </parameterList>                  
+                        </link>
+                    </panel>
+                </pageWindow>
+            </autoLoadLink>
+		</page>	
+		
+	</pageList>	
+</tutorial>

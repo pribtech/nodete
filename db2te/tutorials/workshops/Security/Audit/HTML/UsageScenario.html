@@ -1,0 +1,32 @@
+<br><h3>Usage Scenario</h3><hr><br>
+
+<p>J.K Avro Superstore has a web-store front through which a customer can browse through the products and place his purchase order.
+After the customer checks out the products in his cart, he is given a form to fill in sensitive information like credit card number and other
+confidential information. Once submitted, this data is stored in table <font face="courier">'credit_card'</font> and the purchase order placed by the customer is placed 
+in table <font face="courier">'PurchaseOrder'</font>. Every purchase order placed will have a corresponding entry in table <font face="courier">'Sales'</font>.  </p>
+
+<p>The data in table <font face="courier">'credit_card'</font> contains customer confidential information which should be accessed by authorized user in an 
+ absolute needed basis. The data in the table <font face="courier">'Sales'</font> is monitored by sales managers of respective regions. In this scenario we introduce different users to demonstrate the 
+restricted access to the  table <font face="courier">'credit_card'</font> based on the 
+authorities and privileges granted to them. The different users are <ul>
+<li>Mark - Vice president of sales organization.</li>
+<li>Sue - General Manager for COASTAL region.</li>
+<li>Joe - General Manager for CENTRAL region.</li>
+<li>Bob - Employee of customer service department, SOUTH region.</li>
+<li>Betcy - Employee of customer service department, NORTH region.</li>
+<li>Nick - Employee of customer service department, WEST region.</li>
+<li>Sam - Employee of customer service department, EAST region.</li>
+<li>Pat - Security administrator of J.K.Avro superstore.</li></ul>
+
+<br><b>prerequisite: These users must be created on the operating system before starting with this workshop.</b><br><br>
+
+<p>To avoid any security threats, J.K Avro Superstore decides to implement the following Data Governance policies to get close to PCI compliance. 
+<ul>
+<li>Protect stored data.</li>
+<li>Restrict access to data by business need-to-know.</li>
+<li>Assign unique ID to each person with computer access.</li>
+<li>Restrict physical access to data.</li>
+<li>Track and monitor all access to network resources and data.</li>
+</ul>
+</p><br>
+ 

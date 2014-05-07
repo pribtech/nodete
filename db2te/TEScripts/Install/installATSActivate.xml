@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2011 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<tutorial name="installATSActivate">
+    <closeAction />
+    <openAction />
+    <globalCodeHighlightOptions highlightCode = "true" />
+    <WMDConfig/>
+    <pageList>
+		<page name="enable ATS" type="general">
+    	 	<entryAction/>
+    	 	<exitAction/>
+            <contentText>
+<![CDATA[
+<div style='width:500px'>
+<ol>
+<li> Set the DB2_ATS_ENABLE registry variable to YES, TRUE, 1, or ON. For example:
+<p/>
+      db2set DB2_ATS_ENABLE=YES
+<p/>
+The instance will need to be recycled for this to take effect.  If the option has been set and this is showing as uninstalled its because the instance hasn't been recycled or set to the off value. 
+<li> Activate your database. Your database must be active for your tasks to execute on time. The best way to do this is to use the ACTIVATE DATABASE command. Alternatively, you can keep a database active if you maintain at least one database connection at all times.
+</ol>
+</div>
+]]>
+			</contentText>
+		</page>
+		<page name="Create stored procedure for ATS Housekeeping" type="general">
+    	 	<entryAction/>
+    	 	<exitAction/>
+            <contentText>
+<![CDATA[
+Create the stored procedure that prunes old data from ATS table.  Default is keep only 14 days.  
+]]>
+			</contentText>
+            <SQLText>
+<![CDATA[
+CREATE PROCEDURE "s#db2mc"."atsHousekeeping" ()
+  SPECIFIC "s#db2mc.atsHousekeeping"
+  DYNAMIC RESULT SETS 0
+  LANGUAGE SQL
+  BEGIN
+--/******************************************************************************	
+--  Author: Peter Prib
+--  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2011 All rights reserved.
+--
+--  Licensed under the Apache License, Version 2.0 (the "License");
+--  you may not use this file except in compliance with the License.
+--  You may obtain a copy of the License at
+--
+--      http://www.apache.org/licenses/LICENSE-2.0
+--
+--  Unless required by applicable law or agreed to in writing, software
+--  distributed under the License is distributed on an "AS IS" BASIS,
+--  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+--  See the License for the specific language governing permissions and
+--  limitations under the License.
+--******************************************************************************/
+	DECLARE stmt varchar(32000);--
+	set stmt = 'delete from SYSTOOLS.ADMINTASKSTATUS where BEGIN_TIME < current timestamp - 14 days';
+	prepare s1 from stmt;--
+	execute s1;--
+	commit;--
+end
+]]>
+			</SQLText>
+            <SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar="@"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+		</page>
+		<page name="Schedule dynamic SQL gathering" type="general">
+    	 	<entryAction/>
+    	 	<exitAction/>
+            <contentText>
+<![CDATA[
+Schedule housekeeping procedure.  Default is to schedule daily. 
+]]>
+			</contentText>
+            <SQLText>
+<![CDATA[
+call ADMIN_TASK_ADD('db2mc ATS Housekeeping '
+					,cast(NULL as TIMESTAMP)
+					,cast(NULL as TIMESTAMP)
+					,cast(NULL as INTEGER)
+					,'30 6 * * *' 
+					,'s#db2mc'
+					,'atsHousekeeping'
+					,cast(null as CLOB(100))
+					,cast(null as VARCHAR(512))
+					,'')
+]]>
+			</SQLText>
+            <SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar=";"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+        </page>
+        
+		<page name="Audit" type="general">
+            <contentText>
+<![CDATA[
+To provide a greater level of security it is worthwhile auditing changes to the table.
+This step is not manditory but recommended as a means of providing an audit trail. 
+
+]]>
+			</contentText>
+            <SQLText>
+<![CDATA[
+create audit policy ATS_AUDIT categories execute 
+           with data status both error type audit
+@
+audit table SYSTOOLS.ADMINTASKS using policy ATS_AUDIT
+@
+audit table SYSTOOLS.ADMINTASKSTATUS using policy ATS_AUDIT
+@
+]]>
+            </SQLText>
+            <SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar="@"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+	</page>
+
+	<page name="Uninstall" type="last">
+            <contentText>
+<![CDATA[
+Uninstall dynamic SQL sampling.
+<p/>
+      db2set DB2_ATS_ENABLE=NO
+<p/>
+]]>
+			</contentText>
+            <SQLText>
+<![CDATA[
+call ADMIN_TASK_REMOVE('db2mc ATS Housekeeping',NULL)@
+drop PROCEDURE "s#db2mc"."atsHousekeeping"@
+]]>
+            </SQLText>
+            <SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar="@"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+        </page>
+    </pageList>
+</tutorial>

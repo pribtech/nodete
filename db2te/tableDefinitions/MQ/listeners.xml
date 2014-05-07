@@ -1,0 +1,124 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2013 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+<table name="listeners">
+	<sqlName>Listeners</sqlName>
+	<singularName>Listener</singularName>
+	<pluralName>Listeners</pluralName>
+	<inlinequery>
+<![CDATA[
+MQCMD_INQUIRE_LISTENER  ?
+]]>
+	</inlinequery>
+	<parameters>
+		<parm name="MQCACH_LISTENER_NAME">
+			<title>Channel Mask</title>
+			<value>*</value>
+			<type>s</type>
+		</parm>
+	</parameters>
+	<description></description>
+	<displayColumns>
+		<col type="column" name="MQCACH_LISTENER_NAME"/>
+		<col type="column" name="MQIACH_LISTENER_CONTROL"/>
+		<col type="column" name="MQIACH_XMIT_PROTOCOL_TYPE"/>
+		<col type="column" name="MQIACH_PORT"/>
+		<col type="column" name="MQCACH_IP_ADDRESS"/>
+		<col type="column" name="MQIACH_BACKLOG"/>
+		<col type="column" name="MQCACH_LISTENER_DESC"/>
+		<col type="column" name="MQCA_ALTERATION_DATE"/>
+		<col type="column" name="MQCA_ALTERATION_TIME"/>
+		<col type="column" name="MQCACH_TP_NAME"/>
+		<col type="column" name="MQIACH_ADAPTER"/>
+		<col type="column" name="MQCACH_LOCAL_NAME"/>
+		<col type="column" name="MQIACH_NAME_COUNT"/>
+		<col type="column" name="MQIACH_SESSION_COUNT"/>
+		<col type="column" name="MQIACH_COMMAND_COUNT"/>
+		<col type="column" name="MQIACH_SOCKET"/>
+	</displayColumns>
+	<column name="MQCACH_LISTENER_NAME">
+		<sqlName>MQCACH_LISTENER_NAME</sqlName>
+		<title>Name</title>
+	</column>
+	<column name="MQIACH_LISTENER_CONTROL">
+		<sqlName>MQIACH_LISTENER_CONTROL</sqlName>
+		<title>Control</title>
+		<type>n</type>
+	</column>
+	<column name="MQIACH_XMIT_PROTOCOL_TYPE">
+		<sqlName>MQIACH_XMIT_PROTOCOL_TYPE</sqlName>
+		<title>Xmit Protocol Type</title>
+		<type>n</type>
+	</column>
+	<column name="MQIACH_PORT">
+		<sqlName>MQIACH_PORT</sqlName>
+		<title>Port</title>
+		<type>n</type>
+	</column>
+	<column name="MQCACH_IP_ADDRESS">
+		<sqlName>MQCACH_IP_ADDRESS</sqlName>
+		<title>IP Address</title>
+	</column>
+	<column name="MQIACH_BACKLOG">
+		<sqlName>MQIACH_BACKLOG</sqlName>
+		<title>Backlog</title>
+	</column>
+	<column name="MQCACH_LISTENER_DESC">
+		<sqlName>MQCACH_LISTENER_DESC</sqlName>
+		<title>Description</title>
+	</column>
+	<column name="MQCA_ALTERATION_DATE">
+		<sqlName>MQCA_ALTERATION_DATE</sqlName>
+		<title>Alteration Date</title>
+	</column>
+	<column name="MQCA_ALTERATION_TIME">
+		<sqlName>MQCA_ALTERATION_TIME</sqlName>
+		<title>Alteration Time</title>
+	</column>
+	<column name="MQCACH_TP_NAME">
+		<sqlName>MQCACH_TP_NAME</sqlName>
+		<title>Tp Name</title>
+	</column>
+	<column name="MQIACH_ADAPTER">
+		<sqlName>MQIACH_ADAPTER</sqlName>
+		<title>Adapter</title>
+	</column>
+	<column name="MQCACH_LOCAL_NAME">
+		<sqlName>MQCACH_LOCAL_NAME</sqlName>
+		<title>Local Name</title>
+	</column>
+	<column name="MQIACH_NAME_COUNT">
+		<sqlName>MQIACH_NAME_COUNT</sqlName>
+		<title>Name Count</title>
+		<type>n</type>
+	</column>
+	<column name="MQIACH_SESSION_COUNT">
+		<sqlName>MQIACH_SESSION_COUNT</sqlName>
+		<title>Session Count</title>
+		<type>n</type>
+	</column>
+	<column name="MQIACH_COMMAND_COUNT">
+		<sqlName>MQIACH_COMMAND_COUNT</sqlName>
+		<title>Command Count</title>
+		<type>n</type>
+	</column>
+	<column name="MQIACH_SOCKET">
+		<sqlName>MQIACH_SOCKET</sqlName>
+		<title>Socket</title>
+		<type>n</type>
+	</column>
+</table>

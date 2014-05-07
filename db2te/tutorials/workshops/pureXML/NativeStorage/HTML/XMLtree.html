@@ -1,0 +1,23 @@
+<H4>XML document tree storage</H4>
+
+<P align = "justify">
+<BR>
+	Any XML document inserted into DB2 is stored in native format in a tree structure.
+	The tags in the XML documents are replaced by a unique integer and this integer is
+	stored instead of the XML tags. We can obtain the XML string and string ID mapping in the catalog table
+	SYSIBM.SYSXMLSTRINGS.
+<BR>
+<BR>
+<BR>
+<B> Advantages of replacing the XML tags with an integer includes :</B>
+	<ul>
+		<li>Less storage space</li>
+		<li>An integer comparsion in XQueries instead of string comparsion which will speed up processing.</li>
+	</ul>
+<BR>
+<BR>
+<B>SYSIBM.SYSXMLSTRINGS table definition</B> <BR><BR>
+<img src='?BASE_DIRECTORY?/HTML/SysXmlStrings.png'/>
+
+
+

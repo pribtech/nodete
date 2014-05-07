@@ -1,0 +1,200 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2010 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+<table name="planDependency">
+	<sql_name>SYSIBM.SYSPLANDEP</sql_name>
+	<singular_name>Plan Dependency</singular_name>
+	<plural_name>Plan Dependencies</plural_name>
+	<description/>
+	<disableEdit/>
+	<output>
+		<type name="DDL" destination="" title="" generator=""/>
+	</output>
+	<order_by_index name="bcreator" direction="A"/>
+	<order_by_index name="bname" direction="A"/>
+	<display_columns>
+		<col type="column" name="dcreator"/>
+		<col type="column" name="dname"/>
+		<col type="reference" name="plan"/>
+		<col type="column" name="bcreator"/>
+		<col type="column" name="bname"/>
+		<col type="column" name="btype"/>
+		<col type="column" name="binder"/>
+		<col type="column" name="tabauth"/>
+		<col type="column" name="tabusage"/>
+		<col type="column" name="dunique_id"/>
+		<col type="column" name="bindertype"/>
+	</display_columns>
+	<reference name="plan">
+		<title>Plan/Package</title>
+		<reftype>displayRow</reftype>
+		<refvalue>plan</refvalue>
+		<icon>images/icon-link-calendar.gif</icon>
+		<ref foreign_column_name="creator">
+			<local_column_name>dcreator</local_column_name>
+		</ref>
+		<ref foreign_column_name="name">
+			<local_column_name>dname</local_column_name>
+		</ref>
+	</reference>
+	<column name="dcreator">
+		<sqlName>"DCREATOR"</sqlName>
+		<title>Plan Creator</title>
+		<type>s</type>
+		<drillEnable/>
+		<c_prefill>
+			<table>schema</table>
+			<column>SCHEMANAME</column>
+		</c_prefill>
+	</column>
+	<column name="dname">
+		<sqlName>"DNAME"</sqlName>
+		<title>Plan Name</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="bcreator">
+		<sqlName>"BCREATOR"</sqlName>
+		<title>Creator</title>
+		<type>s</type>
+		<drillEnable/>
+		<c_prefill>
+			<table>schema</table>
+			<column>SCHEMANAME</column>
+		</c_prefill>
+	</column>
+	<column name="bname">
+		<sqlName>"BNAME"</sqlName>
+		<title>Name</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="btype">
+		<sqlName>"BTYPE"</sqlName>
+		<title>Type</title>
+		<type>s</type>
+		<drillEnable/>
+		<c_column_mask>
+			<value_mask value="F"><mask>Function</mask></value_mask>
+			<value_mask value="G"><mask>Global temporary table</mask></value_mask>
+			<value_mask value="I"><mask>Index</mask></value_mask>
+			<value_mask value="M"><mask>Materialized query table</mask></value_mask>
+			<value_mask value="O"><mask>Stored procedure</mask></value_mask>
+			<value_mask value="P"><mask>Partitioned table space</mask></value_mask>
+			<value_mask value="Q"><mask>Sequence object</mask></value_mask>
+			<value_mask value="R"><mask>Table space</mask></value_mask>
+			<value_mask value="T">
+				<mask>Table</mask>
+				<reference name="details">
+					<reftype>displayRow</reftype>
+					<refvalue>tablecat</refvalue>
+					<icon>images/fw_bold.gif</icon>
+					<ref foreign_column_name="tabschema">
+						<local_column_name>bcreator</local_column_name>
+					</ref>
+					<ref foreign_column_name="tabname">
+						<local_column_name>bname</local_column_name>
+					</ref>
+				</reference>
+			</value_mask>
+			<value_mask value="S">
+				<mask>Materialized query table</mask>
+				<reference name="details">
+					<reftype>displayRow</reftype>
+					<refvalue>viewcat</refvalue>
+					<icon>images/fw_bold.gif</icon>
+					<ref foreign_column_name="tabschema">
+						<local_column_name>bcreator</local_column_name>
+					</ref>
+					<ref foreign_column_name="tabname">
+						<local_column_name>bname</local_column_name>
+					</ref>
+				</reference>
+			</value_mask>
+			<value_mask value="N">
+				<mask>Nickname</mask>
+				<reference name="details">
+					<reftype>displayRow</reftype>
+					<refvalue>Federation/federatedObjects</refvalue>
+					<icon>images/fw_bold.gif</icon>
+					<ref foreign_column_name="TABSCHEMA">
+						<local_column_name>bcreator</local_column_name>
+					</ref>
+					<ref foreign_column_name="TABNAME">
+						<local_column_name>bname</local_column_name>
+					</ref>
+				</reference>
+			</value_mask>
+			<value_mask value="V">
+				<mask>View</mask>
+				<reference name="details">
+					<reftype>displayRow</reftype>
+					<refvalue>viewcat</refvalue>
+					<icon>images/fw_bold.gif</icon>
+					<ref foreign_column_name="viewschema">
+						<local_column_name>bcreator</local_column_name>
+					</ref>
+					<ref foreign_column_name="viewname">
+						<local_column_name>bname</local_column_name>
+					</ref>
+				</reference>
+			</value_mask>
+			<value_mask value="A">
+				<mask>Alias</mask>
+				<reference name="details">
+					<reftype>displayRow</reftype>
+					<refvalue>alias</refvalue>
+					<icon>images/fw_bold.gif</icon>
+					<ref foreign_column_name="aliasSchema">
+						<local_column_name>bcreator</local_column_name>
+					</ref>
+					<ref foreign_column_name="aliasName">
+						<local_column_name>bname</local_column_name>
+					</ref>
+				</reference>
+			</value_mask>
+		</c_column_mask>
+	</column>
+	<column name="binder">
+		<sqlName>"BINDER"</sqlName>
+		<title>Binder</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="tabauth">
+		<sqlName>"TABAUTH"</sqlName>
+		<title>Table Auth.</title>
+		<type>n</type>
+	</column>
+	<column name="tabusage">
+		<sqlName>"TABUSAGE"</sqlName>
+		<title>Table Usage</title>
+		<type>n</type>
+	</column>
+	<column name="dunique_id">
+		<sqlName>"DUNIQUE_ID"</sqlName>
+		<title>Unique Id.</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="bindertype">
+		<sqlName>"BINDERTYPE"</sqlName>
+		<title>Binder Type</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+</table>

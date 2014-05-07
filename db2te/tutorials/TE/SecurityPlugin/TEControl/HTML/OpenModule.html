@@ -1,0 +1,16 @@
+<H3>Loading the Module</H3><hr>
+<p>The db2auth plug-in offers a command-line interface to control authentication data.  The db2auth plug-in control module in the TE allows the same control with a graphical user interface.</p>
+<p>When you try to load the module, it will verify that the db2auth plug-in is installed in the system by checking that there are 7 stored procedures created by the plug-in under the DB2AUTH schema. 
+It will then check that one of those procedures is called ADD_USER.
+Once this is verified, it will check for the existence of the DB2AUTH.USERS table.  
+Upon failure of either one of these confirmations, the TE will alert the user, and nothing will load.
+</p>
+<p>If both the plug-in's procedures' and tables' existences are verified, the TE will load a new page that is split vertically.  
+The top panel will contain four tabs as shown on the right: <b>Users</b>, <b>Groups</b>, <b>Group Memberships</b>, and <b>Master View</b>.  
+The bottom panel will be the <b>details</b> panel, which will be discussed later.
+</p>
+
+<H2>Steps:</H2><p>
+<ul><li>
+<p>Load the module by choosing from the menu:
+<ul><li>Tools → Db2auth Plugin Control </li></ul></p>

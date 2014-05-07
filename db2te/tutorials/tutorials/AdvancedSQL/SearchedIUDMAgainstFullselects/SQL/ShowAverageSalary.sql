@@ -1,0 +1,1 @@
+select avg(emp_salary) from EMP_Profile;

@@ -1,0 +1,38 @@
+<p>This task demonstrates the basic types of monitoring
+   information that can be obtained from the default workload
+   and service class objects. </p>
+
+   <p>
+  A workload is an entity that groups one or more units of
+  work based on criteria such as system user ID, session user
+  ID, etc.  Workloads provide a means of assigning work to a
+  service class so that the work can later be managed. Since DB2
+  9.5, <a onclick="OpenURLInFloatingWindow
+('http://publib.boulder.ibm.com/infocenter/db2luw/v9r7/topic/com.ibm.db2.luw.admin.wlm.doc/doc/c0051473.html?noframes=true');">a default user workload (SYSDEFAULTUSERWORKLOAD) and a
+  default administration workload (SYSDEFAULTADMWORKLOAD)</a> are
+  created for each database.  If no user defined workloads are
+  created, all user activities are associated with the default
+  user workload.
+  </p>
+   
+   <p>
+  Service classes are the primary point of resource control
+  for database activities. They are also useful for
+  monitoring. For example, you can collect statistics for
+  activities in a particular service class to determine
+  whether the performance goals for that service class are
+  being met. Since DB2 9.5, <a onclick="OpenURLInFloatingWindow
+('http://publib.boulder.ibm.com/infocenter/db2luw/v9r5/topic/com.ibm.db2.luw.admin.wlm.doc/doc/c0051412.html?noframes=true');">three default service classes
+  (SYSDEFAULTSYSTEMCLASS, SYSDEFAULTMAINTENANCECLASS, and
+  SYSDEFAULTUSERCLASS)</a> are created for each database.  If no
+  user defined service classes are created, user activities
+  are run under the default user service class
+  (SYSDEFAULTUSERCLASS).
+  </p>
+  <p>
+  There are two separate features of monitoring that are demonstrated by this section:
+  <ul>
+  <li>The ability to collect aggregate statistics for all activities that run in a service class. Aggregate activity statistics provide an inexpensive way of looking at work in a service class as a whole. They show information like the number of activities that ran in the service class, and the average lifetime of those activities.</li>
+  <li>The ability to capture information about individual activities. Activity information can be useful when investigating the performance or behavior of a particular activity. Activity information includes things like statement text, compilation environment, etc. Activity information is more expensive to collect than aggregate activity statistics and is usually targeted towards a specific subset of activities.</li>
+  </ul>
+  </p>

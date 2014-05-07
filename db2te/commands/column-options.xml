@@ -1,0 +1,106 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2009 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+
+<clause name="column-options" title="column options">
+<![CDATA[
+|--●--+----------+--●------------------------------------------->
+      '-NOT NULL-'      
+]]>
+		<select>
+			<option default="true"><note>nullable</note></option> 
+			<option><text>NOT NULL</text></option>
+		</select>
+		<br/>
+<![CDATA[
+>--+-------------------------------------------------------------------+--●--|
+   +-| default-clause |------------------------------------------------+      
+   '-GENERATED--+-ALWAYS-----+--AS--IDENTITY--+----------------------+-'      
+                '-BY DEFAULT-'                '-| identity-options |-'        
+]]>
+		<select>
+			<option default="true"><note>options</note></option> 
+			<option><clauseReference name="default-clause"/></option>
+			<option>
+				<text>GENERATED</text>
+				<select>
+					<option default="true"><text>ALWAYS</text></option> 
+					<option><text>BY DEFAULT</text></option>
+				</select>
+				<text>AS IDENTITY</text>
+				<select>
+					<option default="true"><note>identity options</note></option> 
+					<option><clauseReference name="identity-options"/></option>
+				</select>
+			</option>
+		</select>
+
+	
+	<clause name="default-clause" title="default clause">
+<![CDATA[
+   .-WITH-.                                    
+|--+------+--DEFAULT--+--------------------+--------------------|
+                      '-| default-values |-'   
+]]>
+		<select>
+			<option><text>WITH</text></option>
+			<option default="true"><note>WITH</note></option> 
+		</select>
+		<text>DEFAULT</text>
+		<select>
+			<option default="true"><note>data type default</note></option> 
+			<option><clauseReference name="default-values"/></option>
+		</select>
+	</clause>
+
+	<clause name="default-values" title="default values">
+<![CDATA[
+|--+-constant-------------------------------------------+-------|
+   +-datetime-special-register--------------------------+   
+   +-user-special-register------------------------------+   
+   +-CURRENT SCHEMA-------------------------------------+   
+   +-NULL-----------------------------------------------+   
+   +-cast-function--(--+-constant------------------+--)-+   
+   |                   +-datetime-special-register-+    |   
+   |                   +-user-special-register-----+    |   
+   |                   '-CURRENT SCHEMA------------'    |   
+   +-EMPTY_CLOB()---------------------------------------+   
+   +-EMPTY_DBCLOB()-------------------------------------+   
+   '-EMPTY_BLOB()---------------------------------------'   
+]]>
+		<select>
+			<option default="true"><clauseReference name="constant"/></option> 
+			<option><clauseReference name="datetime-special-register"/></option>
+			<option><clauseReference name="user-special-register"/></option>
+			<option><text>CURRENT SCHEMA</text></option>
+			<option>
+				<clauseReference name="cast-function"/>
+				<text>(</text>
+				<select>
+					<option default="true"><clauseReference name="constant"/></option> 
+					<option><clauseReference name="datetime-special-register"/></option>
+					<option><clauseReference name="user-special-register"/></option>
+					<option><text>CURRENT SCHEMA</text></option>
+				</select>
+				<text>)</text>
+			</option>
+			<option><text>EMPTY_CLOB()</text></option>
+			<option><text>EMPTY_DBCLOB()</text></option>
+			<option><text>EMPTY_BLOB()</text></option>
+		</select>
+	</clause>
+</clause>

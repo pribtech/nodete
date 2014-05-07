@@ -1,0 +1,618 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2013 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+<tutorial name="Setup DB2mc Monitor History"  autoPlayTime="5">
+	<flowRestriction>freewithchecks</flowRestriction>
+    <closeAction />
+    <openAction />
+    <globalCodeHighlightOptions highlightCode = "true" />
+    <WMDConfig/>
+    <pageList>
+    	 <page name="Create Control Tables" type="general">
+			<codeHighlightOptions highlightCode="true">
+				<changedHighlightTokens>
+					<text>SYSTOOLSPACE</text>
+				</changedHighlightTokens>
+			</codeHighlightOptions>
+			<entryAction  name="checkForTable" type="serverAction"> 
+				<parameterList> 
+					<parameter name="action" type="fixed"><value>checkForObjectWithCase</value></parameter> 
+					<parameter name="objectType" type="raw"><value>table</value></parameter> 
+					<parameter name="object[schema]" type="raw"><value>s#db2mc</value></parameter> 
+					<parameter name="object[table]" type="raw"><value>PARAMETER</value></parameter> 
+				</parameterList> 
+				<if condition="true"> 
+					<task> 
+						<setActionReturn value="true"/> 
+					</task> 
+				</if>
+				<if condition="false"> 
+					<task> 
+						<alert>DB2TE base objects must be installed before proceeding with the tutorial.</alert> 
+						<setActionReturn value="false"/> 
+					</task> 
+				</if>
+			</entryAction>
+			<exitAction  name="checkForTable" type="serverAction"> 
+				<parameterList> 
+					<parameter name="action" type="fixed"><value>checkForObjectWithCase</value></parameter> 
+					<parameter name="objectType" type="raw"><value>table</value></parameter> 
+					<parameter name="object[schema]" type="raw"><value>s#db2mc</value></parameter> 
+					<parameter name="object[table]" type="raw"><value>MONITOR_CONTROL</value></parameter> 
+				</parameterList> 
+				<if condition="true"> 
+					<task> 
+						<setActionReturn value="true"/> 
+					</task> 
+				</if>
+				<if condition="false"> 
+					<task> 
+						<alert>The required tables all be created before proceeding with the tutorial.</alert> 
+						<setActionReturn value="false"/> 
+					</task> 
+				</if>
+			</exitAction>
+            <contentText>
+<![CDATA[
+<p/>Setup the environment for the db2mc history monitors
+<p/>The default tablespace is SYSTOOLSPACE.  This can be changed to any tablespace and the tablespace defined.
+<p/>Note this collects data across the instance.  Either using an existing database on an instance to collect data
+or create a new database on the instance for monitoring.
+]]>
+            </contentText>
+            <SQLText><![CDATA[
+insert into "s#db2mc".parameter (parameter,value)
+  values('retainsHistoryDays','14')
+       ,('retainHistoryBaseDays','3')
+@
+create table "s#db2mc".monitor_control 
+	(table varchar(128) not null
+	,status char(1) not null with default
+	,description varchar(128) not null
+	,db_var_count smallint
+	,source clob(32K)
+	,key varchar(255)
+	,timestamp_column varchar(128)
+	,not_delta_columns clob(32K)
+	,statement clob(32k)
+	,statement_delta clob(32k)
+	,message_timestamp timestamp
+	,message clob(32k)
+	)
+	in "SYSTOOLSPACE" 
+@
+create unique index "s#db2mc".monitor_control_pk 
+	on "s#db2mc".monitor_control  (table)
+	allow reverse scans
+@
+]]>
+			</SQLText>
+            <SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar="@"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+        </page>
+    	 <page name="Set up metrics to be monitored" type="general">
+            <contentText>Set up metrics to be monitored</contentText>
+            <SQLText>
+<![CDATA[
+insert into "s#db2mc".monitor_control 
+        (table					,description
+		,db_var_count,source                                                                   ,key                                                ,timestamp_column    ,not_delta_columns)
+  values('ENV_SYS_RESOURCES'	,'System resources'
+  		,0,'(select * from sysibmadm.env_sys_resources where datatype not like ''VARCHAR%'')' ,'NAME'                                             ,null                ,null)
+       ,('LOG_UTILIZATION'		,'Logs'  
+       	,0,'sysibmadm.LOG_UTILIZATION'                                                   ,'DB_NAME'                                          ,null                ,null)
+       ,('DBP_MEM_USAGE'		,'Database memory pools'    
+       	,0,'table(SYSPROC.ADMIN_GET_DBP_MEM_USAGE())'  			                        ,null                                               ,null                ,null)
+       ,('SNAPDBM' 				,'Instance'         
+       	,0,'sysibmadm.SNAPDBM'                                                           ,'DBPARTITIONNUM'                                   ,'SNAPSHOT_TIMESTAMP','DBPARTITIONNUM')
+       ,('SNAPDB'  				,'Database'         
+       	,0,'
+(select SNAPSHOT_TIMESTAMP
+		,DB_NAME
+		,CONNECTIONS_TOP
+		,TOTAL_CONS
+		,TOTAL_SEC_CONS 
+		,APPLS_CUR_CONS
+		,APPLS_IN_DB2 
+		,NUM_ASSOC_AGENTS 
+		,AGENTS_TOP
+		,COORD_AGENTS_TOP 
+		,LOCKS_HELD
+		,LOCK_WAITS 
+		,LOCK_WAIT_TIME
+		,LOCK_LIST_IN_USE
+		,DEADLOCKS
+		,LOCK_ESCALS
+		,X_LOCK_ESCALS
+		,LOCKS_WAITING
+		,LOCK_TIMEOUTS
+		,NUM_INDOUBT_TRANS
+		,SORT_HEAP_ALLOCATED
+		,SORT_SHRHEAP_ALLOCATED
+		,SORT_SHRHEAP_TOP
+		,POST_SHRTHRESHOLD_SORTS
+		,TOTAL_SORTS
+		,TOTAL_SORT_TIME
+		,SORT_OVERFLOWS
+		,ACTIVE_SORTS
+		,POOL_DATA_L_READS
+		,POOL_DATA_P_READS
+		,POOL_TEMP_DATA_L_READS
+		,POOL_TEMP_DATA_P_READS
+		,POOL_ASYNC_DATA_READS
+		,POOL_DATA_WRITES 
+		,POOL_ASYNC_DATA_WRITES
+		,POOL_INDEX_L_READS
+		,POOL_INDEX_P_READS
+		,POOL_TEMP_INDEX_L_READS
+		,POOL_TEMP_INDEX_P_READS
+		,POOL_ASYNC_INDEX_READS
+		,POOL_INDEX_WRITES
+		,POOL_ASYNC_INDEX_WRITES
+		,POOL_XDA_P_READS
+		,POOL_XDA_L_READS
+		,POOL_XDA_WRITES
+		,POOL_ASYNC_XDA_READS
+		,POOL_ASYNC_XDA_WRITES
+		,POOL_TEMP_XDA_P_READS
+		,POOL_TEMP_XDA_L_READS
+		,POOL_READ_TIME
+		,POOL_WRITE_TIME
+		,POOL_ASYNC_READ_TIME
+		,POOL_ASYNC_WRITE_TIME
+		,POOL_ASYNC_DATA_READ_REQS
+		,POOL_ASYNC_INDEX_READ_REQS
+		,POOL_ASYNC_XDA_READ_REQS
+		,POOL_NO_VICTIM_BUFFER
+		,POOL_LSN_GAP_CLNS
+		,POOL_DRTY_PG_STEAL_CLNS
+		,POOL_DRTY_PG_THRSH_CLNS
+		,PREFETCH_WAIT_TIME
+		,UNREAD_PREFETCH_PAGES
+		,DIRECT_READS
+		,DIRECT_WRITES
+		,DIRECT_READ_REQS
+		,DIRECT_WRITE_REQS
+		,DIRECT_READ_TIME
+		,DIRECT_WRITE_TIME
+		,FILES_CLOSED 
+		,double(ELAPSED_EXEC_TIME_S) + double(ELAPSED_EXEC_TIME_MS)/1000000 AS ELAPSED_EXEC_TIME
+		,COMMIT_SQL_STMTS 
+		,ROLLBACK_SQL_STMTS 
+		,DYNAMIC_SQL_STMTS
+		,STATIC_SQL_STMTS
+		,FAILED_SQL_STMTS
+		,SELECT_SQL_STMTS
+		,UID_SQL_STMTS
+		,DDL_SQL_STMTS
+		,INT_AUTO_REBINDS
+		,INT_ROWS_DELETED
+		,INT_ROWS_INSERTED
+		,INT_ROWS_UPDATED
+		,INT_COMMITS
+		,INT_ROLLBACKS 
+		,INT_DEADLOCK_ROLLBACKS
+		,ROWS_DELETED
+		,ROWS_INSERTED
+		,ROWS_UPDATED
+		,ROWS_SELECTED
+		,ROWS_READ
+		,BINDS_PRECOMPILES
+		,TOTAL_LOG_AVAILABLE
+		,TOTAL_LOG_USED
+		,SEC_LOG_USED_TOP
+		,TOT_LOG_USED_TOP
+		,SEC_LOGS_ALLOCATED
+		,LOG_READS
+		,double(LOG_READ_TIME_S) + double(LOG_READ_TIME_NS)/1000000000 AS LOG_READ_TIME
+		,LOG_WRITES
+		,double(LOG_WRITE_TIME_S) + double(LOG_WRITE_TIME_NS)/1000000000 AS LOG_WRITE_TIME
+		,NUM_LOG_WRITE_IO 
+		,NUM_LOG_READ_IO 
+		,NUM_LOG_PART_PAGE_IO 
+		,NUM_LOG_BUFFER_FULL
+		,NUM_LOG_DATA_FOUND_IN_BUFFER
+		,PKG_CACHE_LOOKUPS
+		,PKG_CACHE_INSERTS
+		,PKG_CACHE_NUM_OVERFLOWS 
+		,PKG_CACHE_SIZE_TOP
+		,APPL_SECTION_LOOKUPS
+		,APPL_SECTION_INSERTS
+		,CAT_CACHE_LOOKUPS
+		,CAT_CACHE_INSERTS
+		,CAT_CACHE_OVERFLOWS
+		,CAT_CACHE_SIZE_TOP
+		,PRIV_WORKSPACE_SIZE_TOP
+		,PRIV_WORKSPACE_NUM_OVERFLOWS
+		,PRIV_WORKSPACE_SECTION_INSERTS
+		,PRIV_WORKSPACE_SECTION_LOOKUPS
+		,SHR_WORKSPACE_SIZE_TOP
+		,SHR_WORKSPACE_NUM_OVERFLOWS
+		,SHR_WORKSPACE_SECTION_INSERTS
+		,SHR_WORKSPACE_SECTION_LOOKUPS
+		,TOTAL_HASH_JOINS
+		,TOTAL_HASH_LOOPS 
+		,HASH_JOIN_OVERFLOWS 
+		,HASH_JOIN_SMALL_OVERFLOWS 
+		,POST_SHRTHRESHOLD_HASH_JOINS 
+		,ACTIVE_HASH_JOINS 
+		,NUM_DB_STORAGE_PATHS 
+		,DBPARTITIONNUM
+		,TOTAL_OLAP_FUNCS
+		,OLAP_FUNC_OVERFLOWS
+		,ACTIVE_OLAP_FUNCS
+		,STATS_CACHE_SIZE
+		,STATS_FABRICATIONS
+		,SYNC_RUNSTATS 
+		,ASYNC_RUNSTATS
+		,STATS_FABRICATE_TIME
+		,SYNC_RUNSTATS_TIME
+		,NUM_THRESHOLD_VIOLATIONS
+from table(SNAP_GET_DB_V97(cast(null as varchar(128)),0)))'                        
+				   ,'DB_NAME,DBPARTITIONNUM'                           ,'SNAPSHOT_TIMESTAMP','DBPARTITIONNUM')
+       ,('SNAPBP'			,'Bufferpools'           
+       	,0,'table(SNAP_GET_BP(cast(null as varchar(128)),0))'                            ,'DB_NAME,BP_NAME,DBPARTITIONNUM'                   ,'SNAPSHOT_TIMESTAMP','DBPARTITIONNUM')
+       ,('SNAPDBMEM'		,'Database memory'        
+       	,0,'table(SNAP_GET_DB_MEMORY_POOL(cast(null as varchar(128)),0))'                ,'DB_NAME,POOL_ID,POOL_SECONDARY_ID,DBPARTITIONNUM' ,'SNAPSHOT_TIMESTAMP',null)
+       ,('SNAPHADR' 		,'HADR'       
+       	,0,'table(SNAP_GET_HADR(cast(null as varchar(128)),0))'                          ,'DB_NAME,DBPARTITIONNUM'                           ,'SNAPSHOT_TIMESTAMP',null)
+       ,('SNAP_GET_TAB'		,'Table'    
+       	,1,'(SELECT * FROM TABLE(SNAP_GET_TAB_V91(cast(? as varchar(128)),-2)) AS A WHERE NOT SUBSTR(TABNAME,1,1)='']'')'                                                ,'DB_NAME,TABSCHEMA,TABNAME,TAB_FILE_ID,DBPARTITIONNUM'        ,'SNAPSHOT_TIMESTAMP','DBPARTITIONNUM')
+       ,('LOCK_WAITS'		,'Lock waits'    
+       	,2,'
+(SELECT SNAPSHOT_TIMESTAMP,TYPE,AGENT_ID,AGENT_ID_HOLDING_LK,STMT_TYPE AS STMT_TYPE,STMT_START AS STMT_START,STMT_STOP AS STMT_STOP,STMT_TEXT AS STMT_TEXT FROM table(select s.SNAPSHOT_TIMESTAMP
+	,s.DB_NAME
+	,type
+	,l.agent_id
+	,AGENT_ID_HOLDING_LK
+	,case when s.STMT_TEXT is null then ''Static'' else ''Dynamic'' end as stmt_type
+	,coalesce(STMT_TEXT
+		,''see SYSIBM.SYSSTMT on data base with CREATOR: ''||s.CREATOR||'' PACKAGE_NAME: ''||s.PACKAGE_NAME||'' SECTION_NUMBER: ''||char(s.SECTION_NUMBER)
+		) as STMT_TEXT
+	,s.STMT_START
+	,s.STMT_STOP
+from (
+	select distinct 
+	  lock.type
+	 ,case lock.type when ''Waiting'' then AGENT_ID else AGENT_ID_HOLDING_LK end as agent_id
+	 ,case lock.type when ''Waiting'' then AGENT_ID_HOLDING_LK end as AGENT_ID_HOLDING_LK
+	from TABLE(SNAP_GET_LOCKWAIT(cast(? as varchar(128)),-1))
+		,(values(''Holder''),(''Waiting'')) as lock(type)
+	) as l
+	,TABLE(SNAP_GET_STMT(cast(? as varchar(128)),-1)) s
+where l.agent_id=s.agent_id) as lockActiveSQL 	
+)'                                                
+       	,'DB_NAME,AGENT_ID,AGENT_ID_HOLDING_LK,STMT_START'        ,'SNAPSHOT_TIMESTAMP',null)
+
+
+]]>
+			</SQLText>
+            <SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar="@"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+        </page>
+    	 <page name="Create Monitoring Process" type="general">
+            <contentText>Create the stored procedure that gathers the metrics.</contentText>
+            <SQLText>
+<![CDATA[
+CREATE PROCEDURE "s#db2mc"."gatherStatistics" ()
+  SPECIFIC "s#db2mc.gatherStatistics"
+  DYNAMIC RESULT SETS 0
+  LANGUAGE SQL
+  BEGIN
+--/******************************************************************************	
+--  Author: Peter Prib
+--  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2011 All rights reserved.
+--
+--  Licensed under the Apache License, Version 2.0 (the "License");
+--  you may not use this file except in compliance with the License.
+--  You may obtain a copy of the License at
+--
+--      http://www.apache.org/licenses/LICENSE-2.0
+--
+--  Unless required by applicable law or agreed to in writing, software
+--  distributed under the License is distributed on an "AS IS" BASIS,
+--  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+--  See the License for the specific language governing permissions and
+--  limitations under the License.
+--******************************************************************************/
+--  SQLSTATE '22018' is a bug that appears to occur with timestamp at the 60 second mark.
+	DECLARE columns varchar(32000);
+	DECLARE deltaAvailable smallint;
+	DECLARE messageOut varchar(32000);
+	DECLARE stmt varchar(32000);
+	DECLARE table varchar(200);
+	DECLARE tableNameForError varchar(128);
+	DECLARE timeTooLong CONDITION FOR SQLSTATE '22008';
+	DECLARE bug22018 CONDITION FOR SQLSTATE '22018';
+	DECLARE PossibleTimediffOverflow CONDITION FOR SQLSTATE '38552';
+	DECLARE dulpicateKey CONDITION FOR SQLSTATE '23505';
+
+
+	DECLARE CONTINUE HANDLER FOR SQLEXCEPTION begin
+		GET DIAGNOSTICS EXCEPTION 1 messageOut = MESSAGE_TEXT;
+		update "s#db2mc".monitor_control set status='E', message=messageOut, message_timestamp=current timestamp where table = tableNameForError;	
+		commit;
+	end;
+	DECLARE CONTINUE HANDLER FOR SQLWARNING begin
+		GET DIAGNOSTICS EXCEPTION 1 messageOut = MESSAGE_TEXT;
+		update "s#db2mc".monitor_control set status=' ', message=messageOut, message_timestamp=current timestamp where table = tableNameForError;	
+		commit;
+	end;
+	DECLARE CONTINUE HANDLER FOR not found begin end;
+	DECLARE CONTINUE HANDLER FOR timeTooLong begin end;
+	DECLARE CONTINUE HANDLER FOR bug22018 begin end;
+	DECLARE CONTINUE HANDLER FOR PossibleTimediffOverflow begin end;
+	DECLARE CONTINUE HANDLER FOR dulpicateKey begin end;
+	SET deltaAvailable = 1;
+--	if exists(select 1 from syscat.tables where tabschema='s#db2mc' and tabname='HIST_SNAPDBM') then
+--		set stmt = 'select 1 from sysibmadm.SNAPDBM c ,(select max(SNAPSHOT_TIMESTAMP) as SNAPSHOT_TIMESTAMP from "s#db2mc".HIST_SNAPDBM) as l'
+--				|| ' where (c.LAST_RESET is null or c.LAST_RESET < l.SNAPSHOT_TIMESTAMP ) and c.DB2START_TIME < l.SNAPSHOT_TIMESTAMP';
+--		prepare s1 from stmt;
+--		execute s1 into deltaAvailable;
+--	end if;--
+
+	for tables as table_cursor cursor with hold for
+	    select table as in_table,db_var_count,source,key,timestamp_column,not_delta_columns,statement,statement_delta 
+	    from "s#db2mc".monitor_control where status=' '
+	do
+		set tableNameForError = in_table;
+		if (statement is null) then
+			set table='"s#db2mc"."HIST_'||in_table;
+			set statement = '(select '
+						|| case when timestamp_column is null then ' current timestamp as SAMPLE_TS, ' else '' end 
+						|| case when db_var_count > 0 then ' cast(? as varchar(128)) as db_name, ' else '' end 
+						|| ' s.* from '||source||' as s)';
+
+			set stmt = 'create table '||table||'" as '||statement 
+					||' with no data in "'||(select value from "s#db2mc".parameter where parameter='tablespace')||'" compress yes';
+			if (db_var_count>0) then
+				set stmt = replace(stmt,'?','null');
+			end if;
+			prepare s1 from stmt;
+			execute s1;
+			set stmt = 'create unique index '||table||'_PK" on '||table||'"'
+					||'('||case when timestamp_column is null then 'SAMPLE_TS' else timestamp_column end||' desc'
+					||case when key is null then '' else ','||key end ||') allow reverse scans';
+			prepare s1 from stmt;
+			execute s1;
+			set statement = 'insert into '||table||'" '||statement;
+			set stmt = 'update "s#db2mc".monitor_control set statement=? where table = ?';	
+			prepare s1 from stmt;
+			execute s1 using statement,in_table;
+
+			if (not_delta_columns is not null) then
+				set columns='';
+				for columns as column_cursor cursor for
+	    			select COLNAME,TYPENAME from SYSCAT.COLUMNS where TABSCHEMA = 's#db2mc' and TABNAME='HIST_'||in_table  order by COLNO asc
+				do
+					set columns=columns
+								||case when locate( ','||upper(replace(COLNAME,' ',''))||',' , ','||upper(replace(not_delta_columns,' ',''))||',' ) > 0
+										or TYPENAME not in ('SMALLINT','INTEGER','BIGINT','REAL','DOUBLE','DECIMAL')
+										then ',c."'||COLNAME||'"'
+									else ',c."'||COLNAME||'" - l."'||COLNAME||'" as "'||COLNAME||'"'
+									end;
+				end for; 
+				set timestamp_column = coalesce('"'||timestamp_column||'"','"SAMPLE_TS"');
+				set statement_delta = '(select '
+											||' case when c.'||timestamp_column||' < l.'||timestamp_column||' + 8 hours' 
+											||' 	then double(timestampdiff(1,char(c.'||timestamp_column||'-l.'||timestamp_column||')))/1000000'
+											||' 	else double(timestampdiff(2,char(c.'||timestamp_column||'-l.'||timestamp_column||')))'
+											||' end as period'
+											||columns
+											||'	 from (values((select max('||timestamp_column||') from '||table||'")'
+											||			',(select max('||timestamp_column||') from '||table||'" as tm where tm.'||timestamp_column||' < (select max('||timestamp_column||') from '||table||'"))'
+											||		')) as t(current_ts,last_ts)'										
+											||' join '||table||'" c' 
+											||'  on c.'||timestamp_column||'=t.current_ts'
+											||' join '||table||'" l' 
+											||' on l.'||timestamp_column||'=t.last_ts'
+											||case when key is null then '' else ' and (c.'||replace(replace(key,' ',''),',',',c.')||')=(l.'||replace(replace(key,' ',''),',',',l.')||')' end
+										||')';
+				set stmt = 'create table '||table||'_DELTA" as '||statement_delta
+						|| ' with no data in "'||(select value from "s#db2mc".parameter where parameter='tablespace')||'" compress yes';
+				prepare s1 from stmt;
+				execute s1;
+				set stmt = 'create unique index '||table||'_DELTA_PK" on '||table||'_DELTA"'
+						||' ('||case when timestamp_column is null then 'SAMPLE_TS' else timestamp_column end||' desc,'||key||') allow reverse scans';
+				prepare s1 from stmt;
+				execute s1;
+
+				set statement_delta = 'insert into '||table||'_DELTA" '||statement_delta;
+				set stmt = 'update "s#db2mc".monitor_control set statement_delta=? where table = ?';	
+				prepare s1 from stmt;
+				execute s1 using statement_delta,in_table;
+			end if;
+			commit;
+		end if;
+		prepare s1 from statement;
+
+		if (db_var_count >0) then
+			for databases as database cursor with hold for
+				select s.DB_NAME from table(SNAP_GET_DB(cast(null as varchar(128)),0)) as s
+			do
+				if db_var_count = 1 then
+					execute s1 using DB_NAME,DB_NAME;
+				else
+					if db_var_count = 2 then
+						execute s1 using DB_NAME,DB_NAME,DB_NAME;
+					else
+						execute s1 using DB_NAME,DB_NAME,DB_NAME,DB_NAME;
+					end if;
+				end if;
+				commit;
+			end for;
+		else
+			execute s1;
+			commit;
+		end if;
+		if (statement_delta is not null) then
+			if (deltaAvailable is not null) then
+				prepare s1 from statement_delta;
+				execute s1;
+				commit;
+			end if;
+		end if;
+	end for;
+end
+]]>
+			</SQLText>
+            <SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar="@"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+        </page>
+    	 <page name="Test Monitoring Process" type="general">
+            <contentText>Test monitoring process</contentText>
+            <SQLText>
+<![CDATA[
+call "s#db2mc"."gatherStatistics"()
+]]>
+			</SQLText>
+            <SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar="@"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+        </page>
+    	 <page name="Schedule Monitoring Process" type="general">
+            <contentText>
+<![CDATA[
+ Schedule monitoring process.  It is currently scheduled for once a minute.  Change to suit degree of detailed required.
+<p/>
+Format follows crontab.  That is change "* * * * *" to "0 * * * *" to have schedule once an hour on the hour.
+ ]]>
+  			</contentText>
+            <SQLText>
+<![CDATA[
+call ADMIN_TASK_ADD('db2mc History Collection'
+							,cast(NULL as TIMESTAMP)
+							,cast(NULL as TIMESTAMP)
+							,cast(NULL as INTEGER)
+							,'* * * * *' 
+							,'s#db2mc'
+							,'gatherStatistics'
+							,cast(null as CLOB(100))
+							,cast(null as VARCHAR(512))
+							,'')
+]]>
+			</SQLText>
+            <SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar="@"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+        </page>
+    	 <page name="Create Prune Stored Procedure " type="general">
+            <contentText>Create the prune stored procedure.  This deletes aged entries acording to the paramters set.</contentText>
+            <SQLText>
+<![CDATA[
+CREATE PROCEDURE "s#db2mc"."pruneStatistics" ()
+  SPECIFIC "s#db2mc.pruneStatistics"
+  DYNAMIC RESULT SETS 0
+  LANGUAGE SQL
+begin
+--/******************************************************************************	
+--  Author: Peter Prib
+--  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2011 All rights reserved.
+--
+--  Licensed under the Apache License, Version 2.0 (the "License");
+--  you may not use this file except in compliance with the License.
+--  You may obtain a copy of the License at
+--
+--      http://www.apache.org/licenses/LICENSE-2.0
+--
+--  Unless required by applicable law or agreed to in writing, software
+--  distributed under the License is distributed on an "AS IS" BASIS,
+--  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+--  See the License for the specific language governing permissions and
+--  limitations under the License.
+--******************************************************************************/
+	DECLARE stmt varchar(4000);
+	DECLARE retainHistory timestamp;
+	DECLARE retainHistoryBase timestamp;
+	DECLARE CONTINUE HANDLER FOR not found begin end;
+
+-- deliberate use of dynamic SQL to avoid rebinding
+
+	SET retainHistory     = current timestamp - (select cast(value as int) from "s#db2mc".parameter where parameter='retainHistoryDays')  days;
+	SET retainHistoryBase = current timestamp - (select cast(value as int) from "s#db2mc".parameter where parameter='retainHistoryBaseDays')  days;
+
+	for tables as table_cursor cursor with hold for
+	 	select table,timestamp_column,statement_delta from "s#db2mc".monitor_control
+	do
+		set timestamp_column = coalesce('"'||timestamp_column||'"','"SAMPLE_TS"');
+		set stmt = 'delete from "s#db2mc"."HIST_'||table||'" where '||timestamp_column||' < ?';
+		prepare s1 from stmt;
+		if(statement_delta is null) then
+			execute s1 using retainHistory;
+			commit;
+		else
+			execute s1 using retainHistoryBase;
+			commit;
+			set stmt = 'delete from "s#db2mc"."HIST_'||table||'_DELTA" where '||timestamp_column||' < ?';
+			prepare s1 from stmt;
+			execute s1 using retainHistory;
+			commit;
+		end if;
+	end for;
+end
+]]>
+			</SQLText>
+            <SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar="@"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+        </page>
+    	 <page name="Schedule Prune " type="general">
+            <contentText>Schedule the history pruning stored procedure.  Set to prune once a day at 6:10am.</contentText>
+            <SQLText>
+<![CDATA[
+call ADMIN_TASK_ADD('db2mc History Prune'
+							,cast(NULL as TIMESTAMP)
+							,cast(NULL as TIMESTAMP)
+							,cast(NULL as INTEGER)
+							,'10 6 * * *' 
+							,'s#db2mc'
+							,'pruneStatistics'
+							,cast(null as CLOB(100))
+							,cast(null as VARCHAR(512))
+							,'')
+]]>
+            </SQLText>
+            <SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar="@"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+        </page>
+        
+    	 <page name="Uninstall" type="last" autoPlay="false">
+            <contentText>Uninstall history monitoring.</contentText>
+            <SQLText>
+<![CDATA[
+call ADMIN_TASK_REMOVE('db2mc History Prune',NULL)@
+drop PROCEDURE "s#db2mc"."pruneStatistics"@
+call ADMIN_TASK_REMOVE('db2mc History Collection',NULL)@
+drop PROCEDURE "s#db2mc"."gatherStatistics"@
+drop table "s#db2mc".parameter@
+begin
+	for tables as table_cursor cursor with hold for
+	    select table as in_table,statement,statement_delta from "s#db2mc".monitor_control
+	do
+	    if (statement_delta is not null) then
+	    	execute immediate 'drop table "s#db2mc"."HIST_'||in_table||'_DELTA"';
+	    end if;
+	    if (statement is not null) then 
+	     	execute immediate 'drop table "s#db2mc"."HIST_'||in_table||'"';
+	    end if;
+	end for;
+end@
+drop table "s#db2mc".monitor_control@
+]]>
+            </SQLText>
+            <SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar="@"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+        </page>
+    </pageList>
+</tutorial>

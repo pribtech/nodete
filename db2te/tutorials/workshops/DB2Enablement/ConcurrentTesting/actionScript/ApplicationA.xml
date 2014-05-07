@@ -1,0 +1,469 @@
+<actionPanel>
+	<flow>free</flow>
+	<useConsole>yes</useConsole>
+	<taskList>
+		<task name="Reset and query data before transaction">
+			<discription>
+				This step resets data and queries the CUSTOMER and PRODUCT tables before the transaction.
+			</discription>	
+		    	<action name="step0" type="blank">			
+				<followOnAction condition="true" compareOn="true" compareOnType="raw">	
+					<task>			
+						<echo><![CDATA[<font style="color:black;FONT-WEIGHT:bold">STEP 0 - Reset and query CUSTOMER and PRODUCT tables</font>]]></echo>
+						<echo><![CDATA[<font style="color:green">Step 0 Update: UPDATE customer SET phone_number = '111111' WHERE email = 'kumar@mail.ru'</font>]]></echo>
+						<action name="resetPhoneNumber" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="fixed">
+									<value>executeSQL</value>
+								</parameter>
+								<parameter name="SQL" type="fixed">
+									<value>UPDATE customer SET phone_number = '111111' WHERE email = 'kumar@mail.ru'</value>
+								</parameter>
+							</parameterList>
+							<followOnAction condition="true">
+								<task>
+									<echo><![CDATA[<font style="color:green">Step 0 Result: Phone number updated</font>]]></echo>
+									<echo> </echo>
+								</task>
+							</followOnAction>
+							<followOnAction condition="false">
+								<task>
+									<echo>Step 0 Error in run!</echo>
+								</task>
+							</followOnAction>										
+						</action>	
+			  		</task>			
+					<task>			
+						<echo><![CDATA[<font style="color:blue">Step 0 Update: UPDATE product SET product_price = 10000 WHERE product_name = 'Air Freshener'</font>]]></echo>
+						<action name="resetPhoneNumber" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="fixed">
+									<value>executeSQL</value>
+								</parameter>
+								<parameter name="SQL" type="fixed">
+									<value>UPDATE product SET product_price = 10000 WHERE product_name = 'Air Freshener'</value>
+								</parameter>
+							</parameterList>
+							<followOnAction condition="true">
+								<task>
+									<echo><![CDATA[<font style="color:blue">Step 0 Result: Product price updated</font>]]></echo>
+									<echo> </echo>
+								</task>
+							</followOnAction>
+							<followOnAction condition="false">
+								<task>
+									<echo>Step 0 Error in run!</echo>
+								</task>
+							</followOnAction>										
+						</action>	
+			  		</task>					
+			  		
+					<task>			
+						<echo><![CDATA[<font style="color:green">Step 0 Query: SELECT phone_number from customer WHERE email = 'kumar@mail.ru'</font>]]></echo>
+
+						<action name="selectPhoneNumber" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="fixed">
+									<value>executeSQL</value>
+								</parameter>
+								<parameter name="SQL" type="fixed">
+									<value>SELECT phone_number from customer WHERE email = 'kumar@mail.ru'</value>
+								</parameter>
+							</parameterList>
+							<followOnAction condition="true">
+								<task>
+									<assignSharedConstant name="phone_number_before" type="returnObject">
+										<value>
+											selectPhoneNumber.returnValue.resultSet.0.data.0.0
+										</value>
+									</assignSharedConstant>
+									<echo><![CDATA[<font style="color:green">Step 0 Result: Phone number of email user kumar@mail.ru is ?phone_number_before? </font>]]></echo>
+									<echo> </echo>
+								</task>
+							</followOnAction>
+							<followOnAction condition="false">
+								<task>
+									<echo>Step 0 Error in run!</echo>
+								</task>
+							</followOnAction>										
+						</action>	
+			  		</task>	
+					<task>
+						<echo><![CDATA[<font style="color:blue">Step 0 Query: SELECT product_price from product WHERE product_name = 'Air Freshener'</font>]]></echo>
+						<action name="selectPrice" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="fixed">
+									<value>executeSQL</value>
+								</parameter>
+								<parameter name="SQL" type="fixed">
+									<value>SELECT product_price from product WHERE product_name = 'Air Freshener'</value>
+								</parameter>
+							</parameterList>
+							<followOnAction condition="true">
+								<task>
+									<assignSharedConstant name="price_before" type="returnObject">
+										<value>
+											selectPrice.returnValue.resultSet.0.data.0.0
+										</value>
+									</assignSharedConstant>
+									<echo><![CDATA[<font style="color:blue">Step 0 Result: Price of an air freshener is ?price_before? </font>]]></echo>
+									<echo><![CDATA[<font style="color:black; font-style:italic; font-weight:bold; font-family:Arial">Ready to proceed to the next step</font>]]></echo>
+									<echo> </echo>
+								</task>
+							</followOnAction>
+							<followOnAction condition="false">
+								<task>
+									<echo>Step 0 Error in run!</echo>
+								</task>
+							</followOnAction>										
+						</action>	
+			  		</task>		  		  
+				</followOnAction>
+			</action>
+		</task>
+
+	
+		<task name="USER A - Step 1a">
+			<discription>
+			 User A updates the CUSTOMER table to set phone number of email id kumar@mail.ru
+			</discription>
+			<action  name="Update" type="blank">
+				<task>
+					<echo><![CDATA[<font style="color:black;FONT-WEIGHT:bold">STEP 1a - USER A updates the phone number of email id 'kumar@mail.ru'</font>]]></echo>
+					<echo><![CDATA[<font style="color:green">Step 1a UPDATE customer SET phone_number = '234-321' WHERE email = 'kumar@mail.ru'</font>]]></echo>
+					<echo><![CDATA[<font style="color:green">Step 1a Update CUSTOMER table, waiting for transaction to complete ...</font>]]></echo>
+					<echo><![CDATA[<font style="color:black; font-style:italic; font-weight:bold; font-family:Arial">Ready to proceed to the next step</font>]]></echo>
+					
+					<action  name="SQLexecution" type="serverAction">
+						<parameterList>
+							<parameter name="action" type="fixed">
+								<value>executeSQL</value>
+							</parameter>
+							<parameter name="SQL" type="fixed">
+								<value>CALL update_customer_info('234-321', 'kumar@mail.ru')</value>
+							</parameter>
+						</parameterList>
+						<followOnAction condition="true">
+							<task>
+								<echo><![CDATA[<font style="color:green">Step 1a Phone number of email id 'kumar@mail.ru' is updated</font>]]></echo>
+								<echo><![CDATA[<font style="color:black; font-style:italic; font-weight:bold; font-family:Arial">Ready to proceed to the next step</font>]]></echo>
+								<echo> </echo>
+							</task>
+						</followOnAction>
+						<followOnAction condition="false">
+							<task>
+								<echo><![CDATA[<font style="color:red">Step 1a Error in run!</font>]]></echo>
+								<echo> </echo>
+							</task>
+						</followOnAction>
+					</action>
+					
+				</task>
+			</action>
+		</task>
+		
+		<task name="USER B - Step 1b">
+			<discription>
+				USER B updates the PRODUCT table to set the price of the air freshener
+			</discription>
+			<action  name="Update" type="blank">
+				<task>
+					<echo> </echo>
+					<echo><![CDATA[<font style="color:black;FONT-WEIGHT:bold">STEP 1b - USER B updates the price of product 'Air Freshener'</font>]]></echo>
+					<echo><![CDATA[<font style="color:blue">Step 1b UPDATE product SET product_price =  25.99 WHERE product_name = 'Air Freshener'</font>]]></echo>
+					<echo><![CDATA[<font style="color:blue">Step 1b Update product price, waiting for transaction to complete ...</font>]]></echo>
+					<echo><![CDATA[<font style="color:black; font-style:italic; font-weight:bold; font-family:Arial">Ready to proceed to the next step</font>]]></echo>
+					
+					<action  name="SQLexecution" type="serverAction">
+						<parameterList>
+							<parameter name="action" type="fixed">
+								<value>executeSQL</value>
+							</parameter>
+							<parameter name="SQL" type="fixed">
+								<value>CALL update_product_price('Air Freshener', 25.99)</value>
+							</parameter>
+						</parameterList>
+						<followOnAction condition="true">
+							<task>
+								<echo><![CDATA[<font style="color:blue">Step 1b Price of air freshener is updated</font>]]></echo>
+								<echo><![CDATA[<font style="color:black; font-style:italic; font-weight:bold; font-family:Arial">Ready to proceed to the next step</font>]]></echo>
+								<echo> </echo>								
+							</task>
+						</followOnAction>
+						<followOnAction condition="false">
+							<task>
+								<echo><![CDATA[<font style="color:red">Step 1b Error in run!</font>]]></echo>
+								<echo> </echo>								
+							</task>
+						</followOnAction>
+					</action>
+					
+				</task>
+			</action>
+		</task>
+
+		<task name="USER A - Step 2a">
+			<discription>
+				USER A queries the PRODUCT table. Notice that USER A does not have to wait for a lock, the old product price prior to USER B update is retrieved. If the example is running with CUR_COMMIT disabled, this step will cause a lock-wait or deadlock.
+			</discription>
+			<action name="fetchData" type="blank">
+				<followOnAction condition="true" compareOn="true"
+					compareOnType="raw">
+						<task>
+							<echo> </echo>
+							<echo><![CDATA[<font style="color:black;FONT-WEIGHT:bold">STEP 2a - USER A fetches the price of product 'Air Freshener'</font>]]></echo>
+							<echo><![CDATA[<font style="color:green">Step 2a SELECT product_price FROM product WHERE product_name = 'Air Freshener'</font>]]></echo>
+							<action name="executeSelect" type="serverAction">
+								<parameterList>
+									<parameter name="action"
+										type="fixed">
+										<value>executeSQL</value>
+									</parameter>
+									<parameter name="SQL"
+										type="fixed">
+										<value>
+											<!-- Returning the product price -->
+											SELECT product_price FROM ?SCHEMA?.product WHERE product_name = 'Air Freshener' FOR READ ONLY
+										</value>
+									</parameter>
+								</parameterList>
+								<followOnAction condition="true">
+									<task>
+										<assignSharedConstant
+											name="product_price" type="returnObject">
+											<value>
+												executeSelect.returnValue.resultSet.0.data.0.0
+											</value>
+										</assignSharedConstant>
+										<assignSharedConstant
+											name="query1" type="returnObject">
+											<value>
+												executeSelect.returnValue.STMT
+											</value>
+										</assignSharedConstant>
+										<echo><![CDATA[<font style="color:green">Step 2a Check price of Air Freshener: ?product_price?</font>]]></echo>
+										<echo><![CDATA[<font style="color:black; font-style:italic; font-weight:bold; font-family:Arial">Ready to proceed to the next step</font>]]></echo>
+										<echo> </echo>										
+									</task>
+								</followOnAction>
+								<followOnAction condition="false">
+									<task>
+										<echo><![CDATA[<font style="color:red">Step 2a Error in run!</font>]]></echo>
+										<echo> </echo>										
+									</task>
+								</followOnAction>
+							</action>
+    				</task>
+				</followOnAction>
+			</action>
+		</task>
+		
+		<task name="USER B - Step 2b">
+			<discription>
+				USER B queries the CUSTOMER table. Notice that USER B does not have to wait for a lock, the old phone number prior to USER A update is retrieved. If the example is running with CUR_COMMIT disabled, this step will cause a lock-wait or deadlock.
+			</discription>
+			<action name="fetchData" type="blank">
+				<followOnAction condition="true" compareOn="true"
+					compareOnType="raw">
+						<task>
+							<echo> </echo>
+							<echo><![CDATA[<font style="color:black;FONT-WEIGHT:bold">STEP 2b - USER B fetches the phone number of email id 'kumar@mail.ru'</font>]]></echo>
+							<echo><![CDATA[<font style="color:blue">Step 2b SELECT phone_number FROM customer WHERE email = 'kumar@mail.ru'</font>]]></echo>
+							<action name="executeSelect"
+								type="serverAction">
+								<parameterList>
+									<parameter name="action"
+										type="fixed">
+										<value>executeSQL</value>
+									</parameter>
+									<parameter name="SQL"
+										type="fixed">
+										<value>
+										<!-- Returning the phone number -->
+											SELECT phone_number FROM ?SCHEMA?.customer WHERE email = 'kumar@mail.ru' FOR READ ONLY
+										</value>
+									</parameter>
+								</parameterList>
+								<followOnAction condition="true">
+									<task>
+										<assignSharedConstant
+											name="customer_phoneno" type="returnObject">
+											<value>
+												executeSelect.returnValue.resultSet.0.data.0.0
+											</value>
+										</assignSharedConstant>
+										<assignSharedConstant
+											name="query1" type="returnObject">
+											<value>
+												executeSelect.returnValue.STMT
+											</value>
+										</assignSharedConstant>
+										<echo><![CDATA[<font style="color:blue">Step 2b Check phone number of customer with id 'kumar@mail.ru': ?customer_phoneno?</font>]]></echo>
+										<echo><![CDATA[<font style="color:black; font-style:italic; font-weight:bold; font-family:Arial">Ready to proceed to the next step</font>]]></echo>
+										<echo> </echo>										
+									</task>
+								</followOnAction>
+								<followOnAction condition="false">
+									<task>
+										<echo><![CDATA[<font style="color:red">Step 2b Error in run!</font>]]></echo>
+										<echo> </echo>										
+									</task>
+								</followOnAction>
+							</action>
+    				</task>
+				</followOnAction>
+			</action>
+		</task>
+		
+		<task name="USER A - Step 3a">
+			<discription>
+				USER A commits the transaction
+			</discription>
+			<action  name="Committransaction" type="blank">
+				<task>
+					<echo>        </echo>
+					<echo><![CDATA[<font style="color:black;FONT-WEIGHT:bold">STEP 3a - User A commits the transaction</font>]]></echo>
+					<echo><![CDATA[<font style="color:green">Step 3a COMMIT</font>]]></echo>
+					<action  name="SQLexecution" type="serverAction">
+						<parameterList>
+							<parameter name="action" type="fixed">
+								<value>executeSQL</value>
+							</parameter>
+							<parameter name="SQL" type="fixed">
+								<value>CALL DBMS_ALERT.SIGNAL('alert_test_custinfo','This is the message from User A')</value>
+								<!--<value>CALL send_SalaryUpdate_signal</value> -->
+							</parameter>
+						</parameterList>
+							<followOnAction condition="true">
+								<task>
+									<echo><![CDATA[<font style="color:green">Step 3a Commit Successful</font>]]></echo>
+									<echo><![CDATA[<font style="color:Purple;font-weight:bold">You should now see Step 1a completes the transaction</font>]]></echo>
+									
+								</task>
+							</followOnAction>
+							<followOnAction condition="false">
+								<task>
+									<echo><![CDATA[<font style="color:red">Step 3a Error in run!</font>]]></echo>
+								</task>
+							</followOnAction>
+					</action>
+					
+				</task>
+			</action>
+		</task>
+
+		<task name="USER B - Step 3b">
+			<discription>
+				USER B commits the transaction
+			</discription>
+			<action  name="Committransaction" type="blank">
+				<task>
+					<echo>        </echo>
+					<echo><![CDATA[<font style="color:black;FONT-WEIGHT:bold">STEP 3b - User B commits the transaction</font>]]></echo>
+					<echo><![CDATA[<font style="color:blue">Step 3b COMMIT</font>]]></echo>
+					<action  name="SQLexecution" type="serverAction">
+						<parameterList>
+							<parameter name="action" type="fixed">
+								<value>executeSQL</value>
+							</parameter>
+							<parameter name="SQL" type="fixed">
+								<value>CALL DBMS_ALERT.SIGNAL('alert_test_product','This is the message from User B')</value>
+								<!--<value>CALL send_ProductUpdate_signal</value> -->
+							</parameter>
+						</parameterList>
+							<followOnAction condition="true">
+								<task>
+									<echo><![CDATA[<font style="color:blue">Step 3b Commit Successful</font>]]></echo>
+									<echo><![CDATA[<font style="color:Purple;font-weight:bold">You should now see Step 1b completes the transaction</font>]]></echo>
+									
+								</task>
+							</followOnAction>
+							<followOnAction condition="false">
+								<task>
+									<echo><![CDATA[<font style="color:red">Step 3b Error in run!</font>]]></echo>
+								</task>
+							</followOnAction>
+					</action>
+					
+				</task>
+			</action>
+		</task>
+
+
+		<task name="Query data after transaction">
+			<discription>
+				This step queries the CUSTOMER and PRODUCT tables after the transaction. Here you should see the new values.
+			</discription>	
+		    	<action name="step4" type="blank">			    	
+		    	
+				<followOnAction condition="true" compareOn="true" compareOnType="raw">	
+
+					<task>			
+						<echo> </echo>
+		    				<echo><![CDATA[<font style="color:black;FONT-WEIGHT:bold">STEP 4 - Query CUSTOMER and PRODUCT tables</font>]]></echo>
+						<echo><![CDATA[<font style="color:green">Step 4 Query: SELECT phone_number from customer WHERE email = 'kumar@mail.ru'</font>]]></echo>
+
+						<action name="selectPhoneNumber" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="fixed">
+									<value>executeSQL</value>
+								</parameter>
+								<parameter name="SQL" type="fixed">
+									<value>SELECT phone_number from customer WHERE email = 'kumar@mail.ru'</value>
+								</parameter>
+							</parameterList>
+							<followOnAction condition="true">
+								<task>
+									<assignSharedConstant name="phone_number_before" type="returnObject">
+										<value>
+											selectPhoneNumber.returnValue.resultSet.0.data.0.0
+										</value>
+									</assignSharedConstant>
+									<echo><![CDATA[<font style="color:green; font-weight:bold; font-family:Arial">Step 4 Result: New phone number of email user kumar@mail.ru is ?phone_number_before? </font>]]></echo>
+									<echo> </echo>
+								</task>
+							</followOnAction>
+							<followOnAction condition="false">
+								<task>
+									<echo>Step 4 Error in run!</echo>
+								</task>
+							</followOnAction>										
+						</action>	
+			  		</task>	
+					<task>
+						<echo><![CDATA[<font style="color:blue">Step 4 Query: SELECT product_price from product WHERE product_name = 'Air Freshener'</font>]]></echo>
+						<action name="selectPrice" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="fixed">
+									<value>executeSQL</value>
+								</parameter>
+								<parameter name="SQL" type="fixed">
+									<value>SELECT product_price from product WHERE product_name = 'Air Freshener'</value>
+								</parameter>
+							</parameterList>
+							<followOnAction condition="true">
+								<task>
+									<assignSharedConstant name="price_before" type="returnObject">
+										<value>
+											selectPrice.returnValue.resultSet.0.data.0.0
+										</value>
+									</assignSharedConstant>
+									<echo><![CDATA[<font style="color:blue; font-weight:bold; font-family:Arial">Step 4 Result: New price of an air freshener is ?price_before? </font>]]></echo>
+									<echo> </echo>
+								</task>
+							</followOnAction>
+							<followOnAction condition="false">
+								<task>
+									<echo>Error in run!</echo>
+								</task>
+							</followOnAction>										
+						</action>	
+			  		</task>		  		  
+				</followOnAction>
+			</action>
+		</task>
+
+		
+		
+	</taskList>
+</actionPanel>

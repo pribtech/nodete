@@ -1,0 +1,19 @@
+<p><b>Scenario</b></p>
+<p>
+	A patients address is stored natively in an XML document in the health care provider application. 
+	When a patient changes his address, the corresponding XML document needs to be updated into the application.
+</p>
+<p><b>Operation</b></p>
+<p>An UPDATE statement can be used on the XML column. patient_details table will be updated with the new address accordingly. 
+Function XMLPARSE is used here to convert the document text into XML value so that it comply to the ADDRESS column XML type.</p>
+<p><b>Solution</b></p>
+<p>
+	The health care provider uses the statement shown on the right pane to update a patients address which is stored in XML format.
+</p>
+<p><b>Best Practices</b></p>
+<p>
+<ul>
+<li>ALTER TABLE tablename APPEND ON enable append mode for the table and thus any new data will be appended to the end of the table
+rather than searching for free space in existing pages.</li>
+</ul>
+</p>

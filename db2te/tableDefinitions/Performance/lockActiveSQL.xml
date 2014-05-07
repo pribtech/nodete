@@ -1,0 +1,194 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2011 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+
+<table name="lockActiveSQL">
+	<sql_name>lockActiveSQL</sql_name>
+	<singular_name>Active Lock SQL</singular_name>
+	<plural_name>Active Locks SQL</plural_name>
+	<inlinequery>
+<![CDATA[
+select s.SNAPSHOT_TIMESTAMP
+	,type
+	,l.agent_id
+	,AGENT_ID_HOLDING_LK
+	,case when s.STMT_TEXT is null then 'Static' else 'Dynamic' end as stmt_type
+	,coalesce(STMT_TEXT
+		,(select TEXT from SYSIBM.SYSSTMT p
+			where (p.PLCREATOR,p.PLNAME,p.SECTNO)=(s.CREATOR,s.PACKAGE_NAME,s.SECTION_NUMBER)
+		)) as STMT_TEXT
+	,s.STMT_START
+	,s.STMT_STOP
+from (
+	select distinct 
+	  lock.type
+	 ,case lock.type when 'Waiting' then AGENT_ID else AGENT_ID_HOLDING_LK end as agent_id
+	 ,case lock.type when 'Waiting' then AGENT_ID_HOLDING_LK end as AGENT_ID_HOLDING_LK
+	from SYSIBMADM.SNAPLOCKwait
+		,(values('Holder'),('Waiting')) as lock(type)
+	) as l
+	,SYSIBMADM.SNAPSTMT s
+where l.agent_id=s.agent_id
+]]>
+	</inlinequery>
+	<description>Active Statements in Lock</description>
+	<disable_edit/>	
+	<order_by_index name="AGENT_ID_HOLDING_LK" direction="A"/>
+	<order_by_index name="AGENT_ID" direction="A"/>
+	<display_columns>
+		<col type="column" name="SNAPSHOT_TIMESTAMP"/>
+		<col type="column" name="TYPE"/>
+		<col type="column" name="AGENT_ID"/>
+		<col type="column" name="AGENT_ID_HOLDING_LK"/>
+		<col type="column" name="STMT_START"/>
+		<col type="column" name="STMT_STOP"/>
+		<col type="action" name="visualExplain"/>
+		<col type="action" name="db2advis"/>
+		<col type="column" name="STMT_TYPE"/>
+		<col type="column" name="STMT_TEXT"/>
+	</display_columns>
+	<column name="SNAPSHOT_TIMESTAMP">
+		<c_sql_name>SNAPSHOT_TIMESTAMP</c_sql_name>
+		<c_title>Timestamp</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="TYPE">
+		<c_sql_name>TYPE</c_sql_name>
+		<c_title>Type</c_title>
+		<c_presentation>s</c_presentation>
+	</column>
+	<column name="AGENT_ID">
+		<c_sql_name>AGENT_ID</c_sql_name>
+		<c_title>Agent</c_title>
+		<c_presentation>n</c_presentation>
+		<c_pkey>p</c_pkey>
+	</column>
+	<column name="AGENT_ID_HOLDING_LK">
+		<c_sql_name>AGENT_ID_HOLDING_LK</c_sql_name>
+		<c_title>Waiting On</c_title>
+		<c_presentation>n</c_presentation>
+		<c_pkey>p</c_pkey>
+	</column>
+	<column name="STMT_TYPE">
+		<c_sql_name>STMT_TYPE</c_sql_name>
+		<c_title>Stmt. Type</c_title>
+		<c_presentation>s</c_presentation>
+	</column>
+	<column name="STMT_START">
+		<c_sql_name>STMT_START</c_sql_name>
+		<c_title>Started</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="STMT_STOP">
+		<c_sql_name>STMT_STOP</c_sql_name>
+		<c_title>Stopped</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="STMT_TEXT">
+		<c_sql_name>STMT_TEXT</c_sql_name>
+		<c_title>Statement</c_title>
+		<c_presentation>l</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<action name="visualExplain">
+		<c_title>Explain</c_title>
+    	<actionScript>
+    		<task>
+				<assignSharedConstant name="stmttext" type="blockValue">
+					<value>stmttext</value>
+				</assignSharedConstant>
+	   			<callGlobalAction name="DB2ExplainDynamicSQL"/>				
+	   		</task>
+    	</actionScript>
+    </action>
+
+	<action name="db2expln">
+		<c_title>db2expln</c_title>
+    	<actionScript>
+    		<task>
+    			<lock/>
+    			<action name="getSession" type="serverAction" >
+					<parameterList>
+						<parameter name="action" type="raw">
+							<value>getSessionVariable</value>
+						</parameter>
+						<parameter name="name[database]" type="fixed">
+							<value>Connections.USE_DATABASE_CONNECTION.database</value>
+						</parameter>
+						<parameter name="name[schema]" type="fixed">
+							<value>Connections.USE_DATABASE_CONNECTION.schema</value>
+						</parameter>
+					</parameterList>
+				</action>
+		    	<assignSharedConstant name="database-name" type="returnObject">
+					<value>getSession.returnValue.database</value>
+				</assignSharedConstant>
+		    	<assignSharedConstant name="schema-name" type="returnObject">
+					<value>getSession.returnValue.schema</value>
+				</assignSharedConstant>
+				<assignSharedConstant name="query-statement" type="blockValue">
+							<value>STMT_TEXT</value>
+				</assignSharedConstant>
+		   		<assignSharedConstant name="command" type="raw">
+					<value>System/db2expln.statement</value>
+				</assignSharedConstant>
+	   			<callGlobalAction name="systemCommandExecution"/>				
+    			<unlock/>
+	   		</task>
+    	</actionScript>
+    </action>
+
+	<action name="db2advis">
+		<c_title>Advisor</c_title>
+    	<actionScript>
+    		<task>
+    			<lock/>
+    			<action name="getSession" type="serverAction" >
+					<parameterList>
+						<parameter name="action" type="raw">
+							<value>getSessionVariable</value>
+						</parameter>
+						<parameter name="name[database]" type="fixed">
+							<value>Connections.USE_DATABASE_CONNECTION.database</value>
+						</parameter>
+						<parameter name="name[schema]" type="fixed">
+							<value>Connections.USE_DATABASE_CONNECTION.schema</value>
+						</parameter>
+					</parameterList>
+				</action>
+		    	<assignSharedConstant name="database-name" type="returnObject">
+					<value>getSession.returnValue.database</value>
+				</assignSharedConstant>
+		    	<assignSharedConstant name="schema-name" type="returnObject">
+					<value>getSession.returnValue.schema</value>
+				</assignSharedConstant>
+				<assignSharedConstant name="statement" type="blockValue">
+							<value>STMT_TEXT</value>
+				</assignSharedConstant>
+		   		<assignSharedConstant name="command" type="raw">
+					<value>System/db2advis.statement</value>
+				</assignSharedConstant>
+	   			<callGlobalAction name="systemCommandExecution"/>				
+    			<unlock/>
+	   		</task>
+    	</actionScript>
+    </action>
+</table>
+

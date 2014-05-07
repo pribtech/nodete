@@ -1,0 +1,573 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2011 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<tutorial name="installEventMonitors" autoPlayTime="5">
+ 	<flowRestriction>freeWithChecks</flowRestriction>
+    <closeAction />
+    <openAction name="assigns" type="blank" >
+    	<task>
+			<assignSharedConstant name="DROPTEMP32K" type="raw">
+				<value></value> 	 
+			</assignSharedConstant>
+    	</task>
+    </openAction>
+    <globalCodeHighlightOptions highlightCode = "true" />
+    <pageList>
+    	<page name="Overview" type="intro">
+			<exitAction  name="checkPrerequisitises" type="serverAction"> 
+				<parameterList> 
+					<parameter name="action" type="fixed"><value>checkForObjectWithCase</value></parameter> 
+					<parameter name="objectType" type="raw"><value>list</value></parameter> 
+					<parameter name="object" type="raw"><value><![CDATA[
+						<objects>
+							<table schema="s#db2mc" table="PARAMETER" message="Missing parameter table, first install component DB2TE base objects"/>
+							<table schema="s#db2mc" table="PRUNE_CONTROL" message="Missing prune control table, first installs component DB2TE base objects"/>
+						</objects>
+					]]></value></parameter> 
+				</parameterList> 
+				<if condition="true"> 
+					<task> 
+						<setActionReturn value="true"/> 
+					</task> 
+				</if>
+				<if condition="false"> 
+					<task> 
+						<setActionReturn value="false"/> 
+						<assignSharedConstant name="ERROR_MESSAGE" type="returnObject">
+							<value>checkPrerequisitises.returnValue</value>
+						</assignSharedConstant>
+						<alert><pre>?ERROR_MESSAGE?</pre></alert>
+					</task> 
+				</if>
+			</exitAction>
+    	 	<exitAction/>
+            <contentText>
+<![CDATA[
+This tutorial creates the various object for event monitoring used within db2 Technology Explorer.
+There is a system overhead in maintaining these event monitors.
+]]>
+			</contentText>
+        </page>
+		<page name="Create Base Objects" type="general">
+	    	<entryAction name="checkTemp32K" type="blank" >
+	    		<task>
+	    			<action name="checkExistence" type="serverAction" >
+						<parameterList>
+							<parameter name="action" type="raw">
+								<value>checkExistence</value>
+							</parameter>
+							<parameter name="select" type="raw">
+								<value>SELECT 1 FROM SYSCAT.TABLESPACES where DATATYPE='T' and PAGESIZE=32768</value>
+							</parameter>
+						</parameterList>
+						<if condition="true">
+							<task>
+								<assignSharedConstant name="TEMP32K" type="raw">
+									<value></value> 	 
+								</assignSharedConstant>
+								<assignSharedConstant name="DROPTEMP32K" type="raw">
+									<value></value> 	 
+								</assignSharedConstant>
+							</task>
+						</if>
+						<ifNot condition="true">
+							<task>
+								<assignSharedConstant name="TEMP32K" type="raw">
+									<value>
+<![CDATA[
+CREATE BUFFERPOOL TEMP32K
+	SIZE 100
+	PAGESIZE 32768
+@
+CREATE TEMPORARY TABLESPACE TEMP32K1
+			PAGESIZE 32k
+			MANAGED BY DATABASE
+			USING (
+ 				FILE 'TEMP32K1' 10M
+			)
+ 			BUFFERPOOL TEMP32K
+			AUTORESIZE YES   
+			INCREASESIZE 1 M
+			MAXSIZE 20M
+			NO FILE SYSTEM CACHING
+@
+]]>
+									</value> 	 
+								</assignSharedConstant>
+								<assignSharedConstant name="DROPTEMP32K" type="raw">
+									<value>
+<![CDATA[
+DROP TEMPORARY TABLESPACE TEMP32K1@
+]]>
+									</value> 	 
+								</assignSharedConstant>
+							</task>
+						</ifNot>
+					</action>
+    	 			<setActionReturn value="true"/> 
+	    		</task>
+	    	</entryAction>
+    	 	<exitAction/>
+            <contentText>
+<![CDATA[
+Create a buffer pool and tablespace to for the event monitors.
+<p/>
+Note as 32K page size is used then 32k temporary space is required.
+The tutorial will add the create statements if required.
+It allocations a bufferpool to enable appropriate performance management.  
+]]>
+			</contentText>
+            <SQLText>
+<![CDATA[
+CREATE BUFFERPOOL EVM32K
+	SIZE 200
+	PAGESIZE 32768
+@
+
+CREATE LARGE TABLESPACE EVM32K1
+	IN NODEGROUP IBMCATGROUP
+	PAGESIZE 32768
+	MANAGED BY DATABASE
+	USING  (
+ 		FILE 'EVM32K1' 200M
+	)
+ 	BUFFERPOOL EVM32K
+	AUTORESIZE YES   
+	INCREASESIZE 10 M
+	MAXSIZE 1G 
+	NO FILE SYSTEM CACHING
+@
+
+?TEMP32K?
+]]>
+			</SQLText>
+            <SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar="@"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+        </page>
+		<page name="Create Change Monitor" type="general">
+    	 	<entryAction/>
+    	 	<exitAction/>
+            <contentText>
+<![CDATA[
+Create change history event monitor,d turn on collection of data
+and set the collect to happen every 5 minutes.
+]]>
+			</contentText>
+            <SQLText>
+<![CDATA[
+CREATE EVENT MONITOR DB2MC_CHANGE 
+	FOR CHANGE HISTORY WHERE EVENT IN (ALL)
+	WRITE TO TABLE
+	 CONTROL		( TABLE "s#db2mc".EVENT_MONITOR_CHANGE_CONTROL IN EVM32K1 PCTDEACTIVATE 80 )
+    ,CHANGESUMMARY	( TABLE "s#db2mc".EVENT_MONITOR_CHANGE_CHANGESUMMARY IN EVM32K1 PCTDEACTIVATE 80 )
+    ,EVMONSTART		( TABLE "s#db2mc".EVENT_MONITOR_CHANGE_EVMONSTART IN EVM32K1 PCTDEACTIVATE 80 )
+    ,TXNCOMPLETION	( TABLE "s#db2mc".EVENT_MONITOR_CHANGE_TXNCOMPLETION IN EVM32K1 PCTDEACTIVATE 80 )
+    ,DDLSTMTEXEC	( TABLE "s#db2mc".EVENT_MONITOR_CHANGE_DDLSTMTEXEC IN EVM32K1 PCTDEACTIVATE 80 )
+    ,DBDBMCFG		( TABLE "s#db2mc".EVENT_MONITOR_CHANGE_DBDBMCFG IN EVM32K1 PCTDEACTIVATE 80 )
+    ,REGVAR			( TABLE "s#db2mc".EVENT_MONITOR_CHANGE_REGVAR IN EVM32K1 PCTDEACTIVATE 80 )
+    ,UTILSTART		( TABLE "s#db2mc".EVENT_MONITOR_CHANGE_UTILSTART IN EVM32K1 PCTDEACTIVATE 80 )
+    ,UTILSTOP		( TABLE "s#db2mc".EVENT_MONITOR_CHANGE_UTILSTOP IN EVM32K1 PCTDEACTIVATE 80 )
+    ,UTILPHASE		( TABLE "s#db2mc".EVENT_MONITOR_CHANGE_UTILPHASE IN EVM32K1 PCTDEACTIVATE 80 )
+    ,UTILLOCATION	( TABLE "s#db2mc".EVENT_MONITOR_CHANGE_UTILLOCATION IN EVM32K1 PCTDEACTIVATE 80 )
+	AUTOSTART
+@
+create index "s#db2mc".EVENT_MONITOR_CHANGE_CONTROL_i1
+	on "s#db2mc".EVENT_MONITOR_CHANGE_CONTROL
+	(MESSAGE_TIME)
+	allow reverse scans
+@
+create index "s#db2mc".EVENT_MONITOR_CHANGE_CHANGESUMMARY_i1
+	on "s#db2mc".EVENT_MONITOR_CHANGE_CHANGESUMMARY 
+	(event_timestamp)
+	allow reverse scans
+@
+create index "s#db2mc".EVENT_MONITOR_CHANGE_EVMONSTART_i1
+	on "s#db2mc".EVENT_MONITOR_CHANGE_EVMONSTART
+	(event_timestamp)
+	allow reverse scans
+@
+create index "s#db2mc".EVENT_MONITOR_CHANGE_TXNCOMPLETION_i1 
+	on "s#db2mc".EVENT_MONITOR_CHANGE_TXNCOMPLETION 
+	(event_timestamp)
+	allow reverse scans
+@
+create index "s#db2mc".EVENT_MONITOR_CHANGE_DDLSTMTEXEC_i1
+	on "s#db2mc".EVENT_MONITOR_CHANGE_DDLSTMTEXEC 
+	(event_timestamp)
+	allow reverse scans
+@
+create index "s#db2mc".EVENT_MONITOR_CHANGE_DBDBMCFG_i1
+	on "s#db2mc".EVENT_MONITOR_CHANGE_DBDBMCFG
+	(event_timestamp)
+	allow reverse scans
+@
+create index "s#db2mc".EVENT_MONITOR_CHANGE_REGVAR_i1
+	on "s#db2mc".EVENT_MONITOR_CHANGE_REGVAR
+	(event_timestamp)
+	allow reverse scans
+@
+create index "s#db2mc".EVENT_MONITOR_CHANGE_UTILSTART_i1 
+	on "s#db2mc".EVENT_MONITOR_CHANGE_UTILSTART 
+	(event_timestamp)
+	allow reverse scans
+@
+create index "s#db2mc".EVENT_MONITOR_CHANGE_UTILSTOP_i1
+	on "s#db2mc".EVENT_MONITOR_CHANGE_UTILSTOP 
+	(event_timestamp)
+	allow reverse scans
+@
+create index "s#db2mc".EVENT_MONITOR_CHANGE_UTILPHASE_i1
+	on "s#db2mc".EVENT_MONITOR_CHANGE_UTILPHASE 
+	(event_timestamp)
+	allow reverse scans
+@
+create index "s#db2mc".EVENT_MONITOR_CHANGE_UTILLOCATION_i1 
+	on "s#db2mc".EVENT_MONITOR_CHANGE_UTILLOCATION 
+	(event_timestamp)
+	allow reverse scans
+@
+SET EVENT MONITOR DB2MC_CHANGE STATE=1
+@
+CALL SYSPROC.ADMIN_CMD ('update db cfg using wlm_collect_int 5 IMMEDIATE')
+@
+]]>
+			</SQLText>
+            <SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar="@"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+        </page>
+		<page name="Create Threshold Monitor" type="general">
+    	 	<entryAction/>
+    	 	<exitAction/>
+            <contentText>
+<![CDATA[
+Create threshold event monitor and turn on collection of data.
+]]>
+			</contentText>
+            <SQLText>
+<![CDATA[
+CREATE EVENT MONITOR DB2MC_THRESHOLD_VIOLATIONS
+	FOR THRESHOLD VIOLATIONS
+	WRITE TO TABLE
+	 THRESHOLDVIOLATIONS (TABLE "s#db2mc".EVENT_MONITOR_THRESHOLD_VIOLATIONS IN EVM32K1 PCTDEACTIVATE 80 )
+	,CONTROL (TABLE "s#db2mc".EVENT_MONITOR_THRESHOLD_VIOLATIONS_CONTROL IN EVM32K1 PCTDEACTIVATE 80 )
+	AUTOSTART
+@
+create index "s#db2mc".EVENT_MONITOR_THRESHOLD_VIOLATIONS_i1
+	on "s#db2mc".EVENT_MONITOR_THRESHOLD_VIOLATIONS 
+	(ACTIVATE_TIMESTAMP)
+	allow reverse scans
+@
+create index "s#db2mc".EVENT_MONITOR_THRESHOLD_VIOLATIONS_CONTROL_i1
+	on "s#db2mc".EVENT_MONITOR_THRESHOLD_VIOLATIONS_CONTROL
+	(MESSAGE_TIME)
+	allow reverse scans
+@
+
+SET EVENT MONITOR DB2MC_THRESHOLD_VIOLATIONS STATE=1
+@
+]]>
+			</SQLText>
+            <SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar="@"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+        </page>
+		<page name="Create Locking Monitor" type="general">
+    	 	<entryAction/>
+    	 	<exitAction/>
+            <contentText>
+<![CDATA[
+Change the locking monitor from a file to a table for easier access and control.
+]]>
+			</contentText>
+            <SQLText>
+<![CDATA[
+CREATE EVENT MONITOR DB2MC_LOCKING
+	FOR LOCKING
+	WRITE TO TABLE
+	LOCK (TABLE "s#db2mc".EVENT_MONITOR_LOCK IN EVM32K1 PCTDEACTIVATE 80 ),
+	LOCK_PARTICIPANTS (TABLE "s#db2mc".EVENT_MONITOR_LOCK_PARTICIPANTS IN EVM32K1 PCTDEACTIVATE 80 ),
+	LOCK_PARTICIPANT_ACTIVITIES (TABLE "s#db2mc".EVENT_MONITOR_LOCK_PARTICIPANT_ACTIVITIES IN EVM32K1 PCTDEACTIVATE 80 ),
+	LOCK_ACTIVITY_VALUES (TABLE "s#db2mc".EVENT_MONITOR_LOCK_ACTIVITY_VALUES IN EVM32K1 PCTDEACTIVATE 80 ),
+	CONTROL (TABLE "s#db2mc".EVENT_MONITOR_LOCK_CONTROL IN EVM32K1 PCTDEACTIVATE 80 )
+	AUTOSTART
+@
+create index "s#db2mc".EVENT_MONITOR_LOCK_i1
+	on "s#db2mc".EVENT_MONITOR_LOCK 
+	(EVENT_TIMESTAMP)
+	allow reverse scans
+@
+create index "s#db2mc".EVENT_MONITOR_LOCK_PARTICIPANTS_i1
+	on "s#db2mc".EVENT_MONITOR_LOCK_PARTICIPANTS 
+	(EVENT_TIMESTAMP)
+	allow reverse scans
+@
+create index "s#db2mc".EVENT_MONITOR_LOCK_PARTICIPANT_ACTIVITIES_i1
+	on "s#db2mc".EVENT_MONITOR_LOCK_PARTICIPANT_ACTIVITIES 
+	(EVENT_TIMESTAMP)
+	allow reverse scans
+@
+create index "s#db2mc".EVENT_MONITOR_LOCK_ACTIVITY_VALUES_i1
+	on "s#db2mc".EVENT_MONITOR_LOCK_ACTIVITY_VALUES 
+	(EVENT_TIMESTAMP)
+	allow reverse scans
+@
+create index "s#db2mc".EVENT_MONITOR_LOCK_CONTROL_i1
+	on "s#db2mc".EVENT_MONITOR_LOCK_CONTROL
+	(MESSAGE_TIME)
+	allow reverse scans
+@
+SET EVENT MONITOR DB2DETAILDEADLOCK STATE=0
+@
+SET EVENT MONITOR DB2MC_LOCKING STATE=1
+@
+]]>
+			</SQLText>
+            <SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar="@"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+        </page>
+		<page name="Create Statistic Monitors" type="general">
+    	 	<entryAction/>
+    	 	<exitAction/>
+            <contentText>
+<![CDATA[
+Create statistic event monitor and turn on collection of data,
+]]>
+			</contentText>
+            <SQLText>
+<![CDATA[
+CREATE EVENT MONITOR DB2MC_STATISTICS
+	FOR STATISTICS
+	WRITE TO TABLE
+	 QSTATS 		(TABLE "s#db2mc".EVENT_MONITOR_STATISTICS_QSTATS IN EVM32K1 PCTDEACTIVATE 80 )
+	,SCMETRICS 		(TABLE "s#db2mc".EVENT_MONITOR_STATISTICS_SCMETRICS IN EVM32K1 PCTDEACTIVATE 80 )
+	,SCSTATS 		(TABLE "s#db2mc".EVENT_MONITOR_STATISTICS_SCSTATS IN EVM32K1 PCTDEACTIVATE 80 )
+	,WCSTATS 		(TABLE "s#db2mc".EVENT_MONITOR_STATISTICS_WCSTATS IN EVM32K1 PCTDEACTIVATE 80)
+	,WLMETRICS 		(TABLE "s#db2mc".EVENT_MONITOR_STATISTICS_WLMETRICS IN EVM32K1 PCTDEACTIVATE 80 )
+	,WLSTATS 		(TABLE "s#db2mc".EVENT_MONITOR_STATISTICS_WLSTATS IN EVM32K1 PCTDEACTIVATE 80 )
+	,HISTOGRAMBIN 	(TABLE "s#db2mc".EVENT_MONITOR_STATISTICS_HISTOGRAMBIN IN EVM32K1 PCTDEACTIVATE 80 )
+	,CONTROL 		(TABLE "s#db2mc".EVENT_MONITOR_STATISTICS_CONTROL IN EVM32K1 PCTDEACTIVATE 80 )
+	AUTOSTART
+@
+create index "s#db2mc".EVENT_MONITOR_STATISTICS_CONTROL_i1
+	on "s#db2mc".EVENT_MONITOR_STATISTICS_CONTROL
+	(MESSAGE_TIME)
+	allow reverse scans
+@
+create index "s#db2mc".EVENT_MONITOR_STATISTICS_QSTATS_i1
+	on "s#db2mc".EVENT_MONITOR_STATISTICS_QSTATS 
+	(STATISTICS_TIMESTAMP)
+	allow reverse scans
+@
+create index "s#db2mc".EVENT_MONITOR_STATISTICS_SCMETRICS_i1
+	on "s#db2mc".EVENT_MONITOR_STATISTICS_SCMETRICS 
+	(STATISTICS_TIMESTAMP)
+	allow reverse scans
+@
+create index "s#db2mc".EVENT_MONITOR_STATISTICS_SCSTATS_i1
+	on "s#db2mc".EVENT_MONITOR_STATISTICS_SCSTATS 
+	(STATISTICS_TIMESTAMP)
+	allow reverse scans
+@
+create index "s#db2mc".EVENT_MONITOR_STATISTICS_WCSTATS_i1
+	on "s#db2mc".EVENT_MONITOR_STATISTICS_WCSTATS 
+	(STATISTICS_TIMESTAMP)
+	allow reverse scans
+@
+create index "s#db2mc".EVENT_MONITOR_STATISTICS_WLMETRICS_i1
+	on "s#db2mc".EVENT_MONITOR_STATISTICS_WLMETRICS 
+	(STATISTICS_TIMESTAMP)
+	allow reverse scans
+@
+create index "s#db2mc".EVENT_MONITOR_STATISTICS_WLSTATS_i1
+	on "s#db2mc".EVENT_MONITOR_STATISTICS_WLSTATS 
+	(STATISTICS_TIMESTAMP)
+	allow reverse scans
+@
+create index "s#db2mc".EVENT_MONITOR_STATISTICS_HISTOGRAMBIN_i1
+	on "s#db2mc".EVENT_MONITOR_STATISTICS_HISTOGRAMBIN 
+	(STATISTICS_TIMESTAMP)
+	allow reverse scans
+@
+SET EVENT MONITOR DB2MC_STATISTICS STATE=1
+@
+]]>
+			</SQLText>
+            <SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar="@"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+        </page>
+        <page name="Create UOW Monitor" type="general">
+    	 	<entryAction/>
+    	 	<exitAction/>
+            <contentText>
+<![CDATA[
+Create UOW event monitor and turn on collection of data,
+]]>
+			</contentText>
+            <SQLText>
+<![CDATA[
+CREATE EVENT MONITOR DB2MC_UOW 
+	FOR UNIT OF WORK WRITE 
+	TO UNFORMATTED EVENT TABLE ( TABLE "s#db2mc".EVENT_MONITOR_UOW IN EVM32K1 PCTDEACTIVATE 80 )
+@
+create index "s#db2mc".EVENT_MONITOR_UOW_i1
+	on "s#db2mc".EVENT_MONITOR_UOW 
+	(event_timestamp)
+	allow reverse scans
+@
+begin atomic
+	IF exists(select 1 from SYSIBMADM.DBCFG where name='mon_uow_data' and value='NONE') then 
+		CALL SYSPROC.ADMIN_CMD ('update db cfg using mon_uow_data BASE immediate');
+	end if;
+end
+@
+]]>
+			</SQLText>
+            <SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar="@"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+        </page>
+		<page name="Test UOW Monitor" type="general" autoPlay="false">
+            <contentText>
+<![CDATA[
+<h2>Test UOW</h2>
+<ol>
+<li>Turn on the uow event monitor</li>
+<li>Run two statements</li>
+<li>Turn off the uow event monitor</li>
+<li>XML query to extract performance data</li>
+</ol>
+]]>
+			</contentText>
+            <SQLText>
+<![CDATA[
+SET EVENT MONITOR DB2MC_UOW STATE=1@
+select count(1) from syscat.tables@
+select count(1) from syscat.views@
+SET EVENT MONITOR DB2MC_UOW STATE=0
+@
+
+SELECT EVENT.UOW_ID, EVENT.APPLICATION_ID, EVENT.SESSION_AUTHID,
+  EVENT.START_TIME, EVENT.STOP_TIME
+  FROM TABLE( 
+    EVMON_FORMAT_UE_TO_XML(
+      null, 
+      FOR EACH ROW OF ( 
+        select * from "s#db2mc".EVENT_MONITOR_UOW fetch first 10 rows only 
+    ))) AS UEXML
+    ,XMLTABLE( 
+      XMLNAMESPACES( DEFAULT 'http://www.ibm.com/xmlns/prod/db2/mon' ),
+      '$uowevent/db2_uow_event' 
+      PASSING XMLPARSE( DOCUMENT UEXML.XMLREPORT ) as "uowevent"
+      COLUMNS UOW_ID INTEGER PATH 'uow_id',
+      MEMBER SMALLINT PATH '@member', 
+      APPLICATION_ID VARCHAR(128) PATH 'application_id',
+      SESSION_AUTHID VARCHAR(128) PATH 'session_authid',
+      START_TIME TIMESTAMP PATH 'start_time',
+      STOP_TIME TIMESTAMP PATH 'stop_time'
+    )
+    AS EVENT
+   @
+]]>
+            </SQLText>
+            <SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar="@"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+        </page>
+		<page name="Test UOW Extract to Table" type="general" autoPlay="false">
+            <contentText>
+<![CDATA[
+Extract UOW XML data into tables.  Note the stored procedure creates the tables.
+]]>
+			</contentText>
+            <SQLText>
+<![CDATA[
+call EVMON_FORMAT_UE_TO_TABLES('UOW',null,null,null,'s#db2mc#temp','SYSTOOLSPACE',' ',-1,'select * from "s#db2mc".EVENT_MONITOR_UOW')
+@
+	
+select * from s#db2mc#temp.UOW_EVENT@
+select * from s#db2mc#temp.UOW_EXECUTABLE_LIST@
+select * from s#db2mc#temp.UOW_METRICS@
+select * from s#db2mc#temp.UOW_PACKAGE_LIST@
+
+drop table s#db2mc#temp.UOW_EVENT@
+drop table s#db2mc#temp.UOW_EXECUTABLE_LIST@
+drop table s#db2mc#temp.UOW_METRICS@
+drop table s#db2mc#temp.UOW_PACKAGE_LIST@
+]]>
+            </SQLText>
+            <SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar="@"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+        </page>
+		<page name="Setup Pruning" type="general">
+            <contentText>
+<![CDATA[
+Set up prune data control rows.
+]]>
+			</contentText>
+            <SQLText>
+<![CDATA[
+insert into "s#db2mc".prune_control
+	   (schema ,table ,timestampColumn , retentionDays,commitFrequency)
+select 
+	tabschema,tabname
+	,case 
+		when tabname like '%CONTROL' then 'MESSAGE_TIME' 
+		when tabname like '%VIOLATIONS' then 'ACTIVATE_TIMESTAMP' 
+		when tabname like 'EVENT_MONITOR_STATISTICS%' then 'STATISTICS_TIMESTAMP'
+		else 'EVENT_TIMESTAMP' end 
+	,700,10000
+from SYSCAT.EVENTTABLES  e
+where tabschema='s#db2mc' 
+  and tabname like 'EVENT_MONITOR%'
+  and not exists (SELECT * from "s#db2mc".prune_control p
+  				where (p.schema,p.table)=(e.tabschema,e.tabname))
+@
+select * from "s#db2mc".prune_control
+@
+]]>
+            </SQLText>
+            <SQLExecutionOptions xml="false" clob="true" clobinline="true" blob="false" dbclob="false" termChar="@"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+        </page>
+		<page name="Uninstall" type="last" autoPlay="false">
+            <contentText>
+<![CDATA[
+Uninstall event monitors created and supporting tablespace plus bufferpool.
+]]>
+			</contentText>
+            <SQLText>
+<![CDATA[
+?DROPTEMP32K?
+DELETE FROM "s#db2mc".prune_control where schema='s#db2mc' and table like 'EVENT_MONITOR%'@
+SET EVENT MONITOR DB2MC_THRESHOLD_VIOLATIONS STATE=0@
+SET EVENT MONITOR DB2MC_LOCKING STATE=0@
+SET EVENT MONITOR DB2DETAILDEADLOCK STATE=1@
+SET EVENT MONITOR DB2MC_STATISTICS STATE=0@
+SET EVENT MONITOR DB2MC_UOW STATE=0@
+SET EVENT MONITOR DB2MC_CHANGE STATE=0@
+DROP EVENT MONITOR DB2MC_THRESHOLD_VIOLATIONS@
+DROP EVENT MONITOR DB2MC_LOCKING@
+DROP EVENT MONITOR DB2MC_STATISTICS@
+DROP EVENT MONITOR DB2MC_CHANGE@
+DROP EVENT MONITOR DB2MC_UOW @
+DROP TABLESPACE EVM32K1@
+DROP BUFFERPOOL EVM32K @
+]]>
+            </SQLText>
+            <SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar="@"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+        </page>
+    </pageList>
+</tutorial>

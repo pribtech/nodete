@@ -1,0 +1,117 @@
+<!--
+  Author: Peter Prib
+  
+  Copyright Independent Systems Integrators Pty Ltd 2008 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+<table name="stmgThresholdRegistry">
+	<sql_name>SYSTOOLS.STMG_THRESHOLD_REGISTRY</sql_name>
+	<singular_name>Storage Theshold Type</singular_name>
+	<plural_name>Storage Theshold Types</plural_name>
+	<description />
+	<messages>
+		<SQL0204N> Not installed. Please install "Storage Management Object" in Tools-> Installed Components </SQL0204N>
+	</messages>
+	<rows_per_page>50</rows_per_page>
+	<order_by_index />
+	<display_columns>
+		<col type="column" name="stmg_th_type" />
+		<col type="action" name="switchState"/>
+		<col type="column" name="enabled" />
+		<col type="column" name="stmg_th_name" />
+	</display_columns>
+	
+
+	<action name="switchState">
+		<c_title>Switch State</c_title>
+		<icon>images/switch.gif</icon>	
+		<actionScript name="switchStateScript" type="form">
+			<message><![CDATA[
+<div style='width:500px'>
+<table>
+<p>Current State of the ?stmg_th_name? is ?enabled?</p>
+</table>
+]]>
+	    	</message>
+    		<parameterList>
+				<parameter name="buttonOK" type="raw">
+					<value>Switch</value>
+				</parameter>
+				<parameter name="stmg_th_name" type="blockValue">
+					<value>stmg_th_name</value>
+				</parameter>
+				<parameter name="enabled" type="blockValue">
+					<value>enabled</value>
+				</parameter>
+			</parameterList>
+			<if condition="true">
+				<task>
+					<action name="switch" type="serverAction">
+						<parameterList>
+							<parameter name="action" type="fixed">
+								<value>executeSQL</value>
+							</parameter>
+							<parameter name="SQL" type="fixed">
+								<value>update SYSTOOLS.STMG_THRESHOLD_REGISTRY
+								         set ENABLED = (case ENABLED 
+								         				when 'Y' then 'N'
+								         				else 'Y' end) 
+										where stmg_th_type=?stmg_th_type?
+								</value>
+							</parameter>
+							<parameter name="parameter[stmg_th_type]" type="blockValue">
+								<value>stmg_th_type</value>
+							</parameter>
+						</parameterList>
+						<if condition="true" negCondition="true">
+							<task>
+								<assignSharedConstant name="ERROR_MESSAGE" type="returnObject">
+									<value>switch.returnValue.STMTMSG</value>
+								</assignSharedConstant>
+								<alert>Failed: ?ERROR_MESSAGE?</alert>
+							</task>
+						</if>
+						<if condition="true">
+							<task>
+								<panelReload/>
+							</task>
+						</if>
+					</action>
+				</task>
+			</if>
+		</actionScript>
+	</action>
+
+	<column name="stmg_th_type">
+		<c_sql_name>STMG_TH_TYPE</c_sql_name>
+		<c_title>Type</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+		<c_pkey>p</c_pkey>
+	</column>
+	<column name="enabled">
+		<c_sql_name>ENABLED</c_sql_name>
+		<c_title>Enabled</c_title>
+		<c_presentation>s</c_presentation>
+		<c_drill>y</c_drill>
+		<c_column_mask_file>masks/yesNo.xml</c_column_mask_file>
+	</column>
+	<column name="stmg_th_name">
+		<c_sql_name>STMG_TH_NAME</c_sql_name>
+		<c_title>Name</c_title>
+		<c_presentation>s</c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+</table>

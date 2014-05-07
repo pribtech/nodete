@@ -1,0 +1,82 @@
+<!--
+  Peter Prib, Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2012 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<table name="sessionStats">
+	<sqlName>sessionStats</sqlName>
+	<singularName>Session Statistic</singularName>
+	<pluralName>Session Statistics</pluralName>
+	<inlinequery>
+<![CDATA[
+select s.sid,s.STATISTIC#,s.value,n.NAME,n.CLASS,n.STAT_ID
+from v$sesstat s
+join v$statname n
+on n.STATISTIC#=s.STATISTIC#
+]]>
+	</inlinequery>
+	<description></description>
+	<output>
+		<type name="DDL" destination="" title="" generator=""/>
+	</output>
+	<disable_edit/>
+	<orderBy name="SID" direction="A"/>
+	<orderBy name="NAME" direction="A"/>
+	<displayColumns>
+		<col type="column" name="SID"/>
+		<col type="reference" name="session"/>
+		<col type="column" name="NAME"/>
+		<col type="column" name="VALUE"/>
+		<col type="column" name="CLASS"/>
+	</displayColumns>
+	<reference name="session">
+		<title>Session</title>
+		<reftype>displayRow</reftype>
+		<refvalue>Oracle/Monitor/session</refvalue>
+		<icon>images/icon-column.gif</icon>
+		<ref foreign_column_name="SID">
+			<local_column_name>SID</local_column_name>
+		</ref>
+	</reference>
+	<column name="SID">
+		<sqlName>SID</sqlName>
+		<title>SID</title>
+		<type>n</type>
+	</column>
+	<column name="STATISTIC#">
+		<sqlName>STATISTIC#</sqlName>
+		<title>Statistic No.</title>
+		<type>n</type>
+	</column>
+	<column name="VALUE">
+		<sqlName>VALUE</sqlName>
+		<title>Value</title>
+		<type>n</type>
+	</column>
+	<column name="NAME">
+		<sqlName>NAME</sqlName>
+		<title>Name</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="CLASS">
+		<sqlName>CLASS</sqlName>
+		<title>Class</title>
+		<type>n</type>
+	</column>
+	<column name="STAT_ID">
+		<sqlName>STAT_ID</sqlName>
+		<title>Stat. Id</title>
+		<type>n</type>
+	</column>
+</table>

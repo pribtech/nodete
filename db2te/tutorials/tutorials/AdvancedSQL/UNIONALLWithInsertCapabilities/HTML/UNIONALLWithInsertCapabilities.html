@@ -1,0 +1,13 @@
+You can now <a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v9r7/topic/com.ibm.db2.luw.sql.ref.doc/doc/r0000970.html');">INSERT</a> into <a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v9r7/topic/com.ibm.dwe.sqw.doc/designing/data_flow/copunion.html');">UNION ALL</a> views. This augments the <a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v9r7/topic/com.ibm.db2.luw.sql.ref.doc/doc/r0001022.html');">UPDATE</a> and <a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v9r7/topic/com.ibm.db2.luw.sql.ref.doc/doc/r0000939.html');">DELETE</a> capabilities provided in previous releases.
+<p>
+This can be very useful in HSM environments where the view ranges over a partitioned table hierarchy of which the parts are stored on tertiary storage. It also supports improved database scalability by providing SELECT, INSERT, UPDATE and DELETE support on a single view over multiple tables.
+</p>
+  <p>
+This is a form of RANGE partitioning. For example, you may have a number of tables (look at the example on the slide). Each one of these tables has a certain CHECK constraint. For example, Q1 table must have the month between 1 and 3.
+</p>
+  <p>
+Now you can join these tables together as a UNIONED VIEW. Now a user can query the table (in our example V) and DB2 will be smart enough to send the query to the right table (path elimination). However, it will also allow an application to do inserts, updates, and deletes through a view and DB2 will figure out what range to go to (update has a restriction that it cannot go outside the range, changing month March to May since they are in different quarters).
+</p>
+  <p>
+This gives DBAs the ability to separate tables in tablespaces for specific ranges of data -- quarters in this case. They simply roll in and roll off ranges of data - this is good from a management perspective. However, this approach can create hotspots on specific ranges for a date so you may want to look at this from a hashing perspective as well. 
+ </p>

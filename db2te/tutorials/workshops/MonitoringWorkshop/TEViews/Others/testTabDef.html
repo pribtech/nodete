@@ -1,0 +1,96 @@
+<i><font color="#9a1900">&lt;!--</font></i><br>
+<i><font color="#9a1900">  Copyright IBM Corp. 2009 All rights reserved.</font></i><br>
+<br>
+<i><font color="#9a1900">  Licensed under the Apache License, Version 2.0 (the "License");</font></i><br>
+<i><font color="#9a1900">  you may not use this file except in compliance with the License.</font></i><br>
+<i><font color="#9a1900">  You may obtain a copy of the License at</font></i><br>
+
+<br>
+<i><font color="#9a1900">      http://www.apache.org/licenses/LICENSE-2.0</font></i><br>
+<br>
+<i><font color="#9a1900">  Unless required by applicable law or agreed to in writing, software</font></i><br>
+<i><font color="#9a1900">  distributed under the License is distributed on an "AS IS" BASIS,</font></i><br>
+<i><font color="#9a1900">  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</font></i><br>
+<i><font color="#9a1900">  See the License for the specific language governing permissions and</font></i><br>
+
+<i><font color="#9a1900">  limitations under the License.</font></i><br>
+<i><font color="#9a1900">--&gt;</font></i><br>
+
+<PRE>
+<a class="sourceAdd">Indicated text has been added</a>
+<a class="sourceChange">Indicated text has been removed</a>
+<table><tr><td class="sourceCopiedFrom">
+&lt;table name="<a class="sourceChange"><s>Unknown</s></a><a class="sourceAdd">testTabDef</a>"&gt;
+   &lt;sql_name&gt;<a class="sourceChange"><s>Unknown</s></a><a class="sourceAdd">testTabDef</a>&lt;/sql_name&gt;
+   &lt;singular_name&gt;<a class="sourceChange"><s>Unknown</s></a><a class="sourceAdd">testTabDef</a>&lt;/singular_name&gt;
+   &lt;plural_name&gt;<a class="sourceChange"><s>Unknown</s></a><a class="sourceAdd">testTabDef</a>&lt;/plural_name&gt;
+   &lt;inlinequery&gt;
+&lt;![CDATA[
+SELECT APPLICATION_HANDLE, 
+       APPLICATION_NAME,
+      TOTAL_CPU_TIME, 
+      TOTAL_ACT_TIME, 
+      ACT_COMPLETED_TOTAL, 
+      TOTAL_WAIT_TIME, 
+      CLIENT_IDLE_WAIT_TIME
+   FROM TABLE(MON_GET_CONNECTION(NULL, -1)) as t
+]]&gt;
+   &lt;/inlinequery&gt;
+   &lt;description&gt;Query from ad hoc&lt;/description&gt;
+   &lt;rows_per_page&gt;50&lt;/rows_per_page&gt;
+   &lt;order_by_index&gt;&lt;/order_by_index&gt;
+   &lt;display_columns&gt;
+      &lt;col type="column" name="APPLICATION_HANDLE"/&gt;
+      &lt;col type="column" name="APPLICATION_NAME"/&gt;
+      &lt;col type="column" name="TOTAL_CPU_TIME"/&gt;
+      &lt;col type="column" name="TOTAL_ACT_TIME"/&gt;
+      &lt;col type="column" name="ACT_COMPLETED_TOTAL"/&gt;
+      &lt;col type="column" name="TOTAL_WAIT_TIME"/&gt;
+      &lt;col type="column" name="CLIENT_IDLE_WAIT_TIME"/&gt;
+   &lt;/display_columns&gt;
+   &lt;column name="APPLICATION_HANDLE"&gt;
+      &lt;c_sql_name&gt;APPLICATION_HANDLE&lt;/c_sql_name&gt;
+      &lt;c_title&gt;APPLICATION_HANDLE&lt;/c_title&gt;
+      &lt;c_presentation&gt;&lt;/c_presentation&gt;
+      &lt;c_drill&gt;n&lt;/c_drill&gt;
+	  <a class="sourceChange">&lt;c_pkey&gt;y&lt;/c_pkey&gt;</a>
+   &lt;/column&gt;
+   &lt;column name="APPLICATION_NAME"&gt;
+      &lt;c_sql_name&gt;APPLICATION_NAME&lt;/c_sql_name&gt;
+      &lt;c_title&gt;APPLICATION_NAME&lt;/c_title&gt;
+      &lt;c_presentation&gt;&lt;/c_presentation&gt;
+      &lt;c_drill&gt;y&lt;/c_drill&gt;
+   &lt;/column&gt;
+   &lt;column name="TOTAL_CPU_TIME"&gt;
+      &lt;c_sql_name&gt;TOTAL_CPU_TIME&lt;/c_sql_name&gt;
+      &lt;c_title&gt;TOTAL_CPU_TIME&lt;/c_title&gt;
+      &lt;c_presentation&gt;&lt;/c_presentation&gt;
+      &lt;c_drill&gt;n&lt;/c_drill&gt;
+   &lt;/column&gt;
+   &lt;column name="TOTAL_ACT_TIME"&gt;
+      &lt;c_sql_name&gt;TOTAL_ACT_TIME&lt;/c_sql_name&gt;
+      &lt;c_title&gt;TOTAL_ACT_TIME&lt;/c_title&gt;
+      &lt;c_presentation&gt;&lt;/c_presentation&gt;
+      &lt;c_drill&gt;n&lt;/c_drill&gt;
+   &lt;/column&gt;
+   &lt;column name="ACT_COMPLETED_TOTAL"&gt;
+      &lt;c_sql_name&gt;ACT_COMPLETED_TOTAL&lt;/c_sql_name&gt;
+      &lt;c_title&gt;ACT_COMPLETED_TOTAL&lt;/c_title&gt;
+      &lt;c_presentation&gt;&lt;/c_presentation&gt;
+      &lt;c_drill&gt;n&lt;/c_drill&gt;
+   &lt;/column&gt;
+   &lt;column name="TOTAL_WAIT_TIME"&gt;
+      &lt;c_sql_name&gt;TOTAL_WAIT_TIME&lt;/c_sql_name&gt;
+      &lt;c_title&gt;TOTAL_WAIT_TIME&lt;/c_title&gt;
+      &lt;c_presentation&gt;&lt;/c_presentation&gt;
+      &lt;c_drill&gt;n&lt;/c_drill&gt;
+   &lt;/column&gt;
+   &lt;column name="CLIENT_IDLE_WAIT_TIME"&gt;
+      &lt;c_sql_name&gt;CLIENT_IDLE_WAIT_TIME&lt;/c_sql_name&gt;
+      &lt;c_title&gt;CLIENT_IDLE_WAIT_TIME&lt;/c_title&gt;
+      &lt;c_presentation&gt;&lt;/c_presentation&gt;
+      &lt;c_drill&gt;n&lt;/c_drill&gt;
+   &lt;/column&gt;
+&lt;/table&gt;
+</td></tr></table>
+</PRE>

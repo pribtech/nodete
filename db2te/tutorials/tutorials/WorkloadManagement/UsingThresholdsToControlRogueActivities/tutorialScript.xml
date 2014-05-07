@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tutorial name="Using Thresholds to Control Rogue Activities">
+    <FlowRestriction>forwardExploration</FlowRestriction>
+    <closeAction />
+    <openAction />
+    <globalCodeHighlightOptions highlightCode = "true" />
+    <pageList>
+    	<page name="Using Thresholds to Control Rogue Activities" type="intro">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>UsingThresholdsToControlRogueActivities.html</contentFile>
+            <autoLoadLink>
+                <pageWindow target="informationWindow">
+                    <panel name="main"  PrimaryContainer="true" panelTitle="Workload Driver">
+                        <URL>http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.admin.wlm.doc/doc/t0051926.html?noframes=true</URL>
+                    </panel>
+                </pageWindow>
+            </autoLoadLink>
+        </page>
+        
+        <page name="Drop and re-create event monitor (optional)" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>CreateEventMonitor.html</contentFile>
+            <SQLFile>CreateEventMonitor.sql</SQLFile>
+            <SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar="#"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+        </page>
+    <page name="Create threshold violation event monitor" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>CreateThresholdViolationEventMonitor.html</contentFile>
+            <SQLFile>CreateThresholdViolationEventMonitor.sql</SQLFile>
+            <SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar=";"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+        </page>
+        <page name="Create workload" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>CreateWorkload.html</contentFile>
+            <SQLFile>CreateWorkload.sql</SQLFile>
+            <SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar=";"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+        </page><page name="Create thresholds" type="general">
+            <entryAction/>
+            <exitAction name="createDepartmentTable" type="serverAction">
+				<parameterList>
+					<parameter name="action" type="fixed">
+						<value>createTablesFromSampleDatabase</value>
+					</parameter>
+					<parameter name="schema" type="constant">
+						<value>SCHEMA</value>
+					</parameter>
+					<parameter name="table" type="fixed">
+						<value>DEPARTMENT</value>
+					</parameter>
+				</parameterList>
+				<followOnAction condition="false">
+					<task>
+						<action name="" type="alert">
+							<message>Failed to create base tables for initial setup of tutorial. Cannot proceed further with tutorial.</message>
+						</action>
+					</task>
+					<task>
+						<setActionReturn>false</setActionReturn>
+					</task>
+				</followOnAction>
+				<followOnAction condition="[0-9][0-9]*">
+					<task>
+						<assignLocalParameter name="ERROR_MESSAGE" type="returnObject">
+							<value>createDepartmentTable.returnValue</value>
+						</assignLocalParameter>
+						<alert>Failed to create base tables for initial setup of tutorial. Cannot proceed further with tutorial. SQLMSG: ?ERROR_MESSAGE?</alert>
+					</task>
+					<task>
+						<setActionReturn>false</setActionReturn>
+					</task>
+				</followOnAction>
+				<followOnAction condition="true">
+                    <task>
+                        <action name="createSalesTable" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="fixed">
+									<value>createTablesFromSampleDatabase</value>
+								</parameter>
+								<parameter name="schema" type="constant">
+									<value>SCHEMA</value>
+								</parameter>
+								<parameter name="table" type="fixed">
+									<value>SALES</value>
+								</parameter>
+							</parameterList>
+							<followOnAction condition="false">
+								<task>
+									<action name="" type="alert">
+										<message>Failed to create base tables for initial setup of tutorial. Cannot proceed further with tutorial.</message>
+									</action>
+								</task>
+								<task>
+									<setActionReturn>false</setActionReturn>
+								</task>
+							</followOnAction>
+							<followOnAction condition="[0-9][0-9]*">
+								<task>
+									<assignLocalParameter name="ERROR_MESSAGE" type="returnObject">
+										<value>createSalesTable.returnValue</value>
+									</assignLocalParameter>
+									<alert>Failed to create base tables for initial setup of tutorial. Cannot proceed further with tutorial. SQLMSG: ?ERROR_MESSAGE?</alert>
+								</task>
+								<task>
+									<setActionReturn>false</setActionReturn>
+								</task>
+							</followOnAction>
+						</action>
+					</task>
+				</followOnAction>
+			</exitAction>
+            <contentFile>CreateThresholds.html</contentFile>
+            <SQLFile>CreateThresholds.sql</SQLFile>
+            <SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar=";"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+        </page><page name="Run some activities" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>RunSomeActivities.html</contentFile>
+            <SQLFile>RunSomeActivities.sql</SQLFile>
+        </page><page name="View the threshold violation event monitor" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>ViewTheThresholdViolationEventMonitor.html</contentFile>
+            <SQLFile>ViewTheThresholdViolationEventMonitor.sql</SQLFile>
+        </page><page name="View information of the activity that violated the threshold" type="general">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>ViewInformationOfTheActivityThatViolatedTheThreshold.html</contentFile>
+            <SQLFile>ViewInformationOfTheActivityThatViolatedTheThreshold.sql</SQLFile>
+        </page><page name="Reset for next task" type="last">
+            <entryAction/>
+            <exitAction/>
+            <contentFile>ResetForNextTask.html</contentFile>
+            <SQLFile>ResetForNextTask.sql</SQLFile>
+            <SQLExecutionOptions xml="false" clob="false" blob="false" dbclob="false" termChar=";"
+				cursor="forward" commitPerStmt="true" numRowReturned="100"/>
+        </page></pageList>
+</tutorial>

@@ -1,0 +1,184 @@
+<!--
+  Author: Jean Lalande & Sylvain Petitclerc
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+<table name="monIO">
+	<sqlName>monIO</sqlName>
+	<singular_name>Monitored Input/Output</singular_name>
+	<plural_name>Monitored Inputs/Outputs</plural_name>
+	<inlinequery>
+<![CDATA[
+select 
+   BP_NAME as BP_NAME,
+   DIRECT_READS,
+   DIRECT_READ_TIME,
+   DIRECT_READ_REQS,
+   DIRECT_WRITES,
+   DIRECT_WRITE_TIME,
+   DIRECT_WRITE_REQS,
+   POOL_ASYNC_DATA_READS,
+   POOL_ASYNC_INDEX_READS,
+   POOL_ASYNC_DATA_WRITES,
+   POOL_ASYNC_INDEX_WRITES,
+   (CASE WHEN DIRECT_READ_REQS=0 THEN 0 ELSE ((CAST(DIRECT_READ_TIME as FLOAT) / CAST(DIRECT_READ_REQS as FLOAT)) * 1000) END) as IO_INTENSITY,
+   (CASE WHEN DIRECT_READ_REQS=0 THEN 0 ELSE (CAST(DIRECT_READS as FLOAT) / CAST(DIRECT_READ_REQS as FLOAT))  END) as DIRECT_READ_AVG,
+   (CASE WHEN DIRECT_READS=0 THEN 0 ELSE (CAST(DIRECT_READ_TIME as FLOAT) / CAST(DIRECT_READS as FLOAT))  END) as DIRECT_READ_TIME_AVG,
+   (CASE WHEN DIRECT_WRITE_REQS=0 THEN 0 ELSE (CAST(DIRECT_WRITES as FLOAT) / CAST(DIRECT_WRITE_REQS as FLOAT))  END) as DIRECT_WRITE_AVG,
+   (CASE WHEN DIRECT_WRITES=0 THEN 0 ELSE (CAST(DIRECT_WRITE_TIME as FLOAT) / CAST(DIRECT_WRITES as FLOAT))  END) as DIRECT_WRITE_TIME_AVG,
+   (CASE WHEN POOL_INDEX_L_READS=0 THEN 0 ELSE (CAST(POOL_INDEX_P_READS as FLOAT) / CAST(POOL_INDEX_L_READS as FLOAT)) END) as INDEX_PHY_LOG,
+   (CASE WHEN POOL_DATA_L_READS=0 THEN 0 ELSE (CAST(POOL_DATA_P_READS as FLOAT) / CAST(POOL_DATA_L_READS as FLOAT)) END) as DATA_PHY_LOG,
+   (CASE WHEN (POOL_DATA_L_READS + POOL_INDEX_L_READS)=0 THEN 0 ELSE (1-(CAST(((POOL_DATA_P_READS + POOL_INDEX_P_READS)-(POOL_ASYNC_DATA_READS+POOL_ASYNC_INDEX_READS)) as FLOAT) / CAST((POOL_DATA_L_READS + POOL_INDEX_L_READS) as FLOAT))) END) as SYNC_P_READS,
+   (POOL_DATA_WRITES - POOL_ASYNC_DATA_WRITES) as SYNC_DATA_P_WRITES,
+   (POOL_INDEX_WRITES - POOL_ASYNC_INDEX_WRITES) as SYNC_INDEX_P_WRITES
+FROM table(SELECT * FROM TABLE(MON_GET_BUFFERPOOL(null,-2)) AS t) as monBufferpool
+]]>
+	</inlinequery>
+	<messages><SQL0551N>Security issue. Please install "Monitoring Switches/Security" in Tools -> Installed Components</SQL0551N></messages>
+	<description>View Input/Output...</description>
+	<disableEdit/>
+	<output>
+		<type name="DDL" destination="" title="" generator=""/>
+	</output>
+	<order_by_index name="DIRECT_READS" direction="D"/>
+	<display_columns>
+		<col type="column" name="BP_NAME" />
+		<col type="column" name="IO_INTENSITY" />
+		<col type="dynamiccolumn" name="INTENSITY" />
+		<col type="dynamiccolumn" name="DELTA_READS" />
+		<col type="column" name="SYNC_P_READS" />
+	</display_columns>
+	<column name="BP_NAME">
+		<sqlName>BP_NAME</sqlName>
+		<title>BufferPool Name</title>
+		<type>s</type>
+		<primaryKey/>
+	</column>
+	<dynamicColumn name="INTENSITY" type="DELTA_NORMALIZED" column="IO_INTENSITY">
+  		<title>I/O Intensity</title>
+		<type>n</type>
+		<formatNumber round="true" toFixedVal="1" />
+	</dynamicColumn>
+	<column name="DIRECT_READS">
+		<sqlName>DIRECT_READS</sqlName>
+		<title>DIRECT_READS</title>
+		<type>n</type>
+	</column>
+	<column name="DIRECT_READ_TIME">
+		<sqlName>DIRECT_READ_TIME</sqlName>
+		<title>DIRECT_READ_TIME</title>
+		<type>n</type>
+	</column>
+	<column name="DIRECT_READ_REQS">
+		<sqlName>DIRECT_READ_REQS</sqlName>
+		<title>DIRECT_READ_REQS</title>
+		<type>n</type>
+	</column>
+	<column name="DIRECT_WRITES">
+		<sqlName>DIRECT_WRITES</sqlName>
+		<title>DIRECT_WRITES</title>
+		<type>n</type>
+	</column>
+	<column name="DIRECT_WRITE_TIME">
+		<sqlName>DIRECT_WRITE_TIME</sqlName>
+		<title>DIRECT_WRITE_TIME</title>
+		<type>n</type>
+	</column>
+	<column name="DIRECT_WRITE_REQS">
+		<sqlName>DIRECT_WRITE_REQS</sqlName>
+		<title>DIRECT_WRITE_REQS</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_ASYNC_DATA_READS">
+		<sqlName>POOL_ASYNC_DATA_READS</sqlName>
+		<title>POOL_ASYNC_DATA_READS</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_ASYNC_INDEX_READS">
+		<sqlName>POOL_ASYNC_INDEX_READS</sqlName>
+		<title>POOL_ASYNC_INDEX_READS</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_ASYNC_DATA_WRITES">
+		<sqlName>POOL_ASYNC_DATA_WRITES</sqlName>
+		<title>POOL_ASYNC_DATA_WRITES</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_ASYNC_INDEX_WRITES">
+		<sqlName>POOL_ASYNC_INDEX_WRITES</sqlName>
+		<title>POOL_ASYNC_INDEX_WRITES</title>
+		<type>n</type>
+	</column>
+	<column name="DIRECT_READ_AVG">
+		<sqlName>DIRECT_READ_AVG</sqlName>
+		<title>DIRECT_READ_AVG</title>
+		<type>n</type>
+	</column>
+	<column name="DIRECT_READ_TIME_AVG">
+		<sqlName>DIRECT_READ_TIME_AVG</sqlName>
+		<title>DIRECT_READ_TIME_AVG</title>
+		<type>n</type>
+	</column>
+	<column name="DIRECT_WRITE_AVG">
+		<sqlName>DIRECT_WRITE_AVG</sqlName>
+		<title>DIRECT_WRITE_AVG</title>
+		<type>n</type>
+	</column>
+	<column name="DIRECT_WRITE_TIME_AVG">
+		<sqlName>DIRECT_WRITE_TIME_AVG</sqlName>
+		<title>DIRECT_WRITE_TIME_AVG</title>
+		<type>n</type>
+	</column>
+	<column name="IO_INTENSITY">
+		<sqlName>IO_INTENSITY</sqlName>
+		<title>IO_INTENSITY</title>
+		<type>n</type>
+	</column>
+	<column name="INDEX_PHY_LOG">
+		<sqlName>INDEX_PHY_LOG</sqlName>
+		<title>Index Phy/Log</title>
+		<type>n</type>
+	</column>
+	<column name="DATA_PHY_LOG">
+		<sqlName>DATA_PHY_LOG</sqlName>
+		<title>Data Phy/Log</title>
+		<type>n</type>
+	</column>
+	<column name="SYNC_P_READS">
+		<sqlName>SYNC_P_READS</sqlName>
+		<title>SYNC_P_READS</title>
+		<type>n</type>
+	</column>
+	<column name="SYNC_DATA_P_WRITES">
+		<sqlName>SYNC_DATA_P_WRITES</sqlName>
+		<title>SYNC_DATA_P_WRITES</title>
+		<type>n</type>
+	</column>
+	<column name="SYNC_INDEX_P_WRITES">
+		<sqlName>SYNC_INDEX_P_WRITES</sqlName>
+		<title>SYNC_INDEX_P_WRITES</title>
+		<type>n</type>
+	</column>
+	<dynamicColumn name="DELTA_READS" type="DELTA_NORMALIZED" column="DIRECT_READS" title="Delta Reads">
+  		<formatNumber round="true" toFixedVal="1" />
+ 	</dynamicColumn>
+	<dynamicColumn name="DELTA_INDEX"     type="DELTA"					column="INDEX_PHY_LOG"		title="DELTA_INDEX"/>
+	<dynamicColumn name="DELTA_DATA"      type="DELTA"					column="DATA_PHY_LOG"		title="DELTA_DATA"/>
+	<dynamicColumn name="DELTA_NRM_READ"  type="DELTA_NORMALIZED"		column="DIRECT_READ_AVG"	title="DELTA_NRM_READ"/>
+	<dynamicColumn name="DELTA_NRM_WRITE" type="DELTA_NORMALIZED"		column="DIRECT_WRITE_AVG"	title="DELTA_NRM_WRITE"/>
+	<dynamicColumn name="DELTA_NRM_INDEX" type="DELTA_NORMALIZED" 		column="INDEX_PHY_LOG"		title="DELTA_NRM_INDEX"/>
+	<dynamicColumn name="DELTA_NRM_DATA"  type="DELTA_NORMALIZED"		column="DATA_PHY_LOG"		title="DELTA_NRM_DATA"/>
+	<dynamicColumn name="DELTA_AVG_INDEX" type="AVR_DELTA_NORMALIZED"	column="INDEX_PHY_LOG"		title="DELTA_AVG_INDEX"/>
+	<dynamicColumn name="DELTA_AVG_DATA"  type="AVR_DELTA_NORMALIZED"	column="DATA_PHY_LOG"		title="DELTA_AVG_DATA"/>
+</table>

@@ -1,0 +1,1 @@
+select * from table(admin_list_hist()) as history;

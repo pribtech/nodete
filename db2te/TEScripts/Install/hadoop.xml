@@ -1,0 +1,1424 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2013 All rights reserved.
+  
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<tutorial name="Install HADOOP" disableSetSchema="true">
+ 	<flowRestriction>freeWithChecks</flowRestriction>
+    <closeAction />
+    <openAction />
+    <globalCodeHighlightOptions highlightCode = "true" />
+    <WMDConfig/>
+  
+    <pageList>
+		<page name="Overview" type="intro" focusOnWindow="informationWindow">
+    	 	<entryAction/>
+    	 	<exitAction/>
+            <contentText>
+<![CDATA[
+<h1>HADOOP Installation and Examples</h1>
+<p/>
+This tutorial goes through the process of installing HADOOP on a Linux/UNIX/AIX based system.
+<p/>
+The broad steps are:
+<ul>
+<li>Setting up ssh connection in Technlogogy Explorer</li>
+<li>Down loading code</li>
+<li>Installation</li>
+<li>Examples</li>
+</ul>
+<p/>
+Full details on HADOOP are available on http://hadoop.apache.org,  See tab "apache HADOOP".
+<p/>
+To process this tutorial, sudo has to be set up so it doesn't prompt for a password.
+Tab "sudo" details how this is done.
+<p/>
+For this tuturial to work, both wget and java need to be installed.  They can be install via root or sudo using
+<cite>
+yum install java
+yum install wget
+</cite>
+if yum is installed.
+]]>
+			</contentText>
+			<autoLoadLink> 
+				<pageWindow target="informationWindow"> 
+					<title>Apache HADOOP</title>
+					<panel name="main"> 
+						<URL>http://hadoop.apache.org</URL> 
+					</panel> 
+				</pageWindow> 
+			</autoLoadLink> 
+			<autoLoadLink>
+				<pageWindow target="informationWindow1"> 
+					<title>sudo</title>
+	            	<panel name="TutorialSudo" PrimaryContainer="true">
+						<link connectionRequired="y" target="_self" type="action" window="_self">
+							<parameterList>
+								<parameter name="action">tutorial</parameter>
+								<parameter name="tutorialName">TEScripts/Install/sudo.xml</parameter>
+							</parameterList>
+						</link>
+					</panel>
+					</pageWindow>
+            </autoLoadLink>
+        </page>
+
+		<page name="Download HADOOP Code" type="general" focusOnWindow="TutorialSQL">
+    	 	<entryAction name="checkForSshConnection" type="blank">
+    	 		<task>
+    	 			<setActionReturn value="true"/> 
+ 					<ifNot compareOn="ssh" compareOnType="raw" conditionCompairType="DBMS">
+						<task> 
+							<alert>Must be connected to ssh connection before you can proceed.</alert> 
+							<setActionReturn value="false"/> 
+						</task> 
+					</ifNot>
+    	 		</task>
+    	 	</entryAction>
+    	 	<exitAction/>
+            <contentText>
+<![CDATA[
+<h1>Download HADOOP</h1>
+<p/>
+The first thing to do is down load the code base for HADOOP from Apache.
+The various releases can be found at http://hadoop.apache.org/releases.html, see panel opposite.
+<p/>
+In the Ad Hoc window is the method for download if wget is available and your server has
+internet access.
+<note>The examples in this tutorial where based on HADOOP version 1.0.4.
+This can be changed to another version.  See tab "Apache HADOOP" for list of releases.
+<note/>
+<p/>
+If wget fails because it is not found you may need to install, e.g. <cite>yum install wget</cite>
+]]>
+			</contentText>
+			<autoLoadLink> 
+				<pageWindow target="informationWindow"> 
+					<title>Apache HADOOP</title>
+					<panel name="main"> 
+						<URL>http://hadoop.apache.org/releases.html</URL> 
+					</panel> 
+				</pageWindow> 
+			</autoLoadLink> 
+			<SQLText>
+<![CDATA[
+-- Set the directory 
+--
+mkdir /tmp/hadoop
+cd /tmp/hadoop
+--
+-- Download using to the target directory
+--
+wget -b -nd -l 1 -np -r -A "*.x86_64.rpm" http://mirror.overthewire.com.au/pub/apache/hadoop/common/stable/
+-- 
+echo
+echo  next tutorial step lists download status
+
+]]>
+            </SQLText>
+            <SQLExecutionOptions commentOnDoubleSlash="false"/>
+        </page>
+
+		<page name="Download Status" type="general" focusOnWindow="TutorialSQL">
+            <contentText>
+<![CDATA[
+<h1>Download HADOOP</h1>
+<p/>
+The download can take time.  Rerun until it confirms download complete.
+]]>
+			</contentText>
+			<SQLText>
+<![CDATA[
+cd /tmp/hadoop
+ls -l
+cat wget-log*
+]]>
+            </SQLText>
+            <SQLExecutionOptions commentOnDoubleSlash="false" numRowReturned="2000"/>
+        </page>
+
+
+		<page name="Install HADOOP Code" type="general">
+    	 	<entryAction/>
+    	 	<exitAction>
+    	 		<task>
+    	 			<setActionReturn value="true"/> 
+ 					<ifNot compareOn="hadoop" compareOnType="raw" conditionCompairType="features">
+						<task> 
+							<alert>Have you reset the features for the connection or HADOOP hasn't been installed as expected for a normal installation.</alert> 
+							<setActionReturn value="false"/> 
+						</task> 
+					</ifNot>
+    	 		</task>
+    	 	</exitAction>
+            <contentText>
+<![CDATA[
+<h1>Install HADOOP Code</h1>
+<p/>
+If rpm avail use rpm command as in ad hoc window.
+<note>You will need to be able to run the command with root permissions that is why sudo is used.</note>
+<p/>
+If rpm not available then unzip and untar then place "/usr/share/hadoop". 
+Is is more tricky to install not using tar and this tutorial only covers the rpm version.
+The rpm install sets up objects in specific directories e.g configuation file are in "/etc/hadoop".
+<p/>
+Once in place do a "reset features" for connection". 
+If installed as expected then a new menu item "HADOOP Management" should appear under "tools" menu.
+]]>
+			</contentText>
+			<SQLText>
+<![CDATA[
+-- commands needs to run with root authority.
+sudo rpm -i /tmp/hadoop/hadoop*.x86_64.rpm
+--
+-- Comment above out and remove comments below
+--
+-- gkunzip /tmp/hadoop-1.0.4-1-bin.tar.gz | tar -vxf -
+-- mv /tmp/hadoop-1.0.4-1-bin /usr/share/hadoop
+]]>
+            </SQLText>
+            <SQLExecutionOptions/>
+        </page>
+
+		<page name="Java Setup" type="general" focusOnWindow="TutorialSQL">
+	    	<entryAction name="checkJavaHome" type="serverAction" >
+				<parameterList>
+					<parameter name="action" type="fixed">
+						<value>checkForObjectWithCase</value>
+					</parameter>
+					<parameter name="objectType" type="raw">
+						<value>directory</value>
+					</parameter>
+					<parameter name="object[directory]" type="raw">
+						<value>/usr/java/default</value>
+					</parameter>
+				</parameterList>
+				<ifNot condition="true">
+					<task>
+						<assignSharedConstant name="javaHome" type="raw">
+									<value>/usr/java/default</value> 	 
+						</assignSharedConstant>
+						<action name="getJavaHome" type="form">
+							<message><![CDATA[
+								<h3>Set Java Home</h3>
+									The installation requires the java home to be correctly for HADOOP, either the java is not installed
+									or the default with HADOOP is incorrect.  Please specify the correct home (or install java).
+									<table>
+										<tr><td nowrap="nowrap">Java Home:</td>
+											<td><input id="javaHome" type="text" size="64" maxlength="64"  name="javaHome"  value="?javaHome?"/></td>
+										</tr>
+									</table>
+							]]></message>
+							<parameterList>
+								<parameter name="parameter[javaHome]" type="blockValue">
+									<value>javaHome</value>
+								</parameter>
+							</parameterList>
+							<ifNot condition="true">
+								<task>
+									<setActionReturn value="false"/>
+								</task>
+							</ifNot>     
+							<if condition="true">
+								<task>
+									<setActionReturn value="false"/>
+							    	<action name="checkJavaHome" type="serverAction" >
+										<parameterList>
+											<parameter name="action" type="fixed">
+												<value>checkForObjectWithCase</value>
+											</parameter>
+											<parameter name="objectType" type="raw">
+												<value>directory</value>
+											</parameter>
+											<parameter name="object[directory]" type="returnObject">
+												<value>getJavaHome.returnValue.javaHome</value>
+											</parameter>
+										</parameterList>
+										<if condition="true">
+											<task>
+												<assignSharedConstant name="javaHome" type="returnObject">
+													<value>getJavaHome.returnValue.javaHome</value> 	 
+												</assignSharedConstant>
+												<setActionReturn value="true"/>
+											</task>
+										</if>
+										<ifNot condition="true">
+											<task>
+												<alert>Java directory not found</alert>
+											</task>
+										</ifNot>
+									</action>
+								</task>
+							</if>     
+						</action>
+					</task>
+				</ifNot>
+				<if condition="true">
+					<task>
+						<setActionReturn value="true"/>
+						<alert>Java home set correctly so this step can be bypassed.</alert>
+					</task>
+				</if>     
+	    	</entryAction>
+    	 	<exitAction/>
+            <contentText>
+<![CDATA[
+<h1>Java setup</h1>
+<p/>
+The hadoop needs to set the correct java environment.
+]]>
+			</contentText>
+            <SQLText>
+<![CDATA[
+sudo cp ${HADOOP_CONF_DIR}/hadoop-env.sh ${HADOOP_CONF_DIR}/hadoop-env.sh.orginal
+sudo sed -i 's@/usr/java/default@?javaHome?@g' ${HADOOP_CONF_DIR}/hadoop-env.sh
+]]>
+            </SQLText>
+            <SQLExecutionOptions termChar="@"/>
+			<autoLoadLink>
+				<pageWindow target="hadoop-env.sh"> 
+					<title>hadoop-env.sh</title>
+	            	<panel name="core-site" PrimaryContainer="true">
+						<link connectionRequired="y" target="_self" type="action" window="_self">
+							<parameterList>
+								<parameter name="action">list_table</parameter>
+								<parameter name="table">ssh/cat</parameter>
+								<parameter name="file">${HADOOP_CONF_DIR}/hadoop-env.sh</parameter>
+								<parameter name="extendedTitle">hadoop-env.sh</parameter>
+							</parameterList>
+						</link>
+					</panel>
+				</pageWindow>
+            </autoLoadLink>
+        </page>
+        
+
+		<page name="Single Node Direct Run" type="general" focusOnWindow="TutorialSQL">
+    	 	<entryAction/>
+    	 	<exitAction/>
+            <contentText>
+<![CDATA[
+<h1>HADOOP Single Node Setup</h1>
+<p/>
+HADOOP can be setup for Single node or Multi node.
+Single node setup is good for trying out the architecture
+<p/>
+The steps to run the example have already been set up for you to run in the ad hoc window.
+<p/>
+If the following message appears <cite>java.lang.OutOfMemoryError: Java heap space</cite>
+the java heap size may be too small.  By commiting out the export command you can test
+a larger size to over come the issue.
+<p/>
+To permanently overcome the issue the following lines must appear in /etc/hadoop/mapred-site.xml
+<p/>
+<textarea rows="4" cols="40">
+<property>
+  <name>mapred.child.java.opts</name>
+  <value>-Xmx512m</value>
+</property>
+</textarea>
+]]>
+			</contentText>
+			<autoLoadLink> 
+				<pageWindow target="informationWindow"> 
+					<title>Apache HADOOP</title>
+					<panel name="main"> 
+						<URL>http://hadoop.apache.org/docs/stable/single_node_setup.html</URL> 
+					</panel> 
+				</pageWindow> 
+			</autoLoadLink> 
+			<autoLoadLink>
+				<pageWindow target="informationWindow1"> 
+					<title>mapred-site.xml</title>
+	            	<panel name="TutorialSudo" PrimaryContainer="true">
+						<link connectionRequired="y" target="_self" type="action" window="_self">
+							<parameterList>
+								<parameter name="action">chartNodal</parameter>
+								<parameter name="$chartTitle">mapred-site.xml</parameter>
+								<parameter name="$show">Report</parameter>
+								<parameter name="$sourceType">SQL</parameter>
+								<parameter name="$source">cat /etc/hadoop/mapred-site.xml</parameter>
+								<parameter name="$transform">XSL/removerEmptyOrNewLineTextNodes.xsl</parameter>
+							</parameterList>
+						</link>
+					</panel>
+					</pageWindow>
+            </autoLoadLink>
+			<SQLText>
+<![CDATA[
+mkdir hadoopInput;
+cp /etc/hadoop/hadoop-env.sh hadoopInput;
+echo $HADOOP_CLIENT_OPTS
+export HADOOP_CLIENT_OPTS=-Xmx256m
+
+hadoop jar /usr/share/hadoop/hadoop-examples-*.jar grep hadoopInput hadoopOutput 'dfs[a-z.]+';
+-- creates directory hadoopOutput
+ls -l hadoopOutput
+echo "#########################start output#############";
+cat hadoopOutput/part-00000
+echo "#########################end output#############";
+rm -r hadoopOutput
+]]>
+            </SQLText>
+            <SQLExecutionOptions termChar="@" numRowReturned="2000"/>
+        </page>
+
+		<page name="Scan db2diag.log" type="general">
+    	 	<entryAction>
+    	 		<task>
+					<assignSharedConstant name="message" type="raw">
+						<value></value>
+					</assignSharedConstant>
+    	 		</task>
+    	 		<task nofeature="db2">
+					<alert>This step only works with db2 instance user or if db2diag is in expected location</alert> 
+					<assignSharedConstant name="message" type="raw">
+						<value>This only works with db2instance user</value>
+					</assignSharedConstant>
+    	 		</task>
+    	 	</entryAction>
+    	 	<exitAction/>
+            <contentText>
+<![CDATA[
+<h1>Scan db2diag.log</h1>
+<p/>
+This example uses the provided example mapper reduce and extracts from the db2diag.log the error 
+messages and a count.
+<note>
+This only works where the user has a db2instance environment and access to the file.
+</note>
+]]>
+			</contentText>
+			<SQLText>
+-- ?message?
+<![CDATA[
+export HADOOP_CLIENT_OPTS=-Xmx256m
+diagpath=`db2 get dbm cfg | grep \\\\(DIAGPATH\\\\) |  sed -n 's/.*= \\\\(.*\\\\)$/\\\\1/p'`
+if [ "$diagpath" == "" ] ; then diagpath="/home/db2inst1/sqllib/db2dump"; fi 
+echo path = $diagpath
+hadoop jar /usr/share/hadoop/hadoop-examples-*.jar grep $diagpath/db2diag.log hadoopOutput 'ADM[a-zA-Z0-9.]+|SQL[a-zA-Z0-9.]+'
+-- creates directory hadoopOutput
+echo "#########################start output#############"
+cat hadoopOutput/part-00000
+echo "#########################end output#############"
+rm -r hadoopOutput
+]]>
+            </SQLText>
+            <SQLExecutionOptions termChar="@" numRowReturned="2000"/>
+        </page>
+
+		<page name="Pseudo Distributed ssh" type="general" focusOnWindow="TutorialSQL">
+   	 	 	<entryAction name="checkSshPassPhraseLess" type="serverAction">
+				<parameterList>
+					<parameter name="action" type="fixed">
+						<value>checkForObjectWithCase</value>
+					</parameter>
+					<parameter name="objectType" type="raw">
+						<value>sshPassPhraseless</value>
+					</parameter>
+					<parameter name="object[host]" type="raw">
+						<value>localhost</value>
+					</parameter>
+				</parameterList>
+				<if condition="true">
+					<task>
+						<alert>ssh passphrase has been setup already.  This step can be bypassed.</alert>
+						<setActionReturn value="true"/>
+					</task>
+				</if>     
+				<ifNot condition="true">
+					<task>
+						<setActionReturn value="true"/>
+					</task>
+				</ifNot>
+    	 	</entryAction>
+   	 	 	<exitAction name="checkSshPassPhraseLessExit" type="serverAction">
+				<parameterList>
+					<parameter name="action" type="fixed">
+						<value>checkForObjectWithCase</value>
+					</parameter>
+					<parameter name="objectType" type="raw">
+						<value>sshPassPhraseless</value>
+					</parameter>
+					<parameter name="object[host]" type="raw">
+						<value>localhost</value>
+					</parameter>
+				</parameterList>
+				<if condition="true">
+					<task>
+						<setActionReturn value="true"/>
+					</task>
+				</if>     
+				<ifNot condition="true">
+					<task>
+						<setActionReturn value="false"/>
+						<alert>An ssh passphrase is still expected.  Need to make sure the step is completed correctlty</alert>
+					</task>
+				</ifNot>     
+			</exitAction>
+            <contentText>
+<![CDATA[
+<h1>Pseudo-Distributed ssh</h1>
+<p/>
+It is possible to distributed mode within single mode.
+Serveral hadoop daemons will be running on the one host each with its own jvm.
+<p/>
+To make the setup work it requires ssh to localhost to operate without a passphrase. 
+If not set up the ad hoc window can be run to set up the rsa key.
+You will not be able to pass this step if passphrase hasn't been set up correectly.
+<p/>
+You may have to edit 
+<p style="text-indent:50px;">
+ vi /etc/ssh/ssh_config
+</p>
+setting
+<p style="text-indent:50px;">
+RSAAuthentication yes
+</p>
+
+<p style="text-indent:50px;">
+sudo /sbin/service sshd restart
+</p>
+You can check the error message by
+<p stype="text-indent:50px;">
+grep 'sshd' /var/log/secure | grep 'Authentication refused' | tail -3
+</p>
+Deploying on remote can be done by
+<p style="text-indent:50px;">
+ssh-copy-id -i ~/.ssh/id_rsa.pub <remote host>
+</p>
+but prompts for password so must be done on direct an ssh session
+]]>
+			</contentText>
+			<SQLText>
+<![CDATA[
+if [ -f ~/.ssh/id_rsa ] ; then echo rsa already exists ; fi
+if [ ! -f ~/.ssh/id_rsa ] ; then ssh-keygen -t rsa -P '' -f ~/.ssh/id_rsa ;echo ssh rsa key generated; fi
+cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
+chmod g-w ~
+chmod 700 ~/.ssh
+chmod 600 ~/.ssh/authorized_keys
+ 
+ssh localhost -o "StrictHostKeyChecking no" -o "BatchMode yes" echo ssh working as required by hadoop
+
+]]>
+            </SQLText>
+            <SQLExecutionOptions termChar="@"/>
+			<autoLoadLink>
+				<pageWindow target="ssh_config"> 
+					<title>core-site.xml</title>
+	            	<panel name="ssh_config" PrimaryContainer="true">
+						<link connectionRequired="y" target="_self" type="action" window="_self">
+							<parameterList>
+								<parameter name="action">list_table</parameter>
+								<parameter name="table">ssh/cat</parameter>
+								<parameter name="file">/etc/ssh/ssh_config</parameter>
+								<parameter name="extendedTitle">ssh_config</parameter>
+							</parameterList>
+						</link>
+					</panel>
+				</pageWindow>
+            </autoLoadLink>
+        </page>
+
+
+		<page name="Distributed - Setup Single Node" type="general" focusOnWindow="TutorialSQL">
+            <contentText>
+<![CDATA[
+<h1>Setup </h1>
+<p/>
+Next is run setup in default mode which sets up the environment without prompt. 
+<p/>
+It does the following:
+<ul>
+<li>Setup single node configuration</li>
+<li>Format namenode</li>
+<li>Defines configuration files</li>
+<li>Setup default file system structure</li>
+<li>Start up Hadoop</li>
+<li>Start up Hadoop on reboot</li>
+</ul>
+<p/>
+This command is run in the background as it can take some time to complete execution.
+]]>
+			</contentText>
+            <SQLText>
+<![CDATA[
+echo "sudo /usr/sbin/hadoop-setup-single-node.sh  --default > /tmp/hadoop-setup-single-node.out" | at now
+]]>
+            </SQLText>
+            <SQLExecutionOptions termChar="@" commentOnDoubleSlash="false"/>
+			<autoLoadLink>
+				<pageWindow target="runLog"> 
+					<panelHeaders refreshEnabled="true" showRefreshControl="true">
+						<autoRefreshControls>
+							<timeOptions>[10,30,60]</timeOptions>
+						</autoRefreshControls>
+					</panelHeaders>
+	            	<panel name="Logs" PrimaryContainer="true">
+						<link connectionRequired="y" target="_self" type="action" window="_self">
+							<parameterList>
+								<parameter name="action">list_table</parameter>
+								<parameter name="table">ssh/cat</parameter>
+								<parameter name="file">/tmp/hadoop-setup-single-node.out</parameter>
+								<parameter name="extendedTitle">/tmp/hadoop-setup-single-node.out</parameter>
+							</parameterList>
+						</link>
+					</panel>
+				</pageWindow>
+            </autoLoadLink>
+        </page>
+        
+		<page name="Distributed - Override " type="general" focusOnWindow="TutorialSQL">
+	    	<entryAction/>
+
+            <contentText>
+<![CDATA[
+<h1>Override Setups</h1>
+<p/>
+You may need to review the defualt port addresses to ensure the do not conflict with existing ports 
+or you may wish to change other atttributes.
+<p/>
+There are three files that contain the basic configuration. 
+These are:
+<ul>
+<li>core-site.xml</li>
+<li>hdfs-site.xml</li>
+<li>mapred-site.xml</li>
+</ul>
+The content of the various files are displayed in the windows opposite.
+<p/>
+You just cannot just chnage the port numbers.  There are extra parameters that must be added to the script to recognise past the default ports
+used of 9000 and 9001.
+]]>
+			</contentText>
+            <SQLExecutionOptions termChar="@" />
+			<autoLoadLink>
+				<pageWindow target="core-site" windowOptionType="NAV_RELOAD_BUTTON"> 
+					<panelHeaders refreshEnabled="true" showRefreshControl="false"/>
+	            	<panel name="core-site" PrimaryContainer="true" windowOptionType="NAV_RELOAD_BUTTON">
+						<link connectionRequired="y" target="_self" type="action" window="_self">
+							<parameterList>
+								<parameter name="action">list_table</parameter>
+								<parameter name="table">ssh/cat</parameter>
+								<parameter name="file">${HADOOP_CONF_DIR}/core-site.xml</parameter>
+								<parameter name="extendedTitle">core-site.xml</parameter>
+							</parameterList>
+						</link>
+					</panel>
+				</pageWindow>
+            </autoLoadLink>
+			<autoLoadLink>
+				<pageWindow target="_final" windowOptionType="NAV_RELOAD_BUTTON">
+					<panelHeaders refreshEnabled="true" showRefreshControl="false"/>
+	            		<panel name="core-site" PrimaryContainer="true">
+						<link connectionRequired="y" target="_self" type="action" window="_self">
+							<parameterList>
+								<parameter name="action">list_table</parameter>
+								<parameter name="table">ssh/cat</parameter>
+								<parameter name="file">${HADOOP_CONF_DIR}/hdfs-site.xml</parameter>
+								<parameter name="extendedTitle">hdfs-site.xml</parameter>
+							</parameterList>
+						</link>
+					</panel>
+				</pageWindow>
+            </autoLoadLink>
+			<autoLoadLink>
+				<pageWindow target="_final"> 
+	            	<panel name="core-site" PrimaryContainer="true" windowOptionType="NAV_RELOAD_BUTTON">
+						<panelHeaders refreshEnabled="true" showRefreshControl="false"/>
+						<link connectionRequired="y" target="_self" type="action" window="_self">
+							<parameterList>
+								<parameter name="action">list_table</parameter>
+								<parameter name="table">ssh/cat</parameter>
+								<parameter name="file">${HADOOP_CONF_DIR}/mapred-site.xml</parameter>
+								<parameter name="extendedTitle">mapred-site.xml</parameter>
+							</parameterList>
+						</link>
+					</panel>
+				</pageWindow>
+            </autoLoadLink>
+        </page>
+
+		<page name="Distributed - Security" type="general" focusOnWindow="TutorialSQL">
+	    	<entryAction  name="getInfo" type="form" >
+				<message><![CDATA[
+					<h3>Security Setup Values</h3>
+					<table>
+						<tr><td nowrap="nowrap">Domain:</td>
+							<td><input id="domain" type="text" size="128" maxlength="256" name="domain"  value="KERBEROS.EXAMPLE.COM"/></td>
+						</tr>
+					</table>
+				]]></message>
+				<parameterList>
+				</parameterList>
+				<if condition="true">
+					<task>
+						<assignSharedConstant name="domain" type="constant">
+							<value>domain</value> 	 
+						</assignSharedConstant>				
+						<setActionReturn value="true"/>    		
+					</task>
+				</if>
+				<ifNot condition="true">
+					<task>
+						<setActionReturn value="false"/>
+					</task>
+				</ifNot>     
+	    	</entryAction>		
+
+            <contentText>
+<![CDATA[
+<h1>Security setup</h1>
+<p/>
+KERBEROS.EXAMPLE.COM is the default domain.  This should be changed.
+<p/>
+Run the adhoc process which should now containg the domain name you have specified.  
+Once run, you can check the change by refreshing the output in the other windows. 
+]]>
+			</contentText>
+            <SQLText>
+<![CDATA[
+sudo cp ${HADOOP_CONF_DIR}/core-site.xml ${HADOOP_CONF_DIR}/core-site.xml.bak
+sudo sed -i 's/KERBEROS.EXAMPLE.COM/?domain?/g' ${HADOOP_CONF_DIR}/core-site.xml
+]]>
+            </SQLText>
+            <SQLExecutionOptions termChar="@"/>
+            <autoLoadLink> 
+				<pageWindow target="hadoopSecurity"> 
+					<title>Apache HADOOP Security</title>
+					<panel name="main"> 
+						<URL>http://hadoop.apache.org/docs/stable/service_level_auth.html</URL> 
+					</panel> 
+				</pageWindow> 
+			</autoLoadLink>
+			<autoLoadLink>
+				<pageWindow target="core-site" windowOptionType="NAV_RELOAD_BUTTON">
+					<panelHeaders refreshEnabled="true" showRefreshControl="false"/>
+					<title>core-site.xml</title>
+	            	<panel name="core-site" PrimaryContainer="true">
+						<link connectionRequired="y" target="_self" type="action" window="_self">
+							<parameterList>
+								<parameter name="action">list_table</parameter>
+								<parameter name="table">ssh/cat</parameter>
+								<parameter name="file">${HADOOP_CONF_DIR}/core-site.xml</parameter>
+								<parameter name="extendedTitle">core-site.xml</parameter>
+							</parameterList>
+						</link>
+					</panel>
+				</pageWindow>
+            </autoLoadLink>
+			<autoLoadLink>
+				<pageWindow target="hadoop-policy" windowOptionType="NAV_RELOAD_BUTTON">
+					<panelHeaders refreshEnabled="true" showRefreshControl="false"/>
+					<title>core-site.xml</title>
+	            	<panel name="hadoop-policy" PrimaryContainer="true">
+						<link connectionRequired="y" target="_self" type="action" window="_self">
+							<parameterList>
+								<parameter name="action">list_table</parameter>
+								<parameter name="table">ssh/cat</parameter>
+								<parameter name="file">${HADOOP_CONF_DIR}/hadoop-policy.xml</parameter>
+								<parameter name="extendedTitle">hadoop-policy.xml</parameter>
+							</parameterList>
+						</link>
+					</panel>
+				</pageWindow>
+            </autoLoadLink>
+        </page>
+		<page name="Distributed - Recycle Daemons" type="general">
+            <contentText>
+<![CDATA[
+<h1>Recycle</h1>
+<p/>
+Restart all processes to ensure all is running and activate the changes made to the confirguration files.
+The restarted is performed by issuing a service call if installed via RPM.
+The install processes should have set these services into the /etc/rc files and some of these services will be autostarted on boot.
+You may wish to review the confguration, for example the history server may not be autostarted.  
+]]>
+			</contentText>
+            <SQLText>
+<![CDATA[
+sudo /sbin/service hadoop-jobtracker restart
+sudo /sbin/service hadoop-namenode restart
+sudo /sbin/service hadoop-secondarynamenode restart
+sudo /sbin/service hadoop-tasktracker restart
+sudo /sbin/service hadoop-historyserver restart
+sudo /sbin/service hadoop-datanode restart
+]]>
+            </SQLText>
+            <SQLExecutionOptions termChar="@"/>
+        </page>
+
+		<page name="Distributed - User Creation" type="general" focusOnWindow="TutorialSQL">
+            <contentText>
+<![CDATA[
+<h1>Create a user</h1>
+<p/>
+Next is run setup of for a user of HADOOP.  It creates all the nexcessary objects for the user to run HADOOP processes.
+<p/>
+It has the following possible parameters:
+<p style="text-indent:50px;">
+<pre>
+--config /etc/hadoop Location of Hadoop configuration file
+-u <username> Create user on HDFS
+-h Display this message
+--kerberos-realm=KERBEROS.EXAMPLE.COM Set Kerberos realm
+--super-user=hdfs Set super user id
+--super-user-keytab=/etc/security/keytabs/hdfs.keytab Set super user keytab location
+</pre>
+</p>
+The process is run in the background as it may take a long time.
+The other windows display the output and the mail directory.  When the job completes there may be a mail messages.
+
+]]>
+			</contentText>
+            <SQLText>
+<![CDATA[
+echo "/usr/sbin/hadoop-create-user.sh -u $USER > /tmp/hadoop-create-user.out" | sudo at now
+atq
+]]>
+            </SQLText>
+            <SQLExecutionOptions termChar="@" commentOnDoubleSlash="false"/>
+			<autoLoadLink>
+				<pageWindow target="runLog" windowOptionType="NAV_RELOAD_BUTTON">
+					<title>Output</title>
+					<panelHeaders refreshEnabled="true" showRefreshControl="true">
+						<autoRefreshControls>
+							<timeOptions>[10,30,60]</timeOptions>
+						</autoRefreshControls>
+					</panelHeaders>
+	            	<panel name="Logs" PrimaryContainer="true">
+						<link connectionRequired="y" target="_self" type="action" window="_self">
+							<parameterList>
+								<parameter name="action">list_table</parameter>
+								<parameter name="table">ssh/cat</parameter>
+								<parameter name="file">/tmp/hadoop-create-user.out</parameter>
+								<parameter name="extendedTitle">/tmp/hadoop-create-user.out</parameter>
+							</parameterList>
+						</link>
+					</panel>
+				</pageWindow>
+            </autoLoadLink>
+			<autoLoadLink>
+				<pageWindow target="mail" windowOptionType="NAV_RELOAD_BUTTON">
+					<title>Mail</title>
+					<panelHeaders refreshEnabled="true" showRefreshControl="true">
+						<autoRefreshControls>
+							<timeOptions>[10,30,60]</timeOptions>
+						</autoRefreshControls>
+					</panelHeaders>
+	            	<panel name="Mail" PrimaryContainer="true">
+						<link connectionRequired="y" target="_self" type="action" window="_self">
+							<parameterList>
+								<parameter name="action">list_table</parameter>
+								<parameter name="table">ssh/mailx-H</parameter>
+							</parameterList>
+						</link>
+					</panel>
+				</pageWindow>
+            </autoLoadLink>
+        </page>
+
+		<page name="Distributed - Check User Creation" type="general" focusOnWindow="TutorialSQL">
+			<entryAction name="checkGroup" type="serverAction">
+				<parameterList>
+					<parameter name="action" type="raw">
+						<value>checkForObjectWithCase</value>
+					</parameter>
+					<parameter name="objectType" type="raw">
+						<value>inSecurityGroup</value>
+					</parameter>
+					<parameter name="object[group]" type="raw">
+						<value>hadoop</value>
+					</parameter>
+				</parameterList>
+				<if condition="true">
+					<task>
+						<assignSharedConstant name="addUSer2Group" type="raw">
+							<value>-- user in group hadoop</value> 	 
+						</assignSharedConstant>
+						<setActionReturn value="true"/> 
+					</task>
+				</if>
+				<if condition="false">
+					<task>
+						<assignSharedConstant name="addUSer2Group" type="raw">
+							<value>sudo usermod -a -G hadoop $USER\nnewgrp hadoop\nsudo -u hdfs hadoop dfsadmin -refreshUserToGroupsMappings</value> 	 
+						</assignSharedConstant>
+						<alert>
+Connected user needs to be in security group ḧadoop as a minimum to run hadoop commands.
+If this is done via LDAP or KERBEROS the added line should be deleted.
+Note, you will have to disconnect
+						</alert>
+						<setActionReturn value="true"/> 
+					</task>
+				</if>
+			</entryAction>		
+		
+            <contentText>
+<![CDATA[
+<h1>Validation</h1>
+<p/>
+To run HADOOP commands is distributed mode the user must be connected to a group that authorises the accesss.
+The default group is ḧadoop.  Entryn into this step checks the existence of this relationship and adds the the required
+command to be run.  If this relationship is managed via LDAP or KERBEROS this line should be removed. 
+<p/>
+Run this process to verify user was established.  If it times out then their is likely to be a configuration issue with the ports
+or the hadoop services are not running. Check the mail for the job version to see messages.
+<h2>Important Note</h2>
+If you have to run usermode command then you have t ensure the user has all its processes stopped before it works.
+The use of the newgrp command will not fix the issue as it only works on the active session.
+]]>
+			</contentText>
+            <SQLText>
+<![CDATA[
+?addUSer2Group?
+id
+echo hadoop queue -showacls | at now
+hadoop queue -showacls
+]]>
+            </SQLText>
+            <SQLExecutionOptions termChar="@" commentOnDoubleSlash="false"/>
+			<autoLoadLink>
+				<pageWindow target="mail" windowOptionType="NAV_RELOAD_BUTTON">
+					<title>Mail</title>
+					<panelHeaders refreshEnabled="true" showRefreshControl="true">
+						<autoRefreshControls>
+							<timeOptions>[10,30,60]</timeOptions>
+						</autoRefreshControls>
+					</panelHeaders>
+	            	<panel name="Mail" PrimaryContainer="true">
+						<link connectionRequired="y" target="_self" type="action" window="_self">
+							<parameterList>
+								<parameter name="action">list_table</parameter>
+								<parameter name="table">ssh/mailx-H</parameter>
+							</parameterList>
+						</link>
+					</panel>
+				</pageWindow>
+            </autoLoadLink>
+        </page>
+
+		<page name="Distributed - dfsadm" type="general">
+            <contentText>
+<![CDATA[
+<h1>dfsadm</h1>
+<p/>
+These are command that can only be run by the super user for hadoop.  The super user is then user that is used to start the service.
+In the case of distributed default configuration, it is the user hdfs.
+<p/>
+In the configuration for hdfs-site, the super user has been assigned to a group hadoop.
+A user assigned to this group should be able to use dfsadm without the sudo trick.
+
+
+hadoop.security.group.mapping   org.apache.hadoop.security.JniBasedUnixGroupsMappingWithFallback
+<p/>
+Options for the dfsadmin command are:
+<p/>
+<cite>
+<pre>
+Usage: java DFSAdmin
+           [-report]
+           [-safemode enter | leave | get | wait]
+           [-saveNamespace]
+           [-refreshNodes]
+           [-finalizeUpgrade]
+           [-upgradeProgress status | details | force]
+           [-metasave filename]
+           [-refreshServiceAcl]
+           [-refreshUserToGroupsMappings]
+           [-refreshSuperUserGroupsConfiguration]
+           [-setQuota <quota> <dirname>...<dirname>]
+           [-clrQuota <dirname>...<dirname>]
+           [-setSpaceQuota <quota> <dirname>...<dirname>]
+           [-clrSpaceQuota <dirname>...<dirname>]
+           [-setBalancerBandwidth <bandwidth in bytes per second>]
+           [-help [cmd]]
+
+Generic options supported are
+-conf <configuration file>     specify an application configuration file
+-D <property=value>            use value for given property
+-fs <local|namenode:port>      specify a namenode
+-jt <local|jobtracker:port>    specify a job tracker
+-files <comma separated list of files>    specify comma separated files to be copied to the map reduce cluster
+-libjars <comma separated list of jars>    specify comma separated jar files to include in the classpath.
+-archives <comma separated list of archives>    specify comma separated archives to be unarchived on the compute machines.
+</pre>
+</cite>
+]]>
+			</contentText>
+            <SQLText>
+<![CDATA[
+hadoop dfsadmin -report
+echo
+echo "=========================================================================="
+echo
+sudo -u hdfs hadoop dfsadmin -report
+]]>
+            </SQLText>
+            <SQLExecutionOptions termChar="@"/>
+        </page>
+
+		<page name="Distributed - Check OK" type="general" focusOnWindow="TutorialSQL">
+            <contentText>
+<![CDATA[
+<h1>Check OK</h1>
+<p/>
+To determine if all is OK run the "hadoop dfsadm -report" command.
+If it produces the message below 
+<cite>
+Datanodes available: 0 (0 total, 0 dead)
+</cite>
+then the there is an issue with the data node.
+Check log 
+<p/>
+Check that then file system is OK by running command
+<cite>
+hadoop fsck /
+</cite>
+If corrupted it can be fixed by running
+<cite>
+hadoop fsck / -delete
+</cite>
+]]>
+			</contentText>
+            <SQLText>
+<![CDATA[
+-- sudo /sbin/service hadoop-datanode restart
+
+sudo -u hdfs hadoop dfsadmin -report
+echo
+echo "=========================================================================="
+echo
+sudo -u hdfs hadoop fsck /
+]]>
+            </SQLText>
+            <SQLExecutionOptions termChar="@"/>
+			<autoLoadLink>
+				<pageWindow target="logs"> 
+					<title>core-site.xml</title>
+	            	<panel name="Logs" PrimaryContainer="true">
+						<link connectionRequired="y" target="_self" type="action" window="_self">
+							<parameterList>
+								<parameter name="action">list_table</parameter>
+								<parameter name="table">ssh/ls-al</parameter>
+								<parameter name="base">/var/log/hadoop</parameter>
+								<parameter name="extendedTitle">/var/log/hadoop</parameter>
+							</parameterList>
+						</link>
+					</panel>
+				</pageWindow>
+            </autoLoadLink>
+        </page>
+
+		<page name="Distributed - mapred setup" type="general">
+            <contentText>
+<![CDATA[
+<h1>Set up mapred for jobs</h1>
+<p/>
+Before jobs can be run the is a bit of setup.
+Within the hadoop internal file system, a directory need to be created and mapred given access.
+]]>
+			</contentText>
+            <SQLText>
+<![CDATA[
+sudo -u hdfs hadoop dfsadmin -report
+sudo -u hdfs hadoop fs -mkdir /var/lib/hadoop/hdfs/datanode
+
+sudo -u hdfs hadoop fs -mkdir /mapred/mapredsystem
+sudo -u hdfs hadoop fs -chown -R mapred:hadoop /mapred
+
+sudo -u hdfs hadoop fs -mkdir /var/log/hadoop/mapred
+sudo -u hdfs hadoop fs -chown mapred:hadoop /var/log/hadoop/mapred
+
+sudo -u hdfs hadoop fs -mkdir /var/lib/hadoop/mapred
+sudo -u hdfs hadoop fs -chown mapred:hadoop /var/lib/hadoop/mapred
+
+sudo -u hdfs hadoop fs -mkdir /var/lib/hadoop/mapred/jobstatus
+sudo -u hdfs hadoop fs -chown mapred:hadoop /var/lib/hadoop/mapred/jobstatus
+sudo -u hdfs hadoop fs -mkdir /tmp
+sudo -u hdfs hadoop fs -chmod 777 /tmp
+sudo -u hdfs hadoop fs -mkdir /var
+sudo -u hdfs hadoop fs -mkdir /var/lib
+sudo -u hdfs hadoop fs -mkdir /var/lib/hadoop/hdfs
+sudo -u hdfs hadoop fs -mkdir /var/lib/hadoop/hdfs/cache
+sudo -u hdfs hadoop fs -mkdir /var/lib/hadoop/hdfs/cache/mapred
+sudo -u hdfs hadoop fs -mkdir /var/lib/hadoop/hdfs/cache/mapred/mapred
+sudo -u hdfs hadoop fs -mkdir /var/lib/hadoop/hdfs/cache/mapred/mapred/staging
+sudo -u hdfs hadoop fs -chmod 777 /var/lib/hadoop/hdfs/cache/mapred/mapred/staging
+sudo -u hdfs hadoop fs -chown -R mapred /var/lib/hadoop-hdfs/cache/mapred
+sudo -u hdfs hadoop fs -lsr /
+
+
+e /var/lib/hadoop/hdfs/namenode. The directory is already locked.
+]]>
+            </SQLText>
+            <SQLExecutionOptions termChar="@"/>
+        </page>
+
+		<page name="Distributed - Status Daemons" type="general">
+            <contentText>
+<![CDATA[
+<h1>Status</h1>
+<p/>
+]]>
+			</contentText>
+            <SQLText>
+<![CDATA[
+sudo /sbin/service hadoop-jobtracker status
+sudo /sbin/service hadoop-namenode status
+sudo /sbin/service hadoop-secondarynamenode status
+sudo /sbin/service hadoop-tasktracker status
+sudo /sbin/service hadoop-historyserver status
+sudo /sbin/service hadoop-datanode status
+
+]]>
+            </SQLText>
+            <SQLExecutionOptions termChar="@"/>
+        </page>
+
+		<page name="Web Applications" type="general">
+            <contentText>
+<![CDATA[
+<h1>Distributed Example</h1>
+<p/>
+There are a set of web applications.
+<p/>
+<table>
+<tr><td>MR 	Jobracker</td><td>50030</td><td>mapred.job.tracker.http.address</td></tr>
+<tr><td>Tasktrackers</td><td>50060</td><td>mapred.task.tracker.http.address</td></tr>
+<tr><th>Daemon</th><th>Default Port</th><th>Configuration Parameter</th></tr>
+<tr><td>HDFS Namenode</td><td>50070</td><td>dfs.http.address</td></tr>
+<tr><td>Datanodes</td><td>50075</td><td>dfs.datanode.http.address</td></tr>
+<tr><td>Secondarynamenode</td><td>50090</td><td>dfs.secondary.http.address</td></tr>
+<tr><td>Backup/Checkpoint node</td><td>50105</td><td>dfs.backup.http.address</td></tr>
+<table>
+]]>
+			</contentText>
+			<autoLoadLink> 
+				<pageWindow target="MRJobracker"> 
+					<title>MR 	Jobracker</title>
+					<panel name="main"> 
+						<URL>http://?ACTIVE_DATABASE_HOSTNAME?:50030</URL> 
+					</panel> 
+				</pageWindow> 
+			</autoLoadLink>
+			<autoLoadLink> 
+				<pageWindow target="Tasktrackers"> 
+					<title>Tasktrackers</title>
+					<panel name="main"> 
+						<URL>http://?ACTIVE_DATABASE_HOSTNAME?:50060</URL> 
+					</panel> 
+				</pageWindow> 
+			</autoLoadLink>
+			 <autoLoadLink> 
+				<pageWindow target="HDFS"> 
+					<title>HDFS</title>
+					<panel name="main"> 
+						<URL>http://?ACTIVE_DATABASE_HOSTNAME?:50070</URL> 
+					</panel> 
+				</pageWindow> 
+			</autoLoadLink>
+			<autoLoadLink> 
+				<pageWindow target="Datanodes"> 
+					<title>Datanodes</title>
+					<panel name="main"> 
+						<URL>http://?ACTIVE_DATABASE_HOSTNAME?:50075</URL> 
+					</panel> 
+				</pageWindow> 
+			</autoLoadLink>
+			<autoLoadLink> 
+				<pageWindow target="Secondarynamenode"> 
+					<title>Secondarynamenode</title>
+					<panel name="main"> 
+						<URL>http://?ACTIVE_DATABASE_HOSTNAME?:50090</URL> 
+					</panel> 
+				</pageWindow> 
+			</autoLoadLink>
+			<autoLoadLink> 
+				<pageWindow target="BackupCheckpointNode"> 
+					<title>Backup/Checkpoint node</title>
+					<panel name="main"> 
+						<URL>http://?ACTIVE_DATABASE_HOSTNAME?:50105</URL> 
+					</panel> 
+				</pageWindow> 
+			</autoLoadLink>
+        </page>
+        
+		<page name="Distributed - Example setup" type="general">
+            <contentText>
+<![CDATA[
+<h1>Distributed Example</h1>
+<p/>
+The example requires a file to be copied into the hadoop internal directory system.
+<p/>
+At this stage withnthe configuration there is an issue with security and it is necessary to remove safe mode with the following
+<p/>
+<cite>sudo -u hdfs hadoop dfsadmin -safemode leave</cite>
+]]>
+			</contentText>
+            <SQLText>
+<![CDATA[
+-- copy from local into hadoop directory
+hadoop dfs -copyFromLocal ~/hadoopInput /user/$USER/hdfs/hadoopInput
+hadoop dfs -ls /user/$USER/hdfs/hadoopInput
+hadoop dfs -ls /user/$USER  
+--
+sudo -u hdfs hadoop dfsadmin -safemode leave
+]]>
+            </SQLText>
+            <SQLExecutionOptions termChar="@"/>
+        </page>
+
+		<page name="Distributed - Example run" type="general" focusOnWindow="TutorialSQL">
+            <contentText>
+<![CDATA[
+<h1>Distributed Example Run</h1>
+<p/>
+The output directories are attempted to be removed in case this is a rerun
+<p/>
+The output of commands will be found in mail once the jobs are completed.
+]]>
+			</contentText>
+            <SQLText>
+<![CDATA[
+hadoop dfs -rmr /user/$USER/hdfs/OutputGrep
+hadoop dfs -rmr /user/$USER/hdfs/OutputWordCount
+--
+-- run job in background
+--
+echo "hadoop jar /usr/share/hadoop/hadoop-examples-*.jar grep /user/$USER/hdfs/hadoopInput /user/$USER/hdfs/OutputGrep 'dfs[a-z.]+'" | at -m now
+echo "hadoop jar /usr/share/hadoop/hadoop-examples-*.jar wordcount /user/$USER/hdfs/hadoopInput /user/$USER/hdfs/OutputWordCount" | at -m now  
+
+echo "=====================job list=============="
+hadoop job -list
+]]>
+            </SQLText>
+            <SQLExecutionOptions termChar="@"/>
+			<autoLoadLink>
+				<pageWindow target="mail" windowOptionType="NAV_RELOAD_BUTTON">
+					<title>Mail</title>
+					<panelHeaders refreshEnabled="true" showRefreshControl="true">
+						<autoRefreshControls>
+							<timeOptions>[10,30,60]</timeOptions>
+						</autoRefreshControls>
+					</panelHeaders>
+	            	<panel name="Mail" PrimaryContainer="true">
+						<link connectionRequired="y" target="_self" type="action" window="_self">
+							<parameterList>
+								<parameter name="action">list_table</parameter>
+								<parameter name="table">ssh/mailx-H</parameter>
+							</parameterList>
+						</link>
+					</panel>
+				</pageWindow>
+            </autoLoadLink>
+
+        </page>
+
+		<page name="Distributed - Example Check output" type="general">
+            <contentText>
+<![CDATA[
+<h1>Distributed Example Monitor Jobs</h1>
+<p/>
+The jobs may not have finished.  
+The sequence of commands in the ad hoc window can be rerun until the jobs are complete.
+]]>
+			</contentText>
+            <SQLText>
+<![CDATA[
+atq
+echo "=====================job list=============="
+hadoop job -list
+echo "=====================directory list=============="
+hadoop dfs -lsr /user/$USER/hdfs
+echo "=====================hadoop grep=============="
+hadoop dfs -cat /user/$USER/hdfs/OutputGrep/part-00000
+echo "=====================hadoop wordcount=============="
+hadoop dfs -cat /user/$USER/hdfs/OutputWordCount/part-r-00000
+]]>
+            </SQLText>
+            <SQLExecutionOptions termChar="@"/>
+        </page>
+        
+		<page name="Distributed - Example Cleanup" type="general">
+            <contentText>
+<![CDATA[
+<h1>Distributed Example Cleanup</h1>
+<p/>
+]]>
+			</contentText>
+            <SQLText>
+<![CDATA[
+rm /tmp/hadoop.example.grep
+rm /tmp/hadoop.example.wordcount
+hadoop dfs -rmr /user/$USER/hdfs/OutputGrep  
+hadoop dfs -rmr /user/$USER/hdfs/OutputWordCount  
+]]>
+            </SQLText>
+            <SQLExecutionOptions termChar="@"/>
+        </page>
+
+		<page name="Distributed - Multi" type="general">
+            <contentText>
+<![CDATA[
+<p/>
+<h1>Multi-nodes</h1>
+The code has to installed on the slave node. 
+Once installed 
+<p/>
+<pre>
+sudo /usr/sbin/hadoop-setup-conf.sh \ 
+  --namenode-url=hdfs://${namenode}:${namenode.port}/ \
+  --jobtracker-url=${jobtracker}:${jobtracke.portr} \
+  --auto
+<pre>
+Where:
+
+Where ${namenode} and ${jobtracker} should be replaced with hostname of namenode and jobtracker.
+]]>
+			</contentText>
+        </page>
+
+		<page name="Test java" type="general">
+            <contentText>
+<![CDATA[
+This is a sample java process. It has the following steps:
+<ol>
+<li>Set up the work area.</li>
+<li>Create the java source in $WORKAREA/WordCount.java</li>
+<li>Create jar from java source</li>
+<li>Create the input files</li>
+<li>Copy input files to HADOOP data area</li>
+<li>Run application</li>
+<li>Display output</li>
+</ol>
+]]>
+			</contentText>
+            <SQLText>
+<![CDATA[
+export WORKAREA="/tmp/$USER"
+mkdir $WORKAREA
+cat <<EOF >$WORKAREA/WordCount.java
+package org.myorg;
+import java.io.IOException;
+import java.util.*;
+import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.conf.*;
+import org.apache.hadoop.io.*;
+import org.apache.hadoop.mapreduce.*;
+import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
+import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
+import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
+import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
+        
+public class WordCount {
+ public static class Map extends Mapper<LongWritable, Text, Text, IntWritable> {
+    private final static IntWritable one = new IntWritable(1);
+    private Text word = new Text();
+    public void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
+        String line = value.toString();
+        StringTokenizer tokenizer = new StringTokenizer(line);
+        while (tokenizer.hasMoreTokens()) {
+            word.set(tokenizer.nextToken());
+            context.write(word, one);
+        }
+    }
+ } 
+        
+ public static class Reduce extends Reducer<Text, IntWritable, Text, IntWritable> {
+    public void reduce(Text key, Iterable<IntWritable> values, Context context) 
+      throws IOException, InterruptedException {
+        int sum = 0;
+        for (IntWritable val : values) {
+            sum += val.get();
+        }
+        context.write(key, new IntWritable(sum));
+    }
+ }
+        
+ public static void main(String[] args) throws Exception {
+    Configuration conf = new Configuration();
+    Job job = new Job(conf, "wordcount");
+	job.setJarByClass(WordCount.class);
+    job.setOutputKeyClass(Text.class);
+    job.setOutputValueClass(IntWritable.class);
+    job.setMapperClass(Map.class);
+    job.setReducerClass(Reduce.class);
+    job.setInputFormatClass(TextInputFormat.class);
+    job.setOutputFormatClass(TextOutputFormat.class);
+    FileInputFormat.addInputPath(job, new Path(args[0]));
+    FileOutputFormat.setOutputPath(job, new Path(args[1]));
+    job.waitForCompletion(true);
+ }
+}
+EOF
+
+mkdir $WORKAREA/classes
+javac -classpath /usr/share/hadoop/hadoop-core-*.jar -d ${WORKAREA}/classes ${WORKAREA}/WordCount.java
+jar -cvf ${WORKAREA}/wordcount.jar -C ${WORKAREA}/classes/ .
+
+
+cat <<EOF >$WORKAREA/file01
+Hello World Bye World
+EOF
+cat <<EOF >$WORKAREA/file02
+Hello Hadoop Goodbye Hadoop
+EOF
+hadoop dfs -copyFromLocal $WORKAREA/file01 /user/$USER/wordcount/input/file01
+hadoop dfs -copyFromLocal $WORKAREA/file02 /user/$USER/wordcount/input/file02
+
+hadoop jar $WORKAREA/wordcount.jar org.myorg.WordCount /user/$USER/wordcount/input /user/$USER/wordcount/output
+
+echo "===================output========================="
+hadoop dfs -cat /user/$USER/wordcount/output/part-00000 
+]]>
+            </SQLText>
+            <SQLExecutionOptions termChar="@"/>
+        </page>
+
+		<page name="Example Cleanup" type="general">
+            <contentText>
+<![CDATA[
+Cleanup the various objects created
+]]>
+			</contentText>
+            <SQLText>
+<![CDATA[
+hadoop dfs -rmr /user/$USER/wordcount
+rm -r /tmp/$USER
+]]>
+            </SQLText>
+            <SQLExecutionOptions termChar="@"/>
+        </page>
+
+		<page name="Uninstall" type="last">
+            <contentText>
+<![CDATA[
+Uninstall objects.
+]]>
+			</contentText>
+            <SQLText>
+<![CDATA[
+sudo sudo rpm -e hadoop-1.0.4-1.x86_64.rpm
+]]>
+            </SQLText>
+            <SQLExecutionOptions termChar="@"/>
+        </page>
+
+    </pageList>
+</tutorial>
+

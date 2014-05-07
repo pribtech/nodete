@@ -1,0 +1,15 @@
+<p><strong>Conclusion</strong></p>
+
+<p>When you reach a very high number of connections, you should see a value on the <strong>Direct Reads</strong> indicator that is near the one you write in the configuration file. That is the maximum number of direct reads your system is able to manage. When this maximum is reached, the <strong>I/O Intensity</strong> will begin to increase. Your system need to delay the requests because it cannot handle more requests at the same time anymore. If the <strong>I/O Intensity</strong> is reached, your system may become unstable and stop responding.</p>
+
+<p><strong>How to avoid this situation</strong></p>
+
+<p>This kind of problem can be avoided by distributing the load on multiple servers. You achieve that by turning on I/O parallelism on your system if you have multiples I/O devices. For more information on this topic, please refer to <a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v9/topic/com.ibm.db2.udb.admin.doc/doc/c0005399.htm?noframes=true');">I/O server configuration for prefetching and parallelism</a>.</p>
+
+<p>By increasing your bufferpools, you can also reduce the I/O saturation of your system. Bigger bufferpools will result in fewer reads on disks for data that can cached. You can check the <a onclick="OpenInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v9/topic/com.ibm.db2.udb.admin.doc/doc/c0005391.htm');">Bufferpool Management</a> page for more information.</p>
+
+<p><strong>Cleaning the environment</strong></p>
+
+<p>To complete this tutorial, run the query in the Ad Hoc command window on your right. This query will drop the <strong>ABSTRACTS</strong> table used during this scenario.</p>
+
+<p>You now should be able to find I/O saturation problems on your system by looking at the Server Monitoring Dashboard.</p>

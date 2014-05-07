@@ -1,0 +1,174 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2009 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<command name="createEventMonitorStatistics" title="Create Event Monitor Statistics">
+<![CDATA[
+>>-CREATE EVENT MONITOR--event-monitor-name--FOR STATISTICS----->
+]]>
+	<text>CREATE EVENT MONITOR</text><clauseReference name="event-monitor-name"/><text>FOR STATISTICS</text>
+	<br/>
+<![CDATA[
+>--WRITE TO--+-TABLE--| wlm-table-options |------+--●----------->
+             +-PIPE--pipe-name-------------------+      
+             '-FILE--path-name--| file-options |-'      
+]]>
+	<text>WRITE TO</text>
+	<select>
+		<option default="true"><text>TABLE</text><clauseReference name="wlm-table-options"/></option>
+		<option><text>PIPE</text><clauseReference name="pipe-name"/></option>
+		<option><text>FILE</text><clauseReference name="path-name"/><clauseReference name="file-options"/></option>
+		</select>
+	<br/>
+<![CDATA[
+   .-AUTOSTART---.      
+>--+-------------+--●------------------------------------------->
+   '-MANUALSTART-'      
+]]>
+	<select>
+		<option><text>MANUALSTART</text></option>
+		<option default="true"><note>MANUALSTART</note></option>
+		<option><text>AUTOSTART</text></option>
+	</select>
+	<br/>
+<![CDATA[
+>--+----------------------------------------+--●---------------->
+   '-ON DBPARTITIONNUM--db-partition-number-'      
+]]>
+	<select>
+		<option default="true"><note></note></option>
+		<option><text>ON DBPARTITIONNUM</text><clauseReference name="db-partition-number"/></option>
+	</select>
+	<br/>
+<![CDATA[
+   .-LOCAL-.      
+>--+-------+--●------------------------------------------------><
+]]>
+	<select>
+		<option><text>LOCAL</text></option>
+		<option default="true"><note>LOCAL</note></option>
+	</select>
+
+	<clause name="wlm-table-options" title="wlm table options">
+<![CDATA[
+|--●--+----------------------------------------------------+---->
+      | .-,----------------------------------------------. |   
+      | V                                                | |   
+      '---evm-group--+---------------------------------+-+-'   
+                     '-(--| wlm-target-table-info |--)-'       
+
+      .-BUFFERSIZE--4-----.     .-BLOCKED----.      
+>--●--+-------------------+--●--+------------+--●---------------|
+      '-BUFFERSIZE--pages-'     '-NONBLOCKED-'      
+]]>
+		<select>
+			<option default="true"><note>no grouping</note></option>
+			<option>
+				<repeatable>
+					<clauseReference name="evm-group"/>
+					<select>
+						<option default="true"><note>no table info</note></option>
+						<option><text>(</text><clauseReference name="wlm-target-table-info"/><text>)</text></option>
+					</select>
+				</repeatable>
+			</option>
+		</select>
+		<br/>
+		<select>
+			<option><text>BUFFERSIZE 4</text></option>
+			<option default="true"><note>BUFFERSIZE 4</note></option>
+			<option><text>BUFFERSIZE</text><clauseReference name="pages"/></option>
+		</select>
+		<select>
+			<option><text>BLOCKED</text></option>
+			<option default="true"><note>BLOCKED</note></option>
+			<option><text>NONBLOCKED</text></option>
+		</select>
+	</clause>
+
+	<clause name="wlm-target-table-info" title="wlm target table info">
+<![CDATA[
+   .--------------------------------------.   
+   V  (1)                                 |   
+|----------+-TABLE--table-name----------+-+---------------------|
+           +-IN--tablespace-name--------+     
+           | .-PCTDEACTIVATE--100-----. |     
+           '-+-PCTDEACTIVATE--integer-+-'     
+]]>
+		<repeatable separator=" ">
+			<select>
+				<option default="true"><text>TABLE</text><clauseReference name="table-name"/></option>
+				<option><text>IN</text><clauseReference name="tablespace-name"/></option>
+				<option>
+					<select>
+						<option default="true"><text>PCTDEACTIVATE 100</text></option>
+						<option><text>PCTDEACTIVATE</text><input size="2" type="int"/></option>
+					</select>
+				</option>
+			</select>
+		</repeatable>
+	</clause>
+
+	<clause name="file-options" title="file options">
+<![CDATA[
+      .-MAXFILES--NONE------------.      
+|--●--+---------------------------+--●-------------------------->
+      '-MAXFILES--number-of-files-'      
+
+                                  .-BUFFERSIZE--4-----.      
+>--+------------------------+--●--+-------------------+--●------>
+   '-MAXFILESIZE--+-pages-+-'     '-BUFFERSIZE--pages-'      
+                  '-NONE--'                                  
+
+   .-BLOCKED----.     .-APPEND--.      
+>--+------------+--●--+---------+--●----------------------------|
+   '-NONBLOCKED-'     '-REPLACE-'      
+]]>
+		<select>
+			<option><text>MAXFILES NONE</text></option>
+			<option default="true"><note>MAXFILES NONE</note></option>
+			<option><text>MAXFILES</text><input size="3" type="int"/></option>
+		</select>
+		<br/>
+		<select>
+			<option default="true"><note>maxfilesize</note></option>
+			<option><text>MAXFILESIZE</text>
+				<select>
+					<option default="true"><clauseReference name="pages"/></option>
+					<option><text>NONE</text></option>
+				</select>
+			</option>
+		</select>
+		<select>
+			<option><text>BUFFERSIZE 4</text></option>
+			<option default="true"><note>BUFFERSIZE 4</note></option>
+			<option><text>BUFFERSIZE</text><clauseReference name="pages"/></option>
+		</select>
+		<br/>
+		<select>
+			<option><text>BLOCKED</text></option>
+			<option default="true"><note>BLOCKED</note></option>
+			<option><text>NONBLOCKED</text></option>
+		</select>
+		<select>
+			<option><text>APPEND</text></option>
+			<option default="true"><note>APPEND</note></option>
+			<option><text>REPLACE</text></option>
+		</select>
+	</clause>
+
+</command>
+

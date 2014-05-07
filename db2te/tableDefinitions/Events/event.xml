@@ -1,0 +1,113 @@
+<!--
+  Author: Peter Prib
+  
+  Copyright Independent Systems Integrators Pty Ltd 2008 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+<table name="SYSCAT.EVENTS">
+	<sql_name>SYSCAT.EVENTS</sql_name>
+	<singular_name>Event</singular_name>
+	<plural_name>Events</plural_name>
+	<description />
+	<order_by_index />
+	<display_columns>
+		<col type="column" name="evmonname" />
+		<col type="column" name="type" />
+		<col type="column" name="filter" />
+		<col type="reference" name="tables" />
+		<col type="action" name="flushBuffer" />
+	</display_columns>
+	<disable_edit/>
+	<column name="evmonname">
+		<sqlName>EVMONNAME</sqlName>
+		<title>Event Monitor Name</title>
+		<type>s</type>
+		<drillEnable/>
+		<primaryKey/>
+	</column>
+	<column name="type">
+		<sqlName>TYPE</sqlName>
+		<title>Type</title>
+		<type>s</type>
+		<drillEnable/>
+		<primaryKey/>
+		<c_column_mask>
+			<value_mask value="ACTIVITIES"><mask>Activities</mask></value_mask>
+			<value_mask value="CONNECTIONS"><mask>Connections</mask></value_mask>
+			<value_mask value="DATABASE"><mask>Database</mask></value_mask>
+			<value_mask value="DEADLOCKS"><mask>Deadlocks</mask></value_mask>
+			<value_mask value="DETAILDEADLOCKS"><mask>Detailed DeadLocks</mask></value_mask>
+			<value_mask value="LOCKING"><mask>Locking</mask></value_mask>
+			<value_mask value="PACKAGECACHESTMT"><mask>Package Cache Statement</mask></value_mask>
+			<value_mask value="STATEMENTS"><mask>Statements</mask></value_mask>
+			<value_mask value="TABLES"><mask>Tables</mask></value_mask>
+			<value_mask value="TABLESPACES"><mask>Tablespace</mask></value_mask>
+			<value_mask value="THRESHOLDVIOLATIONS"><mask>Threshold Violations</mask></value_mask>
+			<value_mask value="TRANSACTIONS"><mask>Transactions</mask></value_mask>
+			<value_mask value="STATISTICS"><mask>Statistics</mask></value_mask>
+			<value_mask value="UOW"><mask></mask>UOW</value_mask>
+		</c_column_mask>
+	</column>
+	<column name="filter">
+		<sqlName>FILTER</sqlName>
+		<title>Filter</title>
+		<type>l</type>
+	</column>
+	
+<!-- added peter prib, Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2009 All rights reserved. -->
+	<action name="flushBuffer">
+		<title>Flush Buffer</title>
+		<icon>images/sout.gif</icon>
+    	<actionScript>
+    		<task>
+		    	<assignSharedConstant name="event-monitor-name" type="fixed">
+					<value>?evmonname?</value>
+				</assignSharedConstant>
+		    	<assignSharedConstant name="command" type="raw">
+					<value>flushEventMonitor</value>
+				</assignSharedConstant>
+		   		<callGlobalAction name="commandExecution"/>
+	   		</task>
+    	</actionScript>
+    </action>
+    
+    <reference name="Tables">
+		<title>Tables</title>
+		<reftype>table</reftype>
+		<refvalue>Events/eventTable</refvalue>
+		<icon>images/icon-link-calendar.gif</icon>
+		<ref foreign_column_name="evmonname">
+			<local_column_name>evmonname</local_column_name>
+		</ref>
+	</reference>
+    
+	<action name="db2evmon">
+		<title>db2evmon</title>
+		<icon>images/run.gif</icon>   
+    	<actionScript>
+    		<task>
+				<assignSharedConstant name="script" type="fixed">
+					<value>
+<![CDATA[
+db2evmon -db ?ACTIVE_DATABASE? -evm ?evmonname?
+]]>
+					</value>
+				</assignSharedConstant>
+		   		<callGlobalAction name="sshExecution"/>
+	   		</task>
+    	</actionScript>
+    </action>
+	
+</table>

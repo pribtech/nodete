@@ -1,0 +1,63 @@
+<!--
+  Copyright IBM Corp. 2007 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<action name="Setup" type="blank" lockScreen="true">
+	<task>
+		<setActionReturn value="false"/>
+		<action name="DBConnectionConnectionDialog" type="form" lockScreen="true">
+			<parameterList>
+				<parameter name="action" type="raw">
+					<value>DBConnectionNewConnectionForm</value>
+				</parameter>
+				<parameter name="ERROR_MSG" type="constant">
+					<value>ERROR_MSG</value>
+				</parameter>
+				<parameter name="buttonOK" type="raw">
+					<value>Connect</value>
+				</parameter>
+			</parameterList>
+			<if condition="true">
+				<task>
+					<action name="DBConnectionConnectionDialog_Authenticate" type="serverAction">
+						<parameterList>
+							<parameter name="action" type="raw">
+								<value>DBConnectionNewConnection</value>
+							</parameter>
+						</parameterList>
+						<if condition="false">
+							<task>
+								<setGlobal name="ERROR_MSG" type="returnObject">
+									<value>DBConnectionConnectionDialog_Authenticate.returnValue</value>
+								</setGlobal>
+								<gotoAction name="DBConnectionConnectionDialog"/>
+								<return/>
+							</task>
+						</if>
+						<if condition="true">
+							<task>
+								<setActionReturn type="returnObject" value="DBConnectionConnectionDialog_Authenticate.returnValue"/>
+							</task>
+						</if>
+					</action>			          		
+				</task>
+			</if>
+			<ifNot condition="true">
+				<task>
+					<setActionReturn value="false"/>
+				</task>
+			</ifNot>
+		</action>
+	</task>
+</action>

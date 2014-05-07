@@ -1,0 +1,168 @@
+<!--
+  Peter Prib, Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2012 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<table name="subscriber">
+	<sqlName>SYS.MGW$_SUBSCRIBERS</sqlName>
+	<singularName>MGW Subscriber</singularName>
+	<pluralName>MGW Subscribers</pluralName>
+	<description></description>
+	<disable_edit/>
+	<orderBy name="SUBSCRIBER_ID" direction="A"/>
+	<displayColumns>
+		<col type="column" name="SUBSCRIBER_ID"/>
+		<col type="column" name="NUM_FAILS"/>
+		<col type="column" name="ERR_TIME"/>
+		<col type="column" name="ERR_MESSAGE"/>
+		<col type="column" name="PROP_TYPE"/>
+		<col type="column" name="QUEUE_NAME"/>
+		<col type="column" name="DESTINATION"/>
+		<col type="column" name="RULE"/>
+		<col type="column" name="TRANSFORMATION"/>
+		<col type="column" name="EXCEPTION_QUEUE"/>
+		<col type="column" name="CONFIG_STATE"/>
+		<col type="column" name="CURR_PROP_MSGS"/>
+		<col type="column" name="CURR_EXQ_MSGS"/>
+		<col type="column" name="FLAGS"/>
+		<col type="column" name="LINK_NAME"/>
+		<col type="column" name="COMMENTS"/>
+	</displayColumns>
+	<action name="reset">
+		<title>Reset</title>
+		<icon>images/trash.gif</icon>   
+    	<actionScript>
+    		<task>
+				<assignSharedConstant name="sql" type="fixed">
+					<value>
+<![CDATA[
+begin
+    dbms_mgwadm.reset_subscriber('?SUBSCRIBER_ID?');
+end;
+]]>
+					</value>
+				</assignSharedConstant>
+		   		<callGlobalAction name="sqlExecution"/>
+	   		</task>
+    	</actionScript>
+    </action>
+	<column name="SUBSCRIBER_ID">
+		<sqlName>SUBSCRIBER_ID</sqlName>
+		<title>Subscriber Id</title>
+		<type>s</type>
+		<primaryKey/>
+	</column>
+	<column name="PROP_TYPE">
+		<sqlName>PROP_TYPE</sqlName>
+		<title>Prop Type</title>
+		<type>n</type>
+	</column>
+	<column name="QUEUE_NAME">
+		<sqlName>QUEUE_NAME</sqlName>
+		<title>Queue Name</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="DESTINATION">
+		<sqlName>DESTINATION</sqlName>
+		<title>Destination</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="RULE">
+		<sqlName>RULE</sqlName>
+		<title>Rule</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="TRANSFORMATION">
+		<sqlName>TRANSFORMATION</sqlName>
+		<title>Transformation</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="EXCEPTION_QUEUE">
+		<sqlName>EXCEPTION_QUEUE</sqlName>
+		<title>Exception Queue</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="CONFIG_STATE">
+		<sqlName>CONFIG_STATE</sqlName>
+		<title>Config. State</title>
+		<type>n</type>
+	</column>
+	<column name="NUM_FAILS">
+		<sqlName>NUM_FAILS</sqlName>
+		<title>Fails</title>
+		<type>n</type>
+	</column>
+	<column name="ERR_TIME">
+		<sqlName>ERR_TIME</sqlName>
+		<title>Error Time</title>
+		<type>n</type>
+		<drillEnable/>
+	</column>
+	<column name="ERR_MESSAGE">
+		<sqlName>ERR_MESSAGE</sqlName>
+		<title>Error Message</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="CURR_PROP_MSGS">
+		<sqlName>CURR_PROP_MSGS</sqlName>
+		<title>Current Prop. Msgs</title>
+		<type>n</type>
+	</column>
+	<column name="CURR_EXQ_MSGS">
+		<sqlName>CURR_EXQ_MSGS</sqlName>
+		<title>Current Exq. Msgs</title>
+		<type>n</type>
+	</column>
+	<column name="FLAGS">
+		<sqlName>FLAGS</sqlName>
+		<title>Flags</title>
+		<type>n</type>
+	</column>
+	<column name="LINK_NAME">
+		<sqlName>LINK_NAME</sqlName>
+		<title>Link Name</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="COMMENTS">
+		<sqlName>COMMENTS</sqlName>
+		<title>Comments</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<action name="Drop">
+		<title>Drop</title>
+		<icon>images/trash.gif</icon>   
+    	<actionScript>
+    		<task>
+				<assignSharedConstant name="sql" type="fixed">
+					<value>
+<![CDATA[
+begin
+  dbms_mgwadm.remove_subscriber('?SUBSCRIBER_ID?', dbms_mgwadm.FORCE);
+end;
+]]>
+					</value>
+				</assignSharedConstant>
+		   		<callGlobalAction name="sqlExecution"/>
+	   		</task>
+    	</actionScript>
+    </action>
+
+</table>

@@ -1,0 +1,161 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2010 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+<table name="functionParm">
+	<sql_name>SYSCAT.FUNCPARMS</sql_name>
+	<singular_name>Function Parameter</singular_name>
+	<plural_name>Function Parameters</plural_name>
+	<description></description>
+	<disableEdit/>
+	<output>
+		<type name="DDL" destination="" title="" generator=""/>
+	</output>
+	<order_by_index name="FUNCSCHEMA" direction="A"/>
+	<order_by_index name="FUNCNAME" direction="A"/>
+	<order_by_index name="SPECIFICNAME" direction="A"/>
+	<order_by_index name="ROWTYPE" direction="A"/>
+	<order_by_index name="ORDINAL" direction="A"/>
+	<display_columns>
+		<col type="column" name="FUNCSCHEMA"/>
+		<col type="column" name="FUNCNAME"/>
+		<col type="column" name="SPECIFICNAME"/>
+		<col type="column" name="ROWTYPE"/>
+		<col type="column" name="ORDINAL"/>
+		<col type="column" name="PARMNAME"/>
+		<col type="column" name="TYPESCHEMA"/>
+		<col type="column" name="TYPENAME"/>
+		<col type="column" name="LENGTH"/>
+		<col type="column" name="SCALE"/>
+		<col type="column" name="CODEPAGE"/>
+		<col type="column" name="CAST_FUNCID"/>
+		<col type="column" name="AS_LOCATOR"/>
+		<col type="column" name="TARGET_TYPESCHEMA"/>
+		<col type="column" name="TARGET_TYPENAME"/>
+		<col type="column" name="SCOPE_TABSCHEMA"/>
+		<col type="column" name="SCOPE_TABNAME"/>
+		<col type="column" name="TRANSFORM_GRPNAME"/>
+	</display_columns>
+	<display_columns name="Specific Function">
+		<col type="column" name="ROWTYPE"/>
+		<col type="column" name="ORDINAL"/>
+		<col type="column" name="PARMNAME"/>
+		<col type="column" name="TYPESCHEMA"/>
+		<col type="column" name="TYPENAME"/>
+		<col type="column" name="LENGTH"/>
+		<col type="column" name="SCALE"/>
+		<col type="column" name="CODEPAGE"/>
+		<col type="column" name="CAST_FUNCID"/>
+		<col type="column" name="AS_LOCATOR"/>
+		<col type="column" name="TARGET_TYPESCHEMA"/>
+		<col type="column" name="TARGET_TYPENAME"/>
+		<col type="column" name="SCOPE_TABSCHEMA"/>
+		<col type="column" name="SCOPE_TABNAME"/>
+		<col type="column" name="TRANSFORM_GRPNAME"/>
+	</display_columns>
+	<column name="FUNCSCHEMA">
+		<c_sql_name>FUNCSCHEMA</c_sql_name>
+		<c_title>Schema</c_title>
+		<c_prefill>
+			<table>schema</table>
+			<column>SCHEMANAME</column>
+		</c_prefill>
+	</column>
+	<column name="FUNCNAME">
+		<c_sql_name>FUNCNAME</c_sql_name>
+		<c_title>Name</c_title>
+	</column>
+	<column name="SPECIFICNAME">
+		<c_sql_name>SPECIFICNAME</c_sql_name>
+		<c_title>Specific Name</c_title>
+	</column>
+	<column name="ROWTYPE">
+		<c_sql_name>ROWTYPE</c_sql_name>
+		<c_title>Row Type</c_title>
+		<c_prefill>y</c_prefill>						
+   		<c_column_mask>
+			<value_mask value="B"><mask>In/Out Parm</mask></value_mask>
+			<value_mask value="C"><mask>Out Casted</mask></value_mask>
+			<value_mask value="P"><mask>In</mask></value_mask>
+			<value_mask value="O"><mask>Out Parm</mask></value_mask>
+			<value_mask value="R"><mask>Out</mask></value_mask>
+   		</c_column_mask>		
+	</column>
+	<column name="ORDINAL">
+		<c_sql_name>ORDINAL</c_sql_name>
+		<c_title>Ordinal</c_title>
+	</column>
+	<column name="PARMNAME">
+		<c_sql_name>PARMNAME</c_sql_name>
+		<c_title>Parameter</c_title>
+	</column>
+	<column name="TYPESCHEMA">
+		<c_sql_name>TYPESCHEMA</c_sql_name>
+		<c_title>Type Schema</c_title>
+	</column>
+	<column name="TYPENAME">
+		<c_sql_name>TYPENAME</c_sql_name>
+		<c_title>Type Name</c_title>
+	</column>
+	<column name="LENGTH">
+		<c_sql_name>LENGTH</c_sql_name>
+		<c_title>Length</c_title>
+	</column>
+	<column name="SCALE">
+		<c_sql_name>SCALE</c_sql_name>
+		<c_title>Scale</c_title>
+	</column>
+	<column name="CODEPAGE">
+		<c_sql_name>CODEPAGE</c_sql_name>
+		<c_title>Code Page</c_title>
+	</column>
+	<column name="CAST_FUNCID">
+		<c_sql_name>CAST_FUNCID</c_sql_name>
+		<c_title>Cast Id.</c_title>
+	</column>
+	<column name="AS_LOCATOR">
+		<c_sql_name>AS_LOCATOR</c_sql_name>
+		<c_title>As Locator</c_title>
+	</column>
+	<column name="TARGET_TYPESCHEMA">
+		<c_sql_name>TARGET_TYPESCHEMA</c_sql_name>
+		<c_title>Target Type Schema</c_title>
+		<c_prefill>
+			<table>schema</table>
+			<column>SCHEMANAME</column>
+		</c_prefill>
+	</column>
+	<column name="TARGET_TYPENAME">
+		<c_sql_name>TARGET_TYPENAME</c_sql_name>
+		<c_title>Target Type Name</c_title>
+	</column>
+	<column name="SCOPE_TABSCHEMA">
+		<c_sql_name>SCOPE_TABSCHEMA</c_sql_name>
+		<c_title>Scope Schema</c_title>
+		<c_prefill>
+			<table>schema</table>
+			<column>SCHEMANAME</column>
+		</c_prefill>
+	</column>
+	<column name="SCOPE_TABNAME">
+		<c_sql_name>SCOPE_TABNAME</c_sql_name>
+		<c_title>Scope Table</c_title>
+	</column>
+	<column name="TRANSFORM_GRPNAME">
+		<c_sql_name>TRANSFORM_GRPNAME</c_sql_name>
+		<c_title>Transform Group</c_title>
+	</column>
+</table>

@@ -1,0 +1,20 @@
+<BR><BR><H2><B>Access to table data by Manager Joe from non-trusted connection</B></H2><HR><P>
+<?php
+  $baseDIR = $_POST["BASE_DIR"];
+?>
+<img src="?BASE_DIRECTORY?HTML/Joe.gif" />
+
+<p><b>You must log into the database as Joe before proceeding with this page.</b></p>
+<br>Joe is the manager of customer service department. Check if he can access <font face="courier">'credit_card'</font> table data when connected from non-trusted connection.</p>
+
+<br><br><h4>Operation</h4><br>
+
+Joe gets default role 'Mgr' privileges to perform SELECT, INSERT and UPDATE operations on <font face="courier">'credit_card'
+</font> table. 
+
+</P>
+
+<br><br><h4>Solution</h4><br>
+The query results in the right pane show that user Joe is not able to execute any of the SQL statements when 
+connected through non-trusted connection. Joe gets the privileges only when connection through trusted connection.
+

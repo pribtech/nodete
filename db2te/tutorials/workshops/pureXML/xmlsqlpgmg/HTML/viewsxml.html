@@ -1,0 +1,53 @@
+<p><b>Scenario</b></p>
+<p>
+	The hospital receptionist who fetches the patient's information to schedule appointment with a doctor needs to query only 
+	the patient basic information and information about the doctor who is attending the patient. To prevent the receptionist from fetching 
+	the patient's medical information or disease information the patient's PMD XML document should be protected.
+</p>
+<p><b>Operation</b></p>
+<p>
+	DB2 pure XML queries can be used inside SQL views to filter or fetch data which can be called by an application.
+	A SQL view is created to query the XML document.
+</p>
+<p>
+CREATE VIEW - Creates a View in the database. The view can contain a query which fetches data from single or more tables.
+The view retrieves only the patient's name, address and doctor information from the PMD XML document.
+</p>
+<p>
+Also the view uses a query that is indexed and though the view is used it uses the index for faster retrieval.
+</p>
+<p>
+	<b><code>CREATE INDEX</code></b>- to create an XML index for the PMD document.
+	<b><code>GENERATE KEY USING XMLPATTERN</code></b> - used to specify the key within the XML document.
+</p>
+<p><b>Solution</b></p>
+<p>
+	The receptionist is prevented from taking sensitive patient information by giving 
+	her a view which displays only basic patient information and his doctor's name. The data retrivel is also faster.
+</p>
+<p>
+The method to generate a Snapshot of how index is used is given below.
+</p>
+<p>
+Run the following steps on the DB2 CLP window to view the explain snapshot:
+</p>
+<p>
+<ul>
+
+<li>1. Change to directory DB2_install_directory\sqllib\misc</li>
+<li>2. Run db2 -tvf EXPLAIN.DDL. This creates the explain tables.</li>
+<li>3. Connect to the database as db2 connect to SAMPLE.</li>
+<li>4. Run db2 SET CURRENT EXPLAIN MODE=EXPLAIN</li>
+<li>5. Change to directory TE_install_directory\tutorials\workshops\pureXML\xmlsqlpgmg\HTML</li>
+<li>6. Run db2 -tvf view.db2</li>
+<li>7. Run db2 SET CURRENT EXPLAIN MODE=NO</li>
+<li>8. Run db2exfmt -d SAMPLE -1. This displays the explain access plan.</li>
+</ul>
+</p>
+<p><b></b></p>
+<p>
+The below is the snapshot of the index usage though data is fetched using the view.
+</p>
+<tr><a onclick="OpenURLInFloatingWindow('?BASE_DIRECTORY?/HTML/explain.php?BASE_DIR=?BASE_DIRECTORY?');"> Explain Snapshot</a></tr>
+</br>
+<tr></tr>

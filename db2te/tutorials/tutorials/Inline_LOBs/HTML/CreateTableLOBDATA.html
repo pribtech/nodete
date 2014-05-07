@@ -1,0 +1,22 @@
+<p>Run the SQL in the Ad Hoc command window to the right.</p>
+<h4>Create the base table</h4>
+<p>
+It creates a table with regular LOB column that you will use as a baseline to demonstrate the results of inline LOB.
+</p>
+
+<p>
+The LOBDATA table has two LOB columns. The VIEW_TEXT column is in Character Large Object (CLOB) data type. Maximum length of each CLOB value is 2 megabytes. The COLUMN_TEXT column is also in CLOB data type whose value can be up to 20 megabytes long. Note that to create CLOB strings greater than 1 gigabyte, you must specify the NOT LOGGED option.
+</p>
+
+<p>
+The <a onclick="OpenURLInFloatingWindow
+('http://db2id.torolab.ibm.com/cobra/nightly/topic/com.ibm.db2.luw.admin.ha.doc/doc/c0006079.html?noframes=true');">NOT LOGGED INITIALLY </a> clause is used here to reduce logging activities performed on the LOBDATA table. Logging is not engaged for any operations or changes made on the table in the same unit of work that NOT LOGGED INITIALLY is used.
+</p>
+
+<p>
+NOT LOGGED INITIALLY is very useful when you are not concerned about the recoverability for work done on the table. This reduces logging and improves performance.
+</p>
+
+
+<h4>Populate the table with data</h4>
+<p>It inserts 10,000 rows of data into the LOBDATA table.</p>

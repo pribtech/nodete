@@ -1,0 +1,53 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2009  2009 All rights reserved.
+ 
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+
+<menu type="leaf" branchDirectory=""  minVersion="9.7">
+	<pageWindow target="_active">
+		<panelHeaders refreshEnabled="true"/>
+		<splitPane direction="h" splitPercent="0.5">
+			<topPane>
+				<panel name="main" PrimaryContainer="true">
+					<panelHeaders refreshEnabled="true"/>
+					<link type="action" target="_self" window="_self" connectionRequired="y">
+						<parameterList>
+							<parameter name="table">Monitor/monSVSCWaits</parameter>
+							<parameter name="action">list_table</parameter>
+						</parameterList>
+					</link>				
+				</panel>
+			</topPane>
+			<bottomPane>
+				<panel name="detail">
+					<panelHeaders refreshEnabled="true"/>
+					<link type="action" target="_self" window="_self" connectionRequired="y">
+						<parameterList>
+							<parameter name="table">Monitor/monSVSCWaits</parameter>
+							<parameter name="action">chart</parameter>
+							<parameter name="$chartName">Workload Timings</parameter>
+							<parameter name="$type">pie</parameter>
+							<parameter name="$xAxis">SERVICE_SUPERCLASS_NAME</parameter>
+							<parameter name="$yAxis">AGENT_WAIT_TIME,POOL_READ_TIME,POOL_WRITE_TIME,DIRECT_READ_TIME,DIRECT_WRITE_TIME,FCM_RECV_WAIT_TIME,FCM_SEND_WAIT_TIME,IPC_RECV_WAIT_TIME,IPC_SEND_WAIT_TIME,LOCK_WAIT_TIME,LOG_BUFFER_WAIT_TIME,LOG_DISK_WAIT_TIME,TCPIP_RECV_WAIT_TIME,TCPIP_SEND_WAIT_TIME,WLM_QUEUE_TIME_TOTAL,TOTAL_SECTION_SORT_TIME,TOTAL_SECTION_SORT_PROC_TIME</parameter>
+							<parameter name="$slices">column</parameter>
+						</parameterList>
+					</link>		
+				</panel>
+			</bottomPane>
+		</splitPane>
+	</pageWindow>
+	<description>Workload Waits</description>
+</menu>

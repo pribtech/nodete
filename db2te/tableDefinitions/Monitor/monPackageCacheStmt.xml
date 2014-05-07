@@ -1,0 +1,1455 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2013 All rights reserved.
+  Copyright IBM Corp. 2007 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<table name="PKG_CACHE_STMT">	
+	<singularName>Package Cache Statement</singularName>
+	<pluralName>Package Cache Statements</pluralName>
+	<sqlName>PKG_CACHE_STMT</sqlName>
+	<function>MON_GET_PKG_CACHE_STMT('D',NULL,NULL,-2)</function>	
+	<messages><SQL0551N>Security issue. Please install "Monitoring Switches/Security" in Tools -> Installed Components</SQL0551N></messages>
+	<description>
+	This view is a 	point-in-time view of both static and dynamic SQL statements in the database package cache.
+	The Rows Returned column shows the percentage of the rows read by a statement that are also returned to the application. 
+  It is a good indication of the overall efficiency of the statement.	
+	The Time Working column shows the percentage of time spent by the statement working compared to the time waiting for resources.
+	It retrieves information using a 	
+  &lt;a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.sql.rtn.doc/doc/c0053963.html?noframes=true');"&gt;monitor table function&lt;/a&gt;
+  introduced in DB2 9.7.
+  Each row displays metrics for a statement returned by the
+	&lt;a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.sql.rtn.doc/doc/r0055017.html?noframes=true');"&gt;MON_GET_PKG_CACHE_STMT&lt;/a&gt;		
+	table function.
+	This view is not available for databases prior to DB2 9.7.
+	</description>	
+	<order_by_index name="average_time_per_execution" direction="D"/>
+	<output>
+		<type name="DDL" destination="" title="" generator=""/>
+		<type name="ADHOC" destination="adhoc" title="Statement" generator="XSL/compareSQLStmtTxt.xsl"/>
+	</output>		
+	<displayColumns>
+		<col type="action" name="visualExplain" />
+		<col type="action" name="db2advis" />
+		<col type="column" name="NUM_EXECUTIONS" />
+		<col type="column" name="average_time_per_execution" />
+		<col type="column" name="average_rows_per_execution" />
+		<col type="column" name="average_cpu_per_execution" />
+		<col type="column" name="return_effectiveness" />
+		<col type="column" name="active_wait_percent" />
+		<col type="column" name="STMT_TEXT" />
+		<col type="column" name="ROWS_READ" />
+		<col type="column" name="TOTAL_CPU_TIME" />
+		<col type="column" name="TOTAL_ACT_TIME" />
+		<col type="column" name="TOTAL_ACT_WAIT_TIME" />
+		<col type="column" name="POOL_READ_TIME" />
+		<col type="column" name="POOL_WRITE_TIME" />
+		<col type="column" name="DIRECT_READ_TIME" />
+		<col type="column" name="DIRECT_WRITE_TIME" />
+		<col type="column" name="LOCK_WAIT_TIME" />
+		<col type="column" name="LOCK_ESCALS" />
+		<col type="column" name="LOCK_WAITS" />
+		<col type="column" name="LOCK_TIMEOUTS" />
+		<col type="column" name="DEADLOCKS" />
+		<col type="column" name="SORT_OVERFLOWS" />
+		<col type="column" name="TOTAL_SORTS" />
+		<col type="column" name="INSERT_TIMESTAMP" />
+	</displayColumns>
+
+	<action name="visualExplain">
+		<title>Explain</title>
+    	<actionScript>
+    		<task>
+				<assignSharedConstant name="stmttext" type="blockValue">
+					<value>STMT_TEXT</value>
+				</assignSharedConstant>
+	   			<callGlobalAction name="DB2ExplainDynamicSQL"/>				
+	   		</task>
+    	</actionScript>
+    </action>
+	<action name="db2expln">
+		<title>db2expln</title>
+    	<actionScript>
+    		<task>
+    			<lock/>
+    			<action name="getSession" type="serverAction" >
+					<parameterList>
+						<parameter name="action" type="raw">
+							<value>getSessionVariable</value>
+						</parameter>
+						<parameter name="name[database]" type="fixed">
+							<value>Connections.USE_DATABASE_CONNECTION.database</value>
+						</parameter>
+						<parameter name="name[schema]" type="fixed">
+							<value>Connections.USE_DATABASE_CONNECTION.schema</value>
+						</parameter>
+					</parameterList>
+				</action>
+		    	<assignSharedConstant name="database-name" type="returnObject">
+					<value>getSession.returnValue.database</value>
+				</assignSharedConstant>
+		    	<assignSharedConstant name="schema-name" type="returnObject">
+					<value>getSession.returnValue.schema</value>
+				</assignSharedConstant>
+				<assignSharedConstant name="query-statement" type="blockValue">
+							<value>STMT_TEXT</value>
+				</assignSharedConstant>
+		   		<assignSharedConstant name="command" type="raw">
+					<value>System/db2expln.statement</value>
+				</assignSharedConstant>
+	   			<callGlobalAction name="systemCommandExecution"/>				
+    			<unlock/>
+	   		</task>
+    	</actionScript>
+    </action>
+
+	<action name="db2advis">
+		<title>Advisor</title>
+    	<actionScript>
+    		<task>
+    			<lock/>
+    			<action name="getSession" type="serverAction" >
+					<parameterList>
+						<parameter name="action" type="raw">
+							<value>getSessionVariable</value>
+						</parameter>
+						<parameter name="name[database]" type="fixed">
+							<value>Connections.USE_DATABASE_CONNECTION.database</value>
+						</parameter>
+						<parameter name="name[schema]" type="fixed">
+							<value>Connections.USE_DATABASE_CONNECTION.schema</value>
+						</parameter>
+					</parameterList>
+				</action>
+		    	<assignSharedConstant name="database-name" type="returnObject">
+					<value>getSession.returnValue.database</value>
+				</assignSharedConstant>
+		    	<assignSharedConstant name="schema-name" type="returnObject">
+					<value>getSession.returnValue.schema</value>
+				</assignSharedConstant>
+				<assignSharedConstant name="statement" type="blockValue">
+							<value>STMT_TEXT</value>
+				</assignSharedConstant>
+		   		<assignSharedConstant name="command" type="raw">
+					<value>System/db2advis.statement</value>
+				</assignSharedConstant>
+	   			<callGlobalAction name="systemCommandExecution"/>				
+    			<unlock/>
+	   		</task>
+    	</actionScript>
+    </action>
+	<column name="INSERT_TIMESTAMP">
+		<sqlName>INSERT_TIMESTAMP</sqlName>
+		<title>First Exec.</title>
+		<primary_key/>
+	</column>
+	<column name="EXECUTABLE_ID">
+		<sqlName>EXECUTABLE_ID</sqlName>
+		<title>Executable ID</title>
+		<type>s</type>
+	</column>
+	<column name="NUM_EXECUTIONS">
+		<sqlName>NUM_EXECUTIONS</sqlName>
+		<title>Exec's</title>
+		<type>n</type>
+	</column>
+	<column name="average_time_per_execution">
+		<sqlName>float(TOTAL_ACT_TIME)/1000/nullif(NUM_EXEC_WITH_METRICS,0)</sqlName>
+		<title>Avg Exec(s)</title>
+		<type>n</type>
+		<formatNumber round="true" toFixedVal="6"/>									
+		<style>
+			<option gt="1" style="ERROR"/>
+			<option gt="0.01" style="WARNING"/>
+		</style>
+	</column>
+	<column name="average_rows_per_execution">
+		<sqlName>float(ROWS_READ)/nullif(NUM_EXEC_WITH_METRICS,0)</sqlName>
+		<title>Avg Rows(s)</title>
+		<type>n</type>
+		<formatNumber round="true" toFixedVal="1"/>									
+		<style>
+			<option gt="100000" style="ERROR"/>
+			<option gt="1000" style="WARNING"/>
+		</style>
+	</column>
+	<column name="average_cpu_per_execution">
+		<sqlName>float(TOTAL_CPU_TIME)/1000000/nullif(NUM_EXEC_WITH_METRICS,0)</sqlName>
+		<title>Avg CPU(s)</title>
+		<type>n</type>
+		<formatNumber round="true" toFixedVal="6"/>									
+		<style>
+			<option gt="0.1" style="ERROR"/>
+			<option gt="0.001" style="WARNING"/>
+		</style>
+	</column>
+	<column name="return_effectiveness">
+		<sqlName>100*FLOAT(ROWS_RETURNED)/(case when ROWS_READ=0 then 1 else ROWS_READ end)</sqlName>
+		<title>Selected %</title>
+		<type>bg</type>
+		<graphattributes flipColor="y"/>
+	</column>
+	<column name="active_wait_percent">
+		<sqlName>100*float(TOTAL_ACT_WAIT_TIME)/nullif(TOTAL_ACT_TIME,0)</sqlName>
+		<title>Wait %</title>
+		<type>bg</type>
+		<graphattributes flipColor="n"/>
+	</column>
+	<column name="ROWS_MODIFIED">
+		<sqlName>ROWS_MODIFIED</sqlName>
+		<title>Rows Modified</title>
+		<type>n</type>
+	</column>
+	<column name="ROWS_READ">
+		<sqlName>ROWS_READ</sqlName>
+		<title>Rows Read</title>
+		<type>n</type>
+	</column>
+	<column name="ROWS_RETURNED">
+		<sqlName>ROWS_RETURNED</sqlName>
+		<title>Rows Returned</title>
+		<type>n</type>
+	</column>
+	<column name="TOTAL_ACT_TIME">
+		<sqlName>float(TOTAL_ACT_TIME)/1000 </sqlName>
+		<title>Total Activity (s)</title>
+		<type>n</type>
+		<formatNumber round="true" toFixedVal="3"/>									
+	</column>
+	<column name="TOTAL_ACT_WAIT_TIME">
+		<sqlName>float(TOTAL_ACT_WAIT_TIME)/1000</sqlName>
+		<title>Total Wait (s)</title>
+		<type>n</type>
+		<formatNumber round="true" toFixedVal="3"/>									
+	</column>
+	<column name="TOTAL_CPU_TIME">
+		<sqlName>float(TOTAL_CPU_TIME)/1000000</sqlName>
+		<title>Total CPU (s)</title>
+		<type>n</type>
+		<formatNumber round="true" toFixedVal="6"/>									
+	</column>
+	<column name="POOL_READ_TIME">
+		<sqlName>float(POOL_READ_TIME)/1000</sqlName>
+		<title>Pool Read (s)</title>
+		<type>n</type>
+		<formatNumber round="true" toFixedVal="3"/>									
+	</column>
+		<column name="POOL_WRITE_TIME">
+		<sqlName>float(POOL_WRITE_TIME)/1000</sqlName>
+		<title>Pool Write (s)</title>
+		<type>n</type>
+		<formatNumber round="true" toFixedVal="3"/>									
+	</column>
+	<column name="DIRECT_READ_TIME">
+		<sqlName>float(DIRECT_READ_TIME)/1000</sqlName>
+		<title>Direct Read (s)</title>
+		<type>n</type>
+		<formatNumber round="true" toFixedVal="3"/>									
+	</column>
+	<column name="DIRECT_WRITE_TIME">
+		<sqlName>float(DIRECT_WRITE_TIME)/1000</sqlName>
+		<title>Direct Write (s)</title>
+		<type>n</type>
+		<formatNumber round="true" toFixedVal="3"/>									
+	</column>
+	<column name="LOCK_WAIT_TIME">
+		<sqlName>float(LOCK_WAIT_TIME)/1000</sqlName>
+		<title>Lock Wait (s)</title>
+		<type>n</type>
+		<formatNumber round="true" toFixedVal="3"/>									
+	</column>
+	<column name="LOCK_ESCALS">
+		<sqlName>LOCK_ESCALS</sqlName>
+		<title>Lock Escallations</title>
+		<type>n</type>
+	</column>
+	<column name="LOCK_WAITS">
+		<sqlName>LOCK_WAITS</sqlName>
+		<title>Lock Waits</title>
+		<type>n</type>
+	</column>
+	<column name="TOTAL_SORTS">
+		<sqlName>TOTAL_SORTS</sqlName>
+		<title>Total Sorts</title>
+		<type>n</type>
+	</column>
+	<column name="LOCK_TIMEOUTS">
+	<sqlName>LOCK_TIMEOUTS</sqlName>
+		<title>Lock Timeouts</title>
+		<type>n</type>
+	</column>
+	<column name="DEADLOCKS">
+		<sqlName>DEADLOCKS</sqlName>
+		<title>Deadlocks</title>
+		<type>n</type>
+	</column>
+	<column name="SORT_OVERFLOWS">
+		<sqlName>SORT_OVERFLOWS</sqlName>
+		<title>Sort Overflows</title>
+		<type>n</type>
+	</column>
+	<column name="STMT_TEXT">
+		<sqlName>STMT_TEXT</sqlName>
+		<title>Statement</title>
+		<type>l</type>
+	</column>
+	<column name="MEMBER" minVersion="10.5">
+		<sqlName>MEMBER</sqlName>
+		<title>Member</title>
+		<type>n</type>
+	</column>
+	<column name="SECTION_TYPE" minVersion="10.5">
+		<sqlName>SECTION_TYPE</sqlName>
+		<title>Section Type</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="PACKAGE_SCHEMA" minVersion="10.5">
+		<sqlName>PACKAGE_SCHEMA</sqlName>
+		<title>Package Schema</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="PACKAGE_NAME" minVersion="10.5">
+		<sqlName>PACKAGE_NAME</sqlName>
+		<title>Package Name</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="PACKAGE_VERSION_ID" minVersion="10.5">
+		<sqlName>PACKAGE_VERSION_ID</sqlName>
+		<title>Package Version Id</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="SECTION_NUMBER" minVersion="10.5">
+		<sqlName>SECTION_NUMBER</sqlName>
+		<title>Section Number</title>
+		<type>n</type>
+	</column>
+	<column name="EFFECTIVE_ISOLATION" minVersion="10.5">
+		<sqlName>EFFECTIVE_ISOLATION</sqlName>
+		<title>Effective Isolation</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="NUM_EXEC_WITH_METRICS" minVersion="10.5">
+		<sqlName>NUM_EXEC_WITH_METRICS</sqlName>
+		<title>Num Exec With Metrics</title>
+		<type>n</type>
+	</column>
+	<column name="PREP_TIME" minVersion="10.5">
+		<sqlName>PREP_TIME</sqlName>
+		<title>Prep Time</title>
+		<type>n</type>
+	</column>
+	<column name="TOTAL_SECTION_SORT_TIME" minVersion="10.5">
+		<sqlName>TOTAL_SECTION_SORT_TIME</sqlName>
+		<title>Total Section Sort Time</title>
+		<type>n</type>
+	</column>
+	<column name="TOTAL_SECTION_SORT_PROC_TIME" minVersion="10.5">
+		<sqlName>TOTAL_SECTION_SORT_PROC_TIME</sqlName>
+		<title>Total Section Sort Proc Time</title>
+		<type>n</type>
+	</column>
+	<column name="TOTAL_SECTION_SORTS" minVersion="10.5">
+		<sqlName>TOTAL_SECTION_SORTS</sqlName>
+		<title>Total Section Sorts</title>
+		<type>n</type>
+	</column>
+	<column name="DIRECT_READS" minVersion="10.5">
+		<sqlName>DIRECT_READS</sqlName>
+		<title>Direct Reads</title>
+		<type>n</type>
+	</column>
+	<column name="DIRECT_READ_REQS" minVersion="10.5">
+		<sqlName>DIRECT_READ_REQS</sqlName>
+		<title>Direct Read Reqs</title>
+		<type>n</type>
+	</column>
+	<column name="DIRECT_WRITES" minVersion="10.5">
+		<sqlName>DIRECT_WRITES</sqlName>
+		<title>Direct Writes</title>
+		<type>n</type>
+	</column>
+	<column name="DIRECT_WRITE_REQS" minVersion="10.5">
+		<sqlName>DIRECT_WRITE_REQS</sqlName>
+		<title>Direct Write Reqs</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_DATA_L_READS" minVersion="10.5">
+		<sqlName>POOL_DATA_L_READS</sqlName>
+		<title>Pool Data L Reads</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_TEMP_DATA_L_READS" minVersion="10.5">
+		<sqlName>POOL_TEMP_DATA_L_READS</sqlName>
+		<title>Pool Temp Data L Reads</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_XDA_L_READS" minVersion="10.5">
+		<sqlName>POOL_XDA_L_READS</sqlName>
+		<title>Pool Xda L Reads</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_TEMP_XDA_L_READS" minVersion="10.5">
+		<sqlName>POOL_TEMP_XDA_L_READS</sqlName>
+		<title>Pool Temp Xda L Reads</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_INDEX_L_READS" minVersion="10.5">
+		<sqlName>POOL_INDEX_L_READS</sqlName>
+		<title>Pool Index L Reads</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_TEMP_INDEX_L_READS" minVersion="10.5">
+		<sqlName>POOL_TEMP_INDEX_L_READS</sqlName>
+		<title>Pool Temp Index L Reads</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_DATA_P_READS" minVersion="10.5">
+		<sqlName>POOL_DATA_P_READS</sqlName>
+		<title>Pool Data P Reads</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_TEMP_DATA_P_READS" minVersion="10.5">
+		<sqlName>POOL_TEMP_DATA_P_READS</sqlName>
+		<title>Pool Temp Data P Reads</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_XDA_P_READS" minVersion="10.5">
+		<sqlName>POOL_XDA_P_READS</sqlName>
+		<title>Pool Xda P Reads</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_TEMP_XDA_P_READS" minVersion="10.5">
+		<sqlName>POOL_TEMP_XDA_P_READS</sqlName>
+		<title>Pool Temp Xda P Reads</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_INDEX_P_READS" minVersion="10.5">
+		<sqlName>POOL_INDEX_P_READS</sqlName>
+		<title>Pool Index P Reads</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_TEMP_INDEX_P_READS" minVersion="10.5">
+		<sqlName>POOL_TEMP_INDEX_P_READS</sqlName>
+		<title>Pool Temp Index P Reads</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_DATA_WRITES" minVersion="10.5">
+		<sqlName>POOL_DATA_WRITES</sqlName>
+		<title>Pool Data Writes</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_XDA_WRITES" minVersion="10.5">
+		<sqlName>POOL_XDA_WRITES</sqlName>
+		<title>Pool Xda Writes</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_INDEX_WRITES" minVersion="10.5">
+		<sqlName>POOL_INDEX_WRITES</sqlName>
+		<title>Pool Index Writes</title>
+		<type>n</type>
+	</column>
+	<column name="POST_THRESHOLD_SORTS" minVersion="10.5">
+		<sqlName>POST_THRESHOLD_SORTS</sqlName>
+		<title>Post Threshold Sorts</title>
+		<type>n</type>
+	</column>
+	<column name="POST_SHRTHRESHOLD_SORTS" minVersion="10.5">
+		<sqlName>POST_SHRTHRESHOLD_SORTS</sqlName>
+		<title>Post Shrthreshold Sorts</title>
+		<type>n</type>
+	</column>
+	<column name="WLM_QUEUE_TIME_TOTAL" minVersion="10.5">
+		<sqlName>WLM_QUEUE_TIME_TOTAL</sqlName>
+		<title>Wlm Queue Time Total</title>
+		<type>n</type>
+	</column>
+	<column name="WLM_QUEUE_ASSIGNMENTS_TOTAL" minVersion="10.5">
+		<sqlName>WLM_QUEUE_ASSIGNMENTS_TOTAL</sqlName>
+		<title>Wlm Queue Assignments Total</title>
+		<type>n</type>
+	</column>
+	<column name="FCM_RECV_VOLUME" minVersion="10.5">
+		<sqlName>FCM_RECV_VOLUME</sqlName>
+		<title>Fcm Recv Volume</title>
+		<type>n</type>
+	</column>
+	<column name="FCM_RECVS_TOTAL" minVersion="10.5">
+		<sqlName>FCM_RECVS_TOTAL</sqlName>
+		<title>Fcm Recvs Total</title>
+		<type>n</type>
+	</column>
+	<column name="FCM_SEND_VOLUME" minVersion="10.5">
+		<sqlName>FCM_SEND_VOLUME</sqlName>
+		<title>Fcm Send Volume</title>
+		<type>n</type>
+	</column>
+	<column name="FCM_SENDS_TOTAL" minVersion="10.5">
+		<sqlName>FCM_SENDS_TOTAL</sqlName>
+		<title>Fcm Sends Total</title>
+		<type>n</type>
+	</column>
+	<column name="FCM_RECV_WAIT_TIME" minVersion="10.5">
+		<sqlName>FCM_RECV_WAIT_TIME</sqlName>
+		<title>Fcm Recv Wait Time</title>
+		<type>n</type>
+	</column>
+	<column name="FCM_SEND_WAIT_TIME" minVersion="10.5">
+		<sqlName>FCM_SEND_WAIT_TIME</sqlName>
+		<title>Fcm Send Wait Time</title>
+		<type>n</type>
+	</column>
+	<column name="LOG_BUFFER_WAIT_TIME" minVersion="10.5">
+		<sqlName>LOG_BUFFER_WAIT_TIME</sqlName>
+		<title>Log Buffer Wait Time</title>
+		<type>n</type>
+	</column>
+	<column name="NUM_LOG_BUFFER_FULL" minVersion="10.5">
+		<sqlName>NUM_LOG_BUFFER_FULL</sqlName>
+		<title>Num Log Buffer Full</title>
+		<type>n</type>
+	</column>
+	<column name="LOG_DISK_WAIT_TIME" minVersion="10.5">
+		<sqlName>LOG_DISK_WAIT_TIME</sqlName>
+		<title>Log Disk Wait Time</title>
+		<type>n</type>
+	</column>
+	<column name="LOG_DISK_WAITS_TOTAL" minVersion="10.5">
+		<sqlName>LOG_DISK_WAITS_TOTAL</sqlName>
+		<title>Log Disk Waits Total</title>
+		<type>n</type>
+	</column>
+	<column name="LAST_METRICS_UPDATE" minVersion="10.5">
+		<sqlName>LAST_METRICS_UPDATE</sqlName>
+		<title>Last Metrics Update</title>
+		<type>n</type>
+	</column>
+	<column name="NUM_COORD_EXEC" minVersion="10.5">
+		<sqlName>NUM_COORD_EXEC</sqlName>
+		<title>Num Coord Exec</title>
+		<type>n</type>
+	</column>
+	<column name="NUM_COORD_EXEC_WITH_METRICS" minVersion="10.5">
+		<sqlName>NUM_COORD_EXEC_WITH_METRICS</sqlName>
+		<title>Num Coord Exec With Metrics</title>
+		<type>n</type>
+	</column>
+	<column name="VALID" minVersion="10.5">
+		<sqlName>VALID</sqlName>
+		<title>Valid</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="TOTAL_ROUTINE_TIME" minVersion="10.5">
+		<sqlName>TOTAL_ROUTINE_TIME</sqlName>
+		<title>Total Routine Time</title>
+		<type>n</type>
+	</column>
+	<column name="TOTAL_ROUTINE_INVOCATIONS" minVersion="10.5">
+		<sqlName>TOTAL_ROUTINE_INVOCATIONS</sqlName>
+		<title>Total Routine Invocations</title>
+		<type>n</type>
+	</column>
+	<column name="ROUTINE_ID" minVersion="10.5">
+		<sqlName>ROUTINE_ID</sqlName>
+		<title>Routine Id</title>
+		<type>n</type>
+	</column>
+	<column name="STMT_TYPE_ID" minVersion="10.5">
+		<sqlName>STMT_TYPE_ID</sqlName>
+		<title>Stmt Type Id</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="QUERY_COST_ESTIMATE" minVersion="10.5">
+		<sqlName>QUERY_COST_ESTIMATE</sqlName>
+		<title>Query Cost Estimate</title>
+		<type>n</type>
+	</column>
+	<column name="STMT_PKG_CACHE_ID" minVersion="10.5">
+		<sqlName>STMT_PKG_CACHE_ID</sqlName>
+		<title>Stmt Pkg Cache Id</title>
+		<type>n</type>
+	</column>
+	<column name="COORD_STMT_EXEC_TIME" minVersion="10.5">
+		<sqlName>COORD_STMT_EXEC_TIME</sqlName>
+		<title>Coord Stmt Exec Time</title>
+		<type>n</type>
+	</column>
+	<column name="STMT_EXEC_TIME" minVersion="10.5">
+		<sqlName>STMT_EXEC_TIME</sqlName>
+		<title>Stmt Exec Time</title>
+		<type>n</type>
+	</column>
+	<column name="TOTAL_SECTION_TIME" minVersion="10.5">
+		<sqlName>TOTAL_SECTION_TIME</sqlName>
+		<title>Total Section Time</title>
+		<type>n</type>
+	</column>
+	<column name="TOTAL_SECTION_PROC_TIME" minVersion="10.5">
+		<sqlName>TOTAL_SECTION_PROC_TIME</sqlName>
+		<title>Total Section Proc Time</title>
+		<type>n</type>
+	</column>
+	<column name="TOTAL_ROUTINE_NON_SECT_TIME" minVersion="10.5">
+		<sqlName>TOTAL_ROUTINE_NON_SECT_TIME</sqlName>
+		<title>Total Routine Non Sect Time</title>
+		<type>n</type>
+	</column>
+	<column name="TOTAL_ROUTINE_NON_SECT_PROC_TIME" minVersion="10.5">
+		<sqlName>TOTAL_ROUTINE_NON_SECT_PROC_TIME</sqlName>
+		<title>Total Routine Non Sect Proc Time</title>
+		<type>n</type>
+	</column>
+	<column name="LOCK_WAITS_GLOBAL" minVersion="10.5">
+		<sqlName>LOCK_WAITS_GLOBAL</sqlName>
+		<title>Lock Waits Global</title>
+		<type>n</type>
+	</column>
+	<column name="LOCK_WAIT_TIME_GLOBAL" minVersion="10.5">
+		<sqlName>LOCK_WAIT_TIME_GLOBAL</sqlName>
+		<title>Lock Wait Time Global</title>
+		<type>n</type>
+	</column>
+	<column name="LOCK_TIMEOUTS_GLOBAL" minVersion="10.5">
+		<sqlName>LOCK_TIMEOUTS_GLOBAL</sqlName>
+		<title>Lock Timeouts Global</title>
+		<type>n</type>
+	</column>
+	<column name="LOCK_ESCALS_MAXLOCKS" minVersion="10.5">
+		<sqlName>LOCK_ESCALS_MAXLOCKS</sqlName>
+		<title>Lock Escals Maxlocks</title>
+		<type>n</type>
+	</column>
+	<column name="LOCK_ESCALS_LOCKLIST" minVersion="10.5">
+		<sqlName>LOCK_ESCALS_LOCKLIST</sqlName>
+		<title>Lock Escals Locklist</title>
+		<type>n</type>
+	</column>
+	<column name="LOCK_ESCALS_GLOBAL" minVersion="10.5">
+		<sqlName>LOCK_ESCALS_GLOBAL</sqlName>
+		<title>Lock Escals Global</title>
+		<type>n</type>
+	</column>
+	<column name="RECLAIM_WAIT_TIME" minVersion="10.5">
+		<sqlName>RECLAIM_WAIT_TIME</sqlName>
+		<title>Reclaim Wait Time</title>
+		<type>n</type>
+	</column>
+	<column name="SPACEMAPPAGE_RECLAIM_WAIT_TIME" minVersion="10.5">
+		<sqlName>SPACEMAPPAGE_RECLAIM_WAIT_TIME</sqlName>
+		<title>Spacemappage Reclaim Wait Time</title>
+		<type>n</type>
+	</column>
+	<column name="CF_WAITS" minVersion="10.5">
+		<sqlName>CF_WAITS</sqlName>
+		<title>Cf Waits</title>
+		<type>n</type>
+	</column>
+	<column name="CF_WAIT_TIME" minVersion="10.5">
+		<sqlName>CF_WAIT_TIME</sqlName>
+		<title>Cf Wait Time</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_DATA_GBP_L_READS" minVersion="10.5">
+		<sqlName>POOL_DATA_GBP_L_READS</sqlName>
+		<title>Pool Data Gbp L Reads</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_DATA_GBP_P_READS" minVersion="10.5">
+		<sqlName>POOL_DATA_GBP_P_READS</sqlName>
+		<title>Pool Data Gbp P Reads</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_DATA_LBP_PAGES_FOUND" minVersion="10.5">
+		<sqlName>POOL_DATA_LBP_PAGES_FOUND</sqlName>
+		<title>Pool Data Lbp Pages Found</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_DATA_GBP_INVALID_PAGES" minVersion="10.5">
+		<sqlName>POOL_DATA_GBP_INVALID_PAGES</sqlName>
+		<title>Pool Data Gbp Invalid Pages</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_INDEX_GBP_L_READS" minVersion="10.5">
+		<sqlName>POOL_INDEX_GBP_L_READS</sqlName>
+		<title>Pool Index Gbp L Reads</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_INDEX_GBP_P_READS" minVersion="10.5">
+		<sqlName>POOL_INDEX_GBP_P_READS</sqlName>
+		<title>Pool Index Gbp P Reads</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_INDEX_LBP_PAGES_FOUND" minVersion="10.5">
+		<sqlName>POOL_INDEX_LBP_PAGES_FOUND</sqlName>
+		<title>Pool Index Lbp Pages Found</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_INDEX_GBP_INVALID_PAGES" minVersion="10.5">
+		<sqlName>POOL_INDEX_GBP_INVALID_PAGES</sqlName>
+		<title>Pool Index Gbp Invalid Pages</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_XDA_GBP_L_READS" minVersion="10.5">
+		<sqlName>POOL_XDA_GBP_L_READS</sqlName>
+		<title>Pool Xda Gbp L Reads</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_XDA_GBP_P_READS" minVersion="10.5">
+		<sqlName>POOL_XDA_GBP_P_READS</sqlName>
+		<title>Pool Xda Gbp P Reads</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_XDA_LBP_PAGES_FOUND" minVersion="10.5">
+		<sqlName>POOL_XDA_LBP_PAGES_FOUND</sqlName>
+		<title>Pool Xda Lbp Pages Found</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_XDA_GBP_INVALID_PAGES" minVersion="10.5">
+		<sqlName>POOL_XDA_GBP_INVALID_PAGES</sqlName>
+		<title>Pool Xda Gbp Invalid Pages</title>
+		<type>n</type>
+	</column>
+	<column name="AUDIT_EVENTS_TOTAL" minVersion="10.5">
+		<sqlName>AUDIT_EVENTS_TOTAL</sqlName>
+		<title>Audit Events Total</title>
+		<type>n</type>
+	</column>
+	<column name="AUDIT_FILE_WRITES_TOTAL" minVersion="10.5">
+		<sqlName>AUDIT_FILE_WRITES_TOTAL</sqlName>
+		<title>Audit File Writes Total</title>
+		<type>n</type>
+	</column>
+	<column name="AUDIT_FILE_WRITE_WAIT_TIME" minVersion="10.5">
+		<sqlName>AUDIT_FILE_WRITE_WAIT_TIME</sqlName>
+		<title>Audit File Write Wait Time</title>
+		<type>n</type>
+	</column>
+	<column name="AUDIT_SUBSYSTEM_WAITS_TOTAL" minVersion="10.5">
+		<sqlName>AUDIT_SUBSYSTEM_WAITS_TOTAL</sqlName>
+		<title>Audit Subsystem Waits Total</title>
+		<type>n</type>
+	</column>
+	<column name="AUDIT_SUBSYSTEM_WAIT_TIME" minVersion="10.5">
+		<sqlName>AUDIT_SUBSYSTEM_WAIT_TIME</sqlName>
+		<title>Audit Subsystem Wait Time</title>
+		<type>n</type>
+	</column>
+	<column name="DIAGLOG_WRITES_TOTAL" minVersion="10.5">
+		<sqlName>DIAGLOG_WRITES_TOTAL</sqlName>
+		<title>Diaglog Writes Total</title>
+		<type>n</type>
+	</column>
+	<column name="DIAGLOG_WRITE_WAIT_TIME" minVersion="10.5">
+		<sqlName>DIAGLOG_WRITE_WAIT_TIME</sqlName>
+		<title>Diaglog Write Wait Time</title>
+		<type>n</type>
+	</column>
+	<column name="FCM_MESSAGE_RECVS_TOTAL" minVersion="10.5">
+		<sqlName>FCM_MESSAGE_RECVS_TOTAL</sqlName>
+		<title>Fcm Message Recvs Total</title>
+		<type>n</type>
+	</column>
+	<column name="FCM_MESSAGE_RECV_VOLUME" minVersion="10.5">
+		<sqlName>FCM_MESSAGE_RECV_VOLUME</sqlName>
+		<title>Fcm Message Recv Volume</title>
+		<type>n</type>
+	</column>
+	<column name="FCM_MESSAGE_RECV_WAIT_TIME" minVersion="10.5">
+		<sqlName>FCM_MESSAGE_RECV_WAIT_TIME</sqlName>
+		<title>Fcm Message Recv Wait Time</title>
+		<type>n</type>
+	</column>
+	<column name="FCM_MESSAGE_SENDS_TOTAL" minVersion="10.5">
+		<sqlName>FCM_MESSAGE_SENDS_TOTAL</sqlName>
+		<title>Fcm Message Sends Total</title>
+		<type>n</type>
+	</column>
+	<column name="FCM_MESSAGE_SEND_VOLUME" minVersion="10.5">
+		<sqlName>FCM_MESSAGE_SEND_VOLUME</sqlName>
+		<title>Fcm Message Send Volume</title>
+		<type>n</type>
+	</column>
+	<column name="FCM_MESSAGE_SEND_WAIT_TIME" minVersion="10.5">
+		<sqlName>FCM_MESSAGE_SEND_WAIT_TIME</sqlName>
+		<title>Fcm Message Send Wait Time</title>
+		<type>n</type>
+	</column>
+	<column name="FCM_TQ_RECVS_TOTAL" minVersion="10.5">
+		<sqlName>FCM_TQ_RECVS_TOTAL</sqlName>
+		<title>Fcm Tq Recvs Total</title>
+		<type>n</type>
+	</column>
+	<column name="FCM_TQ_RECV_VOLUME" minVersion="10.5">
+		<sqlName>FCM_TQ_RECV_VOLUME</sqlName>
+		<title>Fcm Tq Recv Volume</title>
+		<type>n</type>
+	</column>
+	<column name="FCM_TQ_RECV_WAIT_TIME" minVersion="10.5">
+		<sqlName>FCM_TQ_RECV_WAIT_TIME</sqlName>
+		<title>Fcm Tq Recv Wait Time</title>
+		<type>n</type>
+	</column>
+	<column name="FCM_TQ_SENDS_TOTAL" minVersion="10.5">
+		<sqlName>FCM_TQ_SENDS_TOTAL</sqlName>
+		<title>Fcm Tq Sends Total</title>
+		<type>n</type>
+	</column>
+	<column name="FCM_TQ_SEND_VOLUME" minVersion="10.5">
+		<sqlName>FCM_TQ_SEND_VOLUME</sqlName>
+		<title>Fcm Tq Send Volume</title>
+		<type>n</type>
+	</column>
+	<column name="FCM_TQ_SEND_WAIT_TIME" minVersion="10.5">
+		<sqlName>FCM_TQ_SEND_WAIT_TIME</sqlName>
+		<title>Fcm Tq Send Wait Time</title>
+		<type>n</type>
+	</column>
+	<column name="NUM_LW_THRESH_EXCEEDED" minVersion="10.5">
+		<sqlName>NUM_LW_THRESH_EXCEEDED</sqlName>
+		<title>Num Lw Thresh Exceeded</title>
+		<type>n</type>
+	</column>
+	<column name="THRESH_VIOLATIONS" minVersion="10.5">
+		<sqlName>THRESH_VIOLATIONS</sqlName>
+		<title>Thresh Violations</title>
+		<type>n</type>
+	</column>
+	<column name="TOTAL_APP_SECTION_EXECUTIONS" minVersion="10.5">
+		<sqlName>TOTAL_APP_SECTION_EXECUTIONS</sqlName>
+		<title>Total App Section Executions</title>
+		<type>n</type>
+	</column>
+	<column name="TOTAL_ROUTINE_USER_CODE_PROC_TIME" minVersion="10.5">
+		<sqlName>TOTAL_ROUTINE_USER_CODE_PROC_TIME</sqlName>
+		<title>Total Routine User Code Proc Time</title>
+		<type>n</type>
+	</column>
+	<column name="TOTAL_ROUTINE_USER_CODE_TIME" minVersion="10.5">
+		<sqlName>TOTAL_ROUTINE_USER_CODE_TIME</sqlName>
+		<title>Total Routine User Code Time</title>
+		<type>n</type>
+	</column>
+	<column name="TQ_TOT_SEND_SPILLS" minVersion="10.5">
+		<sqlName>TQ_TOT_SEND_SPILLS</sqlName>
+		<title>Tq Tot Send Spills</title>
+		<type>n</type>
+	</column>
+	<column name="EVMON_WAIT_TIME" minVersion="10.5">
+		<sqlName>EVMON_WAIT_TIME</sqlName>
+		<title>Evmon Wait Time</title>
+		<type>n</type>
+	</column>
+	<column name="EVMON_WAITS_TOTAL" minVersion="10.5">
+		<sqlName>EVMON_WAITS_TOTAL</sqlName>
+		<title>Evmon Waits Total</title>
+		<type>n</type>
+	</column>
+	<column name="TOTAL_EXTENDED_LATCH_WAIT_TIME" minVersion="10.5">
+		<sqlName>TOTAL_EXTENDED_LATCH_WAIT_TIME</sqlName>
+		<title>Total Extended Latch Wait Time</title>
+		<type>n</type>
+	</column>
+	<column name="TOTAL_EXTENDED_LATCH_WAITS" minVersion="10.5">
+		<sqlName>TOTAL_EXTENDED_LATCH_WAITS</sqlName>
+		<title>Total Extended Latch Waits</title>
+		<type>n</type>
+	</column>
+	<column name="MAX_COORD_STMT_EXEC_TIME" minVersion="10.5">
+		<sqlName>MAX_COORD_STMT_EXEC_TIME</sqlName>
+		<title>Max Coord Stmt Exec Time</title>
+		<type>n</type>
+	</column>
+	<column name="MAX_COORD_STMT_EXEC_TIMESTAMP" minVersion="10.5">
+		<sqlName>MAX_COORD_STMT_EXEC_TIMESTAMP</sqlName>
+		<title>Max Coord Stmt Exec Timestamp</title>
+		<type>n</type>
+	</column>
+	<column name="TOTAL_DISP_RUN_QUEUE_TIME" minVersion="10.5">
+		<sqlName>TOTAL_DISP_RUN_QUEUE_TIME</sqlName>
+		<title>Total Disp Run Queue Time</title>
+		<type>n</type>
+	</column>
+	<column name="QUERY_DATA_TAG_LIST" minVersion="10.5">
+		<sqlName>QUERY_DATA_TAG_LIST</sqlName>
+		<title>Query Data Tag List</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="TOTAL_STATS_FABRICATION_TIME" minVersion="10.5">
+		<sqlName>TOTAL_STATS_FABRICATION_TIME</sqlName>
+		<title>Total Stats Fabrication Time</title>
+		<type>n</type>
+	</column>
+	<column name="TOTAL_STATS_FABRICATIONS" minVersion="10.5">
+		<sqlName>TOTAL_STATS_FABRICATIONS</sqlName>
+		<title>Total Stats Fabrications</title>
+		<type>n</type>
+	</column>
+	<column name="TOTAL_SYNC_RUNSTATS_TIME" minVersion="10.5">
+		<sqlName>TOTAL_SYNC_RUNSTATS_TIME</sqlName>
+		<title>Total Sync Runstats Time</title>
+		<type>n</type>
+	</column>
+	<column name="TOTAL_SYNC_RUNSTATS" minVersion="10.5">
+		<sqlName>TOTAL_SYNC_RUNSTATS</sqlName>
+		<title>Total Sync Runstats</title>
+		<type>n</type>
+	</column>
+	<column name="TOTAL_PEDS" minVersion="10.5">
+		<sqlName>TOTAL_PEDS</sqlName>
+		<title>Total Peds</title>
+		<type>n</type>
+	</column>
+	<column name="DISABLED_PEDS" minVersion="10.5">
+		<sqlName>DISABLED_PEDS</sqlName>
+		<title>Disabled Peds</title>
+		<type>n</type>
+	</column>
+	<column name="POST_THRESHOLD_PEDS" minVersion="10.5">
+		<sqlName>POST_THRESHOLD_PEDS</sqlName>
+		<title>Post Threshold Peds</title>
+		<type>n</type>
+	</column>
+	<column name="TOTAL_PEAS" minVersion="10.5">
+		<sqlName>TOTAL_PEAS</sqlName>
+		<title>Total Peas</title>
+		<type>n</type>
+	</column>
+	<column name="POST_THRESHOLD_PEAS" minVersion="10.5">
+		<sqlName>POST_THRESHOLD_PEAS</sqlName>
+		<title>Post Threshold Peas</title>
+		<type>n</type>
+	</column>
+	<column name="TQ_SORT_HEAP_REQUESTS" minVersion="10.5">
+		<sqlName>TQ_SORT_HEAP_REQUESTS</sqlName>
+		<title>Tq Sort Heap Requests</title>
+		<type>n</type>
+	</column>
+	<column name="TQ_SORT_HEAP_REJECTIONS" minVersion="10.5">
+		<sqlName>TQ_SORT_HEAP_REJECTIONS</sqlName>
+		<title>Tq Sort Heap Rejections</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_QUEUED_ASYNC_DATA_REQS" minVersion="10.5">
+		<sqlName>POOL_QUEUED_ASYNC_DATA_REQS</sqlName>
+		<title>Pool Queued Async Data Reqs</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_QUEUED_ASYNC_INDEX_REQS" minVersion="10.5">
+		<sqlName>POOL_QUEUED_ASYNC_INDEX_REQS</sqlName>
+		<title>Pool Queued Async Index Reqs</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_QUEUED_ASYNC_XDA_REQS" minVersion="10.5">
+		<sqlName>POOL_QUEUED_ASYNC_XDA_REQS</sqlName>
+		<title>Pool Queued Async Xda Reqs</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_QUEUED_ASYNC_TEMP_DATA_REQS" minVersion="10.5">
+		<sqlName>POOL_QUEUED_ASYNC_TEMP_DATA_REQS</sqlName>
+		<title>Pool Queued Async Temp Data Reqs</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_QUEUED_ASYNC_TEMP_INDEX_REQS" minVersion="10.5">
+		<sqlName>POOL_QUEUED_ASYNC_TEMP_INDEX_REQS</sqlName>
+		<title>Pool Queued Async Temp Index Reqs</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_QUEUED_ASYNC_TEMP_XDA_REQS" minVersion="10.5">
+		<sqlName>POOL_QUEUED_ASYNC_TEMP_XDA_REQS</sqlName>
+		<title>Pool Queued Async Temp Xda Reqs</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_QUEUED_ASYNC_OTHER_REQS" minVersion="10.5">
+		<sqlName>POOL_QUEUED_ASYNC_OTHER_REQS</sqlName>
+		<title>Pool Queued Async Other Reqs</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_QUEUED_ASYNC_DATA_PAGES" minVersion="10.5">
+		<sqlName>POOL_QUEUED_ASYNC_DATA_PAGES</sqlName>
+		<title>Pool Queued Async Data Pages</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_QUEUED_ASYNC_INDEX_PAGES" minVersion="10.5">
+		<sqlName>POOL_QUEUED_ASYNC_INDEX_PAGES</sqlName>
+		<title>Pool Queued Async Index Pages</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_QUEUED_ASYNC_XDA_PAGES" minVersion="10.5">
+		<sqlName>POOL_QUEUED_ASYNC_XDA_PAGES</sqlName>
+		<title>Pool Queued Async Xda Pages</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_QUEUED_ASYNC_TEMP_DATA_PAGES" minVersion="10.5">
+		<sqlName>POOL_QUEUED_ASYNC_TEMP_DATA_PAGES</sqlName>
+		<title>Pool Queued Async Temp Data Pages</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_QUEUED_ASYNC_TEMP_INDEX_PAGES" minVersion="10.5">
+		<sqlName>POOL_QUEUED_ASYNC_TEMP_INDEX_PAGES</sqlName>
+		<title>Pool Queued Async Temp Index Pages</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_QUEUED_ASYNC_TEMP_XDA_PAGES" minVersion="10.5">
+		<sqlName>POOL_QUEUED_ASYNC_TEMP_XDA_PAGES</sqlName>
+		<title>Pool Queued Async Temp Xda Pages</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_FAILED_ASYNC_DATA_REQS" minVersion="10.5">
+		<sqlName>POOL_FAILED_ASYNC_DATA_REQS</sqlName>
+		<title>Pool Failed Async Data Reqs</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_FAILED_ASYNC_INDEX_REQS" minVersion="10.5">
+		<sqlName>POOL_FAILED_ASYNC_INDEX_REQS</sqlName>
+		<title>Pool Failed Async Index Reqs</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_FAILED_ASYNC_XDA_REQS" minVersion="10.5">
+		<sqlName>POOL_FAILED_ASYNC_XDA_REQS</sqlName>
+		<title>Pool Failed Async Xda Reqs</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_FAILED_ASYNC_TEMP_DATA_REQS" minVersion="10.5">
+		<sqlName>POOL_FAILED_ASYNC_TEMP_DATA_REQS</sqlName>
+		<title>Pool Failed Async Temp Data Reqs</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_FAILED_ASYNC_TEMP_INDEX_REQS" minVersion="10.5">
+		<sqlName>POOL_FAILED_ASYNC_TEMP_INDEX_REQS</sqlName>
+		<title>Pool Failed Async Temp Index Reqs</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_FAILED_ASYNC_TEMP_XDA_REQS" minVersion="10.5">
+		<sqlName>POOL_FAILED_ASYNC_TEMP_XDA_REQS</sqlName>
+		<title>Pool Failed Async Temp Xda Reqs</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_FAILED_ASYNC_OTHER_REQS" minVersion="10.5">
+		<sqlName>POOL_FAILED_ASYNC_OTHER_REQS</sqlName>
+		<title>Pool Failed Async Other Reqs</title>
+		<type>n</type>
+	</column>
+	<column name="PREFETCH_WAIT_TIME" minVersion="10.5">
+		<sqlName>PREFETCH_WAIT_TIME</sqlName>
+		<title>Prefetch Wait Time</title>
+		<type>n</type>
+	</column>
+	<column name="PREFETCH_WAITS" minVersion="10.5">
+		<sqlName>PREFETCH_WAITS</sqlName>
+		<title>Prefetch Waits</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_DATA_GBP_INDEP_PAGES_FOUND_IN_LBP" minVersion="10.5">
+		<sqlName>POOL_DATA_GBP_INDEP_PAGES_FOUND_IN_LBP</sqlName>
+		<title>Pool Data Gbp Indep Pages Found In Lbp</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_INDEX_GBP_INDEP_PAGES_FOUND_IN_LBP" minVersion="10.5">
+		<sqlName>POOL_INDEX_GBP_INDEP_PAGES_FOUND_IN_LBP</sqlName>
+		<title>Pool Index Gbp Indep Pages Found In Lbp</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_XDA_GBP_INDEP_PAGES_FOUND_IN_LBP" minVersion="10.5">
+		<sqlName>POOL_XDA_GBP_INDEP_PAGES_FOUND_IN_LBP</sqlName>
+		<title>Pool Xda Gbp Indep Pages Found In Lbp</title>
+		<type>n</type>
+	</column>
+	<column name="NUM_WORKING_COPIES" minVersion="10.5">
+		<sqlName>NUM_WORKING_COPIES</sqlName>
+		<title>Num Working Copies</title>
+		<type>n</type>
+	</column>
+	<column name="IDA_SEND_WAIT_TIME" minVersion="10.5">
+		<sqlName>IDA_SEND_WAIT_TIME</sqlName>
+		<title>Ida Send Wait Time</title>
+		<type>n</type>
+	</column>
+	<column name="IDA_SENDS_TOTAL" minVersion="10.5">
+		<sqlName>IDA_SENDS_TOTAL</sqlName>
+		<title>Ida Sends Total</title>
+		<type>n</type>
+	</column>
+	<column name="IDA_SEND_VOLUME" minVersion="10.5">
+		<sqlName>IDA_SEND_VOLUME</sqlName>
+		<title>Ida Send Volume</title>
+		<type>n</type>
+	</column>
+	<column name="IDA_RECV_WAIT_TIME" minVersion="10.5">
+		<sqlName>IDA_RECV_WAIT_TIME</sqlName>
+		<title>Ida Recv Wait Time</title>
+		<type>n</type>
+	</column>
+	<column name="IDA_RECVS_TOTAL" minVersion="10.5">
+		<sqlName>IDA_RECVS_TOTAL</sqlName>
+		<title>Ida Recvs Total</title>
+		<type>n</type>
+	</column>
+	<column name="IDA_RECV_VOLUME" minVersion="10.5">
+		<sqlName>IDA_RECV_VOLUME</sqlName>
+		<title>Ida Recv Volume</title>
+		<type>n</type>
+	</column>
+	<column name="STMTNO" minVersion="10.5">
+		<sqlName>STMTNO</sqlName>
+		<title>Stmtno</title>
+		<type>n</type>
+	</column>
+	<column name="NUM_ROUTINES" minVersion="10.5">
+		<sqlName>NUM_ROUTINES</sqlName>
+		<title>Num Routines</title>
+		<type>n</type>
+	</column>
+	<column name="ROWS_DELETED" minVersion="10.5">
+		<sqlName>ROWS_DELETED</sqlName>
+		<title>Rows Deleted</title>
+		<type>n</type>
+	</column>
+	<column name="ROWS_INSERTED" minVersion="10.5">
+		<sqlName>ROWS_INSERTED</sqlName>
+		<title>Rows Inserted</title>
+		<type>n</type>
+	</column>
+	<column name="ROWS_UPDATED" minVersion="10.5">
+		<sqlName>ROWS_UPDATED</sqlName>
+		<title>Rows Updated</title>
+		<type>n</type>
+	</column>
+	<column name="TOTAL_HASH_JOINS" minVersion="10.5">
+		<sqlName>TOTAL_HASH_JOINS</sqlName>
+		<title>Total Hash Joins</title>
+		<type>n</type>
+	</column>
+	<column name="TOTAL_HASH_LOOPS" minVersion="10.5">
+		<sqlName>TOTAL_HASH_LOOPS</sqlName>
+		<title>Total Hash Loops</title>
+		<type>n</type>
+	</column>
+	<column name="HASH_JOIN_OVERFLOWS" minVersion="10.5">
+		<sqlName>HASH_JOIN_OVERFLOWS</sqlName>
+		<title>Hash Join Overflows</title>
+		<type>n</type>
+	</column>
+	<column name="HASH_JOIN_SMALL_OVERFLOWS" minVersion="10.5">
+		<sqlName>HASH_JOIN_SMALL_OVERFLOWS</sqlName>
+		<title>Hash Join Small Overflows</title>
+		<type>n</type>
+	</column>
+	<column name="POST_SHRTHRESHOLD_HASH_JOINS" minVersion="10.5">
+		<sqlName>POST_SHRTHRESHOLD_HASH_JOINS</sqlName>
+		<title>Post Shrthreshold Hash Joins</title>
+		<type>n</type>
+	</column>
+	<column name="TOTAL_OLAP_FUNCS" minVersion="10.5">
+		<sqlName>TOTAL_OLAP_FUNCS</sqlName>
+		<title>Total Olap Funcs</title>
+		<type>n</type>
+	</column>
+	<column name="OLAP_FUNC_OVERFLOWS" minVersion="10.5">
+		<sqlName>OLAP_FUNC_OVERFLOWS</sqlName>
+		<title>Olap Func Overflows</title>
+		<type>n</type>
+	</column>
+	<column name="INT_ROWS_DELETED" minVersion="10.5">
+		<sqlName>INT_ROWS_DELETED</sqlName>
+		<title>Int Rows Deleted</title>
+		<type>n</type>
+	</column>
+	<column name="INT_ROWS_INSERTED" minVersion="10.5">
+		<sqlName>INT_ROWS_INSERTED</sqlName>
+		<title>Int Rows Inserted</title>
+		<type>n</type>
+	</column>
+	<column name="INT_ROWS_UPDATED" minVersion="10.5">
+		<sqlName>INT_ROWS_UPDATED</sqlName>
+		<title>Int Rows Updated</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_COL_L_READS" minVersion="10.5">
+		<sqlName>POOL_COL_L_READS</sqlName>
+		<title>Pool Col L Reads</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_TEMP_COL_L_READS" minVersion="10.5">
+		<sqlName>POOL_TEMP_COL_L_READS</sqlName>
+		<title>Pool Temp Col L Reads</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_COL_P_READS" minVersion="10.5">
+		<sqlName>POOL_COL_P_READS</sqlName>
+		<title>Pool Col P Reads</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_TEMP_COL_P_READS" minVersion="10.5">
+		<sqlName>POOL_TEMP_COL_P_READS</sqlName>
+		<title>Pool Temp Col P Reads</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_COL_LBP_PAGES_FOUND" minVersion="10.5">
+		<sqlName>POOL_COL_LBP_PAGES_FOUND</sqlName>
+		<title>Pool Col Lbp Pages Found</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_COL_WRITES" minVersion="10.5">
+		<sqlName>POOL_COL_WRITES</sqlName>
+		<title>Pool Col Writes</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_COL_GBP_L_READS" minVersion="10.5">
+		<sqlName>POOL_COL_GBP_L_READS</sqlName>
+		<title>Pool Col Gbp L Reads</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_COL_GBP_P_READS" minVersion="10.5">
+		<sqlName>POOL_COL_GBP_P_READS</sqlName>
+		<title>Pool Col Gbp P Reads</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_COL_GBP_INVALID_PAGES" minVersion="10.5">
+		<sqlName>POOL_COL_GBP_INVALID_PAGES</sqlName>
+		<title>Pool Col Gbp Invalid Pages</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_COL_GBP_INDEP_PAGES_FOUND_IN_LBP" minVersion="10.5">
+		<sqlName>POOL_COL_GBP_INDEP_PAGES_FOUND_IN_LBP</sqlName>
+		<title>Pool Col Gbp Indep Pages Found In Lbp</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_QUEUED_ASYNC_COL_REQS" minVersion="10.5">
+		<sqlName>POOL_QUEUED_ASYNC_COL_REQS</sqlName>
+		<title>Pool Queued Async Col Reqs</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_QUEUED_ASYNC_TEMP_COL_REQS" minVersion="10.5">
+		<sqlName>POOL_QUEUED_ASYNC_TEMP_COL_REQS</sqlName>
+		<title>Pool Queued Async Temp Col Reqs</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_QUEUED_ASYNC_COL_PAGES" minVersion="10.5">
+		<sqlName>POOL_QUEUED_ASYNC_COL_PAGES</sqlName>
+		<title>Pool Queued Async Col Pages</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_QUEUED_ASYNC_TEMP_COL_PAGES" minVersion="10.5">
+		<sqlName>POOL_QUEUED_ASYNC_TEMP_COL_PAGES</sqlName>
+		<title>Pool Queued Async Temp Col Pages</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_FAILED_ASYNC_COL_REQS" minVersion="10.5">
+		<sqlName>POOL_FAILED_ASYNC_COL_REQS</sqlName>
+		<title>Pool Failed Async Col Reqs</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_FAILED_ASYNC_TEMP_COL_REQS" minVersion="10.5">
+		<sqlName>POOL_FAILED_ASYNC_TEMP_COL_REQS</sqlName>
+		<title>Pool Failed Async Temp Col Reqs</title>
+		<type>n</type>
+	</column>
+	<column name="TOTAL_COL_TIME" minVersion="10.5">
+		<sqlName>TOTAL_COL_TIME</sqlName>
+		<title>Total Col Time</title>
+		<type>n</type>
+	</column>
+	<column name="TOTAL_COL_PROC_TIME" minVersion="10.5">
+		<sqlName>TOTAL_COL_PROC_TIME</sqlName>
+		<title>Total Col Proc Time</title>
+		<type>n</type>
+	</column>
+	<column name="TOTAL_COL_EXECUTIONS" minVersion="10.5">
+		<sqlName>TOTAL_COL_EXECUTIONS</sqlName>
+		<title>Total Col Executions</title>
+		<type>n</type>
+	</column>
+	<column name="COMM_EXIT_WAIT_TIME" minVersion="10.5">
+		<sqlName>COMM_EXIT_WAIT_TIME</sqlName>
+		<title>Comm Exit Wait Time</title>
+		<type>n</type>
+	</column>
+	<column name="COMM_EXIT_WAITS" minVersion="10.5">
+		<sqlName>COMM_EXIT_WAITS</sqlName>
+		<title>Comm Exit Waits</title>
+		<type>n</type>
+	</column>
+	<column name="POST_THRESHOLD_HASH_JOINS" minVersion="10.5">
+		<sqlName>POST_THRESHOLD_HASH_JOINS</sqlName>
+		<title>Post Threshold Hash Joins</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_DATA_CACHING_TIER_L_READS" minVersion="10.5">
+		<sqlName>POOL_DATA_CACHING_TIER_L_READS</sqlName>
+		<title>Pool Data Caching Tier L Reads</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_INDEX_CACHING_TIER_L_READS" minVersion="10.5">
+		<sqlName>POOL_INDEX_CACHING_TIER_L_READS</sqlName>
+		<title>Pool Index Caching Tier L Reads</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_XDA_CACHING_TIER_L_READS" minVersion="10.5">
+		<sqlName>POOL_XDA_CACHING_TIER_L_READS</sqlName>
+		<title>Pool Xda Caching Tier L Reads</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_COL_CACHING_TIER_L_READS" minVersion="10.5">
+		<sqlName>POOL_COL_CACHING_TIER_L_READS</sqlName>
+		<title>Pool Col Caching Tier L Reads</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_DATA_CACHING_TIER_PAGE_WRITES" minVersion="10.5">
+		<sqlName>POOL_DATA_CACHING_TIER_PAGE_WRITES</sqlName>
+		<title>Pool Data Caching Tier Page Writes</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_INDEX_CACHING_TIER_PAGE_WRITES" minVersion="10.5">
+		<sqlName>POOL_INDEX_CACHING_TIER_PAGE_WRITES</sqlName>
+		<title>Pool Index Caching Tier Page Writes</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_XDA_CACHING_TIER_PAGE_WRITES" minVersion="10.5">
+		<sqlName>POOL_XDA_CACHING_TIER_PAGE_WRITES</sqlName>
+		<title>Pool Xda Caching Tier Page Writes</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_COL_CACHING_TIER_PAGE_WRITES" minVersion="10.5">
+		<sqlName>POOL_COL_CACHING_TIER_PAGE_WRITES</sqlName>
+		<title>Pool Col Caching Tier Page Writes</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_DATA_CACHING_TIER_PAGE_UPDATES" minVersion="10.5">
+		<sqlName>POOL_DATA_CACHING_TIER_PAGE_UPDATES</sqlName>
+		<title>Pool Data Caching Tier Page Updates</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_INDEX_CACHING_TIER_PAGE_UPDATES" minVersion="10.5">
+		<sqlName>POOL_INDEX_CACHING_TIER_PAGE_UPDATES</sqlName>
+		<title>Pool Index Caching Tier Page Updates</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_XDA_CACHING_TIER_PAGE_UPDATES" minVersion="10.5">
+		<sqlName>POOL_XDA_CACHING_TIER_PAGE_UPDATES</sqlName>
+		<title>Pool Xda Caching Tier Page Updates</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_COL_CACHING_TIER_PAGE_UPDATES" minVersion="10.5">
+		<sqlName>POOL_COL_CACHING_TIER_PAGE_UPDATES</sqlName>
+		<title>Pool Col Caching Tier Page Updates</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_CACHING_TIER_PAGE_READ_TIME" minVersion="10.5">
+		<sqlName>POOL_CACHING_TIER_PAGE_READ_TIME</sqlName>
+		<title>Pool Caching Tier Page Read Time</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_CACHING_TIER_PAGE_WRITE_TIME" minVersion="10.5">
+		<sqlName>POOL_CACHING_TIER_PAGE_WRITE_TIME</sqlName>
+		<title>Pool Caching Tier Page Write Time</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_DATA_CACHING_TIER_PAGES_FOUND" minVersion="10.5">
+		<sqlName>POOL_DATA_CACHING_TIER_PAGES_FOUND</sqlName>
+		<title>Pool Data Caching Tier Pages Found</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_INDEX_CACHING_TIER_PAGES_FOUND" minVersion="10.5">
+		<sqlName>POOL_INDEX_CACHING_TIER_PAGES_FOUND</sqlName>
+		<title>Pool Index Caching Tier Pages Found</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_XDA_CACHING_TIER_PAGES_FOUND" minVersion="10.5">
+		<sqlName>POOL_XDA_CACHING_TIER_PAGES_FOUND</sqlName>
+		<title>Pool Xda Caching Tier Pages Found</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_COL_CACHING_TIER_PAGES_FOUND" minVersion="10.5">
+		<sqlName>POOL_COL_CACHING_TIER_PAGES_FOUND</sqlName>
+		<title>Pool Col Caching Tier Pages Found</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_DATA_CACHING_TIER_GBP_INVALID_PAGES" minVersion="10.5">
+		<sqlName>POOL_DATA_CACHING_TIER_GBP_INVALID_PAGES</sqlName>
+		<title>Pool Data Caching Tier Gbp Invalid Pages</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_INDEX_CACHING_TIER_GBP_INVALID_PAGES" minVersion="10.5">
+		<sqlName>POOL_INDEX_CACHING_TIER_GBP_INVALID_PAGES</sqlName>
+		<title>Pool Index Caching Tier Gbp Invalid Pages</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_XDA_CACHING_TIER_GBP_INVALID_PAGES" minVersion="10.5">
+		<sqlName>POOL_XDA_CACHING_TIER_GBP_INVALID_PAGES</sqlName>
+		<title>Pool Xda Caching Tier Gbp Invalid Pages</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_COL_CACHING_TIER_GBP_INVALID_PAGES" minVersion="10.5">
+		<sqlName>POOL_COL_CACHING_TIER_GBP_INVALID_PAGES</sqlName>
+		<title>Pool Col Caching Tier Gbp Invalid Pages</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_DATA_CACHING_TIER_GBP_INDEP_PAGES_FOUND" minVersion="10.5">
+		<sqlName>POOL_DATA_CACHING_TIER_GBP_INDEP_PAGES_FOUND</sqlName>
+		<title>Pool Data Caching Tier Gbp Indep Pages Found</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_INDEX_CACHING_TIER_GBP_INDEP_PAGES_FOUND" minVersion="10.5">
+		<sqlName>POOL_INDEX_CACHING_TIER_GBP_INDEP_PAGES_FOUND</sqlName>
+		<title>Pool Index Caching Tier Gbp Indep Pages Found</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_XDA_CACHING_TIER_GBP_INDEP_PAGES_FOUND" minVersion="10.5">
+		<sqlName>POOL_XDA_CACHING_TIER_GBP_INDEP_PAGES_FOUND</sqlName>
+		<title>Pool Xda Caching Tier Gbp Indep Pages Found</title>
+		<type>n</type>
+	</column>
+	<column name="POOL_COL_CACHING_TIER_GBP_INDEP_PAGES_FOUND" minVersion="10.5">
+		<sqlName>POOL_COL_CACHING_TIER_GBP_INDEP_PAGES_FOUND</sqlName>
+		<title>Pool Col Caching Tier Gbp Indep Pages Found</title>
+		<type>n</type>
+	</column>
+	<column name="TOTAL_HASH_GRPBYS" minVersion="10.5">
+		<sqlName>TOTAL_HASH_GRPBYS</sqlName>
+		<title>Total Hash Grpbys</title>
+		<type>n</type>
+	</column>
+	<column name="HASH_GRPBY_OVERFLOWS" minVersion="10.5">
+		<sqlName>HASH_GRPBY_OVERFLOWS</sqlName>
+		<title>Hash Grpby Overflows</title>
+		<type>n</type>
+	</column>
+	<column name="POST_THRESHOLD_HASH_GRPBYS" minVersion="10.5">
+		<sqlName>POST_THRESHOLD_HASH_GRPBYS</sqlName>
+		<title>Post Threshold Hash Grpbys</title>
+		<type>n</type>
+	</column>
+	<column name="POST_THRESHOLD_OLAP_FUNCS" minVersion="10.5">
+		<sqlName>POST_THRESHOLD_OLAP_FUNCS</sqlName>
+		<title>Post Threshold Olap Funcs</title>
+		<type>n</type>
+	</column>
+	<column name="COMP_ENV_DESC" minVersion="10.5">
+		<sqlName>COMP_ENV_DESC</sqlName>
+		<title>Comp Env Desc</title>
+		<type>l</type>
+	</column>
+	<column name="MAX_COORD_STMT_EXEC_TIME_ARGS" minVersion="10.5">
+		<sqlName>MAX_COORD_STMT_EXEC_TIME_ARGS</sqlName>
+		<title>Max Coord Stmt Exec Time Args</title>
+		<type>l</type>
+	</column>
+</table>

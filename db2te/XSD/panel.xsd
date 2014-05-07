@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xb="link.xsd" xmlns:xc="panelHeaders.xsd">
+    <xs:include schemaLocation="link.xsd"/>
+    <xs:include schemaLocation="panelHeaders.xsd"/>
+    <xs:element name="panel" >
+        <xs:annotation>
+            <xs:documentation><![CDATA[
+                    . 
+                    ]]></xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="panelHeaders"/>
+                <xs:choice>
+                    <xs:element  ref="link">
+                        <xs:annotation>
+                            <xs:documentation><![CDATA[
+                    . 
+                    ]]></xs:documentation>
+                        </xs:annotation></xs:element>
+                    <xs:element name="raw">
+                        <xs:annotation>
+                            <xs:documentation><![CDATA[
+                    . 
+                    ]]></xs:documentation>
+                        </xs:annotation></xs:element>
+                    <xs:element name="url">
+                        <xs:annotation>
+                            <xs:documentation><![CDATA[
+                    . 
+                    ]]></xs:documentation>
+                        </xs:annotation></xs:element>
+                </xs:choice>
+            </xs:sequence>
+            <xs:attribute name="name"  use="required">
+                <xs:annotation>
+                    <xs:documentation><![CDATA[
+                    . 
+                    ]]></xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:annotation>
+                            <xs:documentation><![CDATA[
+                    . 
+                    ]]></xs:documentation>
+                        </xs:annotation>
+                        <xs:pattern value="[a-zA-Z][a-zA-Z0-9]*"/>
+                    </xs:restriction>  
+                </xs:simpleType>
+            </xs:attribute>
+            <xs:attribute name="overflow"  use="optional">
+                <xs:annotation>
+                    <xs:documentation><![CDATA[
+                    . 
+                    ]]></xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:pattern value="(none|auto|scroll|visible)"/>
+                    </xs:restriction>  
+                </xs:simpleType>
+            </xs:attribute>
+            <xs:attribute name="PrimaryContainer"  use="optional">
+                <xs:annotation>
+                    <xs:documentation><![CDATA[
+                    . 
+                    ]]></xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:pattern value="(true|false)"/>
+                    </xs:restriction>  
+                </xs:simpleType>
+            </xs:attribute>
+            <xs:attribute name="delayLoad"  use="optional">
+                <xs:annotation>
+                    <xs:documentation><![CDATA[
+                    . 
+                    ]]></xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:pattern value="(true|false)"/>
+                    </xs:restriction>  
+                </xs:simpleType>
+            </xs:attribute>
+            <xs:attribute name="panelTitle" type="xs:string">
+                <xs:annotation>
+                    <xs:documentation><![CDATA[
+                    . 
+                    ]]></xs:documentation>
+                </xs:annotation></xs:attribute>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

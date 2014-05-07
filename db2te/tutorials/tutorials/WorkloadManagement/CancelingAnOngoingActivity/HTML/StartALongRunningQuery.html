@@ -1,0 +1,23 @@
+First, we need to issue a long running query.  Click on the <b>second</b> 'Ad hoc SQL' tab, and click on 'Run'.
+<p>
+Now, click on the <b>first</b> 'Ad hoc SQL' tab, and click on 'Run'. 
+<p>
+The <a onclick="OpenURLInFloatingWindow
+('http://publib.boulder.ibm.com/infocenter/db2luw/v9r7/topic/com.ibm.db2.luw.sql.rtn.doc/doc/r0052920.html?noframes=true');">WLM_GET_WORKLOAD_OCCURRENCE_ACTIVITIES</a> table function
+  is used to get the application handle,
+  unit of work ID, and activity ID of the cursor activity above.
+  <p>
+  By joining the result of the table function with the <a onclick="OpenURLInFloatingWindow
+('http://publib.boulder.ibm.com/infocenter/db2luw/v9r7/topic/com.ibm.db2.luw.sql.rtn.doc/doc/r0022011.html?noframes=true');">APPLICATIONS</a>
+  administrative view, we can find the cursor activity that is run from
+  the TE, whose application name is 'httpd.exe'.   
+  <p> 
+  If you click on the 'Result' tab on the bottom panel, you will see two results in the created TE_ACTIVITY view.  One for the long-running query, and one for the current query.  
+  <p>
+  The 
+<a onclick="OpenURLInFloatingWindow
+('http://publib.boulder.ibm.com/infocenter/db2luw/v9r7/topic/com.ibm.db2.luw.admin.wlm.doc/doc/c0053149.html?noframes=true');">WLM_CANCEL_ACTIVITY</a> stored
+  procedure can be used to cancel the above cursor activity, using the application
+  handle, unit of work ID, and activity ID obtained from the previous
+  step.
+  

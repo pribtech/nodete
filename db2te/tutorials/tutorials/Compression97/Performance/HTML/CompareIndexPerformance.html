@@ -1,0 +1,25 @@
+<p>Compression can also perform well using compressed indexes.
+	This step performs a deeper analysis of both CPU and IO performance for a select on a table with a compressed index.
+<p>Select the actions on this page in order.</p>
+<h4>Run performance tests</h4>
+The first step runs a select with an 'order by' clause against a compressed and uncompressed table.
+<pre><code>
+SELECT *
+  FROM customer_address_without_compression
+  WHERE customer_name = 'SYSCAT PACKAGES'
+  ORDER BY customer_name
+
+SELECT *
+  FROM customer_address_with_compression
+  WHERE customer_name = 'SYSCAT PACKAGES'
+  ORDER BY customer_name
+</code></pre>
+<p></p>
+<h4>Graph the results</h4>
+<p>You can then graph the results for runtime, IO and CPU performance</p>
+<p>If you hover your cursor over the bars in the graph you will see the exact sizes of each table.</p>
+<h4>How compressed indexes can accelerate performance</h4>
+<p>Just as table compression reduces the IO required for an SQL statement, using compressed indexes compounds the effect.
+	If you want to prove it to yourself, just open the Ad Hoc SQL window, drop the indexes, rerun statistics and rerun the performance test.
+	You should see that the difference in performance between just using compressed table and using compressed indexes as well.
+</p>

@@ -1,0 +1,15 @@
+<H2><B>DB2 compatibility features</B></H2><HR>
+<p>DB2 offers many compatibility features that can be turned on individually based on your need. 
+To enable all the compatibility features applicable to Oracle databases, set the registry variable 
+<b class="sourceChange">DB2_COMPATIBILITY_VECTOR = ORA</b>. You can then create an Oracle compatible database.</p>
+
+<p>
+	Follow the steps below to create a compatible database:<br>
+	<ol>
+		<li class="sourceCopiedFrom"><b>db2stop force</b> to stop the DB2 instance</li>
+		<li class="sourceCopiedFrom"><b>db2set DB2_COMPATIBILITY_VECTOR=ORA</b> to set the compatibility registry variable</li>
+		<li class="sourceCopiedFrom"><b>db2start</b> to start DB2 instance</li>
+		<li class="sourceCopiedFrom"><b>db2 create db compat</b> to create a COMPAT database.</li>
+		<li class="sourceCopiedFrom"><b>db2 connect to compat</b> to connect to COMPAT database</li>
+	</ol>
+</p>

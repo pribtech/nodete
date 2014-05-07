@@ -1,0 +1,125 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2011 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+
+<table name="snapTablespaceRange">
+	<sql_name>SYSIBMADM.SNAPTBSP_RANGE</sql_name>
+	<singular_name>Tablespace Range</singular_name>
+	<plural_name>Tablespace Ranges</plural_name>
+	<messages><SQL0551N>Security issue. Please install "Monitoring Switches/Security" in Tools -> Installed Components</SQL0551N></messages>
+	<order_by_index></order_by_index>
+	<display_columns>
+		<col type="column" name="SNAPSHOT_TIMESTAMP"/>
+		<col type="column" name="TBSP_ID"/>
+		<col type="column" name="TBSP_NAME"/>
+		<col type="column" name="RANGE_NUMBER"/>
+		<col type="column" name="RANGE_STRIPE_SET_NUMBER"/>
+		<col type="column" name="RANGE_OFFSET"/>
+		<col type="column" name="RANGE_MAX_PAGE"/>
+		<col type="column" name="RANGE_MAX_EXTENT"/>
+		<col type="column" name="RANGE_START_STRIPE"/>
+		<col type="column" name="RANGE_END_STRIPE"/>
+		<col type="column" name="RANGE_ADJUSTMENT"/>
+		<col type="column" name="RANGE_NUM_CONTAINER"/>
+		<col type="column" name="RANGE_CONTAINER_ID"/>
+		<col type="column" name="DBPARTITIONNUM"/>
+	</display_columns>
+	<display_columns name="tablespaceSpecific">
+		<col type="column" name="SNAPSHOT_TIMESTAMP"/>
+		<col type="column" name="RANGE_NUMBER"/>
+		<col type="column" name="RANGE_STRIPE_SET_NUMBER"/>
+		<col type="column" name="RANGE_OFFSET"/>
+		<col type="column" name="RANGE_MAX_PAGE"/>
+		<col type="column" name="RANGE_MAX_EXTENT"/>
+		<col type="column" name="RANGE_START_STRIPE"/>
+		<col type="column" name="RANGE_END_STRIPE"/>
+		<col type="column" name="RANGE_ADJUSTMENT"/>
+		<col type="column" name="RANGE_NUM_CONTAINER"/>
+		<col type="column" name="RANGE_CONTAINER_ID"/>
+		<col type="column" name="DBPARTITIONNUM"/>
+	</display_columns>
+	<column name="SNAPSHOT_TIMESTAMP">
+		<sql_name>SNAPSHOT_TIMESTAMP</sql_name>
+		<title>Timestamp</title>
+		<type>n</type>
+	</column>
+	<column name="TBSP_ID">
+		<sql_name>TBSP_ID</sql_name>
+		<title>Tablespace Id.</title>
+		<type>n</type>
+	</column>
+	<column name="TBSP_NAME">
+		<sql_name>TBSP_NAME</sql_name>
+		<title>Tablespace</title>
+		<type>s</type>
+	</column>
+	<column name="RANGE_NUMBER">
+		<sql_name>RANGE_NUMBER</sql_name>
+		<title>No.</title>
+		<type>n</type>
+	</column>
+	<column name="RANGE_STRIPE_SET_NUMBER">
+		<sql_name>RANGE_STRIPE_SET_NUMBER</sql_name>
+		<title>Stripe Set No.</title>
+		<type>n</type>
+	</column>
+	<column name="RANGE_OFFSET">
+		<sql_name>RANGE_OFFSET</sql_name>
+		<title>Offset</title>
+		<type>n</type>
+	</column>
+	<column name="RANGE_MAX_PAGE">
+		<sql_name>RANGE_MAX_PAGE</sql_name>
+		<title>Max Page</title>
+		<type>n</type>
+	</column>
+	<column name="RANGE_MAX_EXTENT">
+		<sql_name>RANGE_MAX_EXTENT</sql_name>
+		<title>Max Extent</title>
+		<type>n</type>
+	</column>
+	<column name="RANGE_START_STRIPE">
+		<sql_name>RANGE_START_STRIPE</sql_name>
+		<title>Start Stripe</title>
+		<type>n</type>
+	</column>
+	<column name="RANGE_END_STRIPE">
+		<sql_name>RANGE_END_STRIPE</sql_name>
+		<title>End Stripe</title>
+		<type>n</type>
+	</column>
+	<column name="RANGE_ADJUSTMENT">
+		<sql_name>RANGE_ADJUSTMENT</sql_name>
+		<title>Adjustment</title>
+		<type>n</type>
+	</column>
+	<column name="RANGE_NUM_CONTAINER">
+		<sql_name>RANGE_NUM_CONTAINER</sql_name>
+		<title>No. Containers</title>
+		<type>n</type>
+	</column>
+	<column name="RANGE_CONTAINER_ID">
+		<sql_name>RANGE_CONTAINER_ID</sql_name>
+		<title>Container Id</title>
+		<type>n</type>
+	</column>
+	<column name="DBPARTITIONNUM">
+		<sql_name>DBPARTITIONNUM</sql_name>
+		<title>Partition</title>
+		<type>n</type>
+	</column>
+</table>

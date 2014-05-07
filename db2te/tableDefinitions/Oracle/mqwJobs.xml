@@ -1,0 +1,225 @@
+<!--
+  Peter Prib, Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2012 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<table name="mqwJobs">
+	<sqlName>SYS.MGW_JOBS</sqlName>
+	<singularName>MQW Job</singularName>
+	<pluralName>MQW Job</pluralName>
+	<disable_edit/>
+	<output>
+		<type name="DDL" destination="" title="" generator=""/>
+	</output>
+	<description></description>
+	<orderBy name="JOB_NAME" direction="A"/>
+	<displayColumns>
+		<col type="column" name="JOB_NAME"/>
+		<col type="column" name="FAILURES"/>
+		<col type="column" name="STATUS"/>
+		<col type="column" name="PROPAGATED_MSGS"/>
+		<col type="column" name="EXCEPTIONQ_MSGS"/>
+		<col type="column" name="LAST_ERROR_DATE"/>
+		<col type="column" name="LAST_ERROR_TIME"/>
+		<col type="column" name="LAST_ERROR_MSG"/>
+		<col type="column" name="PROPAGATION_TYPE"/>
+		<col type="column" name="SOURCE"/>
+		<col type="column" name="DESTINATION"/>
+		<col type="column" name="RULE"/>
+		<col type="column" name="TRANSFORMATION"/>
+		<col type="column" name="EXCEPTION_QUEUE"/>
+		<col type="column" name="POLL_INTERVAL"/>
+		<col type="column" name="ENABLED"/>
+		<col type="column" name="AGENT_NAME"/>
+		<col type="column" name="LINK_NAME"/>
+		<col type="column" name="PROP_STYLE"/>
+		<col type="column" name="COMMENTS"/>
+	</displayColumns>
+	<action name="putTest">
+		<title>Send Test</title>
+		<icon>images/trash.gif</icon>   
+    	<actionScript>
+    		<task>
+				<assignSharedConstant name="sql" type="fixed">
+					<value>
+<![CDATA[
+declare
+  enqueue_options dbms_aq.enqueue_options_t;
+  message_properties dbms_aq.message_properties_t;
+  msgid RAW(16);
+  header sys.mgw_name_value_array_t;
+BEGIN
+  header := sys.mgw_name_value_array_t(
+      sys.mgw_name_value_t.construct_integer('MGW_MQ_characterSet', '1208')
+      ,sys.mgw_name_value_t.construct_integer('MGW_MQ_priority', '7')
+    ) ;
+  dbms_aq.enqueue(queue_name => '?localQueue?'
+               ,enqueue_options => enqueue_options
+               ,message_properties => message_properties
+               ,payload => 
+			sys.mgw_basic_msg_t(header
+                               , sys.mgw_text_value_t('Test message produced:'||to_char(sysdate,'YYYY-MM-DD HH24:MI:SS'), NULL)
+                               , NULL)
+               ,msgid => msgid
+        );
+  commit;
+END enqueue;
+]]>
+					</value>
+				</assignSharedConstant>
+		   		<callGlobalAction name="sqlExecution"/>
+	   		</task>
+    	</actionScript>
+    </action>
+	<action name="cleanupMiisLog">
+		<title>Cleanup Missing Log</title>
+		<icon>images/trash.gif</icon>   
+    	<actionScript>
+    		<task>
+				<assignSharedConstant name="sql" type="fixed">
+					<value>
+<![CDATA[
+begin
+	DBMS_MGWADM.CLEANUP_GATEWAY (
+       action => DBMS_MGWADM.RESET_SUB_MISSING_LOG_REC,  
+       sarg => 'POS_REF_TRANS_OUT');
+end;
+]]>
+					</value>
+				</assignSharedConstant>
+		   		<callGlobalAction name="sqlExecution"/>
+	   		</task>
+    	</actionScript>
+    </action>
+	<column name="localQueue">
+		<sqlName>CASE WHEN INSTR(SOURCE, '@', 1) = 0 THEN SOURCE ELSE DESTINATION END</sqlName>
+		<title>Local Queue</title>
+		<type>s</type>
+	</column>
+	<column name="JOB_NAME">
+		<sqlName>JOB_NAME</sqlName>
+		<title>Job Name</title>
+		<type>s</type>
+		<primaryKey/>
+	</column>
+	<column name="PROPAGATION_TYPE">
+		<sqlName>PROPAGATION_TYPE</sqlName>
+		<title>Propagation Type</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="SOURCE">
+		<sqlName>SOURCE</sqlName>
+		<title>Source</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="DESTINATION">
+		<sqlName>DESTINATION</sqlName>
+		<title>Destination</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="RULE">
+		<sqlName>RULE</sqlName>
+		<title>Rule</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="TRANSFORMATION">
+		<sqlName>TRANSFORMATION</sqlName>
+		<title>Transformation</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="EXCEPTION_QUEUE">
+		<sqlName>EXCEPTION_QUEUE</sqlName>
+		<title>Exception Queue</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="POLL_INTERVAL">
+		<sqlName>POLL_INTERVAL</sqlName>
+		<title>Poll Interval</title>
+		<type>n</type>
+	</column>
+	<column name="ENABLED">
+		<sqlName>ENABLED</sqlName>
+		<title>Enabled</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="AGENT_NAME">
+		<sqlName>AGENT_NAME</sqlName>
+		<title>Agent Name</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="LINK_NAME">
+		<sqlName>LINK_NAME</sqlName>
+		<title>Link Name</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="PROP_STYLE">
+		<sqlName>PROP_STYLE</sqlName>
+		<title>Prop Style</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="STATUS">
+		<sqlName>STATUS</sqlName>
+		<title>Status</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="PROPAGATED_MSGS">
+		<sqlName>PROPAGATED_MSGS</sqlName>
+		<title>Propagated</title>
+		<type>n</type>
+	</column>
+	<column name="EXCEPTIONQ_MSGS">
+		<sqlName>EXCEPTIONQ_MSGS</sqlName>
+		<title>Exceptions</title>
+		<type>n</type>
+	</column>
+	<column name="FAILURES">
+		<sqlName>FAILURES</sqlName>
+		<title>Failures</title>
+		<type>n</type>
+	</column>
+	<column name="LAST_ERROR_MSG">
+		<sqlName>LAST_ERROR_MSG</sqlName>
+		<title>Last Error Msg</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="LAST_ERROR_DATE">
+		<sqlName>LAST_ERROR_DATE</sqlName>
+		<title>Last Error Date</title>
+		<type>n</type>
+		<drillEnable/>
+	</column>
+	<column name="LAST_ERROR_TIME">
+		<sqlName>LAST_ERROR_TIME</sqlName>
+		<title>Last Error Time</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="COMMENTS">
+		<sqlName>COMMENTS</sqlName>
+		<title>Comments</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+</table>

@@ -1,0 +1,440 @@
+<actionPanel>
+	<flow>controlled</flow>
+	<useConsole>yes</useConsole>
+	<overview>
+	</overview>
+	<taskList>
+		<task name="Create and populate a table with inline LOB and compression enabled">
+			<discription>
+				This step creates the INLINE_COMPRESS table like the INLINELOBDATA table. Compression is also enabled with option COMPRESS YES.
+			</discription>	
+		    	<action name="inlineCompress" type="blank">			
+				<followOnAction condition="true" compareOn="true" compareOnType="raw">			
+					<task>
+						<echo>Creating table INLINE_COMPRESS...</echo>
+						<action name="createTab" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="raw"><value>executeSQL</value></parameter>
+								<parameter name="SQL" type="fixed">
+								<value>CREATE TABLE ?SCHEMA?.INLINE_COMPRESS LIKE ?SCHEMA?.INLINELOBDATA COMPRESS YES NOT LOGGED INITIALLY</value>
+								</parameter>
+							</parameterList>
+							<followOnAction condition="true">
+								<task>
+									<echo>Done.</echo>
+								</task>
+							</followOnAction>
+							<followOnAction condition="false">
+								<task>
+									<echo>Error in run!</echo>
+								</task>
+							</followOnAction>
+						</action>			
+			  		  </task>	
+					  <task>
+					  	<echo>Populating table INLINE_COMPRESS...</echo>
+						<action name="insertTab" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="raw"><value>executeSQL</value></parameter>
+								<parameter name="SQL" type="fixed">
+									<value>INSERT INTO ?SCHEMA?.INLINE_COMPRESS SELECT * FROM ?SCHEMA?.INLINELOBDATA
+									</value>
+								</parameter>
+							</parameterList>
+							<followOnAction condition="true">
+								<task>
+									<echo>Done.</echo>
+								</task>
+							</followOnAction>
+							<followOnAction condition="false">
+								<task>
+									<echo>Error in run!</echo>
+								</task>
+							</followOnAction>
+						</action>			
+			  		</task>				  		  
+				</followOnAction>
+			</action>
+		</task>
+		<task name="Reorg and update statistics">
+			<discription>
+				This step reorganizes and updates statistics for all three tables.
+			</discription>		
+		    	<action name="reorgRunstats" type="blank">			
+				<followOnAction condition="true" compareOn="true" compareOnType="raw">			
+					<task>
+						<echo>Reorganizing LOBDATA...</echo>
+						<action name="reorg1" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="raw"><value>executeSQL</value></parameter>
+								<parameter name="SQL" type="fixed">
+								<value>CALL ADMIN_CMD('REORG TABLE ?SCHEMA?.LOBDATA')</value>
+								</parameter>
+							</parameterList>
+							<followOnAction condition="true">
+								<task>
+									<echo>Done.</echo>
+								</task>
+							</followOnAction>
+							<followOnAction condition="false">
+								<task>
+									<echo>Error in run!</echo>
+								</task>
+							</followOnAction>
+						</action>			
+			  		  </task>
+			  		  <task>
+						<echo>Updating statistics for LOBDATA...</echo>
+						<action name="runstats1" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="raw"><value>executeSQL</value></parameter>
+								<parameter name="SQL" type="fixed">
+								<value>CALL ADMIN_CMD('RUNSTATS ON TABLE ?SCHEMA?.LOBDATA')</value>
+								</parameter>
+							</parameterList>
+							<followOnAction condition="true">
+								<task>
+									<echo>Done.</echo>
+								</task>
+							</followOnAction>
+							<followOnAction condition="false">
+								<task>
+									<echo>Error in run!</echo>
+								</task>
+							</followOnAction>
+						</action>			
+			  		  </task>	
+					<task>
+						<echo>Reorganizing INLINELOBDATA...</echo>
+						<action name="reorg2" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="raw"><value>executeSQL</value></parameter>
+								<parameter name="SQL" type="fixed">
+								<value>CALL ADMIN_CMD('REORG TABLE ?SCHEMA?.INLINELOBDATA')</value>
+								</parameter>
+							</parameterList>
+							<followOnAction condition="true">
+								<task>
+									<echo>Done.</echo>
+								</task>
+							</followOnAction>
+							<followOnAction condition="false">
+								<task>
+									<echo>Error in run!</echo>
+								</task>
+							</followOnAction>
+						</action>			
+			  		  </task>
+			  		  <task>
+						<echo>Updating statistics for INLINELOBDATA...</echo>
+						<action name="runstats2" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="raw">
+									<value>executeSQL</value>
+								</parameter>
+								<parameter name="SQL" type="fixed">
+									<value>CALL ADMIN_CMD('RUNSTATS ON TABLE ?SCHEMA?.INLINELOBDATA')</value>
+								</parameter>
+							</parameterList>
+							<followOnAction condition="true">
+								<task>
+									<echo>Done.</echo>
+								</task>
+							</followOnAction>
+							<followOnAction condition="false">
+								<task>
+									<echo>Error in run!</echo>
+								</task>
+							</followOnAction>
+						</action>			
+			  		  </task>
+					<task>
+						<echo>Reorganizing INLINE_COMPRESS...</echo>
+						<action name="reorg3" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="raw">
+									<value>executeSQL</value>
+								</parameter>
+								<parameter name="SQL" type="fixed">
+									<value>CALL ADMIN_CMD('REORG TABLE ?SCHEMA?.INLINE_COMPRESS')</value>
+								</parameter>
+							</parameterList>
+							<followOnAction condition="true">
+								<task>
+									<echo>Done.</echo>
+								</task>
+							</followOnAction>
+							<followOnAction condition="false">
+								<task>
+									<echo>Error in run!</echo>
+								</task>
+							</followOnAction>
+						</action>			
+			  		  </task>
+			  		  <task>
+						<echo>Updating statistics for INLINE_COMPRESS...</echo>
+						<action name="runstats3" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="raw">
+									<value>executeSQL</value>
+								</parameter>
+								<parameter name="SQL" type="fixed">
+									<value>CALL ADMIN_CMD('RUNSTATS ON TABLE ?SCHEMA?.INLINE_COMPRESS')</value>
+								</parameter>
+							</parameterList>
+							<followOnAction condition="true">
+								<task>
+									<echo>Done.</echo>
+									<echo></echo>
+								</task>
+							</followOnAction>
+							<followOnAction condition="false">
+								<task>
+									<echo>Error in run!</echo>
+								</task>
+							</followOnAction>
+						</action>			
+			  		  </task>			  		  
+				</followOnAction>
+			</action>			
+		</task>
+		<task name="Run performance tests">
+			<discription>
+				This step runs the same statement five times against a regular LOB table, a inline LOB table, and a compressed inline LOB table. The results show how quickly each perform. Total processing time for compressed inline LOBs should be about half of the inlined LOBs and about one quarter of the regular LOBs. 
+			</discription>		
+			<action name="runTestWorkload" type="blank">
+				<followOnAction condition="true" compareOn="true" compareOnType="raw">			
+					<task>	
+						<action name="workload1" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="fixed">
+									<value>statementThroughput</value>
+								</parameter>
+								<parameter name="SQL" type="fixed">
+									<value>SELECT * FROM ?SCHEMA?.LOBDATA ORDER BY CUSTOMER_ID FETCH FIRST 500 ROWS ONLY</value>
+								</parameter>								
+								<parameter name="Period" type="fixed">
+									<value>1</value>
+								</parameter>
+								<parameter name="MinRunAmount" type="fixed">
+									<value>5</value>
+								</parameter>								
+								<parameter name="retrieveAllData" type="fixed">
+									<value>true</value>
+								</parameter>
+							</parameterList>
+							<followOnAction condition="true">
+								<task>
+						<assignSharedConstant name="DavgRunTimeDisplay1" type="returnObject"><value>workload1.returnValue.dataRetrevialTime.avgRunTimeDisplay</value></assignSharedConstant>
+						<assignSharedConstant name="DavgRunTime1" type="returnObject"><value>workload1.returnValue.dataRetrevialTime.avgRunTime</value></assignSharedConstant>
+						
+						<assignSharedConstant name="TavgRunTimeDisplay1" type="returnObject"><value>workload1.returnValue.totalTime.avgRunTimeDisplay</value></assignSharedConstant>
+						<assignSharedConstant name="TavgRunTime1" type="returnObject"><value>workload1.returnValue.totalTime.avgRunTime</value></assignSharedConstant>
+								
+						<assignSharedConstant name="avgRunTimeDisplay1" type="returnObject"><value>workload1.returnValue.avgRunTimeDisplay</value></assignSharedConstant>
+						<assignSharedConstant name="avgRunTime1" type="returnObject"><value>workload1.returnValue.avgRunTime</value></assignSharedConstant>
+						<assignSharedConstant name="RunCount1" type="returnObject"><value>workload1.returnValue.RunCount</value></assignSharedConstant>
+						<echo><![CDATA[
+
+------------------------------------------
+SQL: ?SQL?
+Run Count: ?RunCount1?
+<table cellpadding='0px' cellspacing=0px'>
+	<tr>
+		<td></td>
+		<td></td>
+		<td width='100px' align="center">Statement run Time</td>
+		<td>|</td>
+		<td width='100px' align="center">Data retrieval Time</td>
+		<td>|</td>
+		<td width='100px' align="center">Total Processing Time</td>
+	</tr>
+	<tr style='background-color:yellow;'>
+		<td>Average Time</td>
+		<td>:</td>
+		<td align='right'>?avgRunTimeDisplay1?</td>
+		<td>|</td>
+		<td align='right'>?DavgRunTimeDisplay1?</td>
+		<td>|</td>
+		<td align='right'>?TavgRunTimeDisplay1?</td>
+	</tr>
+</table>
+
+		]]></echo>
+								</task>
+							</followOnAction>
+						</action>
+					</task>				
+					<task>	
+						<action name="workload2" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="fixed">
+									<value>statementThroughput</value>
+								</parameter>
+								<parameter name="SQL" type="fixed">
+									<value>SELECT * FROM ?SCHEMA?.INLINELOBDATA ORDER BY CUSTOMER_ID FETCH FIRST 500 ROWS ONLY</value>
+								</parameter>								
+								<parameter name="Period" type="fixed">
+									<value>1</value>
+								</parameter>
+								<parameter name="MinRunAmount" type="fixed">
+									<value>5</value>
+								</parameter>								
+								<parameter name="retrieveAllData" type="fixed">
+									<value>true</value>
+								</parameter>
+							</parameterList>
+							<followOnAction condition="true">
+								<task>
+						<assignSharedConstant name="DavgRunTimeDisplay2" type="returnObject"><value>workload2.returnValue.dataRetrevialTime.avgRunTimeDisplay</value></assignSharedConstant>
+						<assignSharedConstant name="DavgRunTime2" type="returnObject"><value>workload2.returnValue.dataRetrevialTime.avgRunTime</value></assignSharedConstant>
+						
+						<assignSharedConstant name="TavgRunTimeDisplay2" type="returnObject"><value>workload2.returnValue.totalTime.avgRunTimeDisplay</value></assignSharedConstant>
+						<assignSharedConstant name="TavgRunTime2" type="returnObject"><value>workload2.returnValue.totalTime.avgRunTime</value></assignSharedConstant>
+						
+						<assignSharedConstant name="avgRunTimeDisplay2" type="returnObject"><value>workload2.returnValue.avgRunTimeDisplay</value></assignSharedConstant>
+						<assignSharedConstant name="avgRunTime2" type="returnObject"><value>workload2.returnValue.avgRunTime</value></assignSharedConstant>
+						<assignSharedConstant name="RunCount2" type="returnObject"><value>workload1.returnValue.RunCount</value></assignSharedConstant>
+						<echo><![CDATA[
+
+------------------------------------------
+SQL: ?SQL?
+Run Count: ?RunCount2?
+<table cellpadding='0px' cellspacing=0px'>
+	<tr>
+		<td></td>
+		<td></td>
+		<td width='100px' align="center">Statement run Time</td>
+		<td>|</td>
+		<td width='100px' align="center">Data retrieval Time</td>
+		<td>|</td>
+		<td width='100px' align="center">Total Processing Time</td>
+	</tr>
+	<tr style='background-color:yellow;'>
+		<td>Average Time</td>
+		<td>:</td>
+		<td align='right'>?avgRunTimeDisplay2?</td>
+		<td>|</td>
+		<td align='right'>?DavgRunTimeDisplay2?</td>
+		<td>|</td>
+		<td align='right'>?TavgRunTimeDisplay2?</td>
+	</tr>
+</table>
+]]></echo>
+								</task>
+							</followOnAction>
+						</action>
+					</task>
+					<task>	
+						<action name="workload3" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="fixed">
+									<value>statementThroughput</value>
+								</parameter>
+								<parameter name="SQL" type="fixed">
+									<value>SELECT * FROM ?SCHEMA?.INLINE_COMPRESS ORDER BY CUSTOMER_ID FETCH FIRST 500 ROWS ONLY</value>
+								</parameter>								
+								<parameter name="Period" type="fixed">
+									<value>1</value>
+								</parameter>
+								<parameter name="MinRunAmount" type="fixed">
+									<value>5</value>
+								</parameter>								
+								<parameter name="retrieveAllData" type="fixed">
+									<value>true</value>
+								</parameter>
+							</parameterList>
+							<followOnAction condition="true">
+								<task>
+						<assignSharedConstant name="DavgRunTimeDisplay3" type="returnObject"><value>workload3.returnValue.dataRetrevialTime.avgRunTimeDisplay</value></assignSharedConstant>
+						<assignSharedConstant name="DavgRunTime3" type="returnObject"><value>workload3.returnValue.dataRetrevialTime.avgRunTime</value></assignSharedConstant>
+						
+						<assignSharedConstant name="TavgRunTimeDisplay3" type="returnObject"><value>workload3.returnValue.totalTime.avgRunTimeDisplay</value></assignSharedConstant>
+						<assignSharedConstant name="TavgRunTime3" type="returnObject"><value>workload3.returnValue.totalTime.avgRunTime</value></assignSharedConstant>
+						
+						
+						<assignSharedConstant name="avgRunTimeDisplay3" type="returnObject"><value>workload3.returnValue.avgRunTimeDisplay</value></assignSharedConstant>
+						<assignSharedConstant name="avgRunTime3" type="returnObject"><value>workload3.returnValue.avgRunTime</value></assignSharedConstant>
+						<assignSharedConstant name="RunCount3" type="returnObject"><value>workload1.returnValue.RunCount</value></assignSharedConstant>
+						<echo><![CDATA[
+
+------------------------------------------
+SQL: ?SQL?
+Run Count: ?RunCount3?
+<table cellpadding='0px' cellspacing=0px'>
+	<tr>
+		<td></td>
+		<td></td>
+		<td width='100px' align="center">Statement run Time</td>
+		<td>|</td>
+		<td width='100px' align="center">Data retrieval Time</td>
+		<td>|</td>
+		<td width='100px' align="center">Total Processing Time</td>
+	</tr>
+	<tr style='background-color:yellow;'>
+		<td>Average Time</td>
+		<td>:</td>
+		<td align='right'>?avgRunTimeDisplay3?</td>
+		<td>|</td>
+		<td align='right'>?DavgRunTimeDisplay3?</td>
+		<td>|</td>
+		<td align='right'>?TavgRunTimeDisplay3?</td>
+	</tr>
+</table>
+
+]]></echo>
+								</task>
+							</followOnAction>
+						</action>
+					</task>	
+				</followOnAction>
+			</action>
+		</task>	
+
+	  	<task name="Graph run time">
+			<discription>
+				This step plots the average times of the three sets of statements on a graph. 
+			</discription>
+			<action name="graphRun" type="blank">
+				<followOnAction condition="true" compareOn="true" compareOnType="raw">
+					<task>
+						<echo>Graphing times</echo>
+						<loadPage>
+							<pageWindow target="informationWindow">
+						    	<panel name="main" PrimaryContainer="true">
+						       		<link type="action" target="_self" window="_self" connectionRequired="y">
+						       			<parameterList>
+						       				<parameter name="action">graphYUI</parameter>
+						       				<parameter name="graph"><![CDATA[					       				
+  {
+	"Graph": 
+	{
+		"title": "Statement run comparison",
+		"graphType": "column",
+		"xField": "stmt",
+		"xTitle": "Number of Pages",
+		"yTitle": "Un Table",
+		"dataSourceType": "data_from_raw",
+		"style":{	"legend": { "display": "right" }},
+		"responseSchema": {"fields": ["stmt","value"]},
+		"seriesDef": [{"displayName": "Average run time (s)", "yField": "value", "style": {"color": "0x454586"}}],
+		"datasets":
+			 [ 
+				    {"stmt": "Regular LOBs", "value": ?TavgRunTime1?},
+				    {"stmt": "Inlined LOBs", "value": ?TavgRunTime2?},
+				    {"stmt": "Compressed and Inlined LOBs", "value": ?TavgRunTime3?}
+			]
+	}
+}
+]]></parameter>
+						       			</parameterList>
+						       		</link>				
+						       	</panel>
+						      </pageWindow>
+						</loadPage>
+					</task>	
+				</followOnAction>
+			</action>
+		</task>			
+	</taskList>
+</actionPanel>

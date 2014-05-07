@@ -1,0 +1,104 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2013 All rights reserved.
+  
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+<table name="foreignKeyColumns">
+	<sqlName>foreignKeyColumns</sqlName>
+	<singularName>Foreign KeyColumn</singularName>
+	<pluralName>ForeignKey Columns</pluralName>
+	<inlinequery>
+<![CDATA[
+select 
+	 c.table_schema 
+	,c.table_name 
+	,c.column_name	
+	,p.constraint_name
+	,ct.table_schema foreign_schema
+	,ct.table_name foreign_table
+	,p.column_name foreign_Column_Name
+from information_schema.key_column_usage c
+join information_schema.referential_constraints r
+  on r.constraint_name = c.constraint_name
+join information_schema.constraint_column_usage AS ct
+  on ct.constraint_name = c.constraint_name
+join information_schema.key_column_usage p
+  on p.ordinal_position = c.position_in_unique_constraint
+ and p.constraint_name = r.unique_constraint_name
+]]>
+	</inlinequery>
+	<description></description>
+	<orderBy name="table_schema" direction="A"/>
+	<orderBy name="table_name" direction="A"/>
+	<orderBy name="constraint_name" direction="A"/>
+	<orderBy name="column_name" direction="A"/>
+	<displayColumns>
+		<col type="column" name="table_schema"/>
+		<col type="column" name="table_name"/>
+		<col type="column" name="constraint_name"/>
+		<col type="column" name="column_name"/>
+		<col type="column" name="foreign_schema"/>
+		<col type="column" name="foreign_table"/>
+		<col type="column" name="foreign_column_name"/>
+	</displayColumns>
+	<displayColumns name="Specific Table">
+		<col type="column" name="constraint_name" break="yes"/>
+		<col type="column" name="foreign_schema" break="yes"/>
+		<col type="column" name="foreign_table"  break="yes"/>
+		<col type="column" name="foreign_column_name"/>
+	</displayColumns>
+	<column name="table_schema">
+		<sqlName>table_schema</sqlName>
+		<title>Schema</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="table_name">
+		<sqlName>table_name</sqlName>
+		<title>Name</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="column_name">
+		<sqlName>column_name</sqlName>
+		<title>Column</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="constraint_name">
+		<sqlName>constraint_name</sqlName>
+		<title>Constraint</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="foreign_schema">
+		<sqlName>foreign_schema</sqlName>
+		<title>Foreign Schema</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="foreign_table">
+		<sqlName>foreign_table</sqlName>
+		<title>Foreign Table</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="foreign_column_name">
+		<sqlName>foreign_column_name</sqlName>
+		<title>Foreign Column</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+</table>

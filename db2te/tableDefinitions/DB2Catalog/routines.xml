@@ -1,0 +1,675 @@
+
+<table name="SYSCAT.ROUTINES"> 
+	<sql_name>SYSCAT.ROUTINES</sql_name> 
+	<singular_name>SYSCAT.ROUTINES</singular_name> 
+	<plural_name>SYSCAT.ROUTINES</plural_name> 
+	<description/> 
+	<rows_per_page>50</rows_per_page> 
+	<order_by_index/> 
+	<display_columns> 
+		<col type="column" name="routineschema"/> 
+		<col type="column" name="routinemodulename"/> 
+		<col type="column" name="routinename"/> 
+		<col type="column" name="routinetype"/> 
+		<col type="column" name="owner"/> 
+		<col type="column" name="origin"/> 
+		<col type="column" name="functiontype"/> 
+		<col type="column" name="parm_count"/> 
+		<col type="column" name="language"/> 
+		<col type="column" name="dialect"/> 
+		<col type="column" name="sourceschema"/> 
+		<col type="column" name="sourcespecific"/> 
+		<col type="column" name="published"/> 
+		<col type="column" name="deterministic"/> 
+		<col type="column" name="external_action"/> 
+		<col type="column" name="nullcall"/> 
+		<col type="column" name="cast_function"/> 
+		<col type="column" name="assign_function"/> 
+		<col type="column" name="scratchpad"/> 
+		<col type="column" name="scratchpad_length"/> 
+		<col type="column" name="finalcall"/> 
+		<col type="column" name="parallel"/> 
+		<col type="column" name="parameter_style"/> 
+		<col type="column" name="fenced"/> 
+		<col type="column" name="sql_data_access"/> 
+		<col type="column" name="dbinfo"/> 
+		<col type="column" name="programtype"/> 
+		<col type="column" name="commit_on_return"/> 
+		<col type="column" name="autonomous"/> 
+		<col type="column" name="result_sets"/> 
+		<col type="column" name="spec_reg"/> 
+		<col type="column" name="federated"/> 
+		<col type="column" name="threadsafe"/> 
+		<col type="column" name="valid"/> 
+		<col type="column" name="moduleroutineimplemented"/> 
+		<col type="column" name="methodimplemented"/> 
+		<col type="column" name="methodeffect"/> 
+		<col type="column" name="type_preserving"/> 
+		<col type="column" name="with_func_access"/> 
+		<col type="column" name="overridden_methodid"/> 
+		<col type="column" name="subject_typeschema"/> 
+		<col type="column" name="subject_typename"/> 
+		<col type="column" name="class"/> 
+		<col type="column" name="jar_id"/> 
+		<col type="column" name="jarschema"/> 
+		<col type="column" name="jar_signature"/> 
+		<col type="column" name="create_time"/> 
+		<col type="column" name="alter_time"/> 
+		<col type="column" name="func_path"/> 
+		<col type="column" name="qualifier"/> 
+		<col type="column" name="ios_per_invoc"/> 
+		<col type="column" name="insts_per_invoc"/> 
+		<col type="column" name="ios_per_argbyte"/> 
+		<col type="column" name="insts_per_argbyte"/> 
+		<col type="column" name="percent_argbytes"/> 
+		<col type="column" name="initial_ios"/> 
+		<col type="column" name="initial_insts"/> 
+		<col type="column" name="cardinality"/> 
+		<col type="column" name="selectivity"/> 
+		<col type="column" name="result_cols"/> 
+		<col type="column" name="implementation"/> 
+		<col type="column" name="lib_id"/> 
+		<col type="column" name="text_body_offset"/> 
+		<col type="column" name="text"/> 
+		<col type="column" name="newsavepointlevel"/> 
+		<col type="column" name="debug_mode"/> 
+		<col type="column" name="trace_level"/> 
+		<col type="column" name="diagnostic_level"/> 
+		<col type="column" name="checkout_userid"/> 
+		<col type="column" name="precompile_options"/> 
+		<col type="column" name="compile_options"/> 
+		<col type="column" name="execution_control"/> 
+		<col type="column" name="codepage"/> 
+		<col type="column" name="collationschema"/> 
+		<col type="column" name="collationname"/> 
+		<col type="column" name="collationschema_orderby"/> 
+		<col type="column" name="collationname_orderby"/> 
+		<col type="column" name="encoding_scheme"/> 
+		<col type="column" name="last_regen_time"/> 
+		<col type="column" name="inheritlockrequest"/> 
+		<col type="column" name="definer"/> 
+		<col type="column" name="remarks"/> 
+	</display_columns> 
+	<disable_edit/>
+	<column name="routineschema"> 
+		<c_sql_name>ROUTINESCHEMA</c_sql_name> 
+		<c_title>Schema</c_title> 
+		<c_presentation>s</c_presentation> 
+		<c_drill>y</c_drill> 
+		<c_prefill>
+			<table>schema</table>
+			<column>SCHEMANAME</column>
+		</c_prefill>
+	</column> 
+	<column name="routinemodulename"> 
+		<c_sql_name>ROUTINEMODULENAME</c_sql_name> 
+		<c_title>Module</c_title> 
+		<c_presentation>s</c_presentation> 
+		<c_drill>y</c_drill> 
+		<c_column_mask>
+			<value_mask value=""><mask></mask></value_mask>
+	   	</c_column_mask>
+	</column> 
+	<column name="routinename"> 
+		<c_sql_name>ROUTINENAME</c_sql_name> 
+		<c_title>Name</c_title> 
+		<c_presentation>s</c_presentation> 
+		<c_drill>y</c_drill> 
+	</column> 
+	<column name="routinetype"> 
+		<c_sql_name>ROUTINETYPE</c_sql_name> 
+		<c_title>Type</c_title> 
+		<c_presentation>s</c_presentation> 
+		<c_column_mask>
+			<value_mask value="F"><mask>Function</mask></value_mask>
+			<value_mask value="M"><mask>Method</mask></value_mask>
+			<value_mask value="P"><mask>Procedure</mask></value_mask>
+	   	</c_column_mask>
+		<c_drill>y</c_drill> 
+	</column> 
+	<column name="owner"> 
+		<c_sql_name>OWNER</c_sql_name> 
+		<c_title>Owner</c_title> 
+		<c_presentation>s</c_presentation> 
+		<c_drill>y</c_drill> 
+	</column> 
+	<column name="ownertype"> 
+		<c_sql_name>OWNERTYPE</c_sql_name> 
+		<c_title>Owner type</c_title> 
+		<c_presentation>s</c_presentation> 
+		<c_drill>y</c_drill> 
+		<c_column_mask>
+			<value_mask value="S"><mask>System</mask></value_mask>
+			<value_mask value="U"><mask>User</mask></value_mask>
+	   	</c_column_mask>
+	</column> 
+	<column name="specificname"> 
+		<c_sql_name>SPECIFICNAME</c_sql_name> 
+		<c_title>Specific name</c_title> 
+		<c_presentation>s</c_presentation> 
+		<c_drill>y</c_drill> 
+	</column> 
+	<column name="routineid"> 
+		<c_sql_name>ROUTINEID</c_sql_name> 
+		<c_title>Routine ID</c_title> 
+		<c_presentation>n</c_presentation> 
+		<c_drill>n</c_drill> 
+	</column> 
+	<column name="routinemoduleid"> 
+		<c_sql_name>ROUTINEMODULEID</c_sql_name> 
+		<c_title>Module ID</c_title> 
+		<c_presentation>n</c_presentation> 
+		<c_drill>n</c_drill>
+		<c_column_mask>
+			<value_mask value=""><mask></mask></value_mask>
+	   	</c_column_mask>
+	</column> 
+	<column name="return_typeschema"> 
+		<c_sql_name>RETURN_TYPESCHEMA</c_sql_name> 
+		<c_title>Return schema</c_title> 
+		<c_presentation>s</c_presentation> 
+		<c_drill>y</c_drill> 
+	</column> 
+	<column name="return_typemodule"> 
+		<c_sql_name>RETURN_TYPEMODULE</c_sql_name> 
+		<c_title>Return module</c_title> 
+		<c_presentation>s</c_presentation> 
+		<c_drill>y</c_drill> 
+	</column> 
+	<column name="return_typename"> 
+		<c_sql_name>RETURN_TYPENAME</c_sql_name> 
+		<c_title>Return name</c_title> 
+		<c_presentation>s</c_presentation> 
+		<c_drill>y</c_drill> 
+	</column> 
+	<column name="origin"> 
+		<c_sql_name>ORIGIN</c_sql_name> 
+		<c_title>Origin</c_title> 
+		<c_presentation>s</c_presentation> 
+		<c_column_mask>
+			<value_mask value="B"><mask>Built-in</mask></value_mask>
+			<value_mask value="E"><mask>User-defined, external</mask></value_mask>
+			<value_mask value="M"><mask>Template function</mask></value_mask>
+			<value_mask value="F"><mask>Federated procedure</mask></value_mask>
+			<value_mask value="Q"><mask>SQL-bodied1</mask></value_mask>
+			<value_mask value="S"><mask>System-generated</mask></value_mask>
+			<value_mask value="T"><mask>System-generated transform function (not directly invokable)</mask></value_mask>
+			<value_mask value="U"><mask>User-defined, based on a source</mask></value_mask>
+	   	</c_column_mask>
+		<c_drill>y</c_drill> 
+	</column> 
+	<column name="functiontype"> 
+		<c_sql_name>FUNCTIONTYPE</c_sql_name> 
+		<c_title>Type</c_title> 
+		<c_presentation>s</c_presentation> 
+		<c_drill>y</c_drill> 
+		<c_column_mask>
+			<value_mask value="C"><mask>Column or aggregate</mask></value_mask>
+			<value_mask value="R"><mask>Row</mask></value_mask>
+			<value_mask value="S"><mask>Scalar</mask></value_mask>
+			<value_mask value="T"><mask>Table</mask></value_mask>
+			<value_mask value=""><mask>Procedure</mask></value_mask>
+	   	</c_column_mask>
+	</column> 
+	<column name="parm_count"> 
+		<c_sql_name>PARM_COUNT</c_sql_name> 
+		<c_title>Parameter count</c_title> 
+		<c_presentation>n</c_presentation> 
+		<c_drill>n</c_drill> 
+	</column> 
+	<column name="language"> 
+		<c_sql_name>LANGUAGE</c_sql_name> 
+		<c_title>Language</c_title> 
+		<c_presentation>s</c_presentation> 
+		<c_drill>y</c_drill> 
+	</column> 
+	<column name="dialect"> 
+		<c_sql_name>DIALECT</c_sql_name> 
+		<c_title>Dialect</c_title> 
+		<c_presentation>s</c_presentation> 
+		<c_drill>y</c_drill> 
+		<c_column_mask>
+			<value_mask value=""><mask></mask></value_mask>
+	   	</c_column_mask>
+	</column> 
+	<column name="sourceschema"> 
+		<c_sql_name>SOURCESCHEMA</c_sql_name> 
+		<c_title>Source schema</c_title> 
+		<c_presentation>s</c_presentation> 
+		<c_drill>y</c_drill> 
+		<c_prefill>
+			<table>schema</table>
+			<column>SCHEMANAME</column>
+		</c_prefill>
+	</column> 
+	<column name="sourcespecific"> 
+		<c_sql_name>SOURCESPECIFIC</c_sql_name> 
+		<c_title>Source specific</c_title> 
+		<c_presentation>s</c_presentation> 
+		<c_drill>y</c_drill> 
+	</column> 
+	<column name="published"> 
+		<c_sql_name>PUBLISHED</c_sql_name> 
+		<c_title>Published</c_title> 
+		<c_presentation>s</c_presentation> 
+		<c_drill>y</c_drill> 
+	</column> 
+	<column name="deterministic"> 
+		<c_sql_name>DETERMINISTIC</c_sql_name> 
+		<c_title>Deterministic</c_title> 
+		<c_presentation>s</c_presentation> 
+		<c_drill>y</c_drill> 
+	</column> 
+	<column name="external_action"> 
+		<c_sql_name>EXTERNAL_ACTION</c_sql_name> 
+		<c_title>External action</c_title> 
+		<c_presentation>s</c_presentation> 
+		<c_drill>y</c_drill> 
+	</column> 
+	<column name="nullcall"> 
+		<c_sql_name>NULLCALL</c_sql_name> 
+		<c_title>null call</c_title> 
+		<c_presentation>s</c_presentation> 
+		<c_drill>y</c_drill> 
+	</column> 
+	<column name="cast_function"> 
+		<c_sql_name>CAST_FUNCTION</c_sql_name> 
+		<c_title>Cast function</c_title> 
+		<c_presentation>s</c_presentation> 
+		<c_drill>y</c_drill> 
+	</column> 
+	<column name="assign_function"> 
+		<c_sql_name>ASSIGN_FUNCTION</c_sql_name> 
+		<c_title>Assign function</c_title> 
+		<c_presentation>s</c_presentation> 
+		<c_drill>y</c_drill> 
+	</column> 
+	<column name="scratchpad"> 
+		<c_sql_name>SCRATCHPAD</c_sql_name> 
+		<c_title>Has scratch pad</c_title> 
+		<c_presentation>s</c_presentation> 
+		<c_drill>y</c_drill> 
+	</column> 
+	<column name="scratchpad_length"> 
+		<c_sql_name>SCRATCHPAD_LENGTH</c_sql_name> 
+		<c_title>SCRATCHPAD_LENGTH</c_title> 
+		<c_presentation>n</c_presentation> 
+		<c_drill>n</c_drill> 
+	</column> 
+	<column name="finalcall"> 
+		<c_sql_name>FINALCALL</c_sql_name> 
+		<c_title>FINALCALL</c_title> 
+		<c_presentation>s</c_presentation> 
+		<c_drill>y</c_drill> 
+	</column> 
+	<column name="parallel"> 
+		<c_sql_name>PARALLEL</c_sql_name> 
+		<c_title>PARALLEL</c_title> 
+		<c_presentation>s</c_presentation> 
+		<c_drill>y</c_drill> 
+	</column> 
+	<column name="parameter_style"> 
+		<c_sql_name>PARAMETER_STYLE</c_sql_name> 
+		<c_title>PARAMETER_STYLE</c_title> 
+		<c_presentation>s</c_presentation> 
+		<c_drill>y</c_drill> 
+	</column> 
+	<column name="fenced"> 
+		<c_sql_name>FENCED</c_sql_name> 
+		<c_title>FENCED</c_title> 
+		<c_presentation>s</c_presentation> 
+		<c_drill>y</c_drill> 
+	</column> 
+	<column name="sql_data_access"> 
+		<c_sql_name>SQL_DATA_ACCESS</c_sql_name> 
+		<c_title>SQL_DATA_ACCESS</c_title> 
+		<c_presentation>s</c_presentation> 
+		<c_drill>y</c_drill> 
+	</column> 
+	<column name="dbinfo"> 
+		<c_sql_name>DBINFO</c_sql_name> 
+		<c_title>DBINFO</c_title> 
+		<c_presentation>s</c_presentation> 
+		<c_drill>y</c_drill> 
+	</column> 
+	<column name="programtype"> 
+		<c_sql_name>PROGRAMTYPE</c_sql_name> 
+		<c_title>PROGRAMTYPE</c_title> 
+		<c_presentation>s</c_presentation> 
+		<c_drill>y</c_drill> 
+	</column> 
+	<column name="commit_on_return"> 
+		<c_sql_name>COMMIT_ON_RETURN</c_sql_name> 
+		<c_title>COMMIT_ON_RETURN</c_title> 
+		<c_presentation>s</c_presentation> 
+		<c_drill>y</c_drill> 
+	</column> 
+	<column name="autonomous"> 
+		<c_sql_name>AUTONOMOUS</c_sql_name> 
+		<c_title>AUTONOMOUS</c_title> 
+		<c_presentation>s</c_presentation> 
+		<c_drill>y</c_drill> 
+	</column> 
+	<column name="result_sets"> 
+		<c_sql_name>RESULT_SETS</c_sql_name> 
+		<c_title>RESULT_SETS</c_title> 
+		<c_presentation>n</c_presentation> 
+		<c_drill>n</c_drill> 
+	</column> 
+	<column name="spec_reg"> 
+		<c_sql_name>SPEC_REG</c_sql_name> 
+		<c_title>SPEC_REG</c_title> 
+		<c_presentation>s</c_presentation> 
+		<c_drill>y</c_drill> 
+	</column> 
+	<column name="federated"> 
+		<c_sql_name>FEDERATED</c_sql_name> 
+		<c_title>FEDERATED</c_title> 
+		<c_presentation>s</c_presentation> 
+		<c_drill>y</c_drill> 
+	</column> 
+	<column name="threadsafe"> 
+		<c_sql_name>THREADSAFE</c_sql_name> 
+		<c_title>THREADSAFE</c_title> 
+		<c_presentation>s</c_presentation> 
+		<c_drill>y</c_drill> 
+	</column> 
+	<column name="valid"> 
+		<c_sql_name>VALID</c_sql_name> 
+		<c_title>VALID</c_title> 
+		<c_presentation>s</c_presentation> 
+		<c_drill>y</c_drill> 
+	</column> 
+	<column name="moduleroutineimplemented"> 
+		<c_sql_name>MODULEROUTINEIMPLEMENTED</c_sql_name> 
+		<c_title>MODULEROUTINEIMPLEMENTED</c_title> 
+		<c_presentation>s</c_presentation> 
+		<c_drill>y</c_drill> 
+	</column> 
+	<column name="methodimplemented"> 
+		<c_sql_name>METHODIMPLEMENTED</c_sql_name> 
+		<c_title>METHODIMPLEMENTED</c_title> 
+		<c_presentation>s</c_presentation> 
+		<c_drill>y</c_drill> 
+	</column> 
+	<column name="methodeffect"> 
+		<c_sql_name>METHODEFFECT</c_sql_name> 
+		<c_title>METHODEFFECT</c_title> 
+		<c_presentation>s</c_presentation> 
+		<c_drill>y</c_drill> 
+	</column> 
+	<column name="type_preserving"> 
+		<c_sql_name>TYPE_PRESERVING</c_sql_name> 
+		<c_title>TYPE_PRESERVING</c_title> 
+		<c_presentation>s</c_presentation> 
+		<c_drill>y</c_drill> 
+	</column> 
+	<column name="with_func_access"> 
+		<c_sql_name>WITH_FUNC_ACCESS</c_sql_name> 
+		<c_title>WITH_FUNC_ACCESS</c_title> 
+		<c_presentation>s</c_presentation> 
+		<c_drill>y</c_drill> 
+	</column> 
+	<column name="overridden_methodid"> 
+		<c_sql_name>OVERRIDDEN_METHODID</c_sql_name> 
+		<c_title>OVERRIDDEN_METHODID</c_title> 
+		<c_presentation>n</c_presentation> 
+		<c_drill>n</c_drill> 
+	</column> 
+	<column name="subject_typeschema"> 
+		<c_sql_name>SUBJECT_TYPESCHEMA</c_sql_name> 
+		<c_title>SUBJECT_TYPESCHEMA</c_title> 
+		<c_presentation>s</c_presentation> 
+		<c_drill>y</c_drill> 
+		<c_prefill>
+			<table>schema</table>
+			<column>SCHEMANAME</column>
+		</c_prefill>
+	</column> 
+	<column name="subject_typename"> 
+		<c_sql_name>SUBJECT_TYPENAME</c_sql_name> 
+		<c_title>SUBJECT_TYPENAME</c_title> 
+		<c_presentation>s</c_presentation> 
+		<c_drill>y</c_drill> 
+	</column> 
+	<column name="class" DBMS="DB2"> 
+		<c_sql_name>CLASS</c_sql_name> 
+		<c_title>CLASS</c_title> 
+		<c_presentation>s</c_presentation> 
+		<c_drill>y</c_drill> 
+	</column> 
+	<column name="jar_id"> 
+		<c_sql_name>JAR_ID</c_sql_name> 
+		<c_title>JAR_ID</c_title> 
+		<c_presentation>s</c_presentation> 
+		<c_drill>y</c_drill> 
+	</column> 
+	<column name="jarschema"> 
+		<c_sql_name>JARSCHEMA</c_sql_name> 
+		<c_title>JARSCHEMA</c_title> 
+		<c_presentation>s</c_presentation> 
+		<c_drill>y</c_drill> 
+	</column> 
+	<column name="jar_signature"> 
+		<c_sql_name>JAR_SIGNATURE</c_sql_name> 
+		<c_title>JAR_SIGNATURE</c_title> 
+		<c_presentation>s</c_presentation> 
+		<c_drill>y</c_drill> 
+	</column> 
+	<column name="create_time"> 
+		<c_sql_name>CREATE_TIME</c_sql_name> 
+		<c_title>CREATE_TIME</c_title> 
+		<c_presentation>n</c_presentation> 
+		<c_drill>n</c_drill> 
+	</column> 
+	<column name="alter_time"> 
+		<c_sql_name>ALTER_TIME</c_sql_name> 
+		<c_title>ALTER_TIME</c_title> 
+		<c_presentation>n</c_presentation> 
+		<c_drill>n</c_drill> 
+	</column> 
+	<column name="func_path"> 
+		<c_sql_name>FUNC_PATH</c_sql_name> 
+		<c_title>FUNC_PATH</c_title> 
+		<c_presentation>l</c_presentation> 
+		<c_drill>n</c_drill> 
+	</column> 
+	<column name="qualifier"> 
+		<c_sql_name>QUALIFIER</c_sql_name> 
+		<c_title>QUALIFIER</c_title> 
+		<c_presentation>s</c_presentation> 
+		<c_drill>y</c_drill> 
+	</column> 
+	<column name="ios_per_invoc"> 
+		<c_sql_name>IOS_PER_INVOC</c_sql_name> 
+		<c_title>IOS_PER_INVOC</c_title> 
+		<c_presentation>n</c_presentation> 
+		<c_drill>n</c_drill> 
+	</column> 
+	<column name="insts_per_invoc"> 
+		<c_sql_name>INSTS_PER_INVOC</c_sql_name> 
+		<c_title>INSTS_PER_INVOC</c_title> 
+		<c_presentation>n</c_presentation> 
+		<c_drill>n</c_drill> 
+	</column> 
+	<column name="ios_per_argbyte"> 
+		<c_sql_name>IOS_PER_ARGBYTE</c_sql_name> 
+		<c_title>IOS_PER_ARGBYTE</c_title> 
+		<c_presentation>n</c_presentation> 
+		<c_drill>n</c_drill> 
+	</column> 
+	<column name="insts_per_argbyte"> 
+		<c_sql_name>INSTS_PER_ARGBYTE</c_sql_name> 
+		<c_title>INSTS_PER_ARGBYTE</c_title> 
+		<c_presentation>n</c_presentation> 
+		<c_drill>n</c_drill> 
+	</column> 
+	<column name="percent_argbytes"> 
+		<c_sql_name>PERCENT_ARGBYTES</c_sql_name> 
+		<c_title>PERCENT_ARGBYTES</c_title> 
+		<c_presentation>n</c_presentation> 
+		<c_drill>n</c_drill> 
+	</column> 
+	<column name="initial_ios"> 
+		<c_sql_name>INITIAL_IOS</c_sql_name> 
+		<c_title>INITIAL_IOS</c_title> 
+		<c_presentation>n</c_presentation> 
+		<c_drill>n</c_drill> 
+	</column> 
+	<column name="initial_insts"> 
+		<c_sql_name>INITIAL_INSTS</c_sql_name> 
+		<c_title>INITIAL_INSTS</c_title> 
+		<c_presentation>n</c_presentation> 
+		<c_drill>n</c_drill> 
+	</column> 
+	<column name="cardinality"> 
+		<c_sql_name>CARDINALITY</c_sql_name> 
+		<c_title>CARDINALITY</c_title> 
+		<c_presentation>n</c_presentation> 
+		<c_drill>n</c_drill> 
+	</column> 
+	<column name="selectivity"> 
+		<c_sql_name>SELECTIVITY</c_sql_name> 
+		<c_title>SELECTIVITY</c_title> 
+		<c_presentation>n</c_presentation> 
+		<c_drill>n</c_drill> 
+	</column> 
+	<column name="result_cols"> 
+		<c_sql_name>RESULT_COLS</c_sql_name> 
+		<c_title>RESULT_COLS</c_title> 
+		<c_presentation>n</c_presentation> 
+		<c_drill>n</c_drill> 
+	</column> 
+	<column name="implementation"> 
+		<c_sql_name>IMPLEMENTATION</c_sql_name> 
+		<c_title>IMPLEMENTATION</c_title> 
+		<c_presentation>s</c_presentation> 
+		<c_drill>y</c_drill> 
+	</column> 
+	<column name="lib_id"> 
+		<c_sql_name>LIB_ID</c_sql_name> 
+		<c_title>LIB_ID</c_title> 
+		<c_presentation>n</c_presentation> 
+		<c_drill>n</c_drill> 
+	</column> 
+	<column name="text_body_offset"> 
+		<c_sql_name>TEXT_BODY_OFFSET</c_sql_name> 
+		<c_title>TEXT_BODY_OFFSET</c_title> 
+		<c_presentation>n</c_presentation> 
+		<c_drill>n</c_drill> 
+	</column> 
+	<column name="text"> 
+		<c_sql_name>TEXT</c_sql_name> 
+		<c_title>TEXT</c_title> 
+		<c_presentation>l</c_presentation> 
+		<c_drill>n</c_drill> 
+	</column> 
+	<column name="newsavepointlevel"> 
+		<c_sql_name>NEWSAVEPOINTLEVEL</c_sql_name> 
+		<c_title>NEWSAVEPOINTLEVEL</c_title> 
+		<c_presentation>s</c_presentation> 
+		<c_drill>y</c_drill> 
+	</column> 
+	<column name="debug_mode"> 
+		<c_sql_name>DEBUG_MODE</c_sql_name> 
+		<c_title>DEBUG_MODE</c_title> 
+		<c_presentation>s</c_presentation> 
+		<c_drill>y</c_drill> 
+	</column> 
+	<column name="trace_level"> 
+		<c_sql_name>TRACE_LEVEL</c_sql_name> 
+		<c_title>TRACE_LEVEL</c_title> 
+		<c_presentation>s</c_presentation> 
+		<c_drill>y</c_drill> 
+	</column> 
+	<column name="diagnostic_level"> 
+		<c_sql_name>DIAGNOSTIC_LEVEL</c_sql_name> 
+		<c_title>DIAGNOSTIC_LEVEL</c_title> 
+		<c_presentation>s</c_presentation> 
+		<c_drill>y</c_drill> 
+	</column> 
+	<column name="checkout_userid"> 
+		<c_sql_name>CHECKOUT_USERID</c_sql_name> 
+		<c_title>CHECKOUT_USERID</c_title> 
+		<c_presentation>s</c_presentation> 
+		<c_drill>y</c_drill> 
+	</column> 
+	<column name="precompile_options"> 
+		<c_sql_name>PRECOMPILE_OPTIONS</c_sql_name> 
+		<c_title>PRECOMPILE_OPTIONS</c_title> 
+		<c_presentation>s</c_presentation> 
+		<c_drill>y</c_drill> 
+	</column> 
+	<column name="compile_options"> 
+		<c_sql_name>COMPILE_OPTIONS</c_sql_name> 
+		<c_title>COMPILE_OPTIONS</c_title> 
+		<c_presentation>s</c_presentation> 
+		<c_drill>y</c_drill> 
+	</column> 
+	<column name="execution_control"> 
+		<c_sql_name>EXECUTION_CONTROL</c_sql_name> 
+		<c_title>EXECUTION_CONTROL</c_title> 
+		<c_presentation>s</c_presentation> 
+		<c_drill>y</c_drill> 
+	</column> 
+	<column name="codepage"> 
+		<c_sql_name>CODEPAGE</c_sql_name> 
+		<c_title>CODEPAGE</c_title> 
+		<c_presentation>n</c_presentation> 
+		<c_drill>n</c_drill> 
+	</column> 
+	<column name="collationschema"> 
+		<c_sql_name>COLLATIONSCHEMA</c_sql_name> 
+		<c_title>COLLATIONSCHEMA</c_title> 
+		<c_presentation>s</c_presentation> 
+		<c_drill>y</c_drill> 
+	</column> 
+	<column name="collationname"> 
+		<c_sql_name>COLLATIONNAME</c_sql_name> 
+		<c_title>COLLATIONNAME</c_title> 
+		<c_presentation>s</c_presentation> 
+		<c_drill>y</c_drill> 
+	</column> 
+	<column name="collationschema_orderby"> 
+		<c_sql_name>COLLATIONSCHEMA_ORDERBY</c_sql_name> 
+		<c_title>COLLATIONSCHEMA_ORDERBY</c_title> 
+		<c_presentation>s</c_presentation> 
+		<c_drill>y</c_drill> 
+	</column> 
+	<column name="collationname_orderby"> 
+		<c_sql_name>COLLATIONNAME_ORDERBY</c_sql_name> 
+		<c_title>COLLATIONNAME_ORDERBY</c_title> 
+		<c_presentation>s</c_presentation> 
+		<c_drill>y</c_drill> 
+	</column> 
+	<column name="encoding_scheme"> 
+		<c_sql_name>ENCODING_SCHEME</c_sql_name> 
+		<c_title>ENCODING_SCHEME</c_title> 
+		<c_presentation>s</c_presentation> 
+		<c_drill>y</c_drill> 
+	</column> 
+	<column name="last_regen_time"> 
+		<c_sql_name>LAST_REGEN_TIME</c_sql_name> 
+		<c_title>LAST_REGEN_TIME</c_title> 
+		<c_presentation>n</c_presentation> 
+		<c_drill>n</c_drill> 
+	</column> 
+	<column name="inheritlockrequest"> 
+		<c_sql_name>INHERITLOCKREQUEST</c_sql_name> 
+		<c_title>INHERITLOCKREQUEST</c_title> 
+		<c_presentation>s</c_presentation> 
+		<c_drill>y</c_drill> 
+	</column> 
+	<column name="definer"> 
+		<c_sql_name>DEFINER</c_sql_name> 
+		<c_title>DEFINER</c_title> 
+		<c_presentation>s</c_presentation> 
+		<c_drill>y</c_drill> 
+	</column> 
+	<column name="remarks"> 
+		<c_sql_name>REMARKS</c_sql_name> 
+		<c_title>REMARKS</c_title> 
+		<c_presentation>s</c_presentation> 
+		<c_drill>y</c_drill> 
+	</column> 
+</table>

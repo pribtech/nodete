@@ -1,0 +1,25 @@
+<BR><BR><H2><B>Role based access by employee Bob</B></H2><HR><P>
+<?php
+  $baseDIR = $_POST["BASE_DIR"];
+?>
+
+<img src="?BASE_DIRECTORY?HTML/employee.png" />
+
+<p><b>You must log into the database as Bob before proceeding with this page.</b></p>
+
+<p>Bob is an employee of customer service department. Check if Bob can access <font face="courier">'credit_card'</font> table data. </p>
+
+<br><h4>Operation</h4><br>
+<p>Bob acquires SELECT, INSERT, and UPDATE privileges through the 'custService' role.</p>
+
+<br><h4>Solution</h4><br>
+<p>The query results in the right pane show that user Bob is able to execute SELECT, INSERT, UPDATE statements successfully. But
+DELETE statement on the right pane will fail as Bob does not have DELETE privilege.</p>
+
+
+
+
+
+
+
+

@@ -1,0 +1,246 @@
+<!--
+  Peter Prib, Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2012 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<table name="object">
+	<sql_name>sys.dba_objects</sql_name>
+	<singular_name>Object</singular_name>
+	<plural_name>Objects</plural_name>
+	<description></description>
+	<order_by_index name="OWNER" direction="A"/>
+	<order_by_index name="OBJECT_NAME" direction="A"/>
+	<disable_edit/>
+	<display_columns>
+		<col type="column" name="OWNER"/>
+		<col type="column" name="OBJECT_NAME"/>
+		<col type="reference" name="source"/>
+		<col type="column" name="SUBOBJECT_NAME"/>
+		<col type="column" name="OBJECT_ID"/>
+		<col type="column" name="DATA_OBJECT_ID"/>
+		<col type="column" name="OBJECT_TYPE"/>
+		<col type="column" name="CREATED"/>
+		<col type="column" name="LAST_DDL_TIME"/>
+		<col type="column" name="TIMESTAMP"/>
+		<col type="column" name="STATUS"/>
+		<col type="column" name="TEMPORARY"/>
+		<col type="column" name="GENERATED"/>
+		<col type="column" name="SECONDARY"/>
+		<col type="column" name="NAMESPACE"/>
+		<col type="column" name="EDITION_NAME"/>
+	</display_columns>
+	<reference name="source">
+		<title>Source</title>
+		<reftype>table</reftype>
+		<refvalue>Oracle/source</refvalue>
+		<displayColumnsSet>aObject</displayColumnsSet>
+		<icon>images/icon-column.gif</icon>
+		<ref foreign_column_name="OWNER">
+			<local_column_name>OWNER</local_column_name>
+		</ref>
+		<ref foreign_column_name="NAME">
+			<local_column_name>OBJECT_NAME</local_column_name>
+		</ref>
+		<ref foreign_column_name="TYPE">
+			<local_column_name>OBJECT_TYPE</local_column_name>
+		</ref>
+	</reference>
+	<column name="OWNER">
+		<sql_name>OWNER</sql_name>
+		<title>Owner</title>
+		<type>s</type>
+		<primaryKey/>
+		<prefill>
+			<table>Oracle/schema</table>
+			<column>OWNER</column>
+		</prefill>
+	</column>
+	<column name="OBJECT_NAME">
+		<sql_name>OBJECT_NAME</sql_name>
+		<title>Name</title>
+		<type>s</type>
+		<primaryKey/>
+	</column>
+	<column name="SUBOBJECT_NAME">
+		<sql_name>SUBOBJECT_NAME</sql_name>
+		<title>Sub Object Name</title>
+		<type>s</type>
+	</column>
+	<column name="OBJECT_ID">
+		<sql_name>OBJECT_ID</sql_name>
+		<title>Id</title>
+		<type>n</type>
+	</column>
+	<column name="DATA_OBJECT_ID">
+		<sql_name>DATA_OBJECT_ID</sql_name>
+		<title>Data Id</title>
+		<type>n</type>
+	</column>
+	<column name="OBJECT_TYPE">
+		<sql_name>OBJECT_TYPE</sql_name>
+		<title>Type</title>
+		<type>s</type>
+		<prefillEnable/>
+		<column_mask>
+			<value_mask value="INDEX">
+				<mask>Index</mask>
+				<reference name="index">
+					<reftype>table</reftype>
+					<refvalue>Oracle/index</refvalue>
+					<icon>images/fw_bold.gif</icon>
+					<ref foreign_column_name="OWNER">
+						<local_column_name>OWNER</local_column_name>
+					</ref>
+					<ref foreign_column_name="INDEX_NAME">
+						<local_column_name>OBJECT_NAME</local_column_name>
+					</ref>
+				</reference>
+			</value_mask>
+			<value_mask value="PACKAGE BODY">
+				<mask>Package Body</mask>
+				<reference name="procedure">
+					<reftype>table</reftype>
+					<refvalue>Oracle/procedure</refvalue>
+					<icon>images/fw_bold.gif</icon>
+					<ref foreign_column_name="OWNER">
+						<local_column_name>OWNER</local_column_name>
+					</ref>
+					<ref foreign_column_name="OBJECT_NAME">
+						<local_column_name>OBJECT_NAME</local_column_name>
+					</ref>
+				</reference>
+			</value_mask>
+			<value_mask value="SYNONYM">
+				<mask>Synonym</mask>
+				<reference name="synonym">
+					<reftype>displayRow</reftype>
+					<refvalue>Oracle/synonym</refvalue>
+					<icon>images/fw_bold.gif</icon>
+					<ref foreign_column_name="OWNER">
+						<local_column_name>OWNER</local_column_name>
+					</ref>
+					<ref foreign_column_name="SYNONYM_NAME">
+						<local_column_name>OBJECT_NAME</local_column_name>
+					</ref>
+				</reference>
+			</value_mask>
+			<value_mask value="TABLE">
+				<mask>Table</mask>
+				<reference name="table">
+					<reftype>displayRow</reftype>
+					<refvalue>Oracle/table</refvalue>
+					<icon>images/fw_bold.gif</icon>
+					<ref foreign_column_name="OWNER">
+						<local_column_name>OWNER</local_column_name>
+					</ref>
+					<ref foreign_column_name="TABLE_NAME">
+						<local_column_name>OBJECT_NAME</local_column_name>
+					</ref>
+				</reference>
+			</value_mask>
+			<value_mask value="TRIGGER">
+				<mask>Trigger</mask>
+				<reference name="trigger">
+					<reftype>displayRow</reftype>
+					<refvalue>Oracle/trigger</refvalue>
+					<icon>images/fw_bold.gif</icon>
+					<ref foreign_column_name="OWNER">
+						<local_column_name>OWNER</local_column_name>
+					</ref>
+					<ref foreign_column_name="TRIGGER_NAME">
+						<local_column_name>OBJECT_NAME</local_column_name>
+					</ref>
+				</reference>
+			</value_mask>
+			<value_mask value="VIEW">
+				<mask>View</mask>
+				<reference name="view">
+					<reftype>displayRow</reftype>
+					<refvalue>Oracle/view</refvalue>
+					<icon>images/fw_bold.gif</icon>
+					<ref foreign_column_name="OWNER">
+						<local_column_name>OWNER</local_column_name>
+					</ref>
+					<ref foreign_column_name="VIEW_NAME">
+						<local_column_name>OBJECT_NAME</local_column_name>
+					</ref>
+				</reference>
+			</value_mask>
+		</column_mask>
+	</column>
+	<column name="CREATED">
+		<sql_name>CREATED</sql_name>
+		<title>Created</title>
+		<type>n</type>
+	</column>
+	<column name="LAST_DDL_TIME">
+		<sql_name>LAST_DDL_TIME</sql_name>
+		<title>Last DDL Time</title>
+		<type>n</type>
+		<drill_enable/>
+	</column>
+	<column name="TIMESTAMP">
+		<sql_name>TIMESTAMP</sql_name>
+		<title>Timestamp</title>
+		<type>s</type>
+	</column>
+	<column name="STATUS">
+		<sql_name>STATUS</sql_name>
+		<title>Status</title>
+		<type>s</type>
+		<column_mask>
+			<value_mask value="VALID">
+				<mask></mask>
+			</value_mask>
+			<value_mask value="INVALID">
+				<mask>Invalid</mask>
+				<reference name="errors">
+					<reftype>table</reftype>
+					<refvalue>Oracle/error</refvalue>
+					<icon>images/fw_bold.gif</icon>
+					<ref foreign_column_name="OWNER">
+						<local_column_name>OWNER</local_column_name>
+					</ref>
+					<ref foreign_column_name="NAME">
+						<local_column_name>OBJECT_NAME</local_column_name>
+					</ref>
+				</reference>
+			</value_mask>
+		</column_mask>
+	</column>
+	<column name="TEMPORARY">
+		<sql_name>TEMPORARY</sql_name>
+		<title>Temporary</title>
+		<type>s</type>
+	</column>
+	<column name="GENERATED">
+		<sql_name>GENERATED</sql_name>
+		<title>Generated</title>
+		<type>s</type>
+	</column>
+	<column name="SECONDARY">
+		<sql_name>SECONDARY</sql_name>
+		<title>Secondary</title>
+		<type>s</type>
+	</column>
+	<column name="NAMESPACE">
+		<sql_name>NAMESPACE</sql_name>
+		<title>Namespace</title>
+		<type>n</type>
+	</column>
+	<column name="EDITION_NAME">
+		<sql_name>EDITION_NAME</sql_name>
+		<title>Edition_name</title>
+		<type>s</type>
+	</column>
+</table>

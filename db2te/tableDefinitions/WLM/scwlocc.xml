@@ -1,0 +1,253 @@
+<!--
+  Copyright IBM Corp. 2007 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<table name="scwlocc">
+	<sql_name>SERVICE_CLASS_WLO</sql_name>
+	<function>WLM_GET_SERVICE_CLASS_WORKLOAD_OCCURRENCES</function>
+	<singular_name>Service Class Workload Occurrences</singular_name>
+	<plural_name>Service Class Workload Occurrences</plural_name>	
+	<description>
+	This list is generated from the &lt;a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v10r5/topic/com.ibm.db2.luw.sql.rtn.doc/doc/r0052916.html?noframes=true');"&gt;WLM_GET_SERVICE_CLASS_WORKLOAD_OCCURRENCES&lt;/a&gt; table function.
+	</description>		
+	<disableEdit/>
+	<output>
+		<type name="DDL" destination="" title="" generator=""/>
+	</output>
+	<order_by_index name="servsubclassnm" direction="A"/>
+	<parameters>
+		<parm name="SERVICE_SUPERCLASS_NAME">
+			<title>Super Class Name</title>
+			<value></value>
+			<type>s</type>
+		</parm>
+		<parm name="servsubclassnm">
+			<title>Subclass Name</title>
+			<value></value>
+			<type>s</type>
+		</parm>
+		<parm name="dbpartition">
+			<title>Partition Number</title>
+			<value>-2</value>
+			<type>n</type>
+		</parm>
+	</parameters>
+	<displayColumns>
+		<col type="column" name="dbpart"/>															
+		<col type="column" name="servsubclassnm"/>	
+		<col type="column" name="wlname"/>
+		<col type="column" name="agentid"/>
+		<col type="column" name="appname"/>			
+		<col type="column" name="wloccid"/>			
+		<col type="column" name="uowid"/>
+		<col type="column" name="SERVICE_SUPERCLASS_NAME"/>
+		<col type="column" name="COORD_PARTITION_NUM"/>
+		<col type="column" name="WORKLOAD_OCCURRENCE_STATE"/>
+		<col type="column" name="SYSTEM_AUTH_ID"/>
+		<col type="column" name="SESSION_AUTH_ID"/>
+		<col type="column" name="CLIENT_WRKSTNNAME"/>
+		<col type="column" name="CLIENT_ACCTNG"/>
+		<col type="column" name="CLIENT_USER"/>
+		<col type="column" name="CLIENT_APPLNAME"/>
+		<col type="column" name="COORD_ACT_COMPLETED_TOTAL"/>
+		<col type="column" name="COORD_ACT_ABORTED_TOTAL"/>
+		<col type="column" name="COORD_ACT_REJECTED_TOTAL"/>
+		<col type="column" name="CONCURRENT_ACT_TOP"/>
+	</displayColumns>
+	<reference name="wloccact">
+		<title>Workload Occurrence Activities</title>		
+		<reftype>table</reftype>
+		<refvalue>WLM/wloact</refvalue>
+		<ref foreign_column_name="APPLICATION_HANDLE">
+			<local_column_name>agentid</local_column_name>	
+		</ref>			
+	</reference>
+	<action name="force">
+		<title>Force</title>
+		<icon>images/cancel.gif</icon>	
+		<actionScript name="force" type="confirm">
+			<message>
+Force Agent: ?AGENT_ID?
+Select Ok to drop the connection for agent number ?AGENT_ID?. 
+This will stop all active work for agent ?AGENT_ID?.
+			</message>
+			<parameterList>
+				<parameter name="AGENT_ID" type="blockValue">
+					<value>agentid</value>
+				</parameter>
+			</parameterList>
+			<followOnAction condition="true">
+				<task>
+						<action name="forceApplication" type="serverAction">
+							<parameterList>
+								<parameter name="action" type="fixed">
+									<value>executeSQL</value>
+								</parameter>
+								<parameter name="SQL" type="fixed">
+									<value>CALL SYSPROC.ADMIN_CMD( 'force application ( ?AGENT_ID? )' )</value>
+								</parameter>
+								<parameter name="parameter[AGENT_ID]" type="blockValue">
+									<value>agentid</value>
+								</parameter>
+							</parameterList>
+							<followOnAction condition="true" negCondition="true">
+								<task>
+									<action name="raiseError" type="alert">
+										<message>Error: ?ERROR_MESSAGE?</message>
+										<parameterList>
+											<parameter name="ERROR_MESSAGE" type="returnValue">
+												<value>forceApplication</value>
+											</parameter>
+										</parameterList>
+									</action>
+								</task>
+							</followOnAction>
+							<followOnAction condition="true">
+								<task>
+									<action name="raiseError" type="alert">
+										<message>Agent ?AGENT? forced off the database</message>
+										<parameterList>
+											<parameter name="AGENT" type="blockValue">
+												<value>agentid</value>
+											</parameter>
+										</parameterList>
+									</action>
+								</task>
+								<task>
+									<panelReload/>
+								</task>
+							</followOnAction>
+						</action>
+				</task>
+			</followOnAction>
+		</actionScript>
+	</action>
+	<column name="servsubclassnm">
+		<sqlName>SERVICE_SUBCLASS_NAME</sqlName>
+		<title>Service Subclass</title>
+		<primaryKey/>
+		<type>s</type>
+	</column>
+	<column name="dbpart">
+		<sqlName>DBPARTITIONNUM</sqlName>
+		<title>Partition</title>
+		<primaryKey/>
+		<type>n</type>
+	</column>	
+	<column name="wlname">
+		<sqlName>WORKLOAD_NAME</sqlName>
+		<title>Workload</title>
+		<primaryKey/>
+		<type>s</type>
+	</column>	
+	<column name="wloccid">
+		<sqlName>WORKLOAD_OCCURRENCE_ID</sqlName>
+		<title>Occurrence Id</title>
+ 		<primaryKey/>
+		<type>n</type>
+	</column>	
+	<column name="agentid">
+		<sqlName>APPLICATION_HANDLE</sqlName>
+		<title>Application Handle</title>
+		<primaryKey/>
+		<type>n</type>
+	</column>	
+	<column name="uowid">
+		<sqlName>UOW_ID</sqlName>
+		<title>UOW</title>
+		<primaryKey/>
+		<type>n</type>
+	</column>	
+	<column name="appname">
+		<sqlName>APPLICATION_NAME</sqlName>
+		<title>Application</title>
+		<primaryKey/>
+		<type>s</type>
+		<drillEnable/>
+	</column>	
+	<column name="SERVICE_SUPERCLASS_NAME">
+		<sqlName>SERVICE_SUPERCLASS_NAME</sqlName>
+		<title>Service Superclass Name</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="COORD_PARTITION_NUM">
+		<sqlName>COORD_PARTITION_NUM</sqlName>
+		<title>Coord Partition Num</title>
+		<type>n</type>
+	</column>
+	<column name="WORKLOAD_OCCURRENCE_STATE">
+		<sqlName>WORKLOAD_OCCURRENCE_STATE</sqlName>
+		<title>Workload Occurrence State</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="SYSTEM_AUTH_ID">
+		<sqlName>SYSTEM_AUTH_ID</sqlName>
+		<title>System Auth Id</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="SESSION_AUTH_ID">
+		<sqlName>SESSION_AUTH_ID</sqlName>
+		<title>Session Auth Id</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="CLIENT_WRKSTNNAME">
+		<sqlName>CLIENT_WRKSTNNAME</sqlName>
+		<title>Client Wrkstnname</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="CLIENT_ACCTNG">
+		<sqlName>CLIENT_ACCTNG</sqlName>
+		<title>Client Acctng</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="CLIENT_USER">
+		<sqlName>CLIENT_USER</sqlName>
+		<title>Client User</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="CLIENT_APPLNAME">
+		<sqlName>CLIENT_APPLNAME</sqlName>
+		<title>Client Applname</title>
+		<type>s</type>
+		<drillEnable/>
+	</column>
+	<column name="COORD_ACT_COMPLETED_TOTAL">
+		<sqlName>COORD_ACT_COMPLETED_TOTAL</sqlName>
+		<title>Coord Act Completed Total</title>
+		<type>n</type>
+	</column>
+	<column name="COORD_ACT_ABORTED_TOTAL">
+		<sqlName>COORD_ACT_ABORTED_TOTAL</sqlName>
+		<title>Coord Act Aborted Total</title>
+		<type>n</type>
+	</column>
+	<column name="COORD_ACT_REJECTED_TOTAL">
+		<sqlName>COORD_ACT_REJECTED_TOTAL</sqlName>
+		<title>Coord Act Rejected Total</title>
+		<type>n</type>
+	</column>
+	<column name="CONCURRENT_ACT_TOP">
+		<sqlName>CONCURRENT_ACT_TOP</sqlName>
+		<title>Concurrent Act Top</title>
+		<type>n</type>
+	</column>
+</table>
+	

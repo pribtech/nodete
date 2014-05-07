@@ -1,0 +1,37 @@
+<H2>IBM Data Movement Tool</H2><HR>
+<p>
+The <b class="sourceChange">IBM Data Movement Tool</b> (<a onclick="OpenURLInFloatingWindow('http://www.ibm.com/services/forms/preLogin.do?lang=en_US&source=idmt&S_TACT=105AGX11&S_CMP=ART');"><b>IDMT</b></a>) is the tool of choice for moving schema and
+data efficiently between Oracle as a source and DB2 for Linux, UNIX, and Windows (LUW) 
+as a target. This tool also supports many other databases as a source, including 
+Sybase, Microsoft SQL Server, MySQL, PostgreSQL, and MS SQL Access.
+</p>
+<p>
+IDMT uses a series of Java programs and shell scripts (Windows or UNIX) 
+to access the source Oracle database and generate database scripts necessary to
+recreate the objects in DB2. It also extracts the data from the source Oracle
+tables using a multi-threaded technique and generates scripts to populate DB2
+tables with the extracted data using the very fast 
+<a onclick="OpenURLInFloatingWindow('http://publib.boulder.ibm.com/infocenter/db2luw/v9r7/topic/com.ibm.db2.luw.admin.dm.doc/doc/c0004587.html');"><b>DB2 LOAD</b></a> 
+utility.
+</p>
+<H2>Moving DDLs and data</H2><HR>
+<p>
+In order to move the data from Oracle source database to DB2 target database,
+the DMT requires connection information both for Oracle and DB2.
+The extraction process retrieves the original Oracle data definitions (DDL), and
+can also automatically modify the code to make it more compatible with DB2.
+<b><i>Figure 1</i></b> on the right pane shows the GUI screen of DMT 
+with required fields.
+</p>
+<H2>Deploying PL/SQL objects</H2><HR>
+<p>
+The IDMT can also be used for deployment of PL/SQL
+objects such as triggers, functions, procedures and packages. The PL/SQL
+source code is extracted as part of the Extract DDL/Data operation when the
+DDL check box is checked (<b><i>Figure 1</i></b> on the right pane).
+Once the Extract DDL operation is complete, the extracted DDL and PL/SQL
+become visible on the Interactive Deploy panel (<b><i>Figure 2</b></i> on right pane) after
+pressing the Refresh button.
+</p>
+ 
+<img src="?BASE_DIRECTORY?HTML/downloadIDM.jpg"/ onclick="OpenURLInFloatingWindow('http://www.ibm.com/services/forms/preLogin.do?lang=en_US&source=idmt&S_TACT=105AGX11&S_CMP=ART');"><br><br> 

@@ -1,0 +1,5 @@
+The transaction table (product_txs) is cleared for this example.
+
+Insert an existing product into the table. The Merge logic is rewritten to include errors messages in the
+  case where a record does not exist for an insert command, or a record is missing for an update or delete.
+  This first example tries an insert against an existing record.  Therefore the MERGE statement will fail.

@@ -1,0 +1,206 @@
+<!--
+  Author: Peter Prib
+  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2013 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+<table name="ps-all">
+	<sqlName>ps-all</sqlName>
+	<singularName>Process</singularName>
+	<pluralName>Processes</pluralName>
+	<inlinequery>
+<![CDATA[
+ps -A --cols 1024 --no-headers --format "pid ppid pcpu pmem blocked caught cgroup cputime etime egid egroup euid ni maj_flt min_flt args"
+]]>
+	</inlinequery>
+	<filters>
+		<column operator="is empty" name="Line" />
+	</filters>
+	<description></description>
+	<output>
+		<type name="DDL" destination="" title="" generator=""/>
+	</output>
+	<displayColumns titleDepth="2">
+		<col type="column" name="pid"/>
+		<col type="column" name="ppid"/>
+		<col type="column" name="pcpu"/>
+		<col type="column" name="pmem"/>
+		<col type="column" name="cputime"/>
+		<col type="column" name="etime"/>
+		<col type="column" name="maj_flt"/>
+		<col type="column" name="min_flt"/>
+		<col type="column" name="args"/>
+		<col type="column" name="egroup"/>
+		<col type="column" name="euid"/>
+		<col type="column" name="Line"/>
+	</displayColumns>
+    <column name="Line">
+		<sqlName>Line</sqlName>
+		<title>Line</title>
+		<sortDisable/>
+		<type>l</type>
+	</column>
+	<column name="pid">
+		<title>PID</title>
+		<sortDisable/>
+		<type>n</type>
+		<generated>word,Line,1</generated>
+	</column>
+	<column name="ppid">
+		<title>PPID</title>
+		<sortDisable/>
+		<type>n</type>
+		<generated>word,Line,2</generated>
+	</column>
+	<column name="pcpu">
+		<title>CPU %</title>
+		<sortDisable/>
+		<type>n</type>
+		<generated>word,Line,3</generated>
+	</column>
+	<column name="pmem">
+		<title>MEM %</title>
+		<sortDisable/>
+		<type>n</type>
+		<generated>word,Line,4</generated>
+	</column>
+	<column name="blocked">
+		<title>Blocked</title>
+		<sortDisable/>
+		<type>n</type>
+		<generated>word,Line,5</generated>
+	</column>
+	<column name="caught">
+		<title>Caught</title>
+		<sortDisable/>
+		<type>n</type>
+		<generated>word,Line,6</generated>
+	</column>
+	<column name="cgroup">
+		<title>Control Group</title>
+		<sortDisable/>
+		<type>s</type>
+		<generated>word,Line,7</generated>
+	</column>
+	<column name="cputime">
+		<title>cpu</title>
+		<sortDisable/>
+		<type>n</type>
+		<generated>word,Line,8</generated>
+	</column>
+	<column name="etime">
+		<title>Elapse Time</title>
+		<sortDisable/>
+		<type>n</type>
+		<generated>word,Line,9</generated>
+	</column>
+	<column name="egid">
+		<title>Effective GID</title>
+		<sortDisable/>
+		<type>n</type>
+		<generated>word,Line,10</generated>
+	</column>
+	<column name="egroup">
+		<title>Effective Group</title>
+		<sortDisable/>
+		<type>s</type>
+		<generated>word,Line,11</generated>
+	</column>
+	<column name="euid">
+		<title>Effective UID</title>
+		<sortDisable/>
+		<type>n</type>
+		<generated>word,Line,12</generated>
+	</column>
+	<column name="ni">
+		<title>Nice</title>
+		<sortDisable/>
+		<type>n</type>
+		<generated>word,Line,13</generated>
+	</column>
+	<column name="maj_flt">
+		<title>Major Faults</title>
+		<sortDisable/>
+		<type>n</type>
+		<generated>word,Line,14</generated>
+	</column>
+	<column name="min_flt">
+		<title>Minor Faults</title>
+		<sortDisable/>
+		<type>n</type>
+		<generated>word,Line,15</generated>
+	</column>
+	<column name="args">
+		<title>Command</title>
+		<sortDisable/>
+		<type>l</type>
+		<generated>getStringAfterDelimiter,Line,15</generated>
+	</column>
+</table>
+
+<!--
+       cls         CLS       scheduling class of the process. (alias policy, class). Field's possible values are:
+                             -   not reported
+                             TS  SCHED_OTHER
+                             FF  SCHED_FIFO
+                             RR  SCHED_RR
+                             B   SCHED_BATCH
+                             ISO SCHED_ISO
+                             IDL SCHED_IDLE
+                             ?   unknown value
+       lwp         LWP       lwp (light weight process, or thread) ID of the lwp being reported. 
+       nlwp        NLWP      number of lwps (threads) in the process. (alias thcount).
+      nwchan      WCHAN     address of the kernel function where the process is sleeping (use wchan if you want the kernel function name). Running tasks will display a dash
+                             ('-') in this column.
+       pending     PENDING   mask of the pending signals. See signal(7). Signals pending on the process are distinct from signals pending on individual threads. Use the m option
+                             or the -m option to see both. According to the width of the field, a 32 or 64 bits mask in hexadecimal format is displayed. (alias sig).
+       pgid        PGID      process group ID or, equivalently, the process ID of the process group leader. (alias pgrp).
+       pri         PRI       priority of the process. Higher number means lower priority.
+       psr         PSR       processor that process is currently assigned to.
+       rgid        RGID      real group ID.
+       rgroup      RGROUP    real group name. This will be the textual group ID, if it can be obtained and the field width permits, or a decimal representation otherwise.
+       rss         RSS       resident set size, the non-swapped physical memory that a task has used (in kiloBytes). (alias rssize, rsz).
+       rtprio      RTPRIO    realtime priority.
+       ruid        RUID      real user ID.
+       ruser       RUSER     real user ID. This will be the textual user ID, if it can be obtained and the field width permits, or a decimal representation otherwise.
+       s           S         minimal state display (one character). See section PROCESS STATE CODES for the different values. See also stat if you want additional information
+                             displayed. 
+       sched       SCH       scheduling policy of the process. The policies SCHED_OTHER (SCHED_NORMAL), SCHED_FIFO, SCHED_RR, SCHED_BATCH, SCHED_ISO, and SCHED_IDLE are
+                             respectively displayed as 0, 1, 2, 3, 4, and 5.
+       sess        SESS      session ID or, equivalently, the process ID of the session leader. (alias session, sid).
+       sgi_p       P         processor that the process is currently executing on. Displays "*" if the process is not currently running or runnable.
+       sgid        SGID      saved group ID.
+       sgroup      SGROUP    saved group name. This will be the textual group ID, if it can be obtained and the field width permits, or a decimal representation otherwise.
+       size        SZ        approximate amount of swap space that would be required if the process were to dirty all writable pages and then be swapped out. This number is
+                             very rough!
+       stackp      STACKP    address of the bottom (start) of stack for the process.
+       bsdstart    START     time the command started. If the process was started less than 24 hours ago, the output format is " HH:MM", else it is "Mmm dd" 
+       bsdtime     TIME      accumulated cpu time, user + system. The display format is usually "MMM:SS", but can be shifted to the right if the process used more than 999
+       lstart      STARTED   time the command started. See also bsdstart, start, start_time, and stime.
+       start       STARTED   time the command started. If the process was started less than 24 hours ago, the output format is "HH:MM:SS", else it is "  <mm dd" (where Mmm is a
+                             three-letter month name). See also lstart, bsdstart, start_time, and stime.
+       start_time  START     starting time or date of the process. Only the year will be displayed if the process was not started the same year ps was invoked, or "MmmDD" if it
+                             was not started the same day, or "HH:MM" otherwise. See also bsdstart, start, lstart, and stime.
+       stat        STAT      multi-character process state. See section PROCESS STATE CODES for the different values meaning. See also s and state if you just want the first
+                             character displayed.
+       suser       SUSER     saved user name. This will be the textual user ID, if it can be obtained and the field width permits, or a decimal representation otherwise.
+       sz          SZ        size in physical pages of the core image of the process. This includes text, data, and stack space. Device mappings are currently excluded; this is
+                             subject to change. See vsz and rss.
+       tpgid       TPGID     ID of the foreground process group on the tty (terminal) that the process is connected to, or -1 if the process is not connected to a tty.
+       tt          TT        controlling tty (terminal). 
+       vsz         VSZ       virtual memory size of the process in KiB (1024-byte units). Device mappings are currently excluded; this is subject to change. (alias vsize).
+       wchan       WCHAN     name of the kernel function in which the process is sleeping, a "-" if the process is running, or a "*" if the process is multi-threaded and ps is
+-->
+
+

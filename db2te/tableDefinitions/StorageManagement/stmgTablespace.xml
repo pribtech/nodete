@@ -1,0 +1,226 @@
+<!--
+  Author: Peter Prib
+  
+  Copyright Independent Systems Integrators Pty Ltd 2008 All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+<table name="stmgTablespace">
+	<sql_name>stmgTablespace</sql_name>
+	<singular_name>Storage Tablespace</singular_name>
+	<plural_name>Storage Tablespaces</plural_name>
+	<description />
+	<messages>
+		<SQL0204N> Not installed. Please install "Storage Management Object" in Tools-> Installed Components </SQL0204N>
+	</messages>
+	<inlinequery>
+<![CDATA[
+	select s.*,obj_name ,obj_schema ,ts_name
+	from SYSTOOLS.STMG_TABLESPACE s
+	join systools.stmg_object o
+		on o.obj_id=s.obj_id
+		and o.obj_type=2
+		and o.stmg_timestamp=s.stmg_timestamp
+	where s.stmg_timestamp = (select max(stmg_timestamp)
+							from systools.stmg_object mo
+							where mo.obj_name=o.obj_name
+							  and mo.obj_type=o.obj_type
+							)
+]]></inlinequery>
+	<rows_per_page>50</rows_per_page>
+	<order_by_index name="obj_name" direction="A"/>
+	<display_columns>
+		<col type="reference" name="History"/>
+		<col type="reference" name="graphHistory"/>
+		<col type="reference" name="stmgContainer"/>
+		<col type="reference" name="stmgTable"/>
+		<col type="reference" name="stmgIndex"/>
+		<col type="column" name="obj_name" />
+		<col type="column" name="type" />
+		<col type="column" name="datatype" />
+		<col type="column" name="percent_used" />
+		<col type="column" name="total_size" />
+		<col type="column" name="data_size" />
+		<col type="column" name="data_page" />
+		<col type="column" name="extent_size" />
+		<col type="column" name="prefetch_size" />
+		<col type="column" name="overhead" />
+		<col type="column" name="transfer_rate" />
+		<col type="column" name="bufferpool_id" />
+		<col type="column" name="page_size" />
+	</display_columns>
+	<reference name="History">
+		<c_title>History</c_title>
+		<reftype>table</reftype>
+		<refvalue>StorageManagement/stmgTablespaceHist</refvalue>
+		<icon>images/icon-histo.gif</icon>
+		<ref foreign_column_name="obj_name">
+			<local_column_name>obj_name</local_column_name>
+		</ref>
+	</reference>
+	<reference name="graphHistory">
+		<c_title>Graph History</c_title>
+		<reftype>graph</reftype>
+		<refvalue>StorageManagement/stmgTablespaceHist</refvalue>
+		<icon>images/icon-histo.gif</icon>
+		<ref foreign_column_name="obj_name">
+			<local_column_name>obj_name</local_column_name>
+		</ref>
+	</reference>
+	<reference name="stmgContainer">
+			<c_title>Containers</c_title>
+			<reftype>table</reftype>
+			<refvalue>StorageManagement/stmgContainer</refvalue>
+			<icon>images/icon-tbs-cont.gif</icon>
+			<ref foreign_column_name="ts_name">
+				<local_column_name>obj_name</local_column_name>
+			</ref>
+	</reference>
+	<reference name="stmgTable">
+			<c_title>Tables</c_title>
+			<reftype>table</reftype>
+			<refvalue>StorageManagement/stmgTable</refvalue>
+			<icon>images/icon-link-calendar.gif</icon>
+			<ref foreign_column_name="ts_name">
+				<local_column_name>obj_name</local_column_name>
+			</ref>
+	</reference>
+	<reference name="stmgIndex">
+			<c_title>Indices</c_title>
+			<reftype>table</reftype>
+			<refvalue>StorageManagement/stmgIndex</refvalue>
+			<icon>images/icon-index.gif</icon>
+			<ref foreign_column_name="ts_name">
+				<local_column_name>obj_name</local_column_name>
+			</ref>
+	</reference>
+	<column name="stmg_timestamp">
+		<c_sql_name>STMG_TIMESTAMP</c_sql_name>
+		<c_title>Timestamp</c_title>
+		<c_presentation>s</c_presentation>
+		<c_drill>n</c_drill>
+    </column>
+	<column name="obj_id">
+		<c_sql_name>OBJ_ID</c_sql_name>
+		<c_title>Object Id.</c_title>
+		<c_presentation>s</c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+	<column name="obj_name">
+		<c_sql_name>OBJ_NAME</c_sql_name>
+		<c_title>Tablespace</c_title>
+		<c_presentation>s</c_presentation>
+		<c_drill>y</c_drill>
+        <c_pkey>p</c_pkey>
+	</column>
+	<column name="complete_timestamp">
+		<c_sql_name>COMPLETE_TIMESTAMP</c_sql_name>
+		<c_title>Complete Timestamp</c_title>
+		<c_presentation>s</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="type">
+		<c_sql_name>TYPE</c_sql_name>
+		<c_title>Type</c_title>
+		<c_presentation>s</c_presentation>
+		<c_drill>y</c_drill>
+        <c_column_mask_file>masks/tablespaceType.xml</c_column_mask_file>
+	</column>
+	<column name="datatype">
+		<c_sql_name>DATATYPE</c_sql_name>
+		<c_title>Data Type</c_title>
+		<c_presentation>s</c_presentation>
+		<c_drill>y</c_drill>
+		<c_column_mask_file>masks/tablespaceDataType.xml</c_column_mask_file>
+	</column>
+	<column name="total_size">
+		<c_sql_name>TOTAL_SIZE</c_sql_name>
+		<c_title>Total Size</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="percent_used">
+		<c_sql_name>PERCENT_USED</c_sql_name>
+		<c_title>Percent Used</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+        <c_presentation>bg</c_presentation>
+		<graphattributes>		
+			<value>100.0</value>
+	  </graphattributes>
+	</column>
+	<column name="data_size">
+		<c_sql_name>DATA_SIZE</c_sql_name>
+		<c_title>Data Size</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="data_page">
+		<c_sql_name>DATA_PAGE</c_sql_name>
+		<c_title>Data Page</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="extent_size">
+		<c_sql_name>EXTENT_SIZE</c_sql_name>
+		<c_title>Extent Size</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="prefetch_size">
+		<c_sql_name>PREFETCH_SIZE</c_sql_name>
+		<c_title>Prefetch Size</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="overhead">
+		<c_sql_name>OVERHEAD</c_sql_name>
+		<c_title>Overhead</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="transfer_rate">
+		<c_sql_name>TRANSFER_RATE</c_sql_name>
+		<c_title>Transfer rate</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="bufferpool_id">
+		<c_sql_name>BUFFERPOOL_ID</c_sql_name>
+		<c_title>Bufferpool Id.</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+		<c_reference name="buffpool">
+			<title>Bufferpool</title>
+			<reftype>displayRow</reftype>
+			<refvalue>bufferpool</refvalue>
+			<icon>images/icon-buffer.gif</icon>								
+			<ref foreign_column_name="bufferpoolid">
+				<local_column_name>bufferpool_id</local_column_name>
+			</ref>
+		</c_reference>
+	</column>
+	<column name="page_size">
+		<c_sql_name>PAGE_SIZE</c_sql_name>
+		<c_title>Page Size</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="remarks">
+		<c_sql_name>REMARKS</c_sql_name>
+		<c_title>Remarks</c_title>
+		<c_presentation>s</c_presentation>
+		<c_drill>y</c_drill>
+	</column>
+</table>

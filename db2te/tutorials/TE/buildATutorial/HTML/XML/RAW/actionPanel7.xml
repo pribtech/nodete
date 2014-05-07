@@ -1,0 +1,121 @@
+<actionPanel> 
+	<taskList>
+		<task name="Run performance tests"> 
+			<discription></discription> 
+			<action name="run" type="blank"> 
+				<task> 
+					<setGlobal name="SQL" type="fixed"> 
+						<value>?</value> 
+					</setGlobal> 
+					<echo>Timeing : ?SQL?</echo> 
+					<callAction name="statmentTimer"/> 
+					<setGlobal name="RUN_TIME_JOIN" type="returnObject"> 
+						<value>statmentTimer.returnValue.avgRunTime</value> 
+					</setGlobal> 
+	
+	
+					<setGlobal name="SQL" type="fixed"> 
+						<value>?</value> 
+					</setGlobal> 
+					<echo>Timeing : ?SQL?</echo> 
+					<callAction name="statmentTimer"/> 
+					<setGlobal name="RUN_TIME_INNER_JOIN" type="returnObject"> 
+						<value>statmentTimer.returnValue.avgRunTime</value> 
+					</setGlobal> 
+	
+	
+					<setGlobal name="SQL" type="fixed"> 
+						<value>?</value> 
+					</setGlobal> 
+					<echo>Timeing : ?SQL?</echo> 
+					<callAction name="statmentTimer"/> 
+					<setGlobal name="RUN_TIME_OUTER_JOIN" type="returnObject"> 
+						<value>statmentTimer.returnValue.avgRunTime</value> 
+					</setGlobal> 
+	
+	
+					<setGlobal name="SQL" type="fixed"> 
+						<value>?</value> 
+					</setGlobal> 
+					<echo>Timeing : ?SQL?</echo> 
+					<callAction name="statmentTimer"/> 
+					<setGlobal name="RUN_TIME_LEFT_JOIN" type="returnObject"> 
+						<value>statmentTimer.returnValue.avgRunTime</value> 
+					</setGlobal> 
+				</task>
+				<declareActions>	 
+					<action name="statmentTimer" type="serverAction"> 
+						<parameterList> 
+							<parameter name="action" type="fixed"> 
+								<value>statementThroughput</value> 
+							</parameter>								 
+							<parameter name="Period" type="fixed"> 
+								<value>5</value> 
+							</parameter> 
+							<parameter name="MinRunAmount" type="fixed"> 
+								<value>1</value> 
+							</parameter> 
+						</parameterList> 
+						<if condition="true"> 
+							<task> 
+								<echo>Run finished!</echo> 
+							</task> 
+						</if> 
+						<if condition="false"> 
+							<task> 
+								<echo>Error in run!</echo> 
+								<exit/> 
+							</task> 
+						</if> 
+					</action> 
+				</declareActions> 
+			</action>
+		</task>
+		<task name="Graph run time"> 
+			<discription> 
+			</discription> 
+			<action name="plotPerformance" type="blank"> 
+				<task> 
+					<loadPage> 
+						<pageWindow target="informationWindow"> 
+							<panel name="main" PrimaryContainer="true"> 
+								<link type="action"> 
+									<parameterList> 
+										<parameter name="action"> 
+											graphYUI 
+										</parameter> 
+										<parameter name="graph"> 
+											<![CDATA[ 
+{ 
+	"Graph": 
+	{ 
+		"title": "Joins", 
+		"graphType": "column", 
+		"xField": "title", 
+		"xTitle": "ms", 
+		"yTitle": "Join type", 
+		"dataSourceType": "data_from_raw", 
+		"responseSchema": {"fields": ["title","time"]}, 
+		"style":{	"legend": { "display": "right" }, "animationEnabled" : "false"}, 
+		"seriesDef": [{ "displayName": "Average run time (ms)", "yField": "time", "style": {"color": "0x454586"}}], 
+		"datasets":
+			[
+				{ "title": "Join", "time": ?RUN_TIME_JOIN?*1000 }, 
+				{ "title": "Inner Join", "time": ?RUN_TIME_INNER_JOIN?*1000} ,
+				{ "title": "Left Join", "time": ?RUN_TIME_LEFT_JOIN?*1000 }, 
+				{ "title": "Outer Join", "time": ?RUN_TIME_OUTER_JOIN?*1000 } 
+			]
+	}
+}
+]]>
+										</parameter> 
+									</parameterList> 
+								</link> 
+							</panel> 
+						</pageWindow> 
+					</loadPage> 
+				</task> 
+			</action> 
+		</task>
+	</taskList>
+</actionPanel>

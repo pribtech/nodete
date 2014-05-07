@@ -1,0 +1,17 @@
+<p>So why are times often better for compressed tables? This step performs a deeper analysis of both CPU and IO performance.
+<p>Select the actions on this page in order.</p>
+<h4>Run performance tests</h4>
+The first step runs a select with an 'order by' clause against a compressed and uncompressed table. 
+<pre><code>
+SELECT * 
+   FROM customer_address_without_compression 
+   ORDER BY customer_id;
+
+SELECT * 
+   FROM customer_address_with_compression 
+   ORDER BY customer_id;
+</code></pre>
+<p></p>
+<h4>Graph the results</h4>
+<p>You can then graph the results for runtime, IO and CPU performance</p>
+<p>If you hover your cursor over the bars in the graph you will see the precise results for each table.</p>

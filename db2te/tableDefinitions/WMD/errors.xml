@@ -1,0 +1,102 @@
+<table name="errorReport">
+	<sql_name>errors</sql_name>
+	<singular_name>Run errors</singular_name>
+	<plural_name>Run errors</plural_name>
+	<dataRetrievalAction name="WMDproxy"/>
+	<messages>
+		<SQL_NO_DATA>No errors returned</SQL_NO_DATA>
+	</messages>
+	<reloadIndicator threshHold="5"/>
+	<rows_per_page>50</rows_per_page>
+	<parameters>
+		<parm name="WMDSystemName">
+			<title>System</title>
+			<value>localhost</value>
+			<type>s</type>
+		</parm>
+		<parm name="WMDMethod">
+			<title>Method</title>
+			<value>GET</value>
+			<type>s</type>
+		</parm>
+		<parm name="WMDAction">
+			<title>Action</title>
+			<value>error_report/</value>
+			<type>s</type>
+		</parm>
+	</parameters>
+	
+	<disable_search/>
+	<disable_edit/>
+	<disable_sort/>
+	<disable_filter/>
+	
+	<!--
+	<graph name="TransactonsPerRead">
+		<title>Transaction per Interval</title>
+		<type>line</type>
+			<style>
+					<legend>
+						 <display>right</display>
+					</legend>
+					<animationEnabled>false</animationEnabled>
+			</style>
+	</graph>
+	
+	<graph name="TransactionsSecond">
+		<title>Transactions per second</title>
+		<type>line</type>
+			<style>
+					<legend>
+						 <display>right</display>
+					</legend>
+					<animationEnabled>false</animationEnabled>
+			</style>
+	</graph>
+	
+	<graph name="TransactionTimes">
+		<title>Transaction times</title>
+		<type>line</type>
+			<style>
+					<legend>
+						 <display>right</display>
+					</legend>
+					<animationEnabled>false</animationEnabled>
+			</style>
+	</graph>
+	-->
+	
+	<display_columns>
+		<col type="column" name="TIMESTAMP"/>
+		<col type="column" name="THREAD"/>
+		<col type="column" name="MESSAGE"/>
+		<col type="column" name="INFO"/>
+	</display_columns>
+
+	<column name="TIMESTAMP">
+		<c_sql_name>TIMESTAMP</c_sql_name>
+		<c_title>Timestamp</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="THREAD">
+		<c_sql_name>THREAD</c_sql_name>
+		<c_title>Thread</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="MESSAGE">
+		<c_sql_name>MESSAGE</c_sql_name>
+		<c_title>Error message</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+	<column name="INFO">
+		<c_sql_name>INFO</c_sql_name>
+		<c_title>Extra information</c_title>
+		<c_presentation>n</c_presentation>
+		<c_drill>n</c_drill>
+	</column>
+</table>
+
+
