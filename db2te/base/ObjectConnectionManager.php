@@ -417,9 +417,8 @@ class connectionManager{
 	}
 
 	public static function setVCAP_SERVICES($connectionList) {
-		error_log('test setVCAP_SERVICES',0);
-		if(!($services = getenv('VCAP_APPLICATION'))) return;
-		foreach(json_decode($services, true) as $service) {
+		if(!($services = getenv('VCAP_SERVICES'))) return;
+		foreach(json_decode($services, true) as $serviceName => $service) {
 			error_log('test '.var_export($service,true),0);
 			if(!isset($service["credentials"]["jdbcurl"])) continue;
 			if($service["credentials"]["jdbcurl"]=="") continue;
@@ -427,7 +426,7 @@ class connectionManager{
 			$connection=array();
 			$description = "@".(isset($service["name"])?:"*** not found ***");
 			$connection['group'] 					= "VCAP_SERVICE";
-			$connection['comment'] 					= "Bluemix service";
+			$connection['comment'] 					= "Bluemix service ".$serviceName;
 			$connection[$connection]['database'] 	= (isset($service["credentials"]["db"])?$service["credentials"]["db"]:"*** not found ***");
 			$connection['hostname'] 				= (isset($service["credentials"]["host"])?$service["credentials"]["host"]:"*** not found ***");
 			$connection['portnumber'] 				= (isset($service["credentials"]["port"])?$service["credentials"]["port"]:"*** not found ***");
