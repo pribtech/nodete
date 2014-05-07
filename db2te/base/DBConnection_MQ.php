@@ -43,7 +43,7 @@ class Connection_mq extends Connection {
 	public function newStatement($stmt_text, $prepare_statment = FALSE, $verbose = FALSE, $ForwardOnlyScroll = TRUE, $getRowCount = FALSE) {
 		return new Statement_mq($stmt_text, $prepare_statment, $verbose, $ForwardOnlyScroll, $getRowCount, $this);
 	}
-	public function __construct($queueManager, $channel='SYSTEM.DEF.SVRCONN', $username=null, $password=null, $hostname='localhost', $portnumber='1414') {
+	public function __construct($queueManager, $channel='SYSTEM.DEF.SVRCONN', $username=null, $password=null, $hostname='localhost', $portnumber='1414', $usePersistentConnection = null, $enableTrustedContext = false) {
 		$this->connected = false;
 		$this->DBMS=self::$classDBMS;
 		if(!@$this->driverCheck()) return;

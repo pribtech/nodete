@@ -24,15 +24,11 @@ $message="";
 
 foreach($lines as &$line)
 	if(substr($line,0,1)=='[') {
-		if($timestamp!=null)
-			$newLines[]=array($timestamp,$message);
 		$split=strpos($line,']');
-		$timestamp=substr($line,1,$split-1);
-		$message=substr($line,$split+1,-1);
+		$newLines[]=array(substr($line,1,$split-1),substr($line,$split+1,-1).$message);
+		$message="";
 	} else
-		$message.='\n'.$line;
-if($timestamp!=null)
-	$newLines[]=array($timestamp,$message);
+		$message='\n'.$line.$message;
 $returnObject = array(
 		 'returnCode' => 'true'
 		,'returnValue' => array(

@@ -43,7 +43,7 @@ class Connection_json_NoSql_DB2 extends Connection {
 	public function newStatement($stmt_text, $prepare_statment = FALSE, $verbose = FALSE, $ForwardOnlyScroll = TRUE, $getRowCount = FALSE) {
 		return new Statement_json_nosql_DB2($stmt_text, $prepare_statment, $verbose, $ForwardOnlyScroll, $getRowCount, $this);
 	}
-	public function __construct($database, $schema, $username, $password, $hostname, $portnumber, $usePersistentConnection = USE_PERSISTENT_CONNECTION) {
+	public function __construct($database, $schema, $username, $password, $hostname, $portnumber, $usePersistentConnection = USE_PERSISTENT_CONNECTION, $enableTrustedContext = null) {
 		$this->connected = false;
 		$this->DBMS=self::$classDBMS;
 		if(!@$this->driverCheck()) return;
