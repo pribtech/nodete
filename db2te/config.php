@@ -26,7 +26,7 @@ function setDefineFile($var,$valueWindows=null,$valueLinux=null) {
 		@define($var, $value);
 	else {
 		@define($var, null);
-		error_log("define variable ".$var." file not found: \"".$value."\"",0);
+//		error_log("define variable ".$var." file not found: \"".$value."\"",0);
 	}
 }
 function setDefineDirectory($var,$valueWindows,$valueLinux=null) {

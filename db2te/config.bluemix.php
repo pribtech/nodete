@@ -18,7 +18,7 @@
  *********************************************************************************/
 if( getenv('VCAP_APPLICATION')) {
 	setDefine("CLOUD", true);
-	setDefine("VCAP_APPLICATION", getenv('VCAP_APPLICATION', true));
+	setDefine("VCAP_APPLICATION", getenv('VCAP_APPLICATION'));
 	setDefine("VCAP_SERVICES", getenv('VCAP_SERVICES'));
 	if( getenv('VCAP_APP_PORT'))
 		setDefine("VCAP_APP_PORT", getenv('VCAP_APP_PORT'));
