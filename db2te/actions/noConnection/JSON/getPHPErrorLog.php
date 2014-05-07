@@ -17,7 +17,7 @@
  *  limitations under the License.
  *********************************************************************************/
 $errorLog=ini_get('error_log');
-$lines=getFileLastLines($errorLog,200);
+$lines=getFileLastLines($errorLog,400);
 $newLines=array();
 $timestamp=null;
 $message="";
