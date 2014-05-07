@@ -417,7 +417,8 @@ class connectionManager{
 	}
 
 	public static function setVCAP_SERVICES($connectionList) {
-		if($services = getenv('VCAP_APPLICATION')) return;
+		error_log('test setVCAP_SERVICES',0);
+		if(!($services = getenv('VCAP_APPLICATION'))) return;
 		foreach(json_decode($services, true) as $service) {
 			error_log('test '.var_export($service,true),0);
 			if(!isset($service["credentials"]["jdbcurl"])) continue;
