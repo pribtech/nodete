@@ -435,6 +435,8 @@ class connectionManager{
 				$connection['password']					= (isset($credentials["password"])?$credentials["password"]:"*** not found ***");
 				$connection['activeOnFirstLoad'] 		= true;
 				$connection['connectionStatus']			= true;
+				$connection['authenticated'] 			= true;
+				$connection['autoConnect']				= true;
 
 				if(!isset($credentials['uri'])) {
 					$description = "#".$serviceName.'->'.$name;

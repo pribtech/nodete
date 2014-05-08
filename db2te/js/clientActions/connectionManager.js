@@ -187,7 +187,6 @@ function setActiveDatabaseConnection(object) {
 				GLOBAL_CONSTANTS.set(attributes.nameActive, ACTIVE_DATABASE_CONNECTION_OBJECT[column]);
 			}
 	}
-
 }
 
 function resetActiveDatabaseConnection() {
