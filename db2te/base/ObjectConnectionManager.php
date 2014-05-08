@@ -422,7 +422,6 @@ class connectionManager{
 	public static function setVCAP_SERVICES($connectionList) {
 		if(!($services = getenv('VCAP_SERVICES'))) return;
 		foreach(json_decode($services, true) as $serviceName => $service) {
-//test array 0 => array ( 'name' => 'SQLDB-testdb2', 'label' => 'SQLDB-1.0', 'tags' => array ( 0 => 'ibm_created', 1 => 'data_management', ), 'plan' => 'SQLDB_OpenBeta', 'credentials' => array ( 'hostname' => '192.155.243.151', 'host' => '192.155.243.151', 'port' => 50000, 'username' => 'u893133', 'password' => 'okMiaBE0zF', 'db' => 'I_268507', 'jdbcurl' => 'jdbc:db2://192.155.243.151:50000/I_268507', 'uri' => 'db2://u893133:okMiaBE0zF@192.155.243.151:50000/I_268507', ), ), ) 
 			$credentials=$service[0]["credentials"];
 			if(!isset($credentials["jdbcurl"])) continue;
 			if($credentials["jdbcurl"]=="") continue; 
@@ -439,13 +438,19 @@ class connectionManager{
 			$connection['activeOnFirstLoad'] 		= true;
 			$connection['connectionStatus'] 		= false;
 			$connection['connectionStatus']			= true;
-			$dbtype=explode(":",$connection['uri'])[0];
+			if(isset($credentials['uri'])) {
+				$connection['databaseDriver']='uri not found';
+				$connectionList[$description]=$connection;
+				conntinue;
+			}
+			$dbtype=explode(":",$credentials['uri'])[0];
 			switch ($dbtype) {
 				case 'db2' :
 					$connection['databaseDriver']='IBM_DB2';
 					$connectionList[$description]=$connection;
 					$connection['databaseDriver']='JDBC_DB2';
 					$connectionList[$description]=$connection;
+					break;
 				default:
 					$connection['databaseDriver']=toUpperCase('$dbtype');
 					$connectionList[$description]=$connection;
