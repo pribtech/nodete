@@ -424,9 +424,10 @@ class connectionManager{
 				$credentials=$service["credentials"];
 				if(!isset($credentials["jdbcurl"])) continue;
 				if($credentials["jdbcurl"]=="") continue; 
+				$name=( isset($service["name"])?$service["name"]:$index );
 				$connection=array();
 				$connection['group'] 					= "VCAP_SERVICE";
-				$connection['comment'] 					= "Bluemix service ".$serviceName. " ".(isset($service["label"])?$service["label"]:"");
+				$connection['comment'] 					= "Bluemix service ".$serviceName. " ".$name.' label: '.(isset($service["label"])?$service["label"]:"");
 				$connection['database'] 				= (isset($credentials["db"])?$credentials["db"]:"*** not found ***");
 				$connection['hostname'] 				= (isset($credentials["host"])?$credentials["host"]:"*** not found ***");
 				$connection['portnumber'] 				= (isset($credentials["port"])?$credentials["port"]:"*** not found ***");
@@ -434,8 +435,6 @@ class connectionManager{
 				$connection['password']					= (isset($credentials["password"])?$credentials["password"]:"*** not found ***");
 				$connection['activeOnFirstLoad'] 		= true;
 				$connection['connectionStatus']			= true;
-				
-				$name=( isset($service["name"])?$service["name"]:$index );
 
 				if(!isset($credentials['uri'])) {
 					$description = "#".$serviceName.'->'.$name;
