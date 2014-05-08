@@ -439,7 +439,7 @@ class connectionManager{
 
 				if(!isset($credentials['uri'])) {
 					$description = "#".$serviceName.'->'.$name;
-					$connection['$description']=$description;
+					$connection['description']=$description;
 					$connection['databaseDriver']='uri not found';
 					$connectionList[$description]=$connection;
 					continue;
@@ -450,7 +450,7 @@ class connectionManager{
 					case 'db2' :
 						$connection['databaseDriver']='IBM_DB2';
 						$description = "#".$serviceName.'->'.$name."->".$connection['databaseDriver'];
-						$connection['$description']=$description;
+						$connection['description']=$description;
 						$connectionList[$description]=$connection;
 						$connection['databaseDriver']='JDBC_DB2';
 						break;
@@ -458,7 +458,7 @@ class connectionManager{
 						$connection['databaseDriver']=toUpperCase('$dbtype');
 				}
 				$description = "#".$serviceName.'->'.$name."->".$connection['databaseDriver'];
-				$connection['$description']=$description;
+				$connection['description']=$description;
 				$connectionList[$description]=$connection;
 			}
 		}
