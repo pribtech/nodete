@@ -21,7 +21,7 @@ CORE_CLIENT_ACTIONS.set("chartNodalMenu",  Class.create(CORE_CLIENT_ACTIONS.get(
  		this.json2xmlHexObject=['elementAction','elementActionScript','elementFloatingLink','elementLinkList','elementPageWindows'];
  		this.setParameter(callParameters,'autoResize','false');
  		this.setParameter(callParameters,'chartTitle','Menu');
-		this.setParameter(callParameters,'displayTransform','xsl/filterNodesConnectionDetails.xsl');
+		this.setParameter(callParameters,'displayTransform','XSL/filterNodesConnectionDetails.xsl');
 		this.setParameter(callParameters,'show','menuTree');
 		this.setParameter(callParameters,'sourceType','MENU');
 		this.setParameter(callParameters,'sourceJsonRoot','elementSubNodes');
