@@ -21,17 +21,12 @@ include_once(PHP_INCLUDE_BASE_DIRECTORY . "UtilGeneric.php");
 
 try {
 	connectionManager::UpdateConnectionStatusesAllConnection();
-
-	$connectionStatus = connectionManager::isConnected() ? "true" : "false";
-	$connectionText = connectionManager::titleString();
-
 	$returnInformation = array();
-	$returnInformation['connectionStatus'] = $connectionStatus;
-	$returnInformation['connectionText'] = $connectionText;
+	$returnInformation['connectionStatus'] = connectionManager::isConnected() ? "true" : "false";
+	$returnInformation['connectionText'] = connectionManager::titleString();
 	$returnInformation['activeConnection'] = array();
 
 	$basedata = connectionManager::retrieveStoredConnections();
-
 	foreach($basedata as $value)
 		$returnInformation['activeConnection'][] = $value;
 		

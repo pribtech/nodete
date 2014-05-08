@@ -128,8 +128,52 @@ class connectionManager{
 		return NOT_CONNECTION_SYMBOL_START . "&nbsp;" . DISCONNECTED . "...&nbsp;" . NOT_CONNECTION_SYMBOL_END;
 	}
 
-	public static function newConnection () {
+	public static function getConnectionStatus ($databaseDriver,$database=null,$username=null,$password=null,$hostname=null,$portnumber=null,$usePersistentConnection=null) {
+		if(is_array($databaseDriver)) {
+			return $connectionStatus=self::getConnectionStatus(
+				 $databaseDriver["databaseDriver"]
+				,$databaseDriver["database"]
+				,$databaseDriver["username"]
+				,$databaseDriver["password"]
+				,$databaseDriver["hostname"]
+				,$databaseDriver["portnumber"]
+				,$databaseDriver["usePersistentConnection"]
+			);
+		}
+		
+		$connectionDriver = "Connection_" . $databaseDriver;
+		if(is_file(PHP_INCLUDE_BASE_DIRECTORY . "DB" . $connectionDriver . ".php")) {
+			require_once(PHP_INCLUDE_BASE_DIRECTORY . "DB" . $connectionDriver . ".php");
+			try {
+				if (version_compare(PHP_VERSION, '5.3.0') >= 0)
+					$connectionStatus = $connectionDriver::testConnection(
+							$database,
+							$username,
+							$password,
+							$hostname,
+							$portnumber,
+							$usePersistentConnection);
+				else
+					$connectionStatus = eval('return ' . $connectionDriver . '::testConnection(
+						$database,
+						$username,
+						$password,
+						$hostname,
+						$portnumber,
+						$usePersistentConnection
+						);');
+				return $connectionStatus;
+			} catch(Exception $e) {
+				self::$lastErrorState = 'Connect error: '.$e->getMessage();
+				return false;
+			}
+		} else {
+			self::$lastErrorState = 'Connect driver '. PHP_INCLUDE_BASE_DIRECTORY . "DB" . $connectionDriver . ".php not found";
+			return false;
+		}
+	}
 
+	public static function newConnection () {
 		if(FORCE_CONNECTION_WITH_DEFAULT)
 			return "Operation not permitted!";
 
@@ -162,37 +206,9 @@ class connectionManager{
 			} else	
 				self::setGroup($group,$username,$password);
 		}
-		
-		$connectionDriver = "Connection_" . $databaseDriver;
-		if(is_file(PHP_INCLUDE_BASE_DIRECTORY . "DB" . $connectionDriver . ".php")) {
-			require_once(PHP_INCLUDE_BASE_DIRECTORY . "DB" . $connectionDriver . ".php");
-			try {
-				if (version_compare(PHP_VERSION, '5.3.0') >= 0) 
-					$connectionStatus = $connectionDriver::testConnection(
-				 		$database,
-				 		$username,
-				 		$password,
-				 		$hostname,
-				 		$portnumber,
-				 		$usePersistentConnection);
-				else
-					 $connectionStatus = eval('return ' . $connectionDriver . '::testConnection(
-						$database,
-						$username,
-						$password,
-						$hostname,
-						$portnumber,
-						$usePersistentConnection
-						);');
-
-			} catch(Exception $e) {
-				self::$lastErrorState = 'Connect error: ';
-				return false;
-			}
-		} else {
-			self::$lastErrorState = 'Connect driver '. PHP_INCLUDE_BASE_DIRECTORY . "DB" . $connectionDriver . ".php not found";
+		$connectionStatus=self::getConnectionStatus($databaseDriver,$database,$username,$password,$hostname,$portnumber,$usePersistentConnection);
+		if(!$connectionStatus)
 			return false;
-		}
 
 		$dataServerInfo = null;
 
@@ -246,30 +262,10 @@ class connectionManager{
 				continue;
 
 			if(!isset($conn['databaseDriver'])) $conn['databaseDriver']=DEFAULT_DATABASE_DRIVER;
-			$connectionDriver = "Connection_" . $conn['databaseDriver'];
-			if(is_file(PHP_INCLUDE_BASE_DIRECTORY . "DB" . $connectionDriver . ".php")) {
-				require_once(PHP_INCLUDE_BASE_DIRECTORY . "DB" . $connectionDriver . ".php");
-				try{
-					if (version_compare(PHP_VERSION, '5.3.0') >= 0) 
-						$connectionStatus = $connectionDriver::testConnection(
-							 $conn["database"]
-							,$conn["username"]
-							,$conn["password"]
-							,$conn["hostname"]
-							,$conn["portnumber"]
-							);
-					else 
-						$connectionStatus = eval('return ' . $connectionDriver . '::testConnection(
-							 $conn["database"]
-							,$conn["username"]
-							,$conn["password"]
-							,$conn["hostname"]
-							,$conn["portnumber"]
-							);');
-				} catch(Exception $e) {
-					throw "Test connection failed. ".-$e->getMessage();
-				}
-			}
+			
+			$connectionStatus=self::getConnectionStatus($conn);
+			if(!$connectionStatus)
+				throw new Exception("Test connection failed. ".self::$lastErrorState);
 
 			TE_session_start();
 			if(is_array($connectionStatus) || is_object($connectionStatus)) {
@@ -417,11 +413,14 @@ class connectionManager{
 	}
 
 	public static function isVCAP_SERVICE($connection) {
+		return $connection['group'] == "VCAP_SERVICE";
 	}
 
-	public static function setVCAP_SERVICES($connectionList) {
-		if(!($services = getenv('VCAP_SERVICES'))) return;
+	public static function setVCAP_SERVICES(&$connectionList) {
+		$services = getenv('VCAP_SERVICES');
+		if(!$services) return;
 		foreach(json_decode($services, true) as $serviceName => $service) {
+			error_log('test',0);
 			$credentials=$service[0]["credentials"];
 			if(!isset($credentials["jdbcurl"])) continue;
 			if($credentials["jdbcurl"]=="") continue; 
@@ -436,14 +435,14 @@ class connectionManager{
 			$connection['username'] 				= (isset($credentials["username"])?$credentials["username"]:"*** not found ***");
 			$connection['password']					= (isset($credentials["password"])?$credentials["password"]:"*** not found ***");
 			$connection['activeOnFirstLoad'] 		= true;
-			$connection['connectionStatus'] 		= false;
 			$connection['connectionStatus']			= true;
 			if(isset($credentials['uri'])) {
 				$connection['databaseDriver']='uri not found';
 				$connectionList[$description]=$connection;
 				continue;
 			}
-			$dbtype=explode(":",$credentials['uri'])[0];
+			$parts=explode(":",$credentials['uri']);
+			$dbtype=$parts[0];
 			switch ($dbtype) {
 				case 'db2' :
 					$connection['databaseDriver']='IBM_DB2';
@@ -472,19 +471,15 @@ class connectionManager{
 			$connectionList[$description]['username'] = DEFAULT_DATABASE_USERNAME;
 			$connectionList[$description]['password'] = "";
 			$connectionList[$description]['activeOnFirstLoad'] = true;
-			$connectionDriver = "Connection_" . DEFAULT_DATABASE_DRIVER;
-			$connectionList[$description]['connectionStatus'] = false;
-			if(is_file(PHP_INCLUDE_BASE_DIRECTORY . "DB" . $connectionDriver . ".php")) {
-				require_once(PHP_INCLUDE_BASE_DIRECTORY . "DB" . $connectionDriver . ".php");
-				$connectionList[$description]['connectionStatus'] = eval('return ' . $connectionDriver . '::testConnection(
-						DEFAULT_DATABASE,
-						DEFAULT_DATABASE_USERNAME,
-						DEFAULT_DATABASE_PASSWORD,
-						DEFAULT_DATABASE_HOST_NAME,
-						DEFAULT_DATABASE_PORT_NUMBER,
-						USE_PERSISTENT_CONNECTION
-					);');
-			}
+			$connectionList[$description]['connectionStatus']=self::getConnectionStatus(
+					     DEFAULT_DATABASE_DRIVER
+						,DEFAULT_DATABASE
+						,DEFAULT_DATABASE_USERNAME
+						,DEFAULT_DATABASE_PASSWORD
+						,DEFAULT_DATABASE_HOST_NAME
+						,DEFAULT_DATABASE_PORT_NUMBER
+						,USE_PERSISTENT_CONNECTION
+						);
 			TE_session_start();
 			if(!is_array($_SESSION['Connections']))
 				$_SESSION['Connections'] = array();
@@ -522,19 +517,7 @@ class connectionManager{
 							if($_SESSION['Connections'][$connection['description']]['connectionStatus'] == true)
 								$preformAutoConnect = false;
 					if($connection['autoConnect'] == true && $preformAutoConnect) {
-						$connectionStatus = null;
-						$connectionDriver = "Connection_" . $connection['databaseDriver'];
-						if(is_file(PHP_INCLUDE_BASE_DIRECTORY . "DB" . $connectionDriver . ".php")) {
-							require_once(PHP_INCLUDE_BASE_DIRECTORY . "DB" . $connectionDriver . ".php");
-							$connectionStatus = eval('return ' . $connectionDriver . '::testConnection(
-									$connection["database"],
-									$connection["username"],
-									$connection["password"],
-									$connection["hostname"],
-									$connection["portnumber"],
-									$connection["usePersistentConnection"]
-							);');
-						}
+						$connectionStatus=self::getConnectionStatus($connection);
 						$dataServerInfo = null;
 						if(is_array($connectionStatus) || is_object($connectionStatus)) {
 							$dataServerInfo = $connectionStatus;
