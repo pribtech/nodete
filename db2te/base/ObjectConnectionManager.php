@@ -434,9 +434,11 @@ class connectionManager{
 				$connection['password']					= (isset($credentials["password"])?$credentials["password"]:"*** not found ***");
 				$connection['activeOnFirstLoad'] 		= true;
 				$connection['connectionStatus']			= true;
+				
+				$name=( isset($service["name"])?$service["name"]:$index );
 
 				if(!isset($credentials['uri'])) {
-					$description = "#".$serviceName.'->'.( isset($service["name"])?$service["name"]:$index." *** name not found ***" );
+					$description = "#".$serviceName.'->'.$name;
 					$connection['$description']=$description;
 					$connection['databaseDriver']='uri not found';
 					$connectionList[$description]=$connection;
@@ -447,14 +449,15 @@ class connectionManager{
 				switch ($dbtype) {
 					case 'db2' :
 						$connection['databaseDriver']='IBM_DB2';
-						$description = "#".$serviceName.'->'.( isset($service["name"])?$service["name"]:$index." *** name not found ***" )."->".$connection['databaseDriver'];
-						$connectionList[$description]=$description;
+						$description = "#".$serviceName.'->'.$name."->".$connection['databaseDriver'];
+						$connection['$description']=$description;
+						$connectionList[$description]=$connection;
 						$connection['databaseDriver']='JDBC_DB2';
 						break;
 					default:
 						$connection['databaseDriver']=toUpperCase('$dbtype');
 				}
-				$description = "#".$serviceName.'->'.( isset($service["name"])?$service["name"]:$index." *** name not found ***" )."->".$connection['databaseDriver'];
+				$description = "#".$serviceName.'->'.$name."->".$connection['databaseDriver'];
 				$connection['$description']=$description;
 				$connectionList[$description]=$connection;
 			}
