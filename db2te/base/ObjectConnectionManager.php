@@ -441,7 +441,7 @@ class connectionManager{
 			if(isset($credentials['uri'])) {
 				$connection['databaseDriver']='uri not found';
 				$connectionList[$description]=$connection;
-				conntinue;
+				continue;
 			}
 			$dbtype=explode(":",$credentials['uri'])[0];
 			switch ($dbtype) {
