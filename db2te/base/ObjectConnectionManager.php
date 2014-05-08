@@ -419,40 +419,44 @@ class connectionManager{
 	public static function setVCAP_SERVICES(&$connectionList) {
 		$services = getenv('VCAP_SERVICES');
 		if(!$services) return;
-		foreach(json_decode($services, true) as $serviceName => $service) {
-			error_log('test',0);
-			$credentials=$service[0]["credentials"];
-			if(!isset($credentials["jdbcurl"])) continue;
-			if($credentials["jdbcurl"]=="") continue; 
-			$connection=array();
-			$description = "@".(isset($service["name"])?$service["name"]:"*** name not found ***");
-			$connection['group'] 					= "VCAP_SERVICE";
-			$connection['comment'] 					= "Bluemix service ".$serviceName. " ".(isset($service["label"])?$service["label"]:"");
-			$connection['database'] 				= (isset($credentials["db"])?$credentials["db"]:"*** not found ***");
-			$connection['hostname'] 				= (isset($credentials["host"])?$credentials["host"]:"*** not found ***");
-			$connection['portnumber'] 				= (isset($credentials["port"])?$credentials["port"]:"*** not found ***");
-			$connection['description']				= $description;
-			$connection['username'] 				= (isset($credentials["username"])?$credentials["username"]:"*** not found ***");
-			$connection['password']					= (isset($credentials["password"])?$credentials["password"]:"*** not found ***");
-			$connection['activeOnFirstLoad'] 		= true;
-			$connection['connectionStatus']			= true;
-			if(!isset($credentials['uri'])) {
-				$connection['databaseDriver']='uri not found';
+		foreach(json_decode($services, true) as $serviceName => $serviceType) {
+			foreach($serviceType as $index => $service) {
+				$credentials=$service["credentials"];
+				if(!isset($credentials["jdbcurl"])) continue;
+				if($credentials["jdbcurl"]=="") continue; 
+				$connection=array();
+				$connection['group'] 					= "VCAP_SERVICE";
+				$connection['comment'] 					= "Bluemix service ".$serviceName. " ".(isset($service["label"])?$service["label"]:"");
+				$connection['database'] 				= (isset($credentials["db"])?$credentials["db"]:"*** not found ***");
+				$connection['hostname'] 				= (isset($credentials["host"])?$credentials["host"]:"*** not found ***");
+				$connection['portnumber'] 				= (isset($credentials["port"])?$credentials["port"]:"*** not found ***");
+				$connection['username'] 				= (isset($credentials["username"])?$credentials["username"]:"*** not found ***");
+				$connection['password']					= (isset($credentials["password"])?$credentials["password"]:"*** not found ***");
+				$connection['activeOnFirstLoad'] 		= true;
+				$connection['connectionStatus']			= true;
+
+				if(!isset($credentials['uri'])) {
+					$description = "#".$serviceName.'->'.( isset($service["name"])?$service["name"]:$index." *** name not found ***" );
+					$connection['$description']=$description;
+					$connection['databaseDriver']='uri not found';
+					$connectionList[$description]=$connection;
+					continue;
+				}
+				$parts=explode(":",$credentials['uri']);
+				$dbtype=$parts[0];
+				switch ($dbtype) {
+					case 'db2' :
+						$connection['databaseDriver']='IBM_DB2';
+						$description = "#".$serviceName.'->'.( isset($service["name"])?$service["name"]:$index." *** name not found ***" )."->".$connection['databaseDriver'];
+						$connectionList[$description]=$description;
+						$connection['databaseDriver']='JDBC_DB2';
+						break;
+					default:
+						$connection['databaseDriver']=toUpperCase('$dbtype');
+				}
+				$description = "#".$serviceName.'->'.( isset($service["name"])?$service["name"]:$index." *** name not found ***" )."->".$connection['databaseDriver'];
+				$connection['$description']=$description;
 				$connectionList[$description]=$connection;
-				continue;
-			}
-			$parts=explode(":",$credentials['uri']);
-			$dbtype=$parts[0];
-			switch ($dbtype) {
-				case 'db2' :
-					$connection['databaseDriver']='IBM_DB2';
-					$connectionList[$description]=$connection;
-					$connection['databaseDriver']='JDBC_DB2';
-					$connectionList[$description]=$connection;
-					break;
-				default:
-					$connection['databaseDriver']=toUpperCase('$dbtype');
-					$connectionList[$description]=$connection;
 			}
 		}
 	}
