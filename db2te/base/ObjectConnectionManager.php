@@ -429,7 +429,7 @@ class connectionManager{
 			$description = "@".(isset($service["name"])?:"*** not found ***");
 			$connection['group'] 					= "VCAP_SERVICE";
 			$connection['comment'] 					= "Bluemix service ".$serviceName;
-			$connection[$connection]['database'] 	= (isset($credentials["db"])?$credentials["db"]:"*** not found ***");
+			$connection['database'] 				= (isset($credentials["db"])?$credentials["db"]:"*** not found ***");
 			$connection['hostname'] 				= (isset($credentials["host"])?$credentials["host"]:"*** not found ***");
 			$connection['portnumber'] 				= (isset($credentials["port"])?$credentials["port"]:"*** not found ***");
 			$connection['description']				= $description;
