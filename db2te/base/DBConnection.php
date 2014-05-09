@@ -215,12 +215,7 @@ abstract class Connection {
 		return self::$features[$feature]["description"];
 	}
 	public static function getFeatureList() {
-		$list="";
-		$features= &$_SESSION['Connections'][USE_DATABASE_CONNECTION]['features'];
-		foreach($features as $key => $value)
-			if($features[$key]) $list.=','.$key;
-		if($list=="") return '';
-		return substr($list,1);
+		return implode(', ',&$_SESSION['Connections'][USE_DATABASE_CONNECTION]['features']);
 	}
 	public function getSchemaList() {
 		$list=array();
