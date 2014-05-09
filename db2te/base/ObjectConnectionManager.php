@@ -438,19 +438,25 @@ class connectionManager{
 				$connection['connectionStatus']			= true;
 				$connection['authenticated'] 			= true;
 				$connection['autoConnect']				= true;
-				$connection['usePersistentConnection']	= true;
+				$connection['usePersistentConnection']	= false;
 				$connection['schema']					= $connection['username'];
 				$connection['dataServerInfo']			= array();
 				
 				if(!isset($credentials['uri'])) {
+				}
+				if(array_key_exists('uri',$credentials)) {
+					$parts=explode(":",$credentials['uri']);
+					$dbtype=$parts[0];
+				} else if(substr($serviceName,0,1)== 'postgresql') {
+					$dbtype='PostgreSQL';
+				} else {
 					$description = "#".$serviceName.'->'.$name;
 					$connection['description']=$description;
 					$connection['databaseDriver']='uri not found';
 					$connection['connectionStatus']	= 'uri not found';
 					continue;
 				}
-				$parts=explode(":",$credentials['uri']);
-				$dbtype=$parts[0];
+					
 				switch ($dbtype) {
 					case 'db2' :
 						$connection['databaseDriver']='IBM_DB2';
