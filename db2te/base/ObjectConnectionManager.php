@@ -419,6 +419,7 @@ class connectionManager{
 	public static function setVCAP_SERVICES(&$connectionList) {
 		$services = getenv('VCAP_SERVICES');
 		if(!$services) return;
+		TE_session_start();
 		foreach(json_decode($services, true) as $serviceName => $serviceType) {
 			foreach($serviceType as $index => $service) {
 				$credentials=$service["credentials"];
@@ -442,7 +443,7 @@ class connectionManager{
 					$description = "#".$serviceName.'->'.$name;
 					$connection['description']=$description;
 					$connection['databaseDriver']='uri not found';
-					$connectionList[$description]=$connection;
+//					$connectionList[$description]=$connection;
 					continue;
 				}
 				$parts=explode(":",$credentials['uri']);
@@ -452,7 +453,8 @@ class connectionManager{
 						$connection['databaseDriver']='IBM_DB2';
 						$description = "#".$serviceName.'->'.$name."->".$connection['databaseDriver'];
 						$connection['description']=$description;
-						$connectionList[$description]=$connection;
+//						$connectionList[$description]=$connection;
+						$_SESSION['Connections'][$description] = $connection;
 						$connection['databaseDriver']='JDBC_DB2';
 						break;
 					default:
@@ -460,9 +462,11 @@ class connectionManager{
 				}
 				$description = "#".$serviceName.'->'.$name."->".$connection['databaseDriver'];
 				$connection['description']=$description;
-				$connectionList[$description]=$connection;
+//				$connectionList[$description]=$connection;
+				$_SESSION['Connections'][$description] = $connection;
 			}
 		}
+		TE_session_write_close();
 	}
 
 	public static function retrieveStoredConnections()	{
