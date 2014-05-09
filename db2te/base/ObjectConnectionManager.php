@@ -456,12 +456,13 @@ class connectionManager{
 						$connection['databaseDriver']='IBM_DB2';
 						$description = "#".$serviceName.'->'.$name."->".$connection['databaseDriver'];
 						$connection['description']=$description;
-						$connection['connectionStatus']=self::getConnectionStatus($connection);
-						if(is_array($connection['connectionStatus']) || is_object($connection['connectionStatus'])) {
-							$connection['dataServerInfo'] = $connectionStatus;
-							$connection['connectionStatus'] = true;
+						$connection['dataServerInfo']=self::getConnectionStatus($connection);
+						if(!$connection['dataServerInfo']) {
+							$connection['dataServerInfo'] = array();
+							$connection['connectionStatus'] = false;
 						}
 						$_SESSION['Connections'][$description] = $connection;
+						$connection['connectionStatus'] = true;
 						$connection['databaseDriver']='JDBC_DB2';
 						break;
 					default:
@@ -469,10 +470,10 @@ class connectionManager{
 				}
 				$description = "#".$serviceName.'->'.$name."->".$connection['databaseDriver'];
 				$connection['description']=$description;
-				$connection['connectionStatus']=self::getConnectionStatus($connection);
-				if(is_array($connection['connectionStatus']) || is_object($connection['connectionStatus'])) {
-					$connection['dataServerInfo'] = $connectionStatus;
-					$connection['connectionStatus'] = true;
+				$connection['dataServerInfo']=self::getConnectionStatus($connection);
+				if(!$connection['dataServerInfo']) {
+					$connection['dataServerInfo'] = array();
+					$connection['connectionStatus'] = false;
 				}
 				$_SESSION['Connections'][$description] = $connection;
 			}

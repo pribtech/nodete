@@ -25,7 +25,7 @@ $message="";
 foreach($lines as &$line)
 	if(substr($line,0,1)=='[') {
 		$split=strpos($line,']');
-		$newLines[]=array(substr($line,1,$split-1),substr($line,$split+1,-1).$message);
+		$newLines[]=array(substr($line,1,$split-1),substr($line,$split+1).$message);
 		$message="";
 	} else
 		$message=$line.PHP_EOL.$message;

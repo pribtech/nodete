@@ -286,7 +286,6 @@ function getServerPath($serv, $URI, $fname) {
     return $serv.substr($URI, 0, stripos($URI, basename($fname)));
 }
 
-
 function getFileLastLines($fileName="",$maxLines=10) {
 	if($fileName=="")
 		throw new Exception('No file specified');
@@ -306,11 +305,12 @@ function getFileLastLines($fileName="",$maxLines=10) {
 	$currentLine = '';
 	if (-1 !== fseek($file ,$position ,SEEK_SET)) {
 		$char = fgetc($file);
-		if ($char == "\r" ) $position--;
-		if (-1 !== fseek($file ,$position ,SEEK_SET)) {
-			$char = fgetc($file);
-			if ($char == "\n" ) $position--;
+		if ($char == "\r" ) {
+			$position--;
+			if (-1 !== fseek($file ,$position ,SEEK_SET))
+				$char = fgetc($file);
 		}
+		if ($char == "\n" ) $position--;
 	}
 	$minPosition=$position-($maxLines*128);
 	while ($position>$minPosition && (-1 !== fseek($file ,$position ,SEEK_SET))) {
