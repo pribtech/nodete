@@ -440,12 +440,13 @@ class connectionManager{
 				$connection['autoConnect']				= true;
 				$connection['usePersistentConnection']	= true;
 				$connection['schema']					= $connection['username'];
+				$connection['dataServerInfo']			= array();
 				
 				if(!isset($credentials['uri'])) {
 					$description = "#".$serviceName.'->'.$name;
 					$connection['description']=$description;
 					$connection['databaseDriver']='uri not found';
-//					$connectionList[$description]=$connection;
+					$connection['connectionStatus']	= 'uri not found';
 					continue;
 				}
 				$parts=explode(":",$credentials['uri']);
@@ -455,7 +456,11 @@ class connectionManager{
 						$connection['databaseDriver']='IBM_DB2';
 						$description = "#".$serviceName.'->'.$name."->".$connection['databaseDriver'];
 						$connection['description']=$description;
-//						$connectionList[$description]=$connection;
+						$connection['connectionStatus']=self::getConnectionStatus($connection);
+						if(is_array($connection['connectionStatus']) || is_object($connection['connectionStatus'])) {
+							$connection['dataServerInfo'] = $connectionStatus;
+							$connection['connectionStatus'] = true;
+						}
 						$_SESSION['Connections'][$description] = $connection;
 						$connection['databaseDriver']='JDBC_DB2';
 						break;
@@ -464,7 +469,11 @@ class connectionManager{
 				}
 				$description = "#".$serviceName.'->'.$name."->".$connection['databaseDriver'];
 				$connection['description']=$description;
-//				$connectionList[$description]=$connection;
+				$connection['connectionStatus']=self::getConnectionStatus($connection);
+				if(is_array($connection['connectionStatus']) || is_object($connection['connectionStatus'])) {
+					$connection['dataServerInfo'] = $connectionStatus;
+					$connection['connectionStatus'] = true;
+				}
 				$_SESSION['Connections'][$description] = $connection;
 			}
 		}

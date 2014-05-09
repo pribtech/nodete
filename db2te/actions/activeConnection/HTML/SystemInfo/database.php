@@ -17,7 +17,7 @@
 require_once(PHP_INCLUDE_BASE_DIRECTORY . 'FunctionInlineBarGraph.php');
 	$database = strtoupper(connectionManager::getConnection()->database);
 	$prodReleaseNot95 = false;
-	$serverInfo = array('CURR_CONNS'=>-1,'TOTAL_LOG_AVAILABLE_KB'=>-1,'TOTAL_LOG_USED_KB'=>-1,'DB_MEMORY_USED'=>-1,'logretain'=>-1);
+	$serverInfo = array('CURR_CONNS'=>-1,'TOTAL_LOG_AVAILABLE_KB'=>-1,'TOTAL_LOG_USED_KB'=>-1,'DB_MEMORY_USED'=>-1,'logretain'=>-1,'SIZE'=>-1);
 	$ErrorsAdmin24h = 0;
 	$WarningAdmin24h = 0;
 	$error=array();
