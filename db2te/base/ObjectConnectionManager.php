@@ -459,7 +459,7 @@ class connectionManager{
 						$connection['dataServerInfo']=self::getConnectionStatus($connection);
 						if(!$connection['dataServerInfo']) {
 							$connection['dataServerInfo'] = array();
-							$connection['connectionStatus'] = false;
+							$connection['connectionStatus'] = self::$lastErrorState;
 						}
 						$_SESSION['Connections'][$description] = $connection;
 						$connection['connectionStatus'] = true;
@@ -470,10 +470,14 @@ class connectionManager{
 				}
 				$description = "#".$serviceName.'->'.$name."->".$connection['databaseDriver'];
 				$connection['description']=$description;
-				$connection['dataServerInfo']=self::getConnectionStatus($connection);
-				if(!$connection['dataServerInfo']) {
-					$connection['dataServerInfo'] = array();
-					$connection['connectionStatus'] = false;
+				try{
+					$connection['dataServerInfo']=self::getConnectionStatus($connection);
+					if(!$connection['dataServerInfo']) {
+						$connection['dataServerInfo'] = array();
+						$connection['connectionStatus'] = self::$lastErrorState;
+				}
+				} catch(Exception $e) {
+					$connection['connectionStatus'] = 'Connect error: '.$e->getMessage();
 				}
 				$_SESSION['Connections'][$description] = $connection;
 			}
