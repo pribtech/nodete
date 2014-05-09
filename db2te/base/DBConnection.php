@@ -215,7 +215,7 @@ abstract class Connection {
 		return self::$features[$feature]["description"];
 	}
 	public static function getFeatureList() {
-		return implode(', ',&$_SESSION['Connections'][USE_DATABASE_CONNECTION]['features']);
+		return implode(', ',$_SESSION['Connections'][USE_DATABASE_CONNECTION]['features']);
 	}
 	public function getSchemaList() {
 		$list=array();
