@@ -20,6 +20,7 @@ require_once(PHP_INCLUDE_BASE_DIRECTORY . 'FunctionInlineBarGraph.php');
 	$serverInfo = array();
 	$ErrorsAdmin24h = 0;
 	$WarningAdmin24h = 0;
+	$error=array();
 	
 	$selectTopConnsSQL = <<<SELECTTOPCONNS
 SELECT SUM(CONCURRENT_CONNECTION_TOP) FROM TABLE (WLM_GET_SERVICE_SUPERCLASS_STATS('', -2)) AS SERVICE_SUPERCLASS
@@ -47,70 +48,58 @@ SELECTREL;
 
 	$TempStmt = connectionManager::getNewStatement("SELECT * FROM SYSIBMADM.SNAPDB WHERE DB_NAME = '$database'", FALSE, FALSE);
 	if ($TempStmt->execSuccessful()) {
-		if($row = $TempStmt->fetchAssocRow()) {
+		if($row = $TempStmt->fetchAssocRow())
 			foreach($row as $key=>$value)
 				$serverInfo[$key] = $value;
-		}
-	}
+	} else $error[]="SYSIBMADM.SNAPDB failed, sqlcode: ".$TempStmt->sqlstate;
 
 	$TempStmt = connectionManager::getNewStatement("SELECT NAME, VALUE FROM SYSIBMADM.DBCFG where NAME = 'logretain'", FALSE, FALSE);
 	if ($TempStmt->execSuccessful()) {
-		while($row = $TempStmt->fetchAssocRow()) {
+		while($row = $TempStmt->fetchAssocRow())
 			$serverInfo[$row["NAME"]] = $row["VALUE"];
-		}
-	}
-
+	} else $error[]="SYSIBMADM.DBCFG failed, sqlcode: ".$TempStmt->sqlstate;
+		
 	$TempStmt = connectionManager::getNewStatement("SELECT NAME, VALUE FROM SYSIBMADM.DBMCFG where NAME = 'instance_memory'", FALSE, FALSE);
 	if ($TempStmt->execSuccessful()) {
-		while($row = $TempStmt->fetchAssocRow()) {
+		while($row = $TempStmt->fetchAssocRow()) 
 			$serverInfo[$row["NAME"]] = $row["VALUE"];
-		}
-	}
-
+	} else $error[]="SYSIBMADM.DBCFG failed, sqlcode: ".$TempStmt->sqlstate;
+		
 	$TempStmt = connectionManager::getNewStatement($selectDB_Partitions);
 	if ($TempStmt->execSuccessful()) {
-		while($row = $TempStmt->fetchAssocRow()) {
+		while($row = $TempStmt->fetchAssocRow())
 			$serverInfo["DB_Partitions"] = $row[1];
-		}
-	}
-
+	} else $error[]="DB_PARTITIONS failed, sqlcode: ".$TempStmt->sqlstate;
+		
 	$TempStmt = connectionManager::getNewStatement("SELECT COUNT(*) FROM SYSIBMADM.PDLOGMSGS_LAST24HOURS WHERE MSGSEVERITY = 'E'", FALSE, FALSE);
 	if ($TempStmt->execSuccessful()) {
-		if($row = $TempStmt->fetch()) {
-				$ErrorsAdmin24h = $row[0];
-		}
-	}
-
-
-	$TempStmt = connectionManager::getNewStatement("SELECT COUNT(*) FROM SYSIBMADM.PDLOGMSGS_LAST24HOURS WHERE MSGSEVERITY = 'W'", FALSE, FALSE);
-	if ($TempStmt->execSuccessful()) {
-		if($row = $TempStmt->fetch()) {
+		if($row = $TempStmt->fetch())
+			$ErrorsAdmin24h = $row[0];
+		$TempStmt = connectionManager::getNewStatement("SELECT COUNT(*) FROM SYSIBMADM.PDLOGMSGS_LAST24HOURS WHERE MSGSEVERITY = 'W'", FALSE, FALSE);
+		if ($TempStmt->execSuccessful()) {
+			if($row = $TempStmt->fetch())
 				$WarningAdmin24h = $row[0];
 		}
-	}
-
-
+	} else $error[]="SYSIBMADM.PDLOGMSGS_LAST24HOURS failed, sqlcode: ".$TempStmt->sqlstate;
+		
 	$selectTopConns = connectionManager::getNewStatement($selectTopConnsSQL, FALSE, FALSE);
 	if ($selectTopConns->execSuccessful()) {
-		while ($row = $selectTopConns->fetch()) {
+		while ($row = $selectTopConns->fetch())
 			$serverInfo["TOP_CONNS"] = $row[0];
-		}
-	}
-
+	} else $error[]="WLM_GET_SERVICE_SUPERCLASS_STATS failed, sqlcode: ".$selectTopConns->sqlstate;
+		
 	$selectCurrConns = connectionManager::getNewStatement($selectCurrConnsSQL, FALSE, FALSE);
 	if ($selectCurrConns->execSuccessful()) {
-		while ($row = $selectCurrConns->fetch()) {
+		while ($row = $selectCurrConns->fetch())
 			$serverInfo["CURR_CONNS"] = $row[0];
-		}
-	}
-
+	} else $error[]="SYSIBMADM.APPLICATIONS failed, sqlcode: ".$selectCurrConns->sqlstate;
+		
 	$selectDBMEMInfo = connectionManager::getNewStatement($selectDBMEMInfoSQL, FALSE, FALSE);
 	if ($selectDBMEMInfo->execSuccessful()) {
-		while ($row = $selectDBMEMInfo->fetch()) {
+		while ($row = $selectDBMEMInfo->fetch())
 			$serverInfo["DB_MEMORY_USED"] = $row[0];
-		}
-	}
-
+	} else $error[]="SYSIBMADM.SNAPDB_MEMORY_POOL failed, sqlcode: ".$selectDBMEMInfo->sqlstate;
+		
 	$selectLOGInfo = connectionManager::getNewStatement($selectLOGInfoSQL, FALSE, FALSE, TRUE);
 	if ($selectLOGInfo->execSuccessful()) {
 		while ($row = $selectLOGInfo->fetch()) {
@@ -118,47 +107,39 @@ SELECTREL;
 			$serverInfo["TOTAL_LOG_AVAILABLE_KB"] = $row[1];
 			$serverInfo["TOTAL_LOG_USED_TOP_KB"] = $row[2];
 		}
-	}
-
+	} else $error[]="SYSIBMADM.LOG_UTILIZATION failed, sqlcode: ".$selectLOGInfo->sqlstate;
+	
 	$parameters = array();
 	
 	$parameters[1]  = array('name'=>'timestamp', 'value'=>'Unknown','dataType'=>'string','type'=>'DB2_PARAM_OUT');
 	$parameters[2]  = array('name'=>'size', 'value'=>'0.0','dataType'=>'float','type'=>'DB2_PARAM_OUT');
 	$parameters[3]  = array('name'=>'capacity', 'value'=>'0.0','dataType'=>'float','type'=>'DB2_PARAM_OUT');
 	
-
 	$selectDBSizeInfo = connectionManager::getNewStatement($selectDBSizeInfoSQL, true);
-
 	$selectDBSizeInfo->executeStmtWithParameters($parameters);
 
-	if($selectDBSizeInfo->execSuccessful())
-	{
+	if($selectDBSizeInfo->execSuccessful()) {
 		$timestamp = $selectDBSizeInfo->parameters['timestamp'];
 		$size = $selectDBSizeInfo->parameters['size'];
+		$size = (int)($size / 1024 /1024); // convert to MB
 		$capacity = $selectDBSizeInfo->parameters['capacity'];
-	}
-	else 
-	{
+		$capacity = (int)($capacity / 1024 /1024); // convert to MB
+	} else {
 		$timestamp = "GET_DBSIZE_INFO failed";
 		$size = "GET_DBSIZE_INFO failed";
 		$capacity = "GET_DBSIZE_INFO failed";
 	}
 
-	$size = (int)($size / 1024 /1024); // convert to MB
-	$capacity = (int)($capacity / 1024 /1024); // convert to MB
-
 	$serverInfo["TIMESTAMP"] = $timestamp;
 	$serverInfo["SIZE"] = $size;
 	$serverInfo["CAPACITY"] = $capacity;
 
-							
 	$instmemtotal = isset($serverInfo["instance_memory"]) ? ($serverInfo["instance_memory"] * 4/1024) * $serverInfo["DB_Partitions"] : "";
 
 $stageID = CALLING_STAGE;
 $windowID = CALLING_WINDOW;
 $panelID = CALLING_PANEL;
 $pageID = CALLING_PAGE;
-
 
 $date = date('l jS \of F Y h:i:s A');
 	echo <<<HERE
@@ -202,11 +183,9 @@ echo makeDisplayGroup('Database',
    			makeDisplayContent("<a onclick=\"miniLinkLoader({table:'Performance/tbsputil',action:'list_table'}, '', '_blank')\">Size</a>", number_format($serverInfo["SIZE"]) . " MB of " . number_format($serverInfo["CAPACITY"]) . " MB", generatBar($serverInfo["SIZE"], $serverInfo["CAPACITY"], "ReportGeneralBar")) :
    			makeDisplayContent("<a onclick=\"miniLinkLoader({table:'Performance/tbsputil',action:'list_table'}, '', '_blank')\">Size</a>", number_format($serverInfo["SIZE"]) . " MB") ) .
 			makeDisplayContent('Log', number_format($serverInfo["TOTAL_LOG_USED_KB"]/1024) . " MB of " . number_format($serverInfo["TOTAL_LOG_AVAILABLE_KB"]/1024) . " MB", generatBar($serverInfo["TOTAL_LOG_USED_KB"], $serverInfo["TOTAL_LOG_AVAILABLE_KB"], "ReportGeneralBar")) .
-			makeDisplayContent("<a onclick=\"miniLinkLoader({table:'Performance/applicationStatus',action:'list_table'}, '', '_blank')\">Connections</a>", number_format($serverInfo["CURR_CONNS"]) . " current, " . number_format($serverInfo["TOP_CONNS"]) . " high water", generatBar($serverInfo["CURR_CONNS"], $serverInfo["TOP_CONNS"], "ReportGeneralBar"))	
+			makeDisplayContent("<a onclick=\"miniLinkLoader({table:'Performance/applicationStatus',action:'list_table'}, '', '_blank')\">Connections</a>", (isset($serverInfo["CURR_CONNS"])?number_format($serverInfo["CURR_CONNS"]):"?") . " current, " . number_format($serverInfo["TOP_CONNS"]) . " high water", generatBar($serverInfo["CURR_CONNS"], $serverInfo["TOP_CONNS"], "ReportGeneralBar")).
+		    ( count($error)==0 ? '' : makeDisplayContent('Load Errors',implode(", ", $error)) )
 	);
-
-
-
 
 echo '
 			</td>
@@ -219,4 +198,3 @@ echo '
 </table>';
 
 ?>
-

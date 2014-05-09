@@ -438,7 +438,9 @@ class connectionManager{
 				$connection['connectionStatus']			= true;
 				$connection['authenticated'] 			= true;
 				$connection['autoConnect']				= true;
-
+				$connection['usePersistentConnection']	= true;
+				$connection['schema']					= $connection['username'];
+				
 				if(!isset($credentials['uri'])) {
 					$description = "#".$serviceName.'->'.$name;
 					$connection['description']=$description;
