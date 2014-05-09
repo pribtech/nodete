@@ -223,7 +223,7 @@ execSelectItems(con);
 	}
 
 	public static function testConnection($database, $username, $password, $hostname, $portnumber, $usePersistentConnection = USE_PERSISTENT_CONNECTION) {
-		if(!$GLOBALS[self::$driverLoaded])
+		if(!array_key_exists(self::$driverLoaded,$GLOBALS))
 				return "jdbc_DB2 driver not load";
 		if(trim($database) == "") 
 			return "No database specified!";
