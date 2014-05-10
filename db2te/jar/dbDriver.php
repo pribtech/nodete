@@ -17,11 +17,11 @@
  *  limitations under the License.
  *********************************************************************************/
 require_once(JAR_BASE_DIRECTORY . "java.php");
-if(!JAVA_BRIDGE_ACTIVE) 
-	throw new Exception("Requires Java Bridge \nStack trace:\n".var_export($e->getTrace(),true));
 java_last_exception_clear();
 
 try {
+	if(!JAVA_BRIDGE_ACTIVE) 
+		throw new Exception("Requires Java Bridge");
 	if(!isset($GLOBALS["javaClass"])) 
 		$GLOBALS["javaClass"] = new Java('java.lang.Class');
 	if(!isset($GLOBALS["javaSqlDriverManager"])) 
@@ -64,6 +64,6 @@ try {
 		}
 	}
 } catch (JavaException $e) {
-	throw new Exception('Error loading dbDriver error:'.$e->getMessage().'  jar directory: '.JAVA_DB_DRIVER_JSON_NOSQL.', check java bridge working correctly');
+	throw new Exception('Error loading dbDriver error:'.$e->getMessage().'  jar directory: '.JAVA_DB_DRIVER_JSON_NOSQL.', check java bridge working correctly \nStack trace:\n'.var_export($e->getTrace(),true));
 } 
 ?>
