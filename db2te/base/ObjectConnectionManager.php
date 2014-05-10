@@ -459,7 +459,7 @@ class connectionManager{
 						$connection['databaseDriver']='JDBC_DB2';
 						break;
 					default:
-						$connection['databaseDriver']=toUpperCase('$dbtype');
+						$connection['databaseDriver']='$dbtype';
 				}
 				$description = "#".$serviceName.'->'.$name."->".$connection['databaseDriver'];
 				$connection['description']=$description;
