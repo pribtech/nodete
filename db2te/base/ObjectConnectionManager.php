@@ -427,8 +427,6 @@ class connectionManager{
 				continue;
 			foreach($serviceType as $index => $service) {
 				$credentials=$service["credentials"];
-				if(!isset($credentials["jdbcurl"])) continue;
-				if($credentials["jdbcurl"]=="") continue; 
 				$name=( isset($service["name"])?$service["name"]:$index );
 				$connection=array();
 				$connection['group'] 					= "VCAP_SERVICE";
