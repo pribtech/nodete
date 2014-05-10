@@ -421,7 +421,7 @@ class connectionManager{
 		foreach(json_decode($services, true) as $serviceName => $serviceType) {
 			if(substr($serviceName,0,5)== 'SQLDB')
 				$dbtype='IBM_DB2';
-			else {if(substr($serviceName,0,10)== 'postgresql')
+			else if(substr($serviceName,0,10)== 'postgresql')
 				$dbtype='PostgreSQL';
 			else 
 				continue;
