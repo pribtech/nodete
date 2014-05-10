@@ -419,6 +419,12 @@ class connectionManager{
 		if(!$services) return;
 		TE_session_start();
 		foreach(json_decode($services, true) as $serviceName => $serviceType) {
+			if(substr($serviceName,0,5)== 'SQLDB') {
+				$dbtype='IBM_DB2';
+			if(substr($serviceName,0,10)== 'postgresql') {
+				$dbtype='PostgreSQL';
+			} else 
+				continue;
 			foreach($serviceType as $index => $service) {
 				$credentials=$service["credentials"];
 				if(!isset($credentials["jdbcurl"])) continue;
@@ -440,21 +446,6 @@ class connectionManager{
 				$connection['schema']					= $connection['username'];
 				$connection['dataServerInfo']			= array();
 				
-				if(!isset($credentials['uri'])) {
-				}
-				if(array_key_exists('uri',$credentials)) {
-					$parts=explode(":",$credentials['uri']);
-					$dbtype=$parts[0];
-				} else if(substr($serviceName,0,10)== 'postgresql') {
-					$dbtype='PostgreSQL';
-				} else {
-					$description = "#".$serviceName.'->'.$name;
-					$connection['description']=$description;
-					$connection['databaseDriver']='uri not found';
-					$connection['connectionStatus']	= 'uri not found';
-					continue;
-				}
-					
 				switch ($dbtype) {
 					case 'db2' :
 						$connection['databaseDriver']='IBM_DB2';
