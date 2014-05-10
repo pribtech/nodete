@@ -17,6 +17,17 @@
  *  limitations under the License.
  *********************************************************************************/
 
+if(isset($GLOBALS["javaClass"]))
+	setDefine("JAVA_BRIDGE_ACTIVE", true);
+else try{
+	if( class_exists("Java") ) {
+		$GLOBALS["javaClass"] = new Java('java.lang.Class');
+		setDefine("JAVA_BRIDGE_ACTIVE", true);
+	} else
+		setDefine("JAVA_BRIDGE_ACTIVE", false);
+} catch (JavaException $e) {
+	setDefine("JAVA_BRIDGE_ACTIVE", false);
+}
 
 class JavaClassLoader {
 	public $classLoader;
@@ -121,7 +132,7 @@ class JavaClassLoader {
 
 }
 if(!JAVA_BRIDGE_ACTIVE || !isset($GLOBALS['javaClass']))
-	throw new Exception('Java Bridge not active');
+	throw new Exception('Java Bridge not active or java class loader not loaded');
 	
 class JavaClassExpose {
 	public function getObjectClassDetails (&$object) {

@@ -305,8 +305,13 @@ getSQLKeywords 	Yes 	Yes
 	}
 
 	public function setAutoCommit($SQLAdHoc_AutoCommit) {
+		if ($this->dbconn==null) {
+			$this->setError( '???', 'Call to setAutoCommit had no connection for '.$this.requiredDBExtension);
+			$this->connected = false;
+			return false;
+		} 
 		try {
-			$this->dbconn->setAutocommit($SQLAdHoc_AutoCommit);
+			$this->dbconn->setAutoCommit($SQLAdHoc_AutoCommit);
 		} catch (JavaException $e) {
 			$this->setError( '???', $e->getMessage());
 			$this->connected = false;

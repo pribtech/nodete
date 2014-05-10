@@ -1,3 +1,6 @@
+<?php
+require_once(JAR_BASE_DIRECTORY . "java.php");
+?>
 <div class="generalHTML">
 <div id="title">Welcome to the Technology Explorer for IBM DB2 <?php echo TE_VERSION ?></div>
 

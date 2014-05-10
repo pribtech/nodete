@@ -447,7 +447,7 @@ class connectionManager{
 				if(array_key_exists('uri',$credentials)) {
 					$parts=explode(":",$credentials['uri']);
 					$dbtype=$parts[0];
-				} else if(substr($serviceName,0,1)== 'postgresql') {
+				} else if(substr($serviceName,0,10)== 'postgresql') {
 					$dbtype='PostgreSQL';
 				} else {
 					$description = "#".$serviceName.'->'.$name;
@@ -587,19 +587,21 @@ class connectionManager{
 			if($connectionKey == 'default') continue;
 			if($connectionInformation == null) continue;
 			if(!isset($connectionInformation['description'])) continue;
-			$connectionList[$connectionInformation['description']]= $connectionInformation;
-			$connectionList[$connectionInformation['description']]['time'] = time();
-			$connectionList[$connectionInformation['description']]['password'] = "";
+			if(!array_key_exists($connectionInformation['description'],$connectionList)) continue;
+			$connect=$connectionList[$connectionInformation['description']];
+			$connect = $connectionInformation;
+			$connect['time'] = time();
+			$connect['password'] = "";
 			if(array_key_exists('trustedContext', $connectionInformation)) {
 				if(is_array($_SESSION['Connections'][$connectionInformation['description']]['trustedContext']))	{
 					if(is_array($connectionInformation['trustedContext']))
-						$connectionList[$connectionInformation['description']]['dataServerInfo'] = $connectionInformation['dataServerInfo'];
+						$connection['dataServerInfo'] = $connectionInformation['dataServerInfo'];
 				} else
-					$connectionList[$connectionInformation['description']]['trustedContext'] =  $connectionInformation['trustedContext'];
+					$connection['trustedContext'] =  $connectionInformation['trustedContext'];
 			}
-			$connectionList[$connectionInformation['description']]['authenticated'] = true;
+			$connection['authenticated'] = true;
 			if(strtolower(USE_DATABASE_CONNECTION) == strtolower($connectionKey))
-				$connectionList[$connectionInformation['description']]['activeConnection'] = true;
+				$connect['activeConnection'] = true;
 		}
 		ksort($connectionList);
 		return $connectionList;
@@ -667,7 +669,7 @@ class connectionManager{
 		if($group == "VCAP_SERVICE") return;
 		
 		$connectionList = self::retrieveStoredConnections();
-		$connectionKey = $username . "@" . $database . ($hostname != "" ? "." . $hostname . ":" . $portnumber : "");
+		$connectionKey = $databaseDriver.':'.$username . "@" . $database . ($hostname != "" ? "." . $hostname . ":" . $portnumber : "");
 		$connectionList[$connectionKey]['description'] = $connectionKey;
 		$connectionList[$connectionKey]['databaseDriver'] = $databaseDriver;
 		$connectionList[$connectionKey]['database'] = $database;
@@ -1408,6 +1410,7 @@ class connectManagerNodes {
 	public $healthUser;
 	public $uri4Authentication='';
 	public $lastUsedTime=0;
+	public $timeoutPeriod=3600;
 	public function __construct($useSession=true) {
 		include_once(PHP_INCLUDE_BASE_DIRECTORY . "ObjectSsh.php");
 		if(defined('CONNECTION_STORE_FILE'))
@@ -1470,7 +1473,7 @@ class connectManagerNodes {
 		return true;
 	}
 	private function checkActive() {
-		if ((time()-$this->lastUsedTime)>3600) 
+		if ((time()-$this->lastUsedTime)>$this->timeoutPeriod) 
 			throw new Exception('Session expired, signon to session required');
 	}
 	function checkHealth(&$object) {

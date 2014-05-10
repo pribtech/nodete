@@ -547,15 +547,6 @@ setDefine("CONNECTION_VERIFIER", ACTION_PROCESSOR . "?action=DBConnectionCheck&r
 /***
  *  Java related objects
  */
-try{
-   if( class_exists("Java") ) {
-	   $GLOBALS["javaClass"] = new Java('java.lang.Class');
-	   setDefine("JAVA_BRIDGE_ACTIVE", true);
-	} else
-   	setDefine("JAVA_BRIDGE_ACTIVE", false);
-} catch (JavaException $e) {
-	setDefine("JAVA_BRIDGE_ACTIVE", false);
-}
 
 setDefine("JAR_BASE_DIRECTORY", __DIR__."/jar/");
 

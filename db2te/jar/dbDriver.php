@@ -16,9 +16,9 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  *********************************************************************************/
+require_once(JAR_BASE_DIRECTORY . "java.php");
 if(!JAVA_BRIDGE_ACTIVE) 
 	throw new Exception('Requires Java Bridge');
-require_once("jar/java.php");
 java_last_exception_clear();
 
 try {

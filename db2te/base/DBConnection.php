@@ -243,7 +243,7 @@ abstract class Connection {
 			$this->SQLState = $SQLState;
 			$this->SQLErrorMSG  = $SQLErrorMSG ;
 		}
-		error_log("DBConnect error state:".$SQLState." error: ".$SQLErrorMSG,0);
+		error_log("DBConnect ".(isset($this)?$this->requiredDBExtension:"")." error state:".$SQLState." error: ".$SQLErrorMSG,0);
 	}
 	public function getMaxExecutionTime() {return $this->maxExecutionTime;}
 	public function setMaxExecutionTime($maxExecutionTime) {
