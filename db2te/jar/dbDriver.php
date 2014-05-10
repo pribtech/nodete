@@ -18,7 +18,7 @@
  *********************************************************************************/
 require_once(JAR_BASE_DIRECTORY . "java.php");
 if(!JAVA_BRIDGE_ACTIVE) 
-	throw new Exception('Requires Java Bridge');
+	throw new Exception("Requires Java Bridge \nStack trace:\n".var_export($e->getTrace(),true));
 java_last_exception_clear();
 
 try {

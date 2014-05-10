@@ -32,7 +32,7 @@ try {
 		
 } catch (Exception $e){
 	$returnInformation['connectionStatus'] = "false";
-	$returnInformation['connectionText'] =  "Failed: ".$e->getmessage()."\nStack trace:\n".var_export($e->getTrace(),true);
+	$returnInformation['connectionText'] =  "Failed: ".$e->getmessage();
 	$returnInformation['activeConnection'] = array();
 }
 
