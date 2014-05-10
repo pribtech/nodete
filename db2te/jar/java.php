@@ -131,8 +131,6 @@ class JavaClassLoader {
 	}
 
 }
-if(!JAVA_BRIDGE_ACTIVE || !isset($GLOBALS['javaClass']))
-	throw new Exception('Java Bridge not active or java class loader not loaded');
 	
 class JavaClassExpose {
 	public function getObjectClassDetails (&$object) {
