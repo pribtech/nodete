@@ -264,8 +264,6 @@ class connectionManager{
 			if(!isset($conn['databaseDriver'])) $conn['databaseDriver']=DEFAULT_DATABASE_DRIVER;
 			
 			$connectionStatus=self::getConnectionStatus($conn);
-			if(!$connectionStatus)
-				throw new Exception("Test connection failed. ".self::$lastErrorState);
 
 			TE_session_start();
 			if(is_array($connectionStatus) || is_object($connectionStatus)) {
