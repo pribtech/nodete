@@ -419,11 +419,11 @@ class connectionManager{
 		if(!$services) return;
 		TE_session_start();
 		foreach(json_decode($services, true) as $serviceName => $serviceType) {
-			if(substr($serviceName,0,5)== 'SQLDB') {
+			if(substr($serviceName,0,5)== 'SQLDB')
 				$dbtype='IBM_DB2';
-			if(substr($serviceName,0,10)== 'postgresql') {
+			else {if(substr($serviceName,0,10)== 'postgresql')
 				$dbtype='PostgreSQL';
-			} else 
+			else 
 				continue;
 			foreach($serviceType as $index => $service) {
 				$credentials=$service["credentials"];
