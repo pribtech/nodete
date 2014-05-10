@@ -17,11 +17,11 @@
  *  limitations under the License.
  *********************************************************************************/
 require_once(JAR_BASE_DIRECTORY . "java.php");
-java_last_exception_clear();
 
 try {
 	if(!JAVA_BRIDGE_ACTIVE) 
 		throw new Exception("Requires Java Bridge");
+	java_last_exception_clear();
 	if(!isset($GLOBALS["javaClass"])) 
 		$GLOBALS["javaClass"] = new Java('java.lang.Class');
 	if(!isset($GLOBALS["javaSqlDriverManager"])) 
