@@ -14,6 +14,8 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  *********************************************************************************/
+$timezone=ini_get('date.timezone');
+date_default_timezone_set($timezone==null||$timezone==''?'UTC':$timezone);
 
 function setDefine($var,$value=null) {
 	if (defined($var)) return;

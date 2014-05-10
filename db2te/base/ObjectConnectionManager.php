@@ -143,8 +143,8 @@ class connectionManager{
 		
 		$connectionDriver = "Connection_" . $databaseDriver;
 		if(is_file(PHP_INCLUDE_BASE_DIRECTORY . "DB" . $connectionDriver . ".php")) {
-			require_once(PHP_INCLUDE_BASE_DIRECTORY . "DB" . $connectionDriver . ".php");
 			try {
+				require_once(PHP_INCLUDE_BASE_DIRECTORY . "DB" . $connectionDriver . ".php");
 				if (version_compare(PHP_VERSION, '5.3.0') >= 0)
 					$connectionStatus = $connectionDriver::testConnection(
 							$database,
