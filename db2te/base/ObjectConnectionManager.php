@@ -23,6 +23,11 @@ class connectionManager{
 	private static $connection = null;
 	private static $connectionName = null;
 	public static $lastErrorState = "";
+	public static $VCAP2DBType = array(
+		 'SQLDB'=>'IBM_DB2'
+		,'BLUAcceleration'=>'IBM_DB2'
+		,'postgresql'=>'PostgreSQL'
+		);
 	
 	public static function getNewStatement($stmt_text, $prepare_statment = FALSE, $verbose = FALSE, $ForwardOnlyScroll = TRUE, $getRowCount = FALSE, $localConnection = null) {
 		if(!is_subclass_of($localConnection, 'Connection') || $localConnection == null)
@@ -419,12 +424,10 @@ class connectionManager{
 		if(!$services) return;
 		TE_session_start();
 		foreach(json_decode($services, true) as $serviceName => $serviceType) {
-			if(substr($serviceName,0,5)== 'SQLDB')
-				$dbtype='IBM_DB2';
-			else if(substr($serviceName,0,10)== 'postgresql')
-				$dbtype='PostgreSQL';
-			else 
-				continue;
+			$parts=explode($serviceName);
+			$vcapService=$parts[0];
+			if(array_key_exists($vcapService,$this->VCAP2DBType)) continue;
+			$dbtype=$this->VCAP2DBType[$vcapService];
 			foreach($serviceType as $index => $service) {
 				$credentials=$service["credentials"];
 				$name=( isset($service["name"])?$service["name"]:$index );
@@ -443,10 +446,10 @@ class connectionManager{
 				$connection['usePersistentConnection']	= false;
 				$connection['schema']					= $connection['username'];
 				$connection['dataServerInfo']			= array();
+				$connection['databaseDriver']=$dbtype;
 				
 				switch ($dbtype) {
-					case 'db2' :
-						$connection['databaseDriver']='IBM_DB2';
+					case 'IBM_DB2' :
 						$description = "#".$serviceName.'->'.$name."->".$connection['databaseDriver'];
 						$connection['description']=$description;
 						$connection['dataServerInfo']=self::getConnectionStatus($connection);
@@ -459,7 +462,6 @@ class connectionManager{
 						$connection['databaseDriver']='JDBC_DB2';
 						break;
 					default:
-						$connection['databaseDriver']='$dbtype';
 				}
 				$description = "#".$serviceName.'->'.$name."->".$connection['databaseDriver'];
 				$connection['description']=$description;
@@ -1101,7 +1103,12 @@ class connectDatabase extends ConnectManagerAbstract {
 	}
 	function checkHealth(&$object,&$healthUser,&$nodeId,&$port,&$dbName,&$databaseDriver) {
 		$object->setConnectId($nodeId.":".$port."/".$dbName);
-		require_once(PHP_INCLUDE_BASE_DIRECTORY . "DBConnection_" . $databaseDriver . ".php");
+		try{
+			require_once(PHP_INCLUDE_BASE_DIRECTORY . "DBConnection_" . $databaseDriver . ".php");
+		} catch (Exception $e) {
+			$object->setError('Check health error load '. $databaseDriver . ' error:' .$e->getMessage());
+			return;
+		}
 		if($this->healthUser==null) {
 					if($healthUser==null) {
 						$object->setError('No health user set');
