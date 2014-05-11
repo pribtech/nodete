@@ -426,8 +426,8 @@ class connectionManager{
 		foreach(json_decode($services, true) as $serviceName => $serviceType) {
 			$parts=explode($serviceName);
 			$vcapService=$parts[0];
-			if(array_key_exists($vcapService,$this->VCAP2DBType)) continue;
-			$dbtype=$this->VCAP2DBType[$vcapService];
+			if(!array_key_exists($vcapService,self::$VCAP2DBType)) continue;
+			$dbtype=self::$VCAP2DBType[$vcapService];
 			foreach($serviceType as $index => $service) {
 				$credentials=$service["credentials"];
 				$name=( isset($service["name"])?$service["name"]:$index );
