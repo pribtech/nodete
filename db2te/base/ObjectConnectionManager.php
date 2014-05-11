@@ -461,8 +461,9 @@ class connectionManager{
 						$connection['connectionStatus'] = true;
 						$connection['databaseDriver']='JDBC_DB2';
 						break;
-					case 'IBM_DB2' :
+					case 'PostgreSQL' :
 						$connection['database'] 				= (isset($credentials["name"])?$credentials["name"]:"");
+						break;
 					default:
 				}
 				$description = "#".$serviceName.'->'.$name."->".$connection['databaseDriver'];
