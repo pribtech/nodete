@@ -576,6 +576,8 @@ class connectionManager{
 
 		foreach($SessionConnectionList as $connectionKey => $connectionInformation) {
 			if($connectionKey == 'default') continue;
+			if($connectionKey == null) continue;
+			if($connectionKey == '') continue;
 			if($connectionInformation == null) {
 				error_log('Session connection "'.$connectionKey.'" has no details',0);
 				continue;

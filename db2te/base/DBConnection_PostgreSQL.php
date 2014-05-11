@@ -73,27 +73,14 @@ function handleError($errno, $errstr, $errfile, $errline, array $errcontext) {
 
 		if($this->database == "" && $this->username == "")
 			return;
-
-		$optionArray = array();
-		
-		if($this->usePersistentConnection) {
-			if ($this->cataloged) {
-				$connectionString = "dbname={$this->database} user={$this->username} password={$this->password}"; //not sure about what to do with PROTOCOL
-				$this->dbconn = @pg_pconnect($connectionString);
-			} else {
-				$connectionString = "host={$this->hostname} dbname={$this->database} port={$this->portnumber} user={$this->username} password={$this->password}";
-				$this->dbconn = @pg_pconnect($connectionString); 
-			}
-		} else {
-			if ($this->cataloged) {
-				$connectionString = "dbname={$this->database} user={$this->username} password={$this->password}"; //not sure about what to do with PROTOCOL
-				$this->dbconn = @pg_connect($connectionString);
-			} else {
-				$connectionString = "host={$this->hostname} dbname={$this->database} port={$this->portnumber} user={$this->username} password={$this->password}";
-				$this->dbconn = @pg_connect($connectionString); 
-			}
+		try{
+			if($this->usePersistentConnection) 
+				$dbconn = @pg_pconnect(($cataloged?"":"host='".$hostname."' port='".$portnumber."' " )." dbname='".$database."' user='".$username."' password='".$password."'");
+			else
+				$dbconn = @pg_connect(($cataloged?"":"host='".$hostname."' port='".$portnumber."' " )." dbname='".$database."' user='".$username."' password='".$password."'");
+		} catch (Exception $e) {
+			return $e->getMessage();
 		}
-
 		$error = error_get_last();
 		if($error !== null)
 			return $error['message'];
