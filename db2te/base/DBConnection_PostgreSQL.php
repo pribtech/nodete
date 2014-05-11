@@ -135,25 +135,11 @@ function handleError($errno, $errstr, $errfile, $errline, array $errcontext) {
 			return "No database specified!";
 		if(trim($username) == "")
 			return "No username specified!";
-			
-		if($usePersistentConnection) {
-			if ($cataloged) {
-				$connectionString = "dbname={$database} user={$username} password={$password}"; //not sure about what to do with PROTOCOL
-				$dbconn = @pg_pconnect($connectionString);
-			} else {
-				$connectionString = "host={$hostname} dbname={$database} port={$portnumber} user={$username} password={$password}";
-				$dbconn = @pg_pconnect($connectionString); 
-			}
-		} else {
-			if ($cataloged) {
-				$connectionString = "dbname={$database} user={$username} password={$password}"; //not sure about what to do with PROTOCOL
-				$dbconn = @pg_connect($connectionString);
-			} else {
-				$connectionString = "host={$hostname} dbname={$database}  port={$portnumber} user={$username} password={$password}";
-				$dbconn = @pg_connect($connectionString); 
-			}
+		try{			
+			$dbconn = @pg_connect(($cataloged?"":"host={$hostname} port={$portnumber} ")."dbname={$database}  user={$username} password={$password}"); 
+		} catch (Exception $e) {
+			return $e->getMessage();
 		}
-		
 		$error = error_get_last();
 		if ($dbconn === false)
 			return $error['message'];
