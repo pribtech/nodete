@@ -584,7 +584,7 @@ class connectionManager{
 				error_log('Session connection "'.$connectionKey.'" has no description',0);
 				continue;
 			}
-			if(!array_key_exists($connectionInformation['description'],$connectionList)) {
+			if(array_key_exists($connectionInformation['description'],$connectionList)) {
 				error_log('Session connection "'.$connectionKey.'" defined using defined version',0);
 				continue;
 			}
