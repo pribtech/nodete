@@ -424,7 +424,7 @@ class connectionManager{
 		if(!$services) return;
 		TE_session_start();
 		foreach(json_decode($services, true) as $serviceName => $serviceType) {
-			$parts=explode($serviceName);
+			$parts=explode('-',$serviceName);
 			$vcapService=$parts[0];
 			if(!array_key_exists($vcapService,self::$VCAP2DBType)) continue;
 			$dbtype=self::$VCAP2DBType[$vcapService];
