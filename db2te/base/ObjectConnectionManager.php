@@ -584,12 +584,11 @@ class connectionManager{
 				error_log('Session connection "'.$connectionKey.'" has no description',0);
 				continue;
 			}
-			if(array_key_exists($connectionInformation['description'],$connectionList)) {
+			if(!array_key_exists($connectionInformation['description'],$connectionList)) {
 				error_log('Session connection "'.$connectionKey.'" defined using defined version',0);
 				continue;
 			}
 			
-			$connect=$connectionList[$connectionInformation['description']];
 			$connect = $connectionInformation;
 			$connect['time'] = time();
 			$connect['password'] = "";
@@ -603,6 +602,7 @@ class connectionManager{
 			$connection['authenticated'] = true;
 			if(strtolower(USE_DATABASE_CONNECTION) == strtolower($connectionKey))
 				$connect['activeConnection'] = true;
+			$connectionList[$connectionKey]=$connect;
 		}
 		ksort($connectionList);
 		return $connectionList;
