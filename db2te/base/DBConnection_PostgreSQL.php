@@ -136,7 +136,7 @@ function handleError($errno, $errstr, $errfile, $errline, array $errcontext) {
 		if(trim($username) == "")
 			return "No username specified!";
 		try{			
-			$dbconn = @pg_connect(($cataloged?"":"host={$hostname} port={$portnumber} ")."dbname={$database}  user={$username} password={$password}"); 
+			$dbconn = @pg_connect(($cataloged?"":"host='".$hostname."' port='".$portnumber."' " )." dbname='".$database."' user='".$username."' password='".$password."'"); 
 		} catch (Exception $e) {
 			return $e->getMessage();
 		}
