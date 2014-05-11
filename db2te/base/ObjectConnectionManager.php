@@ -434,7 +434,7 @@ class connectionManager{
 				$connection=array();
 				$connection['group'] 					= "VCAP_SERVICE";
 				$connection['comment'] 					= "Bluemix service ".$serviceName. " ".$name.' label: '.(isset($service["label"])?$service["label"]:"");
-				$connection['database'] 				= (isset($credentials["db"])?$credentials["db"]:"*** not found ***");
+				$connection['database'] 				= (isset($credentials["db"])?$credentials["db"]:"");
 				$connection['hostname'] 				= (isset($credentials["host"])?$credentials["host"]:"*** not found ***");
 				$connection['portnumber'] 				= (isset($credentials["port"])?$credentials["port"]:"*** not found ***");
 				$connection['username'] 				= (isset($credentials["username"])?$credentials["username"]:"*** not found ***");
@@ -461,6 +461,8 @@ class connectionManager{
 						$connection['connectionStatus'] = true;
 						$connection['databaseDriver']='JDBC_DB2';
 						break;
+					case 'IBM_DB2' :
+						$connection['database'] 				= (isset($credentials["name"])?$credentials["name"]:"");
 					default:
 				}
 				$description = "#".$serviceName.'->'.$name."->".$connection['databaseDriver'];
