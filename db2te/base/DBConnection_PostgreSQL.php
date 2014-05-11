@@ -75,9 +75,9 @@ function handleError($errno, $errstr, $errfile, $errline, array $errcontext) {
 			return;
 		try{
 			if($this->usePersistentConnection) 
-				$dbconn = @pg_pconnect(($cataloged?"":"host='".$hostname."' port='".$portnumber."' " )." dbname='".$database."' user='".$username."' password='".$password."'");
+				$dbconn = @pg_pconnect(($this->cataloged?"":"host='".$hostname."' port='".$portnumber."' " )." dbname='".$database."' user='".$username."' password='".$password."'");
 			else
-				$dbconn = @pg_connect(($cataloged?"":"host='".$hostname."' port='".$portnumber."' " )." dbname='".$database."' user='".$username."' password='".$password."'");
+				$dbconn = @pg_connect(($this->cataloged?"":"host='".$hostname."' port='".$portnumber."' " )." dbname='".$database."' user='".$username."' password='".$password."'");
 		} catch (Exception $e) {
 			return $e->getMessage();
 		}

@@ -144,14 +144,13 @@ class Statement_PostgreSQL extends Statement {
 	* sets $stmt to false when there are no more result sets
 	* @return array */
 	function nextResultSet() {
-		if (empty($this->otherResult)){
-		return false;
-		}
+		if (empty($this->otherResult))
+			return false;
 		
 		$this->otherResult_counter += 1;
-		if ($this->otherResult_counter >= count($this->otherResult)){
+		if ($this->otherResult_counter >= count($this->otherResult))
 			return false;
-		}
+
 		$this->execResult = $this->otherResult[$this->otherResult_counter];
 			
 		$this->rowsRead = 0;
