@@ -419,7 +419,7 @@ class connectionManager{
 		return $connection['group'] == "VCAP_SERVICE";
 	}
 
-	public static function setVCAP_SERVICES(&$connectionList) {
+	public static function setVCAP_SERVICES() {
 		$services = getenv('VCAP_SERVICES');
 		if(!$services) return;
 		TE_session_start();
@@ -520,7 +520,6 @@ class connectionManager{
 			TE_session_write_close();
 			return $connectionList;
 		}
-		self::setVCAP_SERVICES($connectionList);
 		$connectionStoreDoc = self::readSavedConnectionList();
 		if($connectionStoreDoc !== false) {
 			foreach($connectionStoreDoc->childNodes as $node) {
@@ -567,6 +566,7 @@ class connectionManager{
 			ksort($connectionList);
 		}
 		unset($SessionConnectionList);
+		self::setVCAP_SERVICES($connectionList);
 		TE_session_start();
 		if(isset($_SESSION['Connections']))
 			$SessionConnectionList = $_SESSION['Connections'];
@@ -576,9 +576,19 @@ class connectionManager{
 
 		foreach($SessionConnectionList as $connectionKey => $connectionInformation) {
 			if($connectionKey == 'default') continue;
-			if($connectionInformation == null) continue;
-			if(!isset($connectionInformation['description'])) continue;
-			if(!array_key_exists($connectionInformation['description'],$connectionList)) continue;
+			if($connectionInformation == null) {
+				error_log('Session connection "'.$connectionKey.'" has no details',0);
+				continue;
+			}
+			if(!isset($connectionInformation['description'])) {
+				error_log('Session connection "'.$connectionKey.'" has no description',0);
+				continue;
+			}
+			if(array_key_exists($connectionInformation['description'],$connectionList)) {
+				error_log('Session connection "'.$connectionKey.'" defined using defined version',0);
+				continue;
+			}
+			
 			$connect=$connectionList[$connectionInformation['description']];
 			$connect = $connectionInformation;
 			$connect['time'] = time();
