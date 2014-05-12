@@ -73,8 +73,8 @@
 @define("COMPARE_ENABLED_BY_DEFAULT", true);
 @define("MAIN_MENU_ROOT_DIRECTORY", "./menu/DeveloperSwitch");
 @define("HADOOP_JARS", null);
-//@define("TRACE_ACTION_CALLS", true);
 setDefine("DEVELOPMENT_MODE", true);
 //setDefineDirectory("JAVA_DB_DRIVER_JSON_NOSQL_DB2", "C:\\Program Files\\IBM\\SQLLIB_E105\\json\\lib");
+@define("TRACE_ACTION_CALLS", true);
 
 
