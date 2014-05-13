@@ -46,11 +46,23 @@ class IBMSSO {
 	
 	public function __construct() {
 		$this->state=session_id();
+ 		$this->setServices();
+		$this->setClientSettings();
+ 		saveIBMSSO($this);
+ 	}
+	function __destruct() {
+    }
+    function getSignonURL() {
+    	return $this->$authorize_url."?client_id=".$this->consumer_key."&response_type=code&scope=profile&state=".$this->state."&redirect_uri=".( isset($_SERVER["HTTP_REFERER"]) ? $_SERVER["HTTP_REFERER"] : $_SERVER["SERVER_NAME"].dirname($_SERVER['PHP_SELF'])).ACTION_PROCESSOR."?action=sessionIBMSSO";
+    }
+    function setServices() {
  		$services = getenv('VCAP_SERVICES');
  		if(!$services)
  			throw new Exception('Requires IBM Bluemix and SSO application');
  		$servicesArray=json_decode($services, true);
- 		foreach(json_decode($services, true) as $serviceName => $serviceType) {
+ 		if(!$servicesArray)
+ 			throw new Exception('Decode VCAP services failed');
+ 		foreach($servicesArray as $serviceName => $serviceType) {
  			$parts=explode('-',$serviceName);
  			$vcapService=$parts[0];
  			if($vcapService=='SSO')
@@ -68,14 +80,21 @@ class IBMSSO {
  		$this->$tokeninfo_resource=$credentials['tokeninfo_resource'];
  		$this->$openidProviderURL=$credentials['openidProviderURL'];
  		$this->$authorize_url=$credentials['authorize_url'];
- 		saveIBMSSO($this);
- 	}
-	function __destruct() {
     }
-    function getSignonURL() {
-    	return $this->$authorize_url."?client_id=".$this->consumer_key."&response_type=code&scope=profile&state=".$this->state."&redirect_uri=".( isset($_SERVER["HTTP_REFERER"]) ? $_SERVER["HTTP_REFERER"] : $_SERVER["SERVER_NAME"].dirname($_SERVER['PHP_SELF'])).ACTION_PROCESSOR."?action=sessionIBMSSO";
+    function setClientSettings() {
+ 		$setting = getenv('TE_IBMSSO');
+ 		if(!$setting) return;
+    //TE_IBMSSO {client_id:'sOdxIgNm8cuseKoj3HFM',client_secret:'8y5eyMup8h0AmDeqppOI'}
+ 		$settingArray=json_decode($services, true);
+ 		if(!$servicesArray)
+ 			throw new Exception('Decode VCAP services failed');
+ 		if(!array_key_exists('client_id',$settingArray))
+ 			throw new Exception('client_id not found in TE_IBMSSO');
+ 		if(!array_key_exists('client_secret',$settingArray))
+ 			throw new Exception('client_secret not found in TE_IBMSSO');
+ 		$this->consumer_key = $settingArray['client_id'];
+		$this->consumer_secret = $settingArray['client_secret'];
     }
-    
     function setCode() {
    		if($this->state !== getParameter('state'))
 			throw new Exception("States don't match, different session call");
