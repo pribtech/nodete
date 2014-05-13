@@ -143,7 +143,7 @@ class Connection_MYSQL extends Connection {
 			$returnObject['dataServerVersion'] = ((int)$version[0]) . "." . ((int)$version[1]);
 			$returnObject['dataServerFixpack'] = ((int)$version[2]);
 		}
-		$returnObject['DBMS'] = self::getDBMS();
+		$returnObject['DBMS'] = self::$DBMS;
 		return $returnObject;
 	}
 

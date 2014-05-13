@@ -19,7 +19,7 @@
 include_once(PHP_INCLUDE_BASE_DIRECTORY . "ObjectIBMSSO.php");
 try{
 	$ibmsso=getIBMSSO();
-//	$url=$ibmsso->getSignonURL();
+	$url=$ibmsso->getSignonURL();
 	echo "<div id='title'>IBM SSO Signon</div>";
 	echo <<<ENDSCRIPT
 <script type="text/javascript">
@@ -33,13 +33,13 @@ loadNewPageLayout(
 			,name				: "main"
 			,PrimaryContainer	: true
 			,ContentType		: "LINK"
-			,data:	$ibmsso->getSignonURL()
+			,data:	$url
 			}
 		});
 </script>
 ENDSCRIPT;
 } catch (Exception $e){
 	echo "<div id='title'>IBM SSO Check -".$e->getmessage()."</div>";
-	error_log($e->getmessage()."");
+	error_log("sessionSignon ".$e->getmessage()." class: ".var_export($ibmsso,true));
 }
 ?>
