@@ -23,7 +23,8 @@ function getIBMSSO () {
 	if(isset($_SESSION['IBMSSO'])) 
 		$object=unserialize($_SESSION['IBMSSO']);
 	TE_session_write_close();
-	if($object!==null) return $object;
+	if(isset($object))
+		if($object !== null ) return $object;
 	return new IBMSSO();
 }
 function saveIBMSSO (&$object) {

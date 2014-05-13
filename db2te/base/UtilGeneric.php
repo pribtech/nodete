@@ -289,15 +289,15 @@ function getServerPath($serv, $URI, $fname) {
 function getFileLastLines($fileName="",$maxLines=10) {
 	if($fileName=="")
 		throw new Exception('No file specified');
-	$testFile=$fileName;
-	if(is_file($testFile)) {
+	$testFile=(substr(php_uname(), 0, 7) == "Windows"?addcslashes($fileName, '\\'):$fileName);
+	if(!is_file($testFile)) {
 		$testFile='"'.$fileName.'"';
-		if(is_file($testFile))
+		if(!is_file($testFile))
 			throw new Exception('File not found');
 	}
-	if(is_readable($testFile))
+	if(!is_readable($testFile))
 		throw new Exception('Not authorised to read file');
-	$file = fopen((substr(php_uname(), 0, 7) == "Windows"?addcslashes($fileName, '\\'):$fileName), 'r');
+	$file = fopen($testFile, 'r');
 	if(!$file)
 		throw new Exception('Cannot open file');
 	$position = filesize($fileName); 

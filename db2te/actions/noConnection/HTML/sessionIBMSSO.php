@@ -49,6 +49,6 @@ loadNewPageLayout(
 ENDSCRIPT;
 } catch (Exception $e){
 	echo "<div id='title'>IBM SSO Check -".$e->getmessage()."</div>";
-	errror_log($e->getmessage()."");
+	error_log($e->getmessage()."");
 }
 ?>
