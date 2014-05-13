@@ -1,6 +1,6 @@
 <?php
 /*******************************************************************************
-  *  Author: Peter Prib
+ *  Author: Peter Prib
  * 
  * Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2014 All rights reserved.
  *
@@ -16,9 +16,11 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  *********************************************************************************/
+TE_session_start();
+$IBMSSOcode=$_SESSION['IBMSSOcode'];
+TE_session_write_close();
+
 try {
-	
-/*
 	$services = getenv('VCAP_SERVICES');
 	if(!$services)
 		throw new Exception('Requires IBM Bluemix and SSO application');
@@ -36,13 +38,12 @@ try {
 	}
 	if(!isset($credentials))
 		throw new Exception('SSO application credentials not found');
-	session_start();
-	
-	if(!isset($_GET['oauth_token']) && $_SESSION['state']==1) $_SESSION['state'] = 0;
-
-	$consumer_key = 'sOdxIgNm8cuseKoj3HFM';  // sOdxIgNm8cuseKoj3H
-	$consumer_secret = '8y5eyMup8h0AmDeqppOI'; //8y5eyMup8h0AmDeqppOI	
-	
+	$token_url=$credentials['token_url'];
+	$profile_resource=$credentials['profile_resource'];
+	$tokeninfo_resource=$credentials['tokeninfo_resource'];
+	$openidProviderURL=$credentials['openidProviderURL'];
+	$authorize_url=$credentials['authorize_url'];
+/*
 
 //	"profile_resource":"https://idaas.ng.bluemix.net/idaas/resources/profile.jsp",
 	
@@ -51,40 +52,6 @@ try {
 	$api_url = 'https://idaas.ng.bluemix.net/idaas/openid';   //"openidProviderURL"
 	$authurl = 'https://idaas.ng.bluemix.net/sps/oauth20sp/oauth20/authorize';  //"authorize_url"
 	
-	$oauth = new OAuth($consumer_key,$consumer_secret,OAUTH_SIG_METHOD_HMACSHA1,OAUTH_AUTH_TYPE_URI);
-	$oauth->enableDebug();
-	if(!isset($_GET['oauth_token']) && !$_SESSION['state']) {
-		$request_token_info = $oauth->getRequestToken($req_url);
-		$_SESSION['secret'] = $request_token_info['oauth_token_secret'];
-		$_SESSION['state'] = 1;
-		header('Location: '.$authurl.'?oauth_token='.$request_token_info['oauth_token']);
-		exit;
-	} else if($_SESSION['state']==1) {
-		$oauth->setToken($_GET['oauth_token'],$_SESSION['secret']);
-		$access_token_info = $oauth->getAccessToken($acc_url);
-		$_SESSION['state'] = 2;
-		$_SESSION['token'] = $access_token_info['oauth_token'];
-		$_SESSION['secret'] = $access_token_info['oauth_token_secret'];
-	}
-	$oauth->setToken($_SESSION['token'],$_SESSION['secret']);
-	$oauth->fetch("$api_url/user.json");
-
-	$json = json_decode($oauth->getLastResponse());
-/*			
-    $oauth->setToken($request_token,$request_token_secret);
-    $access_token_info = $oauth->getAccessToken("https://example.com/oauth/access_token");
-    if(!empty($access_token_info)) {
-        print_r($access_token_info);
-        
-     $request_token_info = $oauth->getRequestToken("https://example.com/oauth/request_token");
-    if(!empty($request_token_info)) { 
-Array
-
-    [oauth_token] => some_token
-    [oauth_token_secret] => some_token_secret
-
-*
-
 https://idaas.ng.bluemix.net/sps/oauth20sp/oauth20/authorize?client_id=sOdxIgNm8cuseKoj3HFM&response_type=code&scope=profile&state=test&redirect_uri=http://pribdb2te.ng.bluemix.net/db2te/action.php?action=sessionIBMSSO
 
 */       
@@ -93,10 +60,38 @@ https://idaas.ng.bluemix.net/sps/oauth20sp/oauth20/authorize?client_id=sOdxIgNm8
 
 	$link='https://idaas.ng.bluemix.net/sps/oauth20sp/oauth20/token';
 //	$data="client_id=".$consumer_key."&client_secret=".$consumer_secret."&grant_type=authorization_code&code=abcd1234&redirect_uri=<your_application_redirect_uri>";
-	$data="client_id=".$consumer_key."&client_secret=".$consumer_secret."&grant_type=authorization_code&code=abcd1234";
-	
+	$data="client_id=".$consumer_key."&client_secret=".$consumer_secret."&grant_type=authorization_code&code=".$IBMSSOcode;
+/*
+ * expected response
+ * 
+  { 
+  "expires_in":3599,
+  "scope":"profile",
+  "access_token":"lCn1oPFA6SJXKyWW7xpF",
+  "token_type":"bearer",
+  "refresh_token":"JgDXOI5uSEVTUn9DbKhB4lv1XN9aZe2rxrTVmDZ8"
+}
+
+"Authorization: bearer <your_bearer_token>" https://idaas.ng.bluemix.net/idaas/resources/profile.jsp
+ should  then give
+ 
+ {
+  "firstName":["Test"],
+  "lastName":["User"],
+  "name":["Test User"],
+  "email":["testuser@mailinator.com"],
+  "userRealm":"www.ibm.com",
+  "userDisplayName":["testuser@mailinator.com"],
+  "username":"http:\/\/www.ibm.com\/testuser@mailinator.com",
+  "userUniqueID":["http:\/\/www.ibm.com\/XXXXXXXXXX"],
+  "AUTHENTICATION_LEVEL":"2",
+  "AZN_CRED_CREATE_TIME":"2013-12-11T01:11:31Z",
+  "idaas.verified_email":["testuser@mailinator.com"]}
+  
+
+ */	
 	if(!function_exists('curl_version'))
-		throw new Exception('Feed data requires PHP curl extension enabled.');
+		throw new Exception('IBMSSO user details requires PHP curl extension enabled.');
 	$cURL = curl_init();
 	
 	

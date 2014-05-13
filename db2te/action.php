@@ -25,7 +25,7 @@ function actionShutDown() {
 		if(TRACE_ACTION_CALLS) {
 			error_log("action trace request: ".var_export($_GET,true),0); 
 			error_log("action trace last error: ".var_export(error_get_last(),true),0); 
-			error_log("action trace response (max 40 chars): ".substr(ob_get_contents(),0,40),0); 
+			error_log("action trace response (max 100 chars): ".substr(ob_get_contents(),0,100),0); 
 		}
 	$errormsg = error_get_last();
 	if($errormsg==null || $errormsg=="") {

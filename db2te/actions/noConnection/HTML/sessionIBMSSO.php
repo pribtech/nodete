@@ -1,6 +1,8 @@
 <?php
 /*******************************************************************************
- *  Copyright IBM Corp. 2007 All rights reserved.
+ *  Author: Peter Prib
+ * 
+ * Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2014 All rights reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -14,26 +16,39 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  *********************************************************************************/
-
-?>
-<div id="title">IBM SSO Check</div>
+include_once(PHP_INCLUDE_BASE_DIRECTORY . "ObjectIBMSSO.php");
+try{
+	$ibmsso=getIBMSSO();
+	$ibmsso->setCode();
+	$bearer=$ibmsso->getBearer();
+	echo "<div id='title'>IBM SSO Check - Success</div>";
+	echo <<<ENDSCRIPT
 <script type="text/javascript">
 loadNewPageLayout(
 		{target			: 'signon'
 		,windowStage	: "DefaultStage"
 		,raiseToTop		: "y"
 		,title			: 'IBM SSO Check'
-		,content	 : 
-				{type				: "panel"
-				,name				: "main"
-					,PrimaryContainer	: true
-				,ContentType		: "LINK"
+		,content	 :
+			{type				: "panel"
+			,name				: "main"
+			,PrimaryContainer	: true
+			,ContentType		: "LINK"
+			,data:
+				{type:"ACTION"
 				,data:
-					{type:"ACTION"
-					,data: 
-						{parameters: {action:"displayJSON"}
+					{parameters: 
+						{action: "displayJSON"
+						,\$source: $bearer
+						}
 					}
 				}
 			}
 		});
 </script>
+ENDSCRIPT;
+} catch (Exception $e){
+	echo "<div id='title'>IBM SSO Check -".$e->getmessage()."</div>";
+	errror_log($e->getmessage()."");
+}
+?>
