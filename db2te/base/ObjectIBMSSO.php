@@ -53,7 +53,11 @@ class IBMSSO {
 	function __destruct() {
     }
     public function getSignonURL() {
-    	return $this->$authorize_url."?client_id=".$this->client_id."&response_type=code&scope=profile&state=".$this->state."&redirect_uri=".( isset($_SERVER["HTTP_REFERER"]) ? $_SERVER["HTTP_REFERER"] : $_SERVER["SERVER_NAME"].dirname($_SERVER['PHP_SELF'])).ACTION_PROCESSOR."?action=sessionIBMSSO";
+    	if(isset($_SERVER["HTTP_REFERER"]))
+    		$redirectURI=$_SERVER["HTTP_REFERER"];
+    	else
+    		$redirectURI= $_SERVER["HTTP_HOST"]."/".$_SERVER['PHP_SELF'];
+    	return $this->$authorize_url."?client_id=".$this->client_id."&response_type=code&scope=profile&state=".$this->state."&redirect_uri=".$redirectURI.ACTION_PROCESSOR."?action=sessionIBMSSO";
     }
 	public function getBearer() {
 		$this->tokenBearer=$this->getResponse(
