@@ -40,8 +40,8 @@ class IBMSSO {
 	private $authorize_url;
 	private $state;
 	private $code;
-	private $consumer_key = 'sOdxIgNm8cuseKoj3HFM';
-	private $consumer_secret = '8y5eyMup8h0AmDeqppOI';
+	private $client_id = 'sOdxIgNm8cuseKoj3HFM';
+	private $client_secret = '8y5eyMup8h0AmDeqppOI';
 	private $tokenBearer;
 	
 	public function __construct() {
@@ -53,7 +53,7 @@ class IBMSSO {
 	function __destruct() {
     }
     function getSignonURL() {
-    	return $this->$authorize_url."?client_id=".$this->consumer_key."&response_type=code&scope=profile&state=".$this->state."&redirect_uri=".( isset($_SERVER["HTTP_REFERER"]) ? $_SERVER["HTTP_REFERER"] : $_SERVER["SERVER_NAME"].dirname($_SERVER['PHP_SELF'])).ACTION_PROCESSOR."?action=sessionIBMSSO";
+    	return $this->$authorize_url."?client_id=".$this->client_id."&response_type=code&scope=profile&state=".$this->state."&redirect_uri=".( isset($_SERVER["HTTP_REFERER"]) ? $_SERVER["HTTP_REFERER"] : $_SERVER["SERVER_NAME"].dirname($_SERVER['PHP_SELF'])).ACTION_PROCESSOR."?action=sessionIBMSSO";
     }
     function setServices() {
  		$services = getenv('VCAP_SERVICES');
@@ -75,25 +75,25 @@ class IBMSSO {
  		}
  		if(!isset($credentials))
  			throw new Exception('SSO application credentials not found');
- 		$this->token_url=$credentials['token_url'];
- 		$this->$profile_resource=$credentials['profile_resource'];
- 		$this->$tokeninfo_resource=$credentials['tokeninfo_resource'];
- 		$this->$openidProviderURL=$credentials['openidProviderURL'];
- 		$this->$authorize_url=$credentials['authorize_url'];
+ 		$this->getClientSettings($credentials,'token_url');
+ 		$this->getClientSettings($credentials,'profile_resource');
+ 		$this->getClientSettings($credentials,'tokeninfo_resource');
+ 		$this->getClientSettings($credentials,'openidProviderURL');
+ 		$this->getClientSettings($credentials,'authorize_url');
+    }
+    function getClientSettings(&$valueArray,$key) {
+ 		if(!array_key_exists($key,$valueArray))
+ 			throw new Exception('SSO application '.$key.' not found');
+ 		$this->$key=$valueArray[$key];
     }
     function setClientSettings() {
  		$setting = getenv('TE_IBMSSO');
  		if(!$setting) return;
-    //TE_IBMSSO {client_id:'sOdxIgNm8cuseKoj3HFM',client_secret:'8y5eyMup8h0AmDeqppOI'}
  		$settingArray=json_decode($services, true);
- 		if(!$servicesArray)
- 			throw new Exception('Decode VCAP services failed');
- 		if(!array_key_exists('client_id',$settingArray))
- 			throw new Exception('client_id not found in TE_IBMSSO');
- 		if(!array_key_exists('client_secret',$settingArray))
- 			throw new Exception('client_secret not found in TE_IBMSSO');
- 		$this->consumer_key = $settingArray['client_id'];
-		$this->consumer_secret = $settingArray['client_secret'];
+ 		if(!$settingArray)
+ 			throw new Exception('Decode TE_IBMSSO failed');
+ 		$this->getClientSettings($settingArray,'client_id');
+ 		$this->getClientSettings($settingArray,'client_secret');
     }
     function setCode() {
    		if($this->state !== getParameter('state'))
@@ -154,7 +154,7 @@ class IBMSSO {
 		if($this->tokenBearer!=null) return $this->tokenBearer['access_token'];
 		$this->tokenBearer=$this->getResponse(
 			 $this->token_url 
-			,"client_id=".$this->consumer_key."&client_secret=".$this->consumer_secret."&grant_type=authorization_code&code=".$this->code
+			,"client_id=".$this->client_id."&client_secret=".$this->client_secret."&grant_type=authorization_code&code=".$this->code
 			);
 /* token should have form:
    		{

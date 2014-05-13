@@ -27,7 +27,8 @@ class connectionManager{
 		 'SQLDB'=>'IBM_DB2'
 		,'BLUAcceleration'=>'IBM_DB2'
 		,'postgresql'=>'PostgreSQL'
-		);
+		,'mysql'=>'MYSQL'
+	);
 	
 	public static function getNewStatement($stmt_text, $prepare_statment = FALSE, $verbose = FALSE, $ForwardOnlyScroll = TRUE, $getRowCount = FALSE, $localConnection = null) {
 		if(!is_subclass_of($localConnection, 'Connection') || $localConnection == null)
@@ -434,7 +435,8 @@ class connectionManager{
 				$connection=array();
 				$connection['group'] 					= "VCAP_SERVICE";
 				$connection['comment'] 					= "Bluemix service ".$serviceName. " ".$name.' label: '.(isset($service["label"])?$service["label"]:"");
-				$connection['database'] 				= (isset($credentials["db"])?$credentials["db"]:"");
+				$connection['database'] 				= (isset($credentials["db"])?$credentials["db"]
+																:(isset($credentials["name"])?$credentials["name"]:"*** not found***"));
 				$connection['hostname'] 				= (isset($credentials["host"])?$credentials["host"]:"*** not found ***");
 				$connection['portnumber'] 				= (isset($credentials["port"])?$credentials["port"]:"*** not found ***");
 				$connection['username'] 				= (isset($credentials["username"])?$credentials["username"]:"*** not found ***");
@@ -460,9 +462,6 @@ class connectionManager{
 						$_SESSION['Connections'][$description] = $connection;
 						$connection['connectionStatus'] = true;
 						$connection['databaseDriver']='JDBC_DB2';
-						break;
-					case 'PostgreSQL' :
-						$connection['database'] 				= (isset($credentials["name"])?$credentials["name"]:"");
 						break;
 					default:
 				}
