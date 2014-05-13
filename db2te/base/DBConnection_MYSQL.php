@@ -28,20 +28,10 @@ require_once(PHP_INCLUDE_BASE_DIRECTORY . 'DBStatement_MYSQL.php');
  * database. It supports either a direct connection to a hostname and port number
  * or a connection through a mysql Client. */
 class Connection_MYSQL extends Connection {
-
-	/** Indicated the PHP extension used
-	 * set to null if non is needed
-	 * @var string */
 	public static $requiredDBExtension = "mysqli";
 	public static $isPHPExtension = true;
-	/** Indicated the PHP extension minimum version needed
-	 * set to null if non is needed
-	 * @var float */
 	public static $requiredDBExtensionMinVersion = null;
-	/** Database Managment System
-	 * @var float */
 	public $DBMS = "MYSQL";
-	
 	public $statementClass = "Statement_MYSQL";
 
 	public static function driverCheck() {
@@ -107,11 +97,8 @@ class Connection_MYSQL extends Connection {
 
 		if ($this->dbconn === false) {
 			$this->setError( mysqli_connect_errno(), mysqli_connect_error());
-			if (DEBUG_MODE_ENABLED && mysqli_connect_error() != "") {
-				echo("Connection to database failed.");
-				$sqlerror = $this->SQLErrorMSG;
-				echo($sqlState);
-			}
+			if (DEBUG_MODE_ENABLED && mysqli_connect_error() != "")
+				error_log("MYSQL Connection to database failed, sql message:".$this->SQLErrorMSG,0);
 			$this->connected = false;
 		} else {
 			$time = date('y.d.m:H:i:s');
@@ -127,11 +114,8 @@ class Connection_MYSQL extends Connection {
 	public static function testConnection($database, $username, $password, $hostname, $portnumber, $usePersistentConnection = USE_PERSISTENT_CONNECTION) {
 
 		$usePersistentConnection = $usePersistentConnection == "" || $usePersistentConnection == null ? USE_PERSISTENT_CONNECTION : $usePersistentConnection;
-
 		$dbconn = null;
-
 		$cataloged = ($hostname == "" | $portnumber == "") ? true : false;
-
 		if(trim($database) == "")
 			return "No database specified!";
 		if(trim($username) == "")
@@ -150,17 +134,16 @@ class Connection_MYSQL extends Connection {
 		$sub = 0;
 		if($serverdata === false)
 			return false;
-		$returnObject = array();
 
 		str_ireplace(" ",".",$serverdata);
 		$version = explode(".", $serverdata);
+
+		$returnObject = array();
 		if($version !== false) {
 			$returnObject['dataServerVersion'] = ((int)$version[0]) . "." . ((int)$version[1]);
 			$returnObject['dataServerFixpack'] = ((int)$version[2]);
 		}
-		
 		$returnObject['DBMS'] = self::getDBMS();
-
 		return $returnObject;
 	}
 
@@ -206,26 +189,12 @@ class Connection_MYSQL extends Connection {
 		return array(false, 'Trusted context user unsupported.');
 	}
 
-	/**
-	 * Sets the autocommit
-	 * @return resource
-	 */
 	public function setAutoCommit($SQLAdHoc_AutoCommit) {
 		return @mysqli_autocommit($this->dbconn, $SQLAdHoc_AutoCommit);
 	}
-
-	/**
-	 * executs a commit
-	 * @return resource
-	 */
 	public function commit() {
 		return @mysqli_commit($this->dbconn);
 	}
-
-	/**
-	 * Executs a rollback
-	 * @return resource
-	 */
 	public function rollback() {
 		return @mysqli_rollback($this->dbconn);
 	}
