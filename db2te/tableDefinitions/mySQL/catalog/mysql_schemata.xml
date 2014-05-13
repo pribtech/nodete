@@ -14,61 +14,53 @@
   limitations under the License.
 -->
 <table name="mysql_schemata">
-	<sql_name>INFORMATION_SCHEMA.SCHEMATA</sql_name>
-	<singular_name>Schemata</singular_name>
-	<plural_name>Schemata</plural_name>
+	<sqlName>INFORMATION_SCHEMA.SCHEMATA</sqlName>
+	<singularName>Schemata</singularName>
+	<pluralName>Schemata</pluralName>
 	<description/>
-	<disable_edit/>
-	<order_by_index name="CATALOG_NAME" direction="A"/>
-	<order_by_index name="SCHEMA_NAME" direction="A"/>
-		<display_columns>
+	<disableEdit/>
+	<orderByIndex name="CATALOG_NAME" direction="A"/>
+	<orderByIndex name="SCHEMA_NAME" direction="A"/>
+	<displayColumns>
 		<col type="column" name="CATALOG_NAME"/>
 		<col type="column" name="SCHEMA_NAME"/>
 		<col type="column" name="DEFAULT_CHARACTER_SET_NAME"/>
 		<col type="column" name="DEFAULT_COLLATION_NAME"/>
 		<col type="column" name="SQL_PATH"/>
-	</display_columns>
+	</displayColumns>
 	<column name="CATALOG_NAME">
-		<c_sql_name>CATALOG_NAME</c_sql_name>
-		<c_title>Catalog</c_title>
-		<c_presentation></c_presentation>
-		<c_drill>y</c_drill>
-		<c_pkey>p</c_pkey>
+		<sqlName>CATALOG_NAME</sqlName>
+		<title>Catalog</title>
+		<primayKey/>			
 	</column>
 	<column name="SCHEMA_NAME">
-		<c_sql_name>SCHEMA_NAME</c_sql_name>
-		<c_title>Schema</c_title>
-		<c_pkey>p</c_pkey>			
-		<c_prefill>
+		<sqlName>SCHEMA_NAME</sqlName>
+		<title>Schema</title>
+		<primayKey/>			
+		<prefill>
 			<table>mysql_tables</table>
 			<column>SCHEMA_NAME</column>
-		</c_prefill>
-		<c_reference name="tabs">
+		</prefill>
+		<reference name="tabs">
 			<title>Tables</title>
 			<reftype>table</reftype>
 			<refvalue>mySQL/catalog/mysql_tables</refvalue>
 			<icon>images/icon-link-calendar.gif</icon>
-			<ref foreign_column_name="TABLE_SCHEMA">
-				<local_column_name>SCHEMA_NAME</local_column_name>
+			<ref foreignColumnName="TABLE_SCHEMA">
+				<localColumnName>SCHEMA_NAME</localColumnName>
 			</ref>
-		</c_reference>
+		</reference>
 	</column>
 	<column name="DEFAULT_CHARACTER_SET_NAME">
-		<c_sql_name>DEFAULT_CHARACTER_SET_NAME</c_sql_name>
-		<c_title>Default Character Set</c_title>
-		<c_presentation></c_presentation>
-		<c_drill>y</c_drill>
+		<sqlName>DEFAULT_CHARACTER_SET_NAME</sqlName>
+		<title>Default Character Set</title>
 	</column>
 	<column name="DEFAULT_COLLATION_NAME">
-		<c_sql_name>DEFAULT_COLLATION_NAME</c_sql_name>
-		<c_title>Defualt Collation</c_title>
-		<c_presentation></c_presentation>
-		<c_drill>y</c_drill>
+		<sqlName>DEFAULT_COLLATION_NAME</sqlName>
+		<title>Default Collation</title>
 	</column>
 	<column name="SQL_PATH">
-		<c_sql_name>SQL_PATH</c_sql_name>
-		<c_title>SQL Path</c_title>
-		<c_presentation></c_presentation>
-		<c_drill>y</c_drill>
+		<sqlName>SQL_PATH</sqlName>
+		<title>SQL Path</title>
 	</column>
 </table>
