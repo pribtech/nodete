@@ -89,8 +89,9 @@ abstract class Connection {
 	public $statementClass = "";
 	public $maxExecutionTime;
 	public function getDBMS() {
-		if ( is_object($this) ) 
-			return $this->DBMS;
+		if(isset($this))
+			if ( is_object($this) ) 
+				return $this->DBMS;
 		return null;
 	}
 	public static function driverCheck() {

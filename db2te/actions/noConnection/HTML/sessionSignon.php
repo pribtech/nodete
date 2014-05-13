@@ -19,7 +19,6 @@
 include_once(PHP_INCLUDE_BASE_DIRECTORY . "ObjectIBMSSO.php");
 try{
 	$ibmsso=getIBMSSO();
-	$url=$ibmsso->getSignonURL();
 	echo "<div id='title'>IBM SSO Signon</div>";
 	echo <<<ENDSCRIPT
 <script type="text/javascript">
@@ -29,11 +28,11 @@ loadNewPageLayout(
 		,raiseToTop		: "y"
 		,title			: 'IBM SSO Signon'
 		,content	 :
-			{type				: "panel"
+			{type				: "html"
 			,name				: "main"
 			,PrimaryContainer	: true
 			,ContentType		: "LINK"
-			,data:	$url
+			,data:	{address:"$ibmsso->getSignonURL()"}
 			}
 		});
 </script>

@@ -472,9 +472,13 @@ class connectionManager{
 					if(!$connection['dataServerInfo']) {
 						$connection['dataServerInfo'] = array();
 						$connection['connectionStatus'] = self::$lastErrorState;
-				}
+						error_log('test failed '+$dbtype,0);
+					}
 				} catch(Exception $e) {
+					$connection['dataServerInfo'] = array();
+					$connection['connectionStatus'] = self::$lastErrorState;
 					$connection['connectionStatus'] = 'Connect error: '.$e->getMessage();
+					error_log('test failed exception raised'+$dbtype,0);
 				}
 				$_SESSION['Connections'][$description] = $connection;
 			}
