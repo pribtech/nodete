@@ -143,7 +143,7 @@ class IBMSSO {
    		if($this->state !== getParameter('state'))
 			throw new Exception("States don't match, different session call");
     	$this->code = getParameter('code');
-    	saveIBMSSO();
+    	saveIBMSSO($this);
 	}
     function setServices() {
  		$services = getenv('VCAP_SERVICES');
