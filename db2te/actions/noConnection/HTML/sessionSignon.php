@@ -29,7 +29,7 @@ loadNewPageLayout(
 		,raiseToTop		: "y"
 		,title			: 'IBM SSO Signon'
 		,content	 :
-			{type				: "html"
+			{type				: "panel"
 			,name				: "main"
 			,PrimaryContainer	: true
 			,ContentType		: "LINK"
