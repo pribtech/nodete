@@ -2,7 +2,7 @@
 /*******************************************************************************
  *  Author: Peter Prib
  * 
- * Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2010 All rights reserved.
+ * Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2014 All rights reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -64,14 +64,18 @@ class IBMSSO {
  		if(!isset($credentials))
  			throw new Exception('SSO application credentials not found');
  		$this->token_url=$credentials['token_url'];
- 		$profile_resource=$credentials['profile_resource'];
- 		$tokeninfo_resource=$credentials['tokeninfo_resource'];
- 		$openidProviderURL=$credentials['openidProviderURL'];
- 		$authorize_url=$credentials['authorize_url'];
+ 		$this->$profile_resource=$credentials['profile_resource'];
+ 		$this->$tokeninfo_resource=$credentials['tokeninfo_resource'];
+ 		$this->$openidProviderURL=$credentials['openidProviderURL'];
+ 		$this->$authorize_url=$credentials['authorize_url'];
  		saveIBMSSO($this);
  	}
 	function __destruct() {
     }
+    function getSignonURL() {
+    	return $this->$authorize_url."?client_id=".$this->consumer_key."&response_type=code&scope=profile&state=".$this->state."&redirect_uri=".( isset($_SERVER["HTTP_REFERER"]) ? $_SERVER["HTTP_REFERER"] : $_SERVER["SERVER_NAME"].dirname($_SERVER['PHP_SELF'])).ACTION_PROCESSOR."?action=sessionIBMSSO";
+    }
+    
     function setCode() {
    		if($this->state !== getParameter('state'))
 			throw new Exception("States don't match, different session call");

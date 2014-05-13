@@ -21,7 +21,14 @@
 	<pageWindow target="_final">
   		<title>Session Signon IBM SSO</title>
     	<panel name="signon">
+    		<link type="action">
+				<parameterList>
+					<parameter name="action">sessionSignon</parameter>
+    			</parameterList>
+  			</link>
+<!-- 
     		<URL><![CDATA[https://idaas.ng.bluemix.net/sps/oauth20sp/oauth20/authorize?client_id=sOdxIgNm8cuseKoj3HFM&response_type=code&scope=profile&state=test&redirect_uri=http://pribdb2te.ng.bluemix.net/db2te/action.php?action=sessionIBMSSO]]></URL>
+ -->    	
     	</panel>
  	</pageWindow>
 </menu>
