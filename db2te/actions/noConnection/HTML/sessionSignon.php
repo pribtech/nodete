@@ -33,7 +33,10 @@ loadNewPageLayout(
 			,name				: "main"
 			,PrimaryContainer	: true
 			,ContentType		: "LINK"
-			,data:	{address:"$uri"}
+			,data:	
+				{type				: "html"
+				,address:"$uri"
+				}
 			}
 		});
 </script>
