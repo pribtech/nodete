@@ -35,7 +35,7 @@ loadNewPageLayout(
 			,ContentType		: "LINK"
 			,data:	
 				{type				: "html"
-				,address:"$uri"
+				,data: {address:"$uri"}
 				}
 			}
 		});

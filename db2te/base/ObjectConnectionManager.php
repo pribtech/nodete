@@ -469,7 +469,7 @@ class connectionManager{
 				$connection['description']=$description;
 				try{
 					$connection['dataServerInfo']=self::getConnectionStatus($connection);
-					error_log('test results '.$dbtype." result: ".$connection['dataServerInfo'],0);
+					error_log('test results '.$dbtype." result: ".var_export($connection['dataServerInfo'],true),0);
 					if(!$connection['dataServerInfo']) {
 						$connection['dataServerInfo'] = array();
 						$connection['connectionStatus'] = self::$lastErrorState;
