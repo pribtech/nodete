@@ -26,6 +26,7 @@ class connectionDriver{
 	private $isPHPExtension;
 	private $reqMinVersion;
 	private $requiredExtension;
+	private $messageLevel;
 	private $state;
 	public function __construct($driver) {
 		if(substr($driver, -4, -4)==".php") {
@@ -101,7 +102,7 @@ class connectionDriver{
 	public function getMessageLevel() {
 		if(!$this->available) return 'E';
 		if(!$this->message==null) return 'I';
-		return'W';
+		return $this->messageLevel;
 	}
 	public function getMessage() {
 		return $this->message;
@@ -112,10 +113,17 @@ class connectionDriver{
 	public function setError(&$message) {
 		$this->state=$message;
 		$this->avaliable=false;
+		$this->messageLevel="E";
 	}
 	public function setWarning(&$message) {
 		$this->state=$message;
 		$this->avaliable=true;
+		$this->messageLevel="W";
+	}
+	public function setInformation(&$message) {
+		$this->state=$message;
+		$this->avaliable=true;
+		$this->messageLevel="I";
 	}
 }
 
