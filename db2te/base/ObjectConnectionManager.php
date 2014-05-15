@@ -38,58 +38,60 @@ class connectionDriver{
 			$this->className = $this->classHeader.$driver;
 			$this->driver = $driver;
 		}
-		if(!is_file(PHP_INCLUDE_BASE_DIRECTORY . "DB" . $className . ".php")) {
+		if(!is_file(PHP_INCLUDE_BASE_DIRECTORY . "DB" . $this->className . ".php")) {
 			self::setError("Driver not found");
 			return;
 		}
 		try {
-			include_once(PHP_INCLUDE_BASE_DIRECTORY . "DB" . $className . ".php");
+			include_once(PHP_INCLUDE_BASE_DIRECTORY . "DB" . $this->className . ".php");
 		} catch (Exception $e){
 			self::setError('PHP module has problem loading, error: '.$e->getMessage());
 			return;
 		}
 		try{
 			if (version_compare(PHP_VERSION, '5.3.0') >= 0) {
+				$className=$this->className;
 				$this->isPHPExtension      = $className::$isPHPExtension;
 				$this->requiredExtension   = $className::$requiredDBExtension;
 				$this->reqMinVersion       = $className::$requiredDBExtensionMinVersion;
 			} else {
-				$this->isPHPExtension      = eval('return ' . $className . '::$isPHPExtension;');
-				$this->requiredExtension   = eval('return ' . $className . '::$requiredDBExtension;');
-				$this->reqMinVersion       = eval('return ' . $className . '::$requiredDBExtensionMinVersion;');
+				$this->isPHPExtension      = eval('return ' . $this->className . '::$isPHPExtension;');
+				$this->requiredExtension   = eval('return ' . $this->className . '::$requiredDBExtension;');
+				$this->reqMinVersion       = eval('return ' . $this->className . '::$requiredDBExtensionMinVersion;');
 			}
 		} catch (Exception $e){
 			self::setError('PHP module has problem with class definition, error: '.$e->getMessage());
 			return;
 		}
-		if($requiredExtension === false) {
+		if($this->requiredExtension === false) {
 			$this->available=true;
 			return;
 		}
-		if($isPHPExtension) {
-			$extension_version = phpversion($requiredExtension);
-			if($extension_version === false) {
+		if($this->isPHPExtension) {
+			$this->extension_version = phpversion($this->requiredExtension);
+			if($this->extension_version === false) {
 				foreach (get_loaded_extensions() as $i => $ext)
-				if($ext==$requiredExtension) break;
-				if($ext==$requiredExtension) {
-					self::setInformation(strtoupper($requiredExtension).' PHP module detected, version unknown');
+				if($ext==$this->requiredExtension) break;
+				if($ext==$this->requiredExtension) {
+					self::setInformation(strtoupper($this->requiredExtension).' PHP module detected, version unknown');
 					return true;
 				}
 				self::setError('PHP module was not found');
 				return;
-			} elseif($reqMinVersion != null)
-			if($extension_version < $reqMinVersion) {
-				self::setWarning('Upgrade to latest PHP module. v'.$extension_version.' is installed a minimum of v' . $reqMinVersion . ' is required');
+			} elseif($this->reqMinVersion != null)
+			if($this->extension_version < $this->reqMinVersion) {
+				self::setWarning('Upgrade to latest PHP module. v'.$this->extension_version.' is installed a minimum of v' . $this->reqMinVersion . ' is required');
 				return;
 			}
-			self::setInformation('v'.$extension_version.' PHP module detected');
+			self::setInformation('v'.$this->extension_version.' PHP module detected');
 			return;
 		}
 		if(!JAVA_BRIDGE_ACTIVE) {
 			self::setError('PHP Java Bridge not installed');
 			return ;
 		}
-		$driverLoaded = ( version_compare(PHP_VERSION, '5.3.0') >= 0 ? $className::$driverLoaded : eval('return ' . $className . '::$driverLoaded  ;'));
+		$className=$this->className;
+		$driverLoaded = ( version_compare(PHP_VERSION, '5.3.0') >= 0 ? $className::$driverLoaded : eval('return ' . $this->className . '::$driverLoaded  ;'));
 		
 		if(!isset($GLOBALS[$driverLoaded]) || ! $GLOBALS[$driverLoaded]) {
 			self::setError('The driver class library location not defined or found');

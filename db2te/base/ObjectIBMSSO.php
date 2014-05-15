@@ -62,7 +62,7 @@ class IBMSSO {
     	return "&redirect_uri=".$this->redirectBase.ACTION_PROCESSOR."?action=".$action;
 	}
     public function getSignonURL() {
-    	$return =  $this->authorize_url."?client_id=".$this->client_id."&response_type=code&scope=profile&state=".$this->state."&redirect_uri=".getRedirect("sessionIBMSSO");
+    	$return =  $this->authorize_url."?client_id=".$this->client_id."&response_type=code&scope=profile&state=".$this->state."&redirect_uri=".$this->getRedirect("sessionIBMSSO");
     }
 	public function getBearer() {
 		$this->tokenBearer=$this->getResponse(
@@ -88,7 +88,7 @@ class IBMSSO {
 		if($this->tokenBearer!=null) return $this->tokenBearer['access_token'];
 		$this->tokenBearer=$this->getResponse(
 			 $this->token_url 
-			,"client_id=".$this->client_id."&client_secret=".$this->client_secret."&grant_type=authorization_code&code=".$this->code.$this->getRedirect(sessionIBMSSOBearer)
+			,"client_id=".$this->client_id."&client_secret=".$this->client_secret."&grant_type=authorization_code&code=".$this->code.$this->getRedirect(sessionIBMSSObearer)
 			);
 /* token should have form:
    		{
