@@ -18,6 +18,105 @@
 
 include_once(PHP_INCLUDE_BASE_DIRECTORY . "JSONEncodeMenu.php");
 
+class connectionDriver{
+	private $classHeader='Connection_';
+	private $available;
+	private $className;
+	private $driver;
+	private $isPHPExtension;
+	private $reqMinVersion;
+	private $requiredExtension;
+	private $state;
+	public function __construct(&$driver) {
+		if(substr($driver, -4, -4)==".php") {
+			$this->className = substr($driver, 2, -4);
+			$this->driver = substr($this->className,  count($this->classHeader));
+		} else if(substr($this->className, count($this->classHeader))==$this->classHeader) {
+			$this->className = $driver;
+			$this->driver = substr($this->className,  count($this->classHeader));
+		} else {
+			$this->className = $this->classHeader.$driver;
+			$this->driver = $driver;
+		}
+		if(!is_file(PHP_INCLUDE_BASE_DIRECTORY . "DB" . $className . ".php")) {
+			self::setError("Driver not found");
+			return;
+		}
+		try {
+			include_once(PHP_INCLUDE_BASE_DIRECTORY . "DB" . $className . ".php");
+		} catch (Exception $e){
+			self::setError('PHP module has problem loading, error: '.$e->getMessage());
+			return;
+		}
+		try{
+			if (version_compare(PHP_VERSION, '5.3.0') >= 0) {
+				$this->isPHPExtension      = $className::$isPHPExtension;
+				$this->requiredExtension   = $className::$requiredDBExtension;
+				$this->reqMinVersion       = $className::$requiredDBExtensionMinVersion;
+			} else {
+				$this->isPHPExtension      = eval('return ' . $className . '::$isPHPExtension;');
+				$this->requiredExtension   = eval('return ' . $className . '::$requiredDBExtension;');
+				$this->reqMinVersion       = eval('return ' . $className . '::$requiredDBExtensionMinVersion;');
+			}
+		} catch (Exception $e){
+			self::setError('PHP module has problem with class definition, error: '.$e->getMessage());
+			return;
+		}
+		if($requiredExtension === false) {
+			$this->available=true;
+			return;
+		}
+		if($isPHPExtension) {
+			$extension_version = phpversion($requiredExtension);
+			if($extension_version === false) {
+				foreach (get_loaded_extensions() as $i => $ext)
+				if($ext==$requiredExtension) break;
+				if($ext==$requiredExtension) {
+					self::setInformation(strtoupper($requiredExtension).' PHP module detected, version unknown');
+					return true;
+				}
+				self::setError('PHP module was not found');
+				return;
+			} elseif($reqMinVersion != null)
+			if($extension_version < $reqMinVersion) {
+				self::setWarning('Upgrade to latest PHP module. v'.$extension_version.' is installed a minimum of v' . $reqMinVersion . ' is required');
+				return;
+			}
+			self::setInformation('v'.$extension_version.' PHP module detected');
+			return;
+		}
+		if(!JAVA_BRIDGE_ACTIVE) {
+			self::setError('PHP Java Bridge not installed');
+			return ;
+		}
+		$driverLoaded = ( version_compare(PHP_VERSION, '5.3.0') >= 0 ? $className::$driverLoaded : eval('return ' . $className . '::$driverLoaded  ;'));
+		
+		if(!isset($GLOBALS[$driverLoaded]) || ! $GLOBALS[$driverLoaded]) {
+			self::setError('The driver class library location not defined or found');
+			return;
+		}
+	}
+	public function getMessageLevel() {
+		if(!$this->available) return 'E';
+		if(!$this->message==null) return 'I';
+		return'W';
+	}
+	public function getMessage() {
+		return $this->message;
+	}
+	public function isAvailable() {
+		return $this->avaiable;
+	}
+	public function setError(&$message) {
+		$this->state=$message;
+		$this->avaliable=false;
+	}
+	public function setWarning(&$message) {
+		$this->state=$message;
+		$this->avaliable=true;
+	}
+}
+
 class connectionManager{
 
 	private static $connection = null;
@@ -134,6 +233,7 @@ class connectionManager{
 		return NOT_CONNECTION_SYMBOL_START . "&nbsp;" . DISCONNECTED . "...&nbsp;" . NOT_CONNECTION_SYMBOL_END;
 	}
 
+
 	public static function getConnectionStatus ($databaseDriver,$database=null,$username=null,$password=null,$hostname=null,$portnumber=null,$usePersistentConnection=null) {
 		if(is_array($databaseDriver)) {
 			return $connectionStatus=self::getConnectionStatus(
@@ -150,7 +250,7 @@ class connectionManager{
 		$connectionDriver = "Connection_" . $databaseDriver;
 		if(is_file(PHP_INCLUDE_BASE_DIRECTORY . "DB" . $connectionDriver . ".php")) {
 			try {
-				require_once(PHP_INCLUDE_BASE_DIRECTORY . "DB" . $connectionDriver . ".php");
+				include_once(PHP_INCLUDE_BASE_DIRECTORY . "DB" . $connectionDriver . ".php");
 				if (version_compare(PHP_VERSION, '5.3.0') >= 0)
 					$connectionStatus = $connectionDriver::testConnection(
 							$database,
@@ -170,11 +270,11 @@ class connectionManager{
 						);');
 				return $connectionStatus;
 			} catch(Exception $e) {
-				self::$lastErrorState = 'Connect error: '.$e->getMessage();
+				self::setError('Connect error: '.$e->getMessage());
 				return false;
 			}
 		} else {
-			self::$lastErrorState = 'Connect driver '. PHP_INCLUDE_BASE_DIRECTORY . "DB" . $connectionDriver . ".php not found";
+			self::setError('Connect driver '. PHP_INCLUDE_BASE_DIRECTORY . "DB" . $connectionDriver . ".php not found");
 			return false;
 		}
 	}
@@ -239,6 +339,7 @@ class connectionManager{
 		$_SESSION['Connections'][$ConnectionName]['portnumber'] = $portnumber;
 		$_SESSION['Connections'][$ConnectionName]['usePersistentConnection'] = $usePersistentConnection;
 		$_SESSION['Connections'][$ConnectionName]['comment'] =  $comment;
+		$_SESSION['Connections'][$ConnectionName]['driverAvailable'] = true;
 		$_SESSION['Connections'][$ConnectionName]['connectionStatus'] = $connectionStatus;
 		$_SESSION['Connections'][$ConnectionName]['group'] = $group;
 		$_SESSION['Connections'][$ConnectionName]['dataServerInfo'] = $dataServerInfo;
@@ -416,6 +517,26 @@ class connectionManager{
 		return null;
 	}
 
+	public static function setConnectionStatus(&$connection) {
+		$connection['dataServerInfo'] = array();
+		$driver=new ConnectionDriver($connection['databaseDriver']);
+		$connection['driverAvailable'] = $driver->isAvailable();
+		if($connection['driverAvailable']) {
+			try{
+				$connection['dataServerInfo']=self::getConnectionStatus($connection);
+			} catch(Exception $e) {
+				self::$lastErrorState = 'Connect error: '.$e->getMessage();
+			}
+			if($connection['dataServerInfo']) {
+				$connection['connectionStatus'] = self::$lastErrorState;
+				return;
+			}
+		} else
+			self::$lastErrorState=$driver>getMessage();
+		$connection['dataServerInfo'] = array();
+		$connection['connectionStatus'] = self::$lastErrorState;
+	}
+
 	public static function isVCAP_SERVICE($connection) {
 		return $connection['group'] == "VCAP_SERVICE";
 	}
@@ -429,7 +550,7 @@ class connectionManager{
 			$vcapService=$parts[0];
 			if(!array_key_exists($vcapService,self::$VCAP2DBType)) continue;
 			$dbtype=self::$VCAP2DBType[$vcapService];
-			foreach($serviceType as $index => $service) {
+			foreach($serviceType as $index => $service) {				
 				$credentials=$service["credentials"];
 				$name=( isset($service["name"])?$service["name"]:$index );
 				$connection=array();
@@ -449,35 +570,21 @@ class connectionManager{
 				$connection['schema']					= $connection['username'];
 				$connection['dataServerInfo']			= array();
 				$connection['databaseDriver']=$dbtype;
-				
 				switch ($dbtype) {
 					case 'IBM_DB2' :
 						$description = "#".$serviceName.'->'.$name."->".$connection['databaseDriver'];
 						$connection['description']=$description;
-						$connection['dataServerInfo']=self::getConnectionStatus($connection);
-						if(!$connection['dataServerInfo']) {
-							$connection['dataServerInfo'] = array();
-							$connection['connectionStatus'] = self::$lastErrorState;
-						}
+						self::setConnectionStatus($connection);
 						$_SESSION['Connections'][$description] = $connection;
 						$connection['connectionStatus'] = true;
 						$connection['databaseDriver']='JDBC_DB2';
 						break;
 					default:
 				}
+				$driver=new ConnectionDriver($dbtype);
 				$description = "#".$serviceName.'->'.$name."->".$connection['databaseDriver'];
 				$connection['description']=$description;
-				try{
-					$connection['dataServerInfo']=self::getConnectionStatus($connection);
-					error_log('test results '.$dbtype." result: ".var_export($connection['dataServerInfo'],true),0);
-					if(!$connection['dataServerInfo']) {
-						$connection['dataServerInfo'] = array();
-						$connection['connectionStatus'] = self::$lastErrorState;
-					}
-				} catch(Exception $e) {
-					$connection['dataServerInfo'] = array();
-					$connection['connectionStatus'] = 'Connect error: '.$e->getMessage();
-				}
+				self::setConnectionStatus($connection);
 				$_SESSION['Connections'][$description] = $connection;
 			}
 		}
@@ -498,6 +605,9 @@ class connectionManager{
 			$connectionList[$description]['username'] = DEFAULT_DATABASE_USERNAME;
 			$connectionList[$description]['password'] = "";
 			$connectionList[$description]['activeOnFirstLoad'] = true;
+			$driver=new ConnectionDriver($connection['databaseDriver']);
+			$connection['driverAvailable'] = $driver->isAvailable();
+			$connectionList[$description]['driverAvailable'] = true;
 			$connectionList[$description]['connectionStatus']=self::getConnectionStatus(
 					     DEFAULT_DATABASE_DRIVER
 						,DEFAULT_DATABASE

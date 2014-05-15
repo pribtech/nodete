@@ -1,5 +1,6 @@
 <?php
 require_once(JAR_BASE_DIRECTORY . "java.php");
+require_once(PHP_INCLUDE_BASE_DIRECTORY . "DBConnect.php");
 ?>
 <div class="generalHTML">
 <div id="title">Welcome to the Technology Explorer for IBM DB2 <?php echo TE_VERSION ?></div>
@@ -15,8 +16,8 @@ require_once(JAR_BASE_DIRECTORY . "java.php");
 <table border="0" cellspacing="0" cellpadding="5">
   <tr>
 	<td class="tableText">
-The Technology Explorer (TE) is a light weight, web based console for DB2 for Linux, UNIX and Windows. 
-The Technology Explorer strives to be a teaching tool for all users of DB2. 
+Technology Explorer (TE) is a light weight, web based console for DB2 for Linux, UNIX and Windows. 
+Technology Explorer strives to be a teaching tool for all users of DB2. 
 Whether you're just starting to use DB2, or have been for years,
 there are tutorials for you around many aspects of DB2.
 Part of what makes the TE such a great teaching tool is that it doesn't just explain to you how a system should act,
@@ -58,82 +59,22 @@ Some of the key features of the Technology Explorer are:
 Java Bridge <?php if(JAVA_BRIDGE_ACTIVE) $v=java_get_version_info(); echo (JAVA_BRIDGE_ACTIVE?'Installed version '.$v["version"]:'<font style="background-color:RED;">Not Installed  - Dependant features not available</font>')?>
 <p>
 PHP database driver check:
-<table><tr>
+<table>
 <?php
-if(DEBUG_LOG_2_CONSOLE)	error_log("Loading connection drivers started in Welcome",0);
+$messageColor=array('I'=>'limegreen','W'=>'YELLOW','E'=>'YELLOW');
 try {
 	$fileInDir = scandir(PHP_INCLUDE_BASE_DIRECTORY, 0);
 	sort($fileInDir);
 	foreach($fileInDir as $currentFile) {
-		// Look for XML files that start with 'menu_' and end with '.xml' while ignoring case
 		if(preg_match('/^DBConnection_.*\.php$/i', $currentFile )) {
-			if(DEBUG_LOG_2_CONSOLE)	error_log("Loading connection driver ".$currentFile,0);
-			try {
-				include_once(PHP_INCLUDE_BASE_DIRECTORY . $currentFile);
-				if(DEBUG_LOG_2_CONSOLE)	error_log("Loaded connection driver ".$currentFile,0);
-			} catch (Exception $e){
-				if(DEBUG_LOG_2_CONSOLE) error_log("error ".$e->getMessage(),0);
-				echo '</tr><tr><td>'.$currentFile.'</td><td style="background-color:RED;">PHP module has problem loading, error: '.$e->getMessage().'</td>';
-				continue;
-			}
 			$className = substr($currentFile, 2, -4);
-			if($className === false) continue;
-			try{
-				if (version_compare(PHP_VERSION, '5.3.0') >= 0) {
-					$isPHPExtension      = $className::$isPHPExtension;
-					$requiredExtension   = $className::$requiredDBExtension;
-					$reqMinVersion       = $className::$requiredDBExtensionMinVersion;
-				} else {
-					$isPHPExtension      = eval('return ' . $className . '::$isPHPExtension;');
-					$requiredExtension   = eval('return ' . $className . '::$requiredDBExtension;');
-					$reqMinVersion       = eval('return ' . $className . '::$requiredDBExtensionMinVersion;');
-				}
-			} catch (Exception $e){
-				if(DEBUG_LOG_2_CONSOLE) error_log("error ".$e->getMessage(),0);
-				echo '</tr><tr><td>'.$currentFile.'</td><td style="background-color:RED;">PHP module has problem with class definition, error: '.$e->getMessage().'</td>';
-				continue;
-			}
-			if($requiredExtension === false) continue;
-			echo '</tr><tr><td>'.strtoupper($requiredExtension).'</td>';		
-			if($isPHPExtension) {
-				$extension_version = phpversion($requiredExtension);
-				if($extension_version === false) {
-					foreach (get_loaded_extensions() as $i => $ext)
-						if($ext==$requiredExtension) break;
-					if($ext==$requiredExtension) {
-						echo '<td style="background-color:limegreen;">'.strtoupper($requiredExtension).' PHP module detected, version unknown</td>';
-						continue;
-					}
-					echo '<td style="background-color:RED;">PHP module was not found.</td>';
-					continue;	
-				} elseif($reqMinVersion != null) 
-					if($extension_version < $reqMinVersion) {
-						echo '<td style="background-color:YELLOW;">Upgrade to latest PHP module. v' . $extension_version . ' is installed a minimum of v' . $reqMinVersion . ' is required.</td>';
-						continue;	
-					}
-				echo '<td style="background-color:limegreen;"> v' . $extension_version . ' PHP module detected</td>';
-				continue;
-			}
-			if(!JAVA_BRIDGE_ACTIVE) {
-				echo '<td style="background-color:RED;">PHP Java Bridge not installed"</td>';
-				continue;;
-			} 
-			if (version_compare(PHP_VERSION, '5.3.0') >= 0)
-				$driverLoaded = $className::$driverLoaded;
-			else
-				$driverLoaded = eval('return ' . $className . '::$driverLoaded  ;');
-				
-			if(!isset($GLOBALS[$driverLoaded]) || ! $GLOBALS[$driverLoaded]) {
-				echo '<td style="background-color:RED;">The driver class library location not defined or found.</td>';
-				continue;;
-			} 
-			echo '<td style="background-color:limegreen;"> extension using java bridge module detected</td>';		
+			$driver=new ConnectionDriver($currentFile);
+			echo '<tr><td>'.$currentFile.'</td><td style="background-color:'.$messageColour[$driver->getMessageLevel()].';">'.$driver->getMessage().'</td></tr>';
 		}
 	}
 } catch (Exception $e){
 	error_log('Error loading DBConnections, exception: '.$e->getMessage(),0);
 }
-if(DEBUG_LOG_2_CONSOLE)	error_log("Loading connection drivers finished ",0);
 ?>
 <tr><table>
 </div>

@@ -559,6 +559,17 @@ CORE_CLIENT_ACTIONS.set("connectionManager",Class.create(basePageElement, {
 		}
 	},
 	
+	getConnectionStatusImage: function (connection) {
+		if(connection['driverAvailable']!=null)
+			if(!connection['driverAvailable'])
+				return "<img alt='N' title='Driver Broken' src='images/icon-lock-broken.gif' id='" + this.elementName + "_" + i + "_PageInformationButton' onMouseUp=\"stopPropagation(event);\" onMouseDown='show_GENERAL_BLANK_POPUP(null, decodeURIComponent(\"<div style=\\\"padding:10px;width:350px\\\">" + escape(connection['connectionStatus']) + "</div>\"));'/>"
+		if(!connection['authenticated'])
+			return "<img alt='N' title='Not authenticated' src='images/close_s.gif'/>";
+		if(connection['connectionStatus'])
+			return "<img alt='Y' title='Authenticated' src='images/unlock_h.gif'/>";
+		return "<img alt='?' title='Connection error' src='images/alert.gif' id='" + this.elementName + "_" + i + "_PageInformationButton' onMouseUp=\"stopPropagation(event);\" onMouseDown='show_GENERAL_BLANK_POPUP(null, decodeURIComponent(\"<div style=\\\"padding:10px;width:350px\\\">" + escape(connection['connectionStatus']) + "</div>\"));'/>";
+	},
+	
 	updateData: function () {
 		var connObject = null;
 		var dataArray = CONNECTION_MANAGER_CONNECTION_LIST;
@@ -595,11 +606,7 @@ CORE_CLIENT_ACTIONS.set("connectionManager",Class.create(basePageElement, {
 								+ ( IS_TOUCH_SYSTEM ? " ontouchstart": " onclick")
 								+ "='" + this.callBackText + ".selectRow(" + i + ")' style='background-color:white;cursor: pointer;padding-left:5px;'";
 					
-					connectionStatus = (dataArray[i]['authenticated'] ?
-										(dataArray[i]['connectionStatus'] ? 
-											 "<img alt='Y' title='Authenticated' src='images/unlock_h.gif'/>"
-											:"<img alt='?' title='Connection error' src='images/alert.gif' id='" + this.elementName + "_" + i + "_PageInformationButton' onMouseUp=\"stopPropagation(event);\" onMouseDown='show_GENERAL_BLANK_POPUP(null, decodeURIComponent(\"<div style=\\\"padding:10px;width:350px\\\">" + escape(dataArray[i]['connectionStatus']) + "</div>\"));'/>")
-										:"<img alt='N' title='Not authenticated' src='images/close_s.gif'/>");
+					connectionStatus = this.getConnectionStatusImage(dataArray[i]);
 
 					activeConnection = ACTIVE_DATABASE_CONNECTION == dataArray[i]['description'] ? "<img alt='&#187;' title='Connected' src='images/fw_bold.gif'/>" : "";
 					dataTable.insert({bottom: "<tr id='" + this.elementName + "_ActiveCONNECTION_MANAGER_CONNECTION_LIST_" + i + "'" + (IS_TOUCH_SYSTEM ? " style='font-size:15px;padding:5px;border-bottom:1px;border-color:#888;' " : "") + ">" 
