@@ -27,11 +27,11 @@ class connectionDriver{
 	private $reqMinVersion;
 	private $requiredExtension;
 	private $state;
-	public function __construct(&$driver) {
+	public function __construct($driver) {
 		if(substr($driver, -4, -4)==".php") {
 			$this->className = substr($driver, 2, -4);
 			$this->driver = substr($this->className,  count($this->classHeader));
-		} else if(substr($this->className, count($this->classHeader))==$this->classHeader) {
+		} else if(substr($driver, count($this->classHeader))==$this->classHeader) {
 			$this->className = $driver;
 			$this->driver = substr($this->className,  count($this->classHeader));
 		} else {

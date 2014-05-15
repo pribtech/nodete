@@ -43,21 +43,26 @@ class IBMSSO {
 	private $client_id = 'sOdxIgNm8cuseKoj3HFM';
 	private $client_secret = '8y5eyMup8h0AmDeqppOI';
 	private $tokenBearer;
+	private $redirectBase;
 	
 	public function __construct() {
 		$this->state=session_id();
  		$this->setServices();
 		$this->setClientSettings();
+		if(isset($_SERVER["HTTP_REFERER"]))
+			$this->redirectBase=$_SERVER["HTTP_REFERER"];
+		else
+			$this->redirectBase=$_SERVER["HTTP_HOST"]."/".$_SERVER['PHP_SELF'];
+		
  		saveIBMSSO($this);
  	}
 	function __destruct() {
     }
+    public function getRedirect($action) {
+    	return "&redirect_uri=".$this->redirectBase.ACTION_PROCESSOR."?action=".$action;
+	}
     public function getSignonURL() {
-    	if(isset($_SERVER["HTTP_REFERER"]))
-    		$redirectURI=$_SERVER["HTTP_REFERER"];
-    	else
-    		$redirectURI= $_SERVER["HTTP_HOST"]."/".$_SERVER['PHP_SELF'];
-    	return $this->authorize_url."?client_id=".$this->client_id."&response_type=code&scope=profile&state=".$this->state."&redirect_uri=".$redirectURI.ACTION_PROCESSOR."?action=sessionIBMSSO";
+    	$return =  $this->authorize_url."?client_id=".$this->client_id."&response_type=code&scope=profile&state=".$this->state."&redirect_uri=".getRedirect("sessionIBMSSO");
     }
 	public function getBearer() {
 		$this->tokenBearer=$this->getResponse(
@@ -83,7 +88,7 @@ class IBMSSO {
 		if($this->tokenBearer!=null) return $this->tokenBearer['access_token'];
 		$this->tokenBearer=$this->getResponse(
 			 $this->token_url 
-			,"client_id=".$this->client_id."&client_secret=".$this->client_secret."&grant_type=authorization_code&code=".$this->code
+			,"client_id=".$this->client_id."&client_secret=".$this->client_secret."&grant_type=authorization_code&code=".$this->code.$this->getRedirect(sessionIBMSSOBearer)
 			);
 /* token should have form:
    		{

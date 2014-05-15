@@ -1,6 +1,6 @@
 <?php
-require_once(JAR_BASE_DIRECTORY . "java.php");
-require_once(PHP_INCLUDE_BASE_DIRECTORY . "DBConnect.php");
+include_once(JAR_BASE_DIRECTORY . "java.php");
+include_once(PHP_INCLUDE_BASE_DIRECTORY . "DBConnection.php");
 ?>
 <div class="generalHTML">
 <div id="title">Welcome to the Technology Explorer for IBM DB2 <?php echo TE_VERSION ?></div>
