@@ -541,7 +541,7 @@ class connectionManager{
 				return;
 			}
 		} else
-			self::$lastErrorState=$driver>getMessage();
+			self::$lastErrorState=$driver->getMessage();
 		$connection['dataServerInfo'] = array();
 		$connection['connectionStatus'] = self::$lastErrorState;
 	}

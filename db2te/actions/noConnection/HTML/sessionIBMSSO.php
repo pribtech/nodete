@@ -20,7 +20,34 @@ include_once(PHP_INCLUDE_BASE_DIRECTORY . "ObjectIBMSSO.php");
 try{
 	$ibmsso=getIBMSSO();
 	$ibmsso->setCode();
-	echo "<div id='title'>IBM SSO Check - Success</div>";
+	echo "<div id='title'>IBM SSO Check successfull, now get details</div>";
+	$bearer=$ibmsso->getBearer();
+	echo <<<ENDSCRIPT
+<script type="text/javascript">
+loadNewPageLayout(
+		{target			: 'signon'
+		,windowStage	: "DefaultStage"
+		,raiseToTop		: "y"
+		,title			: 'IBM SSO Success - Get Details'
+		,content	 :
+			{type				: "panel"
+			,name				: "main"
+			,PrimaryContainer	: true
+			,ContentType		: "LINK"
+			,data:
+				{type:"ACTION"
+				,data:
+					{parameters:
+						{action: "displayJSON"
+						,\$source: $bearer
+						}
+					}
+				}
+			}
+		});
+</script>
+ENDSCRIPT;
+	
 } catch (Exception $e){
 	echo "<div id='title'>IBM SSO Check -".$e->getmessage()."</div>";
 	error_log($e->getmessage()."");
