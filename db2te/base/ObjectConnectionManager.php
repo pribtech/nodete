@@ -279,11 +279,11 @@ class connectionManager{
 						);');
 				return $connectionStatus;
 			} catch(Exception $e) {
-				self::setError('Connect error: '.$e->getMessage());
+				self::$lastErrorState = 'Connect error: '.$e->getMessage();
 				return false;
 			}
 		} else {
-			self::setError('Connect driver '. PHP_INCLUDE_BASE_DIRECTORY . "DB" . $connectionDriver . ".php not found");
+			self::$lastErrorState = 'Connect driver '. PHP_INCLUDE_BASE_DIRECTORY . "DB" . $connectionDriver . ".php not found";
 			return false;
 		}
 	}
