@@ -449,7 +449,6 @@ CORE_CLIENT_ACTIONS.set("connectionManager",Class.create(basePageElement, {
 						 this.refreshFeatures();
 						 break;
 				}
-			
 			this.connectionWatcher();
 			ALL_GLOBAL_OBJECT('reloadIfRequired',null,'panel');
 			allContextWindows.each(function(contextBase) {contextBase.value.reloadOnConnectIfRequired();});

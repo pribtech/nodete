@@ -19,22 +19,22 @@
 include_once(PHP_INCLUDE_BASE_DIRECTORY . "JSONEncodeMenu.php");
 
 class connectionDriver{
-	private $classHeader='Connection_';
+	private $classHeader='DBConnection_';
 	private $available;
 	private $className;
 	private $driver;
 	private $isPHPExtension;
 	private $reqMinVersion;
 	private $requiredExtension;
-	private $messageLevel;
+	private $messageLevel="I";
 	private $state;
 	public function __construct($driver) {
-		if(substr($driver, -4, -4)==".php") {
+		if(substr($driver, -4, 4)==".php") {
 			$this->className = substr($driver, 2, -4);
-			$this->driver = substr($this->className,  count($this->classHeader));
-		} else if(substr($driver, count($this->classHeader))==$this->classHeader) {
+			$this->driver = substr($this->className,  strlen($this->classHeader)-2);
+		} else if(substr($driver, strlen($this->classHeader))==$this->classHeader) {
 			$this->className = $driver;
-			$this->driver = substr($this->className,  count($this->classHeader));
+			$this->driver = substr($this->className,  strlen($this->classHeader));
 		} else {
 			$this->className = $this->classHeader.$driver;
 			$this->driver = $driver;
@@ -98,6 +98,10 @@ class connectionDriver{
 			self::setError('The driver class library location not defined or found');
 			return;
 		}
+		self::setInformation('Java Driver Loaded');
+	}
+	public function getDriver() {
+		return $this->driver;
 	}
 	public function getMessageLevel() {
 		if(!$this->available) return 'E';
@@ -171,7 +175,6 @@ class connectionManager{
 	public static function isConnected($ConnectionName = null) {
 		if($ConnectionName == null) $ConnectionName = USE_DATABASE_CONNECTION;
 		$isconnected = false;
-		$sessionStarted = false;
 		TE_session_start();
 		if(array_key_exists('Connections', $_SESSION)) {
 			if(FORCE_CONNECTION_WITH_DEFAULT) {
@@ -321,12 +324,11 @@ class connectionManager{
 			} else	
 				self::setGroup($group,$username,$password);
 		}
+		
 		$connectionStatus=self::getConnectionStatus($databaseDriver,$database,$username,$password,$hostname,$portnumber,$usePersistentConnection);
 		if(!$connectionStatus)
 			return false;
-
 		$dataServerInfo = null;
-
 		if(is_array($connectionStatus) || is_object($connectionStatus)) {
 			$dataServerInfo = $connectionStatus;
 			$connectionStatus = true;
@@ -334,32 +336,34 @@ class connectionManager{
 			self::$lastErrorState = $connectionStatus;
 			return false;
 		}
+	
+		$connectionName = $databaseDriver.":".$username . "@" . $database . ($hostname != "" ? "." . $hostname . ":" . $portnumber : "");
 
-		$ConnectionName = $databaseDriver.":".$username . "@" . $database . ($hostname != "" ? "." . $hostname . ":" . $portnumber : "");
-
+		$connection=array(
+			 'description' 		=> $connectionName
+			,'databaseDriver' 	=> $databaseDriver
+			,'database' 		=> $database
+			,'schema'			=> getParameter('TE_DATABASE_LOGIN_SCHEMA', "")
+			,'username'			=> $username
+			,'password'			=> $password
+			,'hostname'			=> $hostname
+			,'portnumber'		=> $portnumber
+			,'usePersistentConnection'	=> $usePersistentConnection
+			,'comment'			=> $comment
+			,'driverAvailable'	=> true
+			,'connectionStatus'	=> $connectionStatus
+			,'group'			=> $group
+			,'dataServerInfo'	=> $dataServerInfo
+			,'authenticated'	=> true
+			);
+		
 		TE_session_start();
-		$_SESSION['Connections'][$ConnectionName]['description'] = $ConnectionName;
-		$_SESSION['Connections'][$ConnectionName]['databaseDriver'] = $databaseDriver;
-		$_SESSION['Connections'][$ConnectionName]['database'] = $database;
-		$_SESSION['Connections'][$ConnectionName]['schema'] = getParameter('TE_DATABASE_LOGIN_SCHEMA', "");
-		$_SESSION['Connections'][$ConnectionName]['username'] = $username;
-		$_SESSION['Connections'][$ConnectionName]['password'] = $password;
-		$_SESSION['Connections'][$ConnectionName]['hostname'] = $hostname;
-		$_SESSION['Connections'][$ConnectionName]['portnumber'] = $portnumber;
-		$_SESSION['Connections'][$ConnectionName]['usePersistentConnection'] = $usePersistentConnection;
-		$_SESSION['Connections'][$ConnectionName]['comment'] =  $comment;
-		$_SESSION['Connections'][$ConnectionName]['driverAvailable'] = true;
-		$_SESSION['Connections'][$ConnectionName]['connectionStatus'] = $connectionStatus;
-		$_SESSION['Connections'][$ConnectionName]['group'] = $group;
-		$_SESSION['Connections'][$ConnectionName]['dataServerInfo'] = $dataServerInfo;
-		$_SESSION['Connections'][$ConnectionName]['authenticated'] = true;
-		$returnObject = $_SESSION['Connections'][$ConnectionName];
+		$_SESSION['Connections'][$connectionName]=$connection;
 		TE_session_write_close();
 
 		self::saveConnectionInStoredConnections($databaseDriver, $database, $username, $hostname, $portnumber, $comment, $group);
-		self::getConnection($ConnectionName);
-		unset($returnObject['password']);
-		return $returnObject;
+		unset($connection['password']);
+		return $connection;
 	}
 
 	public static function UpdateConnectionStatusesAllConnection() {
@@ -707,10 +711,8 @@ class connectionManager{
 				error_log('Session connection "'.$connectionKey.'" has no description',0);
 				continue;
 			}
-			if(array_key_exists($connectionInformation['description'],$connectionList)) {
-				error_log('Session connection "'.$connectionKey.'" defined using defined version',0);
+			if(array_key_exists($connectionInformation['description'],$connectionList))
 				continue;
-			}
 			
 			$connect = $connectionInformation;
 			$connect['time'] = time();

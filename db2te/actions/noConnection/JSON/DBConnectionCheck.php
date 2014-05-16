@@ -20,7 +20,7 @@
 include_once(PHP_INCLUDE_BASE_DIRECTORY . "UtilGeneric.php");
 
 try {
-	connectionManager::UpdateConnectionStatusesAllConnection();
+//	connectionManager::UpdateConnectionStatusesAllConnection();
 	$returnInformation = array();
 	$returnInformation['connectionStatus'] = connectionManager::isConnected() ? "true" : "false";
 	$returnInformation['connectionText'] = connectionManager::titleString();

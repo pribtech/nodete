@@ -61,15 +61,14 @@ Java Bridge <?php if(JAVA_BRIDGE_ACTIVE) $v=java_get_version_info(); echo (JAVA_
 PHP database driver check:
 <table>
 <?php
-$messageColor=array('I'=>'limegreen','W'=>'YELLOW','E'=>'YELLOW');
+$messageColor=array('I'=>'limegreen','W'=>'YELLOW','E'=>'RED');
 try {
 	$fileInDir = scandir(PHP_INCLUDE_BASE_DIRECTORY, 0);
 	sort($fileInDir);
 	foreach($fileInDir as $currentFile) {
 		if(preg_match('/^DBConnection_.*\.php$/i', $currentFile )) {
-			$className = substr($currentFile, 2, -4);
 			$driver=new ConnectionDriver($currentFile);
-			echo '<tr><td>'.$currentFile.'</td><td style="background-color:'.$messageColor[$driver->getMessageLevel()].';">'.$driver->getMessage().'</td></tr>';
+			echo '<tr><td>'.$driver->getDriver().'</td><td style="background-color:'.$messageColor[$driver->getMessageLevel()].';">'.$driver->getMessage().'</td></tr>';
 		}
 	}
 } catch (Exception $e){
