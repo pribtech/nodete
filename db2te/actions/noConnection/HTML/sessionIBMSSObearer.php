@@ -19,6 +19,7 @@
 include_once(PHP_INCLUDE_BASE_DIRECTORY . "ObjectIBMSSO.php");
 try{
 	$ibmsso=getIBMSSO();
+	$bearer=$ibmsso->getBearer();
 	echo "<div id='title'>IBM SSO Check - Bearer Details</div>";
 	echo <<<ENDSCRIPT
 <script type="text/javascript">

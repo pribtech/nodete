@@ -101,28 +101,28 @@ class connectionDriver{
 	}
 	public function getMessageLevel() {
 		if(!$this->available) return 'E';
-		if(!$this->message==null) return 'I';
+		if(!$this->state==null) return 'I';
 		return $this->messageLevel;
 	}
 	public function getMessage() {
-		return $this->message;
+		return $this->state;
 	}
 	public function isAvailable() {
-		return $this->avaiable;
+		return $this->available;
 	}
 	public function setError($message) {
 		$this->state=$message;
-		$this->avaliable=false;
+		$this->available=false;
 		$this->messageLevel="E";
 	}
 	public function setWarning($message) {
 		$this->state=$message;
-		$this->avaliable=true;
+		$this->available=true;
 		$this->messageLevel="W";
 	}
 	public function setInformation($message) {
 		$this->state=$message;
-		$this->avaliable=true;
+		$this->available=true;
 		$this->messageLevel="I";
 	}
 }

@@ -69,7 +69,7 @@ try {
 		if(preg_match('/^DBConnection_.*\.php$/i', $currentFile )) {
 			$className = substr($currentFile, 2, -4);
 			$driver=new ConnectionDriver($currentFile);
-			echo '<tr><td>'.$currentFile.'</td><td style="background-color:'.$messageColour[$driver->getMessageLevel()].';">'.$driver->getMessage().'</td></tr>';
+			echo '<tr><td>'.$currentFile.'</td><td style="background-color:'.$messageColor[$driver->getMessageLevel()].';">'.$driver->getMessage().'</td></tr>';
 		}
 	}
 } catch (Exception $e){
