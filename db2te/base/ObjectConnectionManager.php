@@ -110,17 +110,17 @@ class connectionDriver{
 	public function isAvailable() {
 		return $this->avaiable;
 	}
-	public function setError(&$message) {
+	public function setError($message) {
 		$this->state=$message;
 		$this->avaliable=false;
 		$this->messageLevel="E";
 	}
-	public function setWarning(&$message) {
+	public function setWarning($message) {
 		$this->state=$message;
 		$this->avaliable=true;
 		$this->messageLevel="W";
 	}
-	public function setInformation(&$message) {
+	public function setInformation($message) {
 		$this->state=$message;
 		$this->avaliable=true;
 		$this->messageLevel="I";
@@ -128,7 +128,6 @@ class connectionDriver{
 }
 
 class connectionManager{
-
 	private static $connection = null;
 	private static $connectionName = null;
 	public static $lastErrorState = "";

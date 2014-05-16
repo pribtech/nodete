@@ -88,7 +88,7 @@ class IBMSSO {
 		if($this->tokenBearer!=null) return $this->tokenBearer['access_token'];
 		$this->tokenBearer=$this->getResponse(
 			 $this->token_url 
-			,"client_id=".$this->client_id."&client_secret=".$this->client_secret."&grant_type=authorization_code&code=".$this->code.$this->getRedirect(sessionIBMSSObearer)
+			,"client_id=".$this->client_id."&client_secret=".$this->client_secret."&grant_type=authorization_code&code=".$this->code.$this->getRedirect(sessionIBMSSObearerToken)
 			);
 /* token should have form:
    		{
@@ -99,6 +99,7 @@ class IBMSSO {
 		"refresh_token":"xxxxx"
 		}
  */
+		error_log("trace getBearerToken ".$this->tokenBearer['access_token']);
 		return $this->tokenBearer['access_token'];
 	}
     function getClientSettings(&$valueArray,$key) {
