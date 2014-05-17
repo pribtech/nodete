@@ -544,7 +544,7 @@ class connectionManager{
 				self::$lastErrorState = 'Connect error: '.$e->getMessage();
 			}
 			if($connection['dataServerInfo']) {
-				$connection['connectionStatus'] = self::$lastErrorState;
+				$connection['connectionStatus'] = (self::$lastErrorState==null?true:self::$lastErrorState);
 				return;
 			}
 		} else
