@@ -296,6 +296,7 @@ CORE_CLIENT_ACTIONS.set("connectionManager",Class.create(basePageElement, {
 		
 		getPanel(this.parentStageID, this.parentWindowID, this.parentPanelID ).registerNestedObject(this.elementUniqueID, this);
 		
+		this.updateActiveDatabaseConnectionCount=0;
 		this.actions = [];
 		this.addAction(false,"newConnection"	,"createNewConnection()"	,"New");
 		this.addAction(true	,"setDefault"		,"makeDefaultConnection()"	,"Connect");
@@ -462,7 +463,8 @@ CORE_CLIENT_ACTIONS.set("connectionManager",Class.create(basePageElement, {
 		this.actionCallbackCloseFloat=false;
 	},
 	
-	updateActiveDatabaseConnection: function(connectionObjectIsNew) {			
+	updateActiveDatabaseConnection: function(connectionObjectIsNew) {
+		if(++this.updateActiveDatabaseConnectionCount>1) return;
 		connectionObjectIsNew = connectionObjectIsNew == null ? false : connectionObjectIsNew;			
 		this.selectRow(null);
 
@@ -499,6 +501,10 @@ CORE_CLIENT_ACTIONS.set("connectionManager",Class.create(basePageElement, {
 		}
 			
 		GET_GLOBAL_OBJECT_CLASS("connectionManager").each(function(connectionObject) { connectionObject.value.updateData(); });
+
+		if(--this.updateActiveDatabaseConnectionCount <= 0) return;
+		this.updateActiveDatabaseConnectionCount=0;
+		this.updateActiveDatabaseConnection();
 	},
 	
 	connectionWatcher: function() {
@@ -508,6 +514,7 @@ CORE_CLIENT_ACTIONS.set("connectionManager",Class.create(basePageElement, {
 		if (CONNECTION_MANAGER_TIMER != null)
 			clearTimeout(CONNECTION_MANAGER_TIMER);
 		var connectionWatcherParameters = this.connectionWatcherParameters;
+		connectionWatcherParameters['USE_CONNECTION']=ACTIVE_DATABASE_CONNECTION;
 		var thisObject = this;
 		new Ajax.Request(CONNECTION_VERIFIER, {
 			'parameters': connectionWatcherParameters,
@@ -543,6 +550,49 @@ CORE_CLIENT_ACTIONS.set("connectionManager",Class.create(basePageElement, {
 				ALL_GLOBAL_OBJECT('nodeFilter',null,'CONTEXTBASE');
 				CONNECTION_MANAGER_CURRENTLY_UPDATING = false;
 				CONNECTION_MANAGER_TIMER = setTimeout("GET_GLOBAL_OBJECT_CLASS('connectionManager').values()[0].connectionWatcher();", SESSION_TIMEOUT_IN_MIN*60000);
+			}
+		});
+	},
+	updateConnectionStatus: function(connection,activeOnFirstLoad) {
+		if(CONNECTION_MANAGER_CURRENTLY_UPDATING)
+			return;
+		var thisObject = this;
+		new Ajax.Request(ACTION_PROCESSOR, {
+			'parameters': {
+				action:				DBConnectCheckConnection,
+				'USE_CONNECTION':	ACTIVE_DATABASE_CONNECTION,
+				returntype :	 	"JSON"
+				},
+			onSuccess: function(transport) {
+				var result = transport.responseJSON;
+				if(result == null)
+					return;
+				for(var i = 0; i < CONNECTION_MANAGER_CONNECTION_LIST.length; i++) {
+					CONNECTION_MANAGER_CONNECTION_LIST[i]['description']=result.connection
+					if(CONNECTION_MANAGER_CONNECTION_LIST[i]['description']==connection) {
+						if(activeOnFirstLoad) {
+							ACTIVE_DATABASE_CONNECTION = CONNECTION_MANAGER_CONNECTION_LIST[i]['description'];
+							setActiveDatabaseConnection(CONNECTION_MANAGER_CONNECTION_LIST[i]);
+							CORE_ReloadOnConnectionChange.each(function(panelItem) {
+									if(callingPanelID != panelItem.value.elementUniqueID)
+										panelItem.value.reloadPage();
+								});
+								
+							thisObject.updateActiveDatabaseConnection();
+							ALL_GLOBAL_OBJECT('reloadIfRequired',null,'panel');
+							return;
+						}
+						thisObject.updateActiveDatabaseConnection();
+						return;
+					}
+				}
+			},
+			onFailure: function(transport,error) {
+				transport.responseText 
+				openModalAlert("connectionManager.updateConnectionStatus: "+connection+" transport error - " + (error==null?decodeURI(transport.responseText) : error));
+			},
+			onComplete: function(transport) {
+				ALL_GLOBAL_OBJECT('nodeFilter',null,'CONTEXTBASE');
 			}
 		});
 	},

@@ -75,6 +75,6 @@
 @define("HADOOP_JARS", null);
 setDefine("DEVELOPMENT_MODE", true);
 //setDefineDirectory("JAVA_DB_DRIVER_JSON_NOSQL_DB2", "C:\\Program Files\\IBM\\SQLLIB_E105\\json\\lib");
-@define("TRACE_ACTION_CALLS", true);
+//@define("TRACE_ACTION_CALLS", true);
 
 

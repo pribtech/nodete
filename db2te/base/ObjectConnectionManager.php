@@ -174,6 +174,7 @@ class connectionManager{
 	
 	public static function isConnected($ConnectionName = null) {
 		if($ConnectionName == null) $ConnectionName = USE_DATABASE_CONNECTION;
+		if($ConnectionName == null) return false;
 		$isconnected = false;
 		TE_session_start();
 		if(array_key_exists('Connections', $_SESSION)) {
@@ -604,7 +605,7 @@ class connectionManager{
 		TE_session_write_close();
 	}
 
-	public static function retrieveStoredConnections()	{
+	public static function retrieveStoredConnections() {
 		$connectionList = array();
 
 		if(FORCE_CONNECTION_WITH_DEFAULT) {
@@ -661,10 +662,18 @@ class connectionManager{
 				}
 				foreach($connectionArray as $connection) {
 					$preformAutoConnect = true;
-					if(isset($_SESSION['Connections'][$connection['description']]))
-						if(isset($_SESSION['Connections'][$connection['description']]['connectionStatus']))
-							if($_SESSION['Connections'][$connection['description']]['connectionStatus'] == true)
+					$ConnectionName = $connection['description'];
+					if($ConnectionName==null || $ConnectionName="") continue;
+					TE_session_start();
+					if(isset($_SESSION['Connections'][$ConnectionName]))
+						if(isset($_SESSION['Connections'][$ConnectionName]['connectionStatus']))
+							if($_SESSION['Connections'][$ConnectionName]['connectionStatus'] == true) {
+								$connection['connectionStatus']=$_SESSION['Connections'][$ConnectionName]['connectionStatus'];
+								$connection['dataServerInfo']=$_SESSION['Connections'][$ConnectionName]['dataServerInfo'];
+								$connection['authenticated']=$_SESSION['Connections'][$ConnectionName]['authenticated'];
 								$preformAutoConnect = false;
+							}
+					TE_session_write_close();
 					if($connection['autoConnect'] == true && $preformAutoConnect) {
 						$connectionStatus=self::getConnectionStatus($connection);
 						$dataServerInfo = null;
@@ -674,7 +683,6 @@ class connectionManager{
 						}
 						if($connectionStatus === true )	{
 							TE_session_start();
-							$ConnectionName = $connection['description'];
 							$_SESSION['Connections'][$ConnectionName] = $connection;
 							$_SESSION['Connections'][$ConnectionName]['connectionStatus'] = true;
 							$_SESSION['Connections'][$ConnectionName]['dataServerInfo'] = $dataServerInfo;
@@ -711,20 +719,20 @@ class connectionManager{
 				error_log('Session connection "'.$connectionKey.'" has no description',0);
 				continue;
 			}
-			if(array_key_exists($connectionInformation['description'],$connectionList))
+			if(array_key_exists($connectionInformation['description'],$connectionList)) {
+				$connectionList[$connectionKey]['authenticated']=$connectionInformation['authenticated'];
+				$connectionList[$connectionKey]['dataServerInfo']=$connectionInformation['dataServerInfo'];
+				$connectionList[$connectionKey]['connectionStatus']=$connectionInformation['connectionStatus'];
+				$connectionList[$connectionKey]['trustedContext']=$connectionInformation['trustedContext'];
+				$connectionList[$connectionKey]['time'] = time();
+				$connectionList[$connectionKey]['password'] = "";
+				if(strtolower(USE_DATABASE_CONNECTION) == strtolower($connectionKey))
+					$connectionList[$connectionKey]['activeConnection'] = true;
 				continue;
-			
+			}
 			$connect = $connectionInformation;
 			$connect['time'] = time();
 			$connect['password'] = "";
-			if(array_key_exists('trustedContext', $connectionInformation)) {
-				if(is_array($_SESSION['Connections'][$connectionInformation['description']]['trustedContext']))	{
-					if(is_array($connectionInformation['trustedContext']))
-						$connection['dataServerInfo'] = $connectionInformation['dataServerInfo'];
-				} else
-					$connection['trustedContext'] =  $connectionInformation['trustedContext'];
-			}
-			$connection['authenticated'] = true;
 			if(strtolower(USE_DATABASE_CONNECTION) == strtolower($connectionKey))
 				$connect['activeConnection'] = true;
 			$connectionList[$connectionKey]=$connect;
@@ -736,34 +744,27 @@ class connectionManager{
 	private static function extractConnectionFromNode($ConnectionNode, $orderBy = 'time', $connectionType) {
 		$connectionList = array();
 		if(!$ConnectionNode->hasChildNodes()) return $connectionList;
-
 		foreach($ConnectionNode->childNodes as $node) {
- 			switch ($node->nodeName) {
- 				case "connection" :
-					$connectionArray = self::extractConnectionFromNode($node, 'name', "temp");
-					continue;
-				default:
-					break;
-			}
- 			$connection = array();
- 			$connection['connectionTag'] 	= null;
-			$connection['connectionType'] 	= $connectionType;
- 			$connection['connectionStatus'] = false;
- 			$connection['authenticated'] 	= false;
- 			$connection['description'] 		= $node->getAttribute('description');
- 			$connection['time'] 			= $node->getAttribute('time');
- 			$connection['comment'] 			= $node->getChildTextContent('comment');
- 			$connection['databaseDriver'] 	= $node->getChildTextContent('databaseDriver');
- 			$connection['database'] 		= $node->getChildTextContent('database');
- 			$connection['hostname']   		= $node->getChildTextContent('hostname');
- 			$connection['portnumber']     	= $node->getChildTextContent('portnumber');
- 			$connection['group'] 			= $node->getChildTextContent('group');
- 			$connection['username'] 		= $node->getChildTextContent('username');
- 			$connection['password'] 		= $node->getChildTextContent('password');
- 			$connection['schema'] 			= $node->getChildTextContent('schema');
- 			$connection['usePersistentConnection'] = strtolower($node->getChildTextContent('usePersistentConnection')) == 'true' ? true : false;
- 			$connection['autoConnect'] = strtolower($node->getChildTextContent('autoConnect')) == 'true' ? true : false;
- 			$connection['activeOnFirstLoad'] = $node->getAttribute('activeOnFirstLoad') == 'true' ? true : false;
+			$connection = array(
+ 				 'connectionTag'			=> null
+				,'connectionType'			=> $connectionType
+ 				,'connectionStatus'			=> false
+ 				,'authenticated'			=> false
+ 				,'description'				=>  $node->getAttribute('description')
+ 				,'time'						=>  $node->getAttribute('time')
+ 				,'comment'					=>  $node->getChildTextContent('comment')
+ 				,'databaseDriver'			=> $node->getChildTextContent('databaseDriver')
+ 				,'database'					=> $node->getChildTextContent('database')
+ 				,'hostname'					=> $node->getChildTextContent('hostname')
+ 				,'portnumber'				=> $node->getChildTextContent('portnumber')
+ 				,'group'					=> $node->getChildTextContent('group')
+ 				,'username'					=> $node->getChildTextContent('username')
+ 				,'password'					=> $node->getChildTextContent('password')
+ 				,'schema'					=> $node->getChildTextContent('schema')
+ 				,'usePersistentConnection'	=> strtolower($node->getChildTextContent('usePersistentConnection')) == 'true' ? true : false
+ 				,'autoConnect' 				=> strtolower($node->getChildTextContent('autoConnect')) == 'true' ? true : false
+ 				,'activeOnFirstLoad'		=> $node->getAttribute('activeOnFirstLoad') == 'true' ? true : false
+ 				);
  			$trustedContextList = $node->findChildNode('trustedContext');
  			if($trustedContextList != null)	{
  				$connection['trustedContext'] = array();

@@ -20,20 +20,23 @@
 include_once(PHP_INCLUDE_BASE_DIRECTORY . "UtilGeneric.php");
 
 try {
-//	connectionManager::UpdateConnectionStatusesAllConnection();
-	$returnInformation = array();
-	$returnInformation['connectionStatus'] = connectionManager::isConnected() ? "true" : "false";
-	$returnInformation['connectionText'] = connectionManager::titleString();
-	$returnInformation['activeConnection'] = array();
-
+	connectionManager::UpdateConnectionStatusesAllConnection();
+	$returnInformation = array(
+		 'connectionStatus' => (connectionManager::isConnected() ? "true" : "false")
+		,'connectionText'	=> connectionManager::titleString()
+		,'activeConnection'	=> array()
+	);
 	$basedata = connectionManager::retrieveStoredConnections();
 	foreach($basedata as $value)
 		$returnInformation['activeConnection'][] = $value;
-		
-} catch (Exception $e){
-	$returnInformation['connectionStatus'] = "false";
-	$returnInformation['connectionText'] =  "Failed: ".$e->getmessage();
-	$returnInformation['activeConnection'] = array();
+	
+} catch (Exception $e) {
+	error_log("DBConnectionCheck exception: ".var_export($e,true),0);
+	$returnInformation = array(
+		 'connectionStatus' => "false"
+		,'connectionText'	=> "Failed: ".$e->getmessage()
+		,'activeConnection'	=> array()
+	);
 }
 
 echo json_encode($returnInformation);
