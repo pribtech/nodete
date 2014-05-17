@@ -86,7 +86,7 @@ class IBMSSO {
 	}
 	function getBearerToken() {
 		if($this->tokenBearer!=null)
-			return $this->tokenBearer['refresh_token'];
+			return $this->tokenBearer;
 		$this->tokenBearer=$this->getResponse(
 			 $this->token_url 
 			,"client_id=".$this->client_id."&client_secret=".$this->client_secret."&grant_type=authorization_code&code=".$this->code.$this->getRedirect("sessionIBMSSO")
