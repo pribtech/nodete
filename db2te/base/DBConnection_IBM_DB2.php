@@ -23,8 +23,8 @@
 */
 
 /** Statement Class */
-require_once(PHP_INCLUDE_BASE_DIRECTORY . 'DBConnection.php');
-require_once(PHP_INCLUDE_BASE_DIRECTORY . 'DBStatement_IBM_DB2.php');
+include_once(PHP_INCLUDE_BASE_DIRECTORY . 'DBConnection.php');
+include_once(PHP_INCLUDE_BASE_DIRECTORY . 'DBStatement_IBM_DB2.php');
 /** The Connection Class is used to create a connection to either a DB2, Apache Derby or Cloudscape
  * database. It supports either a direct connection to a hostname and port number
  * or a connection through a DB2 Client. */

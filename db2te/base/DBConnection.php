@@ -24,7 +24,10 @@
 
 /** Include your corresponding Statement Class */
 include_once(PHP_INCLUDE_BASE_DIRECTORY . 'DBStatement.php');
-include_once("jar/dbDriver.php");
+try{
+	include_once("jar/dbDriver.php");
+} catch(Exception $e) {
+}
 
 abstract class Connection {
 
