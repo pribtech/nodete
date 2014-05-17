@@ -108,7 +108,6 @@ class IBMSSO {
  		$this->$key=$valueArray[$key];
     }
 	function getResponse($url,$data) {
-		error_log("trace get reponse url: ".$url." data:".$data,0);
 		$cURL = curl_init();
 		curl_setopt($cURL, CURLOPT_URL,$url);
 		curl_setopt($cURL, CURLOPT_POSTFIELDS,$data);
@@ -128,13 +127,15 @@ class IBMSSO {
 		if(preg_match('/^Not Found/', $RawData) > 0)
 			throw new Exception('Not found.');
 		$response=json_decode($RawData,true);
-		if($response!=null) {
-			if(is_array($response))
-				if(array_key_exists('error',$response))
-					throw new Exception($response['error_description']);
-			error_log("trace reponse: ".var_export($response,true),0);
+		if($response==null) {
+			error_log("IBMSSO getResponse url: ".$url." data:".$data." reponse: ".$RawData,0);
+			throw new Exception($RawData);
 		}
-		error_log("trace reponse: ".$RawData,0);		
+		if(is_array($response)) {
+			if(array_key_exists('error',$response))
+				throw new Exception($response['error_description']);
+		}
+		return $response;
 	}
 	function getState($state) {
 		return $this->state;
