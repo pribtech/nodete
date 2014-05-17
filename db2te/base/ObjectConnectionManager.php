@@ -31,7 +31,7 @@ class connectionDriver{
 	public function __construct($driver) {
 		if(substr($driver, -4, 4)==".php") {     
 			$this->className = substr($driver, 2, -4);
-			$this->driver = substr($this->className,  strlen($this->$classHeader));
+			$this->driver = substr($this->className, strlen($this->classHeader));
 		} else if(substr($driver, strlen($this->classHeader))=='DB'.$this->classHeader) {
 			$this->className = substr($driver,1);
 			$this->driver = substr($this->className,  strlen($this->classHeader)+1);
@@ -40,7 +40,7 @@ class connectionDriver{
 			$this->driver = $driver;
 		}
 		if(!is_file(PHP_INCLUDE_BASE_DIRECTORY . "DB" . $this->className . ".php")) {
-			self::setError("Driver not found "."DB" . $this->className . ".php");
+			self::setError("Driver not found");
 			return;
 		}
 		try {
@@ -535,6 +535,7 @@ class connectionManager{
 		$connection['dataServerInfo'] = array();
 		$driver=new ConnectionDriver($connection['databaseDriver']);
 		$connection['driverAvailable'] = $driver->isAvailable();
+		self::$lastErrorState=null;
 		if($connection['driverAvailable']) {
 			try{
 				$connection['dataServerInfo']=self::getConnectionStatus($connection);
@@ -591,6 +592,8 @@ class connectionManager{
 						$description = "#".$serviceName.'/'.$name."/".$connection['databaseDriver'];
 						$connection['description']=$description;
 						self::setConnectionStatus($connection);
+						if(self::$lastErrorState!==null)
+							$connection['connectionStatus'] = self::$lastErrorState;
 						$_SESSION['Connections'][$description] = $connection;
 						$connection['connectionStatus'] = true;
 						$connection['databaseDriver']='JDBC_DB2';
@@ -602,6 +605,8 @@ class connectionManager{
 				$description = "#".$serviceName.'/'.$name."/".$connection['databaseDriver'];
 				$connection['description']=$description;
 				self::setConnectionStatus($connection);
+				if(self::$lastErrorState!==null)
+					$connection['connectionStatus'] = self::$lastErrorState;
 				$_SESSION['Connections'][$description] = $connection;
 			}
 		}
