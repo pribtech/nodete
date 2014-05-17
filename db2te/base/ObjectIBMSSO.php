@@ -88,7 +88,7 @@ class IBMSSO {
 		if($this->tokenBearer!=null) return $this->tokenBearer['access_token'];
 		$this->tokenBearer=$this->getResponse(
 			 $this->token_url 
-			,"client_id=".$this->client_id."&client_secret=".$this->client_secret."&grant_type=authorization_code&code=".$this->code.$this->getRedirect(sessionIBMSSO)
+			,"client_id=".$this->client_id."&client_secret=".$this->client_secret."&grant_type=authorization_code&code=".$this->code.$this->getRedirect("sessionIBMSSO")
 			);
 /* token should have form:
    		{
