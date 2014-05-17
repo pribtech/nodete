@@ -46,7 +46,7 @@ class Connection_DERBY extends Connection {
 		return new Statement_Derby($stmt_text, $prepare_statment, $verbose, $ForwardOnlyScroll, $getRowCount, $this);
 	}
 
-	public function __construct($database, $schema, $username, $password, $hostname, $portnumber, $usePersistentConnection = USE_PERSISTENT_CONNECTION) {
+	public function __construct($database, $schema, $username, $password, $hostname, $portnumber, $usePersistentConnection = USE_PERSISTENT_CONNECTION, $enableTrustedContext = false) {
 		$this->DBMS=self::$classDBMS;
 		if(!@$this->driverCheck()) return;
 

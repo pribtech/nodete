@@ -586,7 +586,7 @@ class connectionManager{
 				$connection['databaseDriver']=$dbtype;
 				switch ($dbtype) {
 					case 'IBM_DB2' :
-						$description = "#".$serviceName.'->'.$name."->".$connection['databaseDriver'];
+						$description = "#".$serviceName.'/'.$name."/".$connection['databaseDriver'];
 						$connection['description']=$description;
 						self::setConnectionStatus($connection);
 						$_SESSION['Connections'][$description] = $connection;
