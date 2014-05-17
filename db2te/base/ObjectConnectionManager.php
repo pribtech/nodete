@@ -532,10 +532,11 @@ class connectionManager{
 	}
 
 	public static function setConnectionStatus(&$connection) {
+		self::$lastErrorState=null;
 		$connection['dataServerInfo'] = array();
 		$driver=new ConnectionDriver($connection['databaseDriver']);
 		$connection['driverAvailable'] = $driver->isAvailable();
-		self::$lastErrorState=null;
+
 		if($connection['driverAvailable']) {
 			try{
 				$connection['dataServerInfo']=self::getConnectionStatus($connection);
@@ -549,7 +550,7 @@ class connectionManager{
 		} else
 			self::$lastErrorState=$driver->getMessage();
 		$connection['dataServerInfo'] = array();
-		$connection['connectionStatus'] = self::$lastErrorState;
+		$connection['connectionStatus'] = (self::$lastErrorState==null?true:self::$lastErrorState);
 	}
 
 	public static function isVCAP_SERVICE($connection) {
