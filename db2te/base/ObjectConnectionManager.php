@@ -592,8 +592,6 @@ class connectionManager{
 						$description = "#".$serviceName.'/'.$name."/".$connection['databaseDriver'];
 						$connection['description']=$description;
 						self::setConnectionStatus($connection);
-						if(self::$lastErrorState!==null)
-							$connection['connectionStatus'] = self::$lastErrorState;
 						$_SESSION['Connections'][$description] = $connection;
 						$connection['connectionStatus'] = true;
 						$connection['databaseDriver']='JDBC_DB2';
@@ -605,8 +603,6 @@ class connectionManager{
 				$description = "#".$serviceName.'/'.$name."/".$connection['databaseDriver'];
 				$connection['description']=$description;
 				self::setConnectionStatus($connection);
-				if(self::$lastErrorState!==null)
-					$connection['connectionStatus'] = self::$lastErrorState;
 				$_SESSION['Connections'][$description] = $connection;
 			}
 		}
