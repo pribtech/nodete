@@ -128,12 +128,13 @@ class IBMSSO {
 		if(preg_match('/^Not Found/', $RawData) > 0)
 			throw new Exception('Not found.');
 		$response=json_decode($RawData,true);
-		if($response!=null)
+		if($response!=null) {
 			if(is_array($response))
 				if(array_key_exists('error',$response))
 					throw new Exception($response['error_description']);
-		error_log("trace reponse: ".var_export($response,true),0);
-
+			error_log("trace reponse: ".var_export($response,true),0);
+		}
+		error_log("trace reponse: ".$RawData,0);		
 	}
 	function getState($state) {
 		return $this->state;
