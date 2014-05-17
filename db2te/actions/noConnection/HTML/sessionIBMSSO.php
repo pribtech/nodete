@@ -24,6 +24,9 @@ try{
 	$bearer=$ibmsso->getBearer();
 	echo <<<ENDSCRIPT
 <script type="text/javascript">
+var ibmssoBear = $bearer;
+alert("test "+$bearer);
+
 loadNewPageLayout(
 		{target			: 'signon'
 		,windowStage	: "DefaultStage"
@@ -39,12 +42,12 @@ loadNewPageLayout(
 				,data:
 					{parameters:
 						{action: "displayJSON"
-						,\$source: $bearer
+						,\$source: ibmssoBear
 						}
 					}
 				}
 			}
-		});
+		});					
 </script>
 ENDSCRIPT;
 	
