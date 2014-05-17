@@ -100,12 +100,9 @@ class IBMSSO {
 		"refresh_token":"xxxxx"
 		}
  */
-		error_log("trace getBearerToken :".$this->tokenBearer['refresh_token']);
 		if($this->tokenBearer==null) 
 			throw new Exception('SSO application bearer token null');
-		if(!array_key_exists('refresh_token',$this->tokenBearer))
-			throw new Exception('SSO application bearer token access_token missing');
-		return $this->tokenBearer['refresh_token'];
+		return $this->tokenBearer;
 	}
     function getClientSettings(&$valueArray,$key) {
  		if(!array_key_exists($key,$valueArray))
