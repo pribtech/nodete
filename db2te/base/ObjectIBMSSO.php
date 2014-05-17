@@ -85,7 +85,8 @@ class IBMSSO {
  */
 	}
 	function getBearerToken() {
-		if($this->tokenBearer!=null) return $this->tokenBearer['access_token'];
+		if($this->tokenBearer!=null)
+			return $this->tokenBearer['refresh_token'];
 		$this->tokenBearer=$this->getResponse(
 			 $this->token_url 
 			,"client_id=".$this->client_id."&client_secret=".$this->client_secret."&grant_type=authorization_code&code=".$this->code.$this->getRedirect("sessionIBMSSO")
@@ -99,8 +100,12 @@ class IBMSSO {
 		"refresh_token":"xxxxx"
 		}
  */
-		error_log("trace getBearerToken ".$this->tokenBearer['access_token']);
-		return $this->tokenBearer['access_token'];
+		error_log("trace getBearerToken :".$this->tokenBearer['refresh_token']);
+		if($this->tokenBearer==null) 
+			throw new Exception('SSO application bearer token null');
+		if(!array_key_exists('refresh_token',$this->tokenBearer))
+			throw new Exception('SSO application bearer token access_token missing');
+		return $this->tokenBearer['refresh_token'];
 	}
     function getClientSettings(&$valueArray,$key) {
  		if(!array_key_exists($key,$valueArray))
