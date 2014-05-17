@@ -19,7 +19,7 @@
 include_once(PHP_INCLUDE_BASE_DIRECTORY . "JSONEncodeMenu.php");
 
 class connectionDriver{
-	private $classHeader='DBConnection_';
+	private $fileHeader='DBConnection_';
 	private $available;
 	private $className;
 	private $driver;
@@ -29,18 +29,20 @@ class connectionDriver{
 	private $messageLevel="I";
 	private $state;
 	public function __construct($driver) {
-		if(substr($driver, -4, 4)==".php") {
+		if(substr($driver, -4, 4)==".php") {     
 			$this->className = substr($driver, 2, -4);
-			$this->driver = substr($this->className,  strlen($this->classHeader)-2);
+			$this->driver = substr($this->className,  strlen($this->fileHeader)-2);
 		} else if(substr($driver, strlen($this->classHeader))==$this->classHeader) {
 			$this->className = $driver;
 			$this->driver = substr($this->className,  strlen($this->classHeader));
 		} else {
 			$this->className = $this->classHeader.$driver;
 			$this->driver = $driver;
+			error_log("test 1 decode 3",0);
 		}
+		error_log("test in: ".$driver." class: ".$this->driver." driver: ".$this->driver,0);
 		if(!is_file(PHP_INCLUDE_BASE_DIRECTORY . "DB" . $this->className . ".php")) {
-			self::setError("Driver not found");
+			self::setError("Driver not found "."DB" . $this->className . ".php");
 			return;
 		}
 		try {
