@@ -586,6 +586,8 @@ class connectionManager{
 				$connection['databaseDriver']=$dbtype;
 				switch ($dbtype) {
 					case 'IBM_DB2' :
+						$driver=new ConnectionDriver($dbtype);
+						$connection['driverAvailable'] = $driver->isAvailable();
 						$description = "#".$serviceName.'/'.$name."/".$connection['databaseDriver'];
 						$connection['description']=$description;
 						self::setConnectionStatus($connection);
@@ -596,7 +598,8 @@ class connectionManager{
 					default:
 				}
 				$driver=new ConnectionDriver($dbtype);
-				$description = "#".$serviceName.'->'.$name."->".$connection['databaseDriver'];
+				$connection['driverAvailable'] = $driver->isAvailable();
+				$description = "#".$serviceName.'/'.$name."/".$connection['databaseDriver'];
 				$connection['description']=$description;
 				self::setConnectionStatus($connection);
 				$_SESSION['Connections'][$description] = $connection;
