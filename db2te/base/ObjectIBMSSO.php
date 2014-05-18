@@ -67,7 +67,7 @@ class IBMSSO {
 	public function getBearer() {
 		$this->tokenBearer=$this->getResponse(
 			 $this->profile_resource 
-			,"Authorization: bearer ".$this->getBearerToken()
+			,"Authorization: Bearer ".$this->getBearerAccessToken()   // or access_token=????
 			);
 /*
  {
@@ -84,13 +84,15 @@ class IBMSSO {
   "idaas.verified_email":["testuser@mailinator.com"]}
  */
 	}
+	function getBearerAccessToken() {
+		return $this->getBearerToken['access_token'];
+	}
 	function getBearerToken() {
 		if($this->tokenBearer!=null)
 			return $this->tokenBearer;
 		$this->tokenBearer=$this->getResponse(
 			 $this->token_url 
 			,"client_id=".$this->client_id."&client_secret=".$this->client_secret."&grant_type=authorization_code&code=".$this->code.$this->getRedirect("sessionIBMSSO")
-			,false
 			);
 /* token should have form:
    		{
@@ -131,7 +133,7 @@ class IBMSSO {
 			throw new Exception('Not found.');
 		$response=json_decode($rawData,true);
 		if($response==null) {
-			error_log("IBMSSO getResponse url: ".$url." data:".$data." reponse: ".$rawData,0);
+			error_log("IBMSSO getResponse url: ".$url." data: ".$data." response: ".$rawData,0);
 			throw new Exception($rawData);
 		}
 		if(is_array($response)) {
