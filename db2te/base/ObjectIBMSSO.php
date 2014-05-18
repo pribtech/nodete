@@ -69,7 +69,8 @@ class IBMSSO {
 			 $this->profile_resource 
 //			,"Authorization: Bearer ".$this->getBearerAccessToken()   
 			,"access_token=".$this->getBearerAccessToken()
-);
+		);
+		error_log("get bearer, details: ".var_export($this->tokenBearer,true),0);
 /*
  * 
  * if reposnse 401  - <html>401</html>
