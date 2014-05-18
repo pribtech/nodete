@@ -90,6 +90,7 @@ class IBMSSO {
 		$this->tokenBearer=$this->getResponse(
 			 $this->token_url 
 			,"client_id=".$this->client_id."&client_secret=".$this->client_secret."&grant_type=authorization_code&code=".$this->code.$this->getRedirect("sessionIBMSSO")
+			,false
 			);
 /* token should have form:
    		{
@@ -109,7 +110,7 @@ class IBMSSO {
  			throw new Exception('SSO application '.$key.' not found');
  		$this->$key=$valueArray[$key];
     }
-	function getResponse($url,$data) {
+	function getResponse($url,$data,$convert2Array=true) {
 		$cURL = curl_init();
 		curl_setopt($cURL, CURLOPT_URL,$url);
 		curl_setopt($cURL, CURLOPT_POSTFIELDS,$data);
@@ -118,26 +119,26 @@ class IBMSSO {
 		curl_setopt($cURL, CURLOPT_HEADER, 0);
 		curl_setopt($cURL, CURLOPT_SSL_VERIFYHOST, 0);
 		curl_setopt($cURL, CURLOPT_SSL_VERIFYPEER, 0);
-		$RawData = curl_exec($cURL);
+		$rawData = curl_exec($cURL);
 		$curl_errno = curl_errno($cURL);
 		$curl_error = curl_error($cURL);
 		curl_close($cURL);
 		if ($curl_errno > 0)
 			throw new Exception($curl_error);
-		if($RawData==null ||  $RawData=="")
+		if($rawData==null ||  $rawData=="")
 			throw new Exception('No data returned');
-		if(preg_match('/^Not Found/', $RawData) > 0)
+		if(preg_match('/^Not Found/', $rawData) > 0)
 			throw new Exception('Not found.');
-		$response=json_decode($RawData,true);
+		$response=json_decode($rawData,true);
 		if($response==null) {
-			error_log("IBMSSO getResponse url: ".$url." data:".$data." reponse: ".$RawData,0);
-			throw new Exception($RawData);
+			error_log("IBMSSO getResponse url: ".$url." data:".$data." reponse: ".$rawData,0);
+			throw new Exception($rawData);
 		}
 		if(is_array($response)) {
 			if(array_key_exists('error',$response))
 				throw new Exception($response['error_description']);
 		}
-		return $response;
+		return ($convert2Array?$response:$rawData);
 	}
 	function getState($state) {
 		return $this->state;
