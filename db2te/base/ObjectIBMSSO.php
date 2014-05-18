@@ -70,6 +70,10 @@ class IBMSSO {
 			,"Authorization: Bearer ".$this->getBearerAccessToken()   // or access_token=????
 			);
 /*
+ * 
+ * if reposnse 401  - <html>401</html>
+ * then curl -d "client_id=mobileClient&grant_type=refresh_token&refresh_token=WtFQMWtU88cRdxNoCYl8FJwU7wiAnLbrY0peYSWa" \
+    https://tfim01.demos.ibm.com/FIM/sps/oauth20sp/oauth20/token
  {
   "firstName":["Test"],
   "lastName":["User"],

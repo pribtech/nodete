@@ -21,15 +21,14 @@ try{
 	$ibmsso=getIBMSSO();
 	$ibmsso->setCode();
 	echo "<div id='title'>IBM SSO Check successfull, now get details</div>";
-	$bearer=$ibmsso->getBearer();
+	$ibmssoBearer=$ibmsso->getBearer();
 	echo <<<ENDSCRIPT
 <script type="text/javascript">
-var ibmssoBear = $bearer;
-alert("test "+$bearer);
+var ibmssoBearer = $ibmssoBearer;
+alert("test "+$ibmssoBearer);
 
 loadNewPageLayout(
 		{target			: 'signon'
-		,windowStage	: "DefaultStage"
 		,raiseToTop		: "y"
 		,title			: 'IBM SSO Success - Get Details'
 		,content	 :
@@ -42,7 +41,7 @@ loadNewPageLayout(
 				,data:
 					{parameters:
 						{action: "displayJSON"
-						,\$source: ibmssoBear
+						,\$source: ibmssoBearer
 						}
 					}
 				}
