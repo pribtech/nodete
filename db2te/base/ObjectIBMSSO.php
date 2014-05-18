@@ -33,6 +33,7 @@ function saveIBMSSO (&$object) {
 	TE_session_write_close();
 }
 class IBMSSO {
+	private $bearer;
 	private $token_url;
 	private $profile_resource;
 	private $tokeninfo_resource;
@@ -65,12 +66,20 @@ class IBMSSO {
     	return $this->authorize_url."?client_id=".$this->client_id."&response_type=code&scope=profile&state=".$this->state."&redirect_uri=".$this->getRedirect("sessionIBMSSO");
     }
 	public function getBearer() {
-		$this->tokenBearer=$this->getResponse(
-			 $this->profile_resource 
-//			,"Authorization: Bearer ".$this->getBearerAccessToken()   
-			,"access_token=".$this->getBearerAccessToken()
-		);
-		error_log("get bearer, details: ".var_export($this->tokenBearer,true),0);
+		if($this->bearer==null) {
+			$bearer=$this->getResponse(
+				 $this->profile_resource 
+//				,"Authorization: Bearer ".$this->getBearerAccessToken()   
+				,"access_token=".$this->getBearerAccessToken()
+				,false
+			);
+			error_log("get bearer, details: ".var_export($bearer,true),0);
+			$bearerArray=json_decode($bearer,true);
+			$this->bearer=array();
+			foreach($bearerArray as $key => $value) 
+				$this->bearer[$key]=(is_array($value)?$value[0]:$value);
+		}
+		return $this->bearer;
 /*
  * 
  * if reposnse 401  - <html>401</html>

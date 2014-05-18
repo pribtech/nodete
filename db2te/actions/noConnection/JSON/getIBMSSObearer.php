@@ -1,8 +1,8 @@
 <?php
 /*******************************************************************************
-  *  Author: Peter Prib
+ *  Author: Peter Prib
  * 
- * Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2014 All rights reserved.
+ * Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2014 All rights reserved..
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -16,6 +16,8 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  *********************************************************************************/
+$ibmsso=getIBMSSO();
+$ibmssoBearer=$ibmsso->getBearer();
 
 $returnObject = array(
 		 'returnCode' => 'true'
@@ -29,7 +31,7 @@ $returnObject = array(
 				,"width" => array(20,128)
 				,"displaySize" => array(20,128)
 				)
-			,'rowsReturned' => count($_ENV)
+			,'rowsReturned' => count($ibmssoBearer)
 			,'rowsInSet' => array(
                              "rowsFound" => count($_ENV)
                             ,"endFound" => true
@@ -39,8 +41,8 @@ $returnObject = array(
 			)
 		);
 $returnObject['returnValue']['data']=array();
-foreach($_ENV as $key => $value)
-	$returnObject['returnValue']['data'][] = array($key, $value);
 
 echo json_encode($returnObject);
+foreach($ibmssoBearer as $key => $value)
+	$returnObject['returnValue']['data'][] = array($key, $value);
 ?>
