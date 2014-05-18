@@ -89,7 +89,7 @@ class IBMSSO {
  */
 	}
 	function getBearerAccessToken() {
-		return $this->getBearerToken['access_token'];
+		return $this->getBearerToken()['access_token'];
 	}
 	function getBearerToken() {
 		if($this->tokenBearer!=null)
