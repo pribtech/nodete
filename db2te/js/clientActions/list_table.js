@@ -679,7 +679,7 @@ CORE_CLIENT_ACTIONS.set("list_table",Class.create(basePageElement, {
 						baseTableData.loadInProgress = false;
 						if(transport.responseJSON!=null)
 							if(transport.responseJSON.returnValue!=null) {
-								thisObject.setErrorFormatted(transport.responseJSON.returnValue);
+								thisObject.setErrorFormatted(decodeURI(transport.responseJSON.returnValue));
 								return;
 							}
 						var error = (exception==null ? transport.statusText : ( typeof(exception)=="object" ? exception.name+" : "+exception.description : exception ));
