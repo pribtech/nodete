@@ -85,7 +85,7 @@ if( getenv('TE_SETTINGS') )
 
 /** User Configuration folder
 * @var  string USER_PREFERENCES_DIRECTORY */
-@define("USER_PREFERENCES_DIRECTORY", "./preferences/");
+setDefine("USER_PREFERENCES_DIRECTORY", "./preferences/");
 
 /** User configuration file Import
  */
@@ -294,7 +294,7 @@ setDefine("DISCONNECTED", "Disconnected");
  * The time in minutes which a given session will time out and request session signon. Set to boolean false to disable.
  * 
  */
-setDefine("SESSION_SIGNON_TIMEOUT", null);
+setDefine("SESSION_SIGNON_TIMEOUT", false);
 
 /**
  * The IP address to only allow connection from or boolean false to disable
@@ -483,7 +483,7 @@ setDefine("JS_BASE_DIRECTORY", "./js/");
  *
  * @var  string IMAGE_BASE_DIRECTORY
  */
-define("IMAGE_BASE_DIRECTORY", "./images/");
+setDefine("IMAGE_BASE_DIRECTORY", "./images/");
 
 /**
  * Base directory for all PHP base include files
@@ -506,7 +506,7 @@ setDefine("MENU_PROCESSOR", ACTION_PROCESSOR . "?action=menu");
  *
  * @var  string TUTORIAL_BASE_DIRECTORY
  */
-define("TUTORIAL_BASE_DIRECTORY", "./tutorials/");
+setDefine("TUTORIAL_BASE_DIRECTORY", "./tutorials/");
 
 /**
  * Base directory for all tutorials
