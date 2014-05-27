@@ -175,7 +175,9 @@ class Connection_IBM_DB2 extends Connection {
 		$dbconn = null;
 
 		$cataloged = ($hostname == "" | $portnumber == "") ? true : false;
-
+		
+		if(!extension_loaded(self::$requiredDBExtension))
+			return "PHP Extension ".self::$requiredDBExtension." not loaded!";
 		if(trim($database) == "")
 			return "No database specified!";
 		if(trim($username) == "")
