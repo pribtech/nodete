@@ -180,21 +180,24 @@ class Connection_IBM_DB2 extends Connection {
 			return "No database specified!";
 		if(trim($username) == "")
 			return "No username specified!";
-			
-		if($usePersistentConnection) {
-			if ($cataloged) {
-				$dbconn = db2_pconnect($database, $username, $password);
+		try{	
+			if($usePersistentConnection) {
+				if ($cataloged) {
+					$dbconn = db2_pconnect($database, $username, $password);
+				} else {
+					$connectionString = "HOSTNAME=$hostname;DATABASE=$database;PROTOCOL=TCPIP;PORT=$portnumber;UID=$username;PWD=$password;";
+					$dbconn = db2_pconnect($connectionString, NULL, NULL);
+				}
 			} else {
-				$connectionString = "HOSTNAME=$hostname;DATABASE=$database;PROTOCOL=TCPIP;PORT=$portnumber;UID=$username;PWD=$password;";
-				$dbconn = db2_pconnect($connectionString, NULL, NULL);
+				if ($cataloged) {
+					$dbconn = db2_connect($database, $username, $password);
+				} else {
+					$connectionString = "HOSTNAME=$hostname;DATABASE=$database;PROTOCOL=TCPIP;PORT=$portnumber;UID=$username;PWD=$password;";
+					$dbconn = db2_connect($connectionString, NULL, NULL);
+				}
 			}
-		} else {
-			if ($cataloged) {
-				$dbconn = db2_connect($database, $username, $password);
-			} else {
-				$connectionString = "HOSTNAME=$hostname;DATABASE=$database;PROTOCOL=TCPIP;PORT=$portnumber;UID=$username;PWD=$password;";
-				$dbconn = db2_connect($connectionString, NULL, NULL);
-			}
+		} catch(Exception $e) {
+			return "DB2 Connection failed ".$e->getMessage();
 		}
 
 		if ($dbconn === false) {
