@@ -36,9 +36,7 @@ var modalPanelFileDialog = Class.create(modalPanel, {
 	fileCallBack: function(fileEncoded) {
 		var fileNameHolder = $(this.elementUniqueID + '_input');
 		if(fileEncoded != null)
-		{
-					fileNameHolder.value = unescape(fileEncoded);
-		}
+			fileNameHolder.value = decodeURIComponent(fileEncoded);
 	},
 	subDirectoryLoadCallBack: function(blockID, subDirectory) {
 		var imageHolder = $(blockID + '_image');

@@ -274,7 +274,8 @@ class JSONEncodeAction {
 					$returnObject["tasks"][] = JSONEncodeAction::encodeFollowOnActionNode($taskNode);
 					break;
 				case "alert":
-					$returnObject["tasks"][] = array("type"=>"alert", "message" => trim($taskNode->textContent));
+				case "alertandlog":
+					$returnObject["tasks"][] = array("type"=>$taskNode->nodeName, "message" => trim($taskNode->textContent));
 					break;
 				case "sendConsole":
 				case "sendconsole":
@@ -337,9 +338,13 @@ class JSONEncodeAction {
 							,"parameter"=>JSONEncodeAction::encodeParameters($taskNode)
 						);
 					break;
+				case "exitAction":
+					$returnObject["tasks"][] = array("type"=>$taskNode->nodeName, "to"=> $taskNode->getAttribute("to"));
+					break;
 				case "panelReload":
 				case "retry":
 				case "setContext":
+				case "exitAction":
 					$returnObject["tasks"][] = array("type"=>$taskNode->nodeName, "name"=> $taskNode->getAttribute("name"));
 					break;
 				case "openContextMenu":

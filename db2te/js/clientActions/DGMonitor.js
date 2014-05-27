@@ -221,19 +221,12 @@ CORE_CLIENT_ACTIONS.set("DGMonitor", Class.create(basePageElement, {
 							return;
 						}
 						if(result.flagGeneralError == true && result.connectionError == true)
-						{
 							initiateConnectionRefresh();
-						}
-						if(result.returnCode == "false")
-						{
+						if( isReturnCodeNotOK(result)) {
 							if(Object.isString(result.returnValue))
-							{
 								openModalAlert(result.returnValue);
-							}
 							else if(Object.isString(result.returnValue.message))
-							{
 								openModalAlert(result.returnValue.message);
-							}
 							getPanel(thisObject.parentStageID, thisObject.parentWindowID, thisObject.generatorPanel).updateReloadTime(-1);
 							return;
 						}

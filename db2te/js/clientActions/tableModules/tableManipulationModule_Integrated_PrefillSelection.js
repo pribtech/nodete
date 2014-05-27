@@ -236,8 +236,8 @@ TABLE_MANIPULATION_MODULES.set("Integrated_PrefillSelection", {
 						if(result == null) return;
 						if(result.flagGeneralError == true && result.connectionError == true)
 							initiateConnectionRefresh();
-						if(result.flagGeneralError == true || result.returnCode == "false" || result.returnCode == false) {
-							openModalAlert("prefill error '" + result.returnMessage);
+						if(result.flagGeneralError == true ||  isReturnCodeNotOK(result)) {
+							openModalAlert("prefill error '" + getReturnErrorMessage(result));
 							return;
 						}
 						if(result != null) {

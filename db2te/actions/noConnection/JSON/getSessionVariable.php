@@ -2,7 +2,7 @@
 /*******************************************************************************
  *  Author: Peter Prib
  * 
- * Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2009 All rights reserved..
+ * Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2014 All rights reserved..
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  *********************************************************************************/
+TE_check_feature_allowed('admin');
 
 $names=getParameter("name");
 

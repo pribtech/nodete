@@ -251,7 +251,7 @@ CORE_CLIENT_ACTIONS.set("WMDSingleWorkloadControl", Class.create(basePageElement
 								thisObject.setError(CORE_MESSAGE_STORE.LANGUAGE_MESSAGES.INVALID_JSON);
 							} else if(result.flagGeneralError == true && result.connectionError == true) {
 								initiateConnectionRefresh();
-						} else if(result.returnCode == "false") {
+						} else if( isReturnCodeNotOK(result)) {
 								thisObject.connectionErrorEncountered = true;
 								thisObject.setError(encodeMessage(CORE_MESSAGE_STORE.WMD_MESSAGES.ERROR_LOADING_ACTIVE_CONNECTION, { WORKLOAD_NAME:thisObject.loadWorkload}));
 							}
@@ -406,7 +406,7 @@ CORE_CLIENT_ACTIONS.set("WMDSingleWorkloadControl", Class.create(basePageElement
 						}
 						if(result.flagGeneralError == true && result.connectionError == true)
 							initiateConnectionRefresh();
-						if(result.returnCode == "false") {
+						if(isReturnCodeNotOK(result)) {
 							if(Object.isString(result.returnValue))
 								thisObject.setError("Load workload details, "+result.returnValue);
 							else if(Object.isString(result.returnValue.message))
@@ -981,7 +981,7 @@ CORE_CLIENT_ACTIONS.set("WMDSingleWorkloadControl", Class.create(basePageElement
 						}
 						if(result.flagGeneralError == true && result.connectionError == true)
 							initiateConnectionRefresh();
-						if(result.returnCode == "false") {
+						if( isReturnCodeNotOK(result)) {
 							if(Object.isString("Load tasks set, "+result.returnValue))
 								thisObject.setError(result.returnValue);
 							else if(Object.isString(result.returnValue.message))
@@ -1077,7 +1077,7 @@ CORE_CLIENT_ACTIONS.set("WMDSingleWorkloadControl", Class.create(basePageElement
 						}
 						if(result.flagGeneralError == true && result.connectionError == true)
 							initiateConnectionRefresh();
-						if(result.returnCode == "false") {
+						if( isReturnCodeNotOK(result)) {
 							if(Object.isString(result.returnValue)) {
 								thisObject.setError("Load XML profile "+result.returnValue);
 							} else if(Object.isString(result.returnValue.message)) {

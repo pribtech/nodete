@@ -56,6 +56,40 @@ function TE_absolute_session_write_close() {
 	@session_write_close();
 }
 
+function TE_check_feature_allowed($keyword) {
+	TE_session_start();
+	$BASE_FEATURES=$_SESSION['BASE_FEATURES'];
+	TE_session_write_close();
+	if(strripos($BASE_FEATURES, $keyword) === false)
+		throw new Exception('Insufficient authority to use '.$keyword.' action');
+}
+
+function TE_check_session_timeout() {
+	if(!SESSION_SIGNON_TIMEOUT) return;
+	TE_session_start();
+	if (isset($_SESSION['TIME_INITIALIZED']))
+		$timeout = ( time() - $_SESSION['TIME_LAST_INITIALIZED'] ) > SESSION_SIGNON_TIMEOUT * 60;
+	else {
+		$_SESSION['TIME_INITIALIZED'] = time() + SESSION_SIGNON_TIMEOUT * 61;
+		$timeout=true;
+	}
+	if(!$timeout) TE_set_session_time();
+	TE_session_write_close();
+	if($timeout)
+		throw new Exception('Session signon required');
+}
+function TE_set_session_time() {
+		$_SESSION['TIME_LAST_INITIALIZED'] = $_SESSION['TIME_INITIALIZED']; 
+		$_SESSION['TIME_INITIALIZED'] = time(); 
+}
+
+function TE_session_destroy() {
+	foreach ($_SESSION as $key=>$value)
+		unset($_SESSION[$key]);
+	$_SESSION = array();
+	session_unset();
+	session_destroy();
+}
 TE_session_start();
 
 $language = getParameter("language");
@@ -75,11 +109,14 @@ if(!defined('TOUCH_CONNECTION'))
 	define("TOUCH_CONNECTION", strtolower(getParameter('touchConnection', 'true')));
 
 if(!defined('RETURN_TYPE'))
-  define("RETURN_TYPE", strtoupper(getParameter('returntype', 'HTML')));
+	define("RETURN_TYPE", strtoupper(getParameter('returntype', 'HTML')));
 
 define("USE_DATABASE_CONNECTION", getParameter('USE_CONNECTION', null));
 
 define("DETAILED_VIEW", getParameter('details', 'no'));
+
+if(!isset($_SESSION['BASE_FEATURES']))
+	$_SESSION['BASE_FEATURES'] = BASE_FEATURES;
 
 if(!isset($_SESSION['Connections']))
 	$_SESSION['Connections'] = array();
@@ -151,39 +188,29 @@ if(	   !isset($_SESSION['CLIENT_TIME_OUT'])
 		if( isset($_SERVER['HTTP_USER_AGENT']) )
 			$_SESSION['CLIENT_USER_AGENT'] = $_SERVER['HTTP_USER_AGENT'];
 		$_SESSION['CLIENT_ADDRESS'] = $_SERVER['REMOTE_ADDR'];
-//		$_SESSION['PHP_AUTH_USER'] = @$_SERVER['PHP_AUTH_USER'];
-//		if(isset($_SERVER['PHP_AUTH_PW']))
-//			$_SESSION['PHP_AUTH_PW'] = @$_SERVER['PHP_AUTH_PW'];
 }
 
 if( 	(($_SERVER['REMOTE_ADDR'] !== $_SESSION['CLIENT_ADDRESS'] && VERIFY_ON_CLIENT_ADDRESS) 
 	|| 	(isset($_SERVER['HTTP_USER_AGENT']) && $_SERVER['HTTP_USER_AGENT'] !== $_SESSION['CLIENT_USER_AGENT'] && VERIFY_ON_USER_AGENT) 
 	||	($_SERVER['REMOTE_ADDR'] !== LOCK_ON_IP_ADDRESS && LOCK_ON_IP_ADDRESS !== false)) 
 	) {
-	foreach ($_SESSION as $key=>$value)
-		$_SESSION[$key] = null;
-	
-	$_SESSION = array();
-	session_unset();
-	session_destroy();
+	TE_session_destroy();
 	exit;
 }
-if( 	SESSION_TIMEOUT_IN_MIN !== false 
-	||	(@$_SERVER['PHP_AUTH_USER'] !== @$_SESSION['PHP_AUTH_USER']) 
-	||	(@$_SERVER['PHP_AUTH_PW'] !== @$_SESSION['PHP_AUTH_PW'])
-	) {
-	if($_SESSION['CLIENT_TIME_OUT'] < (time() - SESSION_TIMEOUT_IN_MIN * 60) ){
-		foreach ($_SESSION as $key=>$value)
-			$_SESSION[$key] = null;
-		
-		$_SESSION = array();
-		session_destroy();
-		session_unset();
-		session_start();
+
+if(!SESSION_SIGNON_TIMEOUT) {
+	if( 	SESSION_TIMEOUT_IN_MIN !== false 
+		||	(@$_SERVER['PHP_AUTH_USER'] !== @$_SESSION['PHP_AUTH_USER']) 
+		||	(@$_SERVER['PHP_AUTH_PW'] !== @$_SESSION['PHP_AUTH_PW'])
+		) {
+		if($_SESSION['CLIENT_TIME_OUT'] < (time() - SESSION_TIMEOUT_IN_MIN * 60) ){
+			TE_session_destroy();
+			session_start();
+		}
 	}
+	if(TOUCH_CONNECTION == "true")
+		$_SESSION['CLIENT_TIME_OUT'] = time();	
 }
-if(TOUCH_CONNECTION == "true")
-	$_SESSION['CLIENT_TIME_OUT'] = time();	
 
 if(CYCLE_SESSION_ID)
 	session_regenerate_id(true);	

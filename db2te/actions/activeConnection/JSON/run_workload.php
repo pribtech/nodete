@@ -14,7 +14,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  *********************************************************************************/
-
+TE_check_session_timeout();
 /**
  * @name 	run_workload * * 
  * @param 	SQL

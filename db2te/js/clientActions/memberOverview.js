@@ -87,24 +87,13 @@ CORE_CLIENT_ACTIONS.set("memberOverview", Class.create(basePageElement, {
 							return;
 						}
 						if(result.flagGeneralError == true && result.connectionError == true)
-						{
 							initiateConnectionRefresh();
-						}
-						if(result.flagGeneralError == true || result.returnCode == "false")
-						{
-							if(Object.isString(result.returnValue))
-							{
-								thisObject.setError(result.returnValue);
-							}
-							else
-							{
-								thisObject.setError(result.returnValue.STMTMSG);
-							}
+						if(result.flagGeneralError == true ||  isReturnCodeNotOK(result)) {
+							thisObject.setError(getReturnErrorMessage(result));
 							return;
 						}
 						
-						if(result != null)
-						{
+						if(result != null) {
 							thisObject.DB2_HOST_DATA	= result.returnValue.host;
 							thisObject.DB2_INSTANCE_DATA	= result.returnValue.member;
 

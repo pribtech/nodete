@@ -33,7 +33,6 @@ function saveIBMSSO (&$object) {
 	TE_session_write_close();
 }
 class IBMSSO {
-	private $bearer;
 	private $token_url;
 	private $profile_resource;
 	private $tokeninfo_resource;
@@ -41,8 +40,8 @@ class IBMSSO {
 	private $authorize_url;
 	private $state;
 	private $code;
-	private $client_id = 'sOdxIgNm8cuseKoj3HFM';
-	private $client_secret = '8y5eyMup8h0AmDeqppOI';
+	private $client_id;
+	private $client_secret;
 	private $tokenBearer;
 	private $redirectBase;
 	
@@ -66,20 +65,10 @@ class IBMSSO {
     	return $this->authorize_url."?client_id=".$this->client_id."&response_type=code&scope=profile&state=".$this->state."&redirect_uri=".$this->getRedirect("sessionIBMSSO");
     }
 	public function getBearer() {
-		if($this->bearer==null) {
-			$bearer=$this->getResponse(
-				 $this->profile_resource 
-//				,"Authorization: Bearer ".$this->getBearerAccessToken()   
-				,"access_token=".$this->getBearerAccessToken()
-				,false
+		$this->tokenBearer=$this->getResponse(
+			 $this->profile_resource 
+			,"Authorization: Bearer ".$this->getBearerAccessToken()   // or access_token=????
 			);
-			error_log("get bearer, details: ".var_export($bearer,true),0);
-			$bearerArray=json_decode($bearer,true);
-			$this->bearer=array();
-			foreach($bearerArray as $key => $value) 
-				$this->bearer[$key]=(is_array($value)?$value[0]:$value);
-		}
-		return $this->bearer;
 /*
  * 
  * if reposnse 401  - <html>401</html>
@@ -163,7 +152,11 @@ class IBMSSO {
 	}
 	function setClientSettings() {
  		$setting = getenv('TE_IBMSSO');
- 		if(!$setting) return;
+ 		if(!$setting) {
+ 			if(SSO_CLIENT)
+ 				$setting=SSO_CLIENT;
+ 				return;
+ 		}
  		$settingArray=json_decode($services, true);
  		if(!$settingArray)
  			throw new Exception('Decode TE_IBMSSO failed');
@@ -176,10 +169,23 @@ class IBMSSO {
     	$this->code = getParameter('code');
     	saveIBMSSO($this);
 	}
+    function decodeSSO($credentials) {
+ 		$this->getClientSettings($credentials,'token_url');
+ 		$this->getClientSettings($credentials,'profile_resource');
+ 		$this->getClientSettings($credentials,'tokeninfo_resource');
+ 		$this->getClientSettings($credentials,'openidProviderURL');
+ 		$this->getClientSettings($credentials,'authorize_url');
+    }
     function setServices() {
- 		$services = getenv('VCAP_SERVICES');
+    	if(SSO) {
+    		$this->decodeSSO(json_decode(SSO, true));
+    		return;
+    	}
+    	if(!BLUEMIX) 
+    		throw new Exception('Requires SSO defined in preferences or IBM Bluemix');
+    	$services = getenv('VCAP_SERVICES');
  		if(!$services)
- 			throw new Exception('Requires IBM Bluemix and SSO application');
+ 			throw new Exception('Requires to be bound with SSO service or SSO defined in preferences');
  		$servicesArray=json_decode($services, true);
  		if(!$servicesArray)
  			throw new Exception('Decode VCAP services failed');
@@ -196,10 +202,6 @@ class IBMSSO {
  		}
  		if(!isset($credentials))
  			throw new Exception('SSO application credentials not found');
- 		$this->getClientSettings($credentials,'token_url');
- 		$this->getClientSettings($credentials,'profile_resource');
- 		$this->getClientSettings($credentials,'tokeninfo_resource');
- 		$this->getClientSettings($credentials,'openidProviderURL');
- 		$this->getClientSettings($credentials,'authorize_url');
+ 		$this->decodeSSO($credentials);
     }
 }

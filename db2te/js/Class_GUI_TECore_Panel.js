@@ -112,7 +112,7 @@ var panel = Class.create(basePageElement, {
 		if (parentWindow != null) {
 			if (parentWindow.WindowContainers.get(this.elementName) != null) {
 				parentWindow.forwardURLHist = new Array();
-				parentWindow.forwardURLHist.push(new Array(getWindow(this.parentStageID, this.parentWindowID).WindowConfiguration, new Array(new Array(this.elementName, "URL", escape($("URL_" + this.elementUniqueID).value)))));
+				parentWindow.forwardURLHist.push(new Array(getWindow(this.parentStageID, this.parentWindowID).WindowConfiguration, new Array(new Array(this.elementName, "URL", encodeURIComponent($("URL_" + this.elementUniqueID).value)))));
 				parentWindow.historyGoForward();
 			}
 		}
@@ -534,7 +534,7 @@ var panel = Class.create(basePageElement, {
 			PanelInformation = "";
 		if (panelTitle != null) {
 			if (PanelInformation != "")
-				newTitle = "<table><tr><td>" + newTitle + "</td><td><img style='float:none' onMouseUp=\"stopPropagation(event);\" onMouseDown='show_GENERAL_BLANK_POPUP(null, decodeURIComponent(\"<div style=\\\"padding:10px;width:350px\\\">" + escape(PanelInformation) + "</div>\"));' src=\"images/info.gif\"/></td></tr></table>";
+				newTitle = "<table><tr><td>" + newTitle + "</td><td><img style='float:none' onMouseUp=\"stopPropagation(event);\" onMouseDown='show_GENERAL_BLANK_POPUP(null, decodeURIComponent(\"" + encodeURIComponent("<div style='padding:10px;width:350px'>"+PanelInformation+"</div>") + "\"));' src=\"images/info.gif\"/></td></tr></table>";
 			panelTitle.update(newTitle);
 		}
 		if (panelMenu != null && leftMenu != null) {

@@ -176,7 +176,7 @@ CORE_CLIENT_ACTIONS.set("pureScaleDemoButtons",Class.create(basePageElement, {
 					{
 						thisObject.notificationCycle(item, "red", 4)
 					}
-					else if(result.flagGeneralError == true || result.returnCode == "false")
+					else if(result.flagGeneralError == true ||  isReturnCodeNotOK(result))
 					{
 						thisObject.notificationCycle(item, "red", 4)
 					}

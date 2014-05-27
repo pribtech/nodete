@@ -261,19 +261,12 @@ CORE_CLIENT_ACTIONS.set("DGSingleGeneratorControl", Class.create(basePageElement
 							return;
 						}
 						if(result.flagGeneralError == true && result.connectionError == true)
-						{
 							initiateConnectionRefresh();
-						}
-						if(result.returnCode == "false")
-						{
+						if( isReturnCodeNotOK(result)) {
 							if(Object.isString(result.returnValue))
-							{
 								openModalAlert(result.returnValue);
-							}
 							else if(Object.isString(result.returnValue.message))
-							{
 								openModalAlert(result.returnValue.message);
-							}
 							getPanel(this.parentStageID, this.parentWindowID, this.parentPanelID).updateRefreshTime(-1);
 							return;
 						}

@@ -89,7 +89,7 @@ CORE_CLIENT_ACTIONS.set("getHeadlessTableForm",Class.create(basePageElement, {
 				else if(Object.isString(value))
 					value = value.escapeHTML();
 				else
-					value = escape(parm.value);
+					value = encodeURIComponent(parm.value);
 				if(paramType == "lob" || paramType == 'l' || paramType == "clob")
 					output += "<TEXTAREA " + disabled + "NAME='" + parm.name + "' COLS=50 ROWS=6>" + value + "</TEXTAREA>";
 				else

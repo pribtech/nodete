@@ -14,7 +14,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  *********************************************************************************/
-
+TE_check_session_timeout();
 include_once("./config_WMD.php");
 
 include_once(USER_PREFERENCES_DIRECTORY . WMD_SERVER_LIST);

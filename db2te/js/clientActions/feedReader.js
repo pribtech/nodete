@@ -68,9 +68,9 @@ CORE_CLIENT_ACTIONS.set("feedReader",Class.create(basePageElement, {
 				}
 				if(result.flagGeneralError == true && result.connectionError == true)
 					initiateConnectionRefresh();
-				if(result.flagGeneralError == true || result.returnCode == "false" || result.returnCode == false) {
+				if(result.flagGeneralError == true ||  isReturnCodeNotOK(result) ) {
 					if(Object.isString(result.returnValue)) {
-						thisObject.setError("<table style='width:100%;height:100%'><tr><td align='center'><h2>" + result.returnValue + "</h2></td></tr></table>");
+						thisObject.setError(getReturnMessageFormatted(result));
 						return;
 					}
 					if(!thisObject.baseTableData.localTableDeffinition.ignoreSQLWarnings) {

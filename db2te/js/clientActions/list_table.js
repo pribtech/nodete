@@ -679,7 +679,7 @@ CORE_CLIENT_ACTIONS.set("list_table",Class.create(basePageElement, {
 						baseTableData.loadInProgress = false;
 						if(transport.responseJSON!=null)
 							if(transport.responseJSON.returnValue!=null) {
-								thisObject.setErrorFormatted(decodeURI(transport.responseJSON.returnValue));
+								thisObject.setErrorFormatted(transport.responseJSON.returnValue);
 								return;
 							}
 						var error = (exception==null ? transport.statusText : ( typeof(exception)=="object" ? exception.name+" : "+exception.description : exception ));
@@ -880,8 +880,8 @@ CORE_CLIENT_ACTIONS.set("list_table",Class.create(basePageElement, {
 		if(result.flagGeneralError == true && result.connectionError == true)
 			initiateConnectionRefresh();
 		var baseTableData = this.baseTableData;
-		if(result.flagGeneralError || result.returnCode == "false") {
-			if(Object.isString(result.returnValue)) throw result.returnValue;
+		if(result.flagGeneralError ||  isReturnCodeNotOK(result)) {
+			if(Object.isString(result.returnValue)) throw getReturnErrorMessage(result);
 			if(!baseTableData.localTableDeffinition.ignoreSQLWarnings) 
 				throw [result.returnValue.STMTMSG , result.returnValue.STMT];
 		}

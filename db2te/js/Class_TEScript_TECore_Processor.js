@@ -140,8 +140,8 @@ var TEScriptStackBase = Class.create({
 		try{
 			eval(inCallFunction);
 		} catch(e) {
-			alert("callEval: " + inCallFunction + "\nerror: " + e.toString() + "\nstack trace:\n\n" + e.stack + localStack.callBackStackDump(false) );
-			localStack.remove();
+			alertAndLog("callEval: " + inCallFunction + "\nerror: " + e.toString() + "\nstack trace:\n\n" + e.stack + localStack.callBackStackDump(false) );
+			localStack.exitAction()
 		}
 	},
 
@@ -149,8 +149,8 @@ var TEScriptStackBase = Class.create({
 		try{
 			inCallFunction.apply(localStack,argArray);
 		} catch(e) {
-			alert("callWithArgs error: " + e.toString() + "\nstack trace:\n\n"+e.stack+localStack.callBackStackDump(false));
-			localStack.remove();
+			alertAndLog("callWithArgs error: " + e.toString() + "\nstack trace:\n\n"+e.stack+localStack.callBackStackDump(false));
+			localStack.exitAction()
 		}
 	},
 
@@ -162,12 +162,12 @@ var TEScriptStackBase = Class.create({
 			else
 				setTimeout(this.callEval.bind(undefined,callFunction,this),(delayTime== null?1:delayTime));
 		} catch(e) {
-			alert('Action call error '+e.toString());
+			alertAndLog('Action call error '+e.toString());
 			this.remove();
 		}
 	},
 
-	exitAction : function () {
+	exitAction : function (name) {
 		try {
 			var callbackFunction = null;
 			var popedFlag = null;
@@ -179,12 +179,17 @@ var TEScriptStackBase = Class.create({
 				popedFlag = stack.flag;
 				if("DoublePOP" == popedFlag)
 					this.call(callbackFunction);
+				if(name!=null) {
+					if(name==actionScript.name) {
+						var matchedName=true;
+					} else if(matchedName!=null) return;
+				}
 			} while(this.callBackStack.length > 0)
 			if(callbackFunction != null)
 				this.call(callbackFunction);
 		} catch(e) {
-			 alert('Action call error '+e);
-			 this.remove();
+			alertAndLog('Action call error '+e);
+			this.remove();
 		}
 	},
 
@@ -217,7 +222,7 @@ var TEScriptStackBase = Class.create({
 			if(stack.flag == "DoublePOP")
 				this.popAndCall();
 		} catch(e) {
-			alert('Action call error '+e);
+			alertAndLog('Action call error '+e);
 			this.remove();
 		}
 	},
@@ -246,7 +251,7 @@ var TEScriptStackBase = Class.create({
 			if(callbackFunction != null)
 				this.call(callbackFunction);
 		} catch(e) {
-			alert('Action callback error '+e);
+			alertAndLog('Action callback error '+e);
 			this.remove();
 		}
 	},
@@ -332,7 +337,7 @@ var actionScript = Class.create(basePageElement,{
 		try{
 			this.executeFollowOnActionsInternal(localStack, currentTask, taskListPos, taskPos);
 		} catch(e) {
-			alert("executeFollowOnActions error: " + e.toString() + "\nstack trace:\n\n"+e.stack);
+			alertAndLog("executeFollowOnActions error: " + e.toString() + "\nstack trace:\n\n"+e.stack);
 		}
 	},
 	
@@ -480,7 +485,7 @@ var actionScript = Class.create(basePageElement,{
 				throw "Parameter/variable not found";
 			var parameterLocation = parameterArray[parameterPosition];
 		} catch(e){
-			alert("parameterCheck error:"+ e.toString() + "\nstack trace:\n\n"+e.stack);
+			alertAndLog("parameterCheck error:"+ e.toString() + "\nstack trace:\n\n"+e.stack);
 			localStack.exitAction();
 			return;
 		}
@@ -503,7 +508,7 @@ var actionScript = Class.create(basePageElement,{
 					}
 					var compareWith = checkParameter.conditionCompareType == "" ? "regex" : checkParameter.conditionCompareType.toLowerCase();
 				} catch (e) {
-					alert("Error in parameter check: "+checkParameter.originalAction+" variable:"+ parameterLocation.name +" condition: "+ checkParameter.condition +" type: "+ checkParameter.conditionCompareType +" error: "+ e.toString() + "\nstack trace:\n\n"+e.stack);
+					alertAndLog("Error in parameter check: "+checkParameter.originalAction+" variable:"+ parameterLocation.name +" condition: "+ checkParameter.condition +" type: "+ checkParameter.conditionCompareType +" error: "+ e.toString() + "\nstack trace:\n\n"+e.stack);
 					localStack.exitAction();
 					return;
 				}
@@ -513,7 +518,7 @@ var actionScript = Class.create(basePageElement,{
 							regex = new RegExp(valueTocompareFrom);
 							resultEval = String(resultTocompareTo).match(regex);
 						} catch(e) {
-							alert("An error has occured:" + e);
+							alertAndLog("An error has occurred:" + e);
 							localStack.exitAction();
 						}
 						resultEval = (resultEval != null);
@@ -548,7 +553,7 @@ var GLOBAL_ACTION_COMPARE = {
 	,check:   function() {alert ("GLOBAL_ACTION_COMPARE bug/debug mode not set");} 
 	,checkDebug:  function (localStack,followOnAction) {
 			result=this.checkNoDebug(localStack,followOnAction);
-			alert("GLOBAL_ACTION_COMPARE Debug"
+			alertAndLog("GLOBAL_ACTION_COMPARE Debug"
 				+"\ncompareOn: "+followOnAction.compareOn
 				+"\ncompareOnType: "+followOnAction.compareOnType
 				+"\ncondition: "+followOnAction.condition
@@ -675,7 +680,7 @@ var GLOBAL_ACTION_TYPE = {
 				var action=localStack.actionScript.actionType.toUpperCase();
 	 			this[(this[action]==null?"default":action)](callObject,localStack);
 	 		} catch (e) {
-	 			alert("Error in execute TE Script action: "+ action +" error : " + e.toString() + "\nstack trace:\n\n"+e.stack+"\n"+this.getDump(callObject,localStack,false));
+	 			alertAndLog("Error in execute TE Script action: "+ action +" error : " + e.toString() + "\nstack trace:\n\n"+e.stack+"\n"+this.getDump(callObject,localStack,false));
 				localStack.exitAction();
 	 		}
 	 	}
@@ -749,17 +754,19 @@ var GLOBAL_ACTION_TYPE = {
 				}
 			,'onFailure': function (transport,exception) {
 					var error = (exception==null ? transport.statusText : ( typeof(exception)=="object" ? exception.toString() : exception ));
-					alert("action request error: "+error);
+					alertAndLog("action request error: "+error);
 					GLOBAL_ACTION_TYPE.setReturnResult(thisObject,localStack,"ERROR","Server action error: " +error);
 					localStack.actionReturnValue = false;
-					localStack.exitAction();
+//					localStack.exitAction();
+					GLOBAL_TASKTYPE.exit(thisObject,localStack);
 				}
 			,'onException':function(transport,exception) {
 					var error = (exception==null ? transport.statusText : ( typeof(exception)=="object" ? exception.toString() : exception ));
-					alert("action request error: "+error);
+					alertAndLog("action request error: "+error);
 					GLOBAL_ACTION_TYPE.setReturnResult(thisObject,localStack,"ERROR",exception.name + "Server action error: " +exception.toString());
 					localStack.actionReturnValue = false;
-					localStack.exitAction();
+//					localStack.exitAction();
+					GLOBAL_TASKTYPE.exit(thisObject,localStack);
 				}
 			}); 
 		}
@@ -897,6 +904,10 @@ var GLOBAL_TASKTYPE = {
 	 	}
 	,execute: function() {alert ("bug/debug mode not set");} 
 	,"action": function(callObject,localStack,task) {
+			task.runAction = task;
+			this.runaction(callObject,localStack,task);
+/*		
+		
 			var emptyLocalVariables=$H();
 			localStack.push(emptyLocalVariables, task, localStack.thisObject.callBackText + ".taskProcessor(" + localStack.getStackCallBackText() + ",'" + task.listLocation + "'," + task.listActionPos +"," + task.listPos + "," + (task.pos+1) + ")", "action");
 			if(localStack.actionScript.lockScreen)
@@ -906,8 +917,10 @@ var GLOBAL_TASKTYPE = {
 									, null, null
 									, localStack.thisObject.callBackText + ".executeTEScript(" + localStack.getStackCallBackText() + ")", "actionHead" );
 			this.breakTaskList(callObject,localStack,task);
+*/
 		}
 	,"alert" : function(callObject,localStack,task) {alert(encodeMessage(task.message, localStack.localVariables.parameters));}
+	,"alertandlog" : function(callObject,localStack,task) {alertAndLog(encodeMessage(task.message, localStack.localVariables.parameters));}
 	,"assignsharedconstant" : function(callObject,localStack,task) {
 			var taskList = {location:task.listLocation , actionPos:task.listActionPos , task:task , localStack:localStack, pos:task.listPos, taskPos:task.pos };
 			callObject.setVariables(taskList,callObject.setDefaultParameter);
@@ -983,7 +996,7 @@ var GLOBAL_TASKTYPE = {
 			$(callObject.consoled).insert(encodeMessage(task.message, localStack.localVariables.parameters) + "\n");
 		}
 	,"exit" : function(callObject,localStack,task) {
-			localStack.exitAction();
+			localStack.exitAction(task.name==null?null:task.name);
 			this.breakTaskList(callObject,localStack,task);
 		}
 	,"forbegin" : function(callObject,localStack,task) {
@@ -1138,7 +1151,7 @@ var GLOBAL_TASKTYPE = {
 									, null, null
 									, localStack.thisObject.callBackText + ".executeTEScript(" + localStack.getStackCallBackText() + ")", "actionHead" );
 			} catch(e) {
-				alert(e);
+				alertAndLog('runaction '+e);
 			}
 			this.breakTaskList(callObject,localStack,task);
 		}
@@ -1182,5 +1195,6 @@ GLOBAL_TASKTYPE.gotoaction=GLOBAL_TASKTYPE.callaction;
 GLOBAL_TASKTYPE.setglobal=GLOBAL_TASKTYPE.assignsharedconstant;
 GLOBAL_TASKTYPE.setlocal=GLOBAL_TASKTYPE.assignlocalparameter;
 GLOBAL_TASKTYPE.checkif=GLOBAL_TASKTYPE.if;
+GLOBAL_TASKTYPE.exitaction=GLOBAL_TASKTYPE.exit;
 
 

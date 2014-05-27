@@ -16,6 +16,9 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  *********************************************************************************/
+ TE_check_session_timeout();
+ TE_check_feature_allowed('admin');
+
 $ini=ini_get_all();
 $returnObject = array(
 		 'returnCode' => 'true'

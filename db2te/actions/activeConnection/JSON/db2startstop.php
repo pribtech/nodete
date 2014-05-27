@@ -15,7 +15,7 @@
  *  limitations under the License.
  *********************************************************************************/
 
-/* main() - start *************************************************************/
+ TE_check_session_timeout();
 
 $instanceName	= db2Parameter('instanceName');
 $setState 		= db2Parameter('setState');

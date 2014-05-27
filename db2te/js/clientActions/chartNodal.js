@@ -1378,8 +1378,8 @@ CORE_CLIENT_ACTIONS.set("chartNodal",  Class.create(basePageElement, {
 				try{
 					if(result == null) throw "An invalid JavaScript object was returned";
 					if(result.flagGeneralError == true && result.connectionError == true) initiateConnectionRefresh();
-					if(result.flagGeneralError == true || result.returnCode == "false" || result.returnCode == false) 
-						throw (Object.isString(result.returnValue)?result.returnValue:result.returnValue.STMTMSG);
+					if(result.flagGeneralError == true ||  isReturnCodeNotOK(result)) 
+						throw getReturnErrorMessage(result);
 				} catch(e) {
 					var error=document.createElement('a');
 					error.innerHTML=e;
@@ -1470,9 +1470,9 @@ CORE_CLIENT_ACTIONS.set("chartNodal",  Class.create(basePageElement, {
 				}
 				if(result.flagGeneralError == true && result.connectionError == true)
 					initiateConnectionRefresh();
-				if(result.flagGeneralError == true || result.returnCode == "false" || result.returnCode == false) {
+				if(result.flagGeneralError == true ||  isReturnCodeNotOK(result)) {
 					if(Object.isString(result.returnValue)) {
-						thisObject.setError(result.returnValue==""?"Error but no message":result.returnValue);
+						thisObject.setError(getReturnErrorMessage(result));
 						return;
 					} 
 					thisObject.setError(result.returnValue.STMTMSG);
@@ -1514,10 +1514,10 @@ CORE_CLIENT_ACTIONS.set("chartNodal",  Class.create(basePageElement, {
 				} else if(result.flagGeneralError == true && result.connectionError == true) {
 					initiateConnectionRefresh();
 					return;
-				} if(result.flagGeneralError == true || result.returnCode == "false" || result.returnCode == false) {
-			 		var msg='<div>'+result.returnValue+'</div>';
+				} if(result.flagGeneralError == true ||  isReturnCodeNotOK(result)) {
+			 		var msg='<div>'+getReturnErrorMessage(result)+'</div>';
 				} else
-		 			var msg=result.returnValue;
+		 			var msg=getReturnErrorMessage(result);
 				if(title==null)
 					menuElement.innerHTML=msg;
 				else
@@ -1759,9 +1759,9 @@ CORE_CLIENT_ACTIONS.set("chartNodal",  Class.create(basePageElement, {
 				}
 				if(result.flagGeneralError == true && result.connectionError == true)
 					initiateConnectionRefresh();
-				if(result.flagGeneralError == true || result.returnCode == "false" || result.returnCode == false) {
+				if(result.flagGeneralError == true ||  isReturnCodeNotOK(result)) {
 					if(Object.isString(result.returnValue)) {
-						thisObject.setError("Error saving, error: "+ result.returnValue);
+						thisObject.setError("Error saving, error: "+ getReturnErrorMessage(result));
 						return;
 					}
 					openModalAlert("Error saving, error: "+ result.returnValue.STMTMSG+"\n SQL Statement: "+thisObject.save);
@@ -1852,9 +1852,9 @@ CORE_CLIENT_ACTIONS.set("chartNodal",  Class.create(basePageElement, {
 					}
 				}
 			if(this.show=='noDisplay')
-				openModalAlert(unescape(message));
+				openModalAlert(decodeURIComponent(message));
 			else
-				this.setDisplay("<table style='width:100%;height:100%'><tr><td align='center'><h2>"+unescape(message)+"</h2></td></tr></table>");
+				this.setDisplay(formattedErrorHTML(decodeURIComponent(message)));
 		} catch(e) {openModalAlert('setError failed: '+e+" "+message);}
 	},
 	setFit2Panel: function() {

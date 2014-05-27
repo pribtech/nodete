@@ -27,15 +27,7 @@ var modalPanel = Class.create(panel, {
 		activeModalPanel.set(this.elementUniqueID, this);
 		this.destroyOnHide = false;
 		this.CallingActionStack = callingActionStack;
-		if(this.CallingActionStack != null) {
-			try{
-					this.CallingActionStack.localVariables.result = {
-							returnCode: 'false',
-							returnValue : ""
-						};
-			}catch (e){
-			}
-		}
+		this.setInitialResults();
 		this.hideMenuBar = coalesce(hideMenuBar,false);
 		this.level = getTopZindex();
 		this.visibleFloatingObject = null;
@@ -54,10 +46,19 @@ var modalPanel = Class.create(panel, {
 		this.contentStyle=coalesce(this.contentStyle,"");
 		this.draw();
 	},
+	setInitialResults: function() {
+		if(this.CallingActionStack == null) return;
+		if(this.CallingActionStack.localVariables == null) this.CallingActionStack.localVariables={};
+		this.CallingActionStack.localVariables.result = {
+				returnCode: "false",
+				returnValue : ""
+			};
+	},
 	setDestroyOnHide: function(destroyOnHide) {
 		this.destroyOnHide = destroyOnHide;
 	},
 	show_and_size: function() {
+		this.setInitialResults();
 		this.size();
 	},
 	setContent: function(Content, Title, PanelInformation) {
@@ -80,7 +81,7 @@ var modalPanel = Class.create(panel, {
 		Title = Title.replace(/ /g, '&nbsp;');
 		if(panelTitle != null) {
 			if(PanelInformation != "")
-				Title = "<table><tr><td>" + Title + "</td><td><img style='float:none' id='{$pageID}_PageInformationButton' onMouseUp=\"stopPropagation(event);\" onMouseDown='show_GENERAL_BLANK_POPUP(null, decodeURIComponent(\"<NOBR>" + escape(PanelInformation) + "</NOBR>\"));' src=\"images/info.gif\"/></td></tr></table>";
+				Title = "<table><tr><td>" + Title + "</td><td><img style='float:none' id='{$pageID}_PageInformationButton' onMouseUp=\"stopPropagation(event);\" onMouseDown='show_GENERAL_BLANK_POPUP(null, decodeURIComponent(\"<NOBR>" + encodeURIComponent(PanelInformation) + "</NOBR>\"));' src=\"images/info.gif\"/></td></tr></table>";
 			panelTitle.update(Title);
 		}
 		this.size();

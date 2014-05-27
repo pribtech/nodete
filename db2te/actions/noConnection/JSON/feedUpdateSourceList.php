@@ -14,11 +14,13 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  *********************************************************************************/
+TE_check_session_timeout();
+
 include_once(PHP_INCLUDE_BASE_DIRECTORY . "ObjectFeedSourceManager.php");
 
 $returnInformation = array();
 $returnInformation['returnCode'] = 'false';
-$returnInformation['returnValue'] = 'Error updateing source list.';
+$returnInformation['returnValue'] = 'Error updating source list.';
 
 
 $returnInformation['returnValue'] = 	feedSourceManager::editSource(rawurldecode($id));

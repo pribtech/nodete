@@ -147,36 +147,22 @@ CORE_CLIENT_ACTIONS.set("display",Class.create(CORE_CLIENT_ACTIONS.get("list_tab
 					},
 					'onSuccess': function(transport) {
 						var result = transport.responseJSON;
-						if(result == null)
-						{
+						if(result == null) {
 							thisObject.setError("<table style='width:100%;height:100%'><tr><td align='center'><h2>An invalid JavaScript object was returned</h2></td></tr></table>");
 							return;
 						}
 						if(result.flagGeneralError == true && result.connectionError == true)
-						{
 							initiateConnectionRefresh();
-						}
-						if(result.flagGeneralError == true || result.returnCode == "false")
-						{
-							if(Object.isString(result.returnValue))
-							{
-								thisObject.setError("<table style='width:100%;height:100%'><tr><td align='center'><h2>" + result.returnValue + "</h2></td></tr></table>");
-							}
-							else
-							{
-								thisObject.setError("<table style='width:100%;height:100%'><tr><td align='center'><h2>" + result.returnValue.STMTMSG + "</h2></td></tr></table>");
-							}
+						if(result.flagGeneralError == true ||  isReturnCodeNotOK(result)) {
+							thisObject.setError(getReturnMessageFormatted(result));
 							return;
 						}
 						
-						if(result != null)
-						{
+						if(result != null) {
 							var resultSet = result.returnValue.STMTReturn['CORE_DATA_QUERY'].resultSet[0];
 							thisObject.baseTableData.resultSetIndexByColumnName = {};
 							for(var i = 0; i < resultSet.columnsInfo.name.length; i++)
-							{
 								thisObject.baseTableData.resultSetIndexByColumnName[resultSet.columnsInfo.name[i]] = i;
-							}
 							thisObject.baseTableData.columnsInfo = resultSet.columnsInfo;
 							thisObject.baseTableData.baseData = resultSet.data;
 							thisObject.baseTableData.updateTime = resultSet.resultTime;
@@ -190,15 +176,11 @@ CORE_CLIENT_ACTIONS.set("display",Class.create(CORE_CLIENT_ACTIONS.get("list_tab
 							var i = 0;
 							
 							var tableColumnRenderingModule = null;
-							for(i=0; i<keyLength; i++)
-							{
+							for(i=0; i<keyLength; i++) {
 								tableColumnRenderingModule = TABLE_COLUMN_RENDERING_MODULES.get(keys[i]);
-								if(tableColumnRenderingModule != null)
-								{
+								if(tableColumnRenderingModule != null) {
 									if(tableColumnRenderingModule.ContainsSecondaryQueries == true)
-									{
 										tableColumnRenderingModule.processSecondaryQueriesReturn(thisObject.baseTableData, result.returnValue.STMTReturn);
-									}
 								}
 							}
 							

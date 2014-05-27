@@ -14,6 +14,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  *********************************************************************************/
+TE_check_session_timeout();
 require_once(PHP_INCLUDE_BASE_DIRECTORY . 'FunctionInlineBarGraph.php');
 	$database = strtoupper(connectionManager::getConnection()->database);
 	$prodReleaseNot95 = false;

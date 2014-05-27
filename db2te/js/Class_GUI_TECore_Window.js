@@ -828,7 +828,7 @@ var pageWindow = Class.create(basePageElement, {
 				PanelInformation = "";
 			if (PanelInformation != "") {
 				newTabTitle = newTitle;
-				newTitle = "<table cellpadding=\"0\" cellspacing=\"0\" ><tr><td valign='top'>" + newTabTitle + "&nbsp;&nbsp;&nbsp;</td><td><img style='float:none' id='{$pageID}_PageInformationButton' onMouseUp=\"stopPropagation(event);\" onMouseDown='show_GENERAL_BLANK_POPUP(\""+newTabTitle+"\", decodeURIComponent(\"<div style=\\\"padding:10px;width:350px;\\\">" + escape(PanelInformation) + "</div>\"));' src=\"images/info.gif\"/></td></tr></table>";
+				newTitle = "<table cellpadding=\"0\" cellspacing=\"0\" ><tr><td valign='top'>" + newTabTitle + "&nbsp;&nbsp;&nbsp;</td><td><img style='float:none' id='{$pageID}_PageInformationButton' onMouseUp=\"stopPropagation(event);\" onMouseDown='show_GENERAL_BLANK_POPUP(\""+newTabTitle+"\", decodeURIComponent(\"" + encodeURIComponent("<div style=\"padding:10px;width:350px;\">"+PanelInformation+"</div>\">") + "));' src=\"images/info.gif\"/></td></tr></table>";
 			}
 			windowTitle.update(newTitle);
 		}

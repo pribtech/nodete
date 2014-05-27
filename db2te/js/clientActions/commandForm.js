@@ -78,11 +78,8 @@ CORE_CLIENT_ACTIONS.set("commandForm",Class.create(basePageElement, {
 					throw "An invalid JavaScript object was returned"
 				if(result.flagGeneralError == true && result.connectionError == true)
 					initiateConnectionRefresh();
-				if(result.flagGeneralError == true || result.returnCode == "false" || result.returnCode == false) {
-					if(Object.isString(result.returnValue)) 
-						throw (result.returnValue==""?"Error but no message":result.returnValue);
-					throw result.returnValue.STMTMSG;
-				}
+				if(result.flagGeneralError == true ||  isReturnCodeNotOK(result) )
+					throw getReturnErrorMessage(result);
 				try {eval('thisObject.'+thisProcessFunction+'(result.returnValue,thisFunctionArg)')} 
 			},
 			'onException': function(transport,exception) {

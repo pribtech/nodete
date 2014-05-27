@@ -1322,3 +1322,35 @@ function decodeTableEventElement(event) {
 	}
 	return elementDetail;
 }
+
+function isReturnCodeOK(results) {
+	return !isReturnCodeNotOK(results);
+}
+
+function isReturnCodeNotOK(results) {
+	return (results.returnCode === false || results.returnCode === "false" || results.returnCode=="ERROR");
+}
+
+function getReturnErrorMessage(results) {
+	if (typeof(results.returnValue) != "undefined") {
+		if(Object.isString(results.returnValue))
+			return decodeURIComponent(results.returnValue);
+	}
+	if (typeof(results.returnMessage) != "undefined")	
+		return decodeURIComponent(results.returnMessage);
+	if (typeof(results.message) != "undefined")
+		if(Object.isString(results.returnMessage) && (results.returnMessage != ""))
+			return decodeURIComponent(results.message);
+	if (typeof(results.returnValue) != "undefined")
+		if (typeof(results.returnValue.STMTMSG) != "undefined")
+			return decodeURIComponent(results.returnValue.STMTMSG);
+	return "An error occurred, no message was provided.";
+}
+
+
+function formattedErrorHTML(message) {
+	return "<table style='width:100%;height:100%'><tr><td align='center'><h2>"+message+"</h2></td></tr></table>";
+}
+function getReturnMessageFormatted(results) {
+	return formattedErrorHTML(getReturnErrorMessage(results));
+}

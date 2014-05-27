@@ -21,11 +21,11 @@ try{
 	$ibmsso=getIBMSSO();
 	$ibmsso->setCode();
 	echo "<div id='title'>IBM SSO Check successfull, now get details</div>";
-	$ibmssoBearer=json_encode($ibmsso->getBearer());
+	$ibmssoBearer=$ibmsso->getBearer();
 	echo <<<ENDSCRIPT
 <script type="text/javascript">
-var ibmssoBearer = '$ibmssoBearer';
-alert('test $ibmssoBearer');
+var ibmssoBearer = $ibmssoBearer;
+alert("test "+$ibmssoBearer);
 
 loadNewPageLayout(
 		{target			: 'signon'

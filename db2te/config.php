@@ -42,14 +42,14 @@ function setDefineDirectory($var,$valueWindows,$valueLinux=null) {
 @define("TE_VERSION", "v".MAJOR_VERSION.".".MINOR_VERSION);
 
 /******************************************************************************
- * END - VERSION INFORMATION
+ * BASE settings
  *****************************************************************************/
 if( getenv('TE_SETTINGS') )
 	try{
 		$settings =  json_decode(getenv('TE_SETTINGS'), true);
 		foreach ($settings as $key => $value) {
 			error_log("Env set ".$key." = ".$value,0);
-			@define($key,$value);
+			setDefine($key,$value);
 		}
 	} catch (Exception $e){
 		error_log('Error loading env settings, exception: '.$e->getMessage(),0);
@@ -87,20 +87,15 @@ if( getenv('TE_SETTINGS') )
 * @var  string USER_PREFERENCES_DIRECTORY */
 @define("USER_PREFERENCES_DIRECTORY", "./preferences/");
 
-
 /** User configuration file Import
  */
-if(is_file(USER_PREFERENCES_DIRECTORY . "config.php") && is_readable(USER_PREFERENCES_DIRECTORY . "config.php")) {
-		include_once(USER_PREFERENCES_DIRECTORY . "config.php");
-}
-
-/******************************************************************************
- * END - USER PREFERENCES DIRECTORY
- *****************************************************************************/
+if(is_file(USER_PREFERENCES_DIRECTORY . "config.php") && is_readable(USER_PREFERENCES_DIRECTORY . "config.php"))
+	include_once(USER_PREFERENCES_DIRECTORY . "config.php");
 
 /******************************************************************************
  * GENERAL CONFIGURATION PARAMETERS
  *****************************************************************************/
+setDefine("BLUEMIX", (getenv('VCAP_APPLICATION')?true:false) );
 
 /** Identifies if the TE is publicly hosted, Items like droping the schema
  * at then end of a tutorial will automaticly be run for you
@@ -110,7 +105,7 @@ setDefine("DMC_IS_PUBLICLY_HOSTED", "false");
 /** Identifies if the TE should raise a warning before the browser reloads or
 *   navigates away from the TE
 * @var  bool ENABLE_CONFIRM_LEAVE_VIA_BROWSER_NAVAGATION */
-@setDefine("ENABLE_CONFIRM_LEAVE_VIA_BROWSER_NAVIGATION", true);
+setDefine("ENABLE_CONFIRM_LEAVE_VIA_BROWSER_NAVIGATION", true);
 
 /** XML Parsing Engine
 * @var  string XML_PARSING_ENGINE */
@@ -128,10 +123,6 @@ setDefine("SHOW_IE_PERFORMANCE_WARNING", true);
  * not have the need PHP extension installed.
 * @var  boolean ENABLE_PHP_EXTENSION_CHECK */
 setDefine("ENABLE_PHP_EXTENSION_CHECK", true);
-
-/******************************************************************************
- * END - GENERAL CONFIGURATION PARAMETERS
- *****************************************************************************/
 
 /******************************************************************************
  * DEFAULT CONNECTION SETTINGS
@@ -297,12 +288,13 @@ setDefine("CONNECTED", "Connected");
 setDefine("DISCONNECTED", "Disconnected");
 
 /******************************************************************************
- * END - DEFAULT CONNECTION SETTINGS
- *****************************************************************************/
-
-/******************************************************************************
  * SESSION SETTINGS
  *****************************************************************************/
+/**
+ * The time in minutes which a given session will time out and request session signon. Set to boolean false to disable.
+ * 
+ */
+setDefine("SESSION_SIGNON_TIMEOUT", null);
 
 /**
  * The IP address to only allow connection from or boolean false to disable
@@ -330,7 +322,7 @@ setDefine("VERIFY_ON_CLIENT_ADDRESS", true);
 setDefine("CYCLE_SESSION_ID", false);
 
 /**
- * The time in which a given session will time out. Set to boolean false to disable.
+ * The time in which a given session will time out and clear out session details. Set to boolean false to disable.
  * @var  int SESSION_TIMEOUT_IN_MIN */
 setDefine("SESSION_TIMEOUT_IN_MIN", 30);
 
@@ -341,12 +333,9 @@ setDefine("SESSION_TIMEOUT_IN_MIN", 30);
 setDefine("SESSION_UNIQUE_PATH_ID", false);
 
 /******************************************************************************
- * END - SESSION SETTINGS
- *****************************************************************************/
-
-/******************************************************************************
  * DEVELOPER SETTINGS
  *****************************************************************************/
+
 /** Show errors that would normaly be suppresed
 * @var  boolean ENABLE_VERBOSE */
 setDefine("ENABLE_VERBOSE", false);
@@ -381,22 +370,16 @@ setDefine("DEBUG_LOG_2_CONSOLE", false);
 setDefine("DEVELOPMENT_MODE", false);
 
 /******************************************************************************
- * END - DEVELOPER SETTINGS
- *****************************************************************************/
-
-/******************************************************************************
  * SECURITY SETTINGS
  *****************************************************************************/
-
 
 /** The Regex used to ensure filenames are valid
 * @var  string FILE_VERIFICATION_REGEX */
 setDefine("FILE_VERIFICATION_REGEX", '/^([\.]?[a-zA-Z0-9_\/-]+)+$/');
-
-
-/******************************************************************************
- * END - SECURITY SETTINGS
- *****************************************************************************/
+setDefine("SESSION_SIGNON",true);
+setDefine("SSO",false); // set to true if SSO signon
+setDefine("SSO_CLIENT",false);  // set to {"client_id":"xxxx" ,"client_secret":"xxxxx"} to work.
+setDefine("BASE_FEATURES", (DEVELOPMENT_MODE?"development":""));
 
 /******************************************************************************
  * BASE FOLDERS AND FILES
@@ -412,13 +395,11 @@ setDefine("CUSTOM_TE_NEW_TAB", USER_PREFERENCES_DIRECTORY . "/menu_CUSTOM_TE_NEW
 * @var  string TE_HOME_PAGE */
 setDefine("CUSTOM_TE_HOME_PAGE_LAYOUT", "/TE_HOME_PAGE.xml");
 
-
 /** This is the page that is displayed when first loading the TE 
  ************ FOR TOUCH SYSTEMS (iPad) ********************
  * This file contains only a XML of a PageWindow
 * @var  string TE_HOME_PAGE */
 setDefine("CUSTOM_TE_TOUCH_HOME_PAGE_LAYOUT", "/TE_HOME_PAGE.xml");
-
 
 /**
  * Base action directory when there is no connection - These action can be run when no connection has been registered
@@ -460,7 +441,6 @@ setDefine("QUERY_FILES_DIRECTORY", "./queryfiles/");
 /**
  * Base directory for all html files
  *
- *
  * DO NOT CHANGE
  *
  * The HTML directory needs to be in the same
@@ -495,7 +475,6 @@ setDefine("JS_BASE_DIRECTORY", "./js/");
 
 /**
  * Base directory for all image files
- *
  *
  * DO NOT CHANGE
  *
@@ -563,10 +542,6 @@ setDefineFile("JAVA_DB_DRIVER_DB2_LICENSE", "C:\\Program Files\\IBM\\SQLLIB\\jav
 setDefineDirectory("JAVA_DB_DRIVER_JSON_NOSQL_DB2", "C:\\Program Files\\IBM\\SQLLIB\\json\\lib","/home/db2inst1/SQLLIB/json/lib/");
 
 /******************************************************************************
- * END -  BASE FOLDERS AND FILES
- *****************************************************************************/
-
-/******************************************************************************
  * TABLE DISPLAY SETTINGS
  *****************************************************************************/
 /** The maximum number of rows to check if exists when the row count does not work
@@ -605,11 +580,6 @@ setDefine("TABLE_TITLE_COLOR", 'id="TableTitlerRow"');
 *@var bool COMPARE_ENABLED_BY_DEFAULT
 */
 setDefine("COMPARE_ENABLED_BY_DEFAULT", false);
-
-
-/******************************************************************************
- * END - TABLE DISPLAY SETTINGS
- *****************************************************************************/
 
 /******************************************************************************
  * Ad Hoc SQL SETTINGS
@@ -677,10 +647,7 @@ setDefine("SHELL_COMMAND_TERM_CHAR", "");
 /**
 * @var string AD_HOC_SCRIPT_MODE */
 setDefine("AD_HOC_SCRIPT_MODE", "SQL");
-/******************************************************************************
- * END - Ad Hoc SQL SETTINGS
- *****************************************************************************/
-
+ 
 /******************************************************************************
  * SSH SETTINGS
 *****************************************************************************/
@@ -699,12 +666,9 @@ setDefine("PHPSECLIB_SSH_AVAILABLE", class_exists("Net_SSH2"));
 setDefine("PHPSECLIB_SSH_ENABLED", true);
 setDefine("SSH_PHP_EXTENSION_AVAILABLE", extension_loaded("ssh2"));
 setDefine("SSH_PHP_EXTENSION_ENABLED", true);
-/******************************************************************************
- * END - SSH SETTINGS
-*****************************************************************************/
 
 /******************************************************************************
- * Start - Floating Window Options
+ * Floating Window Options
  *****************************************************************************/
 /**
 * @var integer DEFAULT_FLOATING_WINDOW_HEIGHT */
@@ -715,10 +679,6 @@ setDefine("DEFAULT_FLOATING_WINDOW_HEIGHT", 500);
 setDefine("DEFAULT_FLOATING_WINDOW_WIDTH", 700);
 
 /******************************************************************************
- * END - Floating Window Options
- *****************************************************************************/
- 
-/******************************************************************************
  * Start - Math Options
  *****************************************************************************/
 /**
@@ -726,27 +686,16 @@ setDefine("DEFAULT_FLOATING_WINDOW_WIDTH", 700);
 setDefine("ACCEPTED_OPERATORS", '/[+*\/\\%-]/');
 
 /******************************************************************************
- * END - Math Options
- *****************************************************************************/
-
-/******************************************************************************
- * Start - MQ Options
+ * MQ Options
 *****************************************************************************/
 
 setDefineDirectory("MQ_JARS", "C:\\Program Files\\IBM\WebSphere MQ\\java\\lib", "/opt/IBM/WebSphere MQ/java/lib");
 
 /******************************************************************************
- * END - MQ Options
+ * HADOOP Options
 *****************************************************************************/
 
-/******************************************************************************
- * Start - HADOOP Options
-*****************************************************************************/
 setDefineDirectory("HADOOP_HOME","C:\\cygwin\\usr\\share\\hadoop\\","/usr/share/hadoop/");
-
-/******************************************************************************
- * END - HADOOP Options
-*****************************************************************************/
 
 /******************************************************************************
  * Define command function

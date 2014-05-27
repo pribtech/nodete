@@ -14,6 +14,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  *********************************************************************************/
+TE_check_session_timeout();
 
 $username = getParameter('TE_DATABASE_LOGIN_USERNAME', "");
 $database = getParameter('TE_DATABASE_LOGIN_DATABASE', ""); 

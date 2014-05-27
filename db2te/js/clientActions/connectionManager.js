@@ -222,7 +222,15 @@ function getValueBasedOnConnection(isValue,isNotValue,Node,connectionObject ) {
 	if(isDatabaseConnectionVersion(Node,connectionObject)) return isValue;
 	return isNotValue;
 }
-
+var BASE_FEATURES_ARRAY=null;
+function rebuildBaseFeatures() {
+	BASE_FEATURES_ARRAY=[];
+	var feature=BASE_FEATURES.split(",");
+	for (var i = 0; i < feature.length; i++)
+		BASE_FEATURES_ARRAY[feature[i]]=true;
+	if(BLUEMIX) BASE_FEATURES_ARRAY['BLUEMIX']=true;
+	if(SSO) BASE_FEATURES_ARRAY['SSO']=true;
+}
 function isDatabaseConnectionVersion(Node,connectionObject) {
 	if(Node==null) return true; 
 	if(Node.context!=null) 
@@ -230,6 +238,7 @@ function isDatabaseConnectionVersion(Node,connectionObject) {
 	if(Node.notContext!=null) 
 		if(Node.notContext!="") 
 			if(GLOBAL_CONTEXT.inList(Node.notContext)) return false;
+	
 	if(connectionObject==undefined) {
 		connectionObject=ACTIVE_DATABASE_CONNECTION_OBJECT;
 		connectionVersion=ACTIVE_DATABASE_CONNECTION_VERSION;
@@ -246,6 +255,33 @@ function isDatabaseConnectionVersion(Node,connectionObject) {
 			connectionFixpak=null;
 		}
 	}
+	
+	if(Node.DBMS != null)
+		if(Node.DBMS != connectionDBMS && Node.DBMS != "ALL")
+			return false;
+
+	if(BASE_FEATURES_ARRAY==null) rebuildBaseFeatures();
+	if(connectionObject==null) connectionObject=[];
+
+	if(Node.feature!=null) 
+		if(Node.feature!='') {
+			if(connectionObject['features'] == undefined) return false;
+			if(connectionObject['features'][Node.feature] == undefined) 
+				if(BASE_FEATURES_ARRAY[Node.feature] == undefined)
+					return false;
+			if(connectionObject['features'][Node.feature] == false) return false;
+		}
+	
+	if(Node.noFeature!=null) 
+		if(Node.noFeature!='') {
+			if(BASE_FEATURES_ARRAY[Node.noFeature] != undefined) return false;
+			if(connectionObject['features'] != undefined)
+				if(connectionObject['features'][Node.noFeature] != undefined) 
+					if(connectionObject['features'][Node.noFeature] == true) 
+						return false; 
+
+		}
+
 	if(connectionVersion == null) {
 		if (Node.minVersion != 0 && Node.minVersion != null 
 		|| 	Node.minFixPack != 0 && Node.minFixPack != null 
@@ -254,24 +290,7 @@ function isDatabaseConnectionVersion(Node,connectionObject) {
 			return false;
 		return true;
 	}
-	
-	if(Node.DBMS != null)
-		if(Node.DBMS != connectionDBMS && Node.DBMS != "ALL")
-			return false;
 
-	if(Node.feature!=null) 
-		if(Node.feature!='') {
-			if(connectionObject['features'] == undefined) return false;
-			if(connectionObject['features'][Node.feature] == undefined) return false;
-			if(connectionObject['features'][Node.feature] == false) return false;
-		}
-	if(Node.noFeature!=null) 
-		if(Node.noFeature!='') {
-			if(connectionObject['features'] == undefined) return false;
-			if(connectionObject['features'][Node.noFeature] != undefined) return false;
-			if(connectionObject['features'][Node.noFeature] == false) return false; 
-		}
-	
 	if( Node.minVersion != 0 && Node.minVersion != null ) {
 		if(	Node.minVersion > connectionVersion) return false;
 		if(	Node.minVersion == connectionVersion)
@@ -611,12 +630,12 @@ CORE_CLIENT_ACTIONS.set("connectionManager",Class.create(basePageElement, {
 	getConnectionStatusImage: function (connection) {
 		if(connection['driverAvailable']!=null)
 			if(!connection['driverAvailable'])
-				return "<img alt='N' title='Driver Broken' src='images/icon-lock-broken.gif' id='" + this.elementName + "_" + i + "_PageInformationButton' onMouseUp=\"stopPropagation(event);\" onMouseDown='show_GENERAL_BLANK_POPUP(null, decodeURIComponent(\"<div style=\\\"padding:10px;width:350px\\\">" + escape(connection['connectionStatus']) + "</div>\"));'/>"
+				return "<img alt='?' title='Driver Broken' width='30' height='30' src='images/icon-lock-broken.gif' id='" + this.elementName + "_" + i + "_PageInformationButton' onMouseUp=\"stopPropagation(event);\" onMouseDown='show_GENERAL_BLANK_POPUP(null, decodeURIComponent(\"<div style=\\\"padding:10px;width:350px\\\">" + encodeURIComponent(connection['connectionStatus']) + "</div>\"));'/>"
 		if(!connection['authenticated'])
 			return "<img alt='N' title='Not authenticated' src='images/close_s.gif'/>";
 		if(connection['connectionStatus'])
 			return "<img alt='Y' title='Authenticated' src='images/unlock_h.gif'/>";
-		return "<img alt='?' title='Connection error' src='images/alert.gif' id='" + this.elementName + "_" + i + "_PageInformationButton' onMouseUp=\"stopPropagation(event);\" onMouseDown='show_GENERAL_BLANK_POPUP(null, decodeURIComponent(\"<div style=\\\"padding:10px;width:350px\\\">" + escape(connection['connectionStatus']) + "</div>\"));'/>";
+		return "<img alt='?' title='Connection error' src='images/alert.gif' id='" + this.elementName + "_" + i + "_PageInformationButton' onMouseUp=\"stopPropagation(event);\" onMouseDown='show_GENERAL_BLANK_POPUP(null, decodeURIComponent(\"<div style=\\\"padding:10px;width:350px\\\">" + encodeURIComponent(connection['connectionStatus']) + "</div>\"));'/>";
 	},
 	
 	updateData: function () {
@@ -783,8 +802,8 @@ CORE_CLIENT_ACTIONS.set("connectionManager",Class.create(basePageElement, {
 					openModalAlert("connectionManager.refreshFeatures: Connection error");
 					return;
 				}
-				if(result.flagGeneralError == true || result.returnCode == "false" || result.returnCode == false) { 
-					openModalAlert("connectionManager.refreshFeatures: "+ result.returnValue);
+				if(result.flagGeneralError == true ||  isReturnCodeNotOK(result)) { 
+					openModalAlert("connectionManager.refreshFeatures: "+ getReturnErrorMessage(result));
 					return;
 				}
 				setActiveDatabaseConnection(result.returnValue);

@@ -14,7 +14,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  *********************************************************************************/
-
+TE_check_session_timeout();
 include_once("./config_WMD.php");
 include_once(PHP_INCLUDE_BASE_DIRECTORY . "ArrayEncodeTableDefinition.php");
 include_once(PHP_INCLUDE_BASE_DIRECTORY . "FunctionLoadXMLDefFromDB.php");

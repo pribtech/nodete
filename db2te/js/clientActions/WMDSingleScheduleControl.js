@@ -232,7 +232,7 @@ CORE_CLIENT_ACTIONS.set("WMDSingleScheduleControl", Class.create(basePageElement
 						}
 						if(result.flagGeneralError == true && result.connectionError == true)
 							initiateConnectionRefresh();
-						if(result.returnCode == "false") {
+						if( isReturnCodeNotOK(result)) {
 							getPanel(this.parentStageID, this.parentWindowID, this.parentPanelID).updateRefreshTime(-1);
 							return;
 						}

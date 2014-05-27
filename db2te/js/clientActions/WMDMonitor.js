@@ -201,9 +201,9 @@ CORE_CLIENT_ACTIONS.set("WMDMonitor", Class.create(basePageElement, {
 						}
 						if(result.flagGeneralError == true && result.connectionError == true)
 							initiateConnectionRefresh();
-						if(result.returnCode == "false") {
+						if( isReturnCodeNotOK(result)) {
 							if(Object.isString(result.returnValue))
-								thisObject.setError("Update available user Workload and schedule list. "+result.returnValue);
+								thisObject.setError("Update available user Workload and schedule list. "+getReturnErrorMessage(result));
 							else if(Object.isString(result.returnValue.message))
 								thisObject.setError("Update available user Workload and schedule list. " + result.returnValue.message);
 							getPanel(thisObject.parentStageID, thisObject.parentWindowID, thisObject.workloadPanel).updateReloadTime(-1);

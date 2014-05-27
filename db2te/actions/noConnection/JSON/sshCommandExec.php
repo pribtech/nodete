@@ -15,7 +15,8 @@
  *  limitations under the License.
  *********************************************************************************/
 
-/* main() - start *************************************************************/
+ TE_check_session_timeout();
+ 
 include_once(PHP_INCLUDE_BASE_DIRECTORY . "ssh.php");
 
 $returnObject = array();

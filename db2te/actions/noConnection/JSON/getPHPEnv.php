@@ -16,6 +16,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  *********************************************************************************/
+TE_check_feature_allowed('admin');
 
 $returnObject = array(
 		 'returnCode' => 'true'
@@ -43,4 +44,3 @@ foreach($_ENV as $key => $value)
 	$returnObject['returnValue']['data'][] = array($key, $value);
 
 echo json_encode($returnObject);
-?>

@@ -27,19 +27,16 @@ if(!Number.prototype.between)
 	Number.prototype.between  = function (min, max) {
 		    return !(this < min || this > max);
 		};
-
 if(!String.prototype.in)
     String.prototype.in = function (str) {
 			for (var i = 0; i < arguments.length; i++)
 				if(this==arguments[i]) return true;
 			return false;
    		};
-
 if(!String.prototype.startsWith)
     String.prototype.startsWith = function (str) {
         	return this.slice(0, str.length) == str;
    		};
-
 if(!String.prototype.toTitle)
     String.prototype.toTitle = function () {
 			var title=this.substr(0,1).toUpperCase()
@@ -65,25 +62,29 @@ if(!String.prototype.to)
 if(!String.prototype.toReal)
     String.prototype.toReal = function () {
 		return parseFloat(this);
-	};
+		};
 if(!String.prototype.toInt)
     String.prototype.toInt = function () {
 		return parseInt(this);
-	};
+		};
 if(!String.prototype.toTimestamp)
     String.prototype.toTimestamp = function () {
 		return Date.parse(this.substr(0,4)+'/'+this.substr(5,2)+'/'+this.substr(8,11))
 			+ parseInt(this.substr(21,3));
-	};
+		};
 if(!String.prototype.toTime)
     String.prototype.toTime = function () {
 		return  Date.parse(this);
-	};
+		};
 if(!String.prototype.toDatetime)
     String.prototype.toDatetime = String.prototype.toTime;
 if(!String.prototype.toDate)
     String.prototype.toDate = String.prototype.toTime;
-	
+if(!String.prototype.CRLF2BR)
+    String.prototype.CRLF2BR = function () {
+		return  this.replace("\n\r","<br/>").replace("\n","<br/>");
+		};
+
 function hideElements() {
 	for (var i = 0; i < arguments.length; i++) document.getElementById(arguments[i]).style.display="none";
 }
@@ -1231,3 +1232,7 @@ var pribProcess = Class.create({
 		this.action.callFunction.apply(this.action.object,this.action.args);
 	}
 });
+function alertAndLog (value) {
+	console.log(value);
+	alert(value);
+}

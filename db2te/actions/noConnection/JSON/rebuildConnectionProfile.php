@@ -16,6 +16,8 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  *********************************************************************************/
+TE_check_session_timeout();
+
 $returndata = array();
 try {
 	if(!isset($connectionProfile))

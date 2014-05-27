@@ -759,7 +759,7 @@ AdhocFormText += '</tr></table></div>'
 		RaiseToTop(this.LocalStage, "RESULTS");
 		var currentTime = new Date();
 		currentTime = (currentTime.getHours()%12) + ":" + (currentTime.getMinutes() < 10 ? "0" + currentTime.getMinutes() : currentTime.getMinutes())+ ":" + (currentTime.getSeconds() < 10 ? "0" + currentTime.getSeconds() : currentTime.getSeconds()) + (currentTime.getHours() > 11 ? " PM" : " AM" );
-		$(this.elementUniqueID + "_AdhocExecutionHistory_List").insert({top:"<li><a title=\"" + adHocSQLText.replace(/"/g, "&quot;")+ "\" onclick=\"$('" + this.elementUniqueID + "_SQL_TEXT_FRAME').value = decodeURIComponent('" + escape(adHocSQLText) + "'); closeOpenFloatingObject();\">" + currentTime + "</a></li>"});
+		$(this.elementUniqueID + "_AdhocExecutionHistory_List").insert({top:"<li><a title=\"" + adHocSQLText.replace(/"/g, "&quot;")+ "\" onclick=\"$('" + this.elementUniqueID + "_SQL_TEXT_FRAME').value = decodeURIComponent('" + encodeURIComponent(adHocSQLText) + "'); closeOpenFloatingObject();\">" + currentTime + "</a></li>"});
 		var queryPack = this.analyzeQuery(adHocSQLText, adHocSQLOptions.STMTermChar);
 		$i = 0;
 		queryPack.each(function(item) {
@@ -1167,58 +1167,40 @@ AdhocFormText += '</tr></table></div>'
 				if(CurrentResultHolder != null)	{
 					var results = transport.responseJSON;
 					if(results != null) {
-						if(results.returnCode === false || results.returnCode === "false")
-						{
-							var errorMessage = "";
-							if (typeof(results.returnValue) != "undefined") {
-								errorMessage = results.returnValue;
-							}
-							else if (typeof(results.returnMessage) != "undefined") {
-								errorMessage = results.returnMessage;
-							}
-							else if (typeof(results.message) != "undefined") {
-								errorMessage = results.message;
-							}
-							else {
-								errorMessage = "An error occurred, no message was provided.";
-							}
-							CurrentResultHolder.insert({top:"<table class='adhocErrorTable'><tr><td align='center'>" + errorMessage + "</td></tr></table><hrclass='adhocInnerLine'/>"});
-						} else {
+						if(isReturnCodeNotOK(results))
+							CurrentResultHolder.insert({top:"<table class='adhocErrorTable'><tr><td align='center'>" + getReturnErrorMessage(results) + "</td></tr></table><hrclass='adhocInnerLine'/>"});
+						else {
 							if (parameters["sshMethod"] == "java") {
 								var resultText = "<table class='adhocReturnTable'>"
 									+"<tr><td width='150px'>Return message</td><td width='3px'>:</td><td>" + results.message + "</td></tr>"
 									+"<tr><td width='150px'>Result summary</td><td width='3px'>:</td><td><hr/>";
-									results.returnValue.each( function (stmtNode) {
-										stmtNode.output = stmtNode.output.replace("\n\r","<br/>");
-										stmtNode.output = stmtNode.output.replace("\n","<br/>");
-										resultText +="<table class='adhocStmt'>";
-										resultText += "<tr><td width='150px'>Command executed</td><td width='3px'>:</td><td>" + stmtNode.command + "</td></tr>";
-										resultText += "<tr><td width='150px'>Result output</td><td width='3px'>:</td><td>" + stmtNode.output + "</td></tr>";
-										resultText += "</table>";
-										resultText +="<hr/>";
+								results.returnValue.each( function (stmtNode) {
+										stmtNode.output = stmtNode.output.CRLF2BR();
+										resultText +="<table class='adhocStmt'>"
+													+ 	"<tr><td width='150px'>Command executed</td><td width='3px'>:</td><td>" + stmtNode.command + "</td></tr>"
+													+ 	"<tr><td width='150px'>Result output</td><td width='3px'>:</td><td>" + stmtNode.output + "</td></tr>"
+													+ "</table>"
+													+ "<hr/>";
 									});
-									resultText += "</td></tr></table>";
-									CurrentResultHolder.insert({top:resultText + "<hr/>"});
+								resultText += "</td></tr></table>";
+								CurrentResultHolder.insert({top:resultText + "<hr/>"});
 							}
 							else {
 								var resultText = "<table class='adhocReturnTable'>";
-								if (results.message != undefined) {
+								if (results.message != undefined) 
 									resultText += "<tr><td width='150px'>Return message</td><td width='3px'>:</td><td>" + results.message + "</td></tr>";
-								}
 								resultText += "<tr><td colspan='3'>";
 								results.returnValue.each( function (stmtNode) {
-								stmtNode.output = stmtNode.output.replace("\n\r","<br/>");
-								stmtNode.output = stmtNode.output.replace("\n","<br/>");
-								resultText +="<hr/><table class='adhocStmt'>";
-								resultText += "<tr><td width='120px'>Command executed</td><td width='3px'>:</td><td>" + stmtNode.command + "</td></tr>";
-								resultText += "<tr><td width='120px'>Result output</td><td width='3px'>:</td></tr>";
-								resultText += "<tr><td colspan='3'>";
-								resultText += "<table><tr><td>&nbsp;&nbsp;&nbsp;</td><td>" + stmtNode.output + "</td></tr></table>";
-								resultText += "</td></tr></table>";
-							});
+									stmtNode.output = stmtNode.output.CRLF2BR();
+									resultText +="<hr/><table class='adhocStmt'>"
+												+ 	"<tr><td width='120px'>Command executed</td><td width='3px'>:</td><td>" + stmtNode.command + "</td></tr>"
+												+ 	"<tr><td width='120px'>Result output</td><td width='3px'>:</td></tr>"
+												+ 	"<tr><td colspan='3'>"
+												+ "<table><tr><td>&nbsp;&nbsp;&nbsp;</td><td>" + stmtNode.output + "</td></tr></table>"
+												+ "</td></tr></table>";
+									});
 							resultText += "</td></tr></table>";
 							CurrentResultHolder.insert({top:resultText + "<hr/>"});
-							
 							}
 						}
 					}

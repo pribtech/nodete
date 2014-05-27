@@ -193,23 +193,14 @@ CORE_CLIENT_ACTIONS.set("DGTutorialBootstrap",Class.create(basePageElement, {
 							return;
 						}
 						if(result.flagGeneralError == true && result.connectionError == true)
-						{
 							initiateConnectionRefresh();
-						}
-						if(result.returnCode == "false")
-						{
+						if( isReturnCodeNotOK(result))
 							thisObject.loadfiles();
-						}
-						else
-						{
+						else {
 							if(result.returnValue['status']['@text'] == "stopped")
-							{
 								thisObject.selectConnection(result.returnValue['connection']['@attributes']['file']);
-							}
 							else
-							{
 								thisObject.loadDGSingleGeneratorControler();
-							}
 						}
 				},
 				'onComplete': function(transport) {
@@ -245,18 +236,13 @@ CORE_CLIENT_ACTIONS.set("DGTutorialBootstrap",Class.create(basePageElement, {
 				'parameters': parameters,	
 				'onSuccess': function(transport) {
 						var result = transport.responseJSON;
-						if(result == null)
-						{
+						if(result == null) {
 							alert(CORE_MESSAGE_STORE.LANGUAGE_MESSAGES.INVALID_JSON);
 							runError = true;
-						}
-						else if(result.flagGeneralError == true && result.connectionError == true)
-						{
+						} else if(result.flagGeneralError == true && result.connectionError == true) {
 							initiateConnectionRefresh();
 							runError = true;
-						}
-						else if(result.returnCode == "false" || result.returnCode == false)
-						{
+						} else if( isReturnCodeNotOK(result)) {
 							alert(encodeMessage(CORE_MESSAGE_STORE.DG_MESSAGES.ERROR_LOADING_GENERATOR, { GENERATOR_NAME:thisObject.loadGenerator}));
 							runError = true;
 						}
@@ -357,18 +343,13 @@ CORE_CLIENT_ACTIONS.set("DGTutorialBootstrap",Class.create(basePageElement, {
 				'parameters': parameters,	
 				'onSuccess': function(transport) {
 						var result = transport.responseJSON;
-						if(result == null)
-						{
+						if(result == null) {
 							alert(CORE_MESSAGE_STORE.LANGUAGE_MESSAGES.INVALID_JSON);
 							runError = true;
-						}
-						else if(result.flagGeneralError == true && result.connectionError == true)
-						{
+						} else if(result.flagGeneralError == true && result.connectionError == true) {
 							initiateConnectionRefresh();
 							runError = true;
-						}
-						else if(result.returnCode == "false")
-						{
+						} else if( isReturnCodeNotOK(result)) {
 							alert(encodeMessage(CORE_MESSAGE_STORE.DG_MESSAGES.ERROR_LOADING_CONNECTION, { GENERATOR_NAME:thisObject.loadGenerator}));
 							runError = true;
 						}
@@ -400,23 +381,16 @@ CORE_CLIENT_ACTIONS.set("DGTutorialBootstrap",Class.create(basePageElement, {
 				'parameters': parameters,	
 				'onSuccess': function(transport) {
 						var result = transport.responseJSON;
-						if(result == null)
-						{
+						if(result == null) {
 							alert(CORE_MESSAGE_STORE.LANGUAGE_MESSAGES.INVALID_JSON);
 							runError = true;
-						}
-						else if(result.flagGeneralError == true && result.connectionError == true)
-						{
+						} else if(result.flagGeneralError == true && result.connectionError == true) {
 							initiateConnectionRefresh();
 							runError = true;
-						}
-						else if(result.returnCode == "false" || result.returnCode == false)
-						{
+						} else if( isReturnCodeNotOK(result)) {
 							thisObject.setErrorFormatted(CORE_MESSAGE_STORE.DG_MESSAGES.ERROR_LOADING_CONNECTION);
 							runError = true;
-						}
-						else
-						{
+						} else {
 							thisObject.loadDGSingleGeneratorControler();
 						}
 				}
@@ -506,7 +480,7 @@ CORE_CLIENT_ACTIONS.set("DGTutorialBootstrap",Class.create(basePageElement, {
 					tdAttributs = " ondblclick='" + this.callBackText + ".selectRow(" + i + ");" + this.callBackText + ".setConnection();' onclick='" + this.callBackText + ".selectRow(" + i + ")' style='background-color:white;cursor: pointer;padding-left:5px;'";
 					if(dataArray[i]['authenticated'] == true)
 					{
-						connectionStatus = dataArray[i]['connectionStatus'] == true ? "<img alt='Y' title='Authenticated' src='images/typevalue_ok.gif'/>" 	: "<img alt='?' title='Connection error' src='images/alert.gif' id='" + this.elementName + "_" + i + "_PageInformationButton' onMouseUp=\"stopPropagation(event);\" onMouseDown='show_GENERAL_BLANK_POPUP(null, decodeURIComponent(\"<div style=\\\"padding:10px;width:350px\\\">" + escape(dataArray[i]['connectionStatus']) + "</div>\"));'/>";
+						connectionStatus = dataArray[i]['connectionStatus'] == true ? "<img alt='Y' title='Authenticated' src='images/typevalue_ok.gif'/>" 	: "<img alt='?' title='Connection error' src='images/alert.gif' id='" + this.elementName + "_" + i + "_PageInformationButton' onMouseUp=\"stopPropagation(event);\" onMouseDown='show_GENERAL_BLANK_POPUP(null, decodeURIComponent(\"<div style=\\\"padding:10px;width:350px\\\">" + encodeURIComponent(dataArray[i]['connectionStatus']) + "</div>\"));'/>";
 					
 						activeConnection = getActiveDatabaseConnection() == dataArray[i]['description'] ? "<img alt='&#187;' title='Connected' src='images/fw_bold.gif'/>" : "";
 						dataTable.insert({bottom:	"<tr id='" + this.elementName + "_ActiveCONNECTION_MANAGER_CONNECTION_LIST_" + i + "'><td" + tdAttributs + ">" + activeConnection +

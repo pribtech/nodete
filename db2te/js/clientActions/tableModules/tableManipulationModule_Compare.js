@@ -662,8 +662,8 @@ TABLE_MANIPULATION_MODULES.set("Compare", {
 				return;
 		    }
 			var actionReturn=blockData.actionResults.get(actionBlock.actionName);
-			if (actionReturn.returnCode==false || actionReturn.returnCode=="false" || actionReturn.returnCode=="ERROR") {
-				openModalAlert("compare.processAction, action: "+actionBlock.actionName+" error: "+actionReturn.returnValue);
+			if (isReturnCodeNotOK(actionReturn)) {
+				openModalAlert("compare.processAction, action: "+actionBlock.actionName+" error: "+getReturnErrorMessage(actionReturn));
 				return;
 			}
 			var base=this.getListTableGUID(actionBlock.GUID,'processActionProcessResults');
@@ -784,8 +784,8 @@ TABLE_MANIPULATION_MODULES.set("Compare", {
 				var result = transport.responseJSON;
 				if(result == null)
 					throw 'An invalid JavaScript object was returned';
-				if(result.flagGeneralError == true || result.returnCode == "false" || result.returnCode == false)
-					throw result.returnValue==""?"Error but no message":result.returnValue;
+				if(result.flagGeneralError == true || isReturnCodeNotOK(result))
+					throw getReturnErrorMessage(result);
 				options.destination='pdf';
 				thisObject.sendDestination(transport.request.parameters.GUID,transport.request.parameters.options,result.returnValue)
 			},

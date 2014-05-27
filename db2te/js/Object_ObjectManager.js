@@ -110,9 +110,9 @@ var ObjectManager = {
 							}
 							if(result.flagGeneralError == true && result.connectionError == true)
 								initiateConnectionRefresh();
-							if(result.flagGeneralError == true || result.returnCode == "false") {
+							if(result.flagGeneralError == true || isReturnCodeNotOK(result)) {
 								if(onFailerFunction != null && onFailerFunction != "")
-									eval(onFailerFunction + "(result.returnValue)");
+									eval(onFailerFunction + "(getReturnErrorMessage(result))");
 								return;
 							}
 							

@@ -287,16 +287,9 @@ TABLE_MANIPULATION_MODULES.set("Core_RowAction", {
 						initiateConnectionRefresh();
 						openModalAlert("Please connect to the database");
 						return;
-					} else if(result.flagGeneralError == true || result.returnCode == "false") {
-						if(Object.isString(result.returnValue)) {
-							openModalAlert("<table style='width:100%;height:100%'><tr><td align='center'>" + result.returnValue + "</td></tr></table>");
-							return;
-						} else if(Object.isString(result.returnMessage) && (result.returnMessage != "")) {
-							openModalAlert(result.returnMessage);
-						} else  {
-							openModalAlert("<table style='width:100%;height:100%'><tr><td align='center'>" + result.returnValue.STMTMSG + "</td></tr></table>");
-							return;
-						}
+					} else if(result.flagGeneralError == true || isReturnCodeNotOK(result)) {
+						openModalAlert(getReturnMessageFormatted(result));
+						return;
 					}
 					getPanel(tableObject.parentStageID, tableObject.parentWindowID, tableObject.parentPanelID).reloadPage();
 				}

@@ -219,11 +219,11 @@ CORE_CLIENT_ACTIONS.set("tutorial", Class.create(AD_HOC_BASE_CONTROLER,{
 								LoadingInformationArea.update("Tutorial JSON encoding error");
 							return;
 						}
-						if(TutorialScript.returnCode == false || TutorialScript.returnCode == "false" )	{
+						if( isReturnCodeNotOK(TutorialScript))	{
 							if(LoadingTitleArea != null)
 								LoadingTitleArea.update("Error Loading Script");
 							if(LoadingInformationArea != null)
-								LoadingInformationArea.update(decodeURI(TutorialScript.returnValue));
+								LoadingInformationArea.update(getReturnErrorMessage(TutorialScript));
 							return;
 						}
 						if(Object.isArray(TutorialScript.returnValue)) {
@@ -729,7 +729,7 @@ CORE_CLIENT_ACTIONS.set("tutorial", Class.create(AD_HOC_BASE_CONTROLER,{
 			var localTutorialConstants = this.localTutorialConstants;
 			new Ajax.Request(this.Script.contentFolder + '/SQL/' + thePage.SQLFile, {
 				'onSuccess': function(transport) {
-					thisObject.updateSQLText(escape(encodeURIandNormaMessage(transport.responseText, localTutorialConstants)), pageNumber);
+					thisObject.updateSQLText(encodeURIComponent(encodeURIandNormaMessage(transport.responseText, localTutorialConstants)), pageNumber);
 				}
 			});
 			RaiseToTop(elementUniqueID + '_stage', "TutorialSQL");
@@ -777,7 +777,7 @@ CORE_CLIENT_ACTIONS.set("tutorial", Class.create(AD_HOC_BASE_CONTROLER,{
 		else if(thePage.contentUrl != "")
 			$(this.elementUniqueID + '_Body').update('<iframe src="' + encodeMessage(thePage.contentUrl, localTutorialConstants) + '" height="100%" width="100%" frameborder="0" scrolling="auto"></iframe>');
 		else
-			$(this.elementUniqueID + '_Body').update(unescape(encodeURIandNormaMessage(thePage.contentText)));
+			$(this.elementUniqueID + '_Body').update(decodeURIComponent(encodeURIandNormaMessage(thePage.contentText)));
 		this.displayPageNumber();
 		if(thePage.focusOnWindow!=null && thePage.focusOnWindow!="")
 			RaiseToTop(elementUniqueID + '_stage', thePage.focusOnWindow);
@@ -802,7 +802,7 @@ CORE_CLIENT_ACTIONS.set("tutorial", Class.create(AD_HOC_BASE_CONTROLER,{
 		if(this.Script.disableAdHoc) return;
 		var SQLHighlightOptions = this.getPageObject(pageNumber).codeHighlightOptions;
 		if(this.attached_AdHoc != null) {
-			SQLText = unescape(SQLText);
+			SQLText = decodeURIComponent(SQLText);
 			var Highlight = false;
 			var sendHighlightOptions = null;
 			if(this.Script.globalCodeHighlightOptions != null) {

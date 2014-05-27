@@ -72,8 +72,8 @@ CORE_CLIENT_ACTIONS.set("callAction",  Class.create(basePageElement, {
 					initiateConnectionRefresh();
 					return;
 				}
-				if(thisObject.result.returnCode == "false" || thisObject.result.returnCode == false) {
-			 		thisObject.setError(thisObject.result.returnValue);
+				if( isReturnCodeNotOK(thisObject.result)) {
+			 		thisObject.setError(getReturnErrorMessage(thisObject.result));
 			 		return;
 				} 
 				try {

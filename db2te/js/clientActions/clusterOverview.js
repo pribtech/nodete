@@ -88,11 +88,8 @@ CORE_CLIENT_ACTIONS.set("clusterOverview", Class.create(basePageElement, {
 				}
 				if(result.flagGeneralError == true && result.connectionError == true)
 					initiateConnectionRefresh();
-				if(result.flagGeneralError == true || result.returnCode == "false") {
-					if(Object.isString(result.returnValue)) 
-						thisObject.setError(result.returnValue);
-					else
-						thisObject.setError(result.returnValue.STMTMSG);
+				if(result.flagGeneralError == true ||  isReturnCodeNotOK(result)) {
+					thisObject.setError(getReturnErrorMessage(result));
 					return;
 				}
 				if(result != null) {

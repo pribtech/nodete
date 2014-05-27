@@ -14,7 +14,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  *********************************************************************************/
-
+TE_check_session_timeout();
 	include_once(PHP_INCLUDE_BASE_DIRECTORY . "graphSupport/graphData.php");
 	header('Content-type: application/json');
 	//$dataSetsOnly = isset($_GET['dataSetsOnly']) ? $_GET['dataSetsOnly'] : true;
