@@ -161,7 +161,7 @@ class Statement_PostgreSQL extends Statement {
 	
 	function getColumnInfo(){
 		if($this->execResult == false || $this->execResult == null) {
-			$this->sqlerror = 'No column information'.pg_last_error($this->dbconn);
+			$this->sqlerror = 'No column information, last error: '.pg_last_error($this->dbconn);
 			$this->sqlstate = '99999';
 			$this->statementSucceed=false;
 			return;
