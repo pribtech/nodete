@@ -71,13 +71,13 @@ function handleError($errno, $errstr, $errfile, $errline, array $errcontext) {
 		$this->description = $this->username. "@".$this->database.($this->hostname != "" ? "." . $this->hostname . ":" . $this->portnumber : "" );
         $this->cataloged = ($this->hostname == "" | $this->portnumber == "") ? true : false;
 
-		if($this->database == "" && $this->username == "")
-			return;
+		if($this->database == "") return 'No database specified';
+		if($this->username == "") return 'No user specified';
 		try{
 			if($this->usePersistentConnection) 
-				$dbconn = @pg_pconnect(($this->cataloged?"":"host='".$hostname."' port='".$portnumber."' " )." dbname='".$database."' user='".$username."' password='".$password."'");
+				$this->dbconn = @pg_pconnect(($this->cataloged?"":"host='".$hostname."' port='".$portnumber."' " )." dbname='".$database."' user='".$username."' password='".$password."'");
 			else
-				$dbconn = @pg_connect(($this->cataloged?"":"host='".$hostname."' port='".$portnumber."' " )." dbname='".$database."' user='".$username."' password='".$password."'");
+				$this->dbconn = @pg_connect(($this->cataloged?"":"host='".$hostname."' port='".$portnumber."' " )." dbname='".$database."' user='".$username."' password='".$password."'");
 		} catch (Exception $e) {
 			return $e->getMessage();
 		}

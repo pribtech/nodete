@@ -42,7 +42,8 @@ class Statement_PostgreSQL extends Statement {
   
   function __construct($stmt_text, $prepare_statment = FALSE, $verbose = FALSE, $ForwardOnlyScroll = TRUE, $getRowCount = FALSE, $dbconn = null) {
 		$this->otherResult = array();
-		$this->statementSucceed=true;
+		$this->statementSucceed=false;
+		$this->sqlstate = -1;
 		if($dbconn == null)
 			$this->dbconn = connectionManager::getConnection()->dbconn;
 		else if(is_subclass_of($dbconn, 'Connection')) 
@@ -59,12 +60,11 @@ class Statement_PostgreSQL extends Statement {
 		$this->elapsedTime = 0;
 		$this->resultSet = 0;
 		
-		if ($this->dbconn === false) 
+		if ($this->dbconn === false) { 
+			$this->sqlerror = 'No database connection found';
 			return;
+		}
 
-		// Check that the connection is valid
-		// db2_exec returns 0 if the statement fails;
-		// otherwise it returns a result set ID
 		$startTime = microtime(true); // Record the start time
 
 		if ($prepare_statment) { // If prepare was requested
@@ -79,14 +79,13 @@ class Statement_PostgreSQL extends Statement {
 		$this->elapsedTime = microtime(true) - $startTime; // record end time
 		if ($this->execResult == false || $this->execResult == null) { // If result was good, display success if verbose
 			$error = error_get_last($this->dbconn);
-			$this->statementSucceed = false;
 			$this->sqlerror = $error['message'];
-			$this->sqlstate = -1;
 			return;
 		}	
 		if($this->sqlerror == null && $this->sqlstate == 0)
 			$this->totalRowsInResultSet = @pg_num_rows($this->execResult);
-	}
+		$this->statementSucceed=true;
+  }
 	function execute($parameters=null, $verbose=false) { // Execute, to only be used if previously prepared
 		$this->statementSucceed=true;
 		$execResult = false;
