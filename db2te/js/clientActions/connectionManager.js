@@ -168,24 +168,25 @@ function setActiveDatabaseConnection(object) {
 	resetActiveDatabaseConnection();
 
 	ACTIVE_DATABASE_CONNECTION_OBJECT=object;
-	if (object!=null)
-		if(ACTIVE_DATABASE_CONNECTION_OBJECT['dataServerInfo'] != null) {
-			ACTIVE_DATABASE_CONNECTION_VERSION = parseFloat( ACTIVE_DATABASE_CONNECTION_OBJECT['dataServerInfo']['dataServerVersion'] );
-			ACTIVE_DATABASE_CONNECTION_FIXPAK = parseInt( ACTIVE_DATABASE_CONNECTION_OBJECT['dataServerInfo']['dataServerFixpack'] , 10);
-			ACTIVE_DATABASE_DBMS = ACTIVE_DATABASE_CONNECTION_OBJECT['dataServerInfo']['DBMS'];
-			ALL_GLOBAL_OBJECT('nodeFilter',null,'CONTEXTBASE');
+	if (object==null) return;
+	if(ACTIVE_DATABASE_CONNECTION_OBJECT['dataServerInfo'] == null) return;
+	if(ACTIVE_DATABASE_CONNECTION_OBJECT['dataServerInfo'].length == 0) return;
+	
+	ACTIVE_DATABASE_CONNECTION_VERSION = parseFloat( ACTIVE_DATABASE_CONNECTION_OBJECT['dataServerInfo']['dataServerVersion'] );
+	ACTIVE_DATABASE_CONNECTION_FIXPAK = parseInt( ACTIVE_DATABASE_CONNECTION_OBJECT['dataServerInfo']['dataServerFixpack'] , 10);
+	ACTIVE_DATABASE_DBMS = ACTIVE_DATABASE_CONNECTION_OBJECT['dataServerInfo']['DBMS'];
+	ALL_GLOBAL_OBJECT('nodeFilter',null,'CONTEXTBASE');
 
-			ACTIVE_DATABASE_CONNECTION = ACTIVE_DATABASE_CONNECTION_OBJECT['description'];
-			window.name = ACTIVE_DATABASE_CONNECTION;
-			GLOBAL_CONSTANTS.set('ACTIVE_DATABASE_CONNECTION', ACTIVE_DATABASE_CONNECTION);
-			GLOBAL_CONSTANTS.set('ACTIVE_DATABASE_DESCRIPTION', ACTIVE_DATABASE_CONNECTION_OBJECT['description']);
+	ACTIVE_DATABASE_CONNECTION = ACTIVE_DATABASE_CONNECTION_OBJECT['description'];
+	window.name = ACTIVE_DATABASE_CONNECTION;
+	GLOBAL_CONSTANTS.set('ACTIVE_DATABASE_CONNECTION', ACTIVE_DATABASE_CONNECTION);
+	GLOBAL_CONSTANTS.set('ACTIVE_DATABASE_DESCRIPTION', ACTIVE_DATABASE_CONNECTION_OBJECT['description']);
 
-			var selectedDriverDetails=GLOBAL_TE_SUPPORTED_DRIVERS.get(object.databaseDriver);
-			for(var column in selectedDriverDetails.attributes) {
-				var attributes=selectedDriverDetails.attributes[column];
-				if(attributes.nameActive==null) continue;
-				GLOBAL_CONSTANTS.set(attributes.nameActive, ACTIVE_DATABASE_CONNECTION_OBJECT[column]);
-			}
+	var selectedDriverDetails=GLOBAL_TE_SUPPORTED_DRIVERS.get(object.databaseDriver);
+	for(var column in selectedDriverDetails.attributes) {
+		var attributes=selectedDriverDetails.attributes[column];
+		if(attributes.nameActive==null) continue;
+		GLOBAL_CONSTANTS.set(attributes.nameActive, ACTIVE_DATABASE_CONNECTION_OBJECT[column]);
 	}
 }
 
