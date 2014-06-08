@@ -78,7 +78,7 @@ class Statement_PostgreSQL extends Statement {
 
 		$this->elapsedTime = microtime(true) - $startTime; // record end time
 		if ($this->execResult == false || $this->execResult == null) { // If result was good, display success if verbose
-			$error = error_get_last($this->dbconn);
+			$error = error_get_last();
 			$this->sqlerror = $error['message'];
 			return;
 		}	
