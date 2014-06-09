@@ -179,7 +179,7 @@
 		<sqlName>amvacuumcleanup</sqlName>
 		<title>Vacuum Cleanup</title>
 	</column>
-	<column name="amcanreturn">
+	<column name="amcanreturn" minVersion="9.3">
 		<sqlName>amcanreturn</sqlName>
 		<title>Can Return</title>
 	</column>

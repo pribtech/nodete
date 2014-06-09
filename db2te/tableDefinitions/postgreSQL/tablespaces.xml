@@ -56,7 +56,7 @@
 		<title>Location</title>
 	</column>
 	<column name="location" maxVersion="9.2">
-		<sqlName>case spcname when 'pg_default' then (select setting from pg_settings where name='data_directory')||'/base' when 'pg_global' then (select setting from pg_settings where name='data_directory')||'/default' else oid end</sqlName>
+		<sqlName>case spcname when 'pg_default' then (select setting from pg_settings where name='data_directory')||'/base' when 'pg_global' then (select setting from pg_settings where name='data_directory')||'/default' else "oid: "||oid end</sqlName>
 		<title>Location</title>
 	</column>
 	<column name="comment">

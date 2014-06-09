@@ -186,7 +186,7 @@
 		<sqlName>relhassubclass</sqlName>
 		<title>Subclass</title>
 	</column>
-	<column name="relispopulated">
+	<column name="relispopulated" minVersion="9.3">
 		<sqlName>relispopulated</sqlName>
 		<title>Populated</title>
 	</column>
@@ -195,7 +195,7 @@
 		<title>Frozen xid</title>
 		<type>n</type>
 	</column>
-	<column name="relminmxid">
+	<column name="relminmxid" minVersion="9.3">
 		<sqlName>relminmxid</sqlName>
 		<title>Minmxid</title>
 		<type>n</type>
