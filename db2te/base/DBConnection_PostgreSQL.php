@@ -203,6 +203,20 @@ function handleError($errno, $errstr, $errfile, $errline, array $errcontext) {
 	}
 	public static function getXMLserializeDocument() {return "DOCUMENT";}
 	public static function getXMLDefSerializeReturnType() {return "VARCHAR";}
+	public static function getShowDataServerDetails() {
+		$details=connectionManager::getConnectionDetail();
+		return makeDisplayGroup('Data Server'
+				,makeDisplayContent('DBMS', connectionManager::getConnection()->getDBMS())
+				.((connectionManager::getConnection()->hostname != "" )?
+						makeDisplayContent('Server', connectionManager::getConnection()->hostname)
+						.makeDisplayContent('Port Number', connectionManager::getConnection()->portnumber)
+						:
+						makeDisplayContent('Server', "Local client")
+				)
+				.makeDisplayContent('Version', $details['dataServerVersion'])
+				.makeDisplayContent('Fixpak', $details['dataServerFixpack'])
+		);
+	}
  }
 
 

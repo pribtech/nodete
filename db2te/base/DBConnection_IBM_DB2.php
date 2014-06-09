@@ -368,5 +368,219 @@ class Connection_IBM_DB2 extends Connection {
 		}
 		self::saveFeatures( $features);
 	}
-
+	public static function getShowPhysicalServerDetails() {  
+		$serverInfo = array();
+		$selectLICInfoResult = connectionManager::getNewStatement('SELECT * FROM SYSIBMADM.ENV_PROD_INFO', FALSE, FALSE);
+		if ($selectLICInfoResult->execSuccessful())
+		if($row = $selectLICInfoResult->fetchAssocRow()) {
+			$serverLICInfo = array();
+			$serverInfo['INSTALLED_PROD'] = $row['INSTALLED_PROD'];
+			$serverInfo['PROD_RELEASE'] = $row['PROD_RELEASE'];
+			$serverInfo['INSTALLED_PROD_FULLNAME'] = $row['INSTALLED_PROD_FULLNAME'];
+			$serverInfo['LICENSE_INSTALLED'] = $row['LICENSE_INSTALLED'];
+			$serverInfo['LICENSE_TYPE'] = $row['LICENSE_TYPE'];
+		}
+		$TempStmt = connectionManager::getNewStatement("SELECT NAME, VALUE FROM SYSIBMADM.ENV_SYS_RESOURCES", FALSE, FALSE);
+		if ($TempStmt->execSuccessful())
+		while($row = $TempStmt->fetch())
+			$serverInfo[$row[0]] = $row[1];
+		require_once(PHP_INCLUDE_BASE_DIRECTORY . 'FunctionInlineBarGraph.php');
+		return makeDisplayGroup('Physical Server',
+				makeDisplayContent('Operating System', $serverInfo['OS_NAME']) .
+				makeDisplayContent('Operating System Version', $serverInfo['OS_VERSION']) .
+				makeDisplayContent('Operating System Release', $serverInfo['OS_RELEASE']) .
+				(isset($serverInfo['OS_LEVEL']) ? makeDisplayContent('Operating System Level', $serverInfo['OS_LEVEL']) : "") .
+				makeDisplayContent('System Type', $serverInfo['MACHINE_IDENTIFICATION']) .
+				makeDisplayContent('Processors', $serverInfo['CPU_TOTAL']) .
+				makeDisplayContent('Processors Active', $serverInfo['CPU_ONLINE']) .
+				makeDisplayContent('Processors Configured', $serverInfo['CPU_ONLINE']) .
+				makeDisplayContent('Processors Speed', ($serverInfo['CPU_SPEED'] / 1000.0) . "GHz") .
+				makeDisplayContent('Processors Pre Socket', $serverInfo['CPU_CORES_PER_SOCKET']) .
+				makeDisplayContent('System Memory', number_format($serverInfo['MEMORY_TOTAL'] - $serverInfo['MEMORY_FREE']) . " MB of " . number_format($serverInfo['MEMORY_TOTAL']) . " MB", generatBar($serverInfo['MEMORY_TOTAL'] - $serverInfo['MEMORY_FREE'], $serverInfo['MEMORY_TOTAL'], "ReportGeneralBar")) .
+				makeDisplayContent('System Swap', number_format($serverInfo['MEMORY_SWAP_TOTAL'] - $serverInfo['MEMORY_SWAP_FREE']) . " MB of " . number_format($serverInfo['MEMORY_SWAP_TOTAL']) . " MB", generatBar($serverInfo['MEMORY_TOTAL'] - $serverInfo['MEMORY_SWAP_FREE'], $serverInfo['MEMORY_SWAP_TOTAL'], "ReportGeneralBar")) .
+				makeDisplayContent('System Virtual Memory', number_format($serverInfo['VIRTUAL_MEM_TOTAL'] - $serverInfo['VIRTUAL_MEM_FREE']) . " MB of " . number_format($serverInfo['VIRTUAL_MEM_TOTAL']) . " MB", generatBar($serverInfo['VIRTUAL_MEM_TOTAL'] - $serverInfo['VIRTUAL_MEM_FREE'], $serverInfo['VIRTUAL_MEM_TOTAL'], "ReportGeneralBar")) .
+				makeDisplayContent('CPU Usage Now', generatBar($serverInfo['CPU_USAGE_TOTAL'], 100, "ReportGeneralBar")).
+				(isset($serverInfo['CPU_LOAD_LONG']) ? makeDisplayContent('CPU Usage Long', generatBar($serverInfo['CPU_LOAD_LONG']*100, 100, "ReportGeneralBar")) : "").
+				(isset($serverInfo['CPU_LOAD_MEDIUM']) ? makeDisplayContent('CPU Usage Medium', generatBar($serverInfo['CPU_LOAD_MEDIUM']*100, 100, "ReportGeneralBar")) : "").
+				(isset($serverInfo['CPU_LOAD_SHORT']) ? makeDisplayContent('CPU Usage Short', generatBar($serverInfo['CPU_LOAD_SHORT']*100, 100, "ReportGeneralBar")) : "")
+			);
+	}
+	public static function getShowDataServerDetails() {  
+		$serverInfo = array();
+		$selectLICInfoResult = connectionManager::getNewStatement('SELECT * FROM SYSIBMADM.ENV_PROD_INFO', FALSE, FALSE);
+		if ($selectLICInfoResult->execSuccessful())
+			if($row = $selectLICInfoResult->fetchAssocRow()){
+				$serverInfo['INSTALLED_PROD'] = $row['INSTALLED_PROD'];
+				$serverInfo['PROD_RELEASE'] = $row['PROD_RELEASE'];
+				$serverInfo['INSTALLED_PROD_FULLNAME'] = $row['INSTALLED_PROD_FULLNAME'];
+				$serverInfo['LICENSE_INSTALLED'] = $row['LICENSE_TYPE'];
+			}
+		$selectDBInfo = connectionManager::getNewStatement('SELECT INST_NAME, RELEASE_NUM, SERVICE_LEVEL, BLD_LEVEL, PTF, FIXPACK_NUM, INST_PTR_SIZE FROM SYSIBMADM.ENV_INST_INFO', FALSE, FALSE);
+		if ($selectDBInfo->execSuccessful())
+			while ($row = $selectDBInfo->fetch()) {
+				$serverInfo["INST_NAME"] = $row[0];
+				$serverInfo["RELEASE_NUM"] = $row[1];
+				$serverInfo["SERVICE_LEVEL"] = $row[2];
+				$serverInfo["BLD_LEVEL"] = $row[3];
+				$serverInfo["PTF"] = $row[4];
+				$serverInfo["FIXPACK_NUM"] = $row[5];
+				$serverInfo["INST_PTR_SIZE"] = $row[6];
+		}
+		
+		return makeDisplayGroup('Data Server',
+				makeDisplayContent('DBMS', $dbms)
+				.(
+						(connectionManager::getConnection()->hostname != "" )?
+						makeDisplayContent('Server', connectionManager::getConnection()->hostname) .
+						makeDisplayContent('Port Number', connectionManager::getConnection()->portnumber)
+						:
+						makeDisplayContent('Server', "Local DB2 Client")
+				)
+				.makeDisplayContent("<a onclick=\"miniLinkLoader({table:'License/features',action:'list_table'}, '', '_blank')\">Product</a>", "{$serverInfo['INSTALLED_PROD']} ({$serverInfo["LICENSE_INSTALLED"]})")
+				.makeDisplayContent('Instance', "{$serverInfo['INST_NAME']}, {$serverInfo['INST_PTR_SIZE']} bit")
+				.makeDisplayContent('Service Level', $serverInfo['SERVICE_LEVEL'])
+				.makeDisplayContent('Code Release', $serverInfo['RELEASE_NUM'])
+						.makeDisplayContent('Build Level', $serverInfo['BLD_LEVEL'])
+								.makeDisplayContent('Fix pack', $serverInfo['FIXPACK_NUM'])
+						);
+		
+		
+	}
+	public static function getShowDatabaseDetails() {
+		require_once(PHP_INCLUDE_BASE_DIRECTORY . 'FunctionInlineBarGraph.php');
+		$database = strtoupper(connectionManager::getConnection()->database);
+		$serverInfo = array('CURR_CONNS'=>-1,'TOTAL_LOG_AVAILABLE_KB'=>-1,'TOTAL_LOG_USED_KB'=>-1,'DB_MEMORY_USED'=>-1,'logretain'=>-1,'SIZE'=>-1);
+		$ErrorsAdmin24h = 0;
+		$WarningAdmin24h = 0;
+		$error=array();
+		$TempStmt = connectionManager::getNewStatement("SELECT * FROM SYSIBMADM.SNAPDB WHERE DB_NAME = '$database'", FALSE, FALSE);
+		if ($TempStmt->execSuccessful()) {
+			if($row = $TempStmt->fetchAssocRow())
+			foreach($row as $key=>$value)
+				$serverInfo[$key] = $value;
+		} else $error[]="SYSIBMADM.SNAPDB failed, sqlcode: ".$TempStmt->sqlstate;
+		
+		$TempStmt = connectionManager::getNewStatement("SELECT NAME, VALUE FROM SYSIBMADM.DBCFG where NAME = 'logretain'", FALSE, FALSE);
+		if ($TempStmt->execSuccessful()) {
+			while($row = $TempStmt->fetchAssocRow())
+				$serverInfo[$row["NAME"]] = $row["VALUE"];
+		} else $error[]="SYSIBMADM.DBCFG failed, sqlcode: ".$TempStmt->sqlstate;
+		
+		$TempStmt = connectionManager::getNewStatement("SELECT NAME, VALUE FROM SYSIBMADM.DBMCFG where NAME = 'instance_memory'", FALSE, FALSE);
+		if ($TempStmt->execSuccessful()) {
+			while($row = $TempStmt->fetchAssocRow())
+				$serverInfo[$row["NAME"]] = $row["VALUE"];
+		} else $error[]="SYSIBMADM.DBCFG failed, sqlcode: ".$TempStmt->sqlstate;
+		
+		$TempStmt = connectionManager::getNewStatement("SELECT count(*) FROM TABLE(DB_PARTITIONS()) AS T");
+		if ($TempStmt->execSuccessful()) {
+			while($row = $TempStmt->fetchAssocRow())
+				$serverInfo["DB_Partitions"] = $row[1];
+		} else $error[]="DB_PARTITIONS failed, sqlcode: ".$TempStmt->sqlstate;
+		
+		$TempStmt = connectionManager::getNewStatement("SELECT COUNT(*) FROM SYSIBMADM.PDLOGMSGS_LAST24HOURS WHERE MSGSEVERITY = 'E'", FALSE, FALSE);
+		if ($TempStmt->execSuccessful()) {
+			if($row = $TempStmt->fetch())
+				$ErrorsAdmin24h = $row[0];
+			$TempStmt = connectionManager::getNewStatement("SELECT COUNT(*) FROM SYSIBMADM.PDLOGMSGS_LAST24HOURS WHERE MSGSEVERITY = 'W'", FALSE, FALSE);
+			if ($TempStmt->execSuccessful()) {
+				if($row = $TempStmt->fetch())
+					$WarningAdmin24h = $row[0];
+			}
+		} else $error[]="SYSIBMADM.PDLOGMSGS_LAST24HOURS failed, sqlcode: ".$TempStmt->sqlstate;
+		
+		$selectTopConns = connectionManager::getNewStatement(
+				"SELECT SUM(CONCURRENT_CONNECTION_TOP) FROM TABLE (WLM_GET_SERVICE_SUPERCLASS_STATS('', -2)) AS SERVICE_SUPERCLASS"
+				, FALSE, FALSE);
+		if ($selectTopConns->execSuccessful()) {
+			while ($row = $selectTopConns->fetch())
+				$serverInfo["TOP_CONNS"] = $row[0];
+		} else $error[]="WLM_GET_SERVICE_SUPERCLASS_STATS failed, sqlcode: ".$selectTopConns->sqlstate;
+		
+		$selectCurrConns = connectionManager::getNewStatement(
+				"SELECT COUNT(*) FROM SYSIBMADM.APPLICATIONS"
+				, FALSE, FALSE);
+		if ($selectCurrConns->execSuccessful()) {
+			while ($row = $selectCurrConns->fetch())
+				$serverInfo["CURR_CONNS"] = $row[0];
+		} else $error[]="SYSIBMADM.APPLICATIONS failed, sqlcode: ".$selectCurrConns->sqlstate;
+		
+		$selectDBMEMInfo = connectionManager::getNewStatement("SELECT sum(pool_cur_size)/1024.0/1024.0 FROM SYSIBMADM.SNAPDB_MEMORY_POOL", FALSE, FALSE);
+		if ($selectDBMEMInfo->execSuccessful()) {
+			while ($row = $selectDBMEMInfo->fetch())
+				$serverInfo["DB_MEMORY_USED"] = $row[0];
+		} else $error[]="SYSIBMADM.SNAPDB_MEMORY_POOL failed, sqlcode: ".$selectDBMEMInfo->sqlstate;
+		
+		$selectLOGInfo = connectionManager::getNewStatement(
+				"SELECT TOTAL_LOG_USED_KB, TOTAL_LOG_AVAILABLE_KB, TOTAL_LOG_USED_TOP_KB FROM SYSIBMADM.LOG_UTILIZATION"
+				, FALSE, FALSE, TRUE);
+		if ($selectLOGInfo->execSuccessful()) {
+			while ($row = $selectLOGInfo->fetch()) {
+				$serverInfo["TOTAL_LOG_USED_KB"] = $row[0];
+				$serverInfo["TOTAL_LOG_AVAILABLE_KB"] = $row[1];
+				$serverInfo["TOTAL_LOG_USED_TOP_KB"] = $row[2];
+			}
+		} else $error[]="SYSIBMADM.LOG_UTILIZATION failed, sqlcode: ".$selectLOGInfo->sqlstate;
+		
+		$parameters = array();
+		
+		$parameters[1]  = array('name'=>'timestamp', 'value'=>'Unknown','dataType'=>'string','type'=>'DB2_PARAM_OUT');
+		$parameters[2]  = array('name'=>'size', 'value'=>'0.0','dataType'=>'float','type'=>'DB2_PARAM_OUT');
+		$parameters[3]  = array('name'=>'capacity', 'value'=>'0.0','dataType'=>'float','type'=>'DB2_PARAM_OUT');
+		
+		$selectDBSizeInfo = connectionManager::getNewStatement("CALL GET_DBSIZE_INFO(?, ?, ?, 0)", true);
+		$selectDBSizeInfo->executeStmtWithParameters($parameters);
+		
+		if($selectDBSizeInfo->execSuccessful()) {
+			$timestamp = $selectDBSizeInfo->parameters['timestamp'];
+			$size = $selectDBSizeInfo->parameters['size'];
+			$size = (int)($size / 1024 /1024); // convert to MB
+			$capacity = $selectDBSizeInfo->parameters['capacity'];
+			$capacity = (int)($capacity / 1024 /1024); // convert to MB
+		} else {
+			$timestamp = "GET_DBSIZE_INFO failed";
+			$size = "GET_DBSIZE_INFO failed";
+			$capacity = "GET_DBSIZE_INFO failed";
+		}
+		
+		$serverInfo["TIMESTAMP"] = $timestamp;
+		$serverInfo["SIZE"] = $size;
+		$serverInfo["CAPACITY"] = $capacity;
+		
+		$instmemtotal = isset($serverInfo["instance_memory"]) ? ($serverInfo["instance_memory"] * 4/1024) * $serverInfo["DB_Partitions"] : "";
+		
+		return makeDisplayGroup('Database',
+		    makeDisplayContent('Name', $database) .
+				makeDisplayContent('Features', connection::getFeatureList()) .
+				makeDisplayContent('Status', @$serverInfo["DB_STATUS"]) .
+				makeDisplayContent('Active Since', @$serverInfo["DB_CONN_TIME"]) .
+				makeDisplayContent("<a onclick=\"miniLinkLoader({oper:'B',table:'dbhist',action:'list_table'}, '', '_blank')\">Last Backup</a>", (isset($serverInfo["LAST_BACKUP"]) ? $serverInfo["LAST_BACKUP"] : 'NONE')) .
+				makeDisplayContent('Logging', ( strcasecmp($serverInfo["logretain"], "OFF") == 0 || strcasecmp($serverInfo["logretain"], "NO") == 0  ?
+					"Circular" :
+					"Archive"
+				)) .
+				makeDisplayContent("<a onclick=\"miniLinkLoader({table:'pdlog',action:'list_table'}, '', '_blank')\">Admin Log (Last 24h)</a>" ,  'Warnings: ' . $WarningAdmin24h . '&nbsp&nbsp&nbsp Errors: ' . $ErrorsAdmin24h) .
+				makeDisplayContent("<a onclick=\"miniLinkLoader({table:'Performance/dbmemory',action:'list_table'}, '', '_blank')\">Memory</a>", number_format($serverInfo["DB_MEMORY_USED"]) . " MB of " . number_format($instmemtotal) . " MB", generatBar($serverInfo["DB_MEMORY_USED"], $instmemtotal, "ReportGeneralBar")) .
+				($serverInfo["CAPACITY"] > 0 ?
+   				makeDisplayContent("<a onclick=\"miniLinkLoader({table:'Performance/tbsputil',action:'list_table'}, '', '_blank')\">Size</a>", number_format($serverInfo["SIZE"]) . " MB of " . number_format($serverInfo["CAPACITY"]) . " MB", generatBar($serverInfo["SIZE"], $serverInfo["CAPACITY"], "ReportGeneralBar")) :
+   				makeDisplayContent("<a onclick=\"miniLinkLoader({table:'Performance/tbsputil',action:'list_table'}, '', '_blank')\">Size</a>", number_format($serverInfo["SIZE"]) . " MB") ) .
+				makeDisplayContent('Log', number_format($serverInfo["TOTAL_LOG_USED_KB"]/1024) . " MB of " . number_format($serverInfo["TOTAL_LOG_AVAILABLE_KB"]/1024) . " MB", generatBar($serverInfo["TOTAL_LOG_USED_KB"], $serverInfo["TOTAL_LOG_AVAILABLE_KB"], "ReportGeneralBar")) .
+				makeDisplayContent("<a onclick=\"miniLinkLoader({table:'Performance/applicationStatus',action:'list_table'}, '', '_blank')\">Connections</a>", (isset($serverInfo["CURR_CONNS"])?number_format($serverInfo["CURR_CONNS"]):"?") . " current, " . number_format($serverInfo["TOP_CONNS"]) . " high water", generatBar($serverInfo["CURR_CONNS"], $serverInfo["TOP_CONNS"], "ReportGeneralBar")).
+		   	 	( count($error)==0 ? '' : makeDisplayContent('Load Errors',implode(", ", $error)) )
+			);
+	}
+	public static function getShowMyAuthoritiesDetails() {
+		$db2ConnectedUser = connectionManager::getConnection()->username;
+		$myAuthoritiesResult = connectionManager::getNewStatement(
+				"SELECT AUTHORITY FROM TABLE (select authority from table(sysproc.auth_list_authorities_for_authid( CURRENT USER,'U')) where d_user = 'Y' or d_group = 'Y' or d_public = 'Y' or role_user = 'Y' or role_group = 'Y' or role_public = 'Y' or d_role = 'Y' ) AS AUTH_SUMMARY"
+				, FALSE, FALSE);
+		if ($myAuthoritiesResult->execSuccessful())
+		while($row = $myAuthoritiesResult->fetchAssocRow())
+			$myAuthorities[] = $row['AUTHORITY'];
+		$fileMask = ArrayEncodeTableDefinition::ParseTableMask(new XMLNode(null, file_get_contents(TABLE_DEFINITION_DIRECTORY . 'masks/authoritiesMask.xml')));
+		$contentInfo = "";
+		foreach($myAuthorities as $autoritie)
+			$contentInfo .= makeDisplayContent($autoritie, (isset($fileMask[$autoritie]) ? $fileMask[$autoritie]['mask'] : ""));
+		return makeDisplayGroup('Authorities for ' . $db2ConnectedUser, $contentInfo);
+	}
 }

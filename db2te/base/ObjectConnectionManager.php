@@ -728,7 +728,8 @@ class connectionManager{
 				$connectionList[$connectionKey]['authenticated']=$connectionInformation['authenticated'];
 				$connectionList[$connectionKey]['dataServerInfo']=$connectionInformation['dataServerInfo'];
 				$connectionList[$connectionKey]['connectionStatus']=$connectionInformation['connectionStatus'];
-				$connectionList[$connectionKey]['trustedContext']=$connectionInformation['trustedContext'];
+				if(array_key_exists('trustedContext',$connectionInformation))
+					$connectionList[$connectionKey]['trustedContext']=$connectionInformation['trustedContext'];
 				$connectionList[$connectionKey]['time'] = time();
 				$connectionList[$connectionKey]['password'] = "";
 				if(strtolower(USE_DATABASE_CONNECTION) == strtolower($connectionKey))

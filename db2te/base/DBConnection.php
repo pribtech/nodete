@@ -15,7 +15,6 @@
  *  limitations under the License.
  *********************************************************************************/
 
-
 /**
  * The Connection Class is used to create a connection to either a DB2, Apache Derby or Cloudscape
  * database. It supports either a direct connection to a hostname and port number
@@ -331,5 +330,17 @@ abstract class Connection {
 		else
 			return false;
 		return true;
+	}
+	public static function getShowPhysicalServerDetails() {
+		return '';
+	}
+	public static function getShowDataServerDetails() {
+		return '';
+	}
+	public static function getShowDatabaseDetails() {
+		return '';
+	}
+	public static function getShowMyAuthoritiesDetails() {
+		return '';
 	}
 }

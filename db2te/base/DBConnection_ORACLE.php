@@ -184,4 +184,15 @@ class Connection_ORACLE extends Connection {
 	public static function getValuesStatement(&$statement) {return "SELECT ".$statement." FROM DUAL";}
 	public static function getXMLserializeDocument() {return "DOCUMENT";}
 	public static function getXMLDefSerializeReturnType() {return "";}
+	public static function getShowDataServerDetails() {
+		return makeDisplayGroup('Data Server'
+				,makeDisplayContent('DBMS', connectionManager::getConnection()->getDBMS()) 
+				 .((connectionManager::getConnection()->hostname != "" )?
+						makeDisplayContent('Server', connectionManager::getConnection()->hostname)
+						.makeDisplayContent('Port Number', connectionManager::getConnection()->portnumber)
+				   :
+						makeDisplayContent('Server', "Local client")
+				  )
+			);
+	}
 }

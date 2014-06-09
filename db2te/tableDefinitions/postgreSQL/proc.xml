@@ -101,7 +101,7 @@
 		<sqlName>(select typname from pg_type t where t.oid=provariadic)</sqlName>
 		<title>variadic</title>
 	</column>
-	<column name="protransform">
+	<column name="protransform" minVersion="9.3">
 		<sqlName>protransform</sqlName>
 		<title>Transform</title>
 	</column>

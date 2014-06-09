@@ -17,41 +17,11 @@
 TE_check_session_timeout();
 
 require_once(PHP_INCLUDE_BASE_DIRECTORY . 'ArrayEncodeTableDefinition.php');
-
-$db2ConnectedUser = connectionManager::getConnection()->username;
- 
-$myAuthoritiesSQL = <<<SELECTSERV
-SELECT AUTHORITY FROM TABLE (select authority from table(sysproc.auth_list_authorities_for_authid( CURRENT USER,'U')) where d_user = 'Y' or d_group = 'Y' or d_public = 'Y' or role_user = 'Y' or role_group = 'Y' or role_public = 'Y' or d_role = 'Y' ) AS AUTH_SUMMARY 
-SELECTSERV;
-	
-$myAuthorities = array();
-
-$myAuthoritiesResult = connectionManager::getNewStatement($myAuthoritiesSQL, FALSE, FALSE);
-if ($myAuthoritiesResult->execSuccessful())
-{
-	while($row = $myAuthoritiesResult->fetchAssocRow())
-	{
-		$myAuthorities[] = $row['AUTHORITY'];
-	}
-}
-
-$notUsed = false;
-
-$fileMask = ArrayEncodeTableDefinition::ParseTableMask(new XMLNode(null, file_get_contents(TABLE_DEFINITION_DIRECTORY . 'masks/authoritiesMask.xml')));
-
 echo '
 <table>
 	<tr>
 		<td valign="top">';
-
-$contentInfo = "";
-foreach($myAuthorities as $autoritie)
-{
-	$contentInfo .= makeDisplayContent($autoritie, (isset($fileMask[$autoritie]) ? $fileMask[$autoritie]['mask'] : ""));
-}
-
-echo makeDisplayGroup('Authorities for ' . $db2ConnectedUser, $contentInfo);
-
+echo connectionManager::getConnection()->getShowMyAuthoritiesDetails();
 echo '
 		</td>
 	</tr>

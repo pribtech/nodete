@@ -318,12 +318,6 @@ class Statement_PostgreSQL extends Statement {
 	}
 	
 	public function executeStmtWithParameters($bindParameters) {
-		$storageCode = ""; 
-		$uid = uniqid();
-		
-		$prepareCode = "function TempStatmentToRun$uid(\$ReturnObject, \$bindParameters) {\n";
-		$prepareCode .= "if (@pg_prepare(\$ReturnObject->dbconn, 'a', \$ReturnObject->stmt)){\n";
-		
 		if($bindParameters == null) {
 			$paramsToBind = $this->getNumberOfParametersToBind($this->stmt, $this->dbconn);
 			if($paramsToBind <= 0) {
@@ -336,67 +330,31 @@ class Statement_PostgreSQL extends Statement {
 			for($i = 1; $i <= $paramsToBind; $i++)
 				$bindParameters[$i]['name'] = "parameter" . $i;
 		}
-		
-		$prepareCode_datatype = "";
-		$prepareCode_values = "";
+		$parametersArray = array();
 		foreach($bindParameters as $parameterNumber=>$parameteOptions) {
-			$name = isset($parameteOptions['name']) ?  (preg_match('/^[a-zA-Z0-9_]+$/' , $parameteOptions['name']) ? $parameteOptions['name'] : "p{$parameterNumber}") : "p{$parameterNumber}";
-			$value = isset($parameteOptions['value']) ? "'" . rawurlencode($parameteOptions['value']) ."'" : "''";
-			$dataType = isset($parameteOptions['dataType']) ? strtolower($parameteOptions['dataType'] ): "string";
-			$type = isset($parameteOptions['type']) ? (preg_match('/^[a-zA-Z0-9_]+$/' , $parameteOptions['type']) ? $parameteOptions['type'] : 'DB2_PARAM_OUT') : 'DB2_PARAM_OUT';
-
-			switch($dataType) {
-				//case "null":
-				//	$prepareCode_datatype .= "s";
-				//	break;
-				case "int";
-				    $prepareCode_datatype .= "i";
-					break;
-				case "double";
-				    $prepareCode_datatype .= "d";
-					break;
-				case 'float':
-				    $prepareCode_datatype .= "d";
-					break;
-				case "blob";
-				    $prepareCode_datatype .= "b";
-					break;
-				default:
-					$prepareCode_datatype .= "s";
-			}
-			$prepareCode_values .= ", " . $value;
+//			$name = isset($parameteOptions['name']) ?  (preg_match('/^[a-zA-Z0-9_]+$/' , $parameteOptions['name']) ? $parameteOptions['name'] : "p{$parameterNumber}") : "p{$parameterNumber}";
+//			$dataType = isset($parameteOptions['dataType']) ? strtolower($parameteOptions['dataType'] ): "string";
+//			$type = isset($parameteOptions['type']) ? (preg_match('/^[a-zA-Z0-9_]+$/' , $parameteOptions['type']) ? $parameteOptions['type'] : 'DB2_PARAM_OUT') : 'DB2_PARAM_OUT';
+			$parametersArray[] = isset($parameteOptions['value']) ? "'" . rawurlencode($parameteOptions['value']) ."'" : "''";
 		}
-		
-		//$prepareCode .= "@mysqli_stmt_bind_param(\$tmpstmt,$prepareCode_datatype,$prepareCode_values);\n";
-		$prepareCode .= "\$startTime = microtime(true);\n";		
-
-		
-		$prepareCode .= "if(@pg_execute(\$tmpstmt))\n"; 
-		$prepareCode .= "{";
-		$prepareCode .= "\$ReturnObject->statementSucceed = true;\n";
-		$prepareCode .= "\$ReturnObject->baseResult = \$ReturnObject->execResult;\n";
-		$prepareCode .= "\$ReturnObject->executionTime = microtime(true) - \$startTime;\n";
-		$prepareCode .= "\$ReturnObject->sqlerror = @pg_result_error(\$tmpstmt);\n";
-		$prepareCode .= "\$ReturnObject->sqlstate = @pg_result_errror_field(\$tmpstmt, PGSQL_DIAG_SQLSTATE);\n";
-		$prepareCode .= "return;";
-		$prepareCode .= "} else {";
-		$prepareCode .= "\$ReturnObject->statementSucceed = false;\n";
-		$prepareCode .= "\$ReturnObject->sqlerror = @pg_result_error(\$tmpstmt);\n";
-		$prepareCode .= "\$ReturnObject->sqlstate = @pg_result_errror_field(\$tmpstmt, PGSQL_DIAG_SQLSTATE);\n";
-		$prepareCode .= "return;";
-		$prepareCode .= "}\n";
-		$prepareCode .= "}\n";
-		
-		//Couldn't even prepare the code!
-		$prepareCode .= "\$ReturnObject->statementSucceed = false;\n";
-		$prepareCode .= "\$ReturnObject->sqlerror = @pg_result_error(\$tmpstmt);\n";
-		$prepareCode .= "\$ReturnObject->sqlstate = @pg_result_errror_field(\$tmpstmt, PGSQL_DIAG_SQLSTATE);\n";
-		$prepareCode .= "return;";
-		$prepareCode .= "}\n";
-		$prepareCode .= "";
-		$prepareCode .= "TempStatmentToRun$uid(\$this, \$bindParameters);\n";
-		
-    	eval($prepareCode);
+//    	$result = pg_query_params($dbconn, 'SELECT * FROM shops WHERE name = $1', array("Joe's Widgets"));
+    	$startTime = microtime(true);
+    	try{
+    		$this->execResult = @pg_query_params($this->dbconn,$this->stmt,$parametersArray);
+    	} catch (Exception $e) {
+    		$this->sqlerror = $e->getMessage();
+    		$this->sqlstate = -1;
+    		return;
+    	}
+		$this->statementSucceed=($this->execResult!==false);
+    	if(!$this->statementSucceed) {
+    		$this->sqlerror = @pg_last_error();
+    		$this->sqlstate = -1;
+    	}
+   		$this->baseResult = $this->execResult;	
+    	$this->executionTime = microtime(true) - $startTime;
+    	$this->sqlerror = @pg_result_error($this->execResult);
+    	$this->sqlstate = @pg_result_error_field($this->execResult, PGSQL_DIAG_SQLSTATE);
 	}
 	
 	public function getRowsInResultSet($OverRideGetRowCount = false) {
