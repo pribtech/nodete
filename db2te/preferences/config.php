@@ -12,5 +12,4 @@ setDefine("COMPARE_ENABLED_BY_DEFAULT", true);
 setDefine("MAIN_MENU_ROOT_DIRECTORY", "./menu/DeveloperSwitch");
 setDefine("HADOOP_JARS", null);
 setDefine("DEVELOPMENT_MODE", true);
-
-
+setDefine("SSO",true);
