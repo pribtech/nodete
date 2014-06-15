@@ -43,6 +43,7 @@ class IBMSSO {
 	private $client_id;
 	private $client_secret;
 	private $tokenBearer;
+	private $bearer;
 	private $redirectBase;
 	
 	public function __construct() {
@@ -63,12 +64,17 @@ class IBMSSO {
 	}
     public function getSignonURL() {
     	return $this->authorize_url."?client_id=".$this->client_id."&response_type=code&scope=profile&state=".$this->state."&redirect_uri=".$this->getRedirect("sessionIBMSSO");
+   }
+	public function getUserName() {
+		return $this->getBearer()['userUniqueID'];
     }
 	public function getBearer() {
-		$this->tokenBearer=$this->getResponse(
-			 $this->profile_resource 
-			,"Authorization: Bearer ".$this->getBearerAccessToken()   // or access_token=????
-			);
+		if($this->bearer==null)
+			$this->bearer=$this->getResponse(
+				 $this->profile_resource 
+				,"Authorization: Bearer ".$this->getBearerAccessToken()   // or access_token=????
+				);
+		return $this->bearer;
 /*
  * 
  * if reposnse 401  - <html>401</html>
@@ -153,15 +159,31 @@ class IBMSSO {
 	function setClientSettings() {
  		$setting = getenv('TE_IBMSSO');
  		if(!$setting) {
- 			if(SSO_CLIENT)
- 				$setting=SSO_CLIENT;
- 				return;
+ 			if(SSO_CLIENT==false) return;
+ 			$setting=SSO_CLIENT;
  		}
- 		$settingArray=json_decode($services, true);
+ 		$settingArray=json_decode($setting, true);
  		if(!$settingArray)
  			throw new Exception('Decode TE_IBMSSO failed');
  		$this->getClientSettings($settingArray,'client_id');
  		$this->getClientSettings($settingArray,'client_secret');
+    }
+    function getUserFeatures($user=null) {
+    	if($user==null) $user=$this->getUserName();
+    	$users = getenv('SSO_USER_FEATURES');
+    	if(!$users) {
+    		if(SSO_USER_FEATURES==false) return;
+    		$users=SSO_USER_FEATURES;
+    	}
+    	$userArray=json_decode($users, true);
+    	if(!$userArray)
+    		throw new Exception('Decode SSO_USER_FEATURES failed');
+    	if(!array_key_exists($user, $userArray)) return;
+    	$features=implode(",",$userArray[$user]);
+    	TE_session_start();
+    	$_SESSION['BASE_FEATURES']=$features;
+    	TE_session_write_close();
+    	return $features;
     }
     public function setCode() {
    		if($this->state !== getParameter('state'))

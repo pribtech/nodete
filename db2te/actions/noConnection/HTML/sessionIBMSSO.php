@@ -20,6 +20,9 @@ include_once(PHP_INCLUDE_BASE_DIRECTORY . "ObjectIBMSSO.php");
 try{
 	$ibmsso=getIBMSSO();
 	$ibmsso->setCode();
+	$features='"'.$ibmsso->getUserFeatures().";";
+	echo 'var BASE_FEATURES = '.$features;
+	echo 'GLOBAL_CONSTANTS.set("BASE_FEATURES",' .$features .');';
 	echo "<div id='title'>IBM SSO Check successfull, now get details</div>";
 	$ibmssoBearer=$ibmsso->getBearer();
 	echo <<<ENDSCRIPT
