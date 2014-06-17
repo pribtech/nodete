@@ -607,6 +607,9 @@ CORE_CLIENT_ACTIONS.set("connectionManager",Class.create(basePageElement, {
 					}
 				}
 			},
+			'onException': function(transport,exception) {
+				openModalAlert("connectionManager.updateConnectionStatus: "+ (exception==null ? transport.statusText : ( typeof(exception)=="object" ? exception.message : exception )));
+			},
 			onFailure: function(transport,error) {
 				transport.responseText 
 				openModalAlert("connectionManager.updateConnectionStatus: "+connection+" transport error - " + (error==null?decodeURI(transport.responseText) : error));
