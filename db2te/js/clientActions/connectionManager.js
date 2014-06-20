@@ -562,6 +562,10 @@ CORE_CLIENT_ACTIONS.set("connectionManager",Class.create(basePageElement, {
 				}
 				thisObject.updateActiveDatabaseConnection();
 			},
+			onException: function(transport,error) {
+				transport.responseText 
+				openModalAlert("connectionManager.connectionWatcher: transport error - " + (error==null?decodeURI(transport.responseText) : error));
+			},
 			onFailure: function(transport,error) {
 				transport.responseText 
 				openModalAlert("connectionManager.connectionWatcher: transport error - " + (error==null?decodeURI(transport.responseText) : error));
