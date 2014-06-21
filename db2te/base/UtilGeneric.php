@@ -230,7 +230,8 @@ function stripSlashesProcessArray(&$parameter) {
 }
 
 function writeJSConstant($constant) {
-	$debug = strtolower(getParameter("DEBUG", "false")) == "true" ? true : false; 
+	$debug = strtolower(getParameter("DEBUG", "false")) == "true" ? true : false;
+	echo 'try{\n';
 	if(is_array($constant)) {
 		$globalVarables = "";
 		$globalsObject = '{';
@@ -248,9 +249,7 @@ function writeJSConstant($constant) {
 		$globalsObject .= '}';
 		echo 'var ' . $globalVarables . ($debug ? ";\n":";");
 		echo 'GLOBAL_CONSTANTS.update(' . $globalsObject . ($debug ? ");\n":");");
-		return ;
-	}
-	if(is_string($constant)) {
+	} else  if(is_string($constant)) {
 		$value = constant($constant);
 		if(is_bool($value))
 			$value	= $value ? "true" : "false";				
@@ -259,6 +258,7 @@ function writeJSConstant($constant) {
 		echo 'var ' . $constant . ' = ' . $value . ($debug ? ";\n":";");
 		echo 'GLOBAL_CONSTANTS.set("' . $constant . '", ' . (strlen($constant) < strlen($value) ?  $constant : $value) . ($debug ? ");\n":");");
 	}
+	echo '} catch (Exception e) {alert("writeJSConstant failed: "+e)}';
 }
 
 function cipherSecureKey($textkey) {
