@@ -230,8 +230,7 @@ function stripSlashesProcessArray(&$parameter) {
 }
 
 function writeJSConstant($constant) {
-	$debug = strtolower(getParameter("DEBUG", "false")) == "true" ? true : false;
-	echo 'try{\n';
+	$script='';
 	if(is_array($constant)) {
 		$globalVarables = "";
 		$globalsObject = '{';
@@ -247,18 +246,20 @@ function writeJSConstant($constant) {
 		$globalVarables = substr($globalVarables, 0, -1);
 		$globalsObject = substr($globalsObject, 0, -1);
 		$globalsObject .= '}';
-		echo 'var ' . $globalVarables . ($debug ? ";\n":";");
-		echo 'GLOBAL_CONSTANTS.update(' . $globalsObject . ($debug ? ");\n":");");
+		$script .= 'var ' . $globalVarables . ";\n";
+		$script .= 'GLOBAL_CONSTANTS.update(' . $globalsObject .  ");\n";
 	} else  if(is_string($constant)) {
 		$value = constant($constant);
 		if(is_bool($value))
 			$value	= $value ? "true" : "false";				
 		elseif(is_array($value) || is_object($value) || is_string($value))
 			$value	= json_encode($value);
-		echo 'var ' . $constant . ' = ' . $value . ($debug ? ";\n":";");
-		echo 'GLOBAL_CONSTANTS.set("' . $constant . '", ' . (strlen($constant) < strlen($value) ?  $constant : $value) . ($debug ? ");\n":");");
+		$script .= 'var ' . $constant . ' = ' . $value . ";\n";
+		$script .= 'GLOBAL_CONSTANTS.set("' . $constant . '", ' . (strlen($constant) < strlen($value) ?  $constant : $value) . ");\n";
 	}
-	echo '} catch (Exception e) {alert("writeJSConstant failed: "+e)}';
+	if(strtolower(getParameter("DEBUG", "false")) == "true" || DEBUG_LOG_2_CONSOLE)
+		echo "log.console('writeJSConstant: ".htmlspecialchars($script, ENT_QUOTES).");";
+	echo 'try{\n'.$script.'} catch (Exception e) {alert("writeJSConstant failed: "+e);}';
 }
 
 function cipherSecureKey($textkey) {
