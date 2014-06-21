@@ -33,6 +33,9 @@ require_once(PHP_INCLUDE_BASE_DIRECTORY . "JSONEncodeMenu.php");
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <meta http-equiv="Content-Style-Type" content="text/css; charset=UTF-8"/>
 <script type="text/javascript">
+<?php
+	require_once(ACTION_DIRECTORY_NO_CONNECTION . "/HTML/JSConstants.php");
+?>
 var IS_TOUCH_SYSTEM = <?php echo getParameter("TOUCH_OVERRIDE", "('ontouchstart' in window) || (navigator.msMaxTouchPoints > 0) ||(navigator.userAgent.match(/iPad/i) != null)"); ?>;
 </script>
 <link rel="stylesheet" type="text/css" media="all" href="<?php echo CSS_BASE_FILE; ?>"/>
@@ -170,7 +173,6 @@ window.onscroll = function (e) {
 function bodyMove(event) {
 	event.preventDefault();
 }
-require_once((ACTION_DIRECTORY_NO_CONNECTION . "/HTML/JSConstants.php");
 </script>
 </head>
 
