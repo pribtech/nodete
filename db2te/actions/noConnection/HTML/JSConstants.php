@@ -16,7 +16,6 @@
  *********************************************************************************/
 
 ?>
-
 var GLOBAL_CONSTANTS = $H();
 var DB2MC_SERVER = location.href.substr(0, location.href.lastIndexOf('/')); 
 GLOBAL_CONSTANTS.set("DB2MC_SERVER", DB2MC_SERVER.replace("http://", ""));
@@ -81,21 +80,18 @@ writeJSConstant(
 $TableDefinitionObjectsDirectory = dir(USER_PREFERENCES_DIRECTORY); 
 $includeFile = "";
 while(($includeFile = $TableDefinitionObjectsDirectory->read()) !== false) 
-{ 
 	 if (preg_match("/^config_.+\\.php$/", $includeFile))
 	  	 include_once(USER_PREFERENCES_DIRECTORY . $includeFile);
-} 
-	
+
 $TableDefinitionObjectsDirectory = dir("./"); 
 $includeFile = "";
 while(($includeFile = $TableDefinitionObjectsDirectory->read()) !== false) 
-{
 	if (preg_match('/^config_(.)+\.php$/', $includeFile) >= 1)
 	  	 include_once("./" . $includeFile);
-}
 ?>
 
 var CONNECTED_DATABASE = null; 
 GLOBAL_CONSTANTS.set("CONNECTED_DATABASE", null);
 var CONNECTED_DATABASE_VERSION = null; 
 GLOBAL_CONSTANTS.set("CONNECTED_DATABASE_VERSION", null);
+log.console('Constants set');
