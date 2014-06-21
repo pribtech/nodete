@@ -94,4 +94,4 @@ var CONNECTED_DATABASE = null;
 GLOBAL_CONSTANTS.set("CONNECTED_DATABASE", null);
 var CONNECTED_DATABASE_VERSION = null; 
 GLOBAL_CONSTANTS.set("CONNECTED_DATABASE_VERSION", null);
-log.console('Constants set');
+console.log('Constants set');

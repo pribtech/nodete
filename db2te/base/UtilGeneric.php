@@ -258,7 +258,7 @@ function writeJSConstant($constant) {
 		$script .= 'GLOBAL_CONSTANTS.set("' . $constant . '", ' . (strlen($constant) < strlen($value) ?  $constant : $value) . ");";
 	}
 	if(strtolower(getParameter("DEBUG", "false")) == "true" || DEBUG_LOG_2_CONSOLE)
-		echo "log.console('writeJSConstant: ".htmlspecialchars($script, ENT_QUOTES).");";
+		echo "console.log('writeJSConstant: ".htmlspecialchars($script, ENT_QUOTES).");";
 	echo 'try{'.$script.'} catch (e) {alert("writeJSConstant failed: "+e);}';
 }
 
