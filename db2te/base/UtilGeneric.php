@@ -246,20 +246,20 @@ function writeJSConstant($constant) {
 		$globalVarables = substr($globalVarables, 0, -1);
 		$globalsObject = substr($globalsObject, 0, -1);
 		$globalsObject .= '}';
-		$script .= 'var ' . $globalVarables . ";\n";
-		$script .= 'GLOBAL_CONSTANTS.update(' . $globalsObject .  ");\n";
+		$script .= 'var ' . $globalVarables . ";";
+		$script .= 'GLOBAL_CONSTANTS.update(' . $globalsObject .  ");";
 	} else  if(is_string($constant)) {
 		$value = constant($constant);
 		if(is_bool($value))
 			$value	= $value ? "true" : "false";				
 		elseif(is_array($value) || is_object($value) || is_string($value))
 			$value	= json_encode($value);
-		$script .= 'var ' . $constant . ' = ' . $value . ";\n";
-		$script .= 'GLOBAL_CONSTANTS.set("' . $constant . '", ' . (strlen($constant) < strlen($value) ?  $constant : $value) . ");\n";
+		$script .= 'var ' . $constant . ' = ' . $value . ";";
+		$script .= 'GLOBAL_CONSTANTS.set("' . $constant . '", ' . (strlen($constant) < strlen($value) ?  $constant : $value) . ");";
 	}
 	if(strtolower(getParameter("DEBUG", "false")) == "true" || DEBUG_LOG_2_CONSOLE)
 		echo "log.console('writeJSConstant: ".htmlspecialchars($script, ENT_QUOTES).");";
-	echo 'try{\n'.$script.'} catch (Exception e) {alert("writeJSConstant failed: "+e);}';
+	echo 'try{'.$script.'} catch (Exception e) {alert("writeJSConstant failed: "+e);}';
 }
 
 function cipherSecureKey($textkey) {
