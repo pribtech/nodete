@@ -170,12 +170,13 @@ window.onscroll = function (e) {
 function bodyMove(event) {
 	event.preventDefault();
 }
-
+require_once((ACTION_DIRECTORY_NO_CONNECTION . "/HTML/JSConstants.php");
 </script>
 </head>
 
 <body id="PageBody" style="width:100%;height:100%;display:block;" onkeypress="generalKeyCommands(event);" onResize="browserWindowSize()">
 <?php
+
 	$agent = $_SERVER['HTTP_USER_AGENT'];
 	if(!empty($agent) and preg_match("~Mozilla/[^ ]+ \((iPhone|iPodi|iPad); U; CPU [^;]+ Mac OS X; [^)]+\) AppleWebKit/[^ ]+ \(KHTML, like Gecko\) Version/[^ ]+ Mobile/[^ ]+ Safari/[^ ]+~",$agent,$match))
 		if(is_file(PHP_INCLUDE_BASE_DIRECTORY . BASE_LANGUAGE_DIRECTORY .  TE_LANGUAGE . "/index_error.html"))

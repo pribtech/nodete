@@ -16,6 +16,7 @@
  *********************************************************************************/
 
 ?>
+
 var GLOBAL_CONSTANTS = $H();
 var DB2MC_SERVER = location.href.substr(0, location.href.lastIndexOf('/')); 
 GLOBAL_CONSTANTS.set("DB2MC_SERVER", DB2MC_SERVER.replace("http://", ""));
