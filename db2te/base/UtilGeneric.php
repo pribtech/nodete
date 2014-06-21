@@ -259,7 +259,7 @@ function writeJSConstant($constant) {
 	}
 	if(strtolower(getParameter("DEBUG", "false")) == "true" || DEBUG_LOG_2_CONSOLE)
 		echo "log.console('writeJSConstant: ".htmlspecialchars($script, ENT_QUOTES).");";
-	echo 'try{'.$script.'} catch (Exception e) {alert("writeJSConstant failed: "+e);}';
+	echo 'try{'.$script.'} catch (e) {alert("writeJSConstant failed: "+e);}';
 }
 
 function cipherSecureKey($textkey) {
