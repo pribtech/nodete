@@ -573,7 +573,8 @@ CORE_CLIENT_ACTIONS.set("connectionManager",Class.create(basePageElement, {
 			onComplete: function(transport) {
 				ALL_GLOBAL_OBJECT('nodeFilter',null,'CONTEXTBASE');
 				CONNECTION_MANAGER_CURRENTLY_UPDATING = false;
-				CONNECTION_MANAGER_TIMER = setTimeout("GET_GLOBAL_OBJECT_CLASS('connectionManager').values()[0].connectionWatcher();", SESSION_TIMEOUT_IN_MIN*60000);
+				if(SESSION_TIMEOUT_IN_MIN)
+					CONNECTION_MANAGER_TIMER = setTimeout("GET_GLOBAL_OBJECT_CLASS('connectionManager').values()[0].connectionWatcher();", SESSION_TIMEOUT_IN_MIN*60000);
 			}
 		});
 	},

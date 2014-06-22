@@ -15,15 +15,22 @@
  *See the License for the specific language governing permissions and
  *limitations under the License.
  *********************************************************************************/
-var SUB_MENU_IMAGE = new Image();
-SUB_MENU_IMAGE.src = IMAGE_BASE_DIRECTORY + 'circleMenu/submenu.png';
 
-var LINK_MENU_IMAGE = new Image();
-LINK_MENU_IMAGE.src = IMAGE_BASE_DIRECTORY + 'circleMenu/link.png';
-
-
-var BACK_MENU_IMAGE = new Image();
-BACK_MENU_IMAGE.src = IMAGE_BASE_DIRECTORY + 'circleMenu/back.png';
+var CIRCLE_MENU = null;
+function CIRCLE_MENU_LOAD_IMAGES() {
+		CIRCLE_MENU =
+				{SUB_MENU_IMAGE : new Image();
+				,LINK_MENU_IMAGE : new Image();
+				,BACK_MENU_IMAGE : new Image();
+				};
+		CIRCLE_MENU.SUB_MENU_IMAGE.src = IMAGE_BASE_DIRECTORY + 'circleMenu/submenu.png';
+		CIRCLE_MENU.LINK_MENU_IMAGE.src = IMAGE_BASE_DIRECTORY + 'circleMenu/link.png';
+		CIRCLE_MENU.BACK_MENU_IMAGE.src = IMAGE_BASE_DIRECTORY + 'circleMenu/back.png';
+	}
+function getCIRCLE_MENU(image) {
+		if (CIRCLE_MENU==nul) CIRCLE_MENU_LOAD_IMAGES();
+		return CIRCLE_MENU[image];
+	};
 
 var ACTIVE_CIRCLE_MENU = null;
 
@@ -39,9 +46,8 @@ function CIRCLE_MENU_MOVE(event) {
 
 var circleMenu = Class.create(basePageElement, {
 	initialize: function($super, parentContainer, parentNode, isEmbedded, baseNodes, nodeDirection, rootNode, submenuVerticalPosition, submenuHorizontalPosition, parentStageID, parentWindowID, parentPanelID, menuExpansionType, listStyleType) {
-		if (menuWaitingToOpen != null) {
+		if (menuWaitingToOpen != null)
 			clearTimeout(menuWaitingToOpen);
-		}
 		var myID = parentNode == null ? "CONTEXTBASE_" + ++contextIDCounter : parentNode;
 		$super(myID, "CONTEXTBASE");
 		this.parentStageID = parentStageID;
@@ -91,9 +97,8 @@ var circleMenu = Class.create(basePageElement, {
 			if (this.baseNodes.nodeType == "DELAYLOADBRANCH") {
 				this.callBackNode = this.baseNodes;
 			    this.mouseLoad=(this.baseNodes.delayLoad == "mouse");
-			    if(!this.mouseLoad) {
+			    if(!this.mouseLoad)
 					this.getMenu();
-				}
 			}
 		}
 	},
@@ -160,8 +165,7 @@ var circleMenu = Class.create(basePageElement, {
 					if(openMenu)
 						thisObject.drawMenu(isFirstLevel);
 				},
-				'onException': function(transport,exception)
-				{
+				'onException': function(transport,exception) {
 					thisObject.baseNodes = [{
 						elementID: 'LEAF',
 						elementValue: encodeMessage(CORE_MESSAGE_STORE.LANGUAGE_MESSAGES.MENU_LOAD_EXCEPTION, {EXCEPTION_MESSAGE:exception}),
@@ -178,35 +182,25 @@ var circleMenu = Class.create(basePageElement, {
 	close: function(event, cascade) {
 		this.windowIsVisible = false;
 		thisNode = $(this.elementUniqueID + "_root");
-		if (thisNode != null) {
+		if (thisNode != null)
 			thisNode.remove();
-		}
-		if(this.oldActive_Menu == null)
-		{
+		if(this.oldActive_Menu == null) {
 			thisNode = $("TOUCH_MENU")
-			if (thisNode != null) {
+			if (thisNode != null)
 				thisNode.remove();
-			}
 		}
 		this.TOUCH_MENU = null;
 		ACTIVE_CIRCLE_MENU = this.oldActive_Menu;
 
 		if(cascade)
-		{
-			if(ACTIVE_CIRCLE_MENU != null)
-			{
+			if(ACTIVE_CIRCLE_MENU != null) {
 				ACTIVE_CIRCLE_MENU.CURRENT_SELECTED_OBJECT = null;
 				ACTIVE_CIRCLE_MENU.close(event, cascade);
 			}
-		}
 
 		if(this.CURRENT_SELECTED_OBJECT != null)
-		{
 			if(this.CURRENT_SELECTED_OBJECT.type.toLowerCase() == "leaf")
-			{
 				eval(this.CURRENT_SELECTED_OBJECT.action);
-			}
-		}
 	},
 	open: function(event, isFirstLevel, X, Y) {
 		this.pointColor = "black";
@@ -214,16 +208,12 @@ var circleMenu = Class.create(basePageElement, {
 		var parentNode = null;
 		var thisNode = null;
 		this.TOUCH_MENU = null;
-		if(X == null || Y == null)
-		{
-			if(event == null && object != null)
-			{
+		if(X == null || Y == null) {
+			if(event == null && object != null) {
 				var object = $(this.elementParent);
 				CORE_Current_Mouse_X = object.cumulativeOffset().left;
 				CORE_Current_Mouse_Y = object.cumulativeOffset().top;
-			}
-			else if(event != null)
-			{
+			} else if(event != null) {
 				if( event.touches && event.touches.length) { 
 					CORE_Current_Mouse_X = event.touches[0].clientX;
 					CORE_Current_Mouse_Y = event.touches[0].clientY;
@@ -232,22 +222,16 @@ var circleMenu = Class.create(basePageElement, {
 					CORE_Current_Mouse_Y = event.clientY;
 				}
 			}
-		}
-		else
-		{
+		} else {
 			CORE_Current_Mouse_X = X;
 			CORE_Current_Mouse_Y = Y;
 		}
 		this.LAST_MOUSE_POINT =  {x:CORE_Current_Mouse_X,y:CORE_Current_Mouse_Y,'tangent':0,'distance':0};
-		if (this.mouseLoad) {
+		if (this.mouseLoad)
 			this.getMenu(true, isFirstLevel);
-		}
 		else
-		{
 			this.drawMenu(isFirstLevel)
-		}
-		if(event != null)
-		{
+		if(event != null) {
 			event.stopPropagation();
 			event.preventDefault();
 		}
@@ -255,20 +239,15 @@ var circleMenu = Class.create(basePageElement, {
 	},
 	
 	moveProcess: function(event) {
-		
 		event.processed = true;
 		
-		if(this.TOUCH_MENU == null)
-		{
+		if(this.TOUCH_MENU == null) {
 			this.TOUCH_MENU = $('TOUCH_MENU');
 			if(this.TOUCH_MENU != null)
-			{
 				this.TOUCH_MENU.setStyle({ "zIndex": 64000 });
-			}
 		}
 		var canvas = this.TOUCH_MENU;
-		if(this.TOUCH_MENU == null)
-		{
+		if(this.TOUCH_MENU == null) {
 			$('PageBody').insert('<canvas id="TOUCH_MENU" width="500px" height="500px" style="padding:0px;margin:0px;position:absolute;top:0px;left:0px;" onmouseup="CIRCLE_MENU_CLOSE(event, true)" ontouchend="CIRCLE_MENU_CLOSE(event, true);" onmousemove="CIRCLE_MENU_MOVE(event)" ontouchmove="CIRCLE_MENU_MOVE(event)"></canvas>');
 			this.TOUCH_MENU = $('TOUCH_MENU');
 			this.TOUCH_MENU.setStyle({ "zIndex": 64000 });
@@ -298,8 +277,7 @@ var circleMenu = Class.create(basePageElement, {
 		var tangent = Math.atan(x/y);
 		var distanceFromMenu = Math.sqrt(x*x+y*y);
 		
-		if(Math.sqrt(x*x+(y-60)*(y-60)) < 30)
-		{
+		if(Math.sqrt(x*x+(y-60)*(y-60)) < 30) {
 			ctx.clearRect(0,0,canvas.width,canvas.height);
 			this.close(event, false)
 			return;	
@@ -311,157 +289,136 @@ var circleMenu = Class.create(basePageElement, {
 	
 		currentSelectedObjectUpdated = false;
 		old_CURRENT_SELECTED_OBJECT = this.CURRENT_SELECTED_OBJECT;
-		if(this.MENU_DIAMETER + this.menuTextLength + 25 > distanceFromMenu)
-		{
-			var arcSize = 0;
-			for(var i = 0; i < this.MENU_POINTS.length; i++)
-			{
-				arcSize = this.MENU_POINTS[i].menuArcSize
-					if(this.MENU_DIAMETER + this.menuTextLength + 25 > distanceFromMenu && distanceFromMenu > this.MENU_DIAMETER - 20 && this.MENU_POINTS[i].type.toLowerCase() == "leaf")
-					{
-						if(this.MENU_POINTS[i].menuTangent+arcSize > tangent && this.MENU_POINTS[i].menuTangent-arcSize < tangent)
-						{
-							doDraw = false;
-							currentSelectedObjectUpdated = true;
-							if(this.CURRENT_SELECTED_OBJECT == null)
-							{
-								this.CURRENT_SELECTED_OBJECT = this.MENU_POINTS[i];
-								this.MENU_POINTS[i].entryPoint = null;
-								doDraw = true;
-							}
-							else if(this.CURRENT_SELECTED_OBJECT.id != this.MENU_POINTS[i].id)
-							{
-								ctx.clearRect(0,0,canvas.width,canvas.height);
-								this.CURRENT_SELECTED_OBJECT.menuExit = true;
-								this.CURRENT_SELECTED_OBJECT = this.MENU_POINTS[i];
-								this.MENU_POINTS[i].entryPoint = null;
-								doDraw = true;
-							}
-							//Highlight Menu Button
-							if(doDraw)
-							{
-								ctx.clearRect(0,0,canvas.width,canvas.height);
-								var lingrad = ctx.createLinearGradient(0,40,0,-40);
-								lingrad.addColorStop(0, 'rgba(255,255,0,0.0)');
-								lingrad.addColorStop(0.5, 'rgba(255,255,0,0.5)');
-								lingrad.addColorStop(1, 'rgba(255,255,0,0)');
-								ctx.save();
-								ctx.translate(this.MENU_CENTER_X, this.MENU_CENTER_Y);
-								ctx.rotate(this.MENU_POINTS[i].menuTangent);
-								ctx.translate(this.MENU_DIAMETER,0);
-								ctx.fillStyle = lingrad;
-								ctx.beginPath();
-								ctx.moveTo(0, 40);  
-								ctx.lineTo(this.menuTextLength+50,  40); 
-								ctx.lineTo(this.menuTextLength+50, -40);  
-								ctx.lineTo(0, -40);  
-								ctx.closePath();  
-								ctx.fill();
-								
-								lingrad = ctx.createRadialGradient(0,0,0,0,0,40);
-								lingrad.addColorStop(0, 'rgba(255,255,0,0.5)');
-								lingrad.addColorStop(1, 'rgba(255,255,0,0)');
-								ctx.beginPath();
-								ctx.fillStyle = lingrad;
-								ctx.arc(0, 0, 40, Math.PI*0.5, Math.PI*1.5, false); 
-								ctx.closePath();
-								ctx.fill();
-								
-								ctx.translate(this.menuTextLength+50,0);
-								lingrad = ctx.createRadialGradient(0,0,0,0,0,40);
-								lingrad.addColorStop(0, 'rgba(255,255,0,0.5)');
-								lingrad.addColorStop(1, 'rgba(255,255,0,0)');
-								ctx.beginPath();
-								ctx.fillStyle = lingrad;
-								ctx.arc(0, 0, 40, Math.PI*0.5, Math.PI*1.5, true); 
-								ctx.closePath();
-								ctx.fill();
-								
-								ctx.restore();
-								this.pointColor = "purple";
-							}
-							
-							break;
-						}
-					}
-					if(this.MENU_POINTS[i].type.toLowerCase() == "branch" && this.MENU_DIAMETER + 30 > distanceFromMenu && this.MENU_DIAMETER - 30 < distanceFromMenu)
-					{
-						if(this.MENU_POINTS[i].menuTangent+arcSize > tangent && this.MENU_POINTS[i].menuTangent-arcSize < tangent)
-						{
-							currentSelectedObjectUpdated = true;
-							if(this.CURRENT_SELECTED_OBJECT == null)
-							{
-								this.CURRENT_SELECTED_OBJECT = this.MENU_POINTS[i];
-								this.MENU_POINTS[i].entryPoint = null;
-							}
-							else if(this.CURRENT_SELECTED_OBJECT.id != this.MENU_POINTS[i].id)
-							{
-								ctx.clearRect(0,0,canvas.width,canvas.height);
-								this.CURRENT_SELECTED_OBJECT.menuExit = true;
-								this.CURRENT_SELECTED_OBJECT = this.MENU_POINTS[i];
-								this.MENU_POINTS[i].entryPoint = null;
-							}
-							if(this.CURRENT_SELECTED_OBJECT.entryPoint == null)
-							{
-								var x1  = x+this.MENU_POINTS[i].x;
-								var y1  = y-this.MENU_POINTS[i].y;
-								if(Math.sqrt(x1*x1+y1*y1) <=30)
-								{ 
-									this.pointColor = "red";
-									var entryPointTangent = Math.atan(x1/y1);
-									if(y<0) entryPointTangent = entryPointTangent + Math.PI*1.5;
-									else if(x>0 && y>0) entryPointTangent = entryPointTangent + Math.PI*0.5;
-									else if(x<0 && y>0) entryPointTangent = entryPointTangent + Math.PI*2.5;
-									entryPointTangent = entryPointTangent/Math.PI;
-									this.CURRENT_SELECTED_OBJECT.entryPoint = entryPointTangent;
-								}
-							}
-							break;
-						}
-					}
-					if(distanceFromMenu > this.MENU_DIAMETER + 20 && this.LAST_MOUSE_POINT.distance < this.MENU_DIAMETER - 20)
-					{
-						if(this.MENU_POINTS[i].menuTangent+arcSize > tangent && this.MENU_POINTS[i].menuTangent-arcSize < tangent)
-						{
-							var X = this.MENU_CENTER_X+this.MENU_POINTS[i].x;
-							var Y = this.MENU_CENTER_Y+this.MENU_POINTS[i].y;
-							this.pointColor = "green";
-							eval(this.MENU_POINTS[i].action);
-							this.LAST_MOUSE_POINT = null;
+		if(this.MENU_DIAMETER + this.menuTextLength + 25 > distanceFromMenu) {
+		var arcSize = 0;
+		for(var i = 0; i < this.MENU_POINTS.length; i++) {
+			arcSize = this.MENU_POINTS[i].menuArcSize;
+			if(this.MENU_DIAMETER + this.menuTextLength + 25 > distanceFromMenu && distanceFromMenu > this.MENU_DIAMETER - 20 && this.MENU_POINTS[i].type.toLowerCase() == "leaf") {
+					if(this.MENU_POINTS[i].menuTangent+arcSize > tangent && this.MENU_POINTS[i].menuTangent-arcSize < tangent) {
+						doDraw = false;
+						currentSelectedObjectUpdated = true;
+						if(this.CURRENT_SELECTED_OBJECT == null) {
+							this.CURRENT_SELECTED_OBJECT = this.MENU_POINTS[i];
 							this.MENU_POINTS[i].entryPoint = null;
+							doDraw = true;
+						} else if(this.CURRENT_SELECTED_OBJECT.id != this.MENU_POINTS[i].id) {
 							ctx.clearRect(0,0,canvas.width,canvas.height);
-							event.preventDefault();
-							return false;
+							this.CURRENT_SELECTED_OBJECT.menuExit = true;
+							this.CURRENT_SELECTED_OBJECT = this.MENU_POINTS[i];
+							this.MENU_POINTS[i].entryPoint = null;
+							doDraw = true;
 						}
+						//Highlight Menu Button
+						if(doDraw) {
+							ctx.clearRect(0,0,canvas.width,canvas.height);
+							var lingrad = ctx.createLinearGradient(0,40,0,-40);
+							lingrad.addColorStop(0, 'rgba(255,255,0,0.0)');
+							lingrad.addColorStop(0.5, 'rgba(255,255,0,0.5)');
+							lingrad.addColorStop(1, 'rgba(255,255,0,0)');
+							ctx.save();
+							ctx.translate(this.MENU_CENTER_X, this.MENU_CENTER_Y);
+							ctx.rotate(this.MENU_POINTS[i].menuTangent);
+							ctx.translate(this.MENU_DIAMETER,0);
+							ctx.fillStyle = lingrad;
+							ctx.beginPath();
+							ctx.moveTo(0, 40);  
+							ctx.lineTo(this.menuTextLength+50,  40); 
+							ctx.lineTo(this.menuTextLength+50, -40);  
+							ctx.lineTo(0, -40);  
+							ctx.closePath();  
+							ctx.fill();
+							
+							lingrad = ctx.createRadialGradient(0,0,0,0,0,40);
+							lingrad.addColorStop(0, 'rgba(255,255,0,0.5)');
+							lingrad.addColorStop(1, 'rgba(255,255,0,0)');
+							ctx.beginPath();
+							ctx.fillStyle = lingrad;
+							ctx.arc(0, 0, 40, Math.PI*0.5, Math.PI*1.5, false); 
+							ctx.closePath();
+							ctx.fill();
+							
+							ctx.translate(this.menuTextLength+50,0);
+							lingrad = ctx.createRadialGradient(0,0,0,0,0,40);
+							lingrad.addColorStop(0, 'rgba(255,255,0,0.5)');
+							lingrad.addColorStop(1, 'rgba(255,255,0,0)');
+							ctx.beginPath();
+							ctx.fillStyle = lingrad;
+							ctx.arc(0, 0, 40, Math.PI*0.5, Math.PI*1.5, true); 
+							ctx.closePath();
+							ctx.fill();
+							
+							ctx.restore();
+							this.pointColor = "purple";
+						}
+						
+						break;
 					}
 				}
-			}
-			var id = -1;
-			if(old_CURRENT_SELECTED_OBJECT != null)
-			{
-				if(old_CURRENT_SELECTED_OBJECT.type.toLowerCase() == "branch" && old_CURRENT_SELECTED_OBJECT.entryPoint != null)
-				{
-					var x1  = x+old_CURRENT_SELECTED_OBJECT.x;
-					var y1  = y-old_CURRENT_SELECTED_OBJECT.y;
-					if(Math.sqrt(x1*x1+y1*y1) >=30 || this.CURRENT_SELECTED_OBJECT.menuExit)
-					{ 
-						var X = this.MENU_CENTER_X+old_CURRENT_SELECTED_OBJECT.x;
-						var Y = this.MENU_CENTER_Y+old_CURRENT_SELECTED_OBJECT.y;
-						eval(old_CURRENT_SELECTED_OBJECT.action);
-						old_CURRENT_SELECTED_OBJECT.entryPoint = null;
+				if(this.MENU_POINTS[i].type.toLowerCase() == "branch" && this.MENU_DIAMETER + 30 > distanceFromMenu && this.MENU_DIAMETER - 30 < distanceFromMenu)  {
+					if(this.MENU_POINTS[i].menuTangent+arcSize > tangent && this.MENU_POINTS[i].menuTangent-arcSize < tangent) {
+						currentSelectedObjectUpdated = true;
+						if(this.CURRENT_SELECTED_OBJECT == null) {
+							this.CURRENT_SELECTED_OBJECT = this.MENU_POINTS[i];
+							this.MENU_POINTS[i].entryPoint = null;
+						} else if(this.CURRENT_SELECTED_OBJECT.id != this.MENU_POINTS[i].id) {
+							ctx.clearRect(0,0,canvas.width,canvas.height);
+							this.CURRENT_SELECTED_OBJECT.menuExit = true;
+							this.CURRENT_SELECTED_OBJECT = this.MENU_POINTS[i];
+							this.MENU_POINTS[i].entryPoint = null;
+						}
+						if(this.CURRENT_SELECTED_OBJECT.entryPoint == null) {
+							var x1  = x+this.MENU_POINTS[i].x;
+							var y1  = y-this.MENU_POINTS[i].y;
+							if(Math.sqrt(x1*x1+y1*y1) <=30) { 
+								this.pointColor = "red";
+								var entryPointTangent = Math.atan(x1/y1);
+								if(y<0) entryPointTangent = entryPointTangent + Math.PI*1.5;
+								else if(x>0 && y>0) entryPointTangent = entryPointTangent + Math.PI*0.5;
+								else if(x<0 && y>0) entryPointTangent = entryPointTangent + Math.PI*2.5;
+								entryPointTangent = entryPointTangent/Math.PI;
+								this.CURRENT_SELECTED_OBJECT.entryPoint = entryPointTangent;
+							}
+						}
+						break;
+					}
+				}
+				if(distanceFromMenu > this.MENU_DIAMETER + 20 && this.LAST_MOUSE_POINT.distance < this.MENU_DIAMETER - 20) {
+					if(this.MENU_POINTS[i].menuTangent+arcSize > tangent && this.MENU_POINTS[i].menuTangent-arcSize < tangent) {
+						var X = this.MENU_CENTER_X+this.MENU_POINTS[i].x;
+						var Y = this.MENU_CENTER_Y+this.MENU_POINTS[i].y;
+						this.pointColor = "green";
+						eval(this.MENU_POINTS[i].action);
 						this.LAST_MOUSE_POINT = null;
+						this.MENU_POINTS[i].entryPoint = null;
 						ctx.clearRect(0,0,canvas.width,canvas.height);
 						event.preventDefault();
 						return false;
 					}
 				}
 			}
-			if(!currentSelectedObjectUpdated) 
-			{
-				if(old_CURRENT_SELECTED_OBJECT != null)
+		}
+		var id = -1;
+		if(old_CURRENT_SELECTED_OBJECT != null) {
+			if(old_CURRENT_SELECTED_OBJECT.type.toLowerCase() == "branch" && old_CURRENT_SELECTED_OBJECT.entryPoint != null) {
+				var x1  = x+old_CURRENT_SELECTED_OBJECT.x;
+				var y1  = y-old_CURRENT_SELECTED_OBJECT.y;
+				if(Math.sqrt(x1*x1+y1*y1) >=30 || this.CURRENT_SELECTED_OBJECT.menuExit) { 
+					var X = this.MENU_CENTER_X+old_CURRENT_SELECTED_OBJECT.x;
+					var Y = this.MENU_CENTER_Y+old_CURRENT_SELECTED_OBJECT.y;
+					eval(old_CURRENT_SELECTED_OBJECT.action);
+					old_CURRENT_SELECTED_OBJECT.entryPoint = null;
+					this.LAST_MOUSE_POINT = null;
 					ctx.clearRect(0,0,canvas.width,canvas.height);
-				this.CURRENT_SELECTED_OBJECT = null;
+					event.preventDefault();
+					return false;
+				}
 			}
+		}
+		if(!currentSelectedObjectUpdated) {
+			if(old_CURRENT_SELECTED_OBJECT != null)
+				ctx.clearRect(0,0,canvas.width,canvas.height);
+			this.CURRENT_SELECTED_OBJECT = null;
+		}
 		this.LAST_MOUSE_POINT = {x:CORE_Current_Mouse_X,y:CORE_Current_Mouse_Y,'tangent':tangent,'distance':distanceFromMenu};
 		event.preventDefault();
 		return false;
@@ -470,32 +427,24 @@ var circleMenu = Class.create(basePageElement, {
 	nodeFilter: function() {
 		this.menuStructure = [];
 		var Node = null;
-		for(var i=0; i < this.coreMenuStructure.length; i++)
-		{
+		for(var i=0; i < this.coreMenuStructure.length; i++) {
 			Node = this.coreMenuStructure[i];
-			if(Node.tag != null)
-			{
-				if(IS_TOUCH_SYSTEM)
-				{
+			if(Node.tag != null) {
+				if(IS_TOUCH_SYSTEM) {
 					if(Node.tag.toUpperCase().indexOf("NON_TOUCH_SYSTEM") != -1)
 						;
 					else if(Node.tag.toUpperCase().indexOf("FOR_TOUCH_SYSTEM") != -1)
 						this.menuStructure.push(Node);
 					else 
 						this.menuStructure.push(Node);
-				}
-				else
-				{
+				} else {
 					if(Node.tag.toUpperCase().indexOf("NON_TOUCH_SYSTEM") != -1) 
 						this.menuStructure.push(Node);
 					else if(Node.tag.toUpperCase().indexOf("FOR_TOUCH_SYSTEM") != -1)
 						;
 				}
-			}
-			else
-			{
+			} else
 				this.menuStructure.push(Node);
-			}
 		}
 	},
 	
@@ -515,8 +464,7 @@ var circleMenu = Class.create(basePageElement, {
 		var arcSet = [];
 		
 		var size = 0;
-		for(i=0; i<numberOfMenuPoints; i++)
-		{
+		for(i=0; i<numberOfMenuPoints; i++) {
 			size = this.menuStructure[i].text.length * 8 + 50;
 			if(size > this.menuTextLength)
 				this.menuTextLength = size;
@@ -528,14 +476,12 @@ var circleMenu = Class.create(basePageElement, {
 		
 		//If this is not a first level menu, the menu needs to be moved away from the edge so that the uses can navigate back
 		if(!isFirstLevel)
-		{
-			if(this.MENU_CENTER_Y+100 >= window.innerHeight)	this.MENU_CENTER_Y = window.innerHeight-100;
-		}
+			if(this.MENU_CENTER_Y+100 >= window.innerHeight)
+				this.MENU_CENTER_Y = window.innerHeight-100;
 		
 		thisNode = $(this.elementUniqueID + "_root");
-		if (thisNode != null) {
+		if (thisNode != null)
 			thisNode.remove();
-		}
 			
 		$("PageBody").insert('<canvas id="' + this.elementUniqueID  + "_root" + '" width="500px" height="500px" style="z-index:' + getTopZindex() + ';padding:0px;margin:0px;position:absolute;top:0px;left:0px;" onmouseup="CIRCLE_MENU_CLOSE(event, true)" ontouchend="CIRCLE_MENU_CLOSE(event, true);" onmousemove="CIRCLE_MENU_MOVE(event)" ontouchmove="CIRCLE_MENU_MOVE(event)"></canvas>');
 		
@@ -550,7 +496,6 @@ var circleMenu = Class.create(basePageElement, {
 		ctx.fillRect (0,0,canvas.width,canvas.height);
 		ctx.fill();
 		
-		
 		var menuIndex = 0;
 		var testRadius = 0;
 		var loops = 0;
@@ -559,8 +504,7 @@ var circleMenu = Class.create(basePageElement, {
 		var foundSuffishenSpace = false;
 		menuArcRadius = (Math.ceil((menuItemSize*numberOfMenuPoints)/( 2 * Math.PI * 5))-1) * 5;
 		if(menuArcRadius < 100) menuArcRadius = 100;
-		while(!foundSuffishenSpace && menuArcRadius < window.innerHeight-this.menuTextLength)
-		{
+		while(!foundSuffishenSpace && menuArcRadius < window.innerHeight-this.menuTextLength) {
 			menuArcRadius += 5;
 			testRadius = this.menuTextLength + menuArcRadius;
 			fingerMask = Math.asin(60/menuArcRadius)/Math.PI;
@@ -575,36 +519,25 @@ var circleMenu = Class.create(basePageElement, {
 					}
 			};
 			
-			if(this.MENU_CENTER_Y < testRadius)
-			{
+			if(this.MENU_CENTER_Y < testRadius) {
 				var angle_A = Math.acos( this.MENU_CENTER_Y/testRadius)/Math.PI;
 				avalibleArc.right.top[0] = 1.5-angle_A;	
 				avalibleArc.left.top[1] = 1.5+angle_A;
-			}
-			else if(this.MENU_CENTER_Y + testRadius > window.innerHeight)
-			{
+			} else if(this.MENU_CENTER_Y + testRadius > window.innerHeight) {
 				var angle_A = Math.acos( (window.innerHeight-this.MENU_CENTER_Y)/testRadius)/Math.PI;
-				
 				var leftAngle =  0.5 + angle_A;
 				var rightAngle = 2.5 - angle_A;
 				
 				if(leftAngle > 0.5+fingerMask)
-				{
 					avalibleArc.right.bottom[1] = leftAngle;
-				}
 				if(rightAngle < 2.5-fingerMask)
-				{
 					avalibleArc.left.bottom[0] = rightAngle;
-				}
 			}
-			if(this.MENU_CENTER_X < testRadius)
-			{
+			if(this.MENU_CENTER_X < testRadius) {
 				var angle_A = Math.acos( this.MENU_CENTER_X/testRadius)/Math.PI;
 				avalibleArc.right.top[1] = 1+angle_A;	
 				avalibleArc.right.bottom[0] = 1-angle_A;
-			}
-			else if(this.MENU_CENTER_X + testRadius > window.innerWidth)
-			{
+			} else if(this.MENU_CENTER_X + testRadius > window.innerWidth) {
 				var angle_A = Math.acos( (window.innerWidth-this.MENU_CENTER_X)/testRadius)/Math.PI;
 				avalibleArc.left.top[1] = 2+angle_A;	
 				avalibleArc.left.bottom[0] = 2-angle_A;
@@ -616,8 +549,7 @@ var circleMenu = Class.create(basePageElement, {
 			else
 				arcSet.unshift(avalibleArc.right.top);
 			
-			if(Math.floor(((arcSet[0][0] - arcSet[0][1])/2 * menuArcRadius * 2 * Math.PI) / menuItemSize) < numberOfMenuPoints)
-			{
+			if(Math.floor(((arcSet[0][0] - arcSet[0][1])/2 * menuArcRadius * 2 * Math.PI) / menuItemSize) < numberOfMenuPoints) {
 				if(arcSet[0][0] == avalibleArc.left.top[1])
 					arcSet[0][0] = avalibleArc.left.top[0];
 				else
@@ -627,9 +559,7 @@ var circleMenu = Class.create(basePageElement, {
 					arcSet[0][0] = avalibleArc.left.bottom[0];
 				else
 					arcSet.unshift(avalibleArc.left.bottom);
-			}
-			else
-			{
+			} else {
 				arcSet.unshift(avalibleArc.left.top);
 					
 				if(arcSet[0][0] == avalibleArc.left.bottom[1])
@@ -641,34 +571,26 @@ var circleMenu = Class.create(basePageElement, {
 			arcSet = [];
 			//Here we are condensing the 4 arc 
 			for(var i=0; i < processArcSet.length; i++)
-			{
 				if(processArcSet[i][1] < processArcSet[i][0])
 					arcSet.push(processArcSet[i]);
-			}
 				
 			var pointSpace = 0;
 			processArcSet = arcSet;
 			arcSet = [];
-			for(var i=0; i < processArcSet.length; i++)
-			{
+			for(var i=0; i < processArcSet.length; i++) {
 				var points = Math.floor(((processArcSet[i][0] - processArcSet[i][1])/2 * menuArcRadius * 2 * Math.PI) / menuItemSize);
 				pointSpace += points;
-				if(points > 0) 
-				{
+				if(points > 0) {
 					arcSet.push(processArcSet[i]);
 					if(menuItemArcSeparation > (processArcSet[i][0] - processArcSet[i][1]) / points || menuItemArcSeparation == 0)
 						menuItemArcSeparation = (processArcSet[i][0] - processArcSet[i][1]) / points;
 				}
 				if(pointSpace > numberOfMenuPoints) 
-				{
 					break;
-				}
 			}
 			 
 			if(pointSpace > numberOfMenuPoints)
-			{
 				foundSuffishenSpace = true;
-			}
 		}
 		
 		this.MENU_POINTS = [];
@@ -682,10 +604,8 @@ var circleMenu = Class.create(basePageElement, {
 		var offset = 0;
 		if(arcSet.length == 0)
 			offset = ((activeArc[0]-activeArc[1]) - menuItemArcSeparation*numberOfMenuPoints)/2;
-		for(i=0; i<numberOfMenuPoints; i++)
-		{
-			if(activeArc[0]-currentArcPossition*menuItemArcSeparation < activeArc[1])
-			{
+		for(i=0; i<numberOfMenuPoints; i++) {
+			if(activeArc[0]-currentArcPossition*menuItemArcSeparation < activeArc[1]) {
 				activeArc = arcSet.pop();
 				if(activeArc == null)
 					break;
@@ -693,9 +613,7 @@ var circleMenu = Class.create(basePageElement, {
 				if(arcSet.length == 0)
 					offset = ((activeArc[0]-activeArc[1]) - menuItemArcSeparation*numberOfMenuPoints)/2;
 			}
-			
 			var menuTangent = (activeArc[0]-(currentArcPossition*menuItemArcSeparation + offset)) * Math.PI;
-			
 			var x = Math.cos(menuTangent);
 			var y = Math.sin(menuTangent);
 			
@@ -713,7 +631,6 @@ var circleMenu = Class.create(basePageElement, {
 			
 			ctx.save();
 			ctx.rotate(menuTangent);
-			
 			
 			/*ctx.beginPath();
 			ctx.moveTo(this.MENU_DIAMETER-20, 0);  
@@ -737,9 +654,7 @@ var circleMenu = Class.create(basePageElement, {
 			
 			ctx.translate(menuArcRadius, 0);
 			if(menuTangent >= Math.PI*0.49 && menuTangent <= Math.PI*1.49)
-			{
 				ctx.rotate(Math.PI);
-			}
 			var radgrad = ctx.createRadialGradient(0,0,0,0,0,30);  
 			radgrad.addColorStop(0, '#FFF');  
 			radgrad.addColorStop(0.95, '#FFF');
@@ -751,20 +666,13 @@ var circleMenu = Class.create(basePageElement, {
 			ctx.fill();
 			
 			if(this.menuStructure[i].type.toLowerCase() == "branch")
-			{
-				ctx.drawImage(SUB_MENU_IMAGE,-20, -20, 40, 40);
-			}
+				ctx.drawImage(getCIRCLE_MENU('SUB_MENU_IMAGE'),-20, -20, 40, 40);
 			else
-			{
-				ctx.drawImage(LINK_MENU_IMAGE,-20, -20, 40, 40);
-			}
-			if(menuTangent >= Math.PI*0.49 && menuTangent <= Math.PI*1.49)
-			{
+				ctx.drawImage(getCIRCLE_MENU('LINK_MENU_IMAGE'),-20, -20, 40, 40);
+			if(menuTangent >= Math.PI*0.49 && menuTangent <= Math.PI*1.49)	{
 				ctx.translate(-25, 0);
 				ctx.textAlign = "end";	
-			}
-			else
-			{
+			} else {
 				ctx.translate(25, 0);
 				ctx.textAlign = "start";
 			}
@@ -782,8 +690,7 @@ var circleMenu = Class.create(basePageElement, {
 			currentArcPossition += 1;
 		}
 		
-		if(!isFirstLevel)
-		{
+		if(!isFirstLevel) {
 			var radgrad = ctx.createRadialGradient(0,80,0,0,80,60);  
 			radgrad.addColorStop(0, '#FFF'); 
 			radgrad.addColorStop(0.8, '#FFF'); 
@@ -794,7 +701,7 @@ var circleMenu = Class.create(basePageElement, {
 			ctx.closePath();
 			ctx.fill();
 			
-			ctx.drawImage(BACK_MENU_IMAGE,-35, 35, 50, 50);
+			ctx.drawImage(getCIRCLE_MENU('BACK_MENU_IMAGE'),-35, 35, 50, 50);
 		}
 		
 		ctx.restore();
@@ -816,14 +723,12 @@ var circleMenu = Class.create(basePageElement, {
 		$super();
 	},
 	setEmpty: function() {
-		
 	},
 	draw: function() {
 		var ID;
 		var buildTextForMenu = "";
 		var isEmbedded = this.isEmbedded;
 		var isRootNodes = (this.isEmbedded) ? true : false;
-
 		var elementParent = this.elementParent;
 		var verticalPosition = BOTTOM;
 		var horizontalPosition = RIGHT;
@@ -831,25 +736,22 @@ var circleMenu = Class.create(basePageElement, {
 		var childNodes = this.childNodes;
 		var internalNode = "";
 		
-		this.coreMenuStructure = []
+		this.coreMenuStructure = [];
 		
-		if(this.baseNodes != null)
-		{
+		if(this.baseNodes != null) {
 			var i = 0;
 			var Node = null;
 			var tag = null;
 			var nodeType = null;
 			var nodeElementID = null;
-			for(i = 0; i<this.baseNodes.length; i++)
-			{
+			for(i = 0; i<this.baseNodes.length; i++) {
 				Node = this.baseNodes[i];
 				if(Node == null) continue;
 				tag = "a";
 				
 				var versionNote = "";
 				
-				if(Node.minVersion != 0 && Node.minVersion != null)
-				{
+				if(Node.minVersion != 0 && Node.minVersion != null) {
 					versionNote = " (" + Node.minVersion;
 					
 					if(Node.minFixPack != 0 && Node.minFixPack != null)
@@ -870,9 +772,8 @@ var circleMenu = Class.create(basePageElement, {
 				nodeType = Node.nodeType;
 				nodeElementID = Node.elementID == null ? "MENUNODE_" + (++contextIDCounter) : Node.elementID;
 				
-				if (nodeType == null) {
+				if (nodeType == null)
 					nodeType = nodeElementID;
-				}
 				nodeType = nodeType.toUpperCase();
 				if (nodeType == "BRANCH" || nodeType == "DELAYLOADBRANCH" || this.mouseLoad ) {
 					internalNode = Node;
@@ -895,23 +796,15 @@ var circleMenu = Class.create(basePageElement, {
 					
 					if (elementAction == "" || elementAction == null) {
 						if(Node.elementActionScript != null)
-						{										
 							elementAction = 'runTEScript(\'' + Node.internalID + '\', allContextWindows.get(\'' + this.elementUniqueID + '\').baseNodes[' + i + '].elementActionScript, null, \'' +Node.internalID + '\', null, null, \'' + this.parentStageID + '\', \'' + this.parentWindowID + '\', \'' + this.parentPanelID + '\', null);';
-						}
-						else if(Node.elementFloatingLink != null)
-						{
+						else if(Node.elementFloatingLink != null) {
 							var DisplayPoint = "null";
 							if(this.isEmbedded && this.isRootNode)
-							{
 								DisplayPoint = Node.internalID;
-							}
 							else
-							{
 								DisplayPoint = this.getRootNode();
-							}
 							var object = getPanel(this.parentStageID,this.parentWindowID, this.parentPanelID);
-							if(object != null)
-							{
+							if(object != null) {
 								var floatingPanelObject = new floatingPanel(Node.internalID + "_floatingPanel", Node.elementFloatingLink.ContentType, Node.elementFloatingLink.data, DisplayPoint, Node.elementFloatingLink.hideMenuBar, Node.elementFloatingLink.reloadOnConnectionChange, Node.elementFloatingLink.panelHeaders, Node.elementFloatingLink.baseWidth, Node.elementFloatingLink.baseHight, Node.elementFloatingLink.loadContentOnShow, Node.elementFloatingLink.reloadContentOnShow);
 								object.registerNestedObject(floatingPanelObject);
 								floatingPanelObject.draw();
@@ -921,14 +814,10 @@ var circleMenu = Class.create(basePageElement, {
 							
 						}
 						else if(Node.elementLinkList != null || Node.elementPageWindows != null)
-						{
 							elementAction = 'loadPage(allContextWindows.get(\'' + this.elementUniqueID + '\').baseNodes[' + i + '].elementPageWindows, allContextWindows.get(\'' + this.elementUniqueID + '\').baseNodes[' + i + '].elementLinkList);';
-						}
-					}
-					else
-					{
-							elementAction = elementAction.substr(elementAction.indexOf("=")+1);
-							elementAction = eval(elementAction);
+					} else {
+						elementAction = elementAction.substr(elementAction.indexOf("=")+1);
+						elementAction = eval(elementAction);
 					}
 					this.coreMenuStructure.push({
 						text:Node.elementValue +versionNote,
