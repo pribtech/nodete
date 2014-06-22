@@ -19,9 +19,9 @@
 var CIRCLE_MENU = null;
 function CIRCLE_MENU_LOAD_IMAGES() {
 		CIRCLE_MENU =
-				{SUB_MENU_IMAGE : new Image();
-				,LINK_MENU_IMAGE : new Image();
-				,BACK_MENU_IMAGE : new Image();
+				{SUB_MENU_IMAGE : new Image()
+				,LINK_MENU_IMAGE : new Image()
+				,BACK_MENU_IMAGE : new Image()
 				};
 		CIRCLE_MENU.SUB_MENU_IMAGE.src = IMAGE_BASE_DIRECTORY + 'circleMenu/submenu.png';
 		CIRCLE_MENU.LINK_MENU_IMAGE.src = IMAGE_BASE_DIRECTORY + 'circleMenu/link.png';
