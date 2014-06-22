@@ -391,7 +391,7 @@ CORE_CLIENT_ACTIONS.set("connectionManager",Class.create(basePageElement, {
 			this.actionCallbackCloseFloat=true;
 
 			if(this.currentSelectedConnectionRowTC == null) {
-				if(GLOBAL_TE_SUPPORTED_DRIVERS==null) 
+				if(GLOBAL_TE_SUPPORTED_DRIVERS==undefined || GLOBAL_TE_SUPPORTED_DRIVERS==null) 
 					throw "List of supported drivers lost, recycle window";
 				var selectedDriverDetails=GLOBAL_TE_SUPPORTED_DRIVERS.get(this.connectionDataTable[this.currentSelectedConnectionRow]['databaseDriver']);
 				if(selectedDriverDetails==null) 
@@ -575,7 +575,8 @@ CORE_CLIENT_ACTIONS.set("connectionManager",Class.create(basePageElement, {
 				CONNECTION_MANAGER_CURRENTLY_UPDATING = false;
 				if(SESSION_TIMEOUT_IN_MIN==undefined) return;
 				if(SESSION_TIMEOUT_IN_MIN==false) return;
-				CONNECTION_MANAGER_TIMER = setTimeout("GET_GLOBAL_OBJECT_CLASS('connectionManager').values()[0].connectionWatcher();", SESSION_TIMEOUT_IN_MIN*60000);
+				var timeMS=SESSION_TIMEOUT_IN_MIN*60000;
+				CONNECTION_MANAGER_TIMER = setTimeout("GET_GLOBAL_OBJECT_CLASS('connectionManager').values()[0].connectionWatcher();", timeMS);
 			}
 		});
 	},
