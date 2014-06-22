@@ -91,35 +91,28 @@ try {
 			NoConnectionMessageHTML();
 		exit();
 	}
-} catch(Exception $err){
+
 	if(RETURN_TYPE == "JSON") {
-		$errormsg = rawurlencode($err);
-			echo <<<JSON
-			{
-				flagGeneralError: true,
-				connectionError:false,
-				returnCode: "false",
-				returnValue: "$errormsg"
-			}
-JSON;
-	} else 
-		print($err);
-	exit();
+		if(!isset($action) || $action=='' || $action==null)
+			throw new Exception('No action parameter found, call GET: '.var_export($_GET,true).' POST: '.var_export($_GET,true));
+		else
+			throw new Exception( str_replace('?ACTION?', $action, ACTION_NOT_FOUND_W_NAME));
+	}
+} catch(Exception $err){
+		error_log("action trace request: ".var_export($_GET,true),0);
+		error_log('action error: '.$err);
+		if(RETURN_TYPE == "JSON") {
+			$returnObject = array();
+			$returnObject['flagGeneralError'] = true;
+			$returnObject['connectionError'] = false;
+			$returnObject['returnCode'] = "false";
+			$returnObject['returnValue'] = $err;
+			echo json_encode($returnObject);
+		} else
+			print($err);
+		exit();
 }
-
-if(RETURN_TYPE == "JSON") {
-	$returnObject = array();
-	$returnObject['flagGeneralError'] = true;
-	$returnObject['connectionError'] = false;
-	$returnObject['returnCode'] = "false";
-	if(!isset($action) || $action=='' || $action==null)
-		$returnObject['returnValue'] = 'No action parameter found, call GET: '.var_export($_GET,true).' POST: '.var_export($_GET,true);
-	else
-		$returnObject['returnValue'] = str_replace('?ACTION?', $action, ACTION_NOT_FOUND_W_NAME);
-	echo json_encode($returnObject);
-	exit();
-}
-
+	
 my_header(ACTION_NOT_FOUND, "");
 if(!isset($action) || $action=='' || $action==null)
 	echo "\n<table style='width:100%;height:100%'><tr><td align='center'>" . 'No action parameter found, call GET: '.var_export($_GET,true).' POST: '.var_export($_GET,true) . "</td></tr></table>";

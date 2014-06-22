@@ -13,3 +13,5 @@ setDefine("MAIN_MENU_ROOT_DIRECTORY", "./menu/DeveloperSwitch");
 setDefine("HADOOP_JARS", null);
 setDefine("DEVELOPMENT_MODE", true);
 setDefine("SSO",true);
+setDefine("TRACE_ACTION_CALLS", true);
+//setDefine("DEBUG_LOG_2_CONSOLE", false);
