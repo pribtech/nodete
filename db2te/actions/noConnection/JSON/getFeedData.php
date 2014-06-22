@@ -1,15 +1,13 @@
 <?php
-
-include_once(PHP_INCLUDE_BASE_DIRECTORY . "ArrayEncodeFeed.php");
-include_once(PHP_INCLUDE_BASE_DIRECTORY . "ObjectFeedSourceManager.php");
-
-$sourceList = feedSourceManager::retrieveAllSources();
-
-ArrayEncodeFeed::$maxItemsToReturn = getParameter('returnCount', 10);
-
 $FeedData = array();
 $FeedDataFromAllSources = array();
 try {
+	include_once(PHP_INCLUDE_BASE_DIRECTORY . "ArrayEncodeFeed.php");
+	include_once(PHP_INCLUDE_BASE_DIRECTORY . "ObjectFeedSourceManager.php");
+
+	$sourceList = feedSourceManager::retrieveAllSources();
+	ArrayEncodeFeed::$maxItemsToReturn = getParameter('returnCount', 10);
+
 	if($sourceList == null) 
 		throw new Exception('Empty RSS Feed list');
 	foreach($sourceList as $source) {

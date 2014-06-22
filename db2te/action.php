@@ -49,18 +49,11 @@ JSON;
 	} else
 		print($error);
 }
-ob_start();
-register_shutdown_function('actionShutDown');
-
 $metaConn = false;
-
-$action = getParameter("action", "");
-$tableName = NULL;
-$schemaName = NULL;
-
 $table = NULL;
 
-$tableName   = getParameter("table");
+$action = getParameter("action", "");
+$tableName   = getParameter("table",NULL);
 $schemaName  = getParameter("schema", "");
 if($schemaName == "")
 	$schemaName  = getParameter("SCHEMA", "");
@@ -77,6 +70,8 @@ if($schemaName == "")
  * run the default action
  */
 try {
+	ob_start();
+	register_shutdown_function('actionShutDown');
 	if(!preg_match('/^[a-zA-Z0-9_\/-]+$/', $action))
 		throw new Exception("Poorly formed action: ".$action);
 	if(file_exists(ACTION_DIRECTORY_ACTIVE_CONNECTION . "/" . RETURN_TYPE . "/" . $action . ".php"))
