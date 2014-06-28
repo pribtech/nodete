@@ -54,25 +54,6 @@ function actionShutDown() {
 	sendErrorMessage($error);
 }
 
-declare(ticks = 1);
-function sig_handler($signo) {
-	switch ($signo) {
-		case SIGTERM:
-			sendErrorMessage('Signal terminate raised');
-			exit;
-		case SIGHUP:
-			sendErrorMessage('Signal restart raised');
-			exit;
-		case SIGUSR1:
-			sendErrorMessage('Signal user raised');
-			exit;
-		default:
-	}
-}
-pcntl_signal(SIGTERM, "sig_handler");
-pcntl_signal(SIGHUP,  "sig_handler");
-pcntl_signal(SIGUSR1, "sig_handler");
-
 $metaConn = false;
 $table = NULL;
 $action = getParameter("action", "");
