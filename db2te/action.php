@@ -21,6 +21,21 @@ if(TRACE_ACTION_CALLS)
 /**
  * The following is to trap time outs and report these issues.
 **/
+function sendErrorMessage($err) {
+	error_log("action request: ".var_export($_GET,true),0);
+	error_log('action error: '.$err);
+	if(RETURN_TYPE == "JSON")
+		echo json_encode(
+				array(
+					'flagGeneralError' => true
+					,'connectionError' => false
+					,'returnCode' => "false"
+					,'returnValue' => $err
+					));
+	else
+		print($err);
+}
+
 function actionShutDown() {
 	if(defined("TRACE_ACTION_CALLS"))
 		if(TRACE_ACTION_CALLS) {
@@ -36,22 +51,30 @@ function actionShutDown() {
 		$error=$errormsg['message'];
 	}
 	if(ob_get_length()>0) exit();
-	if(RETURN_TYPE == "JSON") {
-		$errormsgEncoded = rawurlencode($error);
-		echo <<<JSON
-			{
-				flagGeneralError: true,
-				connectionError:false,
-				returnCode: "false",
-				returnValue: "$errormsgEncoded"
-			}
-JSON;
-	} else
-		print($error);
+	sendErrorMessage($error);
 }
+
+declare(ticks = 1);
+function sig_handler($signo) {
+	switch ($signo) {
+		case SIGTERM:
+			sendErrorMessage('Signal terminate raised');
+			exit;
+		case SIGHUP:
+			sendErrorMessage('Signal restart raised');
+			exit;
+		case SIGUSR1:
+			sendErrorMessage('Signal user raised');
+			exit;
+		default:
+	}
+}
+pcntl_signal(SIGTERM, "sig_handler");
+pcntl_signal(SIGHUP,  "sig_handler");
+pcntl_signal(SIGUSR1, "sig_handler");
+
 $metaConn = false;
 $table = NULL;
-
 $action = getParameter("action", "");
 $tableName   = getParameter("table",NULL);
 $schemaName  = getParameter("schema", "");
@@ -99,18 +122,8 @@ try {
 			throw new Exception( str_replace('?ACTION?', $action, ACTION_NOT_FOUND_W_NAME));
 	}
 } catch(Exception $err){
-		error_log("action trace request: ".var_export($_GET,true),0);
-		error_log('action error: '.$err);
-		if(RETURN_TYPE == "JSON") {
-			$returnObject = array();
-			$returnObject['flagGeneralError'] = true;
-			$returnObject['connectionError'] = false;
-			$returnObject['returnCode'] = "false";
-			$returnObject['returnValue'] = $err;
-			echo json_encode($returnObject);
-		} else
-			print($err);
-		exit();
+	sendErrorMessage($err);
+	exit();
 }
 	
 my_header(ACTION_NOT_FOUND, "");
