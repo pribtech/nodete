@@ -39,20 +39,22 @@ function callAction($ActionToCall) {
 	try {
   		include_once($ActionToCall);
 	}catch(Exception $err){
-		error_log($err,0);
-		if(RETURN_TYPE == "JSON") {
-			$errormsg = rawurlencode($err->getMessage());
-			echo <<<JSON
-			{
-				flagGeneralError: true,
-				connectionError:false,
-				returnCode: "false",
-				returnValue: "$errormsg"
-			}
-JSON;
-		} else 
-			print($err);
-	}
+		sendErrorMessage($err);
+}
+
+function sendErrorMessage($err) {
+	error_log("action request: ".var_export($_GET,true),0);
+	error_log('action error: '.$err);
+	if(RETURN_TYPE == "JSON")
+		echo json_encode(
+				array(
+						'flagGeneralError' => true
+						,'connectionError' => false
+						,'returnCode' => "false"
+						,'returnValue' => $err
+				));
+	else
+		print($err);
 }
 
 /**

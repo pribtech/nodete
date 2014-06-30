@@ -21,27 +21,12 @@ if(TRACE_ACTION_CALLS)
 /**
  * The following is to trap time outs and report these issues.
 **/
-function sendErrorMessage($err) {
-	error_log("action request: ".var_export($_GET,true),0);
-	error_log('action error: '.$err);
-	if(RETURN_TYPE == "JSON")
-		echo json_encode(
-				array(
-					'flagGeneralError' => true
-					,'connectionError' => false
-					,'returnCode' => "false"
-					,'returnValue' => $err
-					));
-	else
-		print($err);
-}
 
 function actionShutDown() {
-	if(defined("TRACE_ACTION_CALLS"))
-		if(TRACE_ACTION_CALLS) {
-			error_log("action trace last error: ".var_export(error_get_last(),true),0); 
-			error_log("action trace response (max 500 chars): ".substr(ob_get_contents(),0,500),0); 
-		}
+	if(TRACE_ACTION_CALLS) {
+		error_log("action trace last error: ".var_export(error_get_last(),true),0); 
+		error_log("action trace response (max 500 chars): ".substr(ob_get_contents(),0,500),0); 
+	}
 	$errormsg = error_get_last();
 	if($errormsg==null || $errormsg=="") {
 		if(ob_get_length()>0) exit();
