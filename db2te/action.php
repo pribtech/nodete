@@ -14,6 +14,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  *********************************************************************************/
+error_log("action test");
 require_once("./config.php");
 if(TRACE_ACTION_CALLS)
 	error_log("action trace request: ".var_export($_REQUEST,true),0);
