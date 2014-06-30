@@ -40,6 +40,7 @@ function callAction($ActionToCall) {
   		include_once($ActionToCall);
 	}catch(Exception $err){
 		sendErrorMessage($err);
+	}
 }
 
 function sendErrorMessage($err) {
