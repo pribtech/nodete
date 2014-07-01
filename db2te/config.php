@@ -381,6 +381,7 @@ setDefine("SSO",false); // set to true if SSO signon
 setDefine("SSO_CLIENT",false);  // set to {"client_id":"xxxx" ,"client_secret":"xxxxx"} to work.
 setDefine("SSO_USER_FEATURES",false);  // e.g. {"peter.prib":["admin","development"] ,"another.user":["feature1","feature2","xxxxx"]} .
 setDefine("BASE_FEATURES", (DEVELOPMENT_MODE?"development":""));
+setDefine("IP_LOCK_SESSION_ADDRESS",false);
 
 /******************************************************************************
  * BASE FOLDERS AND FILES

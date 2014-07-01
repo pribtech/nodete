@@ -138,8 +138,7 @@ header("Cache-control: private"); // IE 6 Fix.
 if(FORCE_SECURE_CONNECTION) {
 	if($HTTP_SERVER_VARS['HTTPS'] != "on") {
 		header("location: https://" . $_SERVER['SERVER_NAME'] . $_SERVER['REMOTE_ADDR']);
-		if(TRACE_ACTION_CALLS)
-			error_log("Force secure connection",0);
+		error_log("Force secure connection",0);
 		exit;
 	}
 }
@@ -191,16 +190,15 @@ if(	   !isset($_SESSION['CLIENT_TIME_OUT'])
 			$_SESSION['CLIENT_USER_AGENT'] = $_SERVER['HTTP_USER_AGENT'];
 		$_SESSION['CLIENT_ADDRESS'] = $_SERVER['REMOTE_ADDR'];
 }
-
-if( 	(($_SERVER['REMOTE_ADDR'] !== $_SESSION['CLIENT_ADDRESS'] && VERIFY_ON_CLIENT_ADDRESS) 
-	|| 	(isset($_SERVER['HTTP_USER_AGENT']) && $_SERVER['HTTP_USER_AGENT'] !== $_SESSION['CLIENT_USER_AGENT'] && VERIFY_ON_USER_AGENT) 
-	||	($_SERVER['REMOTE_ADDR'] !== LOCK_ON_IP_ADDRESS && LOCK_ON_IP_ADDRESS !== false)) 
-	) {
-	TE_session_destroy();
-	if(TRACE_ACTION_CALLS)
+if(IP_LOCK_SESSION_ADDRESS)
+	if( 	(($_SERVER['REMOTE_ADDR'] !== $_SESSION['CLIENT_ADDRESS'] && VERIFY_ON_CLIENT_ADDRESS) 
+		|| 	(isset($_SERVER['HTTP_USER_AGENT']) && $_SERVER['HTTP_USER_AGENT'] !== $_SESSION['CLIENT_USER_AGENT'] && VERIFY_ON_USER_AGENT) 
+		||	($_SERVER['REMOTE_ADDR'] !== LOCK_ON_IP_ADDRESS && LOCK_ON_IP_ADDRESS !== false)) 
+		) {
+		TE_session_destroy();
 		error_log("Session destroyed as changing IP address",0);
-	exit;
-}
+		exit;
+	}
 
 if(!SESSION_SIGNON_TIMEOUT) {
 	if( 	SESSION_TIMEOUT_IN_MIN !== false 
