@@ -43,7 +43,8 @@ function callAction($ActionToCall) {
 	}
 }
 
-function sendErrorMessage($err) {
+function sendErrorMessage($e) {
+	$err=(is_object($e)?$e->getMessage():$e);
 	error_log("action request: ".var_export($_GET,true),0);
 	error_log('action error: '.$err);
 	if(RETURN_TYPE == "JSON")
