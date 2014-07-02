@@ -232,6 +232,13 @@ function rebuildBaseFeatures() {
 	if(BLUEMIX) BASE_FEATURES_ARRAY['BLUEMIX']=true;
 	if(SSO) BASE_FEATURES_ARRAY['SSO']=true;
 }
+function hasFeature(feature,connectionObject) {
+	if(BASE_FEATURES_ARRAY[feature] != undefined)
+		return BASE_FEATURES_ARRAY[feature];
+	if(connectionObject['features'] == undefined) return false;
+	if(connectionObject['features'][feature] == undefined) return false;
+	return connectionObject['features'][feature];
+}
 function isDatabaseConnectionVersion(Node,connectionObject) {
 	if(Node==null) return true; 
 	if(Node.context!=null) 
@@ -265,23 +272,14 @@ function isDatabaseConnectionVersion(Node,connectionObject) {
 	if(connectionObject==null) connectionObject=[];
 
 	if(Node.feature!=null) 
-		if(Node.feature!='') {
-			if(connectionObject['features'] == undefined) return false;
-			if(connectionObject['features'][Node.feature] == undefined) 
-				if(BASE_FEATURES_ARRAY[Node.feature] == undefined)
-					return false;
-			if(connectionObject['features'][Node.feature] == false) return false;
-		}
-	
-	if(Node.noFeature!=null) 
-		if(Node.noFeature!='') {
-			if(BASE_FEATURES_ARRAY[Node.noFeature] != undefined) return false;
-			if(connectionObject['features'] != undefined)
-				if(connectionObject['features'][Node.noFeature] != undefined) 
-					if(connectionObject['features'][Node.noFeature] == true) 
-						return false; 
+		if(Node.feature!='') 
+			if(!hasFeature(Node.feature,connectionObject)) 
+				return false;
 
-		}
+	if(Node.noFeature!=null) 
+		if(Node.noFeature!='')
+			if(hasFeature(Node.noFeature,connectionObject)) 
+				return false;
 
 	if(connectionVersion == null) {
 		if (Node.minVersion != 0 && Node.minVersion != null 
