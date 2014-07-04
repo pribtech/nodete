@@ -165,8 +165,10 @@ class IBMSSO {
  			$setting=SSO_CLIENT;
  		}
  		$settingArray=json_decode($setting, true);
- 		if(!$settingArray)
+ 		if(!$settingArray) {
+ 			error_log("TE_IBMSSO could not be decoded as json, value: ".(isset($setting)?var_export($setting,true):'null'));
  			throw new Exception('Decode TE_IBMSSO failed');
+ 		}
  		$this->getClientSettings($settingArray,'client_id');
  		$this->getClientSettings($settingArray,'client_secret');
     }
