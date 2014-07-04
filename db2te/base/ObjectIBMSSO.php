@@ -201,10 +201,11 @@ class IBMSSO {
  		$this->getClientSettings($credentials,'authorize_url');
     }
     function setServices() {
-    	if(SSO) {
-    		$this->decodeSSO(json_decode(SSO, true));
-    		return;
-    	}
+    	if(SSO) 
+    		if(!is_boolean(SSO)) {
+    			$this->decodeSSO(json_decode(SSO, true));
+    			return;
+	    	}
     	if(!BLUEMIX) 
     		throw new Exception('Requires SSO defined in preferences or IBM Bluemix');
     	$services = getenv('VCAP_SERVICES');
