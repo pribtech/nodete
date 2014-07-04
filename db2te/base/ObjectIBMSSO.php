@@ -120,7 +120,7 @@ class IBMSSO {
 	}
     function getClientSettings(&$valueArray,$key) {
     	if(!is_array($valueArray))
-    		throw new Exception('SSO application '.$key.' invalid return array: '.var_export($valueArray,true));
+    		throw new Exception('SSO application key: '.$key.' invalid return array: '.var_export($valueArray,true));
  		if(!array_key_exists($key,$valueArray))
  			throw new Exception('SSO application '.$key.' not found');
  		$this->$key=$valueArray[$key];
@@ -216,7 +216,7 @@ class IBMSSO {
  		foreach($servicesArray as $serviceName => $serviceType) {
  			$parts=explode('-',$serviceName);
  			$vcapService=$parts[0];
- 			if($vcapService=='SSO')
+ 			if($vcapService=='SSO' || $vcapService=='single.sign.on')  
  				$SSOservices=$serviceType;
  		}
  		if(!isset($SSOservices))
