@@ -119,6 +119,8 @@ class IBMSSO {
 		return $this->tokenBearer;
 	}
     function getClientSettings(&$valueArray,$key) {
+    	if(!is_array($valueArray))
+    		throw new Exception('SSO application '.$key.' invalid return array: '.var_export($valueArray,true));
  		if(!array_key_exists($key,$valueArray))
  			throw new Exception('SSO application '.$key.' not found');
  		$this->$key=$valueArray[$key];

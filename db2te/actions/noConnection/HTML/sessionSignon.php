@@ -19,6 +19,8 @@
 include_once(PHP_INCLUDE_BASE_DIRECTORY . "ObjectIBMSSO.php");
 try{
 	$ibmsso=getIBMSSO();
+	if($ibmsso==null)
+		throw new Exception('getIBMSSO failed, look at PHP log for more details');
 	$uri=$ibmsso->getSignonURL();
 	echo "<div id='title'>IBM SSO Signon</div>";
 	echo <<<ENDSCRIPT
