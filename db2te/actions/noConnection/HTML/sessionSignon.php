@@ -19,7 +19,7 @@
 include_once(PHP_INCLUDE_BASE_DIRECTORY . "ObjectIBMSSO.php");
 try{
 	$ibmsso=getIBMSSO();
-	if($ibmsso==null)
+	if(!is_set($ibmsso) || $ibmsso==null)
 		throw new Exception('getIBMSSO failed, look at PHP log for more details');
 	$uri=$ibmsso->getSignonURL();
 	echo "<div id='title'>IBM SSO Signon</div>";
@@ -45,6 +45,6 @@ loadNewPageLayout(
 ENDSCRIPT;
 } catch (Exception $e){
 	echo "<div id='title'>IBM SSO Check -".$e->getmessage()."</div>";
-	error_log("sessionSignon ".$e->getmessage()." class: ".var_export($ibmsso,true));
+	error_log("sessionSignon ".$e->getmessage()." class: ".(is_set($ibmsso)?var_export($ibmsso,true):''));
 }
 ?>
