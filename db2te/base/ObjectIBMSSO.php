@@ -202,7 +202,7 @@ class IBMSSO {
     }
     function setServices() {
     	if(SSO) 
-    		if(!is_boolean(SSO)) {
+    		if(!is_bool(SSO)) {
     			$this->decodeSSO(json_decode(SSO, true));
     			return;
 	    	}
