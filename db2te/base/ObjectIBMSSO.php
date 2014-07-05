@@ -63,7 +63,7 @@ class IBMSSO {
     	return "&redirect_uri=".$this->redirectBase.ACTION_PROCESSOR."?action=".$action;
 	}
     public function getSignonURL() {
-    	return $this->authorize_url."?client_id=".$this->client_id."&response_type=code&scope=profile&state=".$this->state."&redirect_uri=".$this->getRedirect("sessionIBMSSO");
+    	return $this->authorize_url."?client_id=".$this->client_id."&response_type=code&scope=profile&state=".$this->state.$this->getRedirect("sessionIBMSSO");
    }
 	public function getUserName() {
 		return $this->getBearer()['userUniqueID'];
