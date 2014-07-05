@@ -155,6 +155,9 @@ class IBMSSO {
 		}
 		return ($convert2Array?$response:$rawData);
 	}
+	function getRedirectBase() {
+		return $this->redirectBase;
+	}
 	function getState($state) {
 		return $this->state;
 	}
