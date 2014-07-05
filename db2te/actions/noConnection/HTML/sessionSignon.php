@@ -22,6 +22,8 @@ try{
 	if(!isset($ibmsso))
 		throw new Exception('getIBMSSO failed, look at PHP log for more details');
 	$uri=$ibmsso->getSignonURL();
+	header('X-Frame-Options: ALLOW-FROM $uri');
+	
 	echo "<div id='title'>IBM SSO Signon</div>";
 	echo <<<ENDSCRIPT
 <script type="text/javascript">
