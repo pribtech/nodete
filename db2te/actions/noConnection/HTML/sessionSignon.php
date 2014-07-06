@@ -22,8 +22,8 @@ try{
 	if(!isset($ibmsso))
 		throw new Exception('getIBMSSO failed, look at PHP log for more details');
 	$uri=$ibmsso->getSignonURL();
-	header("X-Frame-Options: SAMEORIGIN");
-	header('X-Frame-Options: ALLOW-FROM //idaas.ng.bluemix.net');
+//	header("X-Frame-Options: SAMEORIGIN");
+	header('X-Frame-Options: ALLOW-FROM SAMEDOMAIN,idaas.ng.bluemix.net');
 //	header('X-Frame-Options: ALLOW-FROM '.$ibmsso->getRedirectBase());
 	echo "<div id='title'>IBM SSO Signon</div>";
 	echo <<<ENDSCRIPT
