@@ -17,7 +17,7 @@
 
 require_once("./config.php");
 require_once(PHP_INCLUDE_BASE_DIRECTORY . "JSONEncodeMenu.php");
-
+header("X-Frame-Options: SAMEORIGIN");
 ?>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/html4/strict.dtd">
