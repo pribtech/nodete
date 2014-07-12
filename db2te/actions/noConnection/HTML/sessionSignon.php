@@ -24,6 +24,7 @@ try{
 	$uri=$ibmsso->getSignonURL();
 //	header("X-Frame-Options: SAMEORIGIN");
 //	header('X-Frame-Options: ALLOW-FROM SAMEDOMAIN,idaas.ng.bluemix.net');
+header('X-Frame-Options: ALLOW-FROM SAMEDOMAIN,idaas.ng.bluemix.net,pribdb2te.mybluemix.net');
 //	header('X-Frame-Options: ALLOW-FROM '.$ibmsso->getRedirectBase());
 	echo "<div id='title'>IBM SSO Signon</div>";
 	echo <<<ENDSCRIPT
