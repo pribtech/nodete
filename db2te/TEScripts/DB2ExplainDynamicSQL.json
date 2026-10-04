@@ -1,0 +1,148 @@
+{
+	"$name": "DB2ExplainDynamicSQL",
+	"$type": "serverAction",
+	"$lockScreen": "false",
+	"suppressAutomaticErrors": false,
+	"lockScreen": false,
+	"type": "action",
+	"name": "DB2ExplainDynamicSQL",
+	"actionType": "serverAction",
+	"message": "",
+	"parameterList": [
+		{
+			"$name": "action",
+			"$type": "raw",
+			"type": "parameter",
+			"name": "action",
+			"parameterType": "raw",
+			"title": "",
+			"transform": "",
+			"value": "getSQLValue",
+			"defaultValue": "",
+			"check": null,
+			"xpathBaseNode": "",
+			"xpathName": "",
+			"xpathValue": ""
+		},
+		{
+			"$name": "query",
+			"$type": "fixed",
+			"type": "parameter",
+			"name": "query",
+			"parameterType": "fixed",
+			"title": "",
+			"transform": "",
+			"value": "(select case \n\t\t\twhen exists(select 1 from syscat.tables where tabschema=session_user and tabname='EXPLAIN_STATEMENT')\n\t\t\t\tthen session_user\n\t\t\telse\n\t\t\t\tcase \n\t\t\t\t\twhen exists(select 1 from syscat.tables where tabschema='SYSTOOLS' and tabname='EXPLAIN_STATEMENT')\n\t\t\t\t\t\tthen 'SYSTOOLS'\n\t\t\t\t\t\telse RAISE_ERROR('70001','explain_statement not found for session user \"'||session_user||'\" schema or under \"SYSTOOLS\" schema')\n\t\t\t\tend\n\t\t\tend\n\t\t\nfrom (values(1)) a )",
+			"defaultValue": "",
+			"check": null,
+			"xpathBaseNode": "",
+			"xpathName": "",
+			"xpathValue": ""
+		}
+	],
+	"schema": "",
+	"tasks": [
+		{
+			"type": "IF",
+			"name": "",
+			"originalAction": "ifNot",
+			"negCondition": true,
+			"compareOn": "",
+			"compareOnType": "",
+			"condition": "true",
+			"conditionType": "",
+			"conditionCompareType": "",
+			"taskList": [
+				{
+					"type": "taskList",
+					"repeat": 1,
+					"tasks": [
+						{
+							"$name": "error",
+							"$type": "returnObject",
+							"type": "assignLocalParameter",
+							"name": "error",
+							"parameterType": "returnObject",
+							"title": "",
+							"transform": "",
+							"value": "DB2ExplainDynamicSQL.returnValue",
+							"defaultValue": "",
+							"check": null,
+							"xpathBaseNode": "",
+							"xpathName": "",
+							"xpathValue": ""
+						},
+						{
+							"type": "alert",
+							"message": "Error looking for explain table:?error?"
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "IF",
+			"name": "",
+			"originalAction": "if",
+			"negCondition": false,
+			"compareOn": "",
+			"compareOnType": "",
+			"condition": "true",
+			"conditionType": "",
+			"conditionCompareType": "",
+			"taskList": [
+				{
+					"type": "taskList",
+					"repeat": 1,
+					"tasks": [
+						{
+							"$name": "tabSchema",
+							"$type": "returnObject",
+							"type": "assignLocalParameter",
+							"name": "tabSchema",
+							"parameterType": "returnObject",
+							"title": "",
+							"transform": "",
+							"value": "DB2ExplainDynamicSQL.returnValue",
+							"defaultValue": "",
+							"check": null,
+							"xpathBaseNode": "",
+							"xpathName": "",
+							"xpathValue": ""
+						},
+						{
+							"type": "loadPage",
+							"links": [],
+							"pageLayouts": [
+								{
+									"target": "_blank",
+									"windowStage": "DefaultStage",
+									"content": {
+										"type": "panel",
+										"name": "Visual Explain",
+										"content": {
+											"link": {
+												"type": "action",
+												"target": "_self",
+												"window": "_self",
+												"parameters": {
+													"action": "chartNodalExplain",
+													"$chartTitle": "Visual Explain",
+													"tabSchema": "?tabSchema?",
+													"$sourceType": "db2Explain",
+													"$source": "?stmttext?",
+													"$schema": "?schema?"
+												}
+											}
+										},
+										"primaryContainer": true
+									}
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

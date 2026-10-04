@@ -1,0 +1,30 @@
+{
+	"description": "Monitor",
+	"requires": {
+		"DBMS": "DB2",
+		"context": "developer"
+	},
+	"branchDirectory": "Monitor",
+	"pageWindows": [
+		{
+			"target": "_final",
+			"content": {
+				"type": "panel",
+				"name": "menu",
+				"content": {
+					"link": {
+						"type": "action",
+						"target": "_self",
+						"window": "_self",
+						"parameters": {
+							"action": "chartNodalMenu",
+							"$chartTitle": "Monitors",
+							"$source": "menu/Monitor/Monitor"
+						}
+					}
+				},
+				"primaryContainer": true
+			}
+		}
+	]
+}

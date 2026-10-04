@@ -1,0 +1,103 @@
+{
+	"description": "Alter Database",
+	"actionScript": {
+		"suppressAutomaticErrors": false,
+		"lockScreen": false,
+		"type": "action",
+		"name": "",
+		"actionType": "",
+		"message": "",
+		"parameterList": [],
+		"schema": "",
+		"tasks": [
+			{
+				"type": "task",
+				"taskList": {
+					"type": "taskList",
+					"repeat": 1,
+					"tasks": [
+						{
+							"$name": "getDatabaseName",
+							"$type": "serverAction",
+							"suppressAutomaticErrors": false,
+							"lockScreen": false,
+							"type": "action",
+							"name": "getDatabaseName",
+							"actionType": "serverAction",
+							"message": "",
+							"parameterList": [
+								{
+									"$name": "action",
+									"$type": "raw",
+									"type": "parameter",
+									"name": "action",
+									"parameterType": "raw",
+									"title": "",
+									"transform": "",
+									"value": "getSessionVariable",
+									"defaultValue": "",
+									"check": null,
+									"xpathBaseNode": "",
+									"xpathName": "",
+									"xpathValue": ""
+								},
+								{
+									"$name": "name",
+									"$type": "raw",
+									"type": "parameter",
+									"name": "name",
+									"parameterType": "raw",
+									"title": "",
+									"transform": "",
+									"value": "Connections.USE_DATABASE_CONNECTION.database",
+									"defaultValue": "",
+									"check": null,
+									"xpathBaseNode": "",
+									"xpathName": "",
+									"xpathValue": ""
+								}
+							],
+							"schema": "",
+							"tasks": []
+						},
+						{
+							"$name": "database-name",
+							"$type": "returnObject",
+							"type": "assignSharedConstant",
+							"name": "database-name",
+							"parameterType": "returnObject",
+							"title": "",
+							"transform": "",
+							"value": "getDatabaseName.returnValue",
+							"defaultValue": "",
+							"check": null,
+							"xpathBaseNode": "",
+							"xpathName": "",
+							"xpathValue": ""
+						},
+						{
+							"$name": "command",
+							"$type": "raw",
+							"type": "assignSharedConstant",
+							"name": "command",
+							"parameterType": "raw",
+							"title": "",
+							"transform": "",
+							"value": "SQL/Alter/alterDatabase",
+							"defaultValue": "",
+							"check": null,
+							"xpathBaseNode": "",
+							"xpathName": "",
+							"xpathValue": ""
+						},
+						{
+							"type": "callGlobalAction",
+							"name": "commandExecution",
+							"parameter": []
+						}
+					]
+				}
+			}
+		]
+	}
+}

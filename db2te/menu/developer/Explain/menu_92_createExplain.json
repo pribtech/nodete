@@ -1,0 +1,218 @@
+{
+	"description": "Create Explain Tables",
+	"actionScript": {
+		"$name": "explainCreateTables",
+		"$type": "form",
+		"suppressAutomaticErrors": false,
+		"lockScreen": false,
+		"type": "action",
+		"name": "explainCreateTables",
+		"actionType": "form",
+		"message": "<div style='width:500px'>\n<p>Create Explain tables</p>\n<table>\n<tr><td>Schema</td><td>:</td><td><input type=\"text\" name='SCHEMA' value=\"?SCHEMA?\" style=\"width:300px\"/></td></tr>\n<tr><td>Tablespace</td><td>:</td><td><input type=\"text\" name='TABLESPACE' value=\"SYSTOOLSPACE\" style=\"width:300px\"/></td></tr>\n</table>\n<p>The task to create the tables may take a while.  A pop screen will appear when completed</p>\n</div>",
+		"parameterList": [
+			{
+				"$name": "TABLESPACE",
+				"$type": "blockValue",
+				"type": "parameter",
+				"name": "TABLESPACE",
+				"parameterType": "blockValue",
+				"title": "",
+				"transform": "",
+				"value": "TABLESPACE",
+				"defaultValue": "",
+				"check": null,
+				"xpathBaseNode": "",
+				"xpathName": "",
+				"xpathValue": ""
+			},
+			{
+				"$name": "SCHEMA",
+				"$type": "blockValue",
+				"type": "parameter",
+				"name": "SCHEMA",
+				"parameterType": "blockValue",
+				"title": "",
+				"transform": "",
+				"value": "SCHEMA",
+				"defaultValue": "",
+				"check": null,
+				"xpathBaseNode": "",
+				"xpathName": "",
+				"xpathValue": ""
+			},
+			{
+				"$name": "buttonOK",
+				"$type": "raw",
+				"type": "parameter",
+				"name": "buttonOK",
+				"parameterType": "raw",
+				"title": "",
+				"transform": "",
+				"value": "Create tables",
+				"defaultValue": "",
+				"check": null,
+				"xpathBaseNode": "",
+				"xpathName": "",
+				"xpathValue": ""
+			}
+		],
+		"schema": "",
+		"tasks": [
+			{
+				"type": "IF",
+				"name": "",
+				"originalAction": "if",
+				"negCondition": false,
+				"compareOn": "",
+				"compareOnType": "",
+				"condition": "true",
+				"conditionType": "",
+				"conditionCompareType": "",
+				"taskList": [
+					{
+						"type": "taskList",
+						"repeat": 1,
+						"tasks": [
+							{
+								"$name": "createTables",
+								"$type": "serverAction",
+								"suppressAutomaticErrors": false,
+								"lockScreen": false,
+								"type": "action",
+								"name": "createTables",
+								"actionType": "serverAction",
+								"message": "",
+								"parameterList": [
+									{
+										"$name": "action",
+										"$type": "fixed",
+										"type": "parameter",
+										"name": "action",
+										"parameterType": "fixed",
+										"title": "",
+										"transform": "",
+										"value": "executeSQL",
+										"defaultValue": "",
+										"check": null,
+										"xpathBaseNode": "",
+										"xpathName": "",
+										"xpathValue": ""
+									},
+									{
+										"$name": "SQL",
+										"$type": "fixed",
+										"type": "parameter",
+										"name": "SQL",
+										"parameterType": "fixed",
+										"title": "",
+										"transform": "",
+										"value": "CALL SYSPROC.SYSINSTALLOBJECTS('EXPLAIN', 'C', CAST ('?TABLESPACE?' AS VARCHAR(128)),   CAST ('?SCHEMA?' AS VARCHAR(128)));",
+										"defaultValue": "",
+										"check": null,
+										"xpathBaseNode": "",
+										"xpathName": "",
+										"xpathValue": ""
+									},
+									{
+										"$name": "parameter[TABLESPACE]",
+										"$type": "blockValue",
+										"type": "parameter",
+										"name": "parameter[TABLESPACE]",
+										"parameterType": "blockValue",
+										"title": "",
+										"transform": "",
+										"value": "TABLESPACE",
+										"defaultValue": "",
+										"check": null,
+										"xpathBaseNode": "",
+										"xpathName": "",
+										"xpathValue": ""
+									},
+									{
+										"$name": "parameter[SCHEMA]",
+										"$type": "blockValue",
+										"type": "parameter",
+										"name": "parameter[SCHEMA]",
+										"parameterType": "blockValue",
+										"title": "",
+										"transform": "",
+										"value": "SCHEMA",
+										"defaultValue": "",
+										"check": null,
+										"xpathBaseNode": "",
+										"xpathName": "",
+										"xpathValue": ""
+									}
+								],
+								"schema": "",
+								"tasks": [
+									{
+										"type": "IF",
+										"name": "",
+										"originalAction": "if",
+										"negCondition": true,
+										"compareOn": "",
+										"compareOnType": "",
+										"condition": "true",
+										"conditionType": "",
+										"conditionCompareType": "",
+										"taskList": [
+											{
+												"type": "taskList",
+												"repeat": 1,
+												"tasks": [
+													{
+														"$name": "ERROR_MESSAGE",
+														"$type": "returnObject",
+														"type": "assignSharedConstant",
+														"name": "ERROR_MESSAGE",
+														"parameterType": "returnObject",
+														"title": "",
+														"transform": "",
+														"value": "createTables.returnValue.STMTMSG",
+														"defaultValue": "",
+														"check": null,
+														"xpathBaseNode": "",
+														"xpathName": "",
+														"xpathValue": ""
+													},
+													{
+														"type": "alert",
+														"message": "Failed to create ?SCHEMA? explain tables: ?ERROR_MESSAGE?"
+													}
+												]
+											}
+										]
+									},
+									{
+										"type": "IF",
+										"name": "",
+										"originalAction": "if",
+										"negCondition": false,
+										"compareOn": "",
+										"compareOnType": "",
+										"condition": "true",
+										"conditionType": "",
+										"conditionCompareType": "",
+										"taskList": [
+											{
+												"type": "taskList",
+												"repeat": 1,
+												"tasks": [
+													{
+														"type": "alert",
+														"message": "Explain ?SCHEMA? tables created"
+													}
+												]
+											}
+										]
+									}
+								]
+							}
+						]
+					}
+				]
+			}
+		]
+	}
+}

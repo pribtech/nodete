@@ -1,0 +1,53 @@
+{
+	"description": "Member overview",
+	"requires": {
+		"DBMS": "DB2",
+		"minVersion": 9.8
+	},
+	"pageWindows": [
+		{
+			"target": "_active",
+			"panelHeaders": {
+				"autoRefreshControls": {
+					"time": "1",
+					"timeOptions": [
+						1,
+						2,
+						3,
+						4,
+						5,
+						6,
+						7,
+						8,
+						9,
+						10
+					]
+				}
+			},
+			"content": {
+				"type": "splitPane",
+				"panelA": {
+					"type": "panel",
+					"name": "main",
+					"content": {
+						"link": {
+							"type": "action",
+							"target": "_self",
+							"window": "_self",
+							"parameters": {
+								"table": "pureScale/memberOverview",
+								"action": "list_table",
+								"$displayCharts": "detail"
+							}
+						}
+					},
+					"primaryContainer": true
+				},
+				"panelB": {
+					"type": "panel",
+					"name": "detail"
+				}
+			}
+		}
+	]
+}

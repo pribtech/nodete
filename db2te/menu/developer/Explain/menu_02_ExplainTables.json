@@ -1,0 +1,24 @@
+{
+	"description": "Explain Tables",
+	"pageWindows": [
+		{
+			"target": "_active",
+			"content": {
+				"type": "panel",
+				"name": "detail",
+				"content": {
+					"link": {
+						"type": "action",
+						"target": "_self",
+						"window": "_self",
+						"parameters": {
+							"table": "Explain/explainSchemas",
+							"action": "list_table"
+						}
+					}
+				},
+				"primaryContainer": true
+			}
+		}
+	]
+}

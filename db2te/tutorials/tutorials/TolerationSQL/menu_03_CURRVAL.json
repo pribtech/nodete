@@ -1,0 +1,28 @@
+{
+	"description": "CURRVAL",
+	"tag": "r95",
+	"pageWindows": [
+		{
+			"target": "_blank",
+			"windowStage": "DefaultStage",
+			"content": {
+				"type": "panel",
+				"name": "Tutorial",
+				"content": {
+					"link": {
+						"type": "action",
+						"target": "_self",
+						"window": "_self",
+						"parameters": {
+							"action": "tutorial",
+							"tutorialName": "CURRVAL",
+							"CurrentMenuLocation": {
+								"$var": "CURRENT_MENU_LOCATION"
+							}
+						}
+					}
+				}
+			}
+		}
+	]
+}

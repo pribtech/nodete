@@ -1,0 +1,32 @@
+{
+	"description": "Re-Org",
+	"pageWindows": [
+		{
+			"target": "_active",
+			"content": {
+				"type": "panel",
+				"name": "main",
+				"content": {
+					"link": {
+						"type": "action",
+						"target": "_self",
+						"window": "_self",
+						"parameters": {
+							"action": "chartNodal",
+							"$chartTitle": "Auto Re-Org",
+							"sourceType": "xmlData",
+							"$editMode": "true",
+							"$definition": "XSD/IBM/DB2AutoReorgPolicy.xsd",
+							"$report": "XSL/chartNodalInternalXML2XML.xsl",
+							"$transform": "XSL/removerEmptyOrNewLineTextNodes.xsl",
+							"$sourceType": "SQL",
+							"$source": "CALL SYSPROC.AUTOMAINT_GET_POLICY( 'AUTO_REORG' , ?!name=result&value=unknown&precision=2000000&conversion=hex2string&dataType=string? )",
+							"$save": "CALL SYSPROC.AUTOMAINT_SET_POLICY( 'AUTO_REORG' ,  cast(cast(? as clob(1m)) as blob(1m)) )"
+						}
+					}
+				},
+				"primaryContainer": true
+			}
+		}
+	]
+}

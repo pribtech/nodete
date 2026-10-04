@@ -1,0 +1,138 @@
+{
+	"description": "Employee Charted",
+	"pageWindows": [
+		{
+			"target": "_active",
+			"content": {
+				"type": "splitPane",
+				"splitPercent": "0.5",
+				"panelA": {
+					"type": "splitPane",
+					"direction": "v",
+					"splitPercent": "0.5",
+					"panelA": {
+						"type": "panel",
+						"name": "pie",
+						"content": {
+							"link": {
+								"type": "action",
+								"target": "_self",
+								"window": "_self",
+								"parameters": {
+									"table": "employee",
+									"action": "chart",
+									"$chartName": "Employees Pies",
+									"$type": "pie",
+									"$xAxis": "lastname",
+									"$yAxis": "comm,bonus",
+									"$settings": "<axis>\n\t<x width=\"6\">\n\t\t<tick width=\"6\"/>\n\t</x>\n\t<y width=\"6\">\n\t\t<tick width=\"6\"/>\n\t</y>\n</axis>"
+								}
+							}
+						}
+					},
+					"panelB": {
+						"type": "panel",
+						"name": "stack",
+						"content": {
+							"link": {
+								"type": "action",
+								"target": "_self",
+								"window": "_self",
+								"parameters": {
+									"table": "employee",
+									"action": "chart",
+									"$chartName": "Employees Stacks",
+									"$type": "stack",
+									"$xAxis": "dept",
+									"$yAxis": "comm,bonus",
+									"$grouping": "sex"
+								}
+							}
+						},
+						"panelHeaders": {}
+					}
+				},
+				"panelB": {
+					"type": "splitPane",
+					"direction": "v",
+					"splitPercent": "0.5",
+					"panelA": {
+						"type": "splitPane",
+						"direction": "v",
+						"splitPercent": "0.5",
+						"panelA": {
+							"type": "panel",
+							"name": "Line",
+							"content": {
+								"link": {
+									"type": "action",
+									"target": "_self",
+									"window": "_self",
+									"parameters": {
+										"table": "employee",
+										"action": "chart",
+										"$chartName": "Employees Line",
+										"$type": "line",
+										"$xAxis": "salary",
+										"$yAxis": "comm,bonus",
+										"$grouping": "dept",
+										"$settings": "<axis>\n\t<x width=\"3\">\n\t\t<tick width=\"6\"/>\n\t</x>\n\t<y width=\"6\">\n\t\t<tick width=\"3\"/>\n\t</y>\n</axis>"
+									}
+								}
+							}
+						},
+						"panelB": {
+							"type": "panel",
+							"name": "bubble",
+							"content": {
+								"link": {
+									"type": "action",
+									"target": "_self",
+									"window": "_self",
+									"parameters": {
+										"table": "employee",
+										"action": "chart",
+										"$chartName": "Employees Line",
+										"$type": "bubble",
+										"$xAxis": "salary",
+										"$yAxis": "comm",
+										"$zAxis": "bonus",
+										"$grouping": "dept",
+										"$settings": "<axis>\n\t<x width=\"3\">\n\t\t<tick width=\"3\"/>\n\t</x>\n\t<y width=\"3\">\n\t\t<tick width=\"3\"/>\n\t</y>\n</axis>"
+									}
+								}
+							}
+						}
+					},
+					"panelB": {
+						"type": "panel",
+						"name": "setline",
+						"content": {
+							"link": {
+								"type": "action",
+								"target": "_self",
+								"window": "_self",
+								"parameters": {
+									"table": "employee",
+									"action": "chart",
+									"$chartName": "Employees Setline",
+									"$type": "setline",
+									"$xAxis": "dept",
+									"$yAxis": "comm",
+									"$grouping": "sex",
+									"$lineWidth": "3",
+									"$axisXLineWidth": "3",
+									"$axisYLineWidth": "3",
+									"$axisLineWidth": "3",
+									"$axisXTickWidth": "3",
+									"$axisYTickWidth": "3",
+									"$settings": "<axis>\n\t<x width=\"6\">\n\t\t<tick width=\"6\"/>\n\t</x>\n\t<y width=\"6\">\n\t\t<tick width=\"6\"/>\n\t</y>\n</axis>"
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	]
+}

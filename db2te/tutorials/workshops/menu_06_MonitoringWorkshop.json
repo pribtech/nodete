@@ -1,0 +1,33 @@
+{
+	"description": "Monitoring Workshop",
+	"tag": "r91",
+	"pageWindows": [
+		{
+			"target": "_final",
+			"content": {
+				"type": "panel",
+				"name": "Tutorial",
+				"content": {
+					"link": {
+						"type": "action",
+						"target": "_self",
+						"window": "_self",
+						"parameters": {
+							"action": "flowgroup",
+							"subFolder": "MonitoringWorkshop",
+							"description": "This workshop demonstrates new monitoring capabilities of DB2 9.7.",
+							"articalTitle": "Tutorials",
+							"title": "Monitoring Workshop",
+							"CurrentMenuLocation": {
+								"$var": "CURRENT_MENU_LOCATION"
+							},
+							"listStyleType": "decimal",
+							"menuExpansionType": "internal"
+						}
+					}
+				},
+				"primaryContainer": true
+			}
+		}
+	]
+}

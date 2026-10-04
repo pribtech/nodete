@@ -1,0 +1,188 @@
+{
+	"description": "Drop Schedule Capture",
+	"actionScript": {
+		"$name": "dropScheduleCapture",
+		"$type": "form",
+		"suppressAutomaticErrors": false,
+		"lockScreen": false,
+		"type": "action",
+		"name": "dropScheduleCapture",
+		"actionType": "form",
+		"message": "<div style='width:500px'>\n<p>You are about to drop schedule capture</p>\n<table>\n<tr><td>Name</td><td>:</td><td><input type=\"text\" name='SCHEDULE_NAME' value=\"Storage Capture Details\" style=\"width:300px\"/></td></tr>\n</table>\n</div>",
+		"parameterList": [
+			{
+				"$name": "SCHEDULE_NAME",
+				"$type": "blockValue",
+				"type": "parameter",
+				"name": "SCHEDULE_NAME",
+				"parameterType": "blockValue",
+				"title": "",
+				"transform": "",
+				"value": "SCHEDULE_NAME",
+				"defaultValue": "",
+				"check": null,
+				"xpathBaseNode": "",
+				"xpathName": "",
+				"xpathValue": ""
+			},
+			{
+				"$name": "buttonOK",
+				"$type": "raw",
+				"type": "parameter",
+				"name": "buttonOK",
+				"parameterType": "raw",
+				"title": "",
+				"transform": "",
+				"value": "Drop schedule",
+				"defaultValue": "",
+				"check": null,
+				"xpathBaseNode": "",
+				"xpathName": "",
+				"xpathValue": ""
+			}
+		],
+		"schema": "",
+		"tasks": [
+			{
+				"type": "IF",
+				"name": "",
+				"originalAction": "if",
+				"negCondition": false,
+				"compareOn": "",
+				"compareOnType": "",
+				"condition": "true",
+				"conditionType": "",
+				"conditionCompareType": "",
+				"taskList": [
+					{
+						"type": "taskList",
+						"repeat": 1,
+						"tasks": [
+							{
+								"$name": "scheduleDrop",
+								"$type": "serverAction",
+								"suppressAutomaticErrors": false,
+								"lockScreen": false,
+								"type": "action",
+								"name": "scheduleDrop",
+								"actionType": "serverAction",
+								"message": "",
+								"parameterList": [
+									{
+										"$name": "action",
+										"$type": "fixed",
+										"type": "parameter",
+										"name": "action",
+										"parameterType": "fixed",
+										"title": "",
+										"transform": "",
+										"value": "executeSQL",
+										"defaultValue": "",
+										"check": null,
+										"xpathBaseNode": "",
+										"xpathName": "",
+										"xpathValue": ""
+									},
+									{
+										"$name": "SQL",
+										"$type": "fixed",
+										"type": "parameter",
+										"name": "SQL",
+										"parameterType": "fixed",
+										"title": "",
+										"transform": "",
+										"value": "call ADMIN_TASK_REMOVE('?SCHEDULE_NAME?', null)",
+										"defaultValue": "",
+										"check": null,
+										"xpathBaseNode": "",
+										"xpathName": "",
+										"xpathValue": ""
+									},
+									{
+										"$name": "parameter[SCHEDULE_NAME]",
+										"$type": "blockValue",
+										"type": "parameter",
+										"name": "parameter[SCHEDULE_NAME]",
+										"parameterType": "blockValue",
+										"title": "",
+										"transform": "",
+										"value": "SCHEDULE_NAME",
+										"defaultValue": "",
+										"check": null,
+										"xpathBaseNode": "",
+										"xpathName": "",
+										"xpathValue": ""
+									}
+								],
+								"schema": "",
+								"tasks": [
+									{
+										"type": "IF",
+										"name": "",
+										"originalAction": "if",
+										"negCondition": true,
+										"compareOn": "",
+										"compareOnType": "",
+										"condition": "true",
+										"conditionType": "",
+										"conditionCompareType": "",
+										"taskList": [
+											{
+												"type": "taskList",
+												"repeat": 1,
+												"tasks": [
+													{
+														"$name": "ERROR_MESSAGE",
+														"$type": "returnObject",
+														"type": "assignSharedConstant",
+														"name": "ERROR_MESSAGE",
+														"parameterType": "returnObject",
+														"title": "",
+														"transform": "",
+														"value": "scheduleDrop.returnValue.STMTMSG",
+														"defaultValue": "",
+														"check": null,
+														"xpathBaseNode": "",
+														"xpathName": "",
+														"xpathValue": ""
+													},
+													{
+														"type": "alert",
+														"message": "Failed to drop schedule: ?ERROR_MESSAGE?"
+													}
+												]
+											}
+										]
+									},
+									{
+										"type": "IF",
+										"name": "",
+										"originalAction": "if",
+										"negCondition": false,
+										"compareOn": "",
+										"compareOnType": "",
+										"condition": "true",
+										"conditionType": "",
+										"conditionCompareType": "",
+										"taskList": [
+											{
+												"type": "taskList",
+												"repeat": 1,
+												"tasks": [
+													{
+														"type": "alert",
+														"message": "Schedule dropped"
+													}
+												]
+											}
+										]
+									}
+								]
+							}
+						]
+					}
+				]
+			}
+		]
+	}
+}

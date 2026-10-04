@@ -1,0 +1,54 @@
+{
+	"description": "Workload Waits",
+	"requires": {
+		"minVersion": 9.7
+	},
+	"pageWindows": [
+		{
+			"target": "_active",
+			"panelHeaders": {},
+			"content": {
+				"type": "splitPane",
+				"splitPercent": "0.5",
+				"panelA": {
+					"type": "panel",
+					"name": "main",
+					"content": {
+						"link": {
+							"type": "action",
+							"target": "_self",
+							"window": "_self",
+							"parameters": {
+								"table": "Monitor/monSVSCWaits",
+								"action": "list_table"
+							}
+						}
+					},
+					"panelHeaders": {},
+					"primaryContainer": true
+				},
+				"panelB": {
+					"type": "panel",
+					"name": "detail",
+					"content": {
+						"link": {
+							"type": "action",
+							"target": "_self",
+							"window": "_self",
+							"parameters": {
+								"table": "Monitor/monSVSCWaits",
+								"action": "chart",
+								"$chartName": "Workload Timings",
+								"$type": "pie",
+								"$xAxis": "SERVICE_SUPERCLASS_NAME",
+								"$yAxis": "AGENT_WAIT_TIME,POOL_READ_TIME,POOL_WRITE_TIME,DIRECT_READ_TIME,DIRECT_WRITE_TIME,FCM_RECV_WAIT_TIME,FCM_SEND_WAIT_TIME,IPC_RECV_WAIT_TIME,IPC_SEND_WAIT_TIME,LOCK_WAIT_TIME,LOG_BUFFER_WAIT_TIME,LOG_DISK_WAIT_TIME,TCPIP_RECV_WAIT_TIME,TCPIP_SEND_WAIT_TIME,WLM_QUEUE_TIME_TOTAL,TOTAL_SECTION_SORT_TIME,TOTAL_SECTION_SORT_PROC_TIME",
+								"$slices": "column"
+							}
+						}
+					},
+					"panelHeaders": {}
+				}
+			}
+		}
+	]
+}

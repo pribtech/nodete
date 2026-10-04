@@ -1,0 +1,679 @@
+{
+	"$name": "asnclpCommandExecution",
+	"$type": "serverAction",
+	"$lockScreen": "true",
+	"suppressAutomaticErrors": false,
+	"lockScreen": true,
+	"type": "action",
+	"name": "asnclpCommandExecution",
+	"actionType": "serverAction",
+	"message": "",
+	"parameterList": [
+		{
+			"$name": "action",
+			"$type": "fixed",
+			"type": "parameter",
+			"name": "action",
+			"parameterType": "fixed",
+			"title": "",
+			"transform": "",
+			"value": "processCommand",
+			"defaultValue": "",
+			"check": null,
+			"xpathBaseNode": "",
+			"xpathName": "",
+			"xpathValue": ""
+		},
+		{
+			"$name": "command",
+			"$type": "fixed",
+			"type": "parameter",
+			"name": "command",
+			"parameterType": "fixed",
+			"title": "",
+			"transform": "",
+			"value": "?command?",
+			"defaultValue": "",
+			"check": null,
+			"xpathBaseNode": "",
+			"xpathName": "",
+			"xpathValue": ""
+		},
+		{
+			"$name": "function",
+			"$type": "fixed",
+			"type": "parameter",
+			"name": "function",
+			"parameterType": "fixed",
+			"title": "",
+			"transform": "",
+			"value": "getObjectFromFile",
+			"defaultValue": "",
+			"check": null,
+			"xpathBaseNode": "",
+			"xpathName": "",
+			"xpathValue": ""
+		}
+	],
+	"schema": "",
+	"tasks": [
+		{
+			"type": "IF",
+			"name": "",
+			"originalAction": "if",
+			"negCondition": true,
+			"compareOn": "",
+			"compareOnType": "",
+			"condition": "true",
+			"conditionType": "",
+			"conditionCompareType": "",
+			"taskList": [
+				{
+					"type": "taskList",
+					"repeat": 1,
+					"tasks": [
+						{
+							"$name": "error",
+							"$type": "returnObject",
+							"type": "assignSharedConstant",
+							"name": "error",
+							"parameterType": "returnObject",
+							"title": "",
+							"transform": "",
+							"value": "asnclpCommandExecution.returnValue",
+							"defaultValue": "",
+							"check": null,
+							"xpathBaseNode": "",
+							"xpathName": "",
+							"xpathValue": ""
+						},
+						{
+							"type": "alert",
+							"message": "XML command load failed : ?error?"
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "IF",
+			"name": "",
+			"originalAction": "if",
+			"negCondition": false,
+			"compareOn": "",
+			"compareOnType": "",
+			"condition": "true",
+			"conditionType": "",
+			"conditionCompareType": "",
+			"taskList": [
+				{
+					"type": "taskList",
+					"repeat": 1,
+					"tasks": [
+						{
+							"$name": "getForm",
+							"$type": "serverAction",
+							"suppressAutomaticErrors": false,
+							"lockScreen": false,
+							"type": "action",
+							"name": "getForm",
+							"actionType": "serverAction",
+							"message": "",
+							"parameterList": [
+								{
+									"$name": "action",
+									"$type": "fixed",
+									"type": "parameter",
+									"name": "action",
+									"parameterType": "fixed",
+									"title": "",
+									"transform": "",
+									"value": "processCommand",
+									"defaultValue": "",
+									"check": null,
+									"xpathBaseNode": "",
+									"xpathName": "",
+									"xpathValue": ""
+								},
+								{
+									"$name": "function",
+									"$type": "fixed",
+									"type": "parameter",
+									"name": "function",
+									"parameterType": "fixed",
+									"title": "",
+									"transform": "",
+									"value": "getForm",
+									"defaultValue": "",
+									"check": null,
+									"xpathBaseNode": "",
+									"xpathName": "",
+									"xpathValue": ""
+								},
+								{
+									"$name": "command",
+									"$type": "returnObject",
+									"type": "parameter",
+									"name": "command",
+									"parameterType": "returnObject",
+									"title": "",
+									"transform": "",
+									"value": "asnclpCommandExecution.returnValue",
+									"defaultValue": "",
+									"check": null,
+									"xpathBaseNode": "",
+									"xpathName": "",
+									"xpathValue": ""
+								}
+							],
+							"schema": "",
+							"tasks": []
+						},
+						{
+							"$name": "commandForm",
+							"$type": "returnObject",
+							"type": "assignSharedConstant",
+							"name": "commandForm",
+							"parameterType": "returnObject",
+							"title": "",
+							"transform": "",
+							"value": "getForm.returnValue",
+							"defaultValue": "",
+							"check": null,
+							"xpathBaseNode": "",
+							"xpathName": "",
+							"xpathValue": ""
+						},
+						{
+							"$name": "createCommand",
+							"$type": "form",
+							"suppressAutomaticErrors": false,
+							"lockScreen": false,
+							"type": "action",
+							"name": "createCommand",
+							"actionType": "form",
+							"message": "?commandForm?",
+							"parameterList": [
+								{
+									"$name": "exitScript",
+									"$type": "raw",
+									"type": "parameter",
+									"name": "exitScript",
+									"parameterType": "raw",
+									"title": "",
+									"transform": "",
+									"value": "if(!commandCheckCompleted ()) return;",
+									"defaultValue": "",
+									"check": null,
+									"xpathBaseNode": "",
+									"xpathName": "",
+									"xpathValue": ""
+								},
+								{
+									"$name": "buttonOK",
+									"$type": "raw",
+									"type": "parameter",
+									"name": "buttonOK",
+									"parameterType": "raw",
+									"title": "",
+									"transform": "",
+									"value": "Execute",
+									"defaultValue": "",
+									"check": null,
+									"xpathBaseNode": "",
+									"xpathName": "",
+									"xpathValue": ""
+								},
+								{
+									"$name": "button_ShowSQL",
+									"$type": "raw",
+									"type": "parameter",
+									"name": "button_ShowSQL",
+									"parameterType": "raw",
+									"title": "",
+									"transform": "",
+									"value": "Show Command",
+									"defaultValue": "",
+									"check": null,
+									"xpathBaseNode": "",
+									"xpathName": "",
+									"xpathValue": ""
+								},
+								{
+									"$name": "button_AdHoc",
+									"$type": "raw",
+									"type": "parameter",
+									"name": "button_AdHoc",
+									"parameterType": "raw",
+									"title": "",
+									"transform": "",
+									"value": "Ad Hoc",
+									"defaultValue": "",
+									"check": null,
+									"xpathBaseNode": "",
+									"xpathName": "",
+									"xpathValue": ""
+								},
+								{
+									"$name": "parameter[commandForm]",
+									"$type": "blockValue",
+									"type": "parameter",
+									"name": "parameter[commandForm]",
+									"parameterType": "blockValue",
+									"title": "",
+									"transform": "",
+									"value": "commandForm",
+									"defaultValue": "",
+									"check": null,
+									"xpathBaseNode": "",
+									"xpathName": "",
+									"xpathValue": ""
+								}
+							],
+							"schema": "",
+							"tasks": []
+						},
+						{
+							"type": "IF",
+							"name": "",
+							"originalAction": "if",
+							"negCondition": false,
+							"compareOn": "createCommand.returnCode",
+							"compareOnType": "returnObject",
+							"condition": "false",
+							"conditionType": "",
+							"conditionCompareType": "",
+							"taskList": [
+								{
+									"type": "taskList",
+									"repeat": 1,
+									"tasks": [
+										{
+											"type": "exit"
+										}
+									]
+								}
+							]
+						},
+						{
+							"$name": "getCommand",
+							"$type": "serverAction",
+							"suppressAutomaticErrors": false,
+							"lockScreen": false,
+							"type": "action",
+							"name": "getCommand",
+							"actionType": "serverAction",
+							"message": "",
+							"parameterList": [
+								{
+									"$name": "action",
+									"$type": "fixed",
+									"type": "parameter",
+									"name": "action",
+									"parameterType": "fixed",
+									"title": "",
+									"transform": "",
+									"value": "processCommand",
+									"defaultValue": "",
+									"check": null,
+									"xpathBaseNode": "",
+									"xpathName": "",
+									"xpathValue": ""
+								},
+								{
+									"$name": "function",
+									"$type": "fixed",
+									"type": "parameter",
+									"name": "function",
+									"parameterType": "fixed",
+									"title": "",
+									"transform": "",
+									"value": "getStatement",
+									"defaultValue": "",
+									"check": null,
+									"xpathBaseNode": "",
+									"xpathName": "",
+									"xpathValue": ""
+								},
+								{
+									"$name": "command",
+									"$type": "returnObject",
+									"type": "parameter",
+									"name": "command",
+									"parameterType": "returnObject",
+									"title": "",
+									"transform": "",
+									"value": "asnclpCommandExecution.returnValue",
+									"defaultValue": "",
+									"check": null,
+									"xpathBaseNode": "",
+									"xpathName": "",
+									"xpathValue": ""
+								}
+							],
+							"schema": "",
+							"tasks": []
+						},
+						{
+							"$name": "systemCommand",
+							"$type": "returnObject",
+							"type": "assignSharedConstant",
+							"name": "systemCommand",
+							"parameterType": "returnObject",
+							"title": "",
+							"transform": "",
+							"value": "getCommand.returnValue",
+							"defaultValue": "",
+							"check": null,
+							"xpathBaseNode": "",
+							"xpathName": "",
+							"xpathValue": ""
+						},
+						{
+							"type": "IF",
+							"name": "",
+							"originalAction": "if",
+							"negCondition": true,
+							"compareOn": "",
+							"compareOnType": "",
+							"condition": "true",
+							"conditionType": "",
+							"conditionCompareType": "",
+							"taskList": [
+								{
+									"type": "taskList",
+									"repeat": 1,
+									"tasks": [
+										{
+											"type": "alert",
+											"message": "Generate Statement Failed : ?systemCommand?"
+										},
+										{
+											"type": "exit"
+										}
+									]
+								}
+							]
+						},
+						{
+							"$name": "execCommand",
+							"$type": "fixed",
+							"type": "assignSharedConstant",
+							"name": "execCommand",
+							"parameterType": "fixed",
+							"title": "",
+							"transform": "",
+							"value": "asnclp -exe ?systemCommand?",
+							"defaultValue": "",
+							"check": null,
+							"xpathBaseNode": "",
+							"xpathName": "",
+							"xpathValue": ""
+						},
+						{
+							"type": "IF",
+							"name": "",
+							"originalAction": "if",
+							"negCondition": false,
+							"compareOn": "createCommand.returnCode",
+							"compareOnType": "returnObject",
+							"condition": "ShowSQL",
+							"conditionType": "",
+							"conditionCompareType": "",
+							"taskList": [
+								{
+									"type": "taskList",
+									"repeat": 1,
+									"tasks": [
+										{
+											"$name": "showCommand",
+											"$type": "form",
+											"suppressAutomaticErrors": false,
+											"lockScreen": false,
+											"type": "action",
+											"name": "showCommand",
+											"actionType": "form",
+											"message": "<div><pre>?execCommand?</pre></div>",
+											"parameterList": [
+												{
+													"$name": "buttonOK",
+													"$type": "raw",
+													"type": "parameter",
+													"name": "buttonOK",
+													"parameterType": "raw",
+													"title": "",
+													"transform": "",
+													"value": "Execute",
+													"defaultValue": "",
+													"check": null,
+													"xpathBaseNode": "",
+													"xpathName": "",
+													"xpathValue": ""
+												},
+												{
+													"$name": "parameter[execCommand]",
+													"$type": "returnObject",
+													"type": "parameter",
+													"name": "parameter[execCommand]",
+													"parameterType": "returnObject",
+													"title": "",
+													"transform": "",
+													"value": "getCommand.returnValue",
+													"defaultValue": "",
+													"check": null,
+													"xpathBaseNode": "",
+													"xpathName": "",
+													"xpathValue": ""
+												}
+											],
+											"schema": "",
+											"tasks": []
+										},
+										{
+											"type": "IF",
+											"name": "",
+											"originalAction": "if",
+											"negCondition": false,
+											"compareOn": "showCommand.returnCode",
+											"compareOnType": "returnObject",
+											"condition": "false",
+											"conditionType": "",
+											"conditionCompareType": "",
+											"taskList": [
+												{
+													"type": "taskList",
+													"repeat": 1,
+													"tasks": [
+														{
+															"type": "exit"
+														}
+													]
+												}
+											]
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "IF",
+							"name": "",
+							"originalAction": "if",
+							"negCondition": false,
+							"compareOn": "getCommand.returnCode",
+							"compareOnType": "returnObject",
+							"condition": "AdHoc",
+							"conditionType": "",
+							"conditionCompareType": "",
+							"taskList": [
+								{
+									"type": "taskList",
+									"repeat": 1,
+									"tasks": [
+										{
+											"$name": "statement",
+											"$type": "returnObject",
+											"type": "assignSharedConstant",
+											"name": "statement",
+											"parameterType": "returnObject",
+											"title": "",
+											"transform": "",
+											"value": "getStmt.returnValue",
+											"defaultValue": "",
+											"check": null,
+											"xpathBaseNode": "",
+											"xpathName": "",
+											"xpathValue": ""
+										},
+										{
+											"type": "loadPage",
+											"links": [],
+											"pageLayouts": [
+												{
+													"target": "adhocWindow",
+													"content": {
+														"type": "panel",
+														"name": "main",
+														"content": {
+															"link": {
+																"type": "action",
+																"target": "adhoc",
+																"window": "_self",
+																"parameters": {
+																	"action": "ADHOC",
+																	"LoadSQLData": "?execCommand?",
+																	"scriptMode": "SHELL"
+																}
+															}
+														},
+														"primaryContainer": true
+													}
+												}
+											]
+										},
+										{
+											"type": "exit"
+										}
+									]
+								}
+							]
+						},
+						{
+							"$name": "executeShell",
+							"$type": "serverAction",
+							"suppressAutomaticErrors": false,
+							"lockScreen": false,
+							"type": "action",
+							"name": "executeShell",
+							"actionType": "serverAction",
+							"message": "",
+							"parameterList": [
+								{
+									"$name": "action",
+									"$type": "fixed",
+									"type": "parameter",
+									"name": "action",
+									"parameterType": "fixed",
+									"title": "",
+									"transform": "",
+									"value": "executeShellNew",
+									"defaultValue": "",
+									"check": null,
+									"xpathBaseNode": "",
+									"xpathName": "",
+									"xpathValue": ""
+								},
+								{
+									"$name": "command",
+									"$type": "fixed",
+									"type": "parameter",
+									"name": "command",
+									"parameterType": "fixed",
+									"title": "",
+									"transform": "",
+									"value": "?execCommand?",
+									"defaultValue": "",
+									"check": null,
+									"xpathBaseNode": "",
+									"xpathName": "",
+									"xpathValue": ""
+								}
+							],
+							"schema": "",
+							"tasks": []
+						},
+						{
+							"type": "IF",
+							"name": "",
+							"originalAction": "if",
+							"negCondition": true,
+							"compareOn": "",
+							"compareOnType": "",
+							"condition": "true",
+							"conditionType": "",
+							"conditionCompareType": "",
+							"taskList": [
+								{
+									"type": "taskList",
+									"repeat": 1,
+									"tasks": [
+										{
+											"$name": "ERROR_MESSAGE",
+											"$type": "returnObject",
+											"type": "assignSharedConstant",
+											"name": "ERROR_MESSAGE",
+											"parameterType": "returnObject",
+											"title": "",
+											"transform": "",
+											"value": "executeShell.returnValue",
+											"defaultValue": "",
+											"check": null,
+											"xpathBaseNode": "",
+											"xpathName": "",
+											"xpathValue": ""
+										},
+										{
+											"type": "alert",
+											"message": "Failed: ?ERROR_MESSAGE?"
+										},
+										{
+											"type": "exit"
+										}
+									]
+								}
+							]
+						},
+						{
+							"$name": "output",
+							"$type": "returnObject",
+							"type": "assignSharedConstant",
+							"name": "output",
+							"parameterType": "returnObject",
+							"title": "",
+							"transform": "",
+							"value": "executeShell.returnValue",
+							"defaultValue": "",
+							"check": null,
+							"xpathBaseNode": "",
+							"xpathName": "",
+							"xpathValue": ""
+						},
+						{
+							"$name": "showOutput",
+							"$type": "form",
+							"suppressAutomaticErrors": false,
+							"lockScreen": false,
+							"type": "action",
+							"name": "showOutput",
+							"actionType": "form",
+							"message": "<textarea style=\"font-family:Console,'Courier New',Lucida\" rows=\"30\" cols=\"80\" wrap=\"off\">\n?output?\n</textarea>",
+							"parameterList": [],
+							"schema": "",
+							"tasks": []
+						}
+					]
+				}
+			]
+		}
+	]
+}

@@ -1,0 +1,13 @@
+{
+	"type": "branch",
+	"description": "Navigator",
+	"requires": {
+		"DBMS": "DB2",
+		"minVersion": 9.5
+	},
+	"delayLoad": "true",
+	"reloadOnConnectionChange": true,
+	"branchSQLXML": "queryfiles/predefined/Database2xml.sql",
+	"branchXSL": "XSL/object2Menu",
+	"onErrorMenu": "navigatorError"
+}

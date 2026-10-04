@@ -1,0 +1,300 @@
+{
+	"$name": "sqlExecutionForm",
+	"$type": "form",
+	"$lockScreen": "true",
+	"suppressAutomaticErrors": false,
+	"lockScreen": true,
+	"type": "action",
+	"name": "sqlExecutionForm",
+	"actionType": "form",
+	"message": "?form?",
+	"parameterList": [
+		{
+			"$name": "buttonOK",
+			"$type": "raw",
+			"type": "parameter",
+			"name": "buttonOK",
+			"parameterType": "raw",
+			"title": "",
+			"transform": "",
+			"value": "Execute",
+			"defaultValue": "",
+			"check": null,
+			"xpathBaseNode": "",
+			"xpathName": "",
+			"xpathValue": ""
+		},
+		{
+			"$name": "button_Background",
+			"$type": "raw",
+			"type": "parameter",
+			"name": "button_Background",
+			"parameterType": "raw",
+			"title": "",
+			"transform": "",
+			"value": "Execute Background",
+			"defaultValue": "",
+			"check": null,
+			"xpathBaseNode": "",
+			"xpathName": "",
+			"xpathValue": ""
+		},
+		{
+			"$name": "button_AdHoc",
+			"$type": "raw",
+			"type": "parameter",
+			"name": "button_AdHoc",
+			"parameterType": "raw",
+			"title": "",
+			"transform": "",
+			"value": "Ad Hoc Panel",
+			"defaultValue": "",
+			"check": null,
+			"xpathBaseNode": "",
+			"xpathName": "",
+			"xpathValue": ""
+		},
+		{
+			"$name": "parameter[form]",
+			"$type": "fixed",
+			"type": "parameter",
+			"name": "parameter[form]",
+			"parameterType": "fixed",
+			"title": "",
+			"transform": "",
+			"value": "?form?",
+			"defaultValue": "",
+			"check": null,
+			"xpathBaseNode": "",
+			"xpathName": "",
+			"xpathValue": ""
+		}
+	],
+	"schema": "",
+	"tasks": [
+		{
+			"type": "IF",
+			"name": "",
+			"originalAction": "if",
+			"negCondition": false,
+			"compareOn": "sqlExecutionForm.returnCode",
+			"compareOnType": "returnObject",
+			"condition": "false",
+			"conditionType": "",
+			"conditionCompareType": "",
+			"taskList": [
+				{
+					"type": "taskList",
+					"repeat": 1,
+					"tasks": [
+						{
+							"type": "exit"
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "IF",
+			"name": "",
+			"originalAction": "if",
+			"negCondition": false,
+			"compareOn": "sqlExecutionForm.returnCode",
+			"compareOnType": "returnObject",
+			"condition": "AdHoc",
+			"conditionType": "",
+			"conditionCompareType": "",
+			"taskList": [
+				{
+					"type": "taskList",
+					"repeat": 1,
+					"tasks": [
+						{
+							"type": "loadPage",
+							"links": [],
+							"pageLayouts": [
+								{
+									"target": "adhocWindow",
+									"content": {
+										"type": "panel",
+										"name": "main",
+										"content": {
+											"link": {
+												"type": "action",
+												"target": "adhoc",
+												"window": "_self",
+												"parameters": {
+													"action": "ADHOC",
+													"LoadSQLData": "?sql?",
+													"termChar": "@"
+												}
+											}
+										},
+										"primaryContainer": true
+									}
+								}
+							]
+						},
+						{
+							"type": "exit"
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "IF",
+			"name": "",
+			"originalAction": "if",
+			"negCondition": false,
+			"compareOn": "sqlExecutionForm.returnCode",
+			"compareOnType": "returnObject",
+			"condition": "Background",
+			"conditionType": "",
+			"conditionCompareType": "",
+			"taskList": [
+				{
+					"type": "taskList",
+					"repeat": 1,
+					"tasks": [
+						{
+							"type": "unlockScreen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "task",
+			"taskList": {
+				"type": "taskList",
+				"repeat": 1,
+				"tasks": [
+					{
+						"$name": "execute",
+						"$type": "serverAction",
+						"suppressAutomaticErrors": false,
+						"lockScreen": false,
+						"type": "action",
+						"name": "execute",
+						"actionType": "serverAction",
+						"message": "",
+						"parameterList": [
+							{
+								"$name": "action",
+								"$type": "fixed",
+								"type": "parameter",
+								"name": "action",
+								"parameterType": "fixed",
+								"title": "",
+								"transform": "",
+								"value": "executeSQL",
+								"defaultValue": "",
+								"check": null,
+								"xpathBaseNode": "",
+								"xpathName": "",
+								"xpathValue": ""
+							},
+							{
+								"$name": "SQL",
+								"$type": "fixed",
+								"type": "parameter",
+								"name": "SQL",
+								"parameterType": "fixed",
+								"title": "",
+								"transform": "",
+								"value": "?sql?",
+								"defaultValue": "",
+								"check": null,
+								"xpathBaseNode": "",
+								"xpathName": "",
+								"xpathValue": ""
+							},
+							{
+								"$name": "STMTermChar",
+								"$type": "fixed",
+								"type": "parameter",
+								"name": "STMTermChar",
+								"parameterType": "fixed",
+								"title": "",
+								"transform": "",
+								"value": "@",
+								"defaultValue": "",
+								"check": null,
+								"xpathBaseNode": "",
+								"xpathName": "",
+								"xpathValue": ""
+							}
+						],
+						"schema": "",
+						"tasks": []
+					},
+					{
+						"type": "IF",
+						"name": "",
+						"originalAction": "if",
+						"negCondition": false,
+						"compareOn": "execute.returnCode",
+						"compareOnType": "returnObject",
+						"condition": "true",
+						"conditionType": "",
+						"conditionCompareType": "",
+						"taskList": [
+							{
+								"type": "taskList",
+								"repeat": 1,
+								"tasks": [
+									{
+										"type": "IF",
+										"name": "",
+										"originalAction": "if",
+										"negCondition": false,
+										"compareOn": "sql.returnCode",
+										"compareOnType": "returnObject",
+										"condition": "Background",
+										"conditionType": "",
+										"conditionCompareType": "",
+										"taskList": [
+											{
+												"type": "taskList",
+												"repeat": 1,
+												"tasks": [
+													{
+														"type": "panelReload",
+														"name": ""
+													}
+												]
+											}
+										]
+									},
+									{
+										"type": "exit"
+									}
+								]
+							}
+						]
+					},
+					{
+						"$name": "ERROR_MESSAGE",
+						"$type": "returnObject",
+						"type": "assignSharedConstant",
+						"name": "ERROR_MESSAGE",
+						"parameterType": "returnObject",
+						"title": "",
+						"transform": "",
+						"value": "execute.returnMessage",
+						"defaultValue": "",
+						"check": null,
+						"xpathBaseNode": "",
+						"xpathName": "",
+						"xpathValue": ""
+					},
+					{
+						"type": "alert",
+						"message": "Failed: ?ERROR_MESSAGE?"
+					}
+				]
+			}
+		}
+	]
+}

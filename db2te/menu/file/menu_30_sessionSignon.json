@@ -1,0 +1,24 @@
+{
+	"description": "Session Signon IBM SSO",
+	"requires": {
+		"feature": "SSO"
+	},
+	"pageWindows": [
+		{
+			"target": "_final",
+			"title": "Session Signon IBM SSO",
+			"content": {
+				"type": "panel",
+				"name": "signon",
+				"content": {
+					"link": {
+						"type": "action",
+						"parameters": {
+							"action": "sessionSignon"
+						}
+					}
+				}
+			}
+		}
+	]
+}

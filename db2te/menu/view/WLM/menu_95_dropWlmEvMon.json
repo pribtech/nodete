@@ -1,0 +1,324 @@
+{
+	"description": "Drop WLM Event Monitors",
+	"actionScript": {
+		"$name": "wlmDropEvMons",
+		"$type": "form",
+		"$lockScreen": "true",
+		"suppressAutomaticErrors": false,
+		"lockScreen": true,
+		"type": "action",
+		"name": "wlmDropEvMons",
+		"actionType": "form",
+		"message": "<div style='width:500px'>\n<h1>Drop three workload management event monitors</h1>\n<p>You are about to drop the event WLM monitors required for work load manager.\n<p>\n</div>",
+		"parameterList": [
+			{
+				"$name": "buttonOK",
+				"$type": "raw",
+				"type": "parameter",
+				"name": "buttonOK",
+				"parameterType": "raw",
+				"title": "",
+				"transform": "",
+				"value": "Drop WLM Event Monitors",
+				"defaultValue": "",
+				"check": null,
+				"xpathBaseNode": "",
+				"xpathName": "",
+				"xpathValue": ""
+			}
+		],
+		"schema": "",
+		"tasks": [
+			{
+				"type": "IF",
+				"name": "",
+				"originalAction": "if",
+				"negCondition": false,
+				"compareOn": "",
+				"compareOnType": "",
+				"condition": "true",
+				"conditionType": "",
+				"conditionCompareType": "",
+				"taskList": [
+					{
+						"type": "taskList",
+						"repeat": 1,
+						"tasks": [
+							{
+								"$name": "dropWlmEvMons",
+								"$type": "serverAction",
+								"suppressAutomaticErrors": false,
+								"lockScreen": false,
+								"type": "action",
+								"name": "dropWlmEvMons",
+								"actionType": "serverAction",
+								"message": "",
+								"parameterList": [
+									{
+										"$name": "action",
+										"$type": "fixed",
+										"type": "parameter",
+										"name": "action",
+										"parameterType": "fixed",
+										"title": "",
+										"transform": "",
+										"value": "executeSQL",
+										"defaultValue": "",
+										"check": null,
+										"xpathBaseNode": "",
+										"xpathName": "",
+										"xpathValue": ""
+									},
+									{
+										"$name": "commitPerSTMT",
+										"$type": "fixed",
+										"type": "parameter",
+										"name": "commitPerSTMT",
+										"parameterType": "fixed",
+										"title": "",
+										"transform": "",
+										"value": "true",
+										"defaultValue": "",
+										"check": null,
+										"xpathBaseNode": "",
+										"xpathName": "",
+										"xpathValue": ""
+									},
+									{
+										"$name": "abortOnFailure",
+										"$type": "fixed",
+										"type": "parameter",
+										"name": "abortOnFailure",
+										"parameterType": "fixed",
+										"title": "",
+										"transform": "",
+										"value": "false",
+										"defaultValue": "",
+										"check": null,
+										"xpathBaseNode": "",
+										"xpathName": "",
+										"xpathValue": ""
+									},
+									{
+										"$name": "SQL[0]",
+										"$type": "fixed",
+										"type": "parameter",
+										"name": "SQL[0]",
+										"parameterType": "fixed",
+										"title": "",
+										"transform": "",
+										"value": "ALTER WORKLOAD SYSDEFAULTUSERWORKLOAD COLLECT ACTIVITY DATA NONE",
+										"defaultValue": "",
+										"check": null,
+										"xpathBaseNode": "",
+										"xpathName": "",
+										"xpathValue": ""
+									},
+									{
+										"$name": "SQL[1]",
+										"$type": "fixed",
+										"type": "parameter",
+										"name": "SQL[1]",
+										"parameterType": "fixed",
+										"title": "",
+										"transform": "",
+										"value": "ALTER SERVICE CLASS SYSDEFAULTSUBCLASS UNDER SYSDEFAULTUSERCLASS\n      COLLECT AGGREGATE ACTIVITY DATA NONE",
+										"defaultValue": "",
+										"check": null,
+										"xpathBaseNode": "",
+										"xpathName": "",
+										"xpathValue": ""
+									},
+									{
+										"$name": "SQL[2]",
+										"$type": "fixed",
+										"type": "parameter",
+										"name": "SQL[2]",
+										"parameterType": "fixed",
+										"title": "",
+										"transform": "",
+										"value": "SET EVENT MONITOR DB2ACTIVITIES STATE 0",
+										"defaultValue": "",
+										"check": null,
+										"xpathBaseNode": "",
+										"xpathName": "",
+										"xpathValue": ""
+									},
+									{
+										"$name": "SQL[3]",
+										"$type": "fixed",
+										"type": "parameter",
+										"name": "SQL[3]",
+										"parameterType": "fixed",
+										"title": "",
+										"transform": "",
+										"value": "SET EVENT MONITOR DB2STATISTICS STATE 0",
+										"defaultValue": "",
+										"check": null,
+										"xpathBaseNode": "",
+										"xpathName": "",
+										"xpathValue": ""
+									},
+									{
+										"$name": "SQL[4]",
+										"$type": "fixed",
+										"type": "parameter",
+										"name": "SQL[4]",
+										"parameterType": "fixed",
+										"title": "",
+										"transform": "",
+										"value": "SET EVENT MONITOR DB2THRESHOLDVIOLATIONS STATE 0",
+										"defaultValue": "",
+										"check": null,
+										"xpathBaseNode": "",
+										"xpathName": "",
+										"xpathValue": ""
+									},
+									{
+										"$name": "SQL[5]",
+										"$type": "fixed",
+										"type": "parameter",
+										"name": "SQL[5]",
+										"parameterType": "fixed",
+										"title": "",
+										"transform": "",
+										"value": "DROP EVENT MONITOR DB2ACTIVITIES",
+										"defaultValue": "",
+										"check": null,
+										"xpathBaseNode": "",
+										"xpathName": "",
+										"xpathValue": ""
+									},
+									{
+										"$name": "SQL[6]",
+										"$type": "fixed",
+										"type": "parameter",
+										"name": "SQL[6]",
+										"parameterType": "fixed",
+										"title": "",
+										"transform": "",
+										"value": "DROP EVENT MONITOR DB2STATISTICS",
+										"defaultValue": "",
+										"check": null,
+										"xpathBaseNode": "",
+										"xpathName": "",
+										"xpathValue": ""
+									},
+									{
+										"$name": "SQL[7]",
+										"$type": "fixed",
+										"type": "parameter",
+										"name": "SQL[7]",
+										"parameterType": "fixed",
+										"title": "",
+										"transform": "",
+										"value": "DROP EVENT MONITOR DB2THRESHOLDVIOLATIONS",
+										"defaultValue": "",
+										"check": null,
+										"xpathBaseNode": "",
+										"xpathName": "",
+										"xpathValue": ""
+									}
+								],
+								"schema": "",
+								"tasks": [
+									{
+										"type": "IF",
+										"name": "",
+										"originalAction": "if",
+										"negCondition": true,
+										"compareOn": "",
+										"compareOnType": "",
+										"condition": "true",
+										"conditionType": "",
+										"conditionCompareType": "",
+										"taskList": [
+											{
+												"type": "taskList",
+												"repeat": 1,
+												"tasks": [
+													{
+														"$name": "STMTRun",
+														"$type": "returnObject",
+														"type": "assignSharedConstant",
+														"name": "STMTRun",
+														"parameterType": "returnObject",
+														"title": "",
+														"transform": "",
+														"value": "dropWlmEvMons.returnValue.STMTRun",
+														"defaultValue": "",
+														"check": null,
+														"xpathBaseNode": "",
+														"xpathName": "",
+														"xpathValue": ""
+													},
+													{
+														"$name": "STMT",
+														"$type": "returnObject",
+														"type": "assignSharedConstant",
+														"name": "STMT",
+														"parameterType": "returnObject",
+														"title": "",
+														"transform": "",
+														"value": "dropWlmEvMons.returnValue.STMT",
+														"defaultValue": "",
+														"check": null,
+														"xpathBaseNode": "",
+														"xpathName": "",
+														"xpathValue": ""
+													},
+													{
+														"$name": "STMTMSG",
+														"$type": "returnObject",
+														"type": "assignSharedConstant",
+														"name": "STMTMSG",
+														"parameterType": "returnObject",
+														"title": "",
+														"transform": "",
+														"value": "dropWlmEvMons.returnValue.STMTMSG",
+														"defaultValue": "",
+														"check": null,
+														"xpathBaseNode": "",
+														"xpathName": "",
+														"xpathValue": ""
+													},
+													{
+														"type": "alert",
+														"message": "Failed to create WLM Event Monitors, statement ?STMTRun? \n\t\t\t\t\t\t\n\t\t\t\t\t\t?STMTMSG?\n\t\t\t\t\t\t\n\t\t\t\t\t\t?STMT?"
+													}
+												]
+											}
+										]
+									},
+									{
+										"type": "IF",
+										"name": "",
+										"originalAction": "if",
+										"negCondition": false,
+										"compareOn": "",
+										"compareOnType": "",
+										"condition": "true",
+										"conditionType": "",
+										"conditionCompareType": "",
+										"taskList": [
+											{
+												"type": "taskList",
+												"repeat": 1,
+												"tasks": [
+													{
+														"type": "alert",
+														"message": "WLM event monitors dropped"
+													}
+												]
+											}
+										]
+									}
+								]
+							}
+						]
+					}
+				]
+			}
+		]
+	}
+}

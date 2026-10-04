@@ -1,0 +1,28 @@
+{
+	"description": "Workload MultiUser Driver",
+	"requires": {
+		"DBMS": "DB2"
+	},
+	"pageWindows": [
+		{
+			"target": "_final",
+			"title": "Workload MultiUser Driver",
+			"content": {
+				"type": "panel",
+				"name": "second",
+				"content": {
+					"link": {
+						"type": "action",
+						"target": "_self",
+						"window": "_self",
+						"parameters": {
+							"action": "WMDMonitor"
+						}
+					}
+				},
+				"overflow": "hidden",
+				"primaryContainer": true
+			}
+		}
+	]
+}

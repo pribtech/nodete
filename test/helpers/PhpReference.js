@@ -32,7 +32,10 @@ export class PhpReference {
 		if (value && typeof value === 'object')
 			return Object.fromEntries(Object.entries(value).map(([k, v]) => [k, PhpReference.normalise(v, k)]));
 		if (key === 'name' && typeof value === 'string' && /^[0-9a-f]{13}$/.test(value)) return '<uniqid>';
-		if (key === 'rootCallBack' && typeof value === 'string' && value.startsWith('{')) return JSON.parse(value);
+		if (key === 'rootCallBack' && typeof value === 'string') {
+			if (value.startsWith('{')) return JSON.parse(value);
+			return value.replace(/\.xml$/, '.json'); // menu definitions are JSON now; the callback names the file
+		}
 		return value;
 	}
 }

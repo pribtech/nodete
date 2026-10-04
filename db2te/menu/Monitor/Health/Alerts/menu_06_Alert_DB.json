@@ -1,0 +1,36 @@
+{
+	"description": "Health Alert DB",
+	"pageWindows": [
+		{
+			"target": "_active",
+			"panelHeaders": {},
+			"content": {
+				"type": "splitPane",
+				"panelA": {
+					"type": "panel",
+					"name": "main",
+					"content": {
+						"link": {
+							"type": "action",
+							"target": "_self",
+							"window": "_self",
+							"parameters": {
+								"table": "Health/healthAlertCFG",
+								"action": "list_table",
+								"OBJECTTYPE": "DB",
+								"CFG_LEVEL": "O",
+								"DBNAME": "TE_DATABASE_LOGIN_DATABASE"
+							}
+						}
+					},
+					"panelHeaders": {},
+					"primaryContainer": true
+				},
+				"panelB": {
+					"type": "panel",
+					"name": "detail"
+				}
+			}
+		}
+	]
+}

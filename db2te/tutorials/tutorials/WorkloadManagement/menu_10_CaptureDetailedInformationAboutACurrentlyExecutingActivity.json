@@ -1,0 +1,27 @@
+{
+	"description": "Capture Detailed Information about a Currently Executing Activity",
+	"pageWindows": [
+		{
+			"target": "_final",
+			"content": {
+				"type": "panel",
+				"name": "Tutorial",
+				"content": {
+					"link": {
+						"type": "action",
+						"target": "_self",
+						"window": "_self",
+						"parameters": {
+							"action": "tutorial",
+							"tutorialName": "CaptureDetailedInformationAboutACurrentlyExecutingActivity",
+							"CurrentMenuLocation": {
+								"$var": "CURRENT_MENU_LOCATION"
+							}
+						}
+					}
+				},
+				"primaryContainer": true
+			}
+		}
+	]
+}

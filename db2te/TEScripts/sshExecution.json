@@ -1,0 +1,117 @@
+{
+	"$name": "sshExecution",
+	"$type": "form",
+	"$lockScreen": "true",
+	"suppressAutomaticErrors": false,
+	"lockScreen": true,
+	"type": "action",
+	"name": "sshExecution",
+	"actionType": "form",
+	"message": "<div style=\"height:200px;width:800px;\">?script?</div>",
+	"parameterList": [
+		{
+			"$name": "button_AdHoc",
+			"$type": "raw",
+			"type": "parameter",
+			"name": "button_AdHoc",
+			"parameterType": "raw",
+			"title": "",
+			"transform": "",
+			"value": "Ad Hoc Panel",
+			"defaultValue": "",
+			"check": null,
+			"xpathBaseNode": "",
+			"xpathName": "",
+			"xpathValue": ""
+		},
+		{
+			"$name": "parameter[script]",
+			"$type": "fixed",
+			"type": "parameter",
+			"name": "parameter[script]",
+			"parameterType": "fixed",
+			"title": "",
+			"transform": "",
+			"value": "?script?",
+			"defaultValue": "",
+			"check": null,
+			"xpathBaseNode": "",
+			"xpathName": "",
+			"xpathValue": ""
+		}
+	],
+	"schema": "",
+	"tasks": [
+		{
+			"type": "IF",
+			"name": "",
+			"originalAction": "if",
+			"negCondition": false,
+			"compareOn": "sshExecution.returnCode",
+			"compareOnType": "returnObject",
+			"condition": "false",
+			"conditionType": "",
+			"conditionCompareType": "",
+			"taskList": [
+				{
+					"type": "taskList",
+					"repeat": 1,
+					"tasks": [
+						{
+							"type": "exit"
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "IF",
+			"name": "",
+			"originalAction": "if",
+			"negCondition": false,
+			"compareOn": "sshExecution.returnCode",
+			"compareOnType": "returnObject",
+			"condition": "AdHoc",
+			"conditionType": "",
+			"conditionCompareType": "",
+			"taskList": [
+				{
+					"type": "taskList",
+					"repeat": 1,
+					"tasks": [
+						{
+							"type": "loadPage",
+							"links": [],
+							"pageLayouts": [
+								{
+									"target": "adhocWindow",
+									"content": {
+										"type": "panel",
+										"name": "main",
+										"content": {
+											"link": {
+												"type": "action",
+												"target": "adhoc",
+												"window": "_self",
+												"parameters": {
+													"action": "ADHOC",
+													"LoadSQLData": "?script?",
+													"ShellTermChar": ";",
+													"scriptMode": "SSH"
+												}
+											}
+										},
+										"primaryContainer": true
+									}
+								}
+							]
+						},
+						{
+							"type": "exit"
+						}
+					]
+				}
+			]
+		}
+	]
+}

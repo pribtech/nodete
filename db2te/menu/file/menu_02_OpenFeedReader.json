@@ -1,0 +1,25 @@
+{
+	"description": "Open feed reader",
+	"pageWindows": [
+		{
+			"target": "_active",
+			"panelHeaders": {},
+			"content": {
+				"type": "panel",
+				"name": "main",
+				"content": {
+					"link": {
+						"type": "action",
+						"target": "_self",
+						"window": "_self",
+						"parameters": {
+							"action": "feedReader"
+						}
+					}
+				},
+				"panelHeaders": {},
+				"primaryContainer": true
+			}
+		}
+	]
+}

@@ -1,0 +1,30 @@
+{
+	"description": "Visual SQL Select",
+	"pageWindows": [
+		{
+			"target": "_active",
+			"content": {
+				"type": "panel",
+				"name": "main",
+				"content": {
+					"link": {
+						"type": "action",
+						"target": "_self",
+						"window": "_self",
+						"parameters": {
+							"action": "chartNodal",
+							"$chartTitle": "Visual Select",
+							"$sourceType": "xmlData",
+							"$editMode": "true",
+							"$newRoot": "select",
+							"$definition": "XSD/visualSelectSchema.xsd",
+							"$report": "XSL/selectCommand.xsl",
+							"$nodeControl": "menu/developer/VisualEditor/chartNodalSelect.xml"
+						}
+					}
+				},
+				"primaryContainer": true
+			}
+		}
+	]
+}

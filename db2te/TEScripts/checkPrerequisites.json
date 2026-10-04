@@ -1,0 +1,127 @@
+{
+	"$name": "checkPrerequisites",
+	"$type": "serverAction",
+	"suppressAutomaticErrors": false,
+	"lockScreen": false,
+	"type": "action",
+	"name": "checkPrerequisites",
+	"actionType": "serverAction",
+	"message": "",
+	"parameterList": [
+		{
+			"$name": "action",
+			"$type": "fixed",
+			"type": "parameter",
+			"name": "action",
+			"parameterType": "fixed",
+			"title": "",
+			"transform": "",
+			"value": "checkForObjectWithCase",
+			"defaultValue": "",
+			"check": null,
+			"xpathBaseNode": "",
+			"xpathName": "",
+			"xpathValue": ""
+		},
+		{
+			"$name": "objectType",
+			"$type": "raw",
+			"type": "parameter",
+			"name": "objectType",
+			"parameterType": "raw",
+			"title": "",
+			"transform": "",
+			"value": "list",
+			"defaultValue": "",
+			"check": null,
+			"xpathBaseNode": "",
+			"xpathName": "",
+			"xpathValue": ""
+		},
+		{
+			"$name": "object",
+			"$type": "blockValue",
+			"type": "parameter",
+			"name": "object",
+			"parameterType": "blockValue",
+			"title": "",
+			"transform": "",
+			"value": "list",
+			"defaultValue": "",
+			"check": null,
+			"xpathBaseNode": "",
+			"xpathName": "",
+			"xpathValue": ""
+		}
+	],
+	"schema": "",
+	"tasks": [
+		{
+			"type": "IF",
+			"name": "",
+			"originalAction": "if",
+			"negCondition": false,
+			"compareOn": "",
+			"compareOnType": "",
+			"condition": "true",
+			"conditionType": "",
+			"conditionCompareType": "",
+			"taskList": [
+				{
+					"type": "taskList",
+					"repeat": 1,
+					"tasks": [
+						{
+							"type": "setActionReturn",
+							"value": "true",
+							"parameterType": "fixed"
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "IF",
+			"name": "",
+			"originalAction": "if",
+			"negCondition": false,
+			"compareOn": "",
+			"compareOnType": "",
+			"condition": "false",
+			"conditionType": "",
+			"conditionCompareType": "",
+			"taskList": [
+				{
+					"type": "taskList",
+					"repeat": 1,
+					"tasks": [
+						{
+							"type": "setActionReturn",
+							"value": "false",
+							"parameterType": "fixed"
+						},
+						{
+							"$name": "ERROR_MESSAGE",
+							"$type": "returnObject",
+							"type": "assignSharedConstant",
+							"name": "ERROR_MESSAGE",
+							"parameterType": "returnObject",
+							"title": "",
+							"transform": "",
+							"value": "checkPrerequisitises.returnValue",
+							"defaultValue": "",
+							"check": null,
+							"xpathBaseNode": "",
+							"xpathName": "",
+							"xpathValue": ""
+						},
+						{
+							"type": "alert",
+							"message": "Prequisites?ERROR_MESSAGE?"
+						}
+					]
+				}
+			]
+		}
+	]
+}

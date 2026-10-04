@@ -1,0 +1,32 @@
+{
+	"description": "Derby Management",
+	"branchDirectory": "Storage",
+	"pageWindows": [
+		{
+			"target": "_final",
+			"content": {
+				"type": "panel",
+				"name": "Tutorial",
+				"content": {
+					"link": {
+						"type": "action",
+						"target": "_self",
+						"window": "_self",
+						"parameters": {
+							"action": "flowgroup",
+							"subFolder": "DerbyDBMS",
+							"title": "Derby Management",
+							"CurrentMenuLocation": {
+								"$var": "CURRENT_MENU_LOCATION"
+							},
+							"listStyleType": "",
+							"menuExpansionType": "internal",
+							"defaultPage": "createDerbyDB"
+						}
+					}
+				},
+				"primaryContainer": true
+			}
+		}
+	]
+}

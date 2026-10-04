@@ -1,0 +1,46 @@
+{
+	"description": "Monitor Settings",
+	"pageWindows": [
+		{
+			"target": "_active",
+			"content": {
+				"type": "splitPane",
+				"splitPercent": "0.5",
+				"panelA": {
+					"type": "panel",
+					"name": "dbm",
+					"content": {
+						"link": {
+							"type": "action",
+							"target": "_self",
+							"window": "_self",
+							"parameters": {
+								"name": "dft_mon%",
+								"comparename": "like",
+								"table": "dbmcfg",
+								"action": "list_table"
+							}
+						}
+					}
+				},
+				"panelB": {
+					"type": "panel",
+					"name": "db",
+					"content": {
+						"link": {
+							"type": "action",
+							"target": "_self",
+							"window": "_self",
+							"parameters": {
+								"name": "mon%",
+								"comparename": "like",
+								"table": "dbcfg",
+								"action": "list_table"
+							}
+						}
+					}
+				}
+			}
+		}
+	]
+}

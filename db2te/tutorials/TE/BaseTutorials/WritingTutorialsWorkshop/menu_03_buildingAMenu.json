@@ -1,0 +1,28 @@
+{
+	"description": "Building a Menu",
+	"tag": "r91",
+	"pageWindows": [
+		{
+			"target": "_final",
+			"content": {
+				"type": "panel",
+				"name": "Tutorial",
+				"content": {
+					"link": {
+						"type": "action",
+						"target": "_self",
+						"window": "_self",
+						"parameters": {
+							"action": "tutorial",
+							"tutorialName": "buildingAMenu",
+							"CurrentMenuLocation": {
+								"$var": "CURRENT_MENU_LOCATION"
+							}
+						}
+					}
+				},
+				"primaryContainer": true
+			}
+		}
+	]
+}

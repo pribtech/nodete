@@ -1,0 +1,177 @@
+{
+	"$name": "forceAgent",
+	"$type": "confirm",
+	"suppressAutomaticErrors": false,
+	"lockScreen": false,
+	"type": "action",
+	"name": "forceAgent",
+	"actionType": "confirm",
+	"message": "Force Agent: ?AGENT_ID?  \n\tSelect Ok to drop the connection for agent number ?AGENT_ID?. \n\tThis will stop all active work for agent ?AGENT_ID? and roll back its active UOW.",
+	"parameterList": [
+		{
+			"$name": "AGENT_ID",
+			"$type": "blockValue",
+			"type": "parameter",
+			"name": "AGENT_ID",
+			"parameterType": "blockValue",
+			"title": "",
+			"transform": "",
+			"value": "AGENT_ID",
+			"defaultValue": "",
+			"check": null,
+			"xpathBaseNode": "",
+			"xpathName": "",
+			"xpathValue": ""
+		}
+	],
+	"schema": "",
+	"tasks": [
+		{
+			"type": "IF",
+			"name": "",
+			"originalAction": "followOnAction",
+			"negCondition": false,
+			"compareOn": "",
+			"compareOnType": "",
+			"condition": "true",
+			"conditionType": "",
+			"conditionCompareType": "",
+			"taskList": [
+				{
+					"type": "taskList",
+					"repeat": 1,
+					"tasks": [
+						{
+							"$name": "forceApplication",
+							"$type": "serverAction",
+							"suppressAutomaticErrors": false,
+							"lockScreen": false,
+							"type": "action",
+							"name": "forceApplication",
+							"actionType": "serverAction",
+							"message": "",
+							"parameterList": [
+								{
+									"$name": "action",
+									"$type": "fixed",
+									"type": "parameter",
+									"name": "action",
+									"parameterType": "fixed",
+									"title": "",
+									"transform": "",
+									"value": "executeSQL",
+									"defaultValue": "",
+									"check": null,
+									"xpathBaseNode": "",
+									"xpathName": "",
+									"xpathValue": ""
+								},
+								{
+									"$name": "SQL",
+									"$type": "fixed",
+									"type": "parameter",
+									"name": "SQL",
+									"parameterType": "fixed",
+									"title": "",
+									"transform": "",
+									"value": "CALL SYSPROC.ADMIN_CMD( 'force application ( ?AGENT_ID? )' )",
+									"defaultValue": "",
+									"check": null,
+									"xpathBaseNode": "",
+									"xpathName": "",
+									"xpathValue": ""
+								},
+								{
+									"$name": "parameter[AGENT_ID]",
+									"$type": "blockValue",
+									"type": "parameter",
+									"name": "parameter[AGENT_ID]",
+									"parameterType": "blockValue",
+									"title": "",
+									"transform": "",
+									"value": "AGENT_ID",
+									"defaultValue": "",
+									"check": null,
+									"xpathBaseNode": "",
+									"xpathName": "",
+									"xpathValue": ""
+								}
+							],
+							"schema": "",
+							"tasks": [
+								{
+									"type": "IF",
+									"name": "",
+									"originalAction": "followOnAction",
+									"negCondition": true,
+									"compareOn": "",
+									"compareOnType": "",
+									"condition": "true",
+									"conditionType": "",
+									"conditionCompareType": "",
+									"taskList": [
+										{
+											"type": "taskList",
+											"repeat": 1,
+											"tasks": [
+												{
+													"type": "alert",
+													"message": "Error: ?RETURN_VALUE?"
+												},
+												{
+													"type": "exit"
+												}
+											]
+										}
+									]
+								},
+								{
+									"type": "IF",
+									"name": "",
+									"originalAction": "followOnAction",
+									"negCondition": false,
+									"compareOn": "",
+									"compareOnType": "",
+									"condition": "true",
+									"conditionType": "",
+									"conditionCompareType": "",
+									"taskList": [
+										{
+											"type": "taskList",
+											"repeat": 1,
+											"tasks": [
+												{
+													"$name": "AGENT_ID",
+													"$type": "blockValue",
+													"type": "assignLocalParameter",
+													"name": "AGENT_ID",
+													"parameterType": "blockValue",
+													"title": "",
+													"transform": "",
+													"value": "AGENT_ID",
+													"defaultValue": "",
+													"check": null,
+													"xpathBaseNode": "",
+													"xpathName": "",
+													"xpathValue": ""
+												},
+												{
+													"type": "alert",
+													"message": "Agent ?AGENT_ID? forced off the database"
+												},
+												{
+													"type": "panelReload",
+													"name": ""
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

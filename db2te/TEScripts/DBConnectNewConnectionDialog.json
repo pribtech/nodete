@@ -1,0 +1,228 @@
+{
+	"$name": "Setup",
+	"$type": "blank",
+	"$lockScreen": "true",
+	"suppressAutomaticErrors": false,
+	"lockScreen": true,
+	"type": "action",
+	"name": "Setup",
+	"actionType": "blank",
+	"message": "",
+	"parameterList": [],
+	"schema": "",
+	"tasks": [
+		{
+			"type": "task",
+			"taskList": {
+				"type": "taskList",
+				"repeat": 1,
+				"tasks": [
+					{
+						"type": "setActionReturn",
+						"value": "false",
+						"parameterType": "fixed"
+					},
+					{
+						"$name": "DBConnectionConnectionDialog",
+						"$type": "form",
+						"$lockScreen": "true",
+						"suppressAutomaticErrors": false,
+						"lockScreen": true,
+						"type": "action",
+						"name": "DBConnectionConnectionDialog",
+						"actionType": "form",
+						"message": "",
+						"parameterList": [
+							{
+								"$name": "action",
+								"$type": "raw",
+								"type": "parameter",
+								"name": "action",
+								"parameterType": "raw",
+								"title": "",
+								"transform": "",
+								"value": "DBConnectionNewConnectionForm",
+								"defaultValue": "",
+								"check": null,
+								"xpathBaseNode": "",
+								"xpathName": "",
+								"xpathValue": ""
+							},
+							{
+								"$name": "ERROR_MSG",
+								"$type": "constant",
+								"type": "parameter",
+								"name": "ERROR_MSG",
+								"parameterType": "constant",
+								"title": "",
+								"transform": "",
+								"value": "ERROR_MSG",
+								"defaultValue": "",
+								"check": null,
+								"xpathBaseNode": "",
+								"xpathName": "",
+								"xpathValue": ""
+							},
+							{
+								"$name": "buttonOK",
+								"$type": "raw",
+								"type": "parameter",
+								"name": "buttonOK",
+								"parameterType": "raw",
+								"title": "",
+								"transform": "",
+								"value": "Connect",
+								"defaultValue": "",
+								"check": null,
+								"xpathBaseNode": "",
+								"xpathName": "",
+								"xpathValue": ""
+							}
+						],
+						"schema": "",
+						"tasks": [
+							{
+								"type": "IF",
+								"name": "",
+								"originalAction": "if",
+								"negCondition": false,
+								"compareOn": "",
+								"compareOnType": "",
+								"condition": "true",
+								"conditionType": "",
+								"conditionCompareType": "",
+								"taskList": [
+									{
+										"type": "taskList",
+										"repeat": 1,
+										"tasks": [
+											{
+												"$name": "DBConnectionConnectionDialog_Authenticate",
+												"$type": "serverAction",
+												"suppressAutomaticErrors": false,
+												"lockScreen": false,
+												"type": "action",
+												"name": "DBConnectionConnectionDialog_Authenticate",
+												"actionType": "serverAction",
+												"message": "",
+												"parameterList": [
+													{
+														"$name": "action",
+														"$type": "raw",
+														"type": "parameter",
+														"name": "action",
+														"parameterType": "raw",
+														"title": "",
+														"transform": "",
+														"value": "DBConnectionNewConnection",
+														"defaultValue": "",
+														"check": null,
+														"xpathBaseNode": "",
+														"xpathName": "",
+														"xpathValue": ""
+													}
+												],
+												"schema": "",
+												"tasks": [
+													{
+														"type": "IF",
+														"name": "",
+														"originalAction": "if",
+														"negCondition": false,
+														"compareOn": "",
+														"compareOnType": "",
+														"condition": "false",
+														"conditionType": "",
+														"conditionCompareType": "",
+														"taskList": [
+															{
+																"type": "taskList",
+																"repeat": 1,
+																"tasks": [
+																	{
+																		"$name": "ERROR_MSG",
+																		"$type": "returnObject",
+																		"type": "setGlobal",
+																		"name": "ERROR_MSG",
+																		"parameterType": "returnObject",
+																		"title": "",
+																		"transform": "",
+																		"value": "DBConnectionConnectionDialog_Authenticate.returnValue",
+																		"defaultValue": "",
+																		"check": null,
+																		"xpathBaseNode": "",
+																		"xpathName": "",
+																		"xpathValue": ""
+																	},
+																	{
+																		"type": "callAction",
+																		"name": "DBConnectionConnectionDialog"
+																	},
+																	{
+																		"type": "return"
+																	}
+																]
+															}
+														]
+													},
+													{
+														"type": "IF",
+														"name": "",
+														"originalAction": "if",
+														"negCondition": false,
+														"compareOn": "",
+														"compareOnType": "",
+														"condition": "true",
+														"conditionType": "",
+														"conditionCompareType": "",
+														"taskList": [
+															{
+																"type": "taskList",
+																"repeat": 1,
+																"tasks": [
+																	{
+																		"type": "setActionReturn",
+																		"value": "DBConnectionConnectionDialog_Authenticate.returnValue",
+																		"parameterType": "returnObject"
+																	}
+																]
+															}
+														]
+													}
+												]
+											}
+										]
+									}
+								]
+							},
+							{
+								"type": "IF",
+								"name": "",
+								"originalAction": "ifNot",
+								"negCondition": true,
+								"compareOn": "",
+								"compareOnType": "",
+								"condition": "true",
+								"conditionType": "",
+								"conditionCompareType": "",
+								"taskList": [
+									{
+										"type": "taskList",
+										"repeat": 1,
+										"tasks": [
+											{
+												"type": "setActionReturn",
+												"value": "false",
+												"parameterType": "fixed"
+											}
+										]
+									}
+								]
+							}
+						]
+					}
+				]
+			}
+		}
+	]
+}

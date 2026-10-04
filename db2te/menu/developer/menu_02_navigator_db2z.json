@@ -1,0 +1,11 @@
+{
+	"type": "branch",
+	"description": "Navigator - z/OS",
+	"requires": {
+		"DBMS": "DB2Z"
+	},
+	"delayLoad": "true",
+	"reloadOnConnectionChange": true,
+	"branchSQLXML": "select XMLELEMENT( NAME \"databases\" , XMLAGG(XMLELEMENT(NAME \"database\" ))) from SYSIBM.SYSDATABASE",
+	"branchXSL": "XSL/object2Menu"
+}

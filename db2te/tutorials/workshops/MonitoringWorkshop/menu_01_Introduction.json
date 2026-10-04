@@ -1,0 +1,28 @@
+{
+	"description": "Introduction and pre-requisites",
+	"tag": "r91",
+	"pageWindows": [
+		{
+			"target": "_final",
+			"content": {
+				"type": "panel",
+				"name": "Tutorial",
+				"content": {
+					"link": {
+						"type": "action",
+						"target": "_self",
+						"window": "_self",
+						"parameters": {
+							"action": "tutorial",
+							"tutorialName": "Introduction",
+							"CurrentMenuLocation": {
+								"$var": "CURRENT_MENU_LOCATION"
+							}
+						}
+					}
+				},
+				"primaryContainer": true
+			}
+		}
+	]
+}

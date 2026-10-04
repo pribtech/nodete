@@ -1,0 +1,259 @@
+{
+	"$name": "sessionSignon",
+	"$type": "blank",
+	"$lockScreen": "true",
+	"suppressAutomaticErrors": false,
+	"lockScreen": true,
+	"type": "action",
+	"name": "sessionSignon",
+	"actionType": "blank",
+	"message": "",
+	"parameterList": [],
+	"schema": "",
+	"tasks": [
+		{
+			"type": "task",
+			"taskList": {
+				"type": "taskList",
+				"repeat": 1,
+				"tasks": [
+					{
+						"$name": "sessionSignonCheck",
+						"$type": "blank",
+						"$lockScreen": "true",
+						"suppressAutomaticErrors": false,
+						"lockScreen": true,
+						"type": "action",
+						"name": "sessionSignonCheck",
+						"actionType": "blank",
+						"message": "",
+						"parameterList": [],
+						"schema": "",
+						"tasks": [
+							{
+								"type": "task",
+								"taskList": {
+									"type": "taskList",
+									"repeat": 1,
+									"tasks": [
+										{
+											"$name": "sessionSignonGetPassword",
+											"$type": "form",
+											"suppressAutomaticErrors": false,
+											"lockScreen": false,
+											"type": "action",
+											"name": "sessionSignonGetPassword",
+											"actionType": "form",
+											"message": "<table><tr><td>\n<h3>Signon to Session</h3>\n<table>\n<tr><td>Password</td><td>\n<input autocomplete=\"off\" id=\"_sessionSignonPassword\" type=\"password\" style=\"width:25em;\" name=\"sessionSignonPassword\"  value=\"?sessionSignonPassword?\"/>\n</td></tr>\n</table>\n<tr>?ERROR_MSG?</tr>\n</table>",
+											"parameterList": [
+												{
+													"$name": "sessionSignonPassword",
+													"$type": "constant",
+													"type": "parameter",
+													"name": "sessionSignonPassword",
+													"parameterType": "constant",
+													"title": "",
+													"transform": "",
+													"value": "password",
+													"defaultValue": "",
+													"check": null,
+													"xpathBaseNode": "",
+													"xpathName": "",
+													"xpathValue": ""
+												},
+												{
+													"$name": "ERROR_MSG",
+													"$type": "constant",
+													"type": "parameter",
+													"name": "ERROR_MSG",
+													"parameterType": "constant",
+													"title": "",
+													"transform": "",
+													"value": "ERROR_MSG",
+													"defaultValue": "",
+													"check": null,
+													"xpathBaseNode": "",
+													"xpathName": "",
+													"xpathValue": ""
+												}
+											],
+											"schema": "",
+											"tasks": [
+												{
+													"type": "IF",
+													"name": "",
+													"originalAction": "ifNot",
+													"negCondition": true,
+													"compareOn": "",
+													"compareOnType": "",
+													"condition": "true",
+													"conditionType": "",
+													"conditionCompareType": "",
+													"taskList": [
+														{
+															"type": "taskList",
+															"repeat": 1,
+															"tasks": [
+																{
+																	"type": "exit"
+																}
+															]
+														}
+													]
+												},
+												{
+													"type": "IF",
+													"name": "",
+													"originalAction": "if",
+													"negCondition": false,
+													"compareOn": "",
+													"compareOnType": "",
+													"condition": "true",
+													"conditionType": "",
+													"conditionCompareType": "",
+													"taskList": [
+														{
+															"type": "taskList",
+															"repeat": 1,
+															"tasks": [
+																{
+																	"$name": "sessionSignonAuthenticate",
+																	"$type": "serverAction",
+																	"suppressAutomaticErrors": false,
+																	"lockScreen": false,
+																	"type": "action",
+																	"name": "sessionSignonAuthenticate",
+																	"actionType": "serverAction",
+																	"message": "",
+																	"parameterList": [
+																		{
+																			"$name": "action",
+																			"$type": "raw",
+																			"type": "parameter",
+																			"name": "action",
+																			"parameterType": "raw",
+																			"title": "",
+																			"transform": "",
+																			"value": "sessionPHPSignon",
+																			"defaultValue": "",
+																			"check": null,
+																			"xpathBaseNode": "",
+																			"xpathName": "",
+																			"xpathValue": ""
+																		},
+																		{
+																			"$name": "password",
+																			"$type": "constant",
+																			"type": "parameter",
+																			"name": "password",
+																			"parameterType": "constant",
+																			"title": "",
+																			"transform": "",
+																			"value": "sessionSignonPassword",
+																			"defaultValue": "",
+																			"check": null,
+																			"xpathBaseNode": "",
+																			"xpathName": "",
+																			"xpathValue": ""
+																		}
+																	],
+																	"schema": "",
+																	"tasks": [
+																		{
+																			"type": "IF",
+																			"name": "",
+																			"originalAction": "if",
+																			"negCondition": false,
+																			"compareOn": "",
+																			"compareOnType": "",
+																			"condition": "true",
+																			"conditionType": "",
+																			"conditionCompareType": "",
+																			"taskList": [
+																				{
+																					"type": "taskList",
+																					"repeat": 1,
+																					"tasks": [
+																						{
+																							"type": "exit"
+																						}
+																					]
+																				}
+																			]
+																		},
+																		{
+																			"type": "IF",
+																			"name": "",
+																			"originalAction": "ifNot",
+																			"negCondition": true,
+																			"compareOn": "",
+																			"compareOnType": "",
+																			"condition": "true",
+																			"conditionType": "",
+																			"conditionCompareType": "",
+																			"taskList": [
+																				{
+																					"type": "taskList",
+																					"repeat": 1,
+																					"tasks": [
+																						{
+																							"$name": "ERROR",
+																							"$type": "returnObject",
+																							"type": "setGlobal",
+																							"name": "ERROR",
+																							"parameterType": "returnObject",
+																							"title": "",
+																							"transform": "",
+																							"value": "sessionSignonAuthenticate.returnValue",
+																							"defaultValue": "",
+																							"check": null,
+																							"xpathBaseNode": "",
+																							"xpathName": "",
+																							"xpathValue": ""
+																						},
+																						{
+																							"$name": "ERROR_MSG",
+																							"$type": "FIXED",
+																							"type": "setGlobal",
+																							"name": "ERROR_MSG",
+																							"parameterType": "FIXED",
+																							"title": "",
+																							"transform": "",
+																							"value": "<td align=\"left\" style=\"background:#FF7777;\">?ERROR?</td>",
+																							"defaultValue": "",
+																							"check": null,
+																							"xpathBaseNode": "",
+																							"xpathName": "",
+																							"xpathValue": ""
+																						},
+																						{
+																							"type": "callGlobalAction",
+																							"name": "sessionPHPSignon",
+																							"parameter": []
+																						}
+																					]
+																				}
+																			]
+																		}
+																	]
+																}
+															]
+														}
+													]
+												}
+											]
+										}
+									]
+								}
+							}
+						]
+					},
+					{
+						"type": "alert",
+						"message": "Too many password attempts"
+					}
+				]
+			}
+		}
+	]
+}

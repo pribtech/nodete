@@ -1,0 +1,33 @@
+{
+	"description": "Writing Tutorials Workshop",
+	"tag": "r91",
+	"pageWindows": [
+		{
+			"target": "_final",
+			"content": {
+				"type": "panel",
+				"name": "Tutorial",
+				"content": {
+					"link": {
+						"type": "action",
+						"target": "_self",
+						"window": "_self",
+						"parameters": {
+							"action": "flowgroup",
+							"subFolder": "BaseTutorials/WritingTutorialsWorkshop",
+							"description": "This workshop shows how to write your own tutorials for the TE.",
+							"articalTitle": "Writing Tutorials Workshop",
+							"title": "Writing Tutorials Workshop",
+							"CurrentMenuLocation": {
+								"$var": "CURRENT_MENU_LOCATION"
+							},
+							"listStyleType": "decimal",
+							"menuExpansionType": "internal"
+						}
+					}
+				},
+				"primaryContainer": true
+			}
+		}
+	]
+}

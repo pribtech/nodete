@@ -19,7 +19,8 @@ Some of the key features of the Technology Explorer are:
 The Technology Explorer is being moved from PHP to Node.js. The Node.js server serves the
 same front end (everything under `db2te/`) and answers the same URLs (`index.php`,
 `action.php`), so the browser code runs unchanged. During the move both servers live in
-this repository; the PHP code is removed once every action has been ported.
+this repository; the PHP code is removed once every action has been ported. The menus and
+layouts are now JSON, which only the Node.js server reads, so run the console with Node.js.
 
 ### Running
 
@@ -59,16 +60,64 @@ Actions not yet ported answer with `Action "<name>" has not been ported to Node.
       index.js            entry point
       core/               server, config, sessions, request/response, action routing
       actions/            one class per action, in the same folders as db2te/actions/*.php
-      encoders/           menu, layout and TE script encoders (from JSONEncodeMenu / JSONEncodeAction)
+      definitions/        builds menus, layouts and TE scripts from their JSON definitions
       pages/              index page, script list, JS constants, templates
       views/              HTML templates
-      xml/                XML reading
       drivers/            database driver catalogue
+    tools/convert/        XML-to-JSON converter for the definition files
     test/                 tests, with outputs recorded from the PHP version in test/fixtures/php-reference
 
 A new action is a file `server/actions/<noConnection|activeConnection>/<JSON|HTML>/<name>.js`
 that default-exports a subclass of `Action` and implements `run()`. It is picked up
 automatically; nothing needs registering.
+
+### Definition files
+
+Menus, page layouts, TE scripts and script lists are JSON files under `db2te/`. They were
+converted from the XML the PHP version used (`tools/convert/convert-definitions.js`); the
+front end receives exactly the same data as before. Fields left out take their default.
+
+**Menus** (`menu_*.json`, listed in name order; `menu/` and `tutorials/`):
+
+    {
+      "type": "branch",                       leaf (default) | branch | embeddedBranch | table | line
+      "description": "View",
+      "requires": { "DBMS": "DB2", "minVersion": 9.7 },   only show for this DBMS / version / feature / context
+      "delayLoad": "true",                    load the branch when it is opened
+      "rootDirectory": "./menu/view"          or "branchDirectory": a folder next to this file
+    }
+
+A leaf can carry `"actionScript"` (a TE script), `"links"`, `"pageWindows"`, `"floatingPanel"`,
+`"JSAction"` or `"tutorial"`; `embeddedBranch` holds `"menus"`; `table` has `"table"` and
+`"parameters"`. Other fields: `tag`, `filter`, `GUID`, `menuGUID`, `replacement`,
+`reloadOnConnectionChange`, and for database branches `branchSQLXML`, `branchSQLPredicate`,
+`branchXML`, `branchXSL`, `onErrorMenu`, `dropParent`.
+
+**Links** open content: `{"type": "action", "parameters": {"action": "listTables"}}`, or
+`{"type": "raw", "raw": "<html>"}`, `{"type": "url", "url": "http://..."}`. `target`, `window`
+and `windowStage` default to what the requesting menu asks for. A parameter value is used as
+given, except these, which are resolved when the menu is built:
+
+    {"$var": "CURRENT_MENU_LOCATION"}       folder of the menu file being loaded
+    {"$config": "ACTION_PROCESSOR"}         a server setting
+    {"$link": {...}} / {"$pageWindow": {...}}   a nested link or layout
+
+**Page layouts** (`pageWindows`, `preferences/default/*.json`): `{"target": "_active", "title": "...",
+"content": <container>}` where a container is a `{"type": "panel", "name": "main", "content":
+{"link": {...}}}`, a `{"type": "splitPane", "direction": "v", "panelA": <container>, "panelB":
+<container>}` or a `{"type": "stage", ...}`. Panels and windows can have `panelHeaders`.
+
+**TE scripts** (`TEScripts/`, listed in `actionList_*.json`) are stored in the form the front
+end's script engine runs (`{"type": "action", "tasks": [...]}`), with version gating under
+`"requires"`.
+
+**Script lists** (`js/**/jsList_*.json`): `{"entries": [{"file": "prototype.js"}, {"action":
+"getTEScript"}, {"group": "TECore", "entries": [...]}, {"directory": "YUI"}]}`, loaded in order.
+
+Still XML, to be converted as the code that reads them is ported: table definitions,
+tutorial scripts (including `TEScripts/Install/*` tutorials), commands, and the `<actionScript>`
+files in `TEScripts/`. The tutorials that teach menu writing ("Extending the TE", "Writing
+tutorials: building a menu") still show the XML format and will be updated with the tutorials.
 
 ### Tests
 
@@ -85,3 +134,5 @@ recorded from the PHP version, so the port can be shown to behave identically.
   written unescaped into the page's scripts.
 - PHP source files, `connectionStore/` and `jar/` are not served as static files.
 - Tutorial menu entries get a camel-cased `tutorialName` again; under PHP 8 it came out empty.
+- The MySQL "Monitors" menu shows its entries (its definition named the folder as a
+  `branchDirectory` instead of a `rootDirectory`, so it was always empty).

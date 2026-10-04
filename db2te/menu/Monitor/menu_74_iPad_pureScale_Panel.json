@@ -1,0 +1,96 @@
+{
+	"description": "Cluster overview",
+	"requires": {
+		"DBMS": "DB2",
+		"minVersion": 9.8
+	},
+	"tag": "FOR_TOUCH_SYSTEM",
+	"pageWindows": [
+		{
+			"target": "_active",
+			"title": "pureScale system overview",
+			"panelHeaders": {
+				"autoRefreshControls": {
+					"time": "1",
+					"timeOptions": [
+						1,
+						2,
+						3,
+						4,
+						5,
+						6,
+						7,
+						8,
+						9,
+						10
+					]
+				}
+			},
+			"content": {
+				"type": "splitPane",
+				"direction": "v",
+				"maxSize": 250,
+				"panelA": {
+					"type": "panel",
+					"name": "clusterOverview",
+					"content": {
+						"link": {
+							"type": "action",
+							"target": "_self",
+							"window": "_self",
+							"parameters": {
+								"action": "clusterOverview"
+							}
+						}
+					}
+				},
+				"panelB": {
+					"type": "splitPane",
+					"splitPercent": "0.25",
+					"panelA": {
+						"type": "panel",
+						"name": "stdwGraph",
+						"content": {
+							"link": {
+								"type": "action",
+								"target": "_self",
+								"window": "_self",
+								"parameters": {
+									"scaleUpOnly": "true",
+									"table": "pureScale/workloadTicker",
+									"action": "chart",
+									"$chartName": "pureScale throughput",
+									"$type": "setline",
+									"$xAxis": "timestamp",
+									"$yAxis": "TP",
+									"$yAxisUpperBound": "1",
+									"$yAxisLowerBound": "0",
+									"$flipDataSet": "true",
+									"$showPoints": "true",
+									"$colours": "#FF0000",
+									"disableLeftMenu": "false"
+								}
+							}
+						}
+					},
+					"panelB": {
+						"type": "panel",
+						"name": "adminLog",
+						"content": {
+							"link": {
+								"type": "action",
+								"target": "_self",
+								"window": "_self",
+								"parameters": {
+									"table": "pureScale/adminTick",
+									"action": "list_table",
+									"disableLeftMenu": "false"
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	]
+}

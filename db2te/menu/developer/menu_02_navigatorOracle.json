@@ -1,0 +1,11 @@
+{
+	"type": "branch",
+	"description": "Navigator - Oracle",
+	"requires": {
+		"DBMS": "ORACLE"
+	},
+	"delayLoad": "true",
+	"reloadOnConnectionChange": true,
+	"branchSQLXML": "queryfiles/predefined/Database2xmlOracle.sql",
+	"branchXSL": "XSL/object2Menu"
+}

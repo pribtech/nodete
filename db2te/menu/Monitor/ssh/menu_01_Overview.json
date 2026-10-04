@@ -1,0 +1,65 @@
+{
+	"description": "Overview",
+	"pageWindows": [
+		{
+			"target": "_active",
+			"panelHeaders": {
+				"autoRefreshControls": {
+					"time": "10",
+					"timeOptions": [
+						1,
+						5,
+						10,
+						20,
+						60
+					],
+					"countdownVisible": true
+				}
+			},
+			"content": {
+				"type": "splitPane",
+				"splitPercent": "0.2",
+				"panelA": {
+					"type": "splitPane",
+					"splitPercent": "0.8",
+					"panelA": {
+						"type": "panel",
+						"name": "cpu",
+						"content": {
+							"link": {
+								"type": "action",
+								"target": "_self",
+								"window": "_self",
+								"parameters": {
+									"table": "ssh/iostat-c",
+									"$action": "list_table"
+								}
+							}
+						},
+						"panelHeaders": {}
+					},
+					"panelB": {
+						"type": "panel",
+						"name": "io",
+						"content": {
+							"link": {
+								"type": "action",
+								"target": "_self",
+								"window": "_self",
+								"parameters": {
+									"table": "ssh/iostat-dx",
+									"$action": "list_table"
+								}
+							}
+						},
+						"panelHeaders": {}
+					}
+				},
+				"panelB": {
+					"type": "panel",
+					"name": "detail"
+				}
+			}
+		}
+	]
+}

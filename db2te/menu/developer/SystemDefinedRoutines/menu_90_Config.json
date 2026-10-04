@@ -1,0 +1,32 @@
+{
+	"description": "Config get/set",
+	"pageWindows": [
+		{
+			"target": "_active",
+			"content": {
+				"type": "panel",
+				"name": "main",
+				"content": {
+					"link": {
+						"type": "action",
+						"target": "_self",
+						"window": "_self",
+						"parameters": {
+							"action": "chartNodal",
+							"$chartTitle": "Configuration",
+							"$show": "Menu",
+							"$sourceType": "SQL",
+							"$editMode": "false",
+							"$definitionDummy": "XSD/IBM/DB2AutoBackupPolicy.xsd",
+							"$report": "XSL/chartNodalInternalXML2XML.xsl",
+							"$source": "call sysproc.get_config(\n\t ?!name=MAJOR_VERSION&value=1&dataType=int&type=DB2_PARAM_INOUT?\n\t,?!name=MINOR_VERSION&value=0&dataType=real&type=DB2_PARAM_INOUT?\n\t,cast('en_US' as VARCHAR(33) )\n\t,null,null\n\t,?!name=result&value=unknown&precision=33000000&conversion=hex2string&dataType=string?\n\t,?!name=error&value=unknown&precision=65000&conversion=hex2string&dataType=string?)",
+							"$saveDummy": "//CALL SYSPROC.AUTOMAINT_SET_POLICY( 'AUTO_BACKUP' ,  cast(cast(? as clob(1m)) as blob(1m)) ) //",
+							"$transform": "XSL/removerEmptyOrNewLineTextNodes.xsl"
+						}
+					}
+				},
+				"primaryContainer": true
+			}
+		}
+	]
+}

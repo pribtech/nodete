@@ -1,0 +1,47 @@
+{
+	"description": "Activity",
+	"requires": {
+		"minVersion": 9.5
+	},
+	"pageWindows": [
+		{
+			"target": "_active",
+			"panelHeaders": {
+				"autoRefreshControls": {
+					"time": "10",
+					"timeOptions": [
+						1,
+						5,
+						10,
+						30,
+						60
+					]
+				}
+			},
+			"content": {
+				"type": "splitPane",
+				"panelA": {
+					"type": "panel",
+					"name": "main",
+					"content": {
+						"link": {
+							"type": "action",
+							"target": "_self",
+							"window": "_self",
+							"parameters": {
+								"table": "Performance/toptable",
+								"action": "list_table",
+								"$displayCharts": "detail"
+							}
+						}
+					},
+					"primaryContainer": true
+				},
+				"panelB": {
+					"type": "panel",
+					"name": "detail"
+				}
+			}
+		}
+	]
+}

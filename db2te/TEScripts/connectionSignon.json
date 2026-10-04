@@ -1,0 +1,272 @@
+{
+	"$name": "connectionSignon",
+	"$type": "blank",
+	"$lockScreen": "true",
+	"suppressAutomaticErrors": false,
+	"lockScreen": true,
+	"type": "action",
+	"name": "connectionSignon",
+	"actionType": "blank",
+	"message": "",
+	"parameterList": [],
+	"schema": "",
+	"tasks": [
+		{
+			"type": "task",
+			"taskList": {
+				"type": "taskList",
+				"repeat": 1,
+				"tasks": [
+					{
+						"$name": "LOGIN_MESSAGE",
+						"$type": "raw",
+						"type": "assignSharedConstant",
+						"name": "LOGIN_MESSAGE",
+						"parameterType": "raw",
+						"title": "",
+						"transform": "",
+						"value": "Please enter user/password",
+						"defaultValue": "",
+						"check": null,
+						"xpathBaseNode": "",
+						"xpathName": "",
+						"xpathValue": ""
+					},
+					{
+						"$name": "LOGIN_PASSWORD",
+						"$type": "raw",
+						"type": "assignSharedConstant",
+						"name": "LOGIN_PASSWORD",
+						"parameterType": "raw",
+						"title": "",
+						"transform": "",
+						"value": "",
+						"defaultValue": "",
+						"check": null,
+						"xpathBaseNode": "",
+						"xpathName": "",
+						"xpathValue": ""
+					},
+					{
+						"type": "setActionReturn",
+						"value": "false",
+						"parameterType": "fixed"
+					},
+					{
+						"$name": "signOn",
+						"$type": "blank",
+						"$lockScreen": "true",
+						"suppressAutomaticErrors": false,
+						"lockScreen": true,
+						"type": "action",
+						"name": "signOn",
+						"actionType": "blank",
+						"message": "",
+						"parameterList": [],
+						"schema": "",
+						"tasks": [
+							{
+								"type": "task",
+								"taskList": {
+									"type": "taskList",
+									"repeat": 1,
+									"tasks": [
+										{
+											"$name": "signon",
+											"$type": "form",
+											"suppressAutomaticErrors": false,
+											"lockScreen": false,
+											"type": "action",
+											"name": "signon",
+											"actionType": "form",
+											"message": "<table><tr><td>\n<h3>Connect</h3>\n<table>\n<tr id=\"_connectSession\" ><td></td><td>Session</td></tr>\n<tr id=\"_connectURI\" ><td>URI:</td><td style=\"width:25em;\" >?LOGIN_URI?</td></tr>\n<tr><td>username:</td><td><input id=\"_connectUsername\" type=\"text\" style=\"width:25em;\" name=\"LOGIN_USERNAME\"  value=\"?LOGIN_USERNAME?\"/></td></tr>\n<tr><td>password:</td><td><input id=\"_connectPassword\" type=\"password\" style=\"width:25em;\" name=\"LOGIN_PASSWORD\"  value=\"?LOGIN_PASSWORD?\"/></td></tr>\n</table>\n<p/>\n<h3 style=\"color:red;\">?LOGIN_MESSAGE?</h3>\n<script language=\"javascript\">\n\tif(\"?LOGIN_URI?\"==\"\") {\n\t\t$(\"_connectURI\").style.display=\"none\";\n\t} else {\n\t\t$(\"_connectSession\").style.display=\"none\";\n\t}\n\tif($(\"_connectUsername\").value == \"\")\n\t\t$(\"_connectUsername\").focus()\n\telse\n\t    $(\"_connectPassword\").focus()\n</script>\n</td></tr></table>",
+											"parameterList": [
+												{
+													"$name": "LOGIN_MESSAGE",
+													"$type": "constant",
+													"type": "parameter",
+													"name": "LOGIN_MESSAGE",
+													"parameterType": "constant",
+													"title": "",
+													"transform": "",
+													"value": "LOGIN_MESSAGE",
+													"defaultValue": "",
+													"check": null,
+													"xpathBaseNode": "",
+													"xpathName": "",
+													"xpathValue": ""
+												},
+												{
+													"$name": "LOGIN_USERNAME",
+													"$type": "constant",
+													"type": "parameter",
+													"name": "LOGIN_USERNAME",
+													"parameterType": "constant",
+													"title": "",
+													"transform": "",
+													"value": "LOGIN_USERNAME",
+													"defaultValue": "",
+													"check": null,
+													"xpathBaseNode": "",
+													"xpathName": "",
+													"xpathValue": ""
+												},
+												{
+													"$name": "LOGIN_PASSWORD",
+													"$type": "constant",
+													"type": "parameter",
+													"name": "LOGIN_PASSWORD",
+													"parameterType": "constant",
+													"title": "",
+													"transform": "",
+													"value": "LOGIN_PASSWORD",
+													"defaultValue": "",
+													"check": null,
+													"xpathBaseNode": "",
+													"xpathName": "",
+													"xpathValue": ""
+												},
+												{
+													"$name": "LOGIN_URI",
+													"$type": "constant",
+													"type": "parameter",
+													"name": "LOGIN_URI",
+													"parameterType": "constant",
+													"title": "",
+													"transform": "",
+													"value": "LOGIN_URI",
+													"defaultValue": "",
+													"check": null,
+													"xpathBaseNode": "",
+													"xpathName": "",
+													"xpathValue": ""
+												}
+											],
+											"schema": "",
+											"tasks": [
+												{
+													"type": "IF",
+													"name": "",
+													"originalAction": "if",
+													"negCondition": false,
+													"compareOn": "",
+													"compareOnType": "",
+													"condition": "true",
+													"conditionType": "",
+													"conditionCompareType": "",
+													"taskList": [
+														{
+															"type": "taskList",
+															"repeat": 1,
+															"tasks": [
+																{
+																	"$name": "userAuthenticate",
+																	"$type": "serverAction",
+																	"suppressAutomaticErrors": false,
+																	"lockScreen": false,
+																	"type": "action",
+																	"name": "userAuthenticate",
+																	"actionType": "serverAction",
+																	"message": "",
+																	"parameterList": [
+																		{
+																			"$name": "action",
+																			"$type": "raw",
+																			"type": "parameter",
+																			"name": "action",
+																			"parameterType": "raw",
+																			"title": "",
+																			"transform": "",
+																			"value": "userAuthenicate",
+																			"defaultValue": "",
+																			"check": null,
+																			"xpathBaseNode": "",
+																			"xpathName": "",
+																			"xpathValue": ""
+																		},
+																		{
+																			"$name": "uri",
+																			"$type": "FIXED",
+																			"type": "parameter",
+																			"name": "uri",
+																			"parameterType": "FIXED",
+																			"title": "",
+																			"transform": "",
+																			"value": "?LOGIN_USERNAME?/?LOGIN_PASSWORD?@?LOGIN_URI?",
+																			"defaultValue": "",
+																			"check": null,
+																			"xpathBaseNode": "",
+																			"xpathName": "",
+																			"xpathValue": ""
+																		}
+																	],
+																	"schema": "",
+																	"tasks": [
+																		{
+																			"type": "IF",
+																			"name": "",
+																			"originalAction": "if",
+																			"negCondition": false,
+																			"compareOn": "",
+																			"compareOnType": "",
+																			"condition": "true",
+																			"conditionType": "",
+																			"conditionCompareType": "",
+																			"taskList": []
+																		},
+																		{
+																			"type": "IF",
+																			"name": "",
+																			"originalAction": "if",
+																			"negCondition": false,
+																			"compareOn": "",
+																			"compareOnType": "",
+																			"condition": "false",
+																			"conditionType": "",
+																			"conditionCompareType": "",
+																			"taskList": [
+																				{
+																					"type": "taskList",
+																					"repeat": 1,
+																					"tasks": [
+																						{
+																							"$name": "LOGIN_MESSAGE",
+																							"$type": "returnObject",
+																							"type": "assignSharedConstant",
+																							"name": "LOGIN_MESSAGE",
+																							"parameterType": "returnObject",
+																							"title": "",
+																							"transform": "",
+																							"value": "userAuthenticate.returnValue",
+																							"defaultValue": "",
+																							"check": null,
+																							"xpathBaseNode": "",
+																							"xpathName": "",
+																							"xpathValue": ""
+																						},
+																						{
+																							"type": "callAction",
+																							"name": "signOn"
+																						}
+																					]
+																				}
+																			]
+																		}
+																	]
+																}
+															]
+														}
+													]
+												}
+											]
+										}
+									]
+								}
+							}
+						]
+					}
+				]
+			}
+		}
+	]
+}

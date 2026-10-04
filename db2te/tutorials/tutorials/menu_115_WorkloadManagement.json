@@ -1,0 +1,34 @@
+{
+	"description": "Workload Management",
+	"tag": "r91",
+	"pageWindows": [
+		{
+			"target": "_final",
+			"windowStage": "FloatingStage",
+			"content": {
+				"type": "panel",
+				"name": "Tutorial",
+				"content": {
+					"link": {
+						"type": "action",
+						"target": "_self",
+						"window": "_self",
+						"parameters": {
+							"action": "workshopIntro",
+							"subFolder": "WorkloadManagement",
+							"description": "Each section in this workshop highlights one or more of the workload management features available with DB2 workload manager.  <br><br><b>Important:</b>If you are not running the sections in the order listed, you should go through section 1: \"Reset all WLM Settings\" prior to starting.<br>",
+							"articalTitle": "Workload Management",
+							"title": "Workload Management",
+							"CurrentMenuLocation": {
+								"$var": "CURRENT_MENU_LOCATION"
+							},
+							"listStyleType": "decimal",
+							"menuExpansionType": "internal"
+						}
+					}
+				},
+				"primaryContainer": true
+			}
+		}
+	]
+}

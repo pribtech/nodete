@@ -1,0 +1,29 @@
+{
+	"description": "Visual db2mc Menu",
+	"pageWindows": [
+		{
+			"target": "_active",
+			"content": {
+				"type": "panel",
+				"name": "main",
+				"content": {
+					"link": {
+						"type": "action",
+						"target": "_self",
+						"window": "_self",
+						"parameters": {
+							"action": "chartNodal",
+							"$chartTitle": "Visual db2mc Menu",
+							"$sourceType": "xmlData",
+							"$editMode": "true",
+							"$newRoot": "menu",
+							"$definition": "XSD/menu.xsd",
+							"$report": "XSL/chartNodalDefaultReport.xsl"
+						}
+					}
+				},
+				"primaryContainer": true
+			}
+		}
+	]
+}

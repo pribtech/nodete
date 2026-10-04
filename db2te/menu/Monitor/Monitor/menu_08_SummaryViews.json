@@ -1,0 +1,160 @@
+{
+	"description": "Summary Views",
+	"requires": {
+		"minVersion": 9.5
+	},
+	"pageWindows": [
+		{
+			"target": "_active",
+			"title": "Summary Views",
+			"info": "To generate reports of the database activities, the database must have a system temporary table space of 8K or more.",
+			"panelHeaders": {},
+			"content": {
+				"type": "splitPane",
+				"splitPercent": "0.2",
+				"panelA": {
+					"type": "splitPane",
+					"direction": "v",
+					"splitPercent": "0.5",
+					"panelA": {
+						"type": "splitPane",
+						"splitPercent": "0.7",
+						"panelA": {
+							"type": "panel",
+							"name": "DBM",
+							"content": {
+								"link": {
+									"type": "action",
+									"target": "_self",
+									"window": "_self",
+									"parameters": {
+										"table": "Monitor/SummaryViews/monSVSCActivities",
+										"action": "list_table"
+									}
+								}
+							},
+							"panelHeaders": {}
+						},
+						"panelB": {
+							"type": "splitPane",
+							"splitPercent": "0.5",
+							"panelA": {
+								"type": "panel",
+								"name": "DB",
+								"content": {
+									"link": {
+										"type": "action",
+										"target": "_self",
+										"window": "_self",
+										"parameters": {
+											"table": "Monitor/SummaryViews/monSVConn",
+											"action": "list_table"
+										}
+									}
+								},
+								"panelHeaders": {}
+							},
+							"panelB": {
+								"type": "splitPane",
+								"direction": "v",
+								"splitPercent": "0.4",
+								"panelA": {
+									"type": "panel",
+									"name": "DBRR",
+									"content": {
+										"link": {
+											"type": "action",
+											"target": "_self",
+											"window": "_self",
+											"parameters": {
+												"table": "Monitor/SummaryViews/monSVSystemUsage",
+												"action": "list_table"
+											}
+										}
+									},
+									"panelHeaders": {}
+								},
+								"panelB": {
+									"type": "panel",
+									"name": "ContRR",
+									"content": {
+										"link": {
+											"type": "action",
+											"target": "_self",
+											"window": "_self",
+											"parameters": {
+												"table": "Monitor/SummaryViews/monSVGeneral",
+												"action": "list_table"
+											}
+										}
+									},
+									"panelHeaders": {}
+								}
+							}
+						}
+					},
+					"panelB": {
+						"type": "splitPane",
+						"splitPercent": "0.7",
+						"panelA": {
+							"type": "panel",
+							"name": "DBMR",
+							"content": {
+								"link": {
+									"type": "action",
+									"target": "_self",
+									"window": "_self",
+									"parameters": {
+										"table": "Monitor/SummaryViews/monSVLongUOW",
+										"action": "list_table"
+									}
+								}
+							},
+							"panelHeaders": {}
+						},
+						"panelB": {
+							"type": "splitPane",
+							"splitPercent": "0.5",
+							"panelA": {
+								"type": "panel",
+								"name": "DBR",
+								"content": {
+									"link": {
+										"type": "action",
+										"target": "_self",
+										"window": "_self",
+										"parameters": {
+											"table": "Monitor/SummaryViews/monSVCPUConsumption",
+											"action": "list_table"
+										}
+									}
+								},
+								"panelHeaders": {}
+							},
+							"panelB": {
+								"type": "panel",
+								"name": "ContR",
+								"content": {
+									"link": {
+										"type": "action",
+										"target": "_self",
+										"window": "_self",
+										"parameters": {
+											"table": "Monitor/SummaryViews/monSVAppLockWait",
+											"action": "list_table"
+										}
+									}
+								},
+								"panelHeaders": {}
+							}
+						}
+					}
+				},
+				"panelB": {
+					"type": "panel",
+					"name": "detail"
+				}
+			}
+		}
+	]
+}

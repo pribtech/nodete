@@ -1,0 +1,28 @@
+{
+	"description": "Cube",
+	"pageWindows": [
+		{
+			"target": "_active",
+			"content": {
+				"type": "panel",
+				"name": "main",
+				"content": {
+					"link": {
+						"type": "action",
+						"target": "_self",
+						"window": "_self",
+						"parameters": {
+							"action": "chartNodal",
+							"$chartTitle": "Visual Cube",
+							"$sourceType": "xmlData",
+							"$editMode": "true",
+							"$newRoot": "cube",
+							"$definition": "XSD/visualCube.xsd"
+						}
+					}
+				},
+				"primaryContainer": true
+			}
+		}
+	]
+}

@@ -1,0 +1,180 @@
+{
+	"$name": "Setup",
+	"$type": "blank",
+	"$lockScreen": "false",
+	"suppressAutomaticErrors": false,
+	"lockScreen": false,
+	"type": "action",
+	"name": "Setup",
+	"actionType": "blank",
+	"message": "",
+	"parameterList": [],
+	"schema": "",
+	"tasks": [
+		{
+			"type": "task",
+			"taskList": {
+				"type": "taskList",
+				"repeat": 1,
+				"tasks": [
+					{
+						"type": "setActionReturn",
+						"value": "false",
+						"parameterType": "fixed"
+					},
+					{
+						"$name": "EditRowDataFormDialog",
+						"$type": "form",
+						"$lockScreen": "false",
+						"suppressAutomaticErrors": false,
+						"lockScreen": false,
+						"type": "action",
+						"name": "EditRowDataFormDialog",
+						"actionType": "form",
+						"message": "",
+						"parameterList": [
+							{
+								"$name": "action",
+								"$type": "raw",
+								"type": "parameter",
+								"name": "action",
+								"parameterType": "raw",
+								"title": "",
+								"transform": "",
+								"value": "EditRowDataForm",
+								"defaultValue": "",
+								"check": null,
+								"xpathBaseNode": "",
+								"xpathName": "",
+								"xpathValue": ""
+							},
+							{
+								"$name": "buttonOK",
+								"$type": "raw",
+								"type": "parameter",
+								"name": "buttonOK",
+								"parameterType": "raw",
+								"title": "",
+								"transform": "",
+								"value": "Commit",
+								"defaultValue": "",
+								"check": null,
+								"xpathBaseNode": "",
+								"xpathName": "",
+								"xpathValue": ""
+							},
+							{
+								"$name": "button_AdHoc",
+								"$type": "raw",
+								"type": "parameter",
+								"name": "button_AdHoc",
+								"parameterType": "raw",
+								"title": "",
+								"transform": "",
+								"value": "Ad Hoc Panel",
+								"defaultValue": "",
+								"check": null,
+								"xpathBaseNode": "",
+								"xpathName": "",
+								"xpathValue": ""
+							}
+						],
+						"schema": "",
+						"tasks": [
+							{
+								"type": "IF",
+								"name": "",
+								"originalAction": "if",
+								"negCondition": false,
+								"compareOn": "EditRowDataFormDialog.returnCode",
+								"compareOnType": "returnObject",
+								"condition": "AdHoc",
+								"conditionType": "",
+								"conditionCompareType": "",
+								"taskList": [
+									{
+										"type": "taskList",
+										"repeat": 1,
+										"tasks": [
+											{
+												"$name": "adHoc",
+												"$type": "raw",
+												"type": "assignSharedConstant",
+												"name": "adHoc",
+												"parameterType": "raw",
+												"title": "",
+												"transform": "",
+												"value": "true",
+												"defaultValue": "",
+												"check": null,
+												"xpathBaseNode": "",
+												"xpathName": "",
+												"xpathValue": ""
+											},
+											{
+												"type": "setActionReturn",
+												"value": "true",
+												"parameterType": "fixed"
+											},
+											{
+												"type": "exit"
+											}
+										]
+									}
+								]
+							},
+							{
+								"type": "IF",
+								"name": "",
+								"originalAction": "if",
+								"negCondition": false,
+								"compareOn": "",
+								"compareOnType": "",
+								"condition": "true",
+								"conditionType": "",
+								"conditionCompareType": "",
+								"taskList": [
+									{
+										"type": "taskList",
+										"repeat": 1,
+										"tasks": [
+											{
+												"type": "setActionReturn",
+												"value": "true",
+												"parameterType": "fixed"
+											}
+										]
+									}
+								]
+							},
+							{
+								"type": "IF",
+								"name": "",
+								"originalAction": "ifNot",
+								"negCondition": true,
+								"compareOn": "",
+								"compareOnType": "",
+								"condition": "true",
+								"conditionType": "",
+								"conditionCompareType": "",
+								"taskList": [
+									{
+										"type": "taskList",
+										"repeat": 1,
+										"tasks": [
+											{
+												"type": "setActionReturn",
+												"value": "false",
+												"parameterType": "fixed"
+											}
+										]
+									}
+								]
+							}
+						]
+					}
+				]
+			}
+		}
+	]
+}

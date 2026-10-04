@@ -1,0 +1,49 @@
+{
+	"description": "DBM Profiler Schemas",
+	"pageWindows": [
+		{
+			"target": "_active",
+			"content": {
+				"type": "splitPane",
+				"splitPercent": "0.8",
+				"panelA": {
+					"type": "splitPane",
+					"direction": "v",
+					"splitPercent": "0.2",
+					"panelA": {
+						"type": "panel",
+						"name": "main",
+						"content": {
+							"link": {
+								"type": "action",
+								"target": "_self",
+								"window": "_self",
+								"parameters": {
+									"table": "Oracle/Monitor/dbmsProfilerSchemas",
+									"$action": "list_table"
+								}
+							}
+						},
+						"primaryContainer": true
+					},
+					"panelB": {
+						"type": "panel",
+						"name": "runs"
+					}
+				},
+				"panelB": {
+					"type": "splitPane",
+					"splitPercent": "0.8",
+					"panelA": {
+						"type": "panel",
+						"name": "units"
+					},
+					"panelB": {
+						"type": "panel",
+						"name": "data"
+					}
+				}
+			}
+		}
+	]
+}

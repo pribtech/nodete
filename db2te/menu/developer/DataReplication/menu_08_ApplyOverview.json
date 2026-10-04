@@ -1,0 +1,76 @@
+{
+	"description": "Apply Overview",
+	"pageWindows": [
+		{
+			"target": "_active",
+			"panelHeaders": {
+				"autoRefreshControls": {
+					"time": "60",
+					"timeOptions": [
+						5,
+						10,
+						60,
+						300
+					]
+				}
+			},
+			"content": {
+				"type": "splitPane",
+				"splitPercent": "0.5",
+				"panelA": {
+					"type": "panel",
+					"name": "trail",
+					"content": {
+						"link": {
+							"type": "action",
+							"target": "_self",
+							"window": "_self",
+							"parameters": {
+								"table": "Replication/applyTrail",
+								"action": "list_table"
+							}
+						}
+					},
+					"primaryContainer": true
+				},
+				"panelB": {
+					"type": "splitPane",
+					"direction": "v",
+					"splitPercent": "0.5",
+					"panelB": {
+						"type": "panel",
+						"name": "trace",
+						"content": {
+							"link": {
+								"type": "action",
+								"target": "_self",
+								"window": "_self",
+								"parameters": {
+									"table": "Replication/applyTrace",
+									"action": "list_table"
+								}
+							}
+						},
+						"primaryContainer": true
+					},
+					"panelA": {
+						"type": "panel",
+						"name": "subscriptionSet",
+						"content": {
+							"link": {
+								"type": "action",
+								"target": "_self",
+								"window": "_self",
+								"parameters": {
+									"table": "Replication/subscriptionSet",
+									"action": "list_table"
+								}
+							}
+						},
+						"primaryContainer": true
+					}
+				}
+			}
+		}
+	]
+}

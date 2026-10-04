@@ -1,0 +1,354 @@
+{
+	"description": "Create WLM Event Monitors",
+	"actionScript": {
+		"$name": "wlmCreateEvMons",
+		"$type": "form",
+		"$lockScreen": "true",
+		"suppressAutomaticErrors": false,
+		"lockScreen": true,
+		"type": "action",
+		"name": "wlmCreateEvMons",
+		"actionType": "form",
+		"message": "<div style='width:500px'>\n<h1>Create three workload management Events</h1>\n<p>You are about to create the event WLM monitors required for work load manager.\n<p>\n<h1>USAGE</h1>\n<p>\n<table>\n<tr><td>Tables create in table space</td><td>:</td><td><input type=\"text\" name='TABLESPACE' value=\"SYSTOOLSPACE\" style=\"width:300px\"/></td></tr>\n</table>\n\n<ul>\n<li>Any specified table spaces must exist prior to executing this script.\n Furthermore they should reside across all partitions; otherwise\n monitoring information may be lost.  Also, make sure they have space\n to contain data from the event monitors.\n<li>If the target table spaces are DMS table spaces, the PCTDEACTIVATE parameter\n specifies how full the table space must be before the event monitor\n automatically deactivates.  Change the value if necessary. It is recommended\n that when the target table space has auto-resize enabled the PCTDEACTIVATE\n be set to 100. Remove PCTDEACTIVATE for any specified System Managed (SMS)\n table spaces.\n<li>If AUTOSTART is specified, the event monitor will automatically\n activate when the database activates.  If MANUALSTART is specified\n instead, the event monitor must be explicitly activated through\n a SET EVENT MONITOR statement after the database is activated.\n</div>",
+		"parameterList": [
+			{
+				"$name": "TABLESPACE",
+				"$type": "blockValue",
+				"type": "parameter",
+				"name": "TABLESPACE",
+				"parameterType": "blockValue",
+				"title": "",
+				"transform": "",
+				"value": "TABLESPACE",
+				"defaultValue": "",
+				"check": null,
+				"xpathBaseNode": "",
+				"xpathName": "",
+				"xpathValue": ""
+			},
+			{
+				"$name": "buttonOK",
+				"$type": "raw",
+				"type": "parameter",
+				"name": "buttonOK",
+				"parameterType": "raw",
+				"title": "",
+				"transform": "",
+				"value": "Create WLM Event Monitors",
+				"defaultValue": "",
+				"check": null,
+				"xpathBaseNode": "",
+				"xpathName": "",
+				"xpathValue": ""
+			}
+		],
+		"schema": "",
+		"tasks": [
+			{
+				"type": "IF",
+				"name": "",
+				"originalAction": "if",
+				"negCondition": false,
+				"compareOn": "",
+				"compareOnType": "",
+				"condition": "true",
+				"conditionType": "",
+				"conditionCompareType": "",
+				"taskList": [
+					{
+						"type": "taskList",
+						"repeat": 1,
+						"tasks": [
+							{
+								"$name": "createWlmEvMons",
+								"$type": "serverAction",
+								"suppressAutomaticErrors": false,
+								"lockScreen": false,
+								"type": "action",
+								"name": "createWlmEvMons",
+								"actionType": "serverAction",
+								"message": "",
+								"parameterList": [
+									{
+										"$name": "action",
+										"$type": "fixed",
+										"type": "parameter",
+										"name": "action",
+										"parameterType": "fixed",
+										"title": "",
+										"transform": "",
+										"value": "executeSQL",
+										"defaultValue": "",
+										"check": null,
+										"xpathBaseNode": "",
+										"xpathName": "",
+										"xpathValue": ""
+									},
+									{
+										"$name": "STMTermChar",
+										"$type": "fixed",
+										"type": "parameter",
+										"name": "STMTermChar",
+										"parameterType": "fixed",
+										"title": "",
+										"transform": "",
+										"value": "@",
+										"defaultValue": "",
+										"check": null,
+										"xpathBaseNode": "",
+										"xpathName": "",
+										"xpathValue": ""
+									},
+									{
+										"$name": "commitPerSTMT",
+										"$type": "fixed",
+										"type": "parameter",
+										"name": "commitPerSTMT",
+										"parameterType": "fixed",
+										"title": "",
+										"transform": "",
+										"value": "true",
+										"defaultValue": "",
+										"check": null,
+										"xpathBaseNode": "",
+										"xpathName": "",
+										"xpathValue": ""
+									},
+									{
+										"$name": "abortOnFailure",
+										"$type": "fixed",
+										"type": "parameter",
+										"name": "abortOnFailure",
+										"parameterType": "fixed",
+										"title": "",
+										"transform": "",
+										"value": "true",
+										"defaultValue": "",
+										"check": null,
+										"xpathBaseNode": "",
+										"xpathName": "",
+										"xpathValue": ""
+									},
+									{
+										"$name": "SQL[0]",
+										"$type": "fixed",
+										"type": "parameter",
+										"name": "SQL[0]",
+										"parameterType": "fixed",
+										"title": "",
+										"transform": "",
+										"value": "CREATE EVENT MONITOR DB2ACTIVITIES\n    FOR ACTIVITIES\n    WRITE TO TABLE\n    ACTIVITY (TABLE ACTIVITY_DB2ACTIVITIES\n              IN ?TABLESPACE?\n              PCTDEACTIVATE 100),\n    ACTIVITYSTMT (TABLE ACTIVITYSTMT_DB2ACTIVITIES\n                  IN ?TABLESPACE?\n                  PCTDEACTIVATE 100),\n    ACTIVITYVALS (TABLE ACTIVITYVALS_DB2ACTIVITIES\n                  IN ?TABLESPACE?\n                  PCTDEACTIVATE 100),\n    CONTROL (TABLE CONTROL_DB2ACTIVITIES\n             IN ?TABLESPACE?\n             PCTDEACTIVATE 100)\n    AUTOSTART",
+										"defaultValue": "",
+										"check": null,
+										"xpathBaseNode": "",
+										"xpathName": "",
+										"xpathValue": ""
+									},
+									{
+										"$name": "SQL[1]",
+										"$type": "fixed",
+										"type": "parameter",
+										"name": "SQL[1]",
+										"parameterType": "fixed",
+										"title": "",
+										"transform": "",
+										"value": "CREATE EVENT MONITOR DB2STATISTICS\n    FOR STATISTICS\n    WRITE TO TABLE\n    SCSTATS (TABLE SCSTATS_DB2STATISTICS\n             IN ?TABLESPACE?\n             PCTDEACTIVATE 100),\n    WCSTATS (TABLE WCSTATS_DB2STATISTICS\n             IN ?TABLESPACE?\n             PCTDEACTIVATE 100),\n    WLSTATS (TABLE WLSTATS_DB2STATISTICS\n             IN ?TABLESPACE?\n             PCTDEACTIVATE 100),\n    QSTATS  (TABLE QSTATS_DB2STATISTICS\n             IN ?TABLESPACE?\n             PCTDEACTIVATE 100),\n    HISTOGRAMBIN (TABLE HISTOGRAMBIN_DB2STATISTICS\n                  IN ?TABLESPACE?\n                  PCTDEACTIVATE 100),\n    CONTROL (TABLE CONTROL_DB2STATISTICS\n             IN ?TABLESPACE?\n             PCTDEACTIVATE 100)\n    AUTOSTART",
+										"defaultValue": "",
+										"check": null,
+										"xpathBaseNode": "",
+										"xpathName": "",
+										"xpathValue": ""
+									},
+									{
+										"$name": "SQL[2]",
+										"$type": "fixed",
+										"type": "parameter",
+										"name": "SQL[2]",
+										"parameterType": "fixed",
+										"title": "",
+										"transform": "",
+										"value": "CREATE EVENT MONITOR DB2THRESHOLDVIOLATIONS\n    FOR THRESHOLD VIOLATIONS\n    WRITE TO TABLE\n    THRESHOLDVIOLATIONS (TABLE THRESHOLDVIOLATIONS_DB2THRESHOLDVIOLATIONS\n                         IN ?TABLESPACE?\n                         PCTDEACTIVATE 100),\n    CONTROL (TABLE CONTROL_DB2THRESHOLDVIOLATIONS\n             IN ?TABLESPACE?\n             PCTDEACTIVATE 100)\n    AUTOSTART",
+										"defaultValue": "",
+										"check": null,
+										"xpathBaseNode": "",
+										"xpathName": "",
+										"xpathValue": ""
+									},
+									{
+										"$name": "SQL[3]",
+										"$type": "fixed",
+										"type": "parameter",
+										"name": "SQL[3]",
+										"parameterType": "fixed",
+										"title": "",
+										"transform": "",
+										"value": "SET EVENT MONITOR DB2ACTIVITIES STATE 1",
+										"defaultValue": "",
+										"check": null,
+										"xpathBaseNode": "",
+										"xpathName": "",
+										"xpathValue": ""
+									},
+									{
+										"$name": "SQL[4]",
+										"$type": "fixed",
+										"type": "parameter",
+										"name": "SQL[4]",
+										"parameterType": "fixed",
+										"title": "",
+										"transform": "",
+										"value": "SET EVENT MONITOR DB2STATISTICS STATE 1",
+										"defaultValue": "",
+										"check": null,
+										"xpathBaseNode": "",
+										"xpathName": "",
+										"xpathValue": ""
+									},
+									{
+										"$name": "SQL[5]",
+										"$type": "fixed",
+										"type": "parameter",
+										"name": "SQL[5]",
+										"parameterType": "fixed",
+										"title": "",
+										"transform": "",
+										"value": "SET EVENT MONITOR DB2THRESHOLDVIOLATIONS STATE 1",
+										"defaultValue": "",
+										"check": null,
+										"xpathBaseNode": "",
+										"xpathName": "",
+										"xpathValue": ""
+									},
+									{
+										"$name": "SQL[6]",
+										"$type": "fixed",
+										"type": "parameter",
+										"name": "SQL[6]",
+										"parameterType": "fixed",
+										"title": "",
+										"transform": "",
+										"value": "ALTER WORKLOAD SYSDEFAULTUSERWORKLOAD\n  COLLECT ACTIVITY DATA ON COORDINATOR WITH DETAILS",
+										"defaultValue": "",
+										"check": null,
+										"xpathBaseNode": "",
+										"xpathName": "",
+										"xpathValue": ""
+									},
+									{
+										"$name": "SQL[7]",
+										"$type": "fixed",
+										"type": "parameter",
+										"name": "SQL[7]",
+										"parameterType": "fixed",
+										"title": "",
+										"transform": "",
+										"value": "ALTER SERVICE CLASS SYSDEFAULTSUBCLASS UNDER SYSDEFAULTUSERCLASS\n  COLLECT AGGREGATE ACTIVITY DATA BASE",
+										"defaultValue": "",
+										"check": null,
+										"xpathBaseNode": "",
+										"xpathName": "",
+										"xpathValue": ""
+									}
+								],
+								"schema": "",
+								"tasks": [
+									{
+										"type": "IF",
+										"name": "",
+										"originalAction": "if",
+										"negCondition": true,
+										"compareOn": "",
+										"compareOnType": "",
+										"condition": "true",
+										"conditionType": "",
+										"conditionCompareType": "",
+										"taskList": [
+											{
+												"type": "taskList",
+												"repeat": 1,
+												"tasks": [
+													{
+														"$name": "STMTRun",
+														"$type": "returnObject",
+														"type": "assignSharedConstant",
+														"name": "STMTRun",
+														"parameterType": "returnObject",
+														"title": "",
+														"transform": "",
+														"value": "createWlmEvMons.returnValue.STMTRun",
+														"defaultValue": "",
+														"check": null,
+														"xpathBaseNode": "",
+														"xpathName": "",
+														"xpathValue": ""
+													},
+													{
+														"$name": "STMT",
+														"$type": "returnObject",
+														"type": "assignSharedConstant",
+														"name": "STMT",
+														"parameterType": "returnObject",
+														"title": "",
+														"transform": "",
+														"value": "createWlmEvMons.returnValue.STMT",
+														"defaultValue": "",
+														"check": null,
+														"xpathBaseNode": "",
+														"xpathName": "",
+														"xpathValue": ""
+													},
+													{
+														"$name": "STMTMSG",
+														"$type": "returnObject",
+														"type": "assignSharedConstant",
+														"name": "STMTMSG",
+														"parameterType": "returnObject",
+														"title": "",
+														"transform": "",
+														"value": "createWlmEvMons.returnValue.STMTMSG",
+														"defaultValue": "",
+														"check": null,
+														"xpathBaseNode": "",
+														"xpathName": "",
+														"xpathValue": ""
+													},
+													{
+														"type": "alert",
+														"message": "Failed to create WLM Event Monitors, statement ?STMTRun? \n\t\t\t\t\t\t\n\t\t\t\t\t\t?STMTMSG?\n\t\t\t\t\t\t\n\t\t\t\t\t\t?STMT?"
+													}
+												]
+											}
+										]
+									},
+									{
+										"type": "IF",
+										"name": "",
+										"originalAction": "if",
+										"negCondition": false,
+										"compareOn": "",
+										"compareOnType": "",
+										"condition": "true",
+										"conditionType": "",
+										"conditionCompareType": "",
+										"taskList": [
+											{
+												"type": "taskList",
+												"repeat": 1,
+												"tasks": [
+													{
+														"type": "alert",
+														"message": "WLM event monitors created"
+													}
+												]
+											}
+										]
+									}
+								]
+							}
+						]
+					}
+				]
+			}
+		]
+	}
+}

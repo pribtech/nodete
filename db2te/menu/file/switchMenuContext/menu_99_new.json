@@ -1,0 +1,30 @@
+{
+	"description": "New Features",
+	"actionScript": {
+		"$name": "set",
+		"$type": "blank",
+		"suppressAutomaticErrors": false,
+		"lockScreen": false,
+		"type": "action",
+		"name": "set",
+		"actionType": "blank",
+		"message": "",
+		"parameterList": [],
+		"schema": "",
+		"tasks": [
+			{
+				"type": "task",
+				"taskList": {
+					"type": "taskList",
+					"repeat": 1,
+					"tasks": [
+						{
+							"type": "setContext",
+							"name": "new"
+						}
+					]
+				}
+			}
+		]
+	}
+}

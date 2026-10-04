@@ -1,0 +1,54 @@
+{
+	"description": "Overview Databases",
+	"pageWindows": [
+		{
+			"target": "_active",
+			"panelHeaders": {},
+			"content": {
+				"type": "splitPane",
+				"panelA": {
+					"type": "splitPane",
+					"splitPercent": "0.5",
+					"panelA": {
+						"type": "panel",
+						"name": "db2",
+						"content": {
+							"link": {
+								"type": "action",
+								"target": "_self",
+								"window": "_self",
+								"parameters": {
+									"table": "db2/Performance/overviewDatabases",
+									"action": "list_table",
+									"useConnection": "*CONNECTED=IBM_DB2"
+								}
+							}
+						},
+						"primaryContainer": true
+					},
+					"panelB": {
+						"type": "panel",
+						"name": "oracle",
+						"content": {
+							"link": {
+								"type": "action",
+								"target": "_self",
+								"window": "_self",
+								"parameters": {
+									"table": "Oracle/Monitor/overviewDatabases",
+									"action": "list_table",
+									"useConnection": "*CONNECTED=ORACLE"
+								}
+							}
+						},
+						"primaryContainer": true
+					}
+				},
+				"panelB": {
+					"type": "panel",
+					"name": "detail"
+				}
+			}
+		}
+	]
+}

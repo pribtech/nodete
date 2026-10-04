@@ -1,0 +1,218 @@
+{
+	"$name": "TE_TRUSTED_CONTEXT_PASSWORD_CHECK",
+	"$type": "blank",
+	"$lockScreen": "true",
+	"suppressAutomaticErrors": false,
+	"lockScreen": true,
+	"type": "action",
+	"name": "TE_TRUSTED_CONTEXT_PASSWORD_CHECK",
+	"actionType": "blank",
+	"message": "",
+	"parameterList": [],
+	"schema": "",
+	"tasks": [
+		{
+			"type": "IF",
+			"name": "",
+			"originalAction": "ifNot",
+			"negCondition": true,
+			"compareOn": "",
+			"compareOnType": "",
+			"condition": "",
+			"conditionType": "",
+			"conditionCompareType": "",
+			"taskList": [
+				{
+					"type": "taskList",
+					"repeat": 1,
+					"tasks": [
+						{
+							"type": "setActionReturn",
+							"value": "false",
+							"parameterType": "fixed"
+						},
+						{
+							"type": "callAction",
+							"name": "DBConnectionSetTrustedContext_Authenticate"
+						},
+						{
+							"type": "exit"
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "IF",
+			"name": "",
+			"originalAction": "if",
+			"negCondition": false,
+			"compareOn": "",
+			"compareOnType": "",
+			"condition": "",
+			"conditionType": "",
+			"conditionCompareType": "",
+			"taskList": [
+				{
+					"type": "taskList",
+					"repeat": 1,
+					"tasks": [
+						{
+							"$name": "TE_TRUSTED_CONTEXT_SET",
+							"$type": "form",
+							"$lockScreen": "true",
+							"suppressAutomaticErrors": false,
+							"lockScreen": true,
+							"type": "action",
+							"name": "TE_TRUSTED_CONTEXT_SET",
+							"actionType": "form",
+							"message": "<table><tr><td>\n\t\t<b>Set trusted context:</b><br/>\n\t\t<input id=\"_db2connectUsername\" type=\"text\" style=\"width:25em;\" name=\"TRUSTED_CONTEXT_USERNAME\"  value=\"?TRUSTED_CONTEXT_USERNAME?\"/>\n\t\t<b>Enter password:</b><br/>\n\t\t<input id=\"_db2connectPassword\" type=\"password\" style=\"width:25em;\" name=\"TRUSTED_CONTEXT_PASSWORD\"  value=\"?TRUSTED_CONTEXT_PASSWORD?\"/>\n\t\t<script language=\"javascript\">\n\t\t\tif($(\"_db2connectUsername\").value == \"\")\n\t\t\t\t$(\"_db2connectUsername\").focus()\n\t\t\telse\n\t\t\t    $(\"_db2connectPassword\").focus()\n\t\t</script>\n\t\t</td></tr></table>",
+							"parameterList": [],
+							"schema": "",
+							"tasks": [
+								{
+									"type": "IF",
+									"name": "",
+									"originalAction": "if",
+									"negCondition": false,
+									"compareOn": "",
+									"compareOnType": "",
+									"condition": "true",
+									"conditionType": "",
+									"conditionCompareType": "",
+									"taskList": [
+										{
+											"type": "taskList",
+											"repeat": 1,
+											"tasks": [
+												{
+													"type": "setActionReturn",
+													"value": "false",
+													"parameterType": "fixed"
+												},
+												{
+													"$name": "DBConnectionSetTrustedContext_Authenticate",
+													"$type": "serverAction",
+													"suppressAutomaticErrors": false,
+													"lockScreen": false,
+													"type": "action",
+													"name": "DBConnectionSetTrustedContext_Authenticate",
+													"actionType": "serverAction",
+													"message": "",
+													"parameterList": [
+														{
+															"$name": "action",
+															"$type": "raw",
+															"type": "parameter",
+															"name": "action",
+															"parameterType": "raw",
+															"title": "",
+															"transform": "",
+															"value": "DBConnectionSetTrustedContext",
+															"defaultValue": "",
+															"check": null,
+															"xpathBaseNode": "",
+															"xpathName": "",
+															"xpathValue": ""
+														}
+													],
+													"schema": "",
+													"tasks": [
+														{
+															"type": "IF",
+															"name": "",
+															"originalAction": "if",
+															"negCondition": false,
+															"compareOn": "",
+															"compareOnType": "",
+															"condition": "false",
+															"conditionType": "",
+															"conditionCompareType": "",
+															"taskList": [
+																{
+																	"type": "taskList",
+																	"repeat": 1,
+																	"tasks": [
+																		{
+																			"$name": "ERROR_MSG",
+																			"$type": "returnObject",
+																			"type": "assignLocalParameter",
+																			"name": "ERROR_MSG",
+																			"parameterType": "returnObject",
+																			"title": "",
+																			"transform": "",
+																			"value": "DBConnectionSetTrustedContext_Authenticate.returnValue",
+																			"defaultValue": "",
+																			"check": null,
+																			"xpathBaseNode": "",
+																			"xpathName": "",
+																			"xpathValue": ""
+																		},
+																		{
+																			"type": "alert",
+																			"message": "An error has occurred: ?ERROR_MSG?"
+																		},
+																		{
+																			"type": "callAction",
+																			"name": "TE_TRUSTED_CONTEXT_SET"
+																		},
+																		{
+																			"type": "return"
+																		}
+																	]
+																}
+															]
+														},
+														{
+															"type": "IF",
+															"name": "",
+															"originalAction": "if",
+															"negCondition": false,
+															"compareOn": "",
+															"compareOnType": "",
+															"condition": "true",
+															"conditionType": "",
+															"conditionCompareType": "",
+															"taskList": [
+																{
+																	"type": "taskList",
+																	"repeat": 1,
+																	"tasks": [
+																		{
+																			"$name": "TC_RETURN",
+																			"$type": "returnObject",
+																			"type": "assignLocalParameter",
+																			"name": "TC_RETURN",
+																			"parameterType": "returnObject",
+																			"title": "",
+																			"transform": "",
+																			"value": "DBConnectionSetTrustedContext_Authenticate.returnValue",
+																			"defaultValue": "",
+																			"check": null,
+																			"xpathBaseNode": "",
+																			"xpathName": "",
+																			"xpathValue": ""
+																		},
+																		{
+																			"type": "setActionReturn",
+																			"value": "?TC_RETURN?",
+																			"parameterType": "fixed"
+																		}
+																	]
+																}
+															]
+														}
+													]
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

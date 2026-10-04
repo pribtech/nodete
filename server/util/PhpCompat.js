@@ -1,5 +1,5 @@
 /**
- * PHP value conversions the encoders need so their JSON matches the PHP version's.
+ * PHP value conversions the builders need so their JSON matches the PHP version's.
  * Kept in one place so they can be dropped once the front end no longer relies on them.
  */
 export class PhpCompat {

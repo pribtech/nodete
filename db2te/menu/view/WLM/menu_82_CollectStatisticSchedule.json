@@ -1,0 +1,188 @@
+{
+	"description": "Schedule Statistics Collection",
+	"actionScript": {
+		"$name": "scheduleCapture",
+		"$type": "form",
+		"suppressAutomaticErrors": false,
+		"lockScreen": false,
+		"type": "action",
+		"name": "scheduleCapture",
+		"actionType": "form",
+		"message": "<div style='width:500px'>\n<p>You are about to schedule WLM Collection of Statistics</p>\n<table>\n<tr><td>Minutes </td><td>:</td><td><input type=\"text\" name='SCHEDULE_TIME' value=\"5\" style=\"width:300px\"/></td></tr>\n</table>\n<p>issues: update db cfg using wlm_collect_int ? immediate</p>\n</div>",
+		"parameterList": [
+			{
+				"$name": "SCHEDULE_TIME",
+				"$type": "blockValue",
+				"type": "parameter",
+				"name": "SCHEDULE_TIME",
+				"parameterType": "blockValue",
+				"title": "",
+				"transform": "",
+				"value": "SCHEDULE_TIME",
+				"defaultValue": "",
+				"check": null,
+				"xpathBaseNode": "",
+				"xpathName": "",
+				"xpathValue": ""
+			},
+			{
+				"$name": "buttonOK",
+				"$type": "raw",
+				"type": "parameter",
+				"name": "buttonOK",
+				"parameterType": "raw",
+				"title": "",
+				"transform": "",
+				"value": "Create schedule",
+				"defaultValue": "",
+				"check": null,
+				"xpathBaseNode": "",
+				"xpathName": "",
+				"xpathValue": ""
+			}
+		],
+		"schema": "",
+		"tasks": [
+			{
+				"type": "IF",
+				"name": "",
+				"originalAction": "if",
+				"negCondition": false,
+				"compareOn": "",
+				"compareOnType": "",
+				"condition": "true",
+				"conditionType": "",
+				"conditionCompareType": "",
+				"taskList": [
+					{
+						"type": "taskList",
+						"repeat": 1,
+						"tasks": [
+							{
+								"$name": "scheduleCreate",
+								"$type": "serverAction",
+								"suppressAutomaticErrors": false,
+								"lockScreen": false,
+								"type": "action",
+								"name": "scheduleCreate",
+								"actionType": "serverAction",
+								"message": "",
+								"parameterList": [
+									{
+										"$name": "action",
+										"$type": "fixed",
+										"type": "parameter",
+										"name": "action",
+										"parameterType": "fixed",
+										"title": "",
+										"transform": "",
+										"value": "executeSQL",
+										"defaultValue": "",
+										"check": null,
+										"xpathBaseNode": "",
+										"xpathName": "",
+										"xpathValue": ""
+									},
+									{
+										"$name": "SQL",
+										"$type": "fixed",
+										"type": "parameter",
+										"name": "SQL",
+										"parameterType": "fixed",
+										"title": "",
+										"transform": "",
+										"value": "CALL SYSPROC.ADMIN_CMD ('update db cfg using wlm_collect_int ?SCHEDULE_TIME? IMMEDIATE')",
+										"defaultValue": "",
+										"check": null,
+										"xpathBaseNode": "",
+										"xpathName": "",
+										"xpathValue": ""
+									},
+									{
+										"$name": "parameter[SCHEDULE_TIME]",
+										"$type": "blockValue",
+										"type": "parameter",
+										"name": "parameter[SCHEDULE_TIME]",
+										"parameterType": "blockValue",
+										"title": "",
+										"transform": "",
+										"value": "SCHEDULE_TIME",
+										"defaultValue": "",
+										"check": null,
+										"xpathBaseNode": "",
+										"xpathName": "",
+										"xpathValue": ""
+									}
+								],
+								"schema": "",
+								"tasks": [
+									{
+										"type": "IF",
+										"name": "",
+										"originalAction": "if",
+										"negCondition": true,
+										"compareOn": "",
+										"compareOnType": "",
+										"condition": "true",
+										"conditionType": "",
+										"conditionCompareType": "",
+										"taskList": [
+											{
+												"type": "taskList",
+												"repeat": 1,
+												"tasks": [
+													{
+														"$name": "ERROR_MESSAGE",
+														"$type": "returnObject",
+														"type": "assignSharedConstant",
+														"name": "ERROR_MESSAGE",
+														"parameterType": "returnObject",
+														"title": "",
+														"transform": "",
+														"value": "scheduleCreate.returnValue.STMTMSG",
+														"defaultValue": "",
+														"check": null,
+														"xpathBaseNode": "",
+														"xpathName": "",
+														"xpathValue": ""
+													},
+													{
+														"type": "alert",
+														"message": "Failed to create schedule: ?ERROR_MESSAGE?"
+													}
+												]
+											}
+										]
+									},
+									{
+										"type": "IF",
+										"name": "",
+										"originalAction": "if",
+										"negCondition": false,
+										"compareOn": "",
+										"compareOnType": "",
+										"condition": "true",
+										"conditionType": "",
+										"conditionCompareType": "",
+										"taskList": [
+											{
+												"type": "taskList",
+												"repeat": 1,
+												"tasks": [
+													{
+														"type": "alert",
+														"message": "Schedule created"
+													}
+												]
+											}
+										]
+									}
+								]
+							}
+						]
+					}
+				]
+			}
+		]
+	}
+}
