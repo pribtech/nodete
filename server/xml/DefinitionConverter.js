@@ -11,10 +11,6 @@ const MENU_TYPES = { leaf: 'leaf', branch: 'branch', embeddedbranch: 'embeddedBr
 const BRANCH_ATTRIBUTES = ['rootDirectory', 'branchDirectory', 'branchSQLXML', 'branchSQLPredicate', 'branchXML', 'branchXSL', 'onErrorMenu', 'dropParent'];
 const VERSION_DEFAULTS = Object.freeze(VersionAttributes.encode(XmlNode.parse('<x/>')));
 
-const isTrue = (value) => String(value ?? '').toLowerCase() === 'true';
-/** Copies value into target[key] unless it equals the default the loader would use anyway. */
-const setUnlessDefault = (target, key, value, defaultValue = '') => { if (value !== defaultValue && value !== undefined) target[key] = value; };
-
 /**
  * Converts the TE's XML definitions (menus, page layouts, links, TE scripts, script lists)
  * into the JSON definition format read by server/definitions. Mirrors exactly what the
@@ -30,6 +26,11 @@ export class DefinitionConverter {
 	constructor({ messages, acceptedOperators }) {
 		this.#scripts = new ActionEncoder({ menus: this.#loadPageAdapter(), messages, acceptedOperators });
 	}
+
+	static #isTrue(value) { return String(value ?? '').toLowerCase() === 'true'; }
+
+	/** Copies value into target[key] unless it equals the default the loader would use anyway. */
+	static #setUnlessDefault(target, key, value, defaultValue = '') { if (value !== defaultValue && value !== undefined) target[key] = value; }
 
 	#note(kind, name) { const key = `${kind} ${name}`; this.report.set(key, (this.report.get(key) ?? 0) + 1); }
 
@@ -52,19 +53,19 @@ export class DefinitionConverter {
 		const result = {};
 		const rawType = node.getAttribute('type', 'leaf');
 		const type = MENU_TYPES[rawType.toLowerCase()] ?? rawType;
-		setUnlessDefault(result, 'type', type, 'leaf');
+		DefinitionConverter.#setUnlessDefault(result, 'type', type, 'leaf');
 		const description = node.getChildTextContent('description', 'none');
-		setUnlessDefault(result, 'description', description, 'none');
+		DefinitionConverter.#setUnlessDefault(result, 'description', description, 'none');
 		const requires = this.#requires(node);
 		if (requires) result.requires = requires;
 
 		const delayLoad = node.getAttribute('delayLoad');
 		if (delayLoad !== '') result.delayLoad = delayLoad.toLowerCase();
-		if (isTrue(node.getAttribute('reloadOnConnectionChange', 'false'))) result.reloadOnConnectionChange = true;
-		if (isTrue(node.getAttribute('replacement', 'false'))) result.replacement = true;
-		for (const name of BRANCH_ATTRIBUTES) setUnlessDefault(result, name, node.getAttribute(name).trim());
-		setUnlessDefault(result, 'GUID', node.getAttribute('GUID').trim());
-		setUnlessDefault(result, 'tag', node.getAttribute('tag'));
+		if (DefinitionConverter.#isTrue(node.getAttribute('reloadOnConnectionChange', 'false'))) result.reloadOnConnectionChange = true;
+		if (DefinitionConverter.#isTrue(node.getAttribute('replacement', 'false'))) result.replacement = true;
+		for (const name of BRANCH_ATTRIBUTES) DefinitionConverter.#setUnlessDefault(result, name, node.getAttribute(name).trim());
+		DefinitionConverter.#setUnlessDefault(result, 'GUID', node.getAttribute('GUID').trim());
+		DefinitionConverter.#setUnlessDefault(result, 'tag', node.getAttribute('tag'));
 		const filter = node.getChildTextContent('filter', null);
 		if (filter !== null) result.filter = filter;
 		const menuGUID = node.getChildTextContent('menuGUID', null);
@@ -127,13 +128,13 @@ export class DefinitionConverter {
 		const result = {};
 		const content = this.#panelContent(node.childNodes);
 		if (content) result.content = content;
-		if (isTrue(node.getAttribute('hideMenuBar', 'false'))) result.hideMenuBar = true;
-		if (isTrue(node.getAttribute('reloadOnConnectionChange', 'false'))) result.reloadOnConnectionChange = true;
+		if (DefinitionConverter.#isTrue(node.getAttribute('hideMenuBar', 'false'))) result.hideMenuBar = true;
+		if (DefinitionConverter.#isTrue(node.getAttribute('reloadOnConnectionChange', 'false'))) result.reloadOnConnectionChange = true;
 		const headers = this.panelHeaders(node.findChildNode('panelHeaders'));
 		if (headers) result.panelHeaders = headers;
 		for (const name of ['baseWidth', 'baseHeight']) if (node.hasAttribute(name)) result[name] = node.getAttribute(name);
-		if (isTrue(node.getAttribute('loadContentOnShow', 'false'))) result.loadContentOnShow = true;
-		if (isTrue(node.getAttribute('reloadContentOnShow', 'false'))) result.reloadContentOnShow = true;
+		if (DefinitionConverter.#isTrue(node.getAttribute('loadContentOnShow', 'false'))) result.loadContentOnShow = true;
+		if (DefinitionConverter.#isTrue(node.getAttribute('reloadContentOnShow', 'false'))) result.reloadContentOnShow = true;
 		return result;
 	}
 
@@ -148,8 +149,8 @@ export class DefinitionConverter {
 		if (!node.isNamed('link')) return null;
 		const result = {};
 		const type = node.getAttribute('type');
-		setUnlessDefault(result, 'type', type);
-		for (const name of ['target', 'window', 'windowStage']) setUnlessDefault(result, name, node.getAttribute(name));
+		DefinitionConverter.#setUnlessDefault(result, 'type', type);
+		for (const name of ['target', 'window', 'windowStage']) DefinitionConverter.#setUnlessDefault(result, name, node.getAttribute(name));
 		const forms = node.getElementsByTagName('formList').flatMap((list) => list.childNodes.map((f) => f.getAttribute('name')));
 		if (forms.length) result.forms = forms;
 		const upper = type.toUpperCase();
@@ -211,16 +212,16 @@ export class DefinitionConverter {
 	pageWindow(node) {
 		if (!node?.hasChildNodes()) return null;
 		const result = {};
-		setUnlessDefault(result, 'target', node.getAttribute('target'));
-		setUnlessDefault(result, 'title', node.getChildTextContent('title'));
-		setUnlessDefault(result, 'info', node.getChildTextContent('info'));
+		DefinitionConverter.#setUnlessDefault(result, 'target', node.getAttribute('target'));
+		DefinitionConverter.#setUnlessDefault(result, 'title', node.getChildTextContent('title'));
+		DefinitionConverter.#setUnlessDefault(result, 'info', node.getChildTextContent('info'));
 		const leftMenu = node.findChildNode('leftMenu');
 		if (leftMenu) result.leftMenu = this.menuNode(leftMenu);
 		if (node.getAttribute('raiseToTop') === 'false') result.raiseToTop = false;
-		setUnlessDefault(result, 'windowStage', node.getAttribute('windowStage'));
+		DefinitionConverter.#setUnlessDefault(result, 'windowStage', node.getAttribute('windowStage'));
 		if (node.hasAttribute('windowType') && node.getAttribute('windowType') !== 'NORMAL') result.windowType = node.getAttribute('windowType');
-		setUnlessDefault(result, 'windowOptionType', node.getAttribute('windowOptionType'));
-		if (isTrue(node.getAttribute('reloadOnConnectionChange', 'false'))) result.reloadOnConnectionChange = true;
+		DefinitionConverter.#setUnlessDefault(result, 'windowOptionType', node.getAttribute('windowOptionType'));
+		if (DefinitionConverter.#isTrue(node.getAttribute('reloadOnConnectionChange', 'false'))) result.reloadOnConnectionChange = true;
 		const headers = this.panelHeaders(node.findChildNode('panelHeaders'));
 		if (headers) result.panelHeaders = headers;
 		result.content = this.container(node);
@@ -232,9 +233,9 @@ export class DefinitionConverter {
 	panelHeaders(node) {
 		if (!node) return null;
 		const result = {};
-		setUnlessDefault(result, 'scope', node.getAttribute('scope'));
+		DefinitionConverter.#setUnlessDefault(result, 'scope', node.getAttribute('scope'));
 		if (node.getAttribute('refreshEnabled') === 'false') result.refreshEnabled = false;
-		setUnlessDefault(result, 'refreshOptions', node.getAttribute('refreshOptions'));
+		DefinitionConverter.#setUnlessDefault(result, 'refreshOptions', node.getAttribute('refreshOptions'));
 		const auto = node.findChildNode('autoRefreshControls');
 		if (auto) {
 			const controls = {};
@@ -274,14 +275,14 @@ export class DefinitionConverter {
 
 	#panel(node) {
 		const result = { type: 'panel' };
-		setUnlessDefault(result, 'name', node.getAttribute('name'));
+		DefinitionConverter.#setUnlessDefault(result, 'name', node.getAttribute('name'));
 		if (node.hasChildNodes()) result.content = this.#panelContent(node.childNodes);
-		if (isTrue(node.getAttribute('reloadOnConnectionChange', 'false'))) result.reloadOnConnectionChange = true;
+		if (DefinitionConverter.#isTrue(node.getAttribute('reloadOnConnectionChange', 'false'))) result.reloadOnConnectionChange = true;
 		const headers = this.panelHeaders(node.findChildNode('panelHeaders'));
 		if (headers) result.panelHeaders = headers;
-		setUnlessDefault(result, 'overflow', node.getAttribute('overflow'));
+		DefinitionConverter.#setUnlessDefault(result, 'overflow', node.getAttribute('overflow'));
 		if (node.getAttribute('delayLoad') === 'true') result.delayLoad = true;
-		setUnlessDefault(result, 'panelTitle', node.getAttribute('panelTitle'));
+		DefinitionConverter.#setUnlessDefault(result, 'panelTitle', node.getAttribute('panelTitle'));
 		if (node.getAttribute('PrimaryContainer') === 'true') result.primaryContainer = true;
 		this.#unread(node, ['name', 'reloadOnConnectionChange', 'overflow', 'delayLoad', 'panelTitle', 'PrimaryContainer'], ['link', 'raw', 'url', 'panelHeaders']);
 		return result;
@@ -290,14 +291,14 @@ export class DefinitionConverter {
 	#splitPane(node) {
 		const result = { type: 'splitPane' };
 		if (node.getAttribute('direction').toLowerCase().startsWith('v')) result.direction = 'v';
-		setUnlessDefault(result, 'splitPercent', node.getAttribute('splitPercent'));
+		DefinitionConverter.#setUnlessDefault(result, 'splitPercent', node.getAttribute('splitPercent'));
 		if (node.getAttribute('allowResize') === 'false') result.allowResize = false;
 		if (node.getAttribute('maxSize') !== '') result.maxSize = PhpCompat.intval(node.getAttribute('maxSize'));
 		if (node.hasAttribute('showSplitSpacer')) {
-			result.showSplitSpacer = isTrue(node.getAttribute('showSplitSpacer'));
+			result.showSplitSpacer = DefinitionConverter.#isTrue(node.getAttribute('showSplitSpacer'));
 			result.splitSpacerWidth = PhpCompat.intval(node.getAttribute('splitSpacerWidth', 3));
 		}
-		setUnlessDefault(result, 'styleOverride', node.getAttribute('styleOverride', ''));
+		DefinitionConverter.#setUnlessDefault(result, 'styleOverride', node.getAttribute('styleOverride', ''));
 		for (const pane of node.childNodes) {
 			const name = pane.nodeName.toLowerCase();
 			if (['toppane', 'leftpane', 'panela'].includes(name)) result.panelA = this.container(pane);
@@ -311,8 +312,8 @@ export class DefinitionConverter {
 	#stage(node) {
 		const result = { type: 'stage' };
 		for (const name of ['name', 'HasMenuBarContainer', 'titleBarType', 'windowOptionType', 'windowControlTypes', 'sizable'])
-			setUnlessDefault(result, name, node.getAttribute(name));
-		for (const name of ['top', 'botton', 'left', 'right']) setUnlessDefault(result, name, PhpCompat.intval(node.getAttribute(name)), 0);
+			DefinitionConverter.#setUnlessDefault(result, name, node.getAttribute(name));
+		for (const name of ['top', 'botton', 'left', 'right']) DefinitionConverter.#setUnlessDefault(result, name, PhpCompat.intval(node.getAttribute(name)), 0);
 		return result;
 	}
 

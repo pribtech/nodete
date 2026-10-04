@@ -1,9 +1,9 @@
 import { PhpCompat } from '../util/PhpCompat.js';
 
-const isNumeric = (value) => value !== '' && value !== null && !Number.isNaN(Number(value));
-
 /** Chart definition inside a link parameter (PHP JSONEncodeMenuGraph::encodeGraph). */
 export class GraphEncoder {
+	static #isNumeric(value) { return value !== '' && value !== null && !Number.isNaN(Number(value)); }
+
 	static encode(root) {
 		if (!root?.hasChildNodes()) return null;
 		const graph = {};
@@ -55,7 +55,7 @@ export class GraphEncoder {
 		return node.childNodes.map((dataset) => {
 			for (const data of dataset.childNodes) {
 				const value = data.getAttribute('value');
-				row[data.getAttribute('field')] = isNumeric(value) ? PhpCompat.intval(value) : data.getAttribute('value', 0);
+				row[data.getAttribute('field')] = GraphEncoder.#isNumeric(value) ? PhpCompat.intval(value) : data.getAttribute('value', 0);
 			}
 			return PhpCompat.assoc({ ...row });
 		});

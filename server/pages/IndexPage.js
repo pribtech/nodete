@@ -28,10 +28,11 @@ export class IndexPage {
 		res.set('Cache-Control', 'private').type('text/html; charset=UTF-8').send(this.render(context));
 	}
 
-	render({ config, files, request, session, connections }) {
+	render(context) {
+		const { config, files, request, session, connections } = context;
 		const touchOverride = this.#touchOverride(request);
 		const isTouch = touchOverride ?? /(iPhone|iPod|iPad)/i.test(request.userAgent);
-		const layouts = new MenuBuilder({ files, config, connections });
+		const layouts = MenuBuilder.forContext(context);
 		const preferences = config.get('USER_PREFERENCES_DIRECTORY');
 		const languageFolder = `${config.get('PHP_INCLUDE_BASE_DIRECTORY')}${config.get('BASE_LANGUAGE_DIRECTORY')}${config.get('TE_LANGUAGE')}`;
 

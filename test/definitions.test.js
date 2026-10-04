@@ -155,3 +155,31 @@ test('converter writes compact menu definitions', () => {
 	});
 	assert.equal(converter.report.get('ignored attribute <link> connectionRequired'), 1);
 });
+
+test('converter turns a PHP connStore.xml into the JSON connection store', async () => {
+	const { DefinitionConversion } = await import('../tools/convert/DefinitionConversion.js');
+	const xml = `<?xml version='1.0'?>
+<connectionList>
+	<SavedConnections>
+		<connection description="IBM_DB2:db2inst1@SAMPLE.host:50000" time="1700000000">
+			<comment><![CDATA[test box]]></comment>
+			<databaseDriver><![CDATA[IBM_DB2]]></databaseDriver>
+			<database><![CDATA[SAMPLE]]></database>
+			<hostname><![CDATA[host]]></hostname>
+			<portnumber><![CDATA[50000]]></portnumber>
+			<group><![CDATA[]]></group>
+			<username><![CDATA[db2inst1]]></username>
+			<password><![CDATA[]]></password>
+			<autoConnect><![CDATA[true]]></autoConnect>
+			<trustedContext>
+			<user id="alice" password=""/>
+			</trustedContext>
+		</connection>
+	</SavedConnections>
+</connectionList>`;
+	assert.deepEqual(DefinitionConversion.connectionStore(XmlNode.parse(xml)), { connections: [{
+		description: 'IBM_DB2:db2inst1@SAMPLE.host:50000', time: 1700000000, comment: 'test box', databaseDriver: 'IBM_DB2', database: 'SAMPLE',
+		hostname: 'host', portnumber: '50000', group: '', username: 'db2inst1', password: '', schema: '',
+		usePersistentConnection: false, autoConnect: true, trustedContext: ['alice'],
+	}] });
+});

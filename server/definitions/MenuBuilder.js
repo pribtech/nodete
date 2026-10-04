@@ -43,6 +43,11 @@ export class MenuBuilder {
 		this.#xmlMenus = xmlMenus ?? new XmlMenuSource({ files, connections, config, messages });
 	}
 
+	/** A builder for one action request: its files, settings, connections, language and parameters. */
+	static forContext({ files, config, connections, messages, request }) {
+		return new MenuBuilder({ files, config, connections, messages, requestValue: (name) => request.getParameter(name) });
+	}
+
 	/** Link and layout builder sharing this request's defaults. */
 	get pages() { return this.#pages; }
 

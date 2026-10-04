@@ -12,9 +12,7 @@ import { MenuBuilder } from '../../../definitions/MenuBuilder.js';
  */
 export default class MenuAction extends Action {
 	async run() {
-		const builder = new MenuBuilder({
-			files: this.files, config: this.config, connections: this.connections, messages: this.messages, requestValue: (name) => this.param(name),
-		});
+		const builder = MenuBuilder.forContext(this.context);
 		builder.defaultStage = this.param('defaultStage', builder.defaultStage);
 		builder.defaultTarget = this.param('defaultPanel', '_self');
 		builder.defaultWindow = this.param('defaultWindow', '_self');
