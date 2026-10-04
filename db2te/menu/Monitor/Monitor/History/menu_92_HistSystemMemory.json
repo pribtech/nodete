@@ -1,0 +1,55 @@
+{
+	"description": "System Memory",
+	"requires": {
+		"minVersion": 9.5
+	},
+	"pageWindows": [
+		{
+			"target": "_active",
+			"content": {
+				"type": "splitPane",
+				"panelA": {
+					"type": "splitPane",
+					"direction": "v",
+					"splitPercent": "0.5",
+					"panelA": {
+						"type": "panel",
+						"name": "instance",
+						"content": {
+							"link": {
+								"type": "action",
+								"target": "_self",
+								"window": "_self",
+								"parameters": {
+									"table": "Monitor/histDBMMemory",
+									"action": "list_table"
+								}
+							}
+						},
+						"primaryContainer": true
+					},
+					"panelB": {
+						"type": "panel",
+						"name": "system",
+						"content": {
+							"link": {
+								"type": "action",
+								"target": "_self",
+								"window": "_self",
+								"parameters": {
+									"table": "Monitor/histSystemMemory",
+									"action": "list_table"
+								}
+							}
+						},
+						"primaryContainer": true
+					}
+				},
+				"panelB": {
+					"type": "panel",
+					"name": "detail"
+				}
+			}
+		}
+	]
+}

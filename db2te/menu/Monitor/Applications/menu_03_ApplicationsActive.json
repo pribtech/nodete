@@ -1,0 +1,38 @@
+{
+	"description": "Active UOW",
+	"requires": {
+		"DBMS": "DB2"
+	},
+	"GUID": "ACTIVEUOW",
+	"pageWindows": [
+		{
+			"target": "_active",
+			"panelHeaders": {},
+			"content": {
+				"type": "splitPane",
+				"splitPercent": "0.7",
+				"panelA": {
+					"type": "panel",
+					"name": "main",
+					"content": {
+						"link": {
+							"type": "action",
+							"target": "_self",
+							"window": "_self",
+							"parameters": {
+								"table": "Performance/applicationsActive",
+								"action": "list_table"
+							}
+						}
+					},
+					"panelHeaders": {},
+					"primaryContainer": true
+				},
+				"panelB": {
+					"type": "panel",
+					"name": "detail"
+				}
+			}
+		}
+	]
+}

@@ -1,0 +1,86 @@
+{
+	"description": "Set Default Schema",
+	"actionScript": {
+		"$name": "setSchema",
+		"$type": "form",
+		"suppressAutomaticErrors": false,
+		"lockScreen": false,
+		"type": "action",
+		"name": "setSchema",
+		"actionType": "form",
+		"message": "",
+		"parameterList": [
+			{
+				"$name": "action",
+				"$type": "fixed",
+				"type": "parameter",
+				"name": "action",
+				"parameterType": "fixed",
+				"title": "",
+				"transform": "",
+				"value": "setschema",
+				"defaultValue": "",
+				"check": null,
+				"xpathBaseNode": "",
+				"xpathName": "",
+				"xpathValue": ""
+			},
+			{
+				"$name": "buttonA",
+				"$type": "fixed",
+				"type": "parameter",
+				"name": "buttonA",
+				"parameterType": "fixed",
+				"title": "",
+				"transform": "",
+				"value": "Apply",
+				"defaultValue": "",
+				"check": null,
+				"xpathBaseNode": "",
+				"xpathName": "",
+				"xpathValue": ""
+			},
+			{
+				"$name": "buttonB",
+				"$type": "fixed",
+				"type": "parameter",
+				"name": "buttonB",
+				"parameterType": "fixed",
+				"title": "",
+				"transform": "",
+				"value": "Close",
+				"defaultValue": "",
+				"check": null,
+				"xpathBaseNode": "",
+				"xpathName": "",
+				"xpathValue": ""
+			}
+		],
+		"schema": "",
+		"tasks": [
+			{
+				"type": "IF",
+				"name": "",
+				"originalAction": "followOnAction",
+				"negCondition": false,
+				"compareOn": "",
+				"compareOnType": "",
+				"condition": "true",
+				"conditionType": "",
+				"conditionCompareType": "",
+				"taskList": [
+					{
+						"type": "taskList",
+						"repeat": 1,
+						"tasks": [
+							{
+								"type": "callAction",
+								"name": "setSchema"
+							}
+						]
+					}
+				]
+			}
+		]
+	}
+}

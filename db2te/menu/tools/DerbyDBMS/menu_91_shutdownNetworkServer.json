@@ -1,0 +1,163 @@
+{
+	"description": "Shutdown Network Server",
+	"GUID": "createDerbyDB",
+	"actionScript": {
+		"$name": "shutdowntDerbyNetworkServer",
+		"$type": "form",
+		"suppressAutomaticErrors": false,
+		"lockScreen": false,
+		"type": "action",
+		"name": "shutdowntDerbyNetworkServer",
+		"actionType": "form",
+		"message": "<div style='width:500px'>\n<h1>Shutdown Derby Network Server</h1>\n<table>\n\t<tr><td>Port</td><td>:</td><td>1527</td></tr>\n</table>\n</div>",
+		"parameterList": [
+			{
+				"$name": "HOST",
+				"$type": "blockValue",
+				"type": "parameter",
+				"name": "HOST",
+				"parameterType": "blockValue",
+				"title": "",
+				"transform": "",
+				"value": "HOST",
+				"defaultValue": "",
+				"check": null,
+				"xpathBaseNode": "",
+				"xpathName": "",
+				"xpathValue": ""
+			},
+			{
+				"$name": "buttonOK",
+				"$type": "raw",
+				"type": "parameter",
+				"name": "buttonOK",
+				"parameterType": "raw",
+				"title": "",
+				"transform": "",
+				"value": "Shutdown",
+				"defaultValue": "",
+				"check": null,
+				"xpathBaseNode": "",
+				"xpathName": "",
+				"xpathValue": ""
+			}
+		],
+		"schema": "",
+		"tasks": [
+			{
+				"type": "IF",
+				"name": "",
+				"originalAction": "if",
+				"negCondition": false,
+				"compareOn": "",
+				"compareOnType": "",
+				"condition": "true",
+				"conditionType": "",
+				"conditionCompareType": "",
+				"taskList": [
+					{
+						"type": "taskList",
+						"repeat": 1,
+						"tasks": [
+							{
+								"$name": "shutdownServer",
+								"$type": "serverAction",
+								"suppressAutomaticErrors": false,
+								"lockScreen": false,
+								"type": "action",
+								"name": "shutdownServer",
+								"actionType": "serverAction",
+								"message": "",
+								"parameterList": [
+									{
+										"$name": "action",
+										"$type": "fixed",
+										"type": "parameter",
+										"name": "action",
+										"parameterType": "fixed",
+										"title": "",
+										"transform": "",
+										"value": "shutdownDerbyNetworkServer",
+										"defaultValue": "",
+										"check": null,
+										"xpathBaseNode": "",
+										"xpathName": "",
+										"xpathValue": ""
+									}
+								],
+								"schema": "",
+								"tasks": [
+									{
+										"type": "IF",
+										"name": "",
+										"originalAction": "if",
+										"negCondition": true,
+										"compareOn": "",
+										"compareOnType": "",
+										"condition": "true",
+										"conditionType": "",
+										"conditionCompareType": "",
+										"taskList": [
+											{
+												"type": "taskList",
+												"repeat": 1,
+												"tasks": [
+													{
+														"$name": "ERROR_MESSAGE",
+														"$type": "returnObject",
+														"type": "assignSharedConstant",
+														"name": "ERROR_MESSAGE",
+														"parameterType": "returnObject",
+														"title": "",
+														"transform": "",
+														"value": "shutdownServer.returnValue",
+														"defaultValue": "",
+														"check": null,
+														"xpathBaseNode": "",
+														"xpathName": "",
+														"xpathValue": ""
+													},
+													{
+														"type": "alert",
+														"message": "Failed to shutdown network Derby server : ?ERROR_MESSAGE?"
+													},
+													{
+														"type": "retry",
+														"name": "shutdownServer"
+													}
+												]
+											}
+										]
+									},
+									{
+										"type": "IF",
+										"name": "",
+										"originalAction": "if",
+										"negCondition": false,
+										"compareOn": "",
+										"compareOnType": "",
+										"condition": "true",
+										"conditionType": "",
+										"conditionCompareType": "",
+										"taskList": [
+											{
+												"type": "taskList",
+												"repeat": 1,
+												"tasks": [
+													{
+														"type": "alert",
+														"message": "Stopped Derby Server"
+													}
+												]
+											}
+										]
+									}
+								]
+							}
+						]
+					}
+				]
+			}
+		]
+	}
+}

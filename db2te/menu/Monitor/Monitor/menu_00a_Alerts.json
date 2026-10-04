@@ -1,0 +1,65 @@
+{
+	"description": "Alert Overview",
+	"pageWindows": [
+		{
+			"target": "_active",
+			"title": "Alert Overview",
+			"info": "Alert overview",
+			"panelHeaders": {},
+			"content": {
+				"type": "splitPane",
+				"splitPercent": "0.5",
+				"panelA": {
+					"type": "splitPane",
+					"direction": "v",
+					"splitPercent": "0.5",
+					"panelA": {
+						"type": "panel",
+						"name": "minute",
+						"content": {
+							"link": {
+								"type": "action",
+								"target": "_self",
+								"window": "_self",
+								"parameters": {
+									"table": "Monitor/alertHistory",
+									"action": "list_table"
+								}
+							}
+						},
+						"panelHeaders": {}
+					},
+					"panelB": {
+						"type": "panel",
+						"name": "daily",
+						"content": {
+							"raw": ""
+						},
+						"panelHeaders": {}
+					}
+				},
+				"panelB": {
+					"type": "splitPane",
+					"direction": "v",
+					"splitPercent": "0.5",
+					"panelA": {
+						"type": "panel",
+						"name": "weekly",
+						"content": {
+							"raw": ""
+						},
+						"panelHeaders": {}
+					},
+					"panelB": {
+						"type": "panel",
+						"name": "details",
+						"content": {
+							"raw": ""
+						},
+						"panelHeaders": {}
+					}
+				}
+			}
+		}
+	]
+}

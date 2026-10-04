@@ -1,0 +1,378 @@
+{
+	"description": "Task Scheduler",
+	"requires": {
+		"DBMS": "DB2",
+		"minVersion": 9.5
+	},
+	"actionScript": {
+		"$name": "CheckForTaskViews",
+		"$type": "serverAction",
+		"$lockScreen": "true",
+		"suppressAutomaticErrors": false,
+		"lockScreen": true,
+		"type": "action",
+		"name": "CheckForTaskViews",
+		"actionType": "serverAction",
+		"message": "",
+		"parameterList": [
+			{
+				"$name": "action",
+				"$type": "fixed",
+				"type": "parameter",
+				"name": "action",
+				"parameterType": "fixed",
+				"title": "",
+				"transform": "",
+				"value": "checkForObject",
+				"defaultValue": "",
+				"check": null,
+				"xpathBaseNode": "",
+				"xpathName": "",
+				"xpathValue": ""
+			},
+			{
+				"$name": "objectType",
+				"$type": "fixed",
+				"type": "parameter",
+				"name": "objectType",
+				"parameterType": "fixed",
+				"title": "",
+				"transform": "",
+				"value": "table",
+				"defaultValue": "",
+				"check": null,
+				"xpathBaseNode": "",
+				"xpathName": "",
+				"xpathValue": ""
+			},
+			{
+				"$name": "object[schema]",
+				"$type": "fixed",
+				"type": "parameter",
+				"name": "object[schema]",
+				"parameterType": "fixed",
+				"title": "",
+				"transform": "",
+				"value": "SYSTOOLS",
+				"defaultValue": "",
+				"check": null,
+				"xpathBaseNode": "",
+				"xpathName": "",
+				"xpathValue": ""
+			},
+			{
+				"$name": "object[table]",
+				"$type": "fixed",
+				"type": "parameter",
+				"name": "object[table]",
+				"parameterType": "fixed",
+				"title": "",
+				"transform": "",
+				"value": "ADMIN_TASK_LIST",
+				"defaultValue": "",
+				"check": null,
+				"xpathBaseNode": "",
+				"xpathName": "",
+				"xpathValue": ""
+			}
+		],
+		"schema": "",
+		"tasks": [
+			{
+				"type": "IF",
+				"name": "",
+				"originalAction": "if",
+				"negCondition": false,
+				"compareOn": "CheckForTaskViews.returnCode",
+				"compareOnType": "returnObject",
+				"condition": "?????",
+				"conditionType": "",
+				"conditionCompareType": "",
+				"taskList": [
+					{
+						"type": "taskList",
+						"repeat": 1,
+						"tasks": [
+							{
+								"$name": "ERROR_MESSAGE",
+								"$type": "returnObject",
+								"type": "assignSharedConstant",
+								"name": "ERROR_MESSAGE",
+								"parameterType": "returnObject",
+								"title": "",
+								"transform": "",
+								"value": "CheckForTaskViews.returnObject",
+								"defaultValue": "",
+								"check": null,
+								"xpathBaseNode": "",
+								"xpathName": "",
+								"xpathValue": ""
+							},
+							{
+								"type": "alert",
+								"message": "Failed: ?ERROR_MESSAGE?"
+							}
+						]
+					}
+				]
+			},
+			{
+				"type": "IF",
+				"name": "",
+				"originalAction": "if",
+				"negCondition": false,
+				"compareOn": "",
+				"compareOnType": "",
+				"condition": "false",
+				"conditionType": "",
+				"conditionCompareType": "",
+				"taskList": [
+					{
+						"type": "taskList",
+						"repeat": 1,
+						"tasks": [
+							{
+								"$name": "alertTablesNotCreated",
+								"$type": "confirm",
+								"suppressAutomaticErrors": false,
+								"lockScreen": false,
+								"type": "action",
+								"name": "alertTablesNotCreated",
+								"actionType": "confirm",
+								"message": "Warning!\nThe required tables to use this view do not exist.\nThese views can be created by adding an admin task to your database.\n\nAdd a dummy admin task to your database now?",
+								"parameterList": [],
+								"schema": "",
+								"tasks": [
+									{
+										"type": "IF",
+										"name": "",
+										"originalAction": "if",
+										"negCondition": false,
+										"compareOn": "",
+										"compareOnType": "",
+										"condition": "true",
+										"conditionType": "",
+										"conditionCompareType": "",
+										"taskList": [
+											{
+												"type": "taskList",
+												"repeat": 1,
+												"tasks": [
+													{
+														"$name": "CreateTask",
+														"$type": "serverAction",
+														"suppressAutomaticErrors": false,
+														"lockScreen": false,
+														"type": "action",
+														"name": "CreateTask",
+														"actionType": "serverAction",
+														"message": "",
+														"parameterList": [
+															{
+																"$name": "action",
+																"$type": "fixed",
+																"type": "parameter",
+																"name": "action",
+																"parameterType": "fixed",
+																"title": "",
+																"transform": "",
+																"value": "executeSQL",
+																"defaultValue": "",
+																"check": null,
+																"xpathBaseNode": "",
+																"xpathName": "",
+																"xpathValue": ""
+															},
+															{
+																"$name": "SQL",
+																"$type": "fixed",
+																"type": "parameter",
+																"name": "SQL",
+																"parameterType": "fixed",
+																"title": "",
+																"transform": "",
+																"value": "CALL SYSPROC.ADMIN_TASK_ADD('TempJob', NULL, NULL, 0, NULL, 'SQLJ', 'REFESH_CLASSES', NULL, NULL, NULL);",
+																"defaultValue": "",
+																"check": null,
+																"xpathBaseNode": "",
+																"xpathName": "",
+																"xpathValue": ""
+															}
+														],
+														"schema": "",
+														"tasks": [
+															{
+																"type": "IF",
+																"name": "",
+																"originalAction": "if",
+																"negCondition": false,
+																"compareOn": "",
+																"compareOnType": "",
+																"condition": "true",
+																"conditionType": "",
+																"conditionCompareType": "",
+																"taskList": [
+																	{
+																		"type": "taskList",
+																		"repeat": 1,
+																		"tasks": [
+																			{
+																				"type": "loadPage",
+																				"links": [],
+																				"pageLayouts": [
+																					{
+																						"target": "_final",
+																						"content": {
+																							"type": "splitPane",
+																							"splitPercent": "0.5",
+																							"panelA": {
+																								"type": "panel",
+																								"name": "main",
+																								"content": {
+																									"link": {
+																										"type": "action",
+																										"target": "_self",
+																										"window": "_self",
+																										"parameters": {
+																											"table": "AdminTask/atsBaseView",
+																											"action": "list_table"
+																										}
+																									}
+																								},
+																								"primaryContainer": true
+																							},
+																							"panelB": {
+																								"type": "splitPane",
+																								"direction": "v",
+																								"splitPercent": "0.3",
+																								"panelA": {
+																									"type": "panel",
+																									"name": "adminTaskDetail"
+																								},
+																								"panelB": {
+																									"type": "panel",
+																									"name": "adminStatusDetail"
+																								}
+																							}
+																						}
+																					}
+																				]
+																			}
+																		]
+																	}
+																]
+															},
+															{
+																"type": "IF",
+																"name": "",
+																"originalAction": "if",
+																"negCondition": false,
+																"compareOn": "",
+																"compareOnType": "",
+																"condition": "false",
+																"conditionType": "",
+																"conditionCompareType": "",
+																"taskList": [
+																	{
+																		"type": "taskList",
+																		"repeat": 1,
+																		"tasks": [
+																			{
+																				"$name": "ERROR_MSG",
+																				"$type": "returnObject",
+																				"type": "assignLocalParameter",
+																				"name": "ERROR_MSG",
+																				"parameterType": "returnObject",
+																				"title": "",
+																				"transform": "",
+																				"value": "CreateTask.returnValue.STMTMSG",
+																				"defaultValue": "",
+																				"check": null,
+																				"xpathBaseNode": "",
+																				"xpathName": "",
+																				"xpathValue": ""
+																			},
+																			{
+																				"type": "alert",
+																				"message": "Unable to create Admin task: ?ERROR_MSG?"
+																			}
+																		]
+																	}
+																]
+															}
+														]
+													}
+												]
+											}
+										]
+									}
+								]
+							}
+						]
+					}
+				]
+			},
+			{
+				"type": "IF",
+				"name": "",
+				"originalAction": "if",
+				"negCondition": false,
+				"compareOn": "",
+				"compareOnType": "",
+				"condition": "true",
+				"conditionType": "",
+				"conditionCompareType": "",
+				"taskList": [
+					{
+						"type": "taskList",
+						"repeat": 1,
+						"tasks": [
+							{
+								"type": "loadPage",
+								"links": [],
+								"pageLayouts": [
+									{
+										"target": "_blank",
+										"content": {
+											"type": "splitPane",
+											"splitPercent": "0.5",
+											"panelA": {
+												"type": "panel",
+												"name": "main",
+												"content": {
+													"link": {
+														"type": "action",
+														"target": "_self",
+														"window": "_self",
+														"parameters": {
+															"table": "AdminTask/atsBaseView",
+															"action": "list_table"
+														}
+													}
+												},
+												"primaryContainer": true
+											},
+											"panelB": {
+												"type": "splitPane",
+												"direction": "v",
+												"splitPercent": "0.3",
+												"panelA": {
+													"type": "panel",
+													"name": "adminTaskDetail"
+												},
+												"panelB": {
+													"type": "panel",
+													"name": "adminStatusDetail"
+												}
+											}
+										}
+									}
+								]
+							}
+						]
+					}
+				]
+			}
+		]
+	}
+}

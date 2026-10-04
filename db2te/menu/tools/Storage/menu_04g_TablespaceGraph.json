@@ -1,0 +1,31 @@
+{
+	"description": "Tablespace Graph",
+	"pageWindows": [
+		{
+			"target": "_active",
+			"content": {
+				"type": "panel",
+				"name": "main",
+				"content": {
+					"link": {
+						"type": "action",
+						"target": "_self",
+						"window": "_self",
+						"parameters": {
+							"table": "StorageManagement/stmgTablespaceHist",
+							"action": "chart",
+							"$chartName": "Tablespace Historic Usage",
+							"$type": "line",
+							"$xAxis": "stmg_timestamp",
+							"$yAxis": "data_size",
+							"$yScale": "EXPONENTIAL",
+							"$grouping": "obj_name",
+							"maxResultsToFetch": "1000"
+						}
+					}
+				},
+				"primaryContainer": true
+			}
+		}
+	]
+}

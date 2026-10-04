@@ -1,0 +1,280 @@
+{
+	"description": "Db2auth Plugin Control",
+	"requires": {
+		"DBMS": "DB2"
+	},
+	"actionScript": {
+		"$name": "CheckForDb2authPlugin",
+		"$type": "serverAction",
+		"$lockScreen": "true",
+		"suppressAutomaticErrors": false,
+		"lockScreen": true,
+		"type": "action",
+		"name": "CheckForDb2authPlugin",
+		"actionType": "serverAction",
+		"message": "",
+		"parameterList": [
+			{
+				"$name": "action",
+				"$type": "fixed",
+				"type": "parameter",
+				"name": "action",
+				"parameterType": "fixed",
+				"title": "",
+				"transform": "",
+				"value": "checkForRow",
+				"defaultValue": "",
+				"check": null,
+				"xpathBaseNode": "",
+				"xpathName": "",
+				"xpathValue": ""
+			},
+			{
+				"$name": "schema",
+				"$type": "fixed",
+				"type": "parameter",
+				"name": "schema",
+				"parameterType": "fixed",
+				"title": "",
+				"transform": "",
+				"value": "SYSIBMADM",
+				"defaultValue": "",
+				"check": null,
+				"xpathBaseNode": "",
+				"xpathName": "",
+				"xpathValue": ""
+			},
+			{
+				"$name": "name",
+				"$type": "fixed",
+				"type": "parameter",
+				"name": "name",
+				"parameterType": "fixed",
+				"title": "",
+				"transform": "",
+				"value": "DBMCFG",
+				"defaultValue": "",
+				"check": null,
+				"xpathBaseNode": "",
+				"xpathName": "",
+				"xpathValue": ""
+			},
+			{
+				"$name": "column[NAME]",
+				"$type": "fixed",
+				"type": "parameter",
+				"name": "column[NAME]",
+				"parameterType": "fixed",
+				"title": "",
+				"transform": "",
+				"value": "group_plugin",
+				"defaultValue": "",
+				"check": null,
+				"xpathBaseNode": "",
+				"xpathName": "",
+				"xpathValue": ""
+			},
+			{
+				"$name": "column[VALUE]",
+				"$type": "fixed",
+				"type": "parameter",
+				"name": "column[VALUE]",
+				"parameterType": "fixed",
+				"title": "",
+				"transform": "",
+				"value": "DB2AUTH",
+				"defaultValue": "",
+				"check": null,
+				"xpathBaseNode": "",
+				"xpathName": "",
+				"xpathValue": ""
+			}
+		],
+		"schema": "",
+		"tasks": [
+			{
+				"type": "IF",
+				"name": "",
+				"originalAction": "if",
+				"negCondition": false,
+				"compareOn": "",
+				"compareOnType": "",
+				"condition": "false",
+				"conditionType": "",
+				"conditionCompareType": "",
+				"taskList": [
+					{
+						"type": "taskList",
+						"repeat": 1,
+						"tasks": [
+							{
+								"type": "alert",
+								"message": "Error: a\nEither the db2auth security plugin is not installed,\nyou do not have the proper authority,\nor there is no connection to the authorization database.\nPlease see http://www.ibm.com/developerworks/data/library/techarticle/dm-0802kligerman/\nfor more information about this plugin."
+							}
+						]
+					}
+				]
+			},
+			{
+				"type": "IF",
+				"name": "",
+				"originalAction": "if",
+				"negCondition": false,
+				"compareOn": "",
+				"compareOnType": "",
+				"condition": "true",
+				"conditionType": "",
+				"conditionCompareType": "",
+				"taskList": [
+					{
+						"type": "taskList",
+						"repeat": 1,
+						"tasks": [
+							{
+								"$name": "CheckForDb2authSchemaUsersTable",
+								"$type": "serverAction",
+								"suppressAutomaticErrors": false,
+								"lockScreen": false,
+								"type": "action",
+								"name": "CheckForDb2authSchemaUsersTable",
+								"actionType": "serverAction",
+								"message": "",
+								"parameterList": [
+									{
+										"$name": "action",
+										"$type": "fixed",
+										"type": "parameter",
+										"name": "action",
+										"parameterType": "fixed",
+										"title": "",
+										"transform": "",
+										"value": "checkForObject",
+										"defaultValue": "",
+										"check": null,
+										"xpathBaseNode": "",
+										"xpathName": "",
+										"xpathValue": ""
+									},
+									{
+										"$name": "objectType",
+										"$type": "fixed",
+										"type": "parameter",
+										"name": "objectType",
+										"parameterType": "fixed",
+										"title": "",
+										"transform": "",
+										"value": "table",
+										"defaultValue": "",
+										"check": null,
+										"xpathBaseNode": "",
+										"xpathName": "",
+										"xpathValue": ""
+									},
+									{
+										"$name": "object[schema]",
+										"$type": "fixed",
+										"type": "parameter",
+										"name": "object[schema]",
+										"parameterType": "fixed",
+										"title": "",
+										"transform": "",
+										"value": "DB2AUTH",
+										"defaultValue": "",
+										"check": null,
+										"xpathBaseNode": "",
+										"xpathName": "",
+										"xpathValue": ""
+									},
+									{
+										"$name": "object[table]",
+										"$type": "fixed",
+										"type": "parameter",
+										"name": "object[table]",
+										"parameterType": "fixed",
+										"title": "",
+										"transform": "",
+										"value": "USERS",
+										"defaultValue": "",
+										"check": null,
+										"xpathBaseNode": "",
+										"xpathName": "",
+										"xpathValue": ""
+									}
+								],
+								"schema": "",
+								"tasks": [
+									{
+										"type": "IF",
+										"name": "",
+										"originalAction": "if",
+										"negCondition": false,
+										"compareOn": "",
+										"compareOnType": "",
+										"condition": "false",
+										"conditionType": "",
+										"conditionCompareType": "",
+										"taskList": [
+											{
+												"type": "taskList",
+												"repeat": 1,
+												"tasks": [
+													{
+														"type": "alert",
+														"message": "Error: \nEither the db2auth security plugin is not installed,\nyou do not have the proper authority,\nor there is no connection to the authorization database.\nPlease see http://www.ibm.com/developerworks/data/library/techarticle/dm-0802kligerman/\nfor more information about this plugin."
+													}
+												]
+											}
+										]
+									},
+									{
+										"type": "IF",
+										"name": "",
+										"originalAction": "if",
+										"negCondition": false,
+										"compareOn": "",
+										"compareOnType": "",
+										"condition": "true",
+										"conditionType": "",
+										"conditionCompareType": "",
+										"taskList": [
+											{
+												"type": "taskList",
+												"repeat": 1,
+												"tasks": [
+													{
+														"type": "loadPage",
+														"links": [],
+														"pageLayouts": [
+															{
+																"target": "_blank",
+																"content": {
+																	"type": "panel",
+																	"name": "main",
+																	"content": {
+																		"link": {
+																			"type": "action",
+																			"target": "_self",
+																			"window": "_self",
+																			"parameters": {
+																				"action": "db2AuthOverview"
+																			}
+																		}
+																	},
+																	"primaryContainer": true
+																}
+															}
+														]
+													}
+												]
+											}
+										]
+									}
+								]
+							}
+						]
+					}
+				]
+			}
+		]
+	}
+}

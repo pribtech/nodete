@@ -1,0 +1,34 @@
+{
+	"description": "Dictionary",
+	"requires": {
+		"DBMS": "DB2",
+		"minVersion": 9.7
+	},
+	"pageWindows": [
+		{
+			"target": "_active",
+			"content": {
+				"type": "panel",
+				"name": "Tutorial",
+				"content": {
+					"link": {
+						"type": "action",
+						"target": "_self",
+						"window": "_self",
+						"parameters": {
+							"action": "flowgroup",
+							"subFolder": "Dictionary",
+							"title": "Dictionary Views",
+							"CurrentMenuLocation": {
+								"$var": "CURRENT_MENU_LOCATION"
+							},
+							"listStyleType": "",
+							"menuExpansionType": "internal"
+						}
+					}
+				},
+				"primaryContainer": true
+			}
+		}
+	]
+}

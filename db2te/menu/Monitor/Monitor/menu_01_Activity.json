@@ -1,0 +1,27 @@
+{
+	"description": "Activity",
+	"requires": {
+		"minVersion": 10.5
+	},
+	"pageWindows": [
+		{
+			"target": "_active",
+			"content": {
+				"type": "panel",
+				"name": "main",
+				"content": {
+					"link": {
+						"type": "action",
+						"target": "_self",
+						"window": "_self",
+						"parameters": {
+							"table": "Monitor/monGetActivity",
+							"action": "list_table"
+						}
+					}
+				},
+				"primaryContainer": true
+			}
+		}
+	]
+}

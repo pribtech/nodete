@@ -23,9 +23,9 @@ const maskTutorialNames = (value) => JSON.parse(JSON.stringify(value), (key, v) 
 const MENU_CASES = {
 	'menu_DeveloperSwitch.json': { baseMenuFolder: './menu/DeveloperSwitch' },
 	'menu_righthand.json': { baseMenuFolder: './menu/righthandMenu/' },
-	'menu_monitor.json': { rootCallBack: './menu/DeveloperSwitch/./menu_04_Monitor.xml' },
-	'menu_tutorials.json': { rootCallBack: './tutorials/./menu_03_tutorials.xml' },
-	'menu_clp.json': { rootCallBack: './menu/Commands/./menu_05_clpCommands.xml' },
+	'menu_monitor.json': { rootCallBack: './menu/DeveloperSwitch/./menu_04_Monitor.json' },
+	'menu_tutorials.json': { rootCallBack: './tutorials/./menu_03_tutorials.json' },
+	'menu_clp.json': { rootCallBack: './menu/Commands/./menu_05_clpCommands.json' },
 };
 
 for (const [fixture, fields] of Object.entries(MENU_CASES)) {
@@ -40,7 +40,7 @@ for (const [fixture, fields] of Object.entries(MENU_CASES)) {
 
 test('tutorial menu entries get a camel-cased tutorialName', async () => {
 	const menu = PhpReference.unwrapMenu(await server.postActionText(
-		{ rootCallBack: './menu/DeveloperSwitch/./menu_04_Monitor.xml', returntype: 'JSON' }, '?action=menu'));
+		{ rootCallBack: './menu/DeveloperSwitch/./menu_04_Monitor.json', returntype: 'JSON' }, '?action=menu'));
 	const names = JSON.stringify(menu).match(/"tutorialName":"[^"]*"/g);
 	assert.ok(names.includes('"tutorialName":"SetupBaseMonitors"'), names.join());
 });

@@ -1,0 +1,48 @@
+{
+	"description": "Session Signon",
+	"requires": {
+		"noFeature": "SSO"
+	},
+	"actionScript": {
+		"$name": "runSessionPHPSignon",
+		"suppressAutomaticErrors": false,
+		"lockScreen": false,
+		"type": "action",
+		"name": "runSessionPHPSignon",
+		"actionType": "",
+		"message": "",
+		"parameterList": [],
+		"schema": "",
+		"tasks": [
+			{
+				"type": "task",
+				"taskList": {
+					"type": "taskList",
+					"repeat": 1,
+					"tasks": [
+						{
+							"$name": "PASSWORD",
+							"$type": "raw",
+							"type": "setGlobal",
+							"name": "PASSWORD",
+							"parameterType": "raw",
+							"title": "",
+							"transform": "",
+							"value": "",
+							"defaultValue": "",
+							"check": null,
+							"xpathBaseNode": "",
+							"xpathName": "",
+							"xpathValue": ""
+						},
+						{
+							"type": "callGlobalAction",
+							"name": "sessionPHPSignon",
+							"parameter": []
+						}
+					]
+				}
+			}
+		]
+	}
+}

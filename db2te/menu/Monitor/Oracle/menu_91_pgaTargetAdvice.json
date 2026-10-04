@@ -1,0 +1,50 @@
+{
+	"description": "PGA Target Advice",
+	"pageWindows": [
+		{
+			"target": "_active",
+			"content": {
+				"type": "splitPane",
+				"panelA": {
+					"type": "panel",
+					"name": "main",
+					"content": {
+						"link": {
+							"type": "action",
+							"target": "_self",
+							"window": "_self",
+							"parameters": {
+								"table": "Oracle/Monitor/pgaTargetAdvice",
+								"$action": "list_table"
+							}
+						}
+					},
+					"primaryContainer": true
+				},
+				"panelB": {
+					"type": "panel",
+					"name": "pgaTargetAdvice",
+					"content": {
+						"link": {
+							"type": "action",
+							"target": "_self",
+							"window": "_self",
+							"parameters": {
+								"table": "Oracle/Monitor/pgaTargetAdvice",
+								"action": "chart",
+								"$chartName": "pgaTargetAdvice",
+								"$chartTitle": "PGA Target AdvicePct",
+								"$type": "bar",
+								"$yScale": "FIXED",
+								"$yAxisUpperBound": "100",
+								"$yAxisLowerBound": "0",
+								"$xAxis": "PGA_TARGET_FOR_ESTIMATE",
+								"$yAxis": "ESTD_PGA_CACHE_HIT_PERCENTAGE"
+							}
+						}
+					}
+				}
+			}
+		}
+	]
+}

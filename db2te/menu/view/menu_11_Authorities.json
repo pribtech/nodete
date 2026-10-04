@@ -1,0 +1,33 @@
+{
+	"description": "Authorities",
+	"requires": {
+		"DBMS": "DB2"
+	},
+	"pageWindows": [
+		{
+			"target": "_active",
+			"content": {
+				"type": "panel",
+				"name": "Tutorial",
+				"content": {
+					"link": {
+						"type": "action",
+						"target": "_self",
+						"window": "_self",
+						"parameters": {
+							"action": "flowgroup",
+							"subFolder": "Authorities",
+							"title": "Authorities",
+							"CurrentMenuLocation": {
+								"$var": "CURRENT_MENU_LOCATION"
+							},
+							"listStyleType": "",
+							"menuExpansionType": "internal"
+						}
+					}
+				},
+				"primaryContainer": true
+			}
+		}
+	]
+}

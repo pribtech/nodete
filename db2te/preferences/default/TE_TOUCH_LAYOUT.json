@@ -1,0 +1,33 @@
+{
+	"target": "_blank",
+	"windowStage": "SuperStage",
+	"content": {
+		"type": "splitPane",
+		"allowResize": false,
+		"maxSize": -70,
+		"panelA": {
+			"type": "stage",
+			"name": "DefaultStage",
+			"HasMenuBarContainer": "TOP_TAB_TASK_BAR",
+			"titleBarType": "NO_TITLE_BAR",
+			"windowOptionType": "NAV_BACK_BUTTON | NAV_FORWARD_BUTTON | NAV_RELOAD_BUTTON",
+			"windowControlTypes": "NO_TITLE_BAR_OPTIONS",
+			"sizable": "WINDOW_IS_FULL"
+		},
+		"panelB": {
+			"type": "panel",
+			"name": "titleBar",
+			"content": {
+				"link": {
+					"type": "action",
+					"target": "_self",
+					"window": "_self",
+					"parameters": {
+						"action": "touchTitleBar"
+					}
+				}
+			},
+			"overflow": "hidden"
+		}
+	}
+}

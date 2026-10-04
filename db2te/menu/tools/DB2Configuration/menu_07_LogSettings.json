@@ -1,0 +1,25 @@
+{
+	"description": "LOG",
+	"pageWindows": [
+		{
+			"target": "_active",
+			"content": {
+				"type": "panel",
+				"name": "LOG",
+				"content": {
+					"link": {
+						"type": "action",
+						"target": "_self",
+						"window": "_self",
+						"parameters": {
+							"name": "log%",
+							"comparename": "like",
+							"table": "dbcfg",
+							"action": "list_table"
+						}
+					}
+				}
+			}
+		}
+	]
+}

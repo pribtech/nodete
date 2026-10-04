@@ -1,0 +1,45 @@
+{
+	"description": "Replication",
+	"pageWindows": [
+		{
+			"target": "_active",
+			"panelHeaders": {
+				"autoRefreshControls": {
+					"time": "10",
+					"timeOptions": [
+						1,
+						5,
+						10,
+						20,
+						60
+					],
+					"countdownVisible": true
+				}
+			},
+			"content": {
+				"type": "splitPane",
+				"panelA": {
+					"type": "panel",
+					"name": "main",
+					"content": {
+						"link": {
+							"type": "action",
+							"target": "_self",
+							"window": "_self",
+							"parameters": {
+								"table": "postgreSQL/Monitor/replication",
+								"$action": "list_table"
+							}
+						}
+					},
+					"panelHeaders": {},
+					"primaryContainer": true
+				},
+				"panelB": {
+					"type": "panel",
+					"name": "detail"
+				}
+			}
+		}
+	]
+}

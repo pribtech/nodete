@@ -1,0 +1,52 @@
+{
+	"description": "Monitor Table Realtime",
+	"requires": {
+		"minVersion": 9.7
+	},
+	"pageWindows": [
+		{
+			"target": "_active",
+			"title": "Monitor Table Activity",
+			"info": "Monitor Table Activity",
+			"panelHeaders": {
+				"autoRefreshControls": {
+					"time": "10",
+					"timeOptions": [
+						1,
+						5,
+						10,
+						20,
+						60
+					],
+					"countdownVisible": true
+				}
+			},
+			"content": {
+				"type": "panel",
+				"name": "DB",
+				"content": {
+					"link": {
+						"type": "action",
+						"target": "_self",
+						"window": "_self",
+						"parameters": {
+							"table": "Monitor/monTable",
+							"action": "chart",
+							"refresh": "append",
+							"$chartName": "TableActivity",
+							"$chartTitle": "Table Activity",
+							"$type": "line",
+							"$xAxis": "SAMPLE_TS",
+							"$yAxis": "ROWS_READ",
+							"$grouping": "TABSCHEMA,TABNAME",
+							"$legend": "show",
+							"$yScale": "EXPONENTIAL",
+							"maxResultsToFetch": "1000",
+							"$highlight": "first"
+						}
+					}
+				}
+			}
+		}
+	]
+}

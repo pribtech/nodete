@@ -1,0 +1,418 @@
+{
+	"$name": "Setup",
+	"$type": "blank",
+	"$lockScreen": "true",
+	"suppressAutomaticErrors": false,
+	"lockScreen": true,
+	"type": "action",
+	"name": "Setup",
+	"actionType": "blank",
+	"message": "",
+	"parameterList": [],
+	"schema": "",
+	"tasks": [
+		{
+			"type": "task",
+			"taskList": {
+				"type": "taskList",
+				"repeat": 1,
+				"tasks": [
+					{
+						"type": "setActionReturn",
+						"value": "false",
+						"parameterType": "fixed"
+					},
+					{
+						"$name": "DBconnectionSetConnection",
+						"$type": "blank",
+						"$lockScreen": "true",
+						"suppressAutomaticErrors": false,
+						"lockScreen": true,
+						"type": "action",
+						"name": "DBconnectionSetConnection",
+						"actionType": "blank",
+						"message": "",
+						"parameterList": [],
+						"schema": "",
+						"tasks": [
+							{
+								"type": "IF",
+								"name": "",
+								"originalAction": "if",
+								"negCondition": false,
+								"compareOn": "TE_DATABASE_AUTHENTICATED",
+								"compareOnType": "constant",
+								"condition": "false",
+								"conditionType": "",
+								"conditionCompareType": "str",
+								"taskList": [
+									{
+										"type": "taskList",
+										"repeat": 1,
+										"tasks": [
+											{
+												"$name": "DBconnectionSetConnection_GetPassword",
+												"$type": "form",
+												"suppressAutomaticErrors": false,
+												"lockScreen": false,
+												"type": "action",
+												"name": "DBconnectionSetConnection_GetPassword",
+												"actionType": "form",
+												"message": "<table><tr><td>\n<h3>Connect to Database</h3>\n<table>\n<tr><td>\n<tr><td>Database:</td><td>?TE_DATABASE_LOGIN_DATABASE?</td></tr>\n<tr><td>Host:</td><td>?TE_DATABASE_LOGIN_HOSTNAME?</td></tr>\n<tr><td>Port:</td><td>?TE_DATABASE_LOGIN_PORTNUMBER?</td></tr>\n<tr><td>Comment:</td><td>?TE_DATABASE_LOGIN_COMMENT?</td></tr>\n<tr><td>Database Driver:</td><td>?TE_DATABASE_LOGIN_DATABASE_DRIVER?</td></tr>\n</table><br/>\n<b>Enter Group:</b><br/>\n<input id=\"_db2connectGroup\" type=\"text\" style=\"width:25em;\" name=\"LOCAL_DATABASE_LOGIN_GROUP\"  value=\"?TE_DATABASE_LOGIN_GROUP?\"/>\n<b>Enter username:</b><br/>\n<input id=\"_db2connectUsername\" type=\"text\" style=\"width:25em;\" name=\"LOCAL_DATABASE_LOGIN_USERNAME\"  value=\"?TE_DATABASE_LOGIN_USERNAME?\"/>\n<b>Enter password:</b><br/>\n<input id=\"_db2connectPassword\" type=\"password\" style=\"width:25em;\" name=\"LOCAL_DATABASE_LOGIN_PASSWORD\"  value=\"?TE_DATABASE_LOGIN_PASSWORD?\"/>\n<script language=\"javascript\">\n\tif($(\"_db2connectUsername\").value == \"\")\n\t\t$(\"_db2connectUsername\").focus()\n\telse\n\t    $(\"_db2connectPassword\").focus()\n</script>\n</td></tr></table>",
+												"parameterList": [
+													{
+														"$name": "PROMPT_DEFAULT",
+														"$type": "constant",
+														"type": "parameter",
+														"name": "PROMPT_DEFAULT",
+														"parameterType": "constant",
+														"title": "",
+														"transform": "",
+														"value": "TE_DATABASE_LOGIN_PASSWORD",
+														"defaultValue": "",
+														"check": null,
+														"xpathBaseNode": "",
+														"xpathName": "",
+														"xpathValue": ""
+													}
+												],
+												"schema": "",
+												"tasks": [
+													{
+														"type": "IF",
+														"name": "",
+														"originalAction": "if",
+														"negCondition": false,
+														"compareOn": "",
+														"compareOnType": "",
+														"condition": "true",
+														"conditionType": "",
+														"conditionCompareType": "",
+														"taskList": [
+															{
+																"type": "taskList",
+																"repeat": 1,
+																"tasks": [
+																	{
+																		"$name": "TE_DATABASE_LOGIN_GROUP",
+																		"$type": "constant",
+																		"type": "assignSharedConstant",
+																		"name": "TE_DATABASE_LOGIN_GROUP",
+																		"parameterType": "constant",
+																		"title": "",
+																		"transform": "",
+																		"value": "LOCAL_DATABASE_LOGIN_GROUP",
+																		"defaultValue": "",
+																		"check": null,
+																		"xpathBaseNode": "",
+																		"xpathName": "",
+																		"xpathValue": ""
+																	},
+																	{
+																		"$name": "TE_DATABASE_LOGIN_USERNAME",
+																		"$type": "constant",
+																		"type": "assignSharedConstant",
+																		"name": "TE_DATABASE_LOGIN_USERNAME",
+																		"parameterType": "constant",
+																		"title": "",
+																		"transform": "",
+																		"value": "LOCAL_DATABASE_LOGIN_USERNAME",
+																		"defaultValue": "",
+																		"check": null,
+																		"xpathBaseNode": "",
+																		"xpathName": "",
+																		"xpathValue": ""
+																	},
+																	{
+																		"$name": "TE_DATABASE_LOGIN_PASSWORD",
+																		"$type": "constant",
+																		"type": "assignSharedConstant",
+																		"name": "TE_DATABASE_LOGIN_PASSWORD",
+																		"parameterType": "constant",
+																		"title": "",
+																		"transform": "",
+																		"value": "LOCAL_DATABASE_LOGIN_PASSWORD",
+																		"defaultValue": "",
+																		"check": null,
+																		"xpathBaseNode": "",
+																		"xpathName": "",
+																		"xpathValue": ""
+																	},
+																	{
+																		"$name": "DBconnectionSetConnection_Authenticate",
+																		"$type": "serverAction",
+																		"suppressAutomaticErrors": false,
+																		"lockScreen": false,
+																		"type": "action",
+																		"name": "DBconnectionSetConnection_Authenticate",
+																		"actionType": "serverAction",
+																		"message": "",
+																		"parameterList": [
+																			{
+																				"$name": "action",
+																				"$type": "raw",
+																				"type": "parameter",
+																				"name": "action",
+																				"parameterType": "raw",
+																				"title": "",
+																				"transform": "",
+																				"value": "DBConnectionNewConnection",
+																				"defaultValue": "",
+																				"check": null,
+																				"xpathBaseNode": "",
+																				"xpathName": "",
+																				"xpathValue": ""
+																			}
+																		],
+																		"schema": "",
+																		"tasks": [
+																			{
+																				"type": "IF",
+																				"name": "",
+																				"originalAction": "if",
+																				"negCondition": false,
+																				"compareOn": "",
+																				"compareOnType": "",
+																				"condition": "false",
+																				"conditionType": "",
+																				"conditionCompareType": "",
+																				"taskList": [
+																					{
+																						"type": "taskList",
+																						"repeat": 1,
+																						"tasks": [
+																							{
+																								"$name": "ERROR_MSG",
+																								"$type": "returnObject",
+																								"type": "setGlobal",
+																								"name": "ERROR_MSG",
+																								"parameterType": "returnObject",
+																								"title": "",
+																								"transform": "",
+																								"value": "DBconnectionSetConnection_Authenticate.returnValue",
+																								"defaultValue": "",
+																								"check": null,
+																								"xpathBaseNode": "",
+																								"xpathName": "",
+																								"xpathValue": ""
+																							},
+																							{
+																								"type": "callGlobalAction",
+																								"name": "DB_CONNECTION_NEW_CONNECTION_DIALOG_SCRIPT",
+																								"parameter": []
+																							},
+																							{
+																								"type": "return"
+																							}
+																						]
+																					}
+																				]
+																			},
+																			{
+																				"type": "IF",
+																				"name": "",
+																				"originalAction": "if",
+																				"negCondition": false,
+																				"compareOn": "",
+																				"compareOnType": "",
+																				"condition": "true",
+																				"conditionType": "",
+																				"conditionCompareType": "",
+																				"taskList": [
+																					{
+																						"type": "taskList",
+																						"repeat": 1,
+																						"tasks": [
+																							{
+																								"type": "setActionReturn",
+																								"value": "DBconnectionSetConnection_Authenticate.returnValue",
+																								"parameterType": "returnObject"
+																							}
+																						]
+																					}
+																				]
+																			}
+																		]
+																	}
+																]
+															}
+														]
+													}
+												]
+											},
+											{
+												"type": "exit"
+											}
+										]
+									}
+								]
+							},
+							{
+								"type": "IF",
+								"name": "",
+								"originalAction": "ifNot",
+								"negCondition": true,
+								"compareOn": "TE_DATABASE_AUTHENTICATED",
+								"compareOnType": "constant",
+								"condition": "false",
+								"conditionType": "",
+								"conditionCompareType": "str",
+								"taskList": [
+									{
+										"type": "taskList",
+										"repeat": 1,
+										"tasks": [
+											{
+												"type": "IF",
+												"name": "",
+												"originalAction": "if",
+												"negCondition": false,
+												"compareOn": "TE_DATABASE_AUTHENTICATED",
+												"compareOnType": "constant",
+												"condition": "true",
+												"conditionType": "",
+												"conditionCompareType": "str",
+												"taskList": [
+													{
+														"type": "taskList",
+														"repeat": 1,
+														"tasks": [
+															{
+																"$name": "DBConnectionSetDefaultConnection",
+																"$type": "serverAction",
+																"suppressAutomaticErrors": false,
+																"lockScreen": false,
+																"type": "action",
+																"name": "DBConnectionSetDefaultConnection",
+																"actionType": "serverAction",
+																"message": "",
+																"parameterList": [
+																	{
+																		"$name": "action",
+																		"$type": "raw",
+																		"type": "parameter",
+																		"name": "action",
+																		"parameterType": "raw",
+																		"title": "",
+																		"transform": "",
+																		"value": "DBConnectionSetDefaultConnection",
+																		"defaultValue": "",
+																		"check": null,
+																		"xpathBaseNode": "",
+																		"xpathName": "",
+																		"xpathValue": ""
+																	},
+																	{
+																		"$name": "USE_CONNECTION",
+																		"$type": "FIXED",
+																		"type": "parameter",
+																		"name": "USE_CONNECTION",
+																		"parameterType": "FIXED",
+																		"title": "",
+																		"transform": "",
+																		"value": "?TE_DATABASE_LOGIN_DESCRIPTION?",
+																		"defaultValue": "",
+																		"check": null,
+																		"xpathBaseNode": "",
+																		"xpathName": "",
+																		"xpathValue": ""
+																	}
+																],
+																"schema": "",
+																"tasks": [
+																	{
+																		"type": "IF",
+																		"name": "",
+																		"originalAction": "if",
+																		"negCondition": false,
+																		"compareOn": "",
+																		"compareOnType": "",
+																		"condition": "true",
+																		"conditionType": "",
+																		"conditionCompareType": "",
+																		"taskList": [
+																			{
+																				"type": "taskList",
+																				"repeat": 1,
+																				"tasks": [
+																					{
+																						"type": "setActionReturn",
+																						"value": "?TE_DATABASE_LOGIN_DESCRIPTION?",
+																						"parameterType": "fixed"
+																					},
+																					{
+																						"type": "exit"
+																					}
+																				]
+																			}
+																		]
+																	}
+																]
+															},
+															{
+																"$name": "ERROR_MSG",
+																"$type": "Raw",
+																"type": "setGlobal",
+																"name": "ERROR_MSG",
+																"parameterType": "Raw",
+																"title": "",
+																"transform": "",
+																"value": "Connection Expired",
+																"defaultValue": "",
+																"check": null,
+																"xpathBaseNode": "",
+																"xpathName": "",
+																"xpathValue": ""
+															},
+															{
+																"type": "callGlobalAction",
+																"name": "DB_CONNECTION_NEW_CONNECTION_DIALOG_SCRIPT",
+																"parameter": []
+															},
+															{
+																"type": "exit"
+															}
+														]
+													}
+												]
+											},
+											{
+												"type": "IF",
+												"name": "",
+												"originalAction": "ifNot",
+												"negCondition": true,
+												"compareOn": "TE_DATABASE_AUTHENTICATED",
+												"compareOnType": "constant",
+												"condition": "true",
+												"conditionType": "",
+												"conditionCompareType": "str",
+												"taskList": [
+													{
+														"type": "taskList",
+														"repeat": 1,
+														"tasks": [
+															{
+																"type": "alert",
+																"message": "Connection Set Failure: \n\t\t\t\t\t\t\t?TE_DATABASE_CONNECTION_STATUS?"
+															},
+															{
+																"type": "exit"
+															}
+														]
+													}
+												]
+											},
+											{
+												"type": "exit"
+											}
+										]
+									}
+								]
+							}
+						]
+					}
+				]
+			}
+		}
+	]
+}

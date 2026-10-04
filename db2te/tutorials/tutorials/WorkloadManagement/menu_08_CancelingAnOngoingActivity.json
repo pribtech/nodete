@@ -1,0 +1,27 @@
+{
+	"description": "Canceling an Ongoing Activity",
+	"pageWindows": [
+		{
+			"target": "_final",
+			"content": {
+				"type": "panel",
+				"name": "Tutorial",
+				"content": {
+					"link": {
+						"type": "action",
+						"target": "_self",
+						"window": "_self",
+						"parameters": {
+							"action": "tutorial",
+							"tutorialName": "CancelingAnOngoingActivity",
+							"CurrentMenuLocation": {
+								"$var": "CURRENT_MENU_LOCATION"
+							}
+						}
+					}
+				},
+				"primaryContainer": true
+			}
+		}
+	]
+}

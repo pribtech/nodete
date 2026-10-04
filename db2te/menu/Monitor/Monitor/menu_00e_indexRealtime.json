@@ -1,0 +1,54 @@
+{
+	"description": "Monitor Index Realtime",
+	"requires": {
+		"minVersion": 9.7
+	},
+	"pageWindows": [
+		{
+			"target": "_active",
+			"title": "Monitor Index Activity",
+			"info": "Monitor Index Activity",
+			"panelHeaders": {
+				"autoRefreshControls": {
+					"time": "10",
+					"timeOptions": [
+						1,
+						5,
+						10,
+						20,
+						60
+					],
+					"countdownVisible": true
+				}
+			},
+			"content": {
+				"type": "panel",
+				"name": "DB",
+				"content": {
+					"link": {
+						"type": "action",
+						"target": "_self",
+						"window": "_self",
+						"parameters": {
+							"table": "Monitor/monIndex",
+							"action": "chart",
+							"refresh": "append",
+							"$chartName": "IndexActivity",
+							"$chartTitle": "Index Activity",
+							"$type": "line",
+							"$xAxis": "SAMPLE_TS",
+							"$yAxis": "INDEX_SCANS",
+							"$grouping": "INDSCHEMA,INDNAME",
+							"$legend": "show",
+							"$yScale": "EXPONENTIAL",
+							"$highlight": "first",
+							"maxResultsToFetch": "1000",
+							"INDEX_SCANS": "0",
+							"compareINDEX_SCANS": "gt"
+						}
+					}
+				}
+			}
+		}
+	]
+}

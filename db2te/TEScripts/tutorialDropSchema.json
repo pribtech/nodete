@@ -1,0 +1,312 @@
+{
+	"$name": "tutorialFinalDropSchema",
+	"$type": "serverAction",
+	"suppressAutomaticErrors": false,
+	"lockScreen": false,
+	"type": "action",
+	"name": "tutorialFinalDropSchema",
+	"actionType": "serverAction",
+	"message": "",
+	"parameterList": [
+		{
+			"$name": "action",
+			"$type": "fixed",
+			"type": "parameter",
+			"name": "action",
+			"parameterType": "fixed",
+			"title": "",
+			"transform": "",
+			"value": "checkForObject",
+			"defaultValue": "",
+			"check": null,
+			"xpathBaseNode": "",
+			"xpathName": "",
+			"xpathValue": ""
+		},
+		{
+			"$name": "objectType",
+			"$type": "fixed",
+			"type": "parameter",
+			"name": "objectType",
+			"parameterType": "fixed",
+			"title": "",
+			"transform": "",
+			"value": "schema",
+			"defaultValue": "",
+			"check": null,
+			"xpathBaseNode": "",
+			"xpathName": "",
+			"xpathValue": ""
+		},
+		{
+			"$name": "object[schema]",
+			"$type": "constant",
+			"type": "parameter",
+			"name": "object[schema]",
+			"parameterType": "constant",
+			"title": "",
+			"transform": "",
+			"value": "SCHEMA",
+			"defaultValue": "",
+			"check": null,
+			"xpathBaseNode": "",
+			"xpathName": "",
+			"xpathValue": ""
+		}
+	],
+	"schema": "",
+	"tasks": [
+		{
+			"type": "IF",
+			"name": "",
+			"originalAction": "if",
+			"negCondition": false,
+			"compareOn": "",
+			"compareOnType": "",
+			"condition": "true",
+			"conditionType": "",
+			"conditionCompareType": "",
+			"taskList": [
+				{
+					"type": "taskList",
+					"repeat": 1,
+					"tasks": [
+						{
+							"type": "IF",
+							"name": "",
+							"originalAction": "if",
+							"negCondition": false,
+							"compareOn": "DMC_IS_PUBLICLY_HOSTED",
+							"compareOnType": "constant",
+							"condition": "true",
+							"conditionType": "",
+							"conditionCompareType": "",
+							"taskList": [
+								{
+									"type": "taskList",
+									"repeat": 1,
+									"tasks": [
+										{
+											"type": "callAction",
+											"name": "tutorialFinalDropSchema_DropSchema"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "IF",
+							"name": "",
+							"originalAction": "ifNot",
+							"negCondition": true,
+							"compareOn": "DMC_IS_PUBLICLY_HOSTED",
+							"compareOnType": "constant",
+							"condition": "true",
+							"conditionType": "",
+							"conditionCompareType": "",
+							"taskList": [
+								{
+									"type": "taskList",
+									"repeat": 1,
+									"tasks": [
+										{
+											"$name": "dropSchemaConfirm",
+											"$type": "confirm",
+											"suppressAutomaticErrors": false,
+											"lockScreen": false,
+											"type": "action",
+											"name": "dropSchemaConfirm",
+											"actionType": "confirm",
+											"message": "Would you like to drop the schema ?SCHEMA? now that you've completed the tutorial",
+											"parameterList": [],
+											"schema": "",
+											"tasks": [
+												{
+													"type": "IF",
+													"name": "",
+													"originalAction": "if",
+													"negCondition": false,
+													"compareOn": "",
+													"compareOnType": "",
+													"condition": "true",
+													"conditionType": "",
+													"conditionCompareType": "",
+													"taskList": [
+														{
+															"type": "taskList",
+															"repeat": 1,
+															"tasks": [
+																{
+																	"type": "callAction",
+																	"name": "tutorialFinalDropSchema_DropSchema"
+																},
+																{
+																	"$name": "tutorialFinalDropSchema_CheckForDropedSchema",
+																	"$type": "serverAction",
+																	"suppressAutomaticErrors": false,
+																	"lockScreen": false,
+																	"type": "action",
+																	"name": "tutorialFinalDropSchema_CheckForDropedSchema",
+																	"actionType": "serverAction",
+																	"message": "",
+																	"parameterList": [
+																		{
+																			"$name": "action",
+																			"$type": "fixed",
+																			"type": "parameter",
+																			"name": "action",
+																			"parameterType": "fixed",
+																			"title": "",
+																			"transform": "",
+																			"value": "checkForObject",
+																			"defaultValue": "",
+																			"check": null,
+																			"xpathBaseNode": "",
+																			"xpathName": "",
+																			"xpathValue": ""
+																		},
+																		{
+																			"$name": "objectType",
+																			"$type": "fixed",
+																			"type": "parameter",
+																			"name": "objectType",
+																			"parameterType": "fixed",
+																			"title": "",
+																			"transform": "",
+																			"value": "schema",
+																			"defaultValue": "",
+																			"check": null,
+																			"xpathBaseNode": "",
+																			"xpathName": "",
+																			"xpathValue": ""
+																		},
+																		{
+																			"$name": "object[schema]",
+																			"$type": "constant",
+																			"type": "parameter",
+																			"name": "object[schema]",
+																			"parameterType": "constant",
+																			"title": "",
+																			"transform": "",
+																			"value": "SCHEMA",
+																			"defaultValue": "",
+																			"check": null,
+																			"xpathBaseNode": "",
+																			"xpathName": "",
+																			"xpathValue": ""
+																		}
+																	],
+																	"schema": "",
+																	"tasks": [
+																		{
+																			"type": "IF",
+																			"name": "",
+																			"originalAction": "if",
+																			"negCondition": false,
+																			"compareOn": "",
+																			"compareOnType": "",
+																			"condition": "true",
+																			"conditionType": "",
+																			"conditionCompareType": "",
+																			"taskList": [
+																				{
+																					"type": "taskList",
+																					"repeat": 1,
+																					"tasks": [
+																						{
+																							"type": "alert",
+																							"message": "An error has occurred. Unable to drop schema check ERRORSCHEMA.?SCHEMA? for details"
+																						}
+																					]
+																				}
+																			]
+																		}
+																	]
+																}
+															]
+														}
+													]
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "task",
+			"taskList": {
+				"type": "taskList",
+				"repeat": 1,
+				"tasks": [
+					{
+						"type": "break"
+					},
+					{
+						"$name": "tutorialFinalDropSchema_DropSchema",
+						"$type": "serverAction",
+						"suppressAutomaticErrors": false,
+						"lockScreen": false,
+						"type": "action",
+						"name": "tutorialFinalDropSchema_DropSchema",
+						"actionType": "serverAction",
+						"message": "",
+						"parameterList": [
+							{
+								"$name": "action",
+								"$type": "fixed",
+								"type": "parameter",
+								"name": "action",
+								"parameterType": "fixed",
+								"title": "",
+								"transform": "",
+								"value": "executeSQL",
+								"defaultValue": "",
+								"check": null,
+								"xpathBaseNode": "",
+								"xpathName": "",
+								"xpathValue": ""
+							},
+							{
+								"$name": "SQL",
+								"$type": "fixed",
+								"type": "parameter",
+								"name": "SQL",
+								"parameterType": "fixed",
+								"title": "",
+								"transform": "",
+								"value": "CALL SYSPROC.ADMIN_DROP_SCHEMA( '?SCHEMA?', NULL, ?!name=SCHEMA&type=DB2_PARAM_IN&value=ERRORSCHEMA?, ?!name=tableName&type=DB2_PARAM_IN&value=?SCHEMA?? )",
+								"defaultValue": "",
+								"check": null,
+								"xpathBaseNode": "",
+								"xpathName": "",
+								"xpathValue": ""
+							},
+							{
+								"$name": "object[schema]",
+								"$type": "constant",
+								"type": "parameter",
+								"name": "object[schema]",
+								"parameterType": "constant",
+								"title": "",
+								"transform": "",
+								"value": "SCHEMA",
+								"defaultValue": "",
+								"check": null,
+								"xpathBaseNode": "",
+								"xpathName": "",
+								"xpathValue": ""
+							}
+						],
+						"schema": "",
+						"tasks": []
+					}
+				]
+			}
+		}
+	]
+}

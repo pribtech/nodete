@@ -1,0 +1,429 @@
+{
+	"$name": "createAndSetDGConnection",
+	"$type": "serverAction",
+	"$lockScreen": "true",
+	"suppressAutomaticErrors": false,
+	"lockScreen": true,
+	"type": "action",
+	"name": "createAndSetDGConnection",
+	"actionType": "serverAction",
+	"message": "",
+	"parameterList": [
+		{
+			"$name": "DGSystemName",
+			"$type": "constant",
+			"type": "parameter",
+			"name": "DGSystemName",
+			"parameterType": "constant",
+			"title": "",
+			"transform": "",
+			"value": "INPUT_SYSTEM_NAME",
+			"defaultValue": "",
+			"check": null,
+			"xpathBaseNode": "",
+			"xpathName": "",
+			"xpathValue": ""
+		},
+		{
+			"$name": "LOAD_CONNECTION",
+			"$type": "constant",
+			"type": "parameter",
+			"name": "LOAD_CONNECTION",
+			"parameterType": "constant",
+			"title": "",
+			"transform": "",
+			"value": "INPUT_CONNECTION_DESCRIPTION",
+			"defaultValue": "",
+			"check": null,
+			"xpathBaseNode": "",
+			"xpathName": "",
+			"xpathValue": ""
+		},
+		{
+			"$name": "GENERATOR",
+			"$type": "constant",
+			"type": "parameter",
+			"name": "GENERATOR",
+			"parameterType": "constant",
+			"title": "",
+			"transform": "",
+			"value": "INPUT_GENERATOR",
+			"defaultValue": "",
+			"check": null,
+			"xpathBaseNode": "",
+			"xpathName": "",
+			"xpathValue": ""
+		},
+		{
+			"$name": "USER_NAME",
+			"$type": "constant",
+			"type": "parameter",
+			"name": "USER_NAME",
+			"parameterType": "constant",
+			"title": "",
+			"transform": "",
+			"value": "INPUT_USER_NAME",
+			"defaultValue": "",
+			"check": null,
+			"xpathBaseNode": "",
+			"xpathName": "",
+			"xpathValue": ""
+		},
+		{
+			"$name": "returntype",
+			"$type": "raw",
+			"type": "parameter",
+			"name": "returntype",
+			"parameterType": "raw",
+			"title": "",
+			"transform": "",
+			"value": "JSON",
+			"defaultValue": "",
+			"check": null,
+			"xpathBaseNode": "",
+			"xpathName": "",
+			"xpathValue": ""
+		},
+		{
+			"$name": "USE_CONNECTION",
+			"$type": "constant",
+			"type": "parameter",
+			"name": "USE_CONNECTION",
+			"parameterType": "constant",
+			"title": "",
+			"transform": "",
+			"value": "INPUT_USE_CONNECTION",
+			"defaultValue": "",
+			"check": null,
+			"xpathBaseNode": "",
+			"xpathName": "",
+			"xpathValue": ""
+		},
+		{
+			"$name": "DGMethod",
+			"$type": "raw",
+			"type": "parameter",
+			"name": "DGMethod",
+			"parameterType": "raw",
+			"title": "",
+			"transform": "",
+			"value": "PUT",
+			"defaultValue": "",
+			"check": null,
+			"xpathBaseNode": "",
+			"xpathName": "",
+			"xpathValue": ""
+		},
+		{
+			"$name": "action",
+			"$type": "fixed",
+			"type": "parameter",
+			"name": "action",
+			"parameterType": "fixed",
+			"title": "",
+			"transform": "",
+			"value": "DGproxy",
+			"defaultValue": "",
+			"check": null,
+			"xpathBaseNode": "",
+			"xpathName": "",
+			"xpathValue": ""
+		}
+	],
+	"schema": "",
+	"tasks": [
+		{
+			"type": "IF",
+			"name": "",
+			"originalAction": "ifNot",
+			"negCondition": true,
+			"compareOn": "",
+			"compareOnType": "",
+			"condition": "true",
+			"conditionType": "",
+			"conditionCompareType": "",
+			"taskList": [
+				{
+					"type": "taskList",
+					"repeat": 1,
+					"tasks": [
+						{
+							"$name": "formGetConnectionProfileHostnamePort",
+							"$type": "form",
+							"suppressAutomaticErrors": false,
+							"lockScreen": false,
+							"type": "action",
+							"name": "formGetConnectionProfileHostnamePort",
+							"actionType": "form",
+							"message": "<table><tr><td>\n\t\t\t\t\t\t<h3>Connect to Database</h3>\n\t\t\t\t\t\t<table>\n\t\t\t\t\t\t<tr><td>\n\t\t\t\t\t\t</table><br/>\n\t\t\t\t\t\t<b>Enter hostname:</b><br/>\n\t\t\t\t\t\t<input id=\"_db2connectHostname\" type=\"text\" style=\"width:25em;\" name=\"LOCAL_DATABASE_LOGIN_HOSTNAME\"  value=\"?INPUT_CURRENT_HOSTNAME?\"/>\n\t\t\t\t\t\t<script language=\"javascript\">\n\t\t\t\t\t\t\t$(\"_db2connectHostname\").focus()\n\t\t\t\t\t\t</script>\n\t\t\t\t\t\t<b>Enter port:</b><br/>\n\t\t\t\t\t\t<input id=\"_db2connectPort\" type=\"text\" style=\"width:25em;\" name=\"LOCAL_DATABASE_LOGIN_PORTNUMBER\"  value=\"?INPUT_CURRENT_PORTNUMBER?\"/>\n\t\t\t\t\t\t</td></tr></table>",
+							"parameterList": [],
+							"schema": "",
+							"tasks": [
+								{
+									"type": "IF",
+									"name": "",
+									"originalAction": "if",
+									"negCondition": false,
+									"compareOn": "",
+									"compareOnType": "",
+									"condition": "false",
+									"conditionType": "",
+									"conditionCompareType": "",
+									"taskList": [
+										{
+											"type": "taskList",
+											"repeat": 1,
+											"tasks": [
+												{
+													"type": "exit"
+												}
+											]
+										}
+									]
+								},
+								{
+									"type": "IF",
+									"name": "",
+									"originalAction": "if",
+									"negCondition": false,
+									"compareOn": "LOCAL_DATABASE_LOGIN_HOSTNAME",
+									"compareOnType": "constant",
+									"condition": "",
+									"conditionType": "",
+									"conditionCompareType": "str",
+									"taskList": [
+										{
+											"type": "taskList",
+											"repeat": 1,
+											"tasks": [
+												{
+													"type": "callAction",
+													"name": "formGetConnectionProfileHostnamePort"
+												}
+											]
+										}
+									]
+								},
+								{
+									"type": "IF",
+									"name": "",
+									"originalAction": "if",
+									"negCondition": false,
+									"compareOn": "LOCAL_DATABASE_LOGIN_PORTNUMBER",
+									"compareOnType": "constant",
+									"condition": "",
+									"conditionType": "",
+									"conditionCompareType": "str",
+									"taskList": [
+										{
+											"type": "taskList",
+											"repeat": 1,
+											"tasks": [
+												{
+													"type": "callAction",
+													"name": "formGetConnectionProfileHostnamePort"
+												}
+											]
+										}
+									]
+								},
+								{
+									"type": "IF",
+									"name": "",
+									"originalAction": "if",
+									"negCondition": false,
+									"compareOn": "",
+									"compareOnType": "",
+									"condition": "true",
+									"conditionType": "",
+									"conditionCompareType": "",
+									"taskList": [
+										{
+											"type": "taskList",
+											"repeat": 1,
+											"tasks": [
+												{
+													"$name": "setConnectionProfile",
+													"$type": "serverAction",
+													"suppressAutomaticErrors": false,
+													"lockScreen": false,
+													"type": "action",
+													"name": "setConnectionProfile",
+													"actionType": "serverAction",
+													"message": "",
+													"parameterList": [
+														{
+															"$name": "action",
+															"$type": "fixed",
+															"type": "parameter",
+															"name": "action",
+															"parameterType": "fixed",
+															"title": "",
+															"transform": "",
+															"value": "DGproxy",
+															"defaultValue": "",
+															"check": null,
+															"xpathBaseNode": "",
+															"xpathName": "",
+															"xpathValue": ""
+														},
+														{
+															"$name": "DGSystemName",
+															"$type": "constant",
+															"type": "parameter",
+															"name": "DGSystemName",
+															"parameterType": "constant",
+															"title": "",
+															"transform": "",
+															"value": "INPUT_SYSTEM_NAME",
+															"defaultValue": "",
+															"check": null,
+															"xpathBaseNode": "",
+															"xpathName": "",
+															"xpathValue": ""
+														},
+														{
+															"$name": "DGMethod",
+															"$type": "raw",
+															"type": "parameter",
+															"name": "DGMethod",
+															"parameterType": "raw",
+															"title": "",
+															"transform": "",
+															"value": "POST",
+															"defaultValue": "",
+															"check": null,
+															"xpathBaseNode": "",
+															"xpathName": "",
+															"xpathValue": ""
+														},
+														{
+															"$name": "LOAD_CONNECTION",
+															"$type": "constant",
+															"type": "parameter",
+															"name": "LOAD_CONNECTION",
+															"parameterType": "constant",
+															"title": "",
+															"transform": "",
+															"value": "INPUT_CONNECTION_DESCRIPTION",
+															"defaultValue": "",
+															"check": null,
+															"xpathBaseNode": "",
+															"xpathName": "",
+															"xpathValue": ""
+														},
+														{
+															"$name": "DGHostname",
+															"$type": "fixed",
+															"type": "parameter",
+															"name": "DGHostname",
+															"parameterType": "fixed",
+															"title": "",
+															"transform": "",
+															"value": "?LOCAL_DATABASE_LOGIN_HOSTNAME?",
+															"defaultValue": "",
+															"check": null,
+															"xpathBaseNode": "",
+															"xpathName": "",
+															"xpathValue": ""
+														},
+														{
+															"$name": "DGPortNumber",
+															"$type": "fixed",
+															"type": "parameter",
+															"name": "DGPortNumber",
+															"parameterType": "fixed",
+															"title": "",
+															"transform": "",
+															"value": "?LOCAL_DATABASE_LOGIN_PORTNUMBER?",
+															"defaultValue": "",
+															"check": null,
+															"xpathBaseNode": "",
+															"xpathName": "",
+															"xpathValue": ""
+														},
+														{
+															"$name": "POST[db2_conn]",
+															"$type": "fixed",
+															"type": "parameter",
+															"name": "POST[db2_conn]",
+															"parameterType": "fixed",
+															"title": "",
+															"transform": "",
+															"value": "?INPUT_CONNECTION_PROFILE?",
+															"defaultValue": "",
+															"check": null,
+															"xpathBaseNode": "",
+															"xpathName": "",
+															"xpathValue": ""
+														},
+														{
+															"$name": "DGAction",
+															"$type": "fixed",
+															"type": "parameter",
+															"name": "DGAction",
+															"parameterType": "fixed",
+															"title": "",
+															"transform": "",
+															"value": "generator/?INPUT_GENERATOR?@?INPUT_USER_NAME?",
+															"defaultValue": "",
+															"check": null,
+															"xpathBaseNode": "",
+															"xpathName": "",
+															"xpathValue": ""
+														}
+													],
+													"schema": "",
+													"tasks": []
+												},
+												{
+													"type": "IF",
+													"name": "",
+													"originalAction": "ifNot",
+													"negCondition": true,
+													"compareOn": "",
+													"compareOnType": "",
+													"condition": "true",
+													"conditionType": "",
+													"conditionCompareType": "",
+													"taskList": [
+														{
+															"type": "taskList",
+															"repeat": 1,
+															"tasks": [
+																{
+																	"type": "alert",
+																	"message": "Error setting connection for generator"
+																},
+																{
+																	"type": "callAction",
+																	"name": "setConnectionProfile"
+																}
+															]
+														}
+													]
+												},
+												{
+													"type": "IF",
+													"name": "",
+													"originalAction": "if",
+													"negCondition": false,
+													"compareOn": "",
+													"compareOnType": "",
+													"condition": "true",
+													"conditionType": "",
+													"conditionCompareType": "",
+													"taskList": []
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

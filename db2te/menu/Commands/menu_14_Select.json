@@ -1,0 +1,47 @@
+{
+	"description": "Select",
+	"requires": {
+		"DBMS": "DB2"
+	},
+	"actionScript": {
+		"suppressAutomaticErrors": false,
+		"lockScreen": false,
+		"type": "action",
+		"name": "",
+		"actionType": "",
+		"message": "",
+		"parameterList": [],
+		"schema": "",
+		"tasks": [
+			{
+				"type": "task",
+				"taskList": {
+					"type": "taskList",
+					"repeat": 1,
+					"tasks": [
+						{
+							"$name": "command",
+							"$type": "raw",
+							"type": "assignSharedConstant",
+							"name": "command",
+							"parameterType": "raw",
+							"title": "",
+							"transform": "",
+							"value": "SQL/select",
+							"defaultValue": "",
+							"check": null,
+							"xpathBaseNode": "",
+							"xpathName": "",
+							"xpathValue": ""
+						},
+						{
+							"type": "callGlobalAction",
+							"name": "commandExecution",
+							"parameter": []
+						}
+					]
+				}
+			}
+		]
+	}
+}

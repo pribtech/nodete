@@ -1,0 +1,48 @@
+{
+	"description": "Java Pool Advice",
+	"pageWindows": [
+		{
+			"target": "_active",
+			"content": {
+				"type": "splitPane",
+				"panelA": {
+					"type": "panel",
+					"name": "main",
+					"content": {
+						"link": {
+							"type": "action",
+							"target": "_self",
+							"window": "_self",
+							"parameters": {
+								"table": "Oracle/Monitor/javaPoolAdvice",
+								"$action": "list_table"
+							}
+						}
+					},
+					"primaryContainer": true
+				},
+				"panelB": {
+					"type": "panel",
+					"name": "pgaTargetAdvice",
+					"content": {
+						"link": {
+							"type": "action",
+							"target": "_self",
+							"window": "_self",
+							"parameters": {
+								"table": "Oracle/Monitor/javaPoolAdvice",
+								"action": "chart",
+								"$chartName": "pgaTargetAdvice",
+								"$chartTitle": "Java Pool Advice",
+								"$type": "bar",
+								"$yScale": "FIXED",
+								"$xAxis": "JAVA_POOL_SIZE_FOR_ESTIMATE",
+								"$yAxis": "ESTD_LC_MEMORY_OBJECT_HITS"
+							}
+						}
+					}
+				}
+			}
+		}
+	]
+}

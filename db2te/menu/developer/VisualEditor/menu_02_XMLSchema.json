@@ -1,0 +1,28 @@
+{
+	"description": "Visual XML Schema",
+	"pageWindows": [
+		{
+			"target": "_active",
+			"content": {
+				"type": "panel",
+				"name": "main",
+				"content": {
+					"link": {
+						"type": "action",
+						"target": "_self",
+						"window": "_self",
+						"parameters": {
+							"action": "chartNodal",
+							"$chartTitle": "Visual Select",
+							"$sourceType": "xmlData",
+							"$editMode": "true",
+							"$definition": "XSD/schema.xsd",
+							"$report": "XSL/chartNodalDefaultReport.xsl"
+						}
+					}
+				},
+				"primaryContainer": true
+			}
+		}
+	]
+}

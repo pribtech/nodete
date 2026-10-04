@@ -1,0 +1,32 @@
+{
+	"description": "Backup",
+	"pageWindows": [
+		{
+			"target": "_active",
+			"content": {
+				"type": "panel",
+				"name": "main",
+				"content": {
+					"link": {
+						"type": "action",
+						"target": "_self",
+						"window": "_self",
+						"parameters": {
+							"action": "chartNodal",
+							"$chartTitle": "Auto Backup",
+							"sourceType": "xmlData",
+							"$editMode": "true",
+							"$definition": "XSD/IBM/DB2AutoBackupPolicy.xsd",
+							"$report": "XSL/chartNodalInternalXML2XML.xsl",
+							"$sourceType": "SQL",
+							"$source": "CALL SYSPROC.AUTOMAINT_GET_POLICY( 'AUTO_BACKUP' , ?!name=result&value=unknown&precision=2000000&conversion=hex2string&dataType=string? )",
+							"$save": "CALL SYSPROC.AUTOMAINT_SET_POLICY( 'AUTO_BACKUP' ,  cast(cast(? as clob(1m)) as blob(1m)) )",
+							"$transform": "XSL/removerEmptyOrNewLineTextNodes.xsl"
+						}
+					}
+				},
+				"primaryContainer": true
+			}
+		}
+	]
+}

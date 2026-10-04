@@ -1,0 +1,33 @@
+{
+	"description": "Customizing the TE",
+	"tag": "r91",
+	"pageWindows": [
+		{
+			"target": "_final",
+			"content": {
+				"type": "panel",
+				"name": "Tutorial",
+				"content": {
+					"link": {
+						"type": "action",
+						"target": "_self",
+						"window": "_self",
+						"parameters": {
+							"action": "flowgroup",
+							"subFolder": "TEWorkshop",
+							"description": "This workshop shows how to customize and extend the TE.",
+							"articalTitle": "TE Workshop",
+							"title": "TE Workshop",
+							"CurrentMenuLocation": {
+								"$var": "CURRENT_MENU_LOCATION"
+							},
+							"listStyleType": "decimal",
+							"menuExpansionType": "internal"
+						}
+					}
+				},
+				"primaryContainer": true
+			}
+		}
+	]
+}

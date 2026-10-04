@@ -1,0 +1,134 @@
+{
+	"description": "Summary Views",
+	"pageWindows": [
+		{
+			"target": "_active",
+			"panelHeaders": {},
+			"content": {
+				"type": "splitPane",
+				"splitPercent": "0.2",
+				"panelA": {
+					"type": "splitPane",
+					"direction": "v",
+					"splitPercent": "0.5",
+					"panelA": {
+						"type": "splitPane",
+						"splitPercent": "0.7",
+						"panelA": {
+							"type": "panel",
+							"name": "DBM",
+							"content": {
+								"link": {
+									"type": "action",
+									"target": "_self",
+									"window": "_self",
+									"parameters": {
+										"table": "?BASE_DIRECTORY?/XML/WorkVolumeAndThroughput",
+										"action": "list_table"
+									}
+								}
+							},
+							"panelHeaders": {}
+						},
+						"panelB": {
+							"type": "splitPane",
+							"splitPercent": "0.5",
+							"panelA": {
+								"type": "panel",
+								"name": "DB",
+								"content": {
+									"link": {
+										"type": "action",
+										"target": "_self",
+										"window": "_self",
+										"parameters": {
+											"table": "?BASE_DIRECTORY?/XML/IO",
+											"action": "list_table"
+										}
+									}
+								},
+								"panelHeaders": {}
+							},
+							"panelB": {
+								"type": "panel",
+								"name": "DBRR",
+								"content": {
+									"link": {
+										"type": "action",
+										"target": "_self",
+										"window": "_self",
+										"parameters": {
+											"table": "?BASE_DIRECTORY?/XML/lockMetrics.xml",
+											"action": "list_table"
+										}
+									}
+								},
+								"panelHeaders": {}
+							}
+						}
+					},
+					"panelB": {
+						"type": "splitPane",
+						"splitPercent": "0.7",
+						"panelA": {
+							"type": "panel",
+							"name": "DBMR",
+							"content": {
+								"link": {
+									"type": "action",
+									"target": "_self",
+									"window": "_self",
+									"parameters": {
+										"table": "?BASE_DIRECTORY?/XML/ApplicationPerformance",
+										"action": "list_table"
+									}
+								}
+							},
+							"panelHeaders": {}
+						},
+						"panelB": {
+							"type": "splitPane",
+							"splitPercent": "0.5",
+							"panelA": {
+								"type": "panel",
+								"name": "DBR",
+								"content": {
+									"link": {
+										"type": "action",
+										"target": "_self",
+										"window": "_self",
+										"parameters": {
+											"table": "?BASE_DIRECTORY?/XML/DBApplicationPerformance",
+											"action": "list_table"
+										}
+									}
+								},
+								"panelHeaders": {}
+							},
+							"panelB": {
+								"type": "panel",
+								"name": "ContR",
+								"content": {
+									"link": {
+										"type": "action",
+										"target": "_self",
+										"window": "_self",
+										"parameters": {
+											"table": "?BASE_DIRECTORY?/XML/monWorkLoad",
+											"action": "list_table"
+										}
+									}
+								},
+								"panelHeaders": {}
+							}
+						}
+					}
+				},
+				"panelB": {
+					"type": "panel",
+					"name": "detail"
+				}
+			}
+		}
+	]
+}

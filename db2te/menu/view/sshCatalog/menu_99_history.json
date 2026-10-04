@@ -1,0 +1,24 @@
+{
+	"description": "Command History",
+	"pageWindows": [
+		{
+			"target": "_active",
+			"content": {
+				"type": "panel",
+				"name": "main",
+				"content": {
+					"link": {
+						"type": "action",
+						"target": "_self",
+						"window": "_self",
+						"parameters": {
+							"table": "ssh/history",
+							"action": "list_table"
+						}
+					}
+				},
+				"primaryContainer": true
+			}
+		}
+	]
+}

@@ -1,0 +1,118 @@
+{
+	"description": "Monitor Overview History",
+	"requires": {
+		"minVersion": 9.5
+	},
+	"pageWindows": [
+		{
+			"target": "_active",
+			"title": "Monitor Overview",
+			"info": "Monitoring overview",
+			"panelHeaders": {},
+			"content": {
+				"type": "splitPane",
+				"splitPercent": "0.5",
+				"panelA": {
+					"type": "splitPane",
+					"direction": "v",
+					"splitPercent": "0.5",
+					"panelA": {
+						"type": "panel",
+						"name": "CPU",
+						"content": {
+							"link": {
+								"type": "action",
+								"target": "_self",
+								"window": "_self",
+								"parameters": {
+									"table": "Monitor/histSystemCPU",
+									"action": "chart",
+									"$chartName": "detail",
+									"maxResultsToFetch": "1000"
+								}
+							}
+						},
+						"panelHeaders": {}
+					},
+					"panelB": {
+						"type": "panel",
+						"name": "bufferpool",
+						"content": {
+							"link": {
+								"type": "action",
+								"target": "_self",
+								"window": "_self",
+								"parameters": {
+									"table": "Monitor/histBufferpoolDeltaRate",
+									"action": "chart",
+									"$chartName": "Buffer Pools",
+									"$type": "line",
+									"$xAxis": "SNAPSHOT_TIMESTAMP",
+									"$yScale": "EXPONENTIAL",
+									"$yAxis": "LOGICAL_READS,PHYSICAL_READS",
+									"$grouping": "DB_NAME,BP_NAME",
+									"$legend": "hide",
+									"maxResultsToFetch": "1000"
+								}
+							}
+						},
+						"panelHeaders": {}
+					}
+				},
+				"panelB": {
+					"type": "splitPane",
+					"direction": "v",
+					"splitPercent": "0.5",
+					"panelA": {
+						"type": "panel",
+						"name": "DBM",
+						"content": {
+							"link": {
+								"type": "action",
+								"target": "_self",
+								"window": "_self",
+								"parameters": {
+									"table": "Monitor/histDBM",
+									"action": "chart",
+									"$chartName": "DBM",
+									"$chartTitle": "Instance",
+									"$type": "line",
+									"$xAxis": "SNAPSHOT_TIMESTAMP",
+									"$yAxis": "SORT_HEAP_ALLOCATED,AGENTS_WAITING_ON_TOKEN,PIPED_SORTS_REQUESTED,CONS_IN_EXEC,AGENTS_REGISTERED",
+									"$legend": "hide",
+									"maxResultsToFetch": "1000"
+								}
+							}
+						},
+						"panelHeaders": {}
+					},
+					"panelB": {
+						"type": "panel",
+						"name": "DB",
+						"content": {
+							"link": {
+								"type": "action",
+								"target": "_self",
+								"window": "_self",
+								"parameters": {
+									"table": "Monitor/histDB",
+									"action": "chart",
+									"$chartName": "DB",
+									"$chartTitle": "Database",
+									"$type": "line",
+									"$xAxis": "SNAPSHOT_TIMESTAMP",
+									"$grouping": "DB_NAME",
+									"$yAxis": "LOCK_WAITS,DEADLOCKS,LOCK_ESCALS,SORT_OVERFLOWS,TOTAL_LOG_USED,SYNC_RUNSTATS",
+									"$legend": "hide",
+									"$yScale": "EXPONENTIAL",
+									"maxResultsToFetch": "1000"
+								}
+							}
+						},
+						"panelHeaders": {}
+					}
+				}
+			}
+		}
+	]
+}

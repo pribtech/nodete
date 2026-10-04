@@ -1,0 +1,33 @@
+{
+	"description": "Reload menu",
+	"requires": {
+		"DBMS": "ALL"
+	},
+	"actionScript": {
+		"$name": "panelReload",
+		"$type": "blank",
+		"suppressAutomaticErrors": false,
+		"lockScreen": false,
+		"type": "action",
+		"name": "panelReload",
+		"actionType": "blank",
+		"message": "",
+		"parameterList": [],
+		"schema": "",
+		"tasks": [
+			{
+				"type": "task",
+				"taskList": {
+					"type": "taskList",
+					"repeat": 1,
+					"tasks": [
+						{
+							"type": "panelReload",
+							"name": ""
+						}
+					]
+				}
+			}
+		]
+	}
+}

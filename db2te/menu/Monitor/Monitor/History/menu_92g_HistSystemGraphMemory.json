@@ -1,0 +1,120 @@
+{
+	"description": "System/Instance Memory Graph",
+	"requires": {
+		"minVersion": 9.5
+	},
+	"pageWindows": [
+		{
+			"target": "_active",
+			"title": "Memory Usage Overview",
+			"info": "Monitoring overview",
+			"panelHeaders": {},
+			"content": {
+				"type": "splitPane",
+				"splitPercent": "0.5",
+				"panelA": {
+					"type": "splitPane",
+					"direction": "v",
+					"splitPercent": "0.5",
+					"panelA": {
+						"type": "panel",
+						"name": "system",
+						"content": {
+							"link": {
+								"type": "action",
+								"target": "_self",
+								"window": "_self",
+								"parameters": {
+									"table": "Monitor/histSystemMemory",
+									"action": "chart",
+									"$chartName": "System Memory",
+									"$type": "line",
+									"$xAxis": "SAMPLE_TS",
+									"$yAxis": "MEMORY_TOTAL,MEMORY_FREE,MEMORY_SWAP_TOTAL,MEMORY_SWAP_FREE,VIRTUAL_MEM_TOTAL,VIRTUAL_MEM_FREE",
+									"$yScale": "EXPONENTIAL",
+									"maxResultsToFetch": "10000"
+								}
+							}
+						},
+						"panelHeaders": {}
+					},
+					"panelB": {
+						"type": "panel",
+						"name": "instance",
+						"content": {
+							"link": {
+								"type": "action",
+								"target": "_self",
+								"window": "_self",
+								"parameters": {
+									"table": "Monitor/histDBMMemory",
+									"action": "chart",
+									"$chartName": "Instance Memory",
+									"$type": "line",
+									"$xAxis": "SAMPLE_TS",
+									"$yAxis": "MAX_PARTITION_MEM,CURRENT_PARTITION_MEM,PEAK_PARTITION_MEM",
+									"$grouping": "DBPARTITIONNUM",
+									"$yScale": "EXPONENTIAL",
+									"maxResultsToFetch": "10000"
+								}
+							}
+						},
+						"panelHeaders": {}
+					}
+				},
+				"panelB": {
+					"type": "splitPane",
+					"direction": "v",
+					"splitPercent": "0.5",
+					"panelA": {
+						"type": "panel",
+						"name": "database",
+						"content": {
+							"link": {
+								"type": "action",
+								"target": "_self",
+								"window": "_self",
+								"parameters": {
+									"table": "Monitor/histDbMemoryAll",
+									"action": "chart",
+									"$chartName": "Database Memory",
+									"$type": "line",
+									"$xAxis": "SNAPSHOT_TIMESTAMP",
+									"$yAxis": "POOL_CUR_SIZE",
+									"$grouping": "DB_NAME,DBPARTITIONNUM",
+									"$yScale": "EXPONENTIAL",
+									"POOL_ID": "DATABASE",
+									"maxResultsToFetch": "10000"
+								}
+							}
+						},
+						"panelHeaders": {}
+					},
+					"panelB": {
+						"type": "panel",
+						"name": "databaseStack",
+						"content": {
+							"link": {
+								"type": "action",
+								"target": "_self",
+								"window": "_self",
+								"parameters": {
+									"table": "Monitor/histDbMemoryAll",
+									"action": "chart",
+									"$chartName": "Database Memory Stack",
+									"$type": "stack",
+									"$xAxis": "SNAPSHOT_TIMESTAMP",
+									"$yAxis": "POOL_CUR_SIZE",
+									"$grouping": "DB_NAME,DBPARTITIONNUM",
+									"POOL_ID": "DATABASE",
+									"maxResultsToFetch": "10000"
+								}
+							}
+						},
+						"panelHeaders": {}
+					}
+				}
+			}
+		}
+	]
+}

@@ -1,0 +1,234 @@
+{
+	"$name": "dropSQLObject",
+	"$type": "blank",
+	"$lockScreen": "true",
+	"suppressAutomaticErrors": false,
+	"lockScreen": true,
+	"type": "action",
+	"name": "dropSQLObject",
+	"actionType": "blank",
+	"message": "",
+	"parameterList": [],
+	"schema": "",
+	"tasks": [
+		{
+			"type": "IF",
+			"name": "",
+			"originalAction": "followOnAction",
+			"negCondition": false,
+			"compareOn": "true",
+			"compareOnType": "raw",
+			"condition": "true",
+			"conditionType": "",
+			"conditionCompareType": "",
+			"taskList": [
+				{
+					"type": "taskList",
+					"repeat": 1,
+					"tasks": [
+						{
+							"$name": "dropCommand",
+							"$type": "form",
+							"suppressAutomaticErrors": false,
+							"lockScreen": false,
+							"type": "action",
+							"name": "dropCommand",
+							"actionType": "form",
+							"message": "DROP ?objectType? ?objectName?",
+							"parameterList": [
+								{
+									"$name": "buttonOK",
+									"$type": "raw",
+									"type": "parameter",
+									"name": "buttonOK",
+									"parameterType": "raw",
+									"title": "",
+									"transform": "",
+									"value": "Drop",
+									"defaultValue": "",
+									"check": null,
+									"xpathBaseNode": "",
+									"xpathName": "",
+									"xpathValue": ""
+								},
+								{
+									"$name": "parameter[objectName]",
+									"$type": "blockValue",
+									"type": "parameter",
+									"name": "parameter[objectName]",
+									"parameterType": "blockValue",
+									"title": "",
+									"transform": "",
+									"value": "objectName",
+									"defaultValue": "",
+									"check": null,
+									"xpathBaseNode": "",
+									"xpathName": "",
+									"xpathValue": ""
+								},
+								{
+									"$name": "parameter[objectType]",
+									"$type": "blockValue",
+									"type": "parameter",
+									"name": "parameter[objectType]",
+									"parameterType": "blockValue",
+									"title": "",
+									"transform": "",
+									"value": "objectType",
+									"defaultValue": "",
+									"check": null,
+									"xpathBaseNode": "",
+									"xpathName": "",
+									"xpathValue": ""
+								}
+							],
+							"schema": "",
+							"tasks": []
+						},
+						{
+							"type": "IF",
+							"name": "",
+							"originalAction": "if",
+							"negCondition": false,
+							"compareOn": "dropCommand.returnCode",
+							"compareOnType": "returnObject",
+							"condition": "false",
+							"conditionType": "",
+							"conditionCompareType": "",
+							"taskList": [
+								{
+									"type": "taskList",
+									"repeat": 1,
+									"tasks": [
+										{
+											"type": "exit"
+										}
+									]
+								}
+							]
+						},
+						{
+							"$name": "execute",
+							"$type": "serverAction",
+							"suppressAutomaticErrors": false,
+							"lockScreen": false,
+							"type": "action",
+							"name": "execute",
+							"actionType": "serverAction",
+							"message": "",
+							"parameterList": [
+								{
+									"$name": "action",
+									"$type": "fixed",
+									"type": "parameter",
+									"name": "action",
+									"parameterType": "fixed",
+									"title": "",
+									"transform": "",
+									"value": "executeSQL",
+									"defaultValue": "",
+									"check": null,
+									"xpathBaseNode": "",
+									"xpathName": "",
+									"xpathValue": ""
+								},
+								{
+									"$name": "SQL",
+									"$type": "fixed",
+									"type": "parameter",
+									"name": "SQL",
+									"parameterType": "fixed",
+									"title": "",
+									"transform": "",
+									"value": "DROP ?objectType? ?objectName?",
+									"defaultValue": "",
+									"check": null,
+									"xpathBaseNode": "",
+									"xpathName": "",
+									"xpathValue": ""
+								},
+								{
+									"$name": "parameter[objectName]",
+									"$type": "blockValue",
+									"type": "parameter",
+									"name": "parameter[objectName]",
+									"parameterType": "blockValue",
+									"title": "",
+									"transform": "",
+									"value": "objectName",
+									"defaultValue": "",
+									"check": null,
+									"xpathBaseNode": "",
+									"xpathName": "",
+									"xpathValue": ""
+								},
+								{
+									"$name": "parameter[objectType]",
+									"$type": "blockValue",
+									"type": "parameter",
+									"name": "parameter[objectType]",
+									"parameterType": "blockValue",
+									"title": "",
+									"transform": "",
+									"value": "objectType",
+									"defaultValue": "",
+									"check": null,
+									"xpathBaseNode": "",
+									"xpathName": "",
+									"xpathValue": ""
+								}
+							],
+							"schema": "",
+							"tasks": []
+						},
+						{
+							"type": "IF",
+							"name": "",
+							"originalAction": "if",
+							"negCondition": false,
+							"compareOn": "execute.returnCode",
+							"compareOnType": "returnObject",
+							"condition": "true",
+							"conditionType": "",
+							"conditionCompareType": "",
+							"taskList": [
+								{
+									"type": "taskList",
+									"repeat": 1,
+									"tasks": [
+										{
+											"type": "panelReload",
+											"name": ""
+										},
+										{
+											"type": "exit"
+										}
+									]
+								}
+							]
+						},
+						{
+							"$name": "ERROR_MESSAGE",
+							"$type": "returnObject",
+							"type": "assignSharedConstant",
+							"name": "ERROR_MESSAGE",
+							"parameterType": "returnObject",
+							"title": "",
+							"transform": "",
+							"value": "execute.returnValue.STMTMSG",
+							"defaultValue": "",
+							"check": null,
+							"xpathBaseNode": "",
+							"xpathName": "",
+							"xpathValue": ""
+						},
+						{
+							"type": "alert",
+							"message": "Failed: ?ERROR_MESSAGE?"
+						}
+					]
+				}
+			]
+		}
+	]
+}

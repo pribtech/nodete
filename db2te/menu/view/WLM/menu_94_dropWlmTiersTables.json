@@ -1,0 +1,399 @@
+{
+	"description": "Drop WLM Tiers",
+	"actionScript": {
+		"$name": "wlmTierDrop",
+		"$type": "form",
+		"$lockScreen": "true",
+		"suppressAutomaticErrors": false,
+		"lockScreen": true,
+		"type": "action",
+		"name": "wlmTierDrop",
+		"actionType": "form",
+		"message": "<div style='width:500px'>\n<p>You are about to drop the WLM tiers\n</div>",
+		"parameterList": [
+			{
+				"$name": "buttonOK",
+				"$type": "raw",
+				"type": "parameter",
+				"name": "buttonOK",
+				"parameterType": "raw",
+				"title": "",
+				"transform": "",
+				"value": "Drop WLM tiers",
+				"defaultValue": "",
+				"check": null,
+				"xpathBaseNode": "",
+				"xpathName": "",
+				"xpathValue": ""
+			}
+		],
+		"schema": "",
+		"tasks": [
+			{
+				"type": "IF",
+				"name": "",
+				"originalAction": "if",
+				"negCondition": false,
+				"compareOn": "",
+				"compareOnType": "",
+				"condition": "true",
+				"conditionType": "",
+				"conditionCompareType": "",
+				"taskList": [
+					{
+						"type": "taskList",
+						"repeat": 1,
+						"tasks": [
+							{
+								"$name": "dropWlmTiers",
+								"$type": "serverAction",
+								"suppressAutomaticErrors": false,
+								"lockScreen": false,
+								"type": "action",
+								"name": "dropWlmTiers",
+								"actionType": "serverAction",
+								"message": "",
+								"parameterList": [
+									{
+										"$name": "action",
+										"$type": "fixed",
+										"type": "parameter",
+										"name": "action",
+										"parameterType": "fixed",
+										"title": "",
+										"transform": "",
+										"value": "executeSQL",
+										"defaultValue": "",
+										"check": null,
+										"xpathBaseNode": "",
+										"xpathName": "",
+										"xpathValue": ""
+									},
+									{
+										"$name": "commitPerSTMT",
+										"$type": "fixed",
+										"type": "parameter",
+										"name": "commitPerSTMT",
+										"parameterType": "fixed",
+										"title": "",
+										"transform": "",
+										"value": "true",
+										"defaultValue": "",
+										"check": null,
+										"xpathBaseNode": "",
+										"xpathName": "",
+										"xpathValue": ""
+									},
+									{
+										"$name": "abortOnFailure",
+										"$type": "raw",
+										"type": "parameter",
+										"name": "abortOnFailure",
+										"parameterType": "raw",
+										"title": "",
+										"transform": "",
+										"value": "false",
+										"defaultValue": "",
+										"check": null,
+										"xpathBaseNode": "",
+										"xpathName": "",
+										"xpathValue": ""
+									},
+									{
+										"$name": "SQL[0]",
+										"$type": "fixed",
+										"type": "parameter",
+										"name": "SQL[0]",
+										"parameterType": "fixed",
+										"title": "",
+										"transform": "",
+										"value": "ALTER WORKLOAD SYSDEFAULTUSERWORKLOAD SERVICE CLASS SYSDEFAULTUSERCLASS",
+										"defaultValue": "",
+										"check": null,
+										"xpathBaseNode": "",
+										"xpathName": "",
+										"xpathValue": ""
+									},
+									{
+										"$name": "SQL[1]",
+										"$type": "fixed",
+										"type": "parameter",
+										"name": "SQL[1]",
+										"parameterType": "fixed",
+										"title": "",
+										"transform": "",
+										"value": "ALTER SERVICE CLASS WLM_SHORT UNDER WLM_TIERS DISABLE;",
+										"defaultValue": "",
+										"check": null,
+										"xpathBaseNode": "",
+										"xpathName": "",
+										"xpathValue": ""
+									},
+									{
+										"$name": "SQL[2]",
+										"$type": "fixed",
+										"type": "parameter",
+										"name": "SQL[2]",
+										"parameterType": "fixed",
+										"title": "",
+										"transform": "",
+										"value": "ALTER SERVICE CLASS WLM_MEDIUM UNDER WLM_TIERS DISABLE;",
+										"defaultValue": "",
+										"check": null,
+										"xpathBaseNode": "",
+										"xpathName": "",
+										"xpathValue": ""
+									},
+									{
+										"$name": "SQL[3]",
+										"$type": "fixed",
+										"type": "parameter",
+										"name": "SQL[3]",
+										"parameterType": "fixed",
+										"title": "",
+										"transform": "",
+										"value": "ALTER SERVICE CLASS WLM_LONG UNDER WLM_TIERS DISABLE;",
+										"defaultValue": "",
+										"check": null,
+										"xpathBaseNode": "",
+										"xpathName": "",
+										"xpathValue": ""
+									},
+									{
+										"$name": "SQL[4]",
+										"$type": "fixed",
+										"type": "parameter",
+										"name": "SQL[4]",
+										"parameterType": "fixed",
+										"title": "",
+										"transform": "",
+										"value": "ALTER SERVICE CLASS WLM_TIERS DISABLE;",
+										"defaultValue": "",
+										"check": null,
+										"xpathBaseNode": "",
+										"xpathName": "",
+										"xpathValue": ""
+									},
+									{
+										"$name": "SQL[5]",
+										"$type": "fixed",
+										"type": "parameter",
+										"name": "SQL[5]",
+										"parameterType": "fixed",
+										"title": "",
+										"transform": "",
+										"value": "ALTER SERVICE CLASS SYSDEFAULTSYSTEMCLASS AGENT PRIORITY DEFAULT \n  PREFETCH PRIORITY DEFAULT;",
+										"defaultValue": "",
+										"check": null,
+										"xpathBaseNode": "",
+										"xpathName": "",
+										"xpathValue": ""
+									},
+									{
+										"$name": "SQL[6]",
+										"$type": "fixed",
+										"type": "parameter",
+										"name": "SQL[6]",
+										"parameterType": "fixed",
+										"title": "",
+										"transform": "",
+										"value": "ALTER SERVICE CLASS SYSDEFAULTMAINTENANCECLASS AGENT PRIORITY DEFAULT \n  PREFETCH PRIORITY DEFAULT;",
+										"defaultValue": "",
+										"check": null,
+										"xpathBaseNode": "",
+										"xpathName": "",
+										"xpathValue": ""
+									},
+									{
+										"$name": "SQL[7]",
+										"$type": "fixed",
+										"type": "parameter",
+										"name": "SQL[7]",
+										"parameterType": "fixed",
+										"title": "",
+										"transform": "",
+										"value": "ALTER SERVICE CLASS SYSDEFAULTMAINTENANCECLASS AGENT PRIORITY DEFAULT \n  PREFETCH PRIORITY DEFAULT;",
+										"defaultValue": "",
+										"check": null,
+										"xpathBaseNode": "",
+										"xpathName": "",
+										"xpathValue": ""
+									},
+									{
+										"$name": "SQL[8]",
+										"$type": "fixed",
+										"type": "parameter",
+										"name": "SQL[8]",
+										"parameterType": "fixed",
+										"title": "",
+										"transform": "",
+										"value": "DROP WORK ACTION SET WLM_TIERS_WAS;",
+										"defaultValue": "",
+										"check": null,
+										"xpathBaseNode": "",
+										"xpathName": "",
+										"xpathValue": ""
+									},
+									{
+										"$name": "SQL[9]",
+										"$type": "fixed",
+										"type": "parameter",
+										"name": "SQL[9]",
+										"parameterType": "fixed",
+										"title": "",
+										"transform": "",
+										"value": "DROP WORK CLASS SET WLM_TIERS_WCS;",
+										"defaultValue": "",
+										"check": null,
+										"xpathBaseNode": "",
+										"xpathName": "",
+										"xpathValue": ""
+									},
+									{
+										"$name": "SQL[10]",
+										"$type": "fixed",
+										"type": "parameter",
+										"name": "SQL[10]",
+										"parameterType": "fixed",
+										"title": "",
+										"transform": "",
+										"value": "DROP THRESHOLD WLM_TIERS_REMAP_SHORT_TO_MEDIUM;",
+										"defaultValue": "",
+										"check": null,
+										"xpathBaseNode": "",
+										"xpathName": "",
+										"xpathValue": ""
+									},
+									{
+										"$name": "SQL[11]",
+										"$type": "fixed",
+										"type": "parameter",
+										"name": "SQL[11]",
+										"parameterType": "fixed",
+										"title": "",
+										"transform": "",
+										"value": "DROP THRESHOLD WLM_TIERS_REMAP_MEDIUM_TO_LONG;",
+										"defaultValue": "",
+										"check": null,
+										"xpathBaseNode": "",
+										"xpathName": "",
+										"xpathValue": ""
+									},
+									{
+										"$name": "SQL[12]",
+										"$type": "fixed",
+										"type": "parameter",
+										"name": "SQL[12]",
+										"parameterType": "fixed",
+										"title": "",
+										"transform": "",
+										"value": "DROP SERVICE CLASS WLM_SHORT UNDER WLM_TIERS;",
+										"defaultValue": "",
+										"check": null,
+										"xpathBaseNode": "",
+										"xpathName": "",
+										"xpathValue": ""
+									},
+									{
+										"$name": "SQL[13]",
+										"$type": "fixed",
+										"type": "parameter",
+										"name": "SQL[13]",
+										"parameterType": "fixed",
+										"title": "",
+										"transform": "",
+										"value": "DROP SERVICE CLASS WLM_MEDIUM UNDER WLM_TIERS;",
+										"defaultValue": "",
+										"check": null,
+										"xpathBaseNode": "",
+										"xpathName": "",
+										"xpathValue": ""
+									},
+									{
+										"$name": "SQL[14]",
+										"$type": "fixed",
+										"type": "parameter",
+										"name": "SQL[14]",
+										"parameterType": "fixed",
+										"title": "",
+										"transform": "",
+										"value": "DROP SERVICE CLASS WLM_LONG UNDER WLM_TIERS;",
+										"defaultValue": "",
+										"check": null,
+										"xpathBaseNode": "",
+										"xpathName": "",
+										"xpathValue": ""
+									},
+									{
+										"$name": "SQL[15]",
+										"$type": "fixed",
+										"type": "parameter",
+										"name": "SQL[15]",
+										"parameterType": "fixed",
+										"title": "",
+										"transform": "",
+										"value": "DROP SERVICE CLASS WLM_TIERS;",
+										"defaultValue": "",
+										"check": null,
+										"xpathBaseNode": "",
+										"xpathName": "",
+										"xpathValue": ""
+									}
+								],
+								"schema": "",
+								"tasks": [
+									{
+										"type": "IF",
+										"name": "",
+										"originalAction": "if",
+										"negCondition": true,
+										"compareOn": "",
+										"compareOnType": "",
+										"condition": "true",
+										"conditionType": "",
+										"conditionCompareType": "",
+										"taskList": [
+											{
+												"type": "taskList",
+												"repeat": 1,
+												"tasks": [
+													{
+														"type": "alert",
+														"message": "Error in dropping WLM Tiers"
+													}
+												]
+											}
+										]
+									},
+									{
+										"type": "IF",
+										"name": "",
+										"originalAction": "if",
+										"negCondition": false,
+										"compareOn": "",
+										"compareOnType": "",
+										"condition": "true",
+										"conditionType": "",
+										"conditionCompareType": "",
+										"taskList": [
+											{
+												"type": "taskList",
+												"repeat": 1,
+												"tasks": [
+													{
+														"type": "alert",
+														"message": "WLM Tiers dropped"
+													}
+												]
+											}
+										]
+									}
+								]
+							}
+						]
+					}
+				]
+			}
+		]
+	}
+}

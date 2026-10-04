@@ -1,0 +1,69 @@
+{
+	"$name": "editAttribute",
+	"$type": "blank",
+	"$lockScreen": "false",
+	"suppressAutomaticErrors": false,
+	"lockScreen": false,
+	"type": "action",
+	"name": "editAttribute",
+	"actionType": "blank",
+	"message": "",
+	"parameterList": [],
+	"schema": "",
+	"tasks": [
+		{
+			"type": "task",
+			"taskList": {
+				"type": "taskList",
+				"repeat": 1,
+				"tasks": [
+					{
+						"$name": "EditAttribute",
+						"$type": "form",
+						"$lockScreen": "false",
+						"suppressAutomaticErrors": false,
+						"lockScreen": false,
+						"type": "action",
+						"name": "EditAttribute",
+						"actionType": "form",
+						"message": "",
+						"parameterList": [
+							{
+								"$name": "action",
+								"$type": "raw",
+								"type": "parameter",
+								"name": "action",
+								"parameterType": "raw",
+								"title": "",
+								"transform": "",
+								"value": "editAttribute",
+								"defaultValue": "",
+								"check": null,
+								"xpathBaseNode": "",
+								"xpathName": "",
+								"xpathValue": ""
+							},
+							{
+								"$name": "buttonOK",
+								"$type": "raw",
+								"type": "parameter",
+								"name": "buttonOK",
+								"parameterType": "raw",
+								"title": "",
+								"transform": "",
+								"value": "Set",
+								"defaultValue": "",
+								"check": null,
+								"xpathBaseNode": "",
+								"xpathName": "",
+								"xpathValue": ""
+							}
+						],
+						"schema": "",
+						"tasks": []
+					}
+				]
+			}
+		}
+	]
+}

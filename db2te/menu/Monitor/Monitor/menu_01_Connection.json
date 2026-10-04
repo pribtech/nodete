@@ -1,0 +1,79 @@
+{
+	"description": "Connections",
+	"requires": {
+		"minVersion": 9.7
+	},
+	"pageWindows": [
+		{
+			"target": "_active",
+			"content": {
+				"type": "splitPane",
+				"splitPercent": "0.5",
+				"panelA": {
+					"type": "panel",
+					"name": "main",
+					"content": {
+						"link": {
+							"type": "action",
+							"target": "_self",
+							"window": "_self",
+							"parameters": {
+								"table": "Monitor/monConnection",
+								"action": "list_table"
+							}
+						}
+					},
+					"primaryContainer": true
+				},
+				"panelB": {
+					"type": "splitPane",
+					"direction": "v",
+					"splitPercent": "0.5",
+					"panelA": {
+						"type": "panel",
+						"name": "componentProcessPercentage",
+						"content": {
+							"link": {
+								"type": "action",
+								"target": "_self",
+								"window": "_self",
+								"parameters": {
+									"table": "Performance/componentPercentage",
+									"action": "chart",
+									"$chartName": "componentProcessPercentage",
+									"$chartTitle": "Component Process Percentage",
+									"$type": "bar",
+									"$yScale": "FIXED",
+									"$yAxisUpperBound": "100",
+									"$yAxisLowerBound": "0",
+									"$yAxis": "SECT_PROC_PCT,COMPILE_PROC_PCT,IMPL_COMPILE_PROC_PCT,ROLLBACK_PROC_PCT,COMMIT_PROC_PCT,RUNSTATS_PROC_PCT,REORG_PROC_PCT,LOAD_PROC_PCT",
+									"$legend": "show"
+								}
+							}
+						}
+					},
+					"panelB": {
+						"type": "panel",
+						"name": "ratioProcessTime",
+						"content": {
+							"link": {
+								"type": "action",
+								"target": "_self",
+								"window": "_self",
+								"parameters": {
+									"table": "Performance/componentPercentage",
+									"action": "chart",
+									"$chartName": "ratioProcessTime",
+									"$chartTitle": "Ratio Process Time",
+									"$type": "pie",
+									"$yAxis": "WAIT,SECT_PROC_TIME,COMP_PROC_TIME,IMP_C_PROC_TIME,ROLLBACK_PROC_TIME,COMMIT_PROC_TIME,RUNSTATS_PROC_TIME,REORG_PROC_TIME,LOAD_PROC_TIME",
+									"$slices": "column"
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	]
+}

@@ -1,0 +1,33 @@
+{
+	"description": "DBA",
+	"pageWindows": [
+		{
+			"target": "_active",
+			"content": {
+				"type": "splitPane",
+				"panelA": {
+					"type": "panel",
+					"name": "main",
+					"content": {
+						"link": {
+							"type": "action",
+							"target": "_self",
+							"window": "_self",
+							"parameters": {
+								"table_name": "DBA_%",
+								"comparetable_name": "like",
+								"table": "dictionary",
+								"action": "list_table"
+							}
+						}
+					},
+					"primaryContainer": true
+				},
+				"panelB": {
+					"type": "panel",
+					"name": "detail"
+				}
+			}
+		}
+	]
+}

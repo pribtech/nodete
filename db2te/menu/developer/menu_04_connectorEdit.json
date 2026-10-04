@@ -1,0 +1,34 @@
+{
+	"description": "Connector Management",
+	"pageWindows": [
+		{
+			"target": "_active",
+			"content": {
+				"type": "panel",
+				"name": "main",
+				"content": {
+					"link": {
+						"type": "action",
+						"target": "_self",
+						"window": "_self",
+						"parameters": {
+							"action": "chartNodal",
+							"$chartTitle": "Table",
+							"$sourceType": "JSON",
+							"$source": "getConnectionProfile",
+							"$nodeControl": "<nodeControl>\n\t<node name='default' textSizeAttribute='5'/>\n\t<node name='table' colour='#99CCFF' shape='table'/>\n\t<node name='column' colour='#CC66FF' shape='operator' hideAble='true'/>\t\n</nodeControl>",
+							"$show": "Report",
+							"$report": "XSL/chartNodalDefaultEdit.xsl",
+							"$editMode": "true",
+							"$newRoot": "connectionManagerNodes",
+							"$definition": "XSD/connectManager.xsd",
+							"$save": "updateConnectionProfile",
+							"$transform": "XSL/removerEmptyOrNewLineTextNodes.xsl"
+						}
+					}
+				},
+				"primaryContainer": true
+			}
+		}
+	]
+}

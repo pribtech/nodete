@@ -1,0 +1,24 @@
+{
+	"description": "Menu Navigator",
+	"pageWindows": [
+		{
+			"target": "_active",
+			"content": {
+				"type": "panel",
+				"name": "menu",
+				"content": {
+					"link": {
+						"type": "action",
+						"target": "_self",
+						"window": "_self",
+						"parameters": {
+							"action": "chartNodalMenu",
+							"$chartTitle": "Menu",
+							"$source": "menu"
+						}
+					}
+				}
+			}
+		}
+	]
+}

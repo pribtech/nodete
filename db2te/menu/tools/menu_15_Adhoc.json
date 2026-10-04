@@ -1,0 +1,24 @@
+{
+	"description": "Ad Hoc SQL",
+	"pageWindows": [
+		{
+			"target": "_final",
+			"content": {
+				"type": "panel",
+				"name": "main",
+				"content": {
+					"link": {
+						"type": "action",
+						"target": "_self",
+						"window": "_self",
+						"parameters": {
+							"action": "ADHOC"
+						}
+					}
+				},
+				"overflow": "hidden",
+				"primaryContainer": true
+			}
+		}
+	]
+}

@@ -1,0 +1,122 @@
+{
+	"description": "Rebuild List",
+	"actionScript": {
+		"$name": "reset",
+		"suppressAutomaticErrors": false,
+		"lockScreen": false,
+		"type": "action",
+		"name": "reset",
+		"actionType": "",
+		"message": "",
+		"parameterList": [],
+		"schema": "",
+		"tasks": [
+			{
+				"type": "task",
+				"taskList": {
+					"type": "taskList",
+					"repeat": 1,
+					"tasks": [
+						{
+							"$name": "rebuildConnectionProfile",
+							"$type": "serverAction",
+							"suppressAutomaticErrors": false,
+							"lockScreen": false,
+							"type": "action",
+							"name": "rebuildConnectionProfile",
+							"actionType": "serverAction",
+							"message": "",
+							"parameterList": [
+								{
+									"$name": "action",
+									"$type": "raw",
+									"type": "parameter",
+									"name": "action",
+									"parameterType": "raw",
+									"title": "",
+									"transform": "",
+									"value": "rebuildConnectionProfile",
+									"defaultValue": "",
+									"check": null,
+									"xpathBaseNode": "",
+									"xpathName": "",
+									"xpathValue": ""
+								}
+							],
+							"schema": "",
+							"tasks": []
+						},
+						{
+							"type": "IF",
+							"name": "",
+							"originalAction": "if",
+							"negCondition": false,
+							"compareOn": "rebuildConnectionProfile.returnCode",
+							"compareOnType": "returnObject",
+							"condition": "true",
+							"conditionType": "",
+							"conditionCompareType": "",
+							"taskList": [
+								{
+									"type": "taskList",
+									"repeat": 1,
+									"tasks": [
+										{
+											"type": "alert",
+											"message": "Connection profile rebuilt and saved"
+										},
+										{
+											"type": "panelReload",
+											"name": ""
+										},
+										{
+											"type": "exit"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "IF",
+							"name": "",
+							"originalAction": "if",
+							"negCondition": false,
+							"compareOn": "rebuildConnectionProfile.returnCode",
+							"compareOnType": "returnObject",
+							"condition": "false",
+							"conditionType": "",
+							"conditionCompareType": "",
+							"taskList": [
+								{
+									"type": "taskList",
+									"repeat": 1,
+									"tasks": [
+										{
+											"$name": "MSG",
+											"$type": "returnObject",
+											"type": "assignSharedConstant",
+											"name": "MSG",
+											"parameterType": "returnObject",
+											"title": "",
+											"transform": "",
+											"value": "rebuildConnectionProfile.returnValue",
+											"defaultValue": "",
+											"check": null,
+											"xpathBaseNode": "",
+											"xpathName": "",
+											"xpathValue": ""
+										},
+										{
+											"type": "alert",
+											"message": "Failed to rebuild connection profile \n\t\t\t\t\t\t\n\t\t\t\t\t\t?MSG?"
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			}
+		]
+	}
+}

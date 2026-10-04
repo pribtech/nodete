@@ -1,0 +1,130 @@
+{
+	"$name": "Setup",
+	"$type": "blank",
+	"$lockScreen": "true",
+	"suppressAutomaticErrors": false,
+	"lockScreen": true,
+	"type": "action",
+	"name": "Setup",
+	"actionType": "blank",
+	"message": "",
+	"parameterList": [],
+	"schema": "",
+	"tasks": [
+		{
+			"type": "task",
+			"taskList": {
+				"type": "taskList",
+				"repeat": 1,
+				"tasks": [
+					{
+						"type": "setActionReturn",
+						"value": "false",
+						"parameterType": "fixed"
+					},
+					{
+						"$name": "DBConnectionRemoveConnection",
+						"$type": "serverAction",
+						"$lockScreen": "true",
+						"suppressAutomaticErrors": false,
+						"lockScreen": true,
+						"type": "action",
+						"name": "DBConnectionRemoveConnection",
+						"actionType": "serverAction",
+						"message": "",
+						"parameterList": [
+							{
+								"$name": "action",
+								"$type": "raw",
+								"type": "parameter",
+								"name": "action",
+								"parameterType": "raw",
+								"title": "",
+								"transform": "",
+								"value": "DBConnectionRemoveSaved",
+								"defaultValue": "",
+								"check": null,
+								"xpathBaseNode": "",
+								"xpathName": "",
+								"xpathValue": ""
+							}
+						],
+						"schema": "",
+						"tasks": [
+							{
+								"type": "IF",
+								"name": "",
+								"originalAction": "if",
+								"negCondition": false,
+								"compareOn": "",
+								"compareOnType": "",
+								"condition": "false",
+								"conditionType": "",
+								"conditionCompareType": "",
+								"taskList": [
+									{
+										"type": "taskList",
+										"repeat": 1,
+										"tasks": [
+											{
+												"$name": "ERROR_MSG",
+												"$type": "returnObject",
+												"type": "assignLocalParameter",
+												"name": "ERROR_MSG",
+												"parameterType": "returnObject",
+												"title": "",
+												"transform": "",
+												"value": "DBConnectionRemoveConnection.returnValue",
+												"defaultValue": "",
+												"check": null,
+												"xpathBaseNode": "",
+												"xpathName": "",
+												"xpathValue": ""
+											},
+											{
+												"type": "alert",
+												"message": "An error has occurred while remove the saved connections."
+											},
+											{
+												"type": "setActionReturn",
+												"value": "false",
+												"parameterType": "fixed"
+											},
+											{
+												"type": "return"
+											}
+										]
+									}
+								]
+							},
+							{
+								"type": "IF",
+								"name": "",
+								"originalAction": "ifNot",
+								"negCondition": true,
+								"compareOn": "",
+								"compareOnType": "",
+								"condition": "false",
+								"conditionType": "",
+								"conditionCompareType": "",
+								"taskList": [
+									{
+										"type": "taskList",
+										"repeat": 1,
+										"tasks": [
+											{
+												"type": "setActionReturn",
+												"value": "true",
+												"parameterType": "fixed"
+											}
+										]
+									}
+								]
+							}
+						]
+					}
+				]
+			}
+		}
+	]
+}

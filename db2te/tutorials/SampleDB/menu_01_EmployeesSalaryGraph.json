@@ -1,0 +1,42 @@
+{
+	"description": "Employee Salaries Graphed",
+	"pageWindows": [
+		{
+			"target": "_active",
+			"content": {
+				"type": "splitPane",
+				"panelA": {
+					"type": "panel",
+					"name": "main",
+					"content": {
+						"link": {
+							"type": "action",
+							"target": "_self",
+							"window": "_self",
+							"parameters": {
+								"table": "employee",
+								"action": "graphYUI"
+							}
+						}
+					},
+					"primaryContainer": true
+				},
+				"panelB": {
+					"type": "panel",
+					"name": "detail",
+					"content": {
+						"link": {
+							"type": "action",
+							"target": "_self",
+							"window": "_self",
+							"parameters": {
+								"table": "employee",
+								"action": "list_table"
+							}
+						}
+					}
+				}
+			}
+		}
+	]
+}

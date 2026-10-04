@@ -1,43 +1,40 @@
 import { Action } from '../../../core/Action.js';
-import { MenuEncoder } from '../../../encoders/MenuEncoder.js';
-import { XmlNode } from '../../../xml/XmlNode.js';
+import { MenuBuilder } from '../../../definitions/MenuBuilder.js';
 
 /**
  * Menu JSON for the front end's menus (PHP actions/noConnection/JSON/menu.php).
  * Answers as "(<json>)", which the front end evaluates.
  *
  * Three ways in:
- *  - baseMenuFolder: every menu_*.xml in a folder
+ *  - baseMenuFolder: every menu_*.json in a folder
  *  - rootCallBack = path of a delay-loaded menu file: expand that branch
- *  - rootCallBack = JSON branch description: expand an XML or database branch
+ *  - rootCallBack = JSON branch description: expand an inline or database branch
  */
 export default class MenuAction extends Action {
 	async run() {
-		const encoder = new MenuEncoder({ files: this.files, config: this.config, messages: this.messages, connections: this.connections });
-		encoder.defaultStage = this.param('defaultStage', encoder.defaultStage);
-		encoder.defaultTarget = this.param('defaultPanel', encoder.defaultTarget);
-		encoder.defaultWindow = this.param('defaultWindow', encoder.defaultWindow);
-		this.response.send(`(${JSON.stringify(this.#encode(encoder))})`);
+		const builder = new MenuBuilder({ files: this.files, config: this.config, connections: this.connections });
+		builder.defaultStage = this.param('defaultStage', builder.defaultStage);
+		builder.defaultTarget = this.param('defaultPanel', '_self');
+		builder.defaultWindow = this.param('defaultWindow', '_self');
+		this.response.send(`(${JSON.stringify(this.#build(builder))})`);
 	}
 
-	#encode(encoder) {
+	#build(builder) {
 		const rootCallBack = this.param('rootCallBack');
-		let menuRoot = this.config.get('MAIN_MENU_ROOT_DIRECTORY');
-		if (rootCallBack === null)
-			return encoder.encodeMenuFolder('.', this.param('baseMenuFolder', menuRoot), this.#requestFilters());
+		const mainMenu = this.config.get('MAIN_MENU_ROOT_DIRECTORY');
+		if (rootCallBack === null) return builder.folder('.', this.param('baseMenuFolder', mainMenu), this.#requestFilters());
 
-		const branch = this.#readBranch(rootCallBack);
-		if (branch === null) return encoder.encodeMenuFolder('.', menuRoot, this.#requestFilters());
+		const branch = this.#readBranch(rootCallBack, builder);
+		if (branch === null) return builder.folder('.', mainMenu, this.#requestFilters());
+		let menuRoot = mainMenu;
 		if (branch.rootDirectory) menuRoot = branch.rootDirectory;
 		else if (branch.branchDirectory) menuRoot = `${rootCallBack.slice(0, rootCallBack.lastIndexOf('/'))}/${branch.branchDirectory}`;
-		// The PHP code replaced the request's filter list with the branch filter (an `=` vs `==` slip); kept for identical menus.
+		// The PHP version replaced the request's filter list with the branch filter (an `=` vs `==` slip); kept for identical menus.
 		const filterList = branch.filter ? [branch.filter] : this.#requestFilters();
 
-		if (branch.branchXML)
-			return encoder.encodeMenuXML(branch.branchXML, menuRoot, filterList, branch.branchXSL, branch.dropParent, branch.onErrorMenu, branch.menulocation);
-		if (branch.branchSQLXML)
-			return encoder.encodeMenuSQLXML(branch.branchSQLXML, menuRoot, filterList, branch.branchXSL, branch.branchSQLPredicate, branch.dropParent, branch.onErrorMenu, branch.menulocation);
-		return encoder.encodeMenuFolder('.', menuRoot, filterList);
+		if (branch.branchXML) return builder.xmlBranch(branch, menuRoot, filterList, branch.menulocation);
+		if (branch.branchSQLXML) return builder.sqlBranch(branch, menuRoot, branch.menulocation);
+		return builder.folder('.', menuRoot, filterList);
 	}
 
 	#requestFilters() {
@@ -46,21 +43,19 @@ export default class MenuAction extends Action {
 		return Array.isArray(filters) ? filters : [filters];
 	}
 
-	/** Branch settings from a JSON callback or from the root element of a menu file. */
-	#readBranch(rootCallBack) {
+	/** Branch settings from a JSON callback or from a delay-loaded menu file. */
+	#readBranch(rootCallBack, builder) {
 		if (rootCallBack.startsWith('{')) {
 			const branch = JSON.parse(rootCallBack);
-			branch.branchSQLXML = String(branch.branchSQLXML ?? '').replaceAll('@@@', '"');
-			return branch;
+			return { ...MenuBuilder.branchOf(branch), filter: branch.filter ?? '', menulocation: branch.menulocation,
+				branchSQLXML: String(branch.branchSQLXML ?? '').replaceAll('@@@', '"') };
 		}
-		const node = XmlNode.parse(this.files.tryReadText(rootCallBack));
-		if (!node) return null;
-		const attr = (name) => node.getAttribute(name).trim();
+		const definition = builder.readDefinition(rootCallBack);
+		if (!definition) return null;
 		return {
-			rootDirectory: attr('rootDirectory'), branchDirectory: attr('branchDirectory'), branchSQLXML: attr('branchSQLXML'),
-			branchSQLPredicate: attr('branchSQLPredicate'), branchXML: attr('branchXML'), branchXSL: attr('branchXSL'),
-			onErrorMenu: attr('onErrorMenu'), dropParent: attr('dropParent'), filter: attr('filter'), DBMS: attr('DBMS'),
-			menulocation: MenuEncoder.menuLocationOf(rootCallBack, this.config.get('MAIN_MENU_ROOT_DIRECTORY')),
+			...MenuBuilder.branchOf(definition),
+			filter: '',
+			menulocation: MenuBuilder.menuLocationOf(rootCallBack, this.config.get('MAIN_MENU_ROOT_DIRECTORY')),
 		};
 	}
 }

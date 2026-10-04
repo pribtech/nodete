@@ -1,0 +1,283 @@
+{
+	"description": "Create Derby Database",
+	"GUID": "createDerbyDB",
+	"actionScript": {
+		"$name": "createDerbyDB",
+		"$type": "form",
+		"suppressAutomaticErrors": false,
+		"lockScreen": false,
+		"type": "action",
+		"name": "createDerbyDB",
+		"actionType": "form",
+		"message": "<div style='width:500px'>\n<h1>Create Derby Database</h1>\n<table>\n\t<tr><td>Host</td>\t\t<td>:</td><td><input type=\"text\" name=\"HOST\" value=\"localhost\" style=\"width:300px\"/></td></tr>\n\t<tr><td>Port</td>\t\t<td>:</td><td><input type=\"text\" name=\"PORT\" value=\"1527\" style=\"width:300px\"/></td></tr>\n\t<tr><td>Database</td>\t<td>:</td><td><input type=\"text\" name=\"DATABASE\" style=\"width:300px\"/></td></tr>\n\t<tr><td>Database</td>\t<td>:</td><td><input type=\"text\" name=\"OPTIONS\" value=\"ssl=basic;\" style=\"width:300px\"/></td></tr>\n</table>\n</div>",
+		"parameterList": [
+			{
+				"$name": "HOST",
+				"$type": "blockValue",
+				"type": "parameter",
+				"name": "HOST",
+				"parameterType": "blockValue",
+				"title": "",
+				"transform": "",
+				"value": "HOST",
+				"defaultValue": "",
+				"check": null,
+				"xpathBaseNode": "",
+				"xpathName": "",
+				"xpathValue": ""
+			},
+			{
+				"$name": "PORT",
+				"$type": "blockValue",
+				"type": "parameter",
+				"name": "PORT",
+				"parameterType": "blockValue",
+				"title": "",
+				"transform": "",
+				"value": "PORT",
+				"defaultValue": "",
+				"check": null,
+				"xpathBaseNode": "",
+				"xpathName": "",
+				"xpathValue": ""
+			},
+			{
+				"$name": "DATABASE",
+				"$type": "blockValue",
+				"type": "parameter",
+				"name": "DATABASE",
+				"parameterType": "blockValue",
+				"title": "",
+				"transform": "",
+				"value": "DATABASE",
+				"defaultValue": "",
+				"check": null,
+				"xpathBaseNode": "",
+				"xpathName": "",
+				"xpathValue": ""
+			},
+			{
+				"$name": "OPTIONS",
+				"$type": "blockValue",
+				"type": "parameter",
+				"name": "OPTIONS",
+				"parameterType": "blockValue",
+				"title": "",
+				"transform": "",
+				"value": "OPTIONS",
+				"defaultValue": "",
+				"check": null,
+				"xpathBaseNode": "",
+				"xpathName": "",
+				"xpathValue": ""
+			},
+			{
+				"$name": "buttonOK",
+				"$type": "raw",
+				"type": "parameter",
+				"name": "buttonOK",
+				"parameterType": "raw",
+				"title": "",
+				"transform": "",
+				"value": "Create DB",
+				"defaultValue": "",
+				"check": null,
+				"xpathBaseNode": "",
+				"xpathName": "",
+				"xpathValue": ""
+			}
+		],
+		"schema": "",
+		"tasks": [
+			{
+				"type": "IF",
+				"name": "",
+				"originalAction": "if",
+				"negCondition": false,
+				"compareOn": "",
+				"compareOnType": "",
+				"condition": "true",
+				"conditionType": "",
+				"conditionCompareType": "",
+				"taskList": [
+					{
+						"type": "taskList",
+						"repeat": 1,
+						"tasks": [
+							{
+								"$name": "createDatabase",
+								"$type": "serverAction",
+								"suppressAutomaticErrors": false,
+								"lockScreen": false,
+								"type": "action",
+								"name": "createDatabase",
+								"actionType": "serverAction",
+								"message": "",
+								"parameterList": [
+									{
+										"$name": "action",
+										"$type": "fixed",
+										"type": "parameter",
+										"name": "action",
+										"parameterType": "fixed",
+										"title": "",
+										"transform": "",
+										"value": "DBConnectionSet",
+										"defaultValue": "",
+										"check": null,
+										"xpathBaseNode": "",
+										"xpathName": "",
+										"xpathValue": ""
+									},
+									{
+										"$name": "databaseDriver",
+										"$type": "raw",
+										"type": "parameter",
+										"name": "databaseDriver",
+										"parameterType": "raw",
+										"title": "",
+										"transform": "",
+										"value": "Derby",
+										"defaultValue": "",
+										"check": null,
+										"xpathBaseNode": "",
+										"xpathName": "",
+										"xpathValue": ""
+									},
+									{
+										"$name": "host",
+										"$type": "fixed",
+										"type": "parameter",
+										"name": "host",
+										"parameterType": "fixed",
+										"title": "",
+										"transform": "",
+										"value": "?HOST?",
+										"defaultValue": "",
+										"check": null,
+										"xpathBaseNode": "",
+										"xpathName": "",
+										"xpathValue": ""
+									},
+									{
+										"$name": "port",
+										"$type": "fixed",
+										"type": "parameter",
+										"name": "port",
+										"parameterType": "fixed",
+										"title": "",
+										"transform": "",
+										"value": "?PORT?",
+										"defaultValue": "",
+										"check": null,
+										"xpathBaseNode": "",
+										"xpathName": "",
+										"xpathValue": ""
+									},
+									{
+										"$name": "database",
+										"$type": "fixed",
+										"type": "parameter",
+										"name": "database",
+										"parameterType": "fixed",
+										"title": "",
+										"transform": "",
+										"value": "?DATABASE?",
+										"defaultValue": "",
+										"check": null,
+										"xpathBaseNode": "",
+										"xpathName": "",
+										"xpathValue": ""
+									},
+									{
+										"$name": "options",
+										"$type": "fixed",
+										"type": "parameter",
+										"name": "options",
+										"parameterType": "fixed",
+										"title": "",
+										"transform": "",
+										"value": "create=true;?OPTIONS?",
+										"defaultValue": "",
+										"check": null,
+										"xpathBaseNode": "",
+										"xpathName": "",
+										"xpathValue": ""
+									}
+								],
+								"schema": "",
+								"tasks": [
+									{
+										"type": "IF",
+										"name": "",
+										"originalAction": "if",
+										"negCondition": true,
+										"compareOn": "",
+										"compareOnType": "",
+										"condition": "true",
+										"conditionType": "",
+										"conditionCompareType": "",
+										"taskList": [
+											{
+												"type": "taskList",
+												"repeat": 1,
+												"tasks": [
+													{
+														"$name": "ERROR_MESSAGE",
+														"$type": "returnObject",
+														"type": "assignSharedConstant",
+														"name": "ERROR_MESSAGE",
+														"parameterType": "returnObject",
+														"title": "",
+														"transform": "",
+														"value": "createDatabase.returnValue",
+														"defaultValue": "",
+														"check": null,
+														"xpathBaseNode": "",
+														"xpathName": "",
+														"xpathValue": ""
+													},
+													{
+														"type": "alert",
+														"message": "Failed to create ?DATABASE? : ?ERROR_MESSAGE?"
+													},
+													{
+														"type": "retry",
+														"name": "createDerbyDB"
+													}
+												]
+											}
+										]
+									},
+									{
+										"type": "IF",
+										"name": "",
+										"originalAction": "if",
+										"negCondition": false,
+										"compareOn": "",
+										"compareOnType": "",
+										"condition": "true",
+										"conditionType": "",
+										"conditionCompareType": "",
+										"taskList": [
+											{
+												"type": "taskList",
+												"repeat": 1,
+												"tasks": [
+													{
+														"type": "alert",
+														"message": "Created Derby database ?DATABASE?"
+													}
+												]
+											}
+										]
+									}
+								]
+							}
+						]
+					}
+				]
+			}
+		]
+	}
+}

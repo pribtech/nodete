@@ -1,0 +1,33 @@
+{
+	"description": "Security Plugin Workshop",
+	"tag": "r91",
+	"pageWindows": [
+		{
+			"target": "_final",
+			"content": {
+				"type": "panel",
+				"name": "Tutorial",
+				"content": {
+					"link": {
+						"type": "action",
+						"target": "_self",
+						"window": "_self",
+						"parameters": {
+							"action": "flowgroup",
+							"subFolder": "SecurityPlugin",
+							"description": "This workshop shows how to install the db2auth security plug-in, in order to control users and groups from TE.  It also shows how the TE support for the plug-in was created.",
+							"articalTitle": "Security Plugin Workshop",
+							"title": "Security Plugin Workshop",
+							"CurrentMenuLocation": {
+								"$var": "CURRENT_MENU_LOCATION"
+							},
+							"listStyleType": "decimal",
+							"menuExpansionType": "internal"
+						}
+					}
+				},
+				"primaryContainer": true
+			}
+		}
+	]
+}

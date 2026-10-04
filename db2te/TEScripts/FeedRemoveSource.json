@@ -1,0 +1,159 @@
+{
+	"$name": "FeedManagerNewSourceDialog",
+	"$type": "form",
+	"$lockScreen": "true",
+	"suppressAutomaticErrors": false,
+	"lockScreen": true,
+	"type": "action",
+	"name": "FeedManagerNewSourceDialog",
+	"actionType": "form",
+	"message": "<div class=\"groupTableTitle\">Remove source feed</div>\n\t\t<span class=\"groupTableContent\"><table width=\"100%\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\"><tbody>\n\t\t\t\t<tr>\n\t\t\t\t\t<td style=\"vertical-align: bottom\">\n\t\t\t\t        <table  width=100% style=\"position:static;\">\n\t\t\t\t          <tbody>\n\t\t\t\t            <tr><td align=\"left\" style=\"width:5px;\"><b>Title:</b></td><td >?SOURCE_TITLE?</td></tr>\n\t\t\t\t\t\t\t<tr><td align=\"left\" style=\"width:5px;\"><b>URL:</b></td><td >?SOURCE_LINK?</td></tr>\n\t\t\t\t            <tr><td align=\"left\" style=\"width:5px;\"><b>Description:</b></td><td >?SOURCE_DESCRIPTION?</td></tr>\n\t\t\t\t\t\t\t<tr><td align=\"left\" style=\"width:5px;\"><b>Enabled:</b></td><td >?SOURCE_ENABLED?</td></tr>\n\t\t\t\t          </tbody>\n\t\t\t\t        </table>\n\t\t\t\t\t</td>\n\t\t\t\t</tr>\n\t\t</tbody></table></span>",
+	"parameterList": [],
+	"schema": "",
+	"tasks": [
+		{
+			"type": "IF",
+			"name": "",
+			"originalAction": "if",
+			"negCondition": false,
+			"compareOn": "",
+			"compareOnType": "",
+			"condition": "true",
+			"conditionType": "",
+			"conditionCompareType": "",
+			"taskList": [
+				{
+					"type": "taskList",
+					"repeat": 1,
+					"tasks": [
+						{
+							"$name": "FeedRemoveSource",
+							"$type": "serverAction",
+							"$lockScreen": "true",
+							"suppressAutomaticErrors": false,
+							"lockScreen": true,
+							"type": "action",
+							"name": "FeedRemoveSource",
+							"actionType": "serverAction",
+							"message": "",
+							"parameterList": [
+								{
+									"$name": "action",
+									"$type": "raw",
+									"type": "parameter",
+									"name": "action",
+									"parameterType": "raw",
+									"title": "",
+									"transform": "",
+									"value": "feedRemoveSource",
+									"defaultValue": "",
+									"check": null,
+									"xpathBaseNode": "",
+									"xpathName": "",
+									"xpathValue": ""
+								}
+							],
+							"schema": "",
+							"tasks": [
+								{
+									"type": "IF",
+									"name": "",
+									"originalAction": "if",
+									"negCondition": false,
+									"compareOn": "",
+									"compareOnType": "",
+									"condition": "false",
+									"conditionType": "",
+									"conditionCompareType": "",
+									"taskList": [
+										{
+											"type": "taskList",
+											"repeat": 1,
+											"tasks": [
+												{
+													"$name": "ERROR_MSG",
+													"$type": "returnObject",
+													"type": "assignLocalParameter",
+													"name": "ERROR_MSG",
+													"parameterType": "returnObject",
+													"title": "",
+													"transform": "",
+													"value": "FeedRemoveSource.returnValue",
+													"defaultValue": "",
+													"check": null,
+													"xpathBaseNode": "",
+													"xpathName": "",
+													"xpathValue": ""
+												},
+												{
+													"type": "alert",
+													"message": "An error has occurred while removing the source."
+												},
+												{
+													"type": "setActionReturn",
+													"value": "false",
+													"parameterType": "fixed"
+												},
+												{
+													"type": "return"
+												}
+											]
+										}
+									]
+								},
+								{
+									"type": "IF",
+									"name": "",
+									"originalAction": "if",
+									"negCondition": false,
+									"compareOn": "",
+									"compareOnType": "",
+									"condition": "false",
+									"conditionType": "",
+									"conditionCompareType": "",
+									"taskList": [
+										{
+											"type": "taskList",
+											"repeat": 1,
+											"tasks": [
+												{
+													"type": "setActionReturn",
+													"value": "true",
+													"parameterType": "fixed"
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "IF",
+			"name": "",
+			"originalAction": "ifNot",
+			"negCondition": true,
+			"compareOn": "",
+			"compareOnType": "",
+			"condition": "true",
+			"conditionType": "",
+			"conditionCompareType": "",
+			"taskList": [
+				{
+					"type": "taskList",
+					"repeat": 1,
+					"tasks": [
+						{
+							"type": "setActionReturn",
+							"value": "false",
+							"parameterType": "fixed"
+						}
+					]
+				}
+			]
+		}
+	]
+}

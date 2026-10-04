@@ -1,0 +1,36 @@
+{
+	"description": "Dynamic SQL Daily",
+	"requires": {
+		"minVersion": 9.5
+	},
+	"pageWindows": [
+		{
+			"target": "_active",
+			"content": {
+				"type": "splitPane",
+				"panelA": {
+					"type": "panel",
+					"name": "main",
+					"content": {
+						"link": {
+							"type": "action",
+							"target": "_self",
+							"window": "_self",
+							"parameters": {
+								"table": "Monitor/histSnapDynSqlV97",
+								"action": "list_table",
+								"$settings": "<summarize><dimension column=\"sample_ts\" level=\"Day\"/></summarize>",
+								"Period": "240"
+							}
+						}
+					},
+					"primaryContainer": true
+				},
+				"panelB": {
+					"type": "panel",
+					"name": "detail"
+				}
+			}
+		}
+	]
+}

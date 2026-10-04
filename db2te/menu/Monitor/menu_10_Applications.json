@@ -1,0 +1,35 @@
+{
+	"description": "Applications",
+	"requires": {
+		"DBMS": "DB2"
+	},
+	"pageWindows": [
+		{
+			"target": "_final",
+			"windowStage": "DefaultStage",
+			"content": {
+				"type": "panel",
+				"name": "Tutorial",
+				"content": {
+					"link": {
+						"type": "action",
+						"target": "_self",
+						"window": "_self",
+						"parameters": {
+							"action": "flowgroup",
+							"subFolder": "Applications",
+							"title": "Applications",
+							"CurrentMenuLocation": {
+								"$var": "CURRENT_MENU_LOCATION"
+							},
+							"listStyleType": "",
+							"menuExpansionType": "internal",
+							"defaultPage": "ACTIVEUOW"
+						}
+					}
+				},
+				"primaryContainer": true
+			}
+		}
+	]
+}

@@ -1,7 +1,7 @@
 import { Template } from './Template.js';
 import { JsListEncoder } from './JsListEncoder.js';
 import { JsConstants } from './JsConstants.js';
-import { MenuEncoder } from '../encoders/MenuEncoder.js';
+import { MenuBuilder } from '../definitions/MenuBuilder.js';
 import { Escape } from '../util/Escape.js';
 
 const TOUCH_DETECTION = "('ontouchstart' in window) || (navigator.msMaxTouchPoints > 0) ||(navigator.userAgent.match(/iPad/i) != null)";
@@ -28,10 +28,10 @@ export class IndexPage {
 		res.set('Cache-Control', 'private').type('text/html; charset=UTF-8').send(this.render(context));
 	}
 
-	render({ config, files, request, session, messages, connections }) {
+	render({ config, files, request, session, connections }) {
 		const touchOverride = this.#touchOverride(request);
 		const isTouch = touchOverride ?? /(iPhone|iPod|iPad)/i.test(request.userAgent);
-		const layouts = new MenuEncoder({ files, config, messages, connections });
+		const layouts = new MenuBuilder({ files, config, connections });
 		const preferences = config.get('USER_PREFERENCES_DIRECTORY');
 		const languageFolder = `${config.get('PHP_INCLUDE_BASE_DIRECTORY')}${config.get('BASE_LANGUAGE_DIRECTORY')}${config.get('TE_LANGUAGE')}`;
 
@@ -43,7 +43,7 @@ export class IndexPage {
 			dimensionLoads: this.#dimensionLoads(config, files),
 			jsBaseDirectory: config.get('JS_BASE_DIRECTORY'),
 			homePageLayout: Escape.inlineJson(this.#homePageLayout(layouts, files, config, preferences, isTouch)),
-			coreLayout: Escape.inlineJson(layouts.encodePageWindowFromFile(`${preferences}default/${isTouch ? 'TE_TOUCH_LAYOUT.xml' : 'TE_CORE_LAYOUT.xml'}`)),
+			coreLayout: Escape.inlineJson(layouts.pageWindowFromFile(`${preferences}default/${isTouch ? 'TE_TOUCH_LAYOUT.json' : 'TE_CORE_LAYOUT.json'}`)),
 			ieWarningPage: `${languageFolder}/index_IE_warning.html`,
 			confirmLeave: config.get('ENABLE_CONFIRM_LEAVE_VIA_BROWSER_NAVIGATION') ? CONFIRM_LEAVE : '',
 			iosError: OLD_IOS_SAFARI.test(request.userAgent) ? (files.tryReadText(`${languageFolder}/index_error.html`) ?? '') : '',
@@ -68,9 +68,9 @@ export class IndexPage {
 	#homePageLayout(layouts, files, config, preferences, isTouch) {
 		const layout = config.get(isTouch ? 'CUSTOM_TE_TOUCH_HOME_PAGE_LAYOUT' : 'CUSTOM_TE_HOME_PAGE_LAYOUT');
 		if (files.isFile(`${preferences}${config.get('CUSTOM_TE_HOME_PAGE_LAYOUT')}`) && files.isFile(`${preferences}${layout}`))
-			return layouts.encodePageWindowFromFile(`${preferences}${layout}`);
+			return layouts.pageWindowFromFile(`${preferences}${layout}`);
 		if (files.isFile(`${preferences}default/${layout}`))
-			return layouts.encodePageWindowFromFile(`${preferences}default/${layout}`);
+			return layouts.pageWindowFromFile(`${preferences}default/${layout}`);
 		return null;
 	}
 }

@@ -1,0 +1,25 @@
+{
+	"description": "Data Generator",
+	"pageWindows": [
+		{
+			"target": "_final",
+			"title": "Data Generator",
+			"content": {
+				"type": "panel",
+				"name": "second",
+				"content": {
+					"link": {
+						"type": "action",
+						"target": "_self",
+						"window": "_self",
+						"parameters": {
+							"action": "DGMonitor"
+						}
+					}
+				},
+				"overflow": "hidden",
+				"primaryContainer": true
+			}
+		}
+	]
+}

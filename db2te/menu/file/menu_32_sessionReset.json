@@ -1,0 +1,82 @@
+{
+	"description": "Session Reset",
+	"actionScript": {
+		"$name": "resetSessionAsk",
+		"$type": "form",
+		"$lockScreen": "true",
+		"suppressAutomaticErrors": false,
+		"lockScreen": true,
+		"type": "action",
+		"name": "resetSessionAsk",
+		"actionType": "form",
+		"message": "<div style='width:500px'>\n<h1>Reset session (destroy current sesson)</h1>\n<p>\n</div>",
+		"parameterList": [
+			{
+				"$name": "buttonOK",
+				"$type": "raw",
+				"type": "parameter",
+				"name": "buttonOK",
+				"parameterType": "raw",
+				"title": "",
+				"transform": "",
+				"value": "Reset",
+				"defaultValue": "",
+				"check": null,
+				"xpathBaseNode": "",
+				"xpathName": "",
+				"xpathValue": ""
+			}
+		],
+		"schema": "",
+		"tasks": [
+			{
+				"type": "IF",
+				"name": "",
+				"originalAction": "if",
+				"negCondition": false,
+				"compareOn": "",
+				"compareOnType": "",
+				"condition": "true",
+				"conditionType": "",
+				"conditionCompareType": "",
+				"taskList": [
+					{
+						"type": "taskList",
+						"repeat": 1,
+						"tasks": [
+							{
+								"$name": "resetSessionExecute",
+								"$type": "serverAction",
+								"suppressAutomaticErrors": false,
+								"lockScreen": false,
+								"type": "action",
+								"name": "resetSessionExecute",
+								"actionType": "serverAction",
+								"message": "",
+								"parameterList": [
+									{
+										"$name": "action",
+										"$type": "fixed",
+										"type": "parameter",
+										"name": "action",
+										"parameterType": "fixed",
+										"title": "",
+										"transform": "",
+										"value": "sessionReset",
+										"defaultValue": "",
+										"check": null,
+										"xpathBaseNode": "",
+										"xpathName": "",
+										"xpathValue": ""
+									}
+								],
+								"schema": "",
+								"tasks": []
+							}
+						]
+					}
+				]
+			}
+		]
+	}
+}

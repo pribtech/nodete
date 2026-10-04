@@ -1,0 +1,71 @@
+{
+	"description": "Instance Memory",
+	"requires": {
+		"DBMS": "DB2",
+		"minVersion": 9.5
+	},
+	"pageWindows": [
+		{
+			"target": "_active",
+			"title": "Instance Memory",
+			"panelHeaders": {},
+			"content": {
+				"type": "splitPane",
+				"splitPercent": "0.7",
+				"panelA": {
+					"type": "splitPane",
+					"direction": "v",
+					"splitPercent": "0.3",
+					"panelA": {
+						"type": "panel",
+						"name": "instance",
+						"content": {
+							"link": {
+								"type": "action",
+								"target": "_self",
+								"window": "_self",
+								"parameters": {
+									"table": "Performance/DBMMemory",
+									"action": "list_table"
+								}
+							}
+						},
+						"panelHeaders": {}
+					},
+					"panelB": {
+						"type": "panel",
+						"name": "database",
+						"content": {
+							"link": {
+								"type": "action",
+								"target": "_self",
+								"window": "_self",
+								"parameters": {
+									"table": "Performance/instanceMemoryDatabase",
+									"action": "list_table"
+								}
+							}
+						},
+						"panelHeaders": {}
+					}
+				},
+				"panelB": {
+					"type": "panel",
+					"name": "detail",
+					"content": {
+						"link": {
+							"type": "action",
+							"target": "_self",
+							"window": "_self",
+							"parameters": {
+								"table": "Performance/instanceMemory",
+								"action": "list_table"
+							}
+						}
+					},
+					"panelHeaders": {}
+				}
+			}
+		}
+	]
+}

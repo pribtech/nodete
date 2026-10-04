@@ -1,0 +1,29 @@
+{
+	"description": "Advanced SQL PL Example",
+	"tag": "r91",
+	"pageWindows": [
+		{
+			"target": "_blank",
+			"windowStage": "DefaultStage",
+			"content": {
+				"type": "panel",
+				"name": "Tutorial",
+				"content": {
+					"link": {
+						"type": "action",
+						"target": "_self",
+						"window": "_self",
+						"parameters": {
+							"action": "tutorial",
+							"tutorialName": "AdvancedSQLPLExample",
+							"CurrentMenuLocation": {
+								"$var": "CURRENT_MENU_LOCATION"
+							}
+						}
+					}
+				},
+				"primaryContainer": true
+			}
+		}
+	]
+}

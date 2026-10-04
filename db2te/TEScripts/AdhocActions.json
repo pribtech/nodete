@@ -1,0 +1,378 @@
+{
+	"$name": "DBconnectionSetConnection",
+	"$type": "blank",
+	"$lockScreen": "true",
+	"suppressAutomaticErrors": false,
+	"lockScreen": true,
+	"type": "action",
+	"name": "DBconnectionSetConnection",
+	"actionType": "blank",
+	"message": "",
+	"parameterList": [],
+	"schema": "",
+	"tasks": [
+		{
+			"type": "IF",
+			"name": "",
+			"originalAction": "if",
+			"negCondition": false,
+			"compareOn": "RUN_ACTION",
+			"compareOnType": "constant",
+			"condition": "SAVEFILE",
+			"conditionType": "",
+			"conditionCompareType": "str",
+			"taskList": [
+				{
+					"type": "taskList",
+					"repeat": 1,
+					"tasks": [
+						{
+							"$name": "saveFile",
+							"$type": "fileDialog",
+							"suppressAutomaticErrors": false,
+							"lockScreen": false,
+							"type": "action",
+							"name": "saveFile",
+							"actionType": "fileDialog",
+							"message": "",
+							"parameterList": [
+								{
+									"$name": "title",
+									"$type": "fixed",
+									"type": "parameter",
+									"name": "title",
+									"parameterType": "fixed",
+									"title": "",
+									"transform": "",
+									"value": "Save File",
+									"defaultValue": "",
+									"check": null,
+									"xpathBaseNode": "",
+									"xpathName": "",
+									"xpathValue": ""
+								}
+							],
+							"schema": "",
+							"tasks": [
+								{
+									"type": "IF",
+									"name": "",
+									"originalAction": "followOnAction",
+									"negCondition": false,
+									"compareOn": "",
+									"compareOnType": "",
+									"condition": "true",
+									"conditionType": "",
+									"conditionCompareType": "",
+									"taskList": [
+										{
+											"type": "taskList",
+											"repeat": 1,
+											"tasks": [
+												{
+													"$name": "getFile",
+													"$type": "serverAction",
+													"suppressAutomaticErrors": false,
+													"lockScreen": false,
+													"type": "action",
+													"name": "getFile",
+													"actionType": "serverAction",
+													"message": "",
+													"parameterList": [
+														{
+															"$name": "action",
+															"$type": "fixed",
+															"type": "parameter",
+															"name": "action",
+															"parameterType": "fixed",
+															"title": "",
+															"transform": "",
+															"value": "AdHocSQL/saveFile",
+															"defaultValue": "",
+															"check": null,
+															"xpathBaseNode": "",
+															"xpathName": "",
+															"xpathValue": ""
+														},
+														{
+															"$name": "fileName",
+															"$type": "returnObject",
+															"type": "parameter",
+															"name": "fileName",
+															"parameterType": "returnObject",
+															"title": "",
+															"transform": "",
+															"value": "saveFile.returnValue",
+															"defaultValue": "",
+															"check": null,
+															"xpathBaseNode": "",
+															"xpathName": "",
+															"xpathValue": ""
+														},
+														{
+															"$name": "data",
+															"$type": "constant",
+															"type": "parameter",
+															"name": "data",
+															"parameterType": "constant",
+															"title": "",
+															"transform": "",
+															"value": "SQL_TEXT",
+															"defaultValue": "",
+															"check": null,
+															"xpathBaseNode": "",
+															"xpathName": "",
+															"xpathValue": ""
+														}
+													],
+													"schema": "",
+													"tasks": [
+														{
+															"type": "IF",
+															"name": "",
+															"originalAction": "followOnAction",
+															"negCondition": false,
+															"compareOn": "",
+															"compareOnType": "",
+															"condition": "true",
+															"conditionType": "",
+															"conditionCompareType": "",
+															"taskList": [
+																{
+																	"type": "taskList",
+																	"repeat": 1,
+																	"tasks": [
+																		{
+																			"type": "alert",
+																			"message": "File saved"
+																		}
+																	]
+																}
+															]
+														},
+														{
+															"type": "IF",
+															"name": "",
+															"originalAction": "followOnAction",
+															"negCondition": false,
+															"compareOn": "",
+															"compareOnType": "",
+															"condition": "false",
+															"conditionType": "",
+															"conditionCompareType": "",
+															"taskList": [
+																{
+																	"type": "taskList",
+																	"repeat": 1,
+																	"tasks": [
+																		{
+																			"type": "alert",
+																			"message": "?RETURN_VALUE?"
+																		},
+																		{
+																			"type": "callAction",
+																			"name": "saveFile"
+																		}
+																	]
+																}
+															]
+														},
+														{
+															"type": "IF",
+															"name": "",
+															"originalAction": "followOnAction",
+															"negCondition": false,
+															"compareOn": "",
+															"compareOnType": "",
+															"condition": "error",
+															"conditionType": "",
+															"conditionCompareType": "",
+															"taskList": [
+																{
+																	"type": "taskList",
+																	"repeat": 1,
+																	"tasks": [
+																		{
+																			"type": "alert",
+																			"message": "?RETURN_VALUE?"
+																		}
+																	]
+																}
+															]
+														}
+													]
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "IF",
+			"name": "",
+			"originalAction": "if",
+			"negCondition": false,
+			"compareOn": "RUN_ACTION",
+			"compareOnType": "constant",
+			"condition": "OPENFILE",
+			"conditionType": "",
+			"conditionCompareType": "str",
+			"taskList": [
+				{
+					"type": "taskList",
+					"repeat": 1,
+					"tasks": [
+						{
+							"$name": "fileOpen",
+							"$type": "fileDialog",
+							"suppressAutomaticErrors": false,
+							"lockScreen": false,
+							"type": "action",
+							"name": "fileOpen",
+							"actionType": "fileDialog",
+							"message": "",
+							"parameterList": [
+								{
+									"$name": "title",
+									"$type": "fixed",
+									"type": "parameter",
+									"name": "title",
+									"parameterType": "fixed",
+									"title": "",
+									"transform": "",
+									"value": "Open File",
+									"defaultValue": "",
+									"check": null,
+									"xpathBaseNode": "",
+									"xpathName": "",
+									"xpathValue": ""
+								}
+							],
+							"schema": "",
+							"tasks": [
+								{
+									"type": "IF",
+									"name": "",
+									"originalAction": "followOnAction",
+									"negCondition": false,
+									"compareOn": "",
+									"compareOnType": "",
+									"condition": "true",
+									"conditionType": "",
+									"conditionCompareType": "",
+									"taskList": [
+										{
+											"type": "taskList",
+											"repeat": 1,
+											"tasks": [
+												{
+													"$name": "getFile",
+													"$type": "serverAction",
+													"suppressAutomaticErrors": false,
+													"lockScreen": false,
+													"type": "action",
+													"name": "getFile",
+													"actionType": "serverAction",
+													"message": "",
+													"parameterList": [
+														{
+															"$name": "action",
+															"$type": "fixed",
+															"type": "parameter",
+															"name": "action",
+															"parameterType": "fixed",
+															"title": "",
+															"transform": "",
+															"value": "AdHocSQL/openFile",
+															"defaultValue": "",
+															"check": null,
+															"xpathBaseNode": "",
+															"xpathName": "",
+															"xpathValue": ""
+														},
+														{
+															"$name": "fileName",
+															"$type": "returnObject",
+															"type": "parameter",
+															"name": "fileName",
+															"parameterType": "returnObject",
+															"title": "",
+															"transform": "",
+															"value": "fileOpen.returnValue",
+															"defaultValue": "",
+															"check": null,
+															"xpathBaseNode": "",
+															"xpathName": "",
+															"xpathValue": ""
+														}
+													],
+													"schema": "",
+													"tasks": [
+														{
+															"type": "IF",
+															"name": "",
+															"originalAction": "followOnAction",
+															"negCondition": false,
+															"compareOn": "",
+															"compareOnType": "",
+															"condition": "true",
+															"conditionType": "",
+															"conditionCompareType": "",
+															"taskList": [
+																{
+																	"type": "taskList",
+																	"repeat": 1,
+																	"tasks": [
+																		{
+																			"type": "blockUpdate"
+																		}
+																	]
+																}
+															]
+														},
+														{
+															"type": "IF",
+															"name": "",
+															"originalAction": "followOnAction",
+															"negCondition": false,
+															"compareOn": "",
+															"compareOnType": "",
+															"condition": "false",
+															"conditionType": "",
+															"conditionCompareType": "",
+															"taskList": [
+																{
+																	"type": "taskList",
+																	"repeat": 1,
+																	"tasks": [
+																		{
+																			"type": "alert",
+																			"message": "?RETURN_VALUE?"
+																		},
+																		{
+																			"type": "callAction",
+																			"name": "fileOpen"
+																		}
+																	]
+																}
+															]
+														}
+													]
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

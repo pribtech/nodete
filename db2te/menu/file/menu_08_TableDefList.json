@@ -1,0 +1,21 @@
+{
+	"description": "View local table definition files",
+	"pageWindows": [
+		{
+			"target": "_active",
+			"content": {
+				"type": "panel",
+				"content": {
+					"link": {
+						"type": "action",
+						"target": "_self",
+						"window": "_self",
+						"parameters": {
+							"action": "listTableDef"
+						}
+					}
+				}
+			}
+		}
+	]
+}

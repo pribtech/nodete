@@ -1,0 +1,35 @@
+{
+	"description": "Monitor",
+	"requires": {
+		"DBMS": "DB2",
+		"notContext": "developer"
+	},
+	"branchDirectory": "Monitor",
+	"pageWindows": [
+		{
+			"target": "_final",
+			"content": {
+				"type": "panel",
+				"name": "Tutorial",
+				"content": {
+					"link": {
+						"type": "action",
+						"target": "_self",
+						"window": "_self",
+						"parameters": {
+							"action": "flowgroup",
+							"subFolder": "Monitor",
+							"title": "Monitor",
+							"CurrentMenuLocation": {
+								"$var": "CURRENT_MENU_LOCATION"
+							},
+							"listStyleType": "",
+							"menuExpansionType": "internal"
+						}
+					}
+				},
+				"primaryContainer": true
+			}
+		}
+	]
+}

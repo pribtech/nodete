@@ -1,0 +1,38 @@
+{
+	"description": "Workload Waits Delta",
+	"requires": {
+		"minVersion": 9.7
+	},
+	"pageWindows": [
+		{
+			"target": "_active",
+			"panelHeaders": {},
+			"content": {
+				"type": "splitPane",
+				"splitPercent": "0.5",
+				"panelA": {
+					"type": "panel",
+					"name": "main",
+					"content": {
+						"link": {
+							"type": "action",
+							"target": "_self",
+							"window": "_self",
+							"parameters": {
+								"table": "Monitor/monSVSCWaits",
+								"action": "list_table",
+								"displayColumnsSet": "delta"
+							}
+						}
+					},
+					"panelHeaders": {},
+					"primaryContainer": true
+				},
+				"panelB": {
+					"type": "panel",
+					"name": "detail"
+				}
+			}
+		}
+	]
+}

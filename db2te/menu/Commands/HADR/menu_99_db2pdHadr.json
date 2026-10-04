@@ -1,0 +1,197 @@
+{
+	"description": "db2pd -hadr",
+	"actionScript": {
+		"$lockScreen": "true",
+		"suppressAutomaticErrors": false,
+		"lockScreen": true,
+		"type": "action",
+		"name": "",
+		"actionType": "",
+		"message": "",
+		"parameterList": [],
+		"schema": "",
+		"tasks": [
+			{
+				"type": "task",
+				"taskList": {
+					"type": "taskList",
+					"repeat": 1,
+					"tasks": [
+						{
+							"$name": "getSession",
+							"$type": "serverAction",
+							"suppressAutomaticErrors": false,
+							"lockScreen": false,
+							"type": "action",
+							"name": "getSession",
+							"actionType": "serverAction",
+							"message": "",
+							"parameterList": [
+								{
+									"$name": "action",
+									"$type": "raw",
+									"type": "parameter",
+									"name": "action",
+									"parameterType": "raw",
+									"title": "",
+									"transform": "",
+									"value": "getSessionVariable",
+									"defaultValue": "",
+									"check": null,
+									"xpathBaseNode": "",
+									"xpathName": "",
+									"xpathValue": ""
+								},
+								{
+									"$name": "name[database]",
+									"$type": "raw",
+									"type": "parameter",
+									"name": "name[database]",
+									"parameterType": "raw",
+									"title": "",
+									"transform": "",
+									"value": "Connections.USE_DATABASE_CONNECTION.database",
+									"defaultValue": "",
+									"check": null,
+									"xpathBaseNode": "",
+									"xpathName": "",
+									"xpathValue": ""
+								}
+							],
+							"schema": "",
+							"tasks": []
+						},
+						{
+							"$name": "database-name",
+							"$type": "returnObject",
+							"type": "assignSharedConstant",
+							"name": "database-name",
+							"parameterType": "returnObject",
+							"title": "",
+							"transform": "",
+							"value": "getSession.returnValue.database",
+							"defaultValue": "",
+							"check": null,
+							"xpathBaseNode": "",
+							"xpathName": "",
+							"xpathValue": ""
+						},
+						{
+							"$name": "executeShell",
+							"$type": "serverAction",
+							"suppressAutomaticErrors": false,
+							"lockScreen": false,
+							"type": "action",
+							"name": "executeShell",
+							"actionType": "serverAction",
+							"message": "",
+							"parameterList": [
+								{
+									"$name": "action",
+									"$type": "raw",
+									"type": "parameter",
+									"name": "action",
+									"parameterType": "raw",
+									"title": "",
+									"transform": "",
+									"value": "executeShellNew",
+									"defaultValue": "",
+									"check": null,
+									"xpathBaseNode": "",
+									"xpathName": "",
+									"xpathValue": ""
+								},
+								{
+									"$name": "command",
+									"$type": "fixed",
+									"type": "parameter",
+									"name": "command",
+									"parameterType": "fixed",
+									"title": "",
+									"transform": "",
+									"value": "db2pd -d ?database-name?  -hadr",
+									"defaultValue": "",
+									"check": null,
+									"xpathBaseNode": "",
+									"xpathName": "",
+									"xpathValue": ""
+								}
+							],
+							"schema": "",
+							"tasks": []
+						},
+						{
+							"type": "IF",
+							"name": "",
+							"originalAction": "if",
+							"negCondition": true,
+							"compareOn": "",
+							"compareOnType": "",
+							"condition": "true",
+							"conditionType": "",
+							"conditionCompareType": "",
+							"taskList": [
+								{
+									"type": "taskList",
+									"repeat": 1,
+									"tasks": [
+										{
+											"$name": "ERROR_MESSAGE",
+											"$type": "returnObject",
+											"type": "assignSharedConstant",
+											"name": "ERROR_MESSAGE",
+											"parameterType": "returnObject",
+											"title": "",
+											"transform": "",
+											"value": "executeShell.returnValue",
+											"defaultValue": "",
+											"check": null,
+											"xpathBaseNode": "",
+											"xpathName": "",
+											"xpathValue": ""
+										},
+										{
+											"type": "alert",
+											"message": "Failed: ?ERROR_MESSAGE?"
+										},
+										{
+											"type": "exit"
+										}
+									]
+								}
+							]
+						},
+						{
+							"$name": "output",
+							"$type": "returnObject",
+							"type": "assignSharedConstant",
+							"name": "output",
+							"parameterType": "returnObject",
+							"title": "",
+							"transform": "",
+							"value": "executeShell.returnValue",
+							"defaultValue": "",
+							"check": null,
+							"xpathBaseNode": "",
+							"xpathName": "",
+							"xpathValue": ""
+						},
+						{
+							"$name": "showOutput",
+							"$type": "form",
+							"suppressAutomaticErrors": false,
+							"lockScreen": false,
+							"type": "action",
+							"name": "showOutput",
+							"actionType": "form",
+							"message": "<textarea style=\"font-family:Console,'Courier New',Lucida\" rows=\"30\" cols=\"80\" wrap=\"off\">\n?output?\n</textarea>",
+							"parameterList": [],
+							"schema": "",
+							"tasks": []
+						}
+					]
+				}
+			}
+		]
+	}
+}

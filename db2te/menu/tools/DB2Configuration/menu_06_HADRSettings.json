@@ -1,0 +1,25 @@
+{
+	"description": "HADR",
+	"pageWindows": [
+		{
+			"target": "_active",
+			"content": {
+				"type": "panel",
+				"name": "HADR",
+				"content": {
+					"link": {
+						"type": "action",
+						"target": "_self",
+						"window": "_self",
+						"parameters": {
+							"name": "hadr%",
+							"comparename": "like",
+							"table": "dbcfg",
+							"action": "list_table"
+						}
+					}
+				}
+			}
+		}
+	]
+}

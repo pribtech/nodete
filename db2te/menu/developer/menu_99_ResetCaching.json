@@ -1,0 +1,62 @@
+{
+	"description": "Reset Caching",
+	"actionScript": {
+		"$name": "resetCache",
+		"suppressAutomaticErrors": false,
+		"lockScreen": false,
+		"type": "action",
+		"name": "resetCache",
+		"actionType": "",
+		"message": "",
+		"parameterList": [],
+		"schema": "",
+		"tasks": [
+			{
+				"type": "task",
+				"taskList": {
+					"type": "taskList",
+					"repeat": 1,
+					"tasks": [
+						{
+							"type": "runJavaScript",
+							"value": "resetCaching()"
+						},
+						{
+							"$name": "reset",
+							"$type": "serverAction",
+							"suppressAutomaticErrors": false,
+							"lockScreen": false,
+							"type": "action",
+							"name": "reset",
+							"actionType": "serverAction",
+							"message": "",
+							"parameterList": [
+								{
+									"$name": "action",
+									"$type": "raw",
+									"type": "parameter",
+									"name": "action",
+									"parameterType": "raw",
+									"title": "",
+									"transform": "",
+									"value": "clearCache",
+									"defaultValue": "",
+									"check": null,
+									"xpathBaseNode": "",
+									"xpathName": "",
+									"xpathValue": ""
+								}
+							],
+							"schema": "",
+							"tasks": []
+						},
+						{
+							"type": "alert",
+							"message": "Cache reset"
+						}
+					]
+				}
+			}
+		]
+	}
+}

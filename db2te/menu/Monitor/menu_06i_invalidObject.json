@@ -1,0 +1,57 @@
+{
+	"description": "Invalid Objects",
+	"requires": {
+		"DBMS": "DB2",
+		"minVersion": 9.7
+	},
+	"pageWindows": [
+		{
+			"target": "_active",
+			"panelHeaders": {},
+			"content": {
+				"type": "splitPane",
+				"panelA": {
+					"type": "splitPane",
+					"direction": "v",
+					"splitPercent": "0.6",
+					"panelA": {
+						"type": "panel",
+						"name": "main",
+						"content": {
+							"link": {
+								"type": "action",
+								"target": "_self",
+								"window": "_self",
+								"parameters": {
+									"table": "DB2Catalog/invalidObjects",
+									"action": "list_table"
+								}
+							}
+						},
+						"primaryContainer": true
+					},
+					"panelB": {
+						"type": "panel",
+						"name": "main2",
+						"content": {
+							"link": {
+								"type": "action",
+								"target": "_self",
+								"window": "_self",
+								"parameters": {
+									"table": "DB2Catalog/invalid",
+									"action": "list_table"
+								}
+							}
+						},
+						"primaryContainer": true
+					}
+				},
+				"panelB": {
+					"type": "panel",
+					"name": "detail"
+				}
+			}
+		}
+	]
+}

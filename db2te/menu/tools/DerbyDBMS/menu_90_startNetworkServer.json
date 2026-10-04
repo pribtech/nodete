@@ -1,0 +1,163 @@
+{
+	"description": "Start Network Server",
+	"GUID": "createDerbyDB",
+	"actionScript": {
+		"$name": "startDerbyNetworkServer",
+		"$type": "form",
+		"suppressAutomaticErrors": false,
+		"lockScreen": false,
+		"type": "action",
+		"name": "startDerbyNetworkServer",
+		"actionType": "form",
+		"message": "<div style='width:500px'>\n<h1>Start Derby Network Server</h1>\n<table>\n\t<tr><td>Port</td><td>:</td><td>1527</td></tr>\n</table>\n</div>",
+		"parameterList": [
+			{
+				"$name": "HOST",
+				"$type": "blockValue",
+				"type": "parameter",
+				"name": "HOST",
+				"parameterType": "blockValue",
+				"title": "",
+				"transform": "",
+				"value": "HOST",
+				"defaultValue": "",
+				"check": null,
+				"xpathBaseNode": "",
+				"xpathName": "",
+				"xpathValue": ""
+			},
+			{
+				"$name": "buttonOK",
+				"$type": "raw",
+				"type": "parameter",
+				"name": "buttonOK",
+				"parameterType": "raw",
+				"title": "",
+				"transform": "",
+				"value": "Start",
+				"defaultValue": "",
+				"check": null,
+				"xpathBaseNode": "",
+				"xpathName": "",
+				"xpathValue": ""
+			}
+		],
+		"schema": "",
+		"tasks": [
+			{
+				"type": "IF",
+				"name": "",
+				"originalAction": "if",
+				"negCondition": false,
+				"compareOn": "",
+				"compareOnType": "",
+				"condition": "true",
+				"conditionType": "",
+				"conditionCompareType": "",
+				"taskList": [
+					{
+						"type": "taskList",
+						"repeat": 1,
+						"tasks": [
+							{
+								"$name": "startServer",
+								"$type": "serverAction",
+								"suppressAutomaticErrors": false,
+								"lockScreen": false,
+								"type": "action",
+								"name": "startServer",
+								"actionType": "serverAction",
+								"message": "",
+								"parameterList": [
+									{
+										"$name": "action",
+										"$type": "fixed",
+										"type": "parameter",
+										"name": "action",
+										"parameterType": "fixed",
+										"title": "",
+										"transform": "",
+										"value": "startDerbyNetworkServer",
+										"defaultValue": "",
+										"check": null,
+										"xpathBaseNode": "",
+										"xpathName": "",
+										"xpathValue": ""
+									}
+								],
+								"schema": "",
+								"tasks": [
+									{
+										"type": "IF",
+										"name": "",
+										"originalAction": "if",
+										"negCondition": true,
+										"compareOn": "",
+										"compareOnType": "",
+										"condition": "true",
+										"conditionType": "",
+										"conditionCompareType": "",
+										"taskList": [
+											{
+												"type": "taskList",
+												"repeat": 1,
+												"tasks": [
+													{
+														"$name": "ERROR_MESSAGE",
+														"$type": "returnObject",
+														"type": "assignSharedConstant",
+														"name": "ERROR_MESSAGE",
+														"parameterType": "returnObject",
+														"title": "",
+														"transform": "",
+														"value": "startServer.returnValue",
+														"defaultValue": "",
+														"check": null,
+														"xpathBaseNode": "",
+														"xpathName": "",
+														"xpathValue": ""
+													},
+													{
+														"type": "alert",
+														"message": "Failed to start network Derby server : ?ERROR_MESSAGE?"
+													},
+													{
+														"type": "retry",
+														"name": "startServer"
+													}
+												]
+											}
+										]
+									},
+									{
+										"type": "IF",
+										"name": "",
+										"originalAction": "if",
+										"negCondition": false,
+										"compareOn": "",
+										"compareOnType": "",
+										"condition": "true",
+										"conditionType": "",
+										"conditionCompareType": "",
+										"taskList": [
+											{
+												"type": "taskList",
+												"repeat": 1,
+												"tasks": [
+													{
+														"type": "alert",
+														"message": "Started Derby Server"
+													}
+												]
+											}
+										]
+									}
+								]
+							}
+						]
+					}
+				]
+			}
+		]
+	}
+}

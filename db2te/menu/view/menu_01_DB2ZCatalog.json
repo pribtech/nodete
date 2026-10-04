@@ -1,0 +1,34 @@
+{
+	"description": "Catalog",
+	"requires": {
+		"DBMS": "DB2Z"
+	},
+	"pageWindows": [
+		{
+			"target": "_active",
+			"content": {
+				"type": "panel",
+				"name": "Tutorial",
+				"content": {
+					"link": {
+						"type": "action",
+						"target": "_self",
+						"window": "_self",
+						"parameters": {
+							"action": "flowgroup",
+							"subFolder": "DB2Catalog",
+							"title": "DB2 catalog views",
+							"CurrentMenuLocation": {
+								"$var": "CURRENT_MENU_LOCATION"
+							},
+							"listStyleType": "",
+							"menuExpansionType": "internal",
+							"defaultPage": "TABLE_CATALOG"
+						}
+					}
+				},
+				"primaryContainer": true
+			}
+		}
+	]
+}
