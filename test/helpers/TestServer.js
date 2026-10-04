@@ -36,6 +36,9 @@ export class TestServer {
 		return response;
 	}
 
+	/** The session cookie, "name=value". */
+	get cookie() { return this.#cookie; }
+
 	get(path, headers = {}) { return this.#fetch(path, { headers }); }
 
 	/** POST form fields to action.php (query is the part after "action.php"). */

@@ -10,7 +10,7 @@ export class SqlText {
 
 	#text;
 
-	constructor(text) { this.#text = String(text ?? '').trim(); }
+	constructor(text) { this.#text = String(text ?? ''); }
 
 	get text() { return this.#text; }
 

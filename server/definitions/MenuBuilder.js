@@ -32,14 +32,15 @@ export class MenuBuilder {
 	/**
 	 * @param {object} options
 	 * @param {(name: string) => any} [options.requestValue] request parameters, for bind markers in branch queries
+	 * @param {XmlMenuSource} [options.xmlMenus] reads database and XSL branches
 	 */
-	constructor({ files, config, connections, log = console, messages = Messages.for(config.get('TE_LANGUAGE')), requestValue = () => null }) {
+	constructor({ files, config, connections, log = console, messages = Messages.for(config.get('TE_LANGUAGE')), requestValue = () => null, xmlMenus = null }) {
 		this.#files = files;
 		this.#connections = connections;
 		this.#log = log;
 		this.#requestValue = requestValue;
 		this.#pages = new PageBuilder({ config, buildMenu: (definition) => this.node(definition, null, null, null, null) });
-		this.#xmlMenus = new XmlMenuSource({ files, connections, config, messages });
+		this.#xmlMenus = xmlMenus ?? new XmlMenuSource({ files, connections, config, messages });
 	}
 
 	/** Link and layout builder sharing this request's defaults. */

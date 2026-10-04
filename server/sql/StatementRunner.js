@@ -32,7 +32,7 @@ export class StatementRunner {
 	 */
 	async run(sql, { substitutions = null, bindParameters = null, maxRows = 100, fromRow = 0, countRows = true, hideSQL = false, earlierResults = [] } = {}) {
 		const started = performance.now();
-		let text = new SqlText(sql).substitute(substitutions);
+		let text = new SqlText(String(sql ?? '').trim()).substitute(substitutions);
 		let binds = bindParameters;
 		if (!binds) ({ sql: text, parameters: binds } = text.extractBindMarkers(this.#connection.DBMS, this.#requestValue));
 		binds = SqlText.resolveInlineBinds(binds, earlierResults);
