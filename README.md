@@ -31,6 +31,15 @@ Requires Node.js 20 or later.
 
 Then open http://localhost:8080/. `PORT` and `HOST` change where it listens.
 
+PostgreSQL support is installed with the server. For DB2, also install IBM's driver, which
+downloads the DB2 CLI client and builds a native module:
+
+    npm install ibm_db
+
+It is not a dependency of the server because it cannot be built everywhere and its
+installer currently pulls in a package with open security advisories. The welcome page
+lists each driver and whether it is ready.
+
 ### Configuration
 
 Settings are the ones the PHP version defined in `db2te/config.php`; their defaults are in
@@ -46,11 +55,18 @@ server restarts.
 | Area | Status |
 |---|---|
 | Start page, layouts, menus, TE scripts, welcome and about panels | Ported |
-| Connection status (not connected) | Ported |
-| Database connections and drivers (DB2, MySQL, PostgreSQL, Oracle, ODBC, SSH) | Next |
-| Database-driven and XSL-transformed menus | With the drivers |
-| Feed reader, tutorials, ad hoc SQL and the other actions | Later |
+| Logging on and off, saved connections, connection status, database features | Ported |
+| DB2 (`ibm_db`) and PostgreSQL (`pg`) drivers | Ported |
+| Running SQL (`executeSQL`: ad hoc SQL, scripts and the SQL behind TE pages) | Ported |
+| Database-driven and XSL-transformed menus (the object navigator) | Ported |
+| MySQL, Oracle, ODBC (solidDB) and SSH drivers | Next |
+| Trusted context users, connection profiles, Cloud Foundry `VCAP_SERVICES` connections | Later |
+| Feed reader, tutorials, table lists and the other actions | Later |
 | Derby, Hadoop, JDBC_DB2, MQ, JSON_NOSQL_DB2 (needed the PHP Java bridge) | Not planned |
+
+The DB2 driver is tested against a stand-in for `ibm_db` that follows its documented API;
+it has not yet been run against a DB2 server. The PostgreSQL driver is tested end to end
+against a real server.
 
 Actions not yet ported answer with `Action "<name>" has not been ported to Node.js yet`.
 
@@ -63,13 +79,36 @@ Actions not yet ported answer with `Action "<name>" has not been ported to Node.
       definitions/        builds menus, layouts and TE scripts from their JSON definitions
       pages/              index page, script list, JS constants, templates
       views/              HTML templates
-      drivers/            database driver catalogue
-    tools/convert/        XML-to-JSON converter for the definition files
+      drivers/            database drivers: DatabaseDriver, DatabaseConnection and ResultCursor
+                          base classes, Db2Driver, PostgresDriver, the DriverCatalog
+      sql/                executeSQL: SqlBatch runs a request, StatementRunner one statement
+      xml/                reads XML definitions (menus from XSL stylesheets, the converter)
+    tools/convert/        converts XML definitions and connStore.xml to JSON
     test/                 tests, with outputs recorded from the PHP version in test/fixtures/php-reference
 
 A new action is a file `server/actions/<noConnection|activeConnection>/<JSON|HTML>/<name>.js`
 that default-exports a subclass of `Action` and implements `run()`. It is picked up
 automatically; nothing needs registering.
+
+A database driver is a subclass of `DatabaseDriver` (opens connections), `DatabaseConnection`
+(runs statements, transactions, schema, server information) and `ResultCursor` (reads rows),
+added to `DriverCatalog.standardDrivers()`.
+
+### Database connections
+
+The connection manager panel and login form work as before. A connection's details,
+including its password, are kept in the server-side session; the database connection itself
+is opened when an action needs it and closed when the request ends.
+
+Saved connections are kept in `connectionStore/connStore.json` (`CONNECTION_STORE_FILE`),
+without passwords. An administrator can add a `"password"` and `"autoConnect": true` to an
+entry to have it connect without asking. To bring over the saved connections of a PHP
+installation, copy its `connStore.xml` into `db2te/connectionStore/` and run
+`node tools/convert/convert-definitions.js --delete`. Keeping the store in a database
+(`CONNECTION_STORE_STORAGE_TYPE` 1) is not supported yet.
+
+With `FORCE_CONNECTION_WITH_DEFAULT`, everyone uses the `DEFAULT_DATABASE_*` connection
+and cannot log on to others.
 
 ### Definition files
 
@@ -124,7 +163,12 @@ tutorials: building a menu") still show the XML format and will be updated with 
     npm test
 
 The parity tests replay the requests the console makes and compare the answers with those
-recorded from the PHP version, so the port can be shown to behave identically.
+recorded from the PHP version, so the port can be shown to behave identically. The XSL menu
+tests compare the stylesheet output with what PHP's libxslt produced.
+
+`test/postgres.test.js` runs against a real PostgreSQL server, given as
+`TE_TEST_POSTGRES=user:password@host:port/database` (default `te:te@localhost:5432/tetest`);
+it is skipped when the server cannot be reached.
 
 ### Changes from the PHP behaviour
 
@@ -134,5 +178,13 @@ recorded from the PHP version, so the port can be shown to behave identically.
   written unescaped into the page's scripts.
 - PHP source files, `connectionStore/` and `jar/` are not served as static files.
 - Tutorial menu entries get a camel-cased `tutorialName` again; under PHP 8 it came out empty.
+- Passwords are never sent to the browser; PHP sent passwords stored in `connStore.xml`
+  back in the connection list.
+- `executeSQL` returns results containing non-ASCII text; PHP converted them to ISO-8859-1,
+  after which its JSON encoding failed and the reply was empty.
+- `queryOpt` (the query optimization level) must be a number; PHP added it to the SQL as given.
+- PostgreSQL connections with a schema set it with `SET search_path`; PHP sent DB2 statements
+  that PostgreSQL rejects. Database menus add `for read only` only for DB2.
+- The connection status shows a forced default connection as connected on the first check.
 - The MySQL "Monitors" menu shows its entries (its definition named the folder as a
   `branchDirectory` instead of a `rootDirectory`, so it was always empty).
