@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pageWindow target="_blank" raiseToTop="false" windowStage="0" windowType="FLOATING" windowOptionType="x" reloadOnConnectionChange="TRUE">
+	<title> Feature test </title>
+	<info>Covers the layout encoder branches</info>
+	<leftMenu type="embeddedBranch">
+		<description>Left</description>
+		<menu type="leaf" DBMS="DB2" minVersion="9.7" minFixPack="3" maxVersion="10.5fp1" feature="f" noFeature="n" context="Developer" notContext="X" tag="t" GUID="g1">
+			<description>Leaf</description>
+			<menuGUID>m1</menuGUID>
+			<JSAction>doIt()</JSAction>
+			<linkList>
+				<link type="raw" target="t1"><RAW>raw text</RAW></link>
+				<link type="url"><URL>http://example.com</URL></link>
+				<link type="html" window="w" windowStage="s">
+					<address>page.html</address>
+					<formList><form name="f1"/><form name="f2"/></formList>
+					<parameterList>
+						<parameter name="plain">text value</parameter>
+						<parameter name="fromConfig" value="ACTION_PROCESSOR"/>
+						<parameter name="nested"><link type="action"><parameterList><parameter name="action">x</parameter></parameterList></link></parameter>
+						<parameter name="structured"><value><a>1</a><a>2</a><b c="d">true</b></value></parameter>
+						<parameter name="other"><thing x="1">y</thing></parameter>
+						<parameter name="key"><keyColumn defaultValue="dv">COL</keyColumn></parameter>
+						<parameter name="chart"><graph><title>T</title><graphType>line</graphType><xField>x</xField><yField>y</yField>
+							<responseSchema><f>a</f><f>b</f></responseSchema>
+							<style><border><color>red</color></border><padding>2</padding></style>
+							<seriesDefinitions><series><displayName>S</displayName><style><color>blue</color></style></series></seriesDefinitions>
+							<datasets><set><d field="a" value="5"/></set><set><d field="b" value="z"/></set></datasets>
+						</graph></parameter>
+					</parameterList>
+				</link>
+			</linkList>
+			<floatingPanel hideMenuBar="true" baseWidth="300" loadContentOnShow="true"><raw>floating</raw></floatingPanel>
+		</menu>
+		<menu type="line"/>
+		<menu type="table" table="T1"><parameter name="p1" value="v1"/><parameter name="p2"><value>v2</value></parameter></menu>
+	</leftMenu>
+	<panelHeaders scope="s" refreshEnabled="false" refreshOptions="o" showRefreshControl="false">
+		<autoRefreshControls><time>30</time><timeVisible>false</timeVisible><timeOptions>[5,10]</timeOptions><countdownVisible>true</countdownVisible></autoRefreshControls>
+	</panelHeaders>
+	<splitPane direction="Vertical" splitPercent="0" allowResize="false" maxSize="40px" showSplitSpacer="TRUE" splitSpacerWidth="7" styleOverride="st">
+		<leftPane><panel name="p" delayLoad="true" panelTitle="0" overflow="hidden" PrimaryContainer="true" reloadOnConnectionChange="true"><url> http://x </url></panel></leftPane>
+		<rightPane><splitPane direction="h"><panelB><stage name="st" top="1" botton="2" left="3" right="4" titleBarType="tb" sizable="true"/></panelB></splitPane></rightPane>
+	</splitPane>
+</pageWindow>

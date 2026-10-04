@@ -1,0 +1,24 @@
+{
+  "name": "db2te",
+  "version": "6.0.0-alpha.1",
+  "description": "Technology Explorer for IBM DB2 - Node.js server (port of the PHP version)",
+  "type": "module",
+  "main": "server/index.js",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "start": "node server/index.js",
+    "test": "node --test \"test/*.test.js\""
+  },
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pribtech/nodete.git"
+  },
+  "dependencies": {
+    "@xmldom/xmldom": "^0.9.12",
+    "express": "^5.2.1",
+    "express-session": "^1.19.0"
+  }
+}

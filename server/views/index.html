@@ -1,0 +1,123 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+<link rel="apple-touch-icon-precomposed" href="images/TEicon.png"/>
+<link rel="apple-touch-startup-image" href="images/TEicon.png" />
+<link rel="apple-touch-icon" href="images/TEicon.png" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<meta http-equiv="Content-Style-Type" content="text/css; charset=UTF-8"/>
+<script type="text/javascript">
+var IS_TOUCH_SYSTEM = {{touchDetection}};
+</script>
+<link rel="stylesheet" type="text/css" media="all" href="{{cssFile}}"/>
+
+{{titleAndScripts}}
+<script type="text/javascript">
+{{jsConstants}}
+
+function checkDimensionLoad(dom,name) {
+	if(dom==null) alert('failed to load dimension: '+name);
+}
+{{dimensionLoads}}
+
+YAHOO.widget.Chart.SWFURL = "{{jsBaseDirectory}}/YUI/chart/assets/charts.swf";
+
+var CLIENT_ACTIONS = $H();
+
+YAHOO.widget.Chart.SWFURL = "{{jsBaseDirectory}}/YUI/chart/assets/charts.swf";
+
+var TE_HOME_PAGE = ({{homePageLayout}});
+
+Event.observe(window, 'load', function() {
+
+	new windowStage('SuperStage', NO_TASK_BAR, 0, 0, 0, 0, NO_TITLE_BAR, NO_NAV_BAR, NO_TITLE_BAR_OPTIONS, WINDOW_IS_FULL);
+	$('PageBody').insert(getStage('SuperStage').show());
+	
+	new windowStage('FloatingStage', NO_TASK_BAR, 0, 0, 0, 0, WINDOW_CONTROLS_INSIDE_OF_TITLE, NAV_BACK_BUTTON | NAV_FORWARD_BUTTON | NAV_RELOAD_BUTTON, TITLE_BAR_CLOSE_BUTTON, WINDOW_IS_SIZABLE);
+	$('PageBody').insert(getStage('FloatingStage').show());
+
+	var layout = ({{coreLayout}});
+	
+	loadNewPageLayout(layout);
+	
+	changeWorkArea();
+
+	$('PageBody').observe('click', function() {
+		if(!mouseIsOverContextBase) {
+			if(visibleFloatingObject != null && AllowAutoClosingOfFloatingObject)
+				visibleFloatingObject.close();
+			AllowAutoClosingOfFloatingObject = true;
+		}
+	});
+	if(IS_TOUCH_SYSTEM) {
+		$('PageBody').observe('touchstart', function(event) {
+                if(!mouseIsOverContextBase) {
+                        if(visibleFloatingObject != null && AllowAutoClosingOfFloatingObject)
+                                visibleFloatingObject.close();
+                        AllowAutoClosingOfFloatingObject = true;
+                }
+        });
+		document.observe('touchmove', function(event) {
+			event.preventDefault();
+		});
+		document.observe('touchend', function(event) {
+			CIRCLE_MENU_CLOSE(event, true);
+			event.preventDefault();
+		});
+	}
+	$('PageBody').observe('mouseup', function(event) {
+		Releaseme();
+		if(IS_TOUCH_SYSTEM)
+			CIRCLE_MENU_CLOSE(event, true);
+		$(GENERAL_BLANK_POPUP.elementUniqueID + "_Container").setStyle({"display": "none"});
+	});
+
+	var GENERAL_BLANK_POPUP = new floatingPanel('GENERAL_BLANK_POPUP', 'RAW', 'Nothing to See', null, true, false, null, 350, 10);
+	GENERAL_BLANK_POPUP.draw();
+	
+	browserWindowSize();
+
+	OpenBlankWindow("DefaultStage");
+	
+	if(Prototype.Browser.IE && SHOW_IE_PERFORMANCE_WARNING)
+		openModalAlert("{{ieWarningPage}}"
+						, "URL", null, null);
+});
+
+generalKeyCommands = function(event) {
+	if(event.keyCode == Event.KEY_ESC)
+		closeOpenFloatingObject();
+};
+
+stopPropagation = function(event){
+	Event.stop(event);
+};
+
+{{confirmLeave}}
+window.onunload = function soLongAndThanksForAllTheFish() {
+	var aStage = getStage("SuperStage");
+	if(aStage != null) aStage.destroy();
+	aStage = getStage("FloatingStage");
+	if(aStage != null) aStage.destroy();
+};
+//On window scroll move scroll bars back to the top. Stop accidental scrolling of the entire application.
+window.onscroll = function (e) {
+	document.documentElement.scrollTop = 0;
+	document.documentElement.scrollLeft = 0;
+	return false;
+};
+
+function bodyMove(event) {
+	event.preventDefault();
+}
+</script>
+</head>
+
+<body id="PageBody" style="width:100%;height:100%;display:block;" onkeypress="generalKeyCommands(event);" onResize="browserWindowSize()">
+{{iosError}}
+</body>
+</html>
