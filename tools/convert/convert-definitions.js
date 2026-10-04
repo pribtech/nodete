@@ -14,7 +14,7 @@ import path from 'node:path';
 import { Config } from '../../server/core/Config.js';
 import { Messages } from '../../server/core/Messages.js';
 import { XmlNode } from '../../server/xml/XmlNode.js';
-import { DefinitionConverter } from './DefinitionConverter.js';
+import { DefinitionConverter } from '../../server/xml/DefinitionConverter.js';
 
 const config = Config.load({ env: {} });
 const app = config.appRoot;

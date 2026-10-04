@@ -7,15 +7,18 @@ import { Messages } from './Messages.js';
 export class TESession {
 	#store;
 	#config;
+	#renew;
 
-	constructor(store, config) {
+	/** @param {() => Promise<object>} renew replaces the session id and returns the new, empty store */
+	constructor(store, config, renew = async () => store) {
 		this.#store = store;
 		this.#config = config;
+		this.#renew = renew;
 	}
 
 	/** Applies the per-request session rules from initializeSession.php and returns the session. */
-	static begin(store, config, request, now = Date.now()) {
-		const session = new TESession(store, config);
+	static begin(store, config, request, now = Date.now(), renew = undefined) {
+		const session = new TESession(store, config, renew);
 		session.#initialise(request, now);
 		return session;
 	}
@@ -67,6 +70,23 @@ export class TESession {
 	get connections() { return this.#store.Connections; }
 
 	connection(name) { return name === null ? null : this.#store.Connections[name] ?? null; }
+
+	/** Remembers a password for a host or connection group (kind 'ipAddresses' or 'connectionGroup'). */
+	rememberPassword(kind, key, username, password) {
+		const byKey = (this.#store[kind] ??= {});
+		(byKey[key] ??= {})[username] = { password };
+	}
+
+	rememberedPassword(kind, key, username) { return this.#store[kind]?.[key]?.[username]?.password ?? null; }
+
+	forgetPassword(kind, key, username) { delete this.#store[kind]?.[key]?.[username]; }
+
+	/** Gives the session a new id, keeping its content (PHP session_regenerate_id(true)), against session fixation. */
+	async renewId() {
+		const content = Object.fromEntries(Object.entries(this.#store).filter(([key]) => key !== 'cookie'));
+		this.#store = await this.#renew();
+		Object.assign(this.#store, content);
+	}
 
 	clear() {
 		for (const key of Object.keys(this.#store)) if (key !== 'cookie') delete this.#store[key];

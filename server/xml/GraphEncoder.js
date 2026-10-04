@@ -1,4 +1,4 @@
-import { PhpCompat } from '../../server/util/PhpCompat.js';
+import { PhpCompat } from '../util/PhpCompat.js';
 
 const isNumeric = (value) => value !== '' && value !== null && !Number.isNaN(Number(value));
 

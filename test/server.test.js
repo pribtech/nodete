@@ -1,6 +1,7 @@
 import { test, before, after } from 'node:test';
 import assert from 'node:assert/strict';
 import { TestServer } from './helpers/TestServer.js';
+import { Db2Driver } from '../server/drivers/Db2Driver.js';
 
 let server;
 before(async () => { server = await TestServer.start(); });
@@ -66,14 +67,19 @@ test('actions that exist only in PHP so far say so', async () => {
 	assert.equal(reply.returnValue, 'Action "getFeedSources" has not been ported to Node.js yet');
 });
 
-test('getSupportedDrivers lists no drivers until they are ported', async () => {
+test('getSupportedDrivers lists the drivers whose npm package is installed, with the login form fields', async () => {
 	const script = await (await server.get('/action.php?action=getSupportedDrivers')).text();
-	assert.equal(script, '\n\t\tGLOBAL_TE_SUPPORTED_DRIVERS = $H();\n\n\t\t');
+	assert.ok(script.startsWith('\n\t\tGLOBAL_TE_SUPPORTED_DRIVERS = $H();\n\n\t\t'));
+	const drivers = Object.fromEntries([...script.matchAll(/GLOBAL_TE_SUPPORTED_DRIVERS\.set\('([^']+)', (.*)\);\n/g)].map((m) => [m[1], JSON.parse(m[2])]));
+	assert.equal(drivers.PostgreSQL.default, false);
+	assert.equal(drivers.PostgreSQL.attributes.password.name, 'TE_DATABASE_LOGIN_PASSWORD');
+	assert.equal('IBM_DB2' in drivers, new Db2Driver().isInstalled, 'IBM_DB2 is listed only with ibm_db installed');
 });
 
 test('welcome page reports the Node.js runtime and driver status', async () => {
 	const html = await server.postActionText({ action: 'welcome' });
 	assert.match(html, /Welcome to the Technology Explorer for IBM DB2 v5\.0/);
 	assert.match(html, /Server Node\.js v\d+/);
-	assert.match(html, /<td>IBM_DB2<\/td><td style="background-color:YELLOW;">Not yet ported to Node\.js<\/td>/);
+	assert.match(html, /<td>PostgreSQL<\/td><td style="background-color:limegreen;">OK<\/td>/);
+	assert.match(html, /<td>MYSQL<\/td><td style="background-color:YELLOW;">Not yet ported to Node\.js<\/td>/);
 });

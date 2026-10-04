@@ -10,7 +10,7 @@ import { MenuBuilder } from '../server/definitions/MenuBuilder.js';
 import { PageBuilder } from '../server/definitions/PageBuilder.js';
 import { ScriptDefinition } from '../server/definitions/ScriptDefinition.js';
 import { Requirements } from '../server/definitions/Requirements.js';
-import { DefinitionConverter } from '../tools/convert/DefinitionConverter.js';
+import { DefinitionConverter } from '../server/xml/DefinitionConverter.js';
 
 const config = Config.load({ env: {} });
 const app = config.appRoot;

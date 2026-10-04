@@ -1,5 +1,9 @@
 import { Config } from '../../server/core/Config.js';
 import { TEServer } from '../../server/core/TEServer.js';
+import { ConnectionStore } from '../../server/core/ConnectionStore.js';
+import { mkdtempSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import path from 'node:path';
 
 const QUIET_LOG = Object.freeze({ info() {}, warn() {}, error() {} });
 
@@ -9,12 +13,20 @@ export class TestServer {
 	#base;
 	#cookie = '';
 
-	static async start(configOverrides = {}) {
+	/**
+	 * @param {object} configOverrides
+	 * @param {object} options drivers: a DriverCatalog; connectionStore: defaults to an empty store in a temporary folder
+	 */
+	static async start(configOverrides = {}, { drivers, connectionStore = TestServer.temporaryStore() } = {}) {
 		const instance = new TestServer();
 		const config = Config.load({ env: {}, overrides: configOverrides });
-		instance.#server = await new TEServer(config, { log: QUIET_LOG, sessionSecret: 'test' }).listen(0, '127.0.0.1');
+		instance.#server = await new TEServer(config, { log: QUIET_LOG, sessionSecret: 'test', drivers, connectionStore }).listen(0, '127.0.0.1');
 		instance.#base = `http://127.0.0.1:${instance.#server.address().port}`;
 		return instance;
+	}
+
+	static temporaryStore() {
+		return new ConnectionStore({ file: path.join(mkdtempSync(path.join(tmpdir(), 'te-store-')), 'connStore.json') });
 	}
 
 	async #fetch(path, init = {}) {

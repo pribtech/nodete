@@ -12,11 +12,15 @@ import { MenuBuilder } from '../../../definitions/MenuBuilder.js';
  */
 export default class MenuAction extends Action {
 	async run() {
-		const builder = new MenuBuilder({ files: this.files, config: this.config, connections: this.connections });
+		const builder = new MenuBuilder({
+			files: this.files, config: this.config, connections: this.connections, messages: this.messages, requestValue: (name) => this.param(name),
+		});
 		builder.defaultStage = this.param('defaultStage', builder.defaultStage);
 		builder.defaultTarget = this.param('defaultPanel', '_self');
 		builder.defaultWindow = this.param('defaultWindow', '_self');
-		this.response.send(`(${JSON.stringify(this.#build(builder))})`);
+		const menu = this.#build(builder);
+		await builder.resolveDeferred();
+		this.response.send(`(${JSON.stringify(menu)})`);
 	}
 
 	#build(builder) {
@@ -33,7 +37,7 @@ export default class MenuAction extends Action {
 		const filterList = branch.filter ? [branch.filter] : this.#requestFilters();
 
 		if (branch.branchXML) return builder.xmlBranch(branch, menuRoot, filterList, branch.menulocation);
-		if (branch.branchSQLXML) return builder.sqlBranch(branch, menuRoot, branch.menulocation);
+		if (branch.branchSQLXML) return builder.sqlBranch(branch, menuRoot, branch.menulocation, filterList);
 		return builder.folder('.', menuRoot, filterList);
 	}
 

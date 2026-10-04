@@ -1,9 +1,9 @@
-import { XmlNode } from '../../server/xml/XmlNode.js';
-import { PhpCompat } from '../../server/util/PhpCompat.js';
+import { XmlNode } from './XmlNode.js';
+import { PhpCompat } from '../util/PhpCompat.js';
 import { ActionEncoder } from './ActionEncoder.js';
 import { GraphEncoder } from './GraphEncoder.js';
 import { VersionAttributes } from './VersionAttributes.js';
-import { ScriptDefinition } from '../../server/definitions/ScriptDefinition.js';
+import { ScriptDefinition } from '../definitions/ScriptDefinition.js';
 
 /** Names a <parameter value="..."> may refer to that are resolved per request. */
 const REQUEST_VARIABLES = new Set(['CURRENT_MENU_LOCATION', 'CURRENT_DIRECTORY', 'CURRENT_TUTORIAL']);

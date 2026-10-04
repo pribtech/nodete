@@ -1,5 +1,5 @@
 import { VersionAttributes } from './VersionAttributes.js';
-import { XmlNode } from '../../server/xml/XmlNode.js';
+import { XmlNode } from './XmlNode.js';
 
 /** Tasks that encode as just their type. */
 const BARE_TASKS = new Set(['windowReload', 'blockUpdate', 'break', 'breakCheck', 'return', 'exit', 'lock',

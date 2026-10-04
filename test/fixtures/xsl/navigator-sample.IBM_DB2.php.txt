@@ -1,0 +1,687 @@
+
+	<menu type="embeddedBranch">
+		<description>SAMPLE</description>
+		
+	<menu type="embeddedBranch">
+		<description>Schemas  (2)</description>
+		
+	<menu type="embeddedBranch">
+	<description>APP</description>
+	
+	<menu type="leaf" branchDirectory="" >
+		<pageWindow target="_active">
+			<splitPane direction="h">
+				<topPane>
+					<panel name="main" PrimaryContainer="true">
+						<link type="action" target="_self" window="_self" connectionRequired="y">
+							<parameterList>
+								<parameter name="table">schema</parameter>
+								<parameter name="action">display</parameter>
+								<parameter name="schemaname">APP</parameter>
+							    
+							</parameterList>
+						</link>				
+					</panel>
+				</topPane>
+				<bottomPane>
+					<panel name="detail"/>
+				</bottomPane>
+			</splitPane>
+		</pageWindow>
+		<description>Detail</description>
+	</menu>
+
+	<menu type="leaf" branchDirectory="" >
+		<pageWindow target="_active">
+			<splitPane direction="h">
+				<topPane>
+					<panel name="main" PrimaryContainer="true">
+						<link type="action" target="_self" window="_self" connectionRequired="y">
+							<parameterList>
+								<parameter name="table">tablecat</parameter>
+								<parameter name="action">list_table</parameter>
+								<parameter name="tabschema">APP</parameter>
+							    
+							</parameterList>
+						</link>				
+					</panel>
+				</topPane>
+				<bottomPane>
+					<panel name="detail"/>
+				</bottomPane>
+			</splitPane>
+		</pageWindow>
+		<description>Table Catalog List Detail</description>
+	</menu>
+
+	<menu type="leaf" branchDirectory="" >
+		<pageWindow target="_active">
+			<splitPane direction="h">
+				<topPane>
+					<panel name="main" PrimaryContainer="true">
+						<link type="action" target="_self" window="_self" connectionRequired="y">
+							<parameterList>
+								<parameter name="table">tableOnlyCat</parameter>
+								<parameter name="action">list_table</parameter>
+								<parameter name="tabschema">APP</parameter>
+							    
+							</parameterList>
+						</link>				
+					</panel>
+				</topPane>
+				<bottomPane>
+					<panel name="detail"/>
+				</bottomPane>
+			</splitPane>
+		</pageWindow>
+		<description>Table List Detail</description>
+	</menu>
+
+	<menu type="branch" 
+		branchSQLXML="queryfiles/predefined/Aliases2XML.sql" 
+		branchSQLPredicate="TABSCHEMA='APP'" 
+		branchXSL="XSL/object2Menu" 
+		delayLoad="mouse" 
+		dropParent="true">
+		<description>Aliases</description>
+	</menu>
+
+	<menu type="branch" 
+		branchSQLXML="queryfiles/predefined/Functions2XML.sql" 
+		branchSQLPredicate="FUNCSCHEMA='APP'" 
+		branchXSL="XSL/object2Menu" 
+		delayLoad="mouse" 
+		dropParent="true">
+		<description>Functions</description>
+	</menu>
+
+	<menu type="branch" 
+		branchSQLXML="queryfiles/predefined/Nicknames2XML.sql" 
+		branchSQLPredicate="TABSCHEMA='APP'" 
+		branchXSL="XSL/object2Menu" 
+		delayLoad="mouse" 
+		dropParent="true">
+		<description>Nicknames</description>
+	</menu>
+
+	<menu type="branch" 
+		branchSQLXML="queryfiles/predefined/Procedures2XML.sql" 
+		branchSQLPredicate="PROCSCHEMA='APP'" 
+		branchXSL="XSL/object2Menu" 
+		delayLoad="mouse" 
+		dropParent="true">
+		<description>Stored Procedures</description>
+	</menu>
+
+	<menu type="branch" 
+		branchSQLXML="queryfiles/predefined/Sequences2XML.sql" 
+		branchSQLPredicate="SEQSCHEMA='APP'" 
+		branchXSL="XSL/object2Menu" 
+		delayLoad="mouse" 
+		dropParent="true">
+		<description>Sequences</description>
+	</menu>
+
+	<menu type="branch" 
+		branchSQLXML="queryfiles/predefined/Tables2XML.sql" 
+		branchSQLPredicate="TABSCHEMA='APP'" 
+		branchXSL="XSL/object2Menu" 
+		delayLoad="mouse" 
+		dropParent="true">
+		<description>Tables</description>
+	</menu>
+
+	<menu type="branch" 
+		branchSQLXML="queryfiles/predefined/Views2XML.sql" 
+		branchSQLPredicate="TABSCHEMA='APP'" 
+		branchXSL="XSL/object2Menu" 
+		delayLoad="mouse" 
+		dropParent="true">
+		<description>Views</description>
+	</menu>
+
+	</menu>
+
+	<menu type="embeddedBranch">
+	<description>SYSCAT</description>
+	
+	<menu type="leaf" branchDirectory="" >
+		<pageWindow target="_active">
+			<splitPane direction="h">
+				<topPane>
+					<panel name="main" PrimaryContainer="true">
+						<link type="action" target="_self" window="_self" connectionRequired="y">
+							<parameterList>
+								<parameter name="table">schema</parameter>
+								<parameter name="action">display</parameter>
+								<parameter name="schemaname">SYSCAT</parameter>
+							    
+							</parameterList>
+						</link>				
+					</panel>
+				</topPane>
+				<bottomPane>
+					<panel name="detail"/>
+				</bottomPane>
+			</splitPane>
+		</pageWindow>
+		<description>Detail</description>
+	</menu>
+
+	<menu type="leaf" branchDirectory="" >
+		<pageWindow target="_active">
+			<splitPane direction="h">
+				<topPane>
+					<panel name="main" PrimaryContainer="true">
+						<link type="action" target="_self" window="_self" connectionRequired="y">
+							<parameterList>
+								<parameter name="table">tablecat</parameter>
+								<parameter name="action">list_table</parameter>
+								<parameter name="tabschema">SYSCAT</parameter>
+							    
+							</parameterList>
+						</link>				
+					</panel>
+				</topPane>
+				<bottomPane>
+					<panel name="detail"/>
+				</bottomPane>
+			</splitPane>
+		</pageWindow>
+		<description>Table Catalog List Detail</description>
+	</menu>
+
+	<menu type="leaf" branchDirectory="" >
+		<pageWindow target="_active">
+			<splitPane direction="h">
+				<topPane>
+					<panel name="main" PrimaryContainer="true">
+						<link type="action" target="_self" window="_self" connectionRequired="y">
+							<parameterList>
+								<parameter name="table">tableOnlyCat</parameter>
+								<parameter name="action">list_table</parameter>
+								<parameter name="tabschema">SYSCAT</parameter>
+							    
+							</parameterList>
+						</link>				
+					</panel>
+				</topPane>
+				<bottomPane>
+					<panel name="detail"/>
+				</bottomPane>
+			</splitPane>
+		</pageWindow>
+		<description>Table List Detail</description>
+	</menu>
+
+	<menu type="branch" 
+		branchSQLXML="queryfiles/predefined/Aliases2XML.sql" 
+		branchSQLPredicate="TABSCHEMA='SYSCAT'" 
+		branchXSL="XSL/object2Menu" 
+		delayLoad="mouse" 
+		dropParent="true">
+		<description>Aliases</description>
+	</menu>
+
+	<menu type="branch" 
+		branchSQLXML="queryfiles/predefined/Functions2XML.sql" 
+		branchSQLPredicate="FUNCSCHEMA='SYSCAT'" 
+		branchXSL="XSL/object2Menu" 
+		delayLoad="mouse" 
+		dropParent="true">
+		<description>Functions</description>
+	</menu>
+
+	<menu type="branch" 
+		branchSQLXML="queryfiles/predefined/Nicknames2XML.sql" 
+		branchSQLPredicate="TABSCHEMA='SYSCAT'" 
+		branchXSL="XSL/object2Menu" 
+		delayLoad="mouse" 
+		dropParent="true">
+		<description>Nicknames</description>
+	</menu>
+
+	<menu type="branch" 
+		branchSQLXML="queryfiles/predefined/Procedures2XML.sql" 
+		branchSQLPredicate="PROCSCHEMA='SYSCAT'" 
+		branchXSL="XSL/object2Menu" 
+		delayLoad="mouse" 
+		dropParent="true">
+		<description>Stored Procedures</description>
+	</menu>
+
+	<menu type="branch" 
+		branchSQLXML="queryfiles/predefined/Sequences2XML.sql" 
+		branchSQLPredicate="SEQSCHEMA='SYSCAT'" 
+		branchXSL="XSL/object2Menu" 
+		delayLoad="mouse" 
+		dropParent="true">
+		<description>Sequences</description>
+	</menu>
+
+	<menu type="branch" 
+		branchSQLXML="queryfiles/predefined/Tables2XML.sql" 
+		branchSQLPredicate="TABSCHEMA='SYSCAT'" 
+		branchXSL="XSL/object2Menu" 
+		delayLoad="mouse" 
+		dropParent="true">
+		<description>Tables</description>
+	</menu>
+
+	<menu type="branch" 
+		branchSQLXML="queryfiles/predefined/Views2XML.sql" 
+		branchSQLPredicate="TABSCHEMA='SYSCAT'" 
+		branchXSL="XSL/object2Menu" 
+		delayLoad="mouse" 
+		dropParent="true">
+		<description>Views</description>
+	</menu>
+
+	</menu>
+
+	</menu>
+
+	<menu type="embeddedBranch">
+		<description>Bufferpools (2)</description>
+		
+	<menu type="embeddedBranch">
+		<description>IBMDEFAULTBP</description>
+		
+	<menu type="leaf" branchDirectory="" >
+		<pageWindow target="_active">
+			<splitPane direction="h">
+				<topPane>
+					<panel name="main" PrimaryContainer="true">
+						<link type="action" target="_self" window="_self" connectionRequired="y">
+							<parameterList>
+								<parameter name="table">bufferpool</parameter>
+								<parameter name="action">display</parameter>
+								<parameter name="bpname">IBMDEFAULTBP</parameter>
+							    
+							</parameterList>
+						</link>				
+					</panel>
+				</topPane>
+				<bottomPane>
+					<panel name="detail"/>
+				</bottomPane>
+			</splitPane>
+		</pageWindow>
+		<description>Detail</description>
+	</menu>
+
+	<menu type="branch" 
+		branchSQLXML='select XMLELEMENT( NAME @@@tablespaces@@@ , XMLAGG(XMLELEMENT(NAME @@@tablespace@@@ ,XMLATTRIBUTES( TBSPACE as TBSPACE)) order by TBSPACE) ) from SYSCAT.TABLESpaces s join syscat.bufferpools b on s.BUFFERPOOLID=b.BUFFERPOOLID'
+		branchXSL="XSL/object2Menu"
+		
+			branchSQLPredicate="BPNAME = ?!value=IBMDEFAULTBP?"
+		
+		delayLoad="mouse"
+		replacement="true">
+		dropParent="false">
+		<description>Tablespaces</description>
+	</menu>
+
+		
+	</menu>
+
+	<menu type="embeddedBranch">
+		<description>BP8K</description>
+		
+	<menu type="leaf" branchDirectory="" >
+		<pageWindow target="_active">
+			<splitPane direction="h">
+				<topPane>
+					<panel name="main" PrimaryContainer="true">
+						<link type="action" target="_self" window="_self" connectionRequired="y">
+							<parameterList>
+								<parameter name="table">bufferpool</parameter>
+								<parameter name="action">display</parameter>
+								<parameter name="bpname">BP8K</parameter>
+							    
+							</parameterList>
+						</link>				
+					</panel>
+				</topPane>
+				<bottomPane>
+					<panel name="detail"/>
+				</bottomPane>
+			</splitPane>
+		</pageWindow>
+		<description>Detail</description>
+	</menu>
+
+	<menu type="branch" 
+		branchSQLXML='select XMLELEMENT( NAME @@@tablespaces@@@ , XMLAGG(XMLELEMENT(NAME @@@tablespace@@@ ,XMLATTRIBUTES( TBSPACE as TBSPACE)) order by TBSPACE) ) from SYSCAT.TABLESpaces s join syscat.bufferpools b on s.BUFFERPOOLID=b.BUFFERPOOLID'
+		branchXSL="XSL/object2Menu"
+		
+			branchSQLPredicate="BPNAME = ?!value=BP8K?"
+		
+		delayLoad="mouse"
+		replacement="true">
+		dropParent="false">
+		<description>Tablespaces</description>
+	</menu>
+
+		
+	</menu>
+
+	</menu>
+
+	<menu type="embeddedBranch">
+		<description>Tablespaces (2)</description>
+		
+	<menu type="embeddedBranch">
+		<description>USERSPACE1</description>
+	
+	<menu type="leaf" branchDirectory="" >
+		<pageWindow target="_active">
+			<splitPane direction="h">
+				<topPane>
+					<panel name="main" PrimaryContainer="true">
+						<link type="action" target="_self" window="_self" connectionRequired="y">
+							<parameterList>
+								<parameter name="table">tablespaces</parameter>
+								<parameter name="action">display</parameter>
+								<parameter name="tbspace">USERSPACE1</parameter>
+							    
+							</parameterList>
+						</link>				
+					</panel>
+				</topPane>
+				<bottomPane>
+					<panel name="detail"/>
+				</bottomPane>
+			</splitPane>
+		</pageWindow>
+		<description>Detail</description>
+	</menu>
+
+	<menu type="leaf" branchDirectory="" >
+		<pageWindow target="_active">
+			<splitPane direction="h">
+				<topPane>
+					<panel name="main" PrimaryContainer="true">
+						<link type="action" target="_self" window="_self" connectionRequired="y">
+							<parameterList>
+								<parameter name="table">tablecat</parameter>
+								<parameter name="action">list_table</parameter>
+								<parameter name="tbspace">USERSPACE1</parameter>
+							    
+							</parameterList>
+						</link>				
+					</panel>
+				</topPane>
+				<bottomPane>
+					<panel name="detail"/>
+				</bottomPane>
+			</splitPane>
+		</pageWindow>
+		<description>Table List Detail</description>
+	</menu>
+
+	<menu type="branch" 
+		branchSQLXML="queryfiles/predefined/Tables2XML.sql" 
+		branchSQLPredicate="TBSPACE='USERSPACE1'" 
+		branchXSL="XSL/object2Menu" 
+		delayLoad="mouse" 
+		dropParent="true">
+		<description>Tables</description>
+	</menu>
+
+	</menu>
+
+	<menu type="embeddedBranch">
+		<description>TEMPSPACE1</description>
+	
+	<menu type="leaf" branchDirectory="" >
+		<pageWindow target="_active">
+			<splitPane direction="h">
+				<topPane>
+					<panel name="main" PrimaryContainer="true">
+						<link type="action" target="_self" window="_self" connectionRequired="y">
+							<parameterList>
+								<parameter name="table">tablespaces</parameter>
+								<parameter name="action">display</parameter>
+								<parameter name="tbspace">TEMPSPACE1</parameter>
+							    
+							</parameterList>
+						</link>				
+					</panel>
+				</topPane>
+				<bottomPane>
+					<panel name="detail"/>
+				</bottomPane>
+			</splitPane>
+		</pageWindow>
+		<description>Detail</description>
+	</menu>
+
+	<menu type="leaf" branchDirectory="" >
+		<pageWindow target="_active">
+			<splitPane direction="h">
+				<topPane>
+					<panel name="main" PrimaryContainer="true">
+						<link type="action" target="_self" window="_self" connectionRequired="y">
+							<parameterList>
+								<parameter name="table">tablecat</parameter>
+								<parameter name="action">list_table</parameter>
+								<parameter name="tbspace">TEMPSPACE1</parameter>
+							    
+							</parameterList>
+						</link>				
+					</panel>
+				</topPane>
+				<bottomPane>
+					<panel name="detail"/>
+				</bottomPane>
+			</splitPane>
+		</pageWindow>
+		<description>Table List Detail</description>
+	</menu>
+
+	<menu type="branch" 
+		branchSQLXML="queryfiles/predefined/Tables2XML.sql" 
+		branchSQLPredicate="TBSPACE='TEMPSPACE1'" 
+		branchXSL="XSL/object2Menu" 
+		delayLoad="mouse" 
+		dropParent="true">
+		<description>Tables</description>
+	</menu>
+
+	</menu>
+
+	</menu>
+
+	<menu type="embeddedBranch">
+		<description>Tables (2)</description>
+		
+	<menu type="branch" 
+		branchSQLXML="queryfiles/predefined/Table2XML.sql" 
+		branchSQLPredicate="TABSCHEMA='APP' and TABNAME='EMPLOYEE'" 
+		branchXSL="XSL/table2Menu" 
+		delayLoad="mouse" 
+		dropParent="true">
+		<description>APP.EMPLOYEE</description>
+	</menu>
+
+	<menu type="branch" 
+		branchSQLXML="queryfiles/predefined/Table2XML.sql" 
+		branchSQLPredicate="TABSCHEMA='APP' and TABNAME='DEPT & CO'" 
+		branchXSL="XSL/table2Menu" 
+		delayLoad="mouse" 
+		dropParent="true">
+		<description>APP.DEPT & CO</description>
+	</menu>
+
+	</menu>
+
+	<menu type="embeddedBranch">
+		<description>Views (1)</description>
+		
+	<menu type="leaf" branchDirectory="" >
+		<pageWindow target="_active">
+			<splitPane direction="h">
+				<topPane>
+					<panel name="main" PrimaryContainer="true">
+						<link type="action" target="_self" window="_self" connectionRequired="y">
+							<parameterList>
+								<parameter name="table">viewcat</parameter>
+								<parameter name="action">display</parameter>
+								<parameter name="viewschema"></parameter>
+							    <parameter name="viewname"></parameter>
+							</parameterList>
+						</link>				
+					</panel>
+				</topPane>
+				<bottomPane>
+					<panel name="detail"/>
+				</bottomPane>
+			</splitPane>
+		</pageWindow>
+		<description>.</description>
+	</menu>
+
+	</menu>
+
+	<menu type="embeddedBranch">
+		<description>Aliases  (1)</description>
+		
+	<menu type="leaf" branchDirectory="" >
+		<pageWindow target="_active">
+			<splitPane direction="h">
+				<topPane>
+					<panel name="main" PrimaryContainer="true">
+						<link type="action" target="_self" window="_self" connectionRequired="y">
+							<parameterList>
+								<parameter name="table">alias</parameter>
+								<parameter name="action">display</parameter>
+								<parameter name="tabschema">APP</parameter>
+							    <parameter name="tabname">A1</parameter>
+							</parameterList>
+						</link>				
+					</panel>
+				</topPane>
+				<bottomPane>
+					<panel name="detail"/>
+				</bottomPane>
+			</splitPane>
+		</pageWindow>
+		<description>APP.A1</description>
+	</menu>
+
+	</menu>
+
+	<menu type="embeddedBranch">
+		<description>Nicknames (1)</description>
+		
+	<menu type="leaf" branchDirectory="" >
+		<pageWindow target="_active">
+			<splitPane direction="h">
+				<topPane>
+					<panel name="main" PrimaryContainer="true">
+						<link type="action" target="_self" window="_self" connectionRequired="y">
+							<parameterList>
+								<parameter name="table">Federation/federatedObjects</parameter>
+								<parameter name="action">display</parameter>
+								<parameter name="TABSCHEMA"></parameter>
+							    <parameter name="TABNAME"></parameter>
+							</parameterList>
+						</link>				
+					</panel>
+				</topPane>
+				<bottomPane>
+					<panel name="detail"/>
+				</bottomPane>
+			</splitPane>
+		</pageWindow>
+		<description>.</description>
+	</menu>
+
+	</menu>
+
+	<menu type="embeddedBranch">
+		<description>Functions  (1)</description>
+		
+	<menu type="leaf" branchDirectory="" >
+		<pageWindow target="_active">
+			<splitPane direction="h">
+				<topPane>
+					<panel name="main" PrimaryContainer="true">
+						<link type="action" target="_self" window="_self" connectionRequired="y">
+							<parameterList>
+								<parameter name="table">function</parameter>
+								<parameter name="action">display</parameter>
+								<parameter name="FUNCSCHEMA">APP</parameter>
+							    <parameter name="FUNCNAME">F1</parameter>
+							</parameterList>
+						</link>				
+					</panel>
+				</topPane>
+				<bottomPane>
+					<panel name="detail"/>
+				</bottomPane>
+			</splitPane>
+		</pageWindow>
+		<description>APP.F1</description>
+	</menu>
+
+	</menu>
+
+	<menu type="embeddedBranch">
+		<description>Procedures (1)</description>
+		
+	<menu type="leaf" branchDirectory="" >
+		<pageWindow target="_active">
+			<splitPane direction="h">
+				<topPane>
+					<panel name="main" PrimaryContainer="true">
+						<link type="action" target="_self" window="_self" connectionRequired="y">
+							<parameterList>
+								<parameter name="table">procedure</parameter>
+								<parameter name="action">display</parameter>
+								<parameter name="procschema">APP</parameter>
+							    <parameter name="procname">P1</parameter>
+							</parameterList>
+						</link>				
+					</panel>
+				</topPane>
+				<bottomPane>
+					<panel name="detail"/>
+				</bottomPane>
+			</splitPane>
+		</pageWindow>
+		<description>APP.P1</description>
+	</menu>
+
+	</menu>
+
+	<menu type="embeddedBranch">
+		<description>Sequences  (1)</description>
+		
+	<menu type="leaf" branchDirectory="" >
+		<pageWindow target="_active">
+			<splitPane direction="h">
+				<topPane>
+					<panel name="main" PrimaryContainer="true">
+						<link type="action" target="_self" window="_self" connectionRequired="y">
+							<parameterList>
+								<parameter name="table">sequence</parameter>
+								<parameter name="action">display</parameter>
+								<parameter name="SEQSCHEMA">APP</parameter>
+							    <parameter name="SEQNAME">S1</parameter>
+							</parameterList>
+						</link>				
+					</panel>
+				</topPane>
+				<bottomPane>
+					<panel name="detail"/>
+				</bottomPane>
+			</splitPane>
+		</pageWindow>
+		<description>APP.S1</description>
+	</menu>
+
+	</menu>
+
+	</menu>
