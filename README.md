@@ -36,9 +36,19 @@ downloads the DB2 CLI client and builds a native module:
 
     npm install ibm_db
 
-It is not a dependency of the server because it cannot be built everywhere and its
+`ibm_db` is not a dependency of the server because it cannot be built everywhere and its
 installer currently pulls in a package with open security advisories. The welcome page
 lists each driver and whether it is ready.
+
+Apache H2 is a Java database, so the server talks to it through H2's PostgreSQL protocol
+server, which needs no extra package. Start H2 with that server enabled and log on with the
+H2 driver (a blank host and port mean this machine and H2's default port, 5435):
+
+    java -cp h2.jar org.h2.tools.Server -pg -baseDir <folder of databases>
+
+H2 supports the PostgreSQL protocol only in part, so H2 statements are sent as plain SQL
+text with bind values written in as quoted literals, and results are read in full rather
+than in batches.
 
 ### Configuration
 
@@ -56,7 +66,7 @@ server restarts.
 |---|---|
 | Start page, layouts, menus, TE scripts, welcome and about panels | Ported |
 | Logging on and off, saved connections, connection status, database features | Ported |
-| DB2 (`ibm_db`) and PostgreSQL (`pg`) drivers | Ported |
+| DB2 (`ibm_db`), PostgreSQL (`pg`) and Apache H2 drivers | Ported |
 | Running SQL (`executeSQL`: ad hoc SQL, scripts and the SQL behind TE pages) | Ported |
 | Database-driven and XSL-transformed menus (the object navigator) | Ported |
 | MySQL, Oracle, ODBC (solidDB) and SSH drivers | Next |
@@ -168,7 +178,9 @@ tests compare the stylesheet output with what PHP's libxslt produced.
 
 `test/postgres.test.js` runs against a real PostgreSQL server, given as
 `TE_TEST_POSTGRES=user:password@host:port/database` (default `te:te@localhost:5432/tetest`);
-it is skipped when the server cannot be reached.
+it is skipped when the server cannot be reached. `test/h2.test.js` does the same for H2
+(`TE_TEST_H2`, default `sa:sa@localhost:5435/tetest`); start the server with
+`java -cp h2.jar org.h2.tools.Server -pg -ifNotExists -baseDir <folder>` to run it.
 
 ### Changes from the PHP behaviour
 
