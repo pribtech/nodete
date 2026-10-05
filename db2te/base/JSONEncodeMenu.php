@@ -79,7 +79,7 @@ class JSONEncodeMenu {
 		}
 		return $returnObject;
 	}
-/*** added: Peter Prib - Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009)  2010 All rights reserved.*/
+/*** added: Peter Prib - Copyright 2026 Jaroslav Peter Prib, Purveyor of Excellence*/
 	static function logMessage($message) {
 		error_log("JSONEncodeMenu ".$message,0);
 	}
@@ -356,7 +356,7 @@ class JSONEncodeMenu {
 						$elementSubNodeElements = JSONEncodeMenu::encodeMenuFolder($menulocation, $rootDirectory, $filterList);
 					} else if($branchDirectory != "") {
 						$elementSubNodeElements = JSONEncodeMenu::encodeMenuFolder($menulocation . "/" . $branchDirectory, $rootNode, $filterList);
-/*** added: Peter Prib - Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009)  2010 All rights reserved.*/
+/*** added: Peter Prib - Copyright 2026 Jaroslav Peter Prib, Purveyor of Excellence*/
 					} else if($branchSQLXML != "")  {
 						$nodeType = "SQL_BRANCH";
 						$elementSubNodeElements = JSONEncodeMenu::encodeMenuSQLXML($branchSQLXML, $rootNode, $filterList,$branchXSL,$branchSQLPredicate,$dropParent,$onErrorMenu, $menulocation);
@@ -370,7 +370,7 @@ class JSONEncodeMenu {
 				}
 				break;
 			case "LEAF":
-/*** added: Peter Prib - Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009)  2011 All rights reserved.*/
+/*** added: Peter Prib - Copyright 2026 Jaroslav Peter Prib, Purveyor of Excellence*/
 				
 				$actionNode = $node->findChildNode("actionScript");
 				if($actionNode == null) {

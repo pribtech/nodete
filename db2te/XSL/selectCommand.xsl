@@ -10,7 +10,7 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 
 <!--
   Author: Peter Prib
-  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2009 All rights reserved.
+  Copyright 2026 Jaroslav Peter Prib, Purveyor of Excellence
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.

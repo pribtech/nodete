@@ -14,7 +14,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  ********************************************************************************/
-/*** modifications by: Peter Prib -  Frygma Pty Ltd (ABN 90 791 388 622 2009) */
+/*** modifications by: Peter Prib -  Copyright 2026 Jaroslav Peter Prib, Purveyor of Excellence */
 
 include_once(PHP_INCLUDE_BASE_DIRECTORY . "JSONEncodeMenu.php");
 
@@ -1058,7 +1058,7 @@ class connectionManager{
  *  Below 
  *  Author: Peter Prib
  * 
- *  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2010-2011 All rights reserved.
+ *  Copyright 2026 Jaroslav Peter Prib, Purveyor of Excellence
  *********************************************************************************/
 
 abstract class ConnectManagerAbstract {
