@@ -1,6 +1,6 @@
 import { DatabaseDriver } from './DatabaseDriver.js';
 import { DatabaseConnection } from './DatabaseConnection.js';
-import { ResultCursor } from './ResultCursor.js';
+import { ResultCursor, ArrayCursor } from './ResultCursor.js';
 
 /** Values are passed to the front end as the server's text, as PHP's pg_* functions did. */
 const AS_TEXT = Object.freeze({ getTypeParser: () => (value) => value });
@@ -16,15 +16,26 @@ export class PostgresDriver extends DatabaseDriver {
 	get cursorModule() { return (this.#cursorModule ??= this.load('pg-cursor')); }
 
 	async open(spec) {
-		const { Client } = this.module;
-		const client = new Client({
+		const client = new this.module.Client(this.clientOptions(spec));
+		// a connection lost between requests is reported by the next statement; unhandled, the event would end the process
+		client.on('error', () => {});
+		await client.connect();
+		return this.createConnection(spec, client);
+	}
+
+	/** pg Client settings for a connection; without host and port, pg's defaults (local server) apply. */
+	clientOptions(spec) {
+		return {
 			database: spec.database,
 			user: spec.username,
 			password: spec.password,
 			...(spec.isCataloged ? {} : { host: spec.hostname, port: Number(spec.portnumber) }),
 			application_name: 'Technology Explorer',
-		});
-		await client.connect();
+		};
+	}
+
+	/** The connection object for an open pg client; subclasses for servers that speak the PostgreSQL protocol return their own. */
+	createConnection(spec, client) {
 		return new PostgresConnection(spec, client, this.cursorModule, this.module.types.builtins);
 	}
 }
@@ -48,16 +59,41 @@ export class PostgresConnection extends DatabaseConnection {
 	 * Question marks inside quotes, comments and dollar-quoted strings are left alone.
 	 */
 	static numberPlaceholders(sql) {
+		return PostgresConnection.replacePlaceholders(sql, (position) => `$${position}`);
+	}
+
+	/** Replaces each "?" marker outside quotes and comments with replacement(position), counting from 1. */
+	static replacePlaceholders(sql, replacement) {
 		let position = 0;
 		return sql.replace(/'(?:[^']|'')*'|"(?:[^"]|"")*"|--[^\n]*|\/\*[\s\S]*?\*\/|(\$[A-Za-z_]*\$)[\s\S]*?\1|\?/g,
-			(match) => (match === '?' ? `$${++position}` : match));
+			(match) => (match === '?' ? replacement(++position) : match));
 	}
 
 	async run(sql, parameters) {
 		if (parameters.length) sql = PostgresConnection.numberPlaceholders(sql);
 		const cursor = this.#client.query(new this.#Cursor(sql, parameters.map((p) => p.value), { rowMode: 'array', types: AS_TEXT }));
-		return PostgresCursor.open(cursor, (oid) => this.#typeNames.get(oid) ?? String(oid));
+		return PostgresCursor.open(cursor, (oid) => this.typeName(oid));
 	}
+
+	/** Runs a statement outside the cursor machinery and returns its rows as objects of text values. */
+	async query(text) {
+		return (await this.#client.query({ text, types: AS_TEXT })).rows;
+	}
+
+	/**
+	 * Runs SQL text through the simple query protocol and returns every result set read into
+	 * memory, as an ArrayCursor. For servers whose extended protocol support is incomplete.
+	 */
+	async simpleQuery(text) {
+		const results = [await this.#client.query({ text, rowMode: 'array', types: AS_TEXT })].flat();
+		return new ArrayCursor(results.map((result) => ({
+			columns: (result.fields ?? []).map((field) => ResultCursor.column(field.name, this.typeName(field.dataTypeID))),
+			rows: result.rows ?? [],
+		})));
+	}
+
+	/** PostgreSQL type name of a type id, e.g. 23 is int4. */
+	typeName(oid) { return this.#typeNames.get(oid) ?? String(oid); }
 
 	async changeAutoCommit(on) { await this.#client.query(on ? 'COMMIT' : 'BEGIN'); }
 
@@ -67,11 +103,11 @@ export class PostgresConnection extends DatabaseConnection {
 	}
 
 	async changeSchema(schema) {
-		await this.#client.query(`SET search_path TO ${DatabaseConnection.quoteIdentifier(schema)}, public`);
+		await this.query(`SET search_path TO ${DatabaseConnection.quoteIdentifier(schema)}, public`);
 	}
 
 	async serverInfo() {
-		const { rows: [row] } = await this.#client.query({ text: 'SELECT current_setting(\'server_version_num\')::int AS v', types: AS_TEXT });
+		const [row] = await this.query('SELECT current_setting(\'server_version_num\')::int AS v');
 		const number = Number(row.v);
 		const major = Math.floor(number / 10000);
 		const minor = major >= 10 ? number % 10000 : Math.floor(number / 100) % 100;

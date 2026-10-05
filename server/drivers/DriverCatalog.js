@@ -1,5 +1,6 @@
 import { Db2Driver } from './Db2Driver.js';
 import { PostgresDriver } from './PostgresDriver.js';
+import { H2Driver } from './H2Driver.js';
 import { DatabaseError } from './DatabaseError.js';
 
 /**
@@ -23,7 +24,7 @@ export class DriverCatalog {
 		this.#drivers = new Map(drivers.map((driver) => [driver.id, driver]));
 	}
 
-	static standardDrivers(options = {}) { return [new Db2Driver(options), new PostgresDriver(options)]; }
+	static standardDrivers(options = {}) { return [new Db2Driver(options), new H2Driver(options), new PostgresDriver(options)]; }
 
 	/** The driver called id; throws when it is unknown or its npm package is missing. */
 	driver(id) {
