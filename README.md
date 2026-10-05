@@ -66,10 +66,11 @@ server restarts.
 |---|---|
 | Start page, layouts, menus, TE scripts, welcome and about panels | Ported |
 | Logging on and off, saved connections, connection status, database features | Ported |
-| DB2 (`ibm_db`), PostgreSQL (`pg`) and Apache H2 drivers | Ported |
+| PostgreSQL, MySQL/MariaDB, SQLite and Apache H2 drivers, all in JavaScript | Ported |
+| DB2 (`ibm_db`, a native module; a JavaScript-only route is still to be chosen) | Ported |
 | Running SQL (`executeSQL`: ad hoc SQL, scripts and the SQL behind TE pages) | Ported |
 | Database-driven and XSL-transformed menus (the object navigator) | Ported |
-| MySQL, Oracle, ODBC (solidDB) and SSH drivers | Next |
+| Oracle, SQL Server, ODBC (solidDB) and SSH drivers | Next |
 | Trusted context users, connection profiles, Cloud Foundry `VCAP_SERVICES` connections | Later |
 | Feed reader, tutorials, table lists and the other actions | Later |
 | Derby, Hadoop, JDBC_DB2, MQ, JSON_NOSQL_DB2 (needed the PHP Java bridge) | Not planned |
@@ -100,9 +101,28 @@ A new action is a file `server/actions/<noConnection|activeConnection>/<JSON|HTM
 that default-exports a subclass of `Action` and implements `run()`. It is picked up
 automatically; nothing needs registering.
 
-A database driver is a subclass of `DatabaseDriver` (opens connections), `DatabaseConnection`
-(runs statements, transactions, schema, server information) and `ResultCursor` (reads rows),
-added to `DriverCatalog.standardDrivers()`.
+### Database drivers
+
+The drivers share one generic, JDBC-like set of classes, and each database extends them only
+where it differs. No Java is involved:
+
+| Generic class | Like JDBC's | Does |
+|---|---|---|
+| `DatabaseDriver` | `Driver` | checks the login, opens connections, tests a log on |
+| `DatabaseConnection` | `Connection` | runs statements with bind parameters, transactions, schema, server information |
+| `ResultCursor` | `ResultSet` | reads rows forwards, across result sets, with OUT parameter values |
+
+| Vendor driver | Database | Talks through | What it overrides |
+|---|---|---|---|
+| `PostgresDriver` | PostgreSQL | `pg`, `pg-cursor` (JavaScript) | `$n` markers, rows read in batches by a server cursor |
+| `H2Driver` (extends `PostgresDriver`) | Apache H2 | H2's PostgreSQL protocol server | simple protocol with bind values as literals, `H2VERSION()` |
+| `MySqlDriver` | MySQL, MariaDB | `mysql2` (JavaScript) | MySQL quoting, `USE` for schemas, reading paused between batches |
+| `SqliteDriver` | SQLite | Node's built-in `node:sqlite` (Node 22.13+) | files in `DATABASE_DATA_DIRECTORY` (default `./data`), no users or schemas |
+| `Db2Driver` | DB2 | `ibm_db` (native module, `npm install ibm_db`) | CLI connection strings, DB2 feature checks |
+
+A new database is a subclass of the three classes, added to `DriverCatalog.standardDrivers()`.
+SQLite database names may only use letters, digits and `_ . - /` and stay inside the data
+folder, so a log on cannot open or create files elsewhere.
 
 ### Database connections
 
@@ -175,6 +195,10 @@ tutorials: building a menu") still show the XML format and will be updated with 
 The parity tests replay the requests the console makes and compare the answers with those
 recorded from the PHP version, so the port can be shown to behave identically. The XSL menu
 tests compare the stylesheet output with what PHP's libxslt produced.
+
+`test/vendors.test.js` runs one scenario (transactions, bind values, errors, large results)
+against every vendor driver: SQLite always, and PostgreSQL, H2 and MySQL/MariaDB when their
+servers answer (`TE_TEST_POSTGRES`, `TE_TEST_H2`, `TE_TEST_MYSQL`).
 
 `test/postgres.test.js` runs against a real PostgreSQL server, given as
 `TE_TEST_POSTGRES=user:password@host:port/database` (default `te:te@localhost:5432/tetest`);

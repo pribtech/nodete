@@ -81,5 +81,6 @@ test('welcome page reports the Node.js runtime and driver status', async () => {
 	assert.match(html, /Welcome to the Technology Explorer for IBM DB2 v5\.0/);
 	assert.match(html, /Server Node\.js v\d+/);
 	assert.match(html, /<td>PostgreSQL<\/td><td style="background-color:limegreen;">OK<\/td>/);
-	assert.match(html, /<td>MYSQL<\/td><td style="background-color:YELLOW;">Not yet ported to Node\.js<\/td>/);
+	assert.match(html, /<td>MYSQL<\/td><td style="background-color:limegreen;">OK<\/td>/);
+	assert.match(html, /<td>ORACLE<\/td><td style="background-color:YELLOW;">Not yet ported to Node\.js<\/td>/);
 });

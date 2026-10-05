@@ -26,7 +26,7 @@ export class TEServer {
 	 * @param {DriverCatalog} [options.drivers] database drivers (tests pass stand-ins)
 	 * @param {ConnectionStore} [options.connectionStore] saved connections
 	 */
-	constructor(config, { log = console, sessionSecret = process.env.TE_SESSION_SECRET, sessionStore, drivers = new DriverCatalog(), connectionStore } = {}) {
+	constructor(config, { log = console, sessionSecret = process.env.TE_SESSION_SECRET, sessionStore, drivers = DriverCatalog.forConfig(config), connectionStore } = {}) {
 		this.#config = config;
 		this.#log = log;
 		const files = new AppFiles(config.appRoot);

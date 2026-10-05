@@ -164,9 +164,9 @@ test('DriverCatalog reports ported, missing and unported drivers', () => {
 	const missing = new (class extends FakeDriver { get isInstalled() { return false; } })({ id: 'BBB' });
 	const catalog = new DriverCatalog([installed, missing]);
 	assert.equal(catalog.driver('AAA'), installed);
-	assert.throws(() => catalog.driver('BBB'), /needs npm package fake/);
+	assert.throws(() => catalog.driver('BBB'), /BBB is not usable: npm package fake not installed/);
 	assert.throws(() => catalog.driver('NOPE'), /Connect driver NOPE not found/);
 	const status = Object.fromEntries(catalog.status().map((d) => [d.name, d.level]));
-	assert.deepEqual(status, { AAA: 'I', BBB: 'E', MYSQL: 'W', ODBC_SolidDB: 'W', ORACLE: 'W', SSH: 'W' });
+	assert.deepEqual(status, { AAA: 'I', BBB: 'E', ODBC_SolidDB: 'W', ORACLE: 'W', SSH: 'W' });
 	assert.deepEqual(catalog.available().map((d) => d.id), ['AAA']);
 });

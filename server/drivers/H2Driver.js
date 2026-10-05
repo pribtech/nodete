@@ -1,5 +1,6 @@
 import { PostgresDriver, PostgresConnection } from './PostgresDriver.js';
 import { DatabaseConnection } from './DatabaseConnection.js';
+import { Placeholders } from './Placeholders.js';
 
 /**
  * Apache H2 through its PostgreSQL protocol server, using the pg package.
@@ -37,7 +38,7 @@ export class H2Connection extends PostgresConnection {
 
 	async run(sql, parameters) {
 		const values = parameters.map((p) => H2Connection.literal(p.value));
-		return this.simpleQuery(parameters.length ? PostgresConnection.replacePlaceholders(sql, (position) => values[position - 1] ?? 'NULL') : sql);
+		return this.simpleQuery(parameters.length ? Placeholders.STANDARD.inline(sql, values, (value) => value) : sql);
 	}
 
 	/** An SQL literal for a bind value: numbers as they are, text quoted with ' doubled (H2 gives \ no meaning). */

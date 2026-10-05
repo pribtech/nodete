@@ -31,6 +31,9 @@ export class DatabaseDriver {
 	/** Fields of the login form for this driver (getSupportedDrivers). */
 	get loginAttributes() { return LOGIN_ATTRIBUTES; }
 
+	/** What to do when the driver is not usable, for the welcome page and error messages. */
+	get installAdvice() { return `npm package ${this.moduleName} not installed (run: npm install ${this.moduleName})`; }
+
 	get isInstalled() {
 		try { this.module; return true; } catch { return false; }
 	}
@@ -49,7 +52,7 @@ export class DatabaseDriver {
 
 	/** Opens a connection, sets its schema and returns it. */
 	async connect(spec) {
-		const problem = spec.validate();
+		const problem = this.validate(spec);
 		if (problem) throw new DatabaseError(problem);
 		let connection;
 		try {
@@ -65,6 +68,9 @@ export class DatabaseDriver {
 			throw DatabaseError.from(error);
 		}
 	}
+
+	/** Problem with the login details that stops a connection being tried, or null. */
+	validate(spec) { return spec.validate(); }
 
 	/** Connects, reads the server information and disconnects (PHP testConnection). */
 	async test(spec) {
