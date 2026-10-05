@@ -1,5 +1,6 @@
 import { DatabaseDriver } from './DatabaseDriver.js';
 import { DatabaseConnection } from './DatabaseConnection.js';
+import { Placeholders } from './Placeholders.js';
 import { ResultCursor, ArrayCursor } from './ResultCursor.js';
 
 /** Values are passed to the front end as the server's text, as PHP's pg_* functions did. */
@@ -54,19 +55,9 @@ export class PostgresConnection extends DatabaseConnection {
 
 	get DBMS() { return 'postgreSQL'; }
 
-	/**
-	 * TE SQL marks parameters with "?" (the DB2 style); PostgreSQL numbers them $1, $2...
-	 * Question marks inside quotes, comments and dollar-quoted strings are left alone.
-	 */
+	/** TE SQL marks parameters with "?" (the DB2 style); PostgreSQL numbers them $1, $2... */
 	static numberPlaceholders(sql) {
-		return PostgresConnection.replacePlaceholders(sql, (position) => `$${position}`);
-	}
-
-	/** Replaces each "?" marker outside quotes and comments with replacement(position), counting from 1. */
-	static replacePlaceholders(sql, replacement) {
-		let position = 0;
-		return sql.replace(/'(?:[^']|'')*'|"(?:[^"]|"")*"|--[^\n]*|\/\*[\s\S]*?\*\/|(\$[A-Za-z_]*\$)[\s\S]*?\1|\?/g,
-			(match) => (match === '?' ? replacement(++position) : match));
+		return Placeholders.STANDARD.replace(sql, (position) => `$${position}`);
 	}
 
 	async run(sql, parameters) {

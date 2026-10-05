@@ -12,10 +12,10 @@ export class DatabaseError extends Error {
 
 	get sqlstate() { return this.#sqlstate; }
 
-	/** Wraps any error a driver module throws; its SQLSTATE is read from `sqlstate` (ibm_db) or `code` (pg). */
+	/** Wraps any error a driver module throws; its SQLSTATE is read from `sqlstate`, `sqlState` (mysql2) or `code` (pg). */
 	static from(error) {
 		if (error instanceof DatabaseError) return error;
-		const state = error?.sqlstate ?? (/^[0-9A-Z]{5}$/.test(error?.code ?? '') ? error.code : undefined);
+		const state = error?.sqlstate ?? error?.sqlState ?? (/^[0-9A-Z]{5}$/.test(error?.code ?? '') ? error.code : undefined);
 		return new DatabaseError(error?.message ?? String(error), state, { cause: error });
 	}
 }

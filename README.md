@@ -31,14 +31,9 @@ Requires Node.js 20 or later.
 
 Then open http://localhost:8080/. `PORT` and `HOST` change where it listens.
 
-PostgreSQL support is installed with the server. For DB2, also install IBM's driver, which
-downloads the DB2 CLI client and builds a native module:
-
-    npm install ibm_db
-
-`ibm_db` is not a dependency of the server because it cannot be built everywhere and its
-installer currently pulls in a package with open security advisories. The welcome page
-lists each driver and whether it is ready.
+Every database driver is JavaScript and installed with the server: no native modules, no
+Java. DB2 is reached with the server's own DRDA client (see "DB2 and DRDA" below). The
+welcome page lists each driver and whether it is ready.
 
 Apache H2 is a Java database, so the server talks to it through H2's PostgreSQL protocol
 server, which needs no extra package. Start H2 with that server enabled and log on with the
@@ -66,17 +61,14 @@ server restarts.
 |---|---|
 | Start page, layouts, menus, TE scripts, welcome and about panels | Ported |
 | Logging on and off, saved connections, connection status, database features | Ported |
-| DB2 (`ibm_db`), PostgreSQL (`pg`) and Apache H2 drivers | Ported |
+| PostgreSQL, MySQL/MariaDB, SQLite and Apache H2 drivers, all in JavaScript | Ported |
+| DB2 and Apache Derby through the server's own DRDA client, in JavaScript | Ported |
 | Running SQL (`executeSQL`: ad hoc SQL, scripts and the SQL behind TE pages) | Ported |
 | Database-driven and XSL-transformed menus (the object navigator) | Ported |
-| MySQL, Oracle, ODBC (solidDB) and SSH drivers | Next |
+| Oracle, SQL Server, ODBC (solidDB) and SSH drivers | Next |
 | Trusted context users, connection profiles, Cloud Foundry `VCAP_SERVICES` connections | Later |
 | Feed reader, tutorials, table lists and the other actions | Later |
-| Derby, Hadoop, JDBC_DB2, MQ, JSON_NOSQL_DB2 (needed the PHP Java bridge) | Not planned |
-
-The DB2 driver is tested against a stand-in for `ibm_db` that follows its documented API;
-it has not yet been run against a DB2 server. The PostgreSQL driver is tested end to end
-against a real server.
+| Hadoop, MQ, JSON_NOSQL_DB2 (needed the PHP Java bridge) | Not planned |
 
 Actions not yet ported answer with `Action "<name>" has not been ported to Node.js yet`.
 
@@ -90,7 +82,8 @@ Actions not yet ported answer with `Action "<name>" has not been ported to Node.
       pages/              index page, script list, JS constants, templates
       views/              HTML templates
       drivers/            database drivers: DatabaseDriver, DatabaseConnection and ResultCursor
-                          base classes, Db2Driver, PostgresDriver, the DriverCatalog
+                          base classes, the vendor drivers, the DriverCatalog
+        drda/             DRDA client: framing, logon, statements, row decoding
       sql/                executeSQL: SqlBatch runs a request, StatementRunner one statement
       xml/                reads XML definitions (menus from XSL stylesheets, the converter)
     tools/convert/        converts XML definitions and connStore.xml to JSON
@@ -100,9 +93,59 @@ A new action is a file `server/actions/<noConnection|activeConnection>/<JSON|HTM
 that default-exports a subclass of `Action` and implements `run()`. It is picked up
 automatically; nothing needs registering.
 
-A database driver is a subclass of `DatabaseDriver` (opens connections), `DatabaseConnection`
-(runs statements, transactions, schema, server information) and `ResultCursor` (reads rows),
-added to `DriverCatalog.standardDrivers()`.
+### Database drivers
+
+The drivers share one generic, JDBC-like set of classes, and each database extends them only
+where it differs. No Java is involved:
+
+| Generic class | Like JDBC's | Does |
+|---|---|---|
+| `DatabaseDriver` | `Driver` | checks the login, opens connections, tests a log on |
+| `DatabaseConnection` | `Connection` | runs statements with bind parameters, transactions, schema, server information |
+| `ResultCursor` | `ResultSet` | reads rows forwards, across result sets, with OUT parameter values |
+
+| Vendor driver | Database | Talks through | What it overrides |
+|---|---|---|---|
+| `PostgresDriver` | PostgreSQL | `pg`, `pg-cursor` (JavaScript) | `$n` markers, rows read in batches by a server cursor |
+| `H2Driver` (extends `PostgresDriver`) | Apache H2 | H2's PostgreSQL protocol server | simple protocol with bind values as literals, `H2VERSION()` |
+| `MySqlDriver` | MySQL, MariaDB | `mysql2` (JavaScript) | MySQL quoting, `USE` for schemas, reading paused between batches |
+| `SqliteDriver` | SQLite | Node's built-in `node:sqlite` (Node 22.13+) | files in `DATABASE_DATA_DIRECTORY` (default `./data`), no users or schemas |
+| `DrdaDriver` | (base for DRDA databases) | the server's DRDA client (JavaScript) | commits in autocommit mode, `SET SCHEMA`, server information from the product id |
+| `Db2Driver` (extends `DrdaDriver`) | DB2 for LUW, z/OS, i | DRDA | package NULLID.SYSSH200, port 50000, `CURRENT PATH`, DB2 feature checks |
+| `DerbyDriver` (extends `DrdaDriver`) | Apache Derby network server | DRDA | introduces itself as Derby's client, port 1527 |
+
+A new database is a subclass of the three classes, added to `DriverCatalog.standardDrivers()`.
+SQLite database names may only use letters, digits and `_ . - /` and stay inside the data
+folder, so a log on cannot open or create files elsewhere.
+
+### DB2 and DRDA
+
+DB2 speaks DRDA, IBM's open distributed database protocol, and so does Apache Derby's
+network server. `server/drivers/drda/` is a DRDA client written for this server:
+
+| Class | Does |
+|---|---|
+| `DrdaTransport` | the TCP connection; one request chain at a time |
+| `DdmRequest`, `DdmReply`, `DdmObject` | DDM objects in DSS structures, 32 KB segments, extended lengths |
+| `DrdaConnection` | log on (EXCSAT, ACCSEC, SECCHK, ACCRDB), prepare, execute, open and fetch queries, commit, rollback |
+| `Sqlca`, `Sqlda` | SQL errors and warnings; column descriptions |
+| `QueryDescriptor`, `RowDecoder` | result rows in FD:OCA form, including rows split across blocks and LOBs sent apart |
+| `Parameters` | bind values (SQLDTA) |
+| `Ccsid`, `TypeDefinition`, `ByteReader` | EBCDIC and UTF-8 text, the server's byte order |
+
+Tested against Derby 10.17's network server: log on and its errors, all common data types
+(integers, reals, decimals, character and binary strings, dates and times, CLOB, BLOB,
+boolean), nulls, results of thousands of rows, bind values, transactions, and the console
+end to end. **It has not been run against a DB2 server yet.** DB2 follows the same protocol,
+but differences only a DB2 server would show are likely at first.
+
+Not supported yet:
+- logging on with an encrypted user ID and password (security mechanisms 7 and 9) or
+  Kerberos; the user ID and password go in clear, so use it on trusted networks
+- TLS connections
+- bind values over 32 KB each (large values can be read, not yet sent)
+- stored procedure OUT parameters and result sets from CALL
+- column types described with overrides (SDA/MDD triplets), which DB2 may use for some types
 
 ### Database connections
 
@@ -175,6 +218,22 @@ tutorials: building a menu") still show the XML format and will be updated with 
 The parity tests replay the requests the console makes and compare the answers with those
 recorded from the PHP version, so the port can be shown to behave identically. The XSL menu
 tests compare the stylesheet output with what PHP's libxslt produced.
+
+`test/drda.test.js` tests the DRDA client's parts on their own and runs against an Apache
+Derby network server (`TE_TEST_DERBY`, default `te:te@localhost:1527/tetest`), started with
+users defined, for example a `derby.properties` of
+
+    derby.connection.requireAuthentication=true
+    derby.authentication.provider=BUILTIN
+    derby.user.te=te
+
+and `java -Dderby.system.home=<folder> -cp derby.jar:derbyshared.jar:derbytools.jar:derbynet.jar
+org.apache.derby.drda.NetworkServerControl start -p 1527`. Java is needed only to run this
+test server.
+
+`test/vendors.test.js` runs one scenario (transactions, bind values, errors, large results)
+against every vendor driver: SQLite always, and PostgreSQL, H2, MySQL/MariaDB and Derby when
+their servers answer (`TE_TEST_POSTGRES`, `TE_TEST_H2`, `TE_TEST_MYSQL`, `TE_TEST_DERBY`).
 
 `test/postgres.test.js` runs against a real PostgreSQL server, given as
 `TE_TEST_POSTGRES=user:password@host:port/database` (default `te:te@localhost:5432/tetest`);
