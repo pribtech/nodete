@@ -34,8 +34,8 @@ ALL;
 
 $opensource = <<<ALL
 <table><tr><td valign='top' class="ContentTableContent">
-<p>The DB2 Technology Explorer for IBM DB2 is an open source project available at
-<a onclick="OpenURLInFloatingWindow('http://www.sourceforge.net/projects/db2mc');">sourceforge.net/projects/db2mc</a>
+<p>The Technology Explorer is an open source project available at
+<a onclick="OpenURLInFloatingWindow('https://github.com/pribtech/nodete');">github.com/pribtech/nodete</a>
 </p>
 </td></tr>
 <table>

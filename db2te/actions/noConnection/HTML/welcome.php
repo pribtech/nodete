@@ -3,14 +3,13 @@ include_once(JAR_BASE_DIRECTORY . "java.php");
 include_once(PHP_INCLUDE_BASE_DIRECTORY . "DBConnection.php");
 ?>
 <div class="generalHTML">
-<div id="title">Welcome to the Technology Explorer for IBM DB2 <?php echo TE_VERSION ?></div>
+<div id="title">Welcome to the Technology Explorer <?php echo TE_VERSION ?></div>
 
 <p>
 <table>
 	<tr>
 		<td><img src="./images/logo.jpg"/></td>
-		<td><h1>The Technology Explorer for IBM DB2 <?php echo TE_VERSION ?></h1></td>
-		<td><img src="./images/frygmaLogo.jpg" height="80" /></td>
+		<td><h1>The Technology Explorer <?php echo TE_VERSION ?></h1></td>
 		</tr>
 </table>
 <table border="0" cellspacing="0" cellpadding="5">

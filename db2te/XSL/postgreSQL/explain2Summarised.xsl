@@ -2,7 +2,7 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <!--
   Author: Peter Prib
-  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2013 All rights reserved.
+  Copyright 2026 Jaroslav Peter Prib, Purveyor of Excellence
   
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.

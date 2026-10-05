@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
   Author: Peter Prib
-  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2011 All rights reserved.
+  Copyright 2026 Jaroslav Peter Prib, Purveyor of Excellence
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
 
 &lt;xsd:schema  xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
   Author: Peter Prib
-  Copyright Frygma Pty Ltd (ABN 90 791 388 622 2009) 2011 All rights reserved.
+  Copyright 2026 Jaroslav Peter Prib, Purveyor of Excellence
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
