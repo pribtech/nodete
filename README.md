@@ -263,3 +263,10 @@ it is skipped when the server cannot be reached. `test/h2.test.js` does the same
 - The connection status shows a forced default connection as connected on the first check.
 - The MySQL "Monitors" menu shows its entries (its definition named the folder as a
   `branchDirectory` instead of a `rootDirectory`, so it was always empty).
+
+## Copyright and licence
+
+Copyright 2026 Jaroslav Peter Prib, Purveyor of Excellence. Licensed under the Apache License,
+Version 2.0 (`LICENSE`). The Technology Explorer began as the Technology Explorer for IBM DB2;
+files that still contain IBM's work keep IBM's copyright notice, as the licence requires, and
+`NOTICE` records it.

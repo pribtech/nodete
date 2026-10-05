@@ -1,3 +1,4 @@
+// Copyright 2026 Jaroslav Peter Prib, Purveyor of Excellence. Licensed under the Apache License, Version 2.0 (see LICENSE).
 import { DrdaTransport } from './DrdaTransport.js';
 import { DdmRequest } from './Ddm.js';
 import { CP, SECMEC, SEVERITY, CODE_POINT_NAMES, DSS } from './CodePoints.js';

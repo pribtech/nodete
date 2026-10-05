@@ -1,3 +1,4 @@
+// Copyright 2026 Jaroslav Peter Prib, Purveyor of Excellence. Licensed under the Apache License, Version 2.0 (see LICENSE).
 /** Settings the front end reads as JavaScript globals (PHP actions/noConnection/HTML/JSConstants.php). */
 const EXPORTED = Object.freeze([
 	'ACTION_PROCESSOR', 'AD_HOC_DISPLAY_XML', 'AD_HOC_DISPLAY_XML_AS_INLINE', 'AD_HOC_DISPLAY_CLOB',

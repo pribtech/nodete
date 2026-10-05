@@ -1,3 +1,4 @@
+// Copyright 2026 Jaroslav Peter Prib, Purveyor of Excellence. Licensed under the Apache License, Version 2.0 (see LICENSE).
 import net from 'node:net';
 import tls from 'node:tls';
 import { DdmReply } from './Ddm.js';

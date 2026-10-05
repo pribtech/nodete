@@ -1,3 +1,4 @@
+// Copyright 2026 Jaroslav Peter Prib, Purveyor of Excellence. Licensed under the Apache License, Version 2.0 (see LICENSE).
 import { Config } from '../../server/core/Config.js';
 import { TEServer } from '../../server/core/TEServer.js';
 import { ConnectionStore } from '../../server/core/ConnectionStore.js';

@@ -1,3 +1,4 @@
+// Copyright 2026 Jaroslav Peter Prib, Purveyor of Excellence. Licensed under the Apache License, Version 2.0 (see LICENSE).
 /**
  * Finds the "?" parameter markers in SQL text, skipping those inside string literals,
  * quoted identifiers and comments. Dialects differ in how a quote is escaped inside a

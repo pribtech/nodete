@@ -1,3 +1,4 @@
+// Copyright 2026 Jaroslav Peter Prib, Purveyor of Excellence. Licensed under the Apache License, Version 2.0 (see LICENSE).
 import { DatabaseDriver } from './DatabaseDriver.js';
 import { DatabaseConnection } from './DatabaseConnection.js';
 import { DatabaseError } from './DatabaseError.js';

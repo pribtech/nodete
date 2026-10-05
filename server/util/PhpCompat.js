@@ -1,3 +1,4 @@
+// Copyright 2026 Jaroslav Peter Prib, Purveyor of Excellence. Licensed under the Apache License, Version 2.0 (see LICENSE).
 /**
  * PHP value conversions the builders need so their JSON matches the PHP version's.
  * Kept in one place so they can be dropped once the front end no longer relies on them.

@@ -1,3 +1,4 @@
+// Copyright 2026 Jaroslav Peter Prib, Purveyor of Excellence. Licensed under the Apache License, Version 2.0 (see LICENSE).
 /**
  * Writes action results in the formats the front end expects from the PHP version.
  * The return type (JSON or HTML) is fixed per request, as PHP fixed it in a constant.

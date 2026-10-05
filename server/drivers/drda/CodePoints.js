@@ -1,3 +1,4 @@
+// Copyright 2026 Jaroslav Peter Prib, Purveyor of Excellence. Licensed under the Apache License, Version 2.0 (see LICENSE).
 /** DRDA / DDM code points used by the client (DRDA Version 4, Volume 3: DDM). */
 export const CP = Object.freeze({
 	// commands

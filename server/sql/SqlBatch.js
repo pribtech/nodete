@@ -1,3 +1,4 @@
+// Copyright 2026 Jaroslav Peter Prib, Purveyor of Excellence. Licensed under the Apache License, Version 2.0 (see LICENSE).
 import { StatementRunner } from './StatementRunner.js';
 import { ResultFormatter } from './ResultFormatter.js';
 import { RunConditions } from './RunConditions.js';

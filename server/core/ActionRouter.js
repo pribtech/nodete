@@ -1,3 +1,4 @@
+// Copyright 2026 Jaroslav Peter Prib, Purveyor of Excellence. Licensed under the Apache License, Version 2.0 (see LICENSE).
 import { ActionRequest } from './ActionRequest.js';
 import { ActionResponse } from './ActionResponse.js';
 import { TESession } from './TESession.js';

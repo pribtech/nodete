@@ -1,3 +1,4 @@
+// Copyright 2026 Jaroslav Peter Prib, Purveyor of Excellence. Licensed under the Apache License, Version 2.0 (see LICENSE).
 import { Action } from '../../../core/Action.js';
 
 /** Script listing the usable database drivers in GLOBAL_TE_SUPPORTED_DRIVERS (PHP getSupportedDrivers.php). */

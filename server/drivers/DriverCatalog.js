@@ -1,3 +1,4 @@
+// Copyright 2026 Jaroslav Peter Prib, Purveyor of Excellence. Licensed under the Apache License, Version 2.0 (see LICENSE).
 import { Db2Driver } from './Db2Driver.js';
 import { DerbyDriver } from './DerbyDriver.js';
 import { PostgresDriver } from './PostgresDriver.js';

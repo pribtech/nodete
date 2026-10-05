@@ -1,3 +1,4 @@
+// Copyright 2026 Jaroslav Peter Prib, Purveyor of Excellence. Licensed under the Apache License, Version 2.0 (see LICENSE).
 /**
  * The <script> tags for the front end's JavaScript, built from js/jsList_*.json
  * (PHP base/HTMLEncodeJSList.php).

@@ -1,3 +1,4 @@
+// Copyright 2026 Jaroslav Peter Prib, Purveyor of Excellence. Licensed under the Apache License, Version 2.0 (see LICENSE).
 import { test, before, after } from 'node:test';
 import assert from 'node:assert/strict';
 import { H2Driver, H2Connection } from '../server/drivers/H2Driver.js';

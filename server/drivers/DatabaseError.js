@@ -1,3 +1,4 @@
+// Copyright 2026 Jaroslav Peter Prib, Purveyor of Excellence. Licensed under the Apache License, Version 2.0 (see LICENSE).
 /** A failure reported by a database, carrying its SQLSTATE (99999 when the driver gave none). */
 export class DatabaseError extends Error {
 	static UNKNOWN_STATE = '99999';
