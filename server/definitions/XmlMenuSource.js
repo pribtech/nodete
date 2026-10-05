@@ -1,3 +1,4 @@
+// Copyright 2026 Jaroslav Peter Prib, Purveyor of Excellence. Licensed under the Apache License, Version 2.0 (see LICENSE).
 import { Xslt, XmlParser } from 'xslt-processor';
 import { XmlNode } from '../xml/XmlNode.js';
 import { DefinitionConverter } from '../xml/DefinitionConverter.js';

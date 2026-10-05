@@ -1,3 +1,4 @@
+// Copyright 2026 Jaroslav Peter Prib, Purveyor of Excellence. Licensed under the Apache License, Version 2.0 (see LICENSE).
 /**
  * The rows produced by one executed statement, read forwards, possibly over several
  * result sets (stored procedure calls). Subclasses wrap a driver's result object.

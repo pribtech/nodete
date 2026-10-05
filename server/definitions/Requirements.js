@@ -1,3 +1,4 @@
+// Copyright 2026 Jaroslav Peter Prib, Purveyor of Excellence. Licensed under the Apache License, Version 2.0 (see LICENSE).
 /** The version/feature/context gating fields and their defaults, as the front end receives them. */
 const DEFAULTS = Object.freeze({
 	DBMS: null, minVersion: 0, minFixPack: 0, maxVersion: 0, feature: '', noFeature: '', context: '', notContext: '',

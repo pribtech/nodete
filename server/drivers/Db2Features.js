@@ -1,3 +1,4 @@
+// Copyright 2026 Jaroslav Peter Prib, Purveyor of Excellence. Licensed under the Apache License, Version 2.0 (see LICENSE).
 /**
  * The optional DB2 features TE menus test for (requires.feature), found by querying the
  * catalog (PHP Connection_IBM_DB2::$features and setFeatures).

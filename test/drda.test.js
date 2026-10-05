@@ -1,3 +1,4 @@
+// Copyright 2026 Jaroslav Peter Prib, Purveyor of Excellence. Licensed under the Apache License, Version 2.0 (see LICENSE).
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { DdmRequest, DdmReply, DdmObject } from '../server/drivers/drda/Ddm.js';

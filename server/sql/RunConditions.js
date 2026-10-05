@@ -1,3 +1,4 @@
+// Copyright 2026 Jaroslav Peter Prib, Purveyor of Excellence. Licensed under the Apache License, Version 2.0 (see LICENSE).
 /**
  * Conditions checked after a statement of a batch, deciding whether the batch goes on
  * (PHP checkConditions / setReturnAction in executeSQL.php), e.g.

@@ -1,3 +1,4 @@
+// Copyright 2026 Jaroslav Peter Prib, Purveyor of Excellence. Licensed under the Apache License, Version 2.0 (see LICENSE).
 /**
  * What is needed to open one database connection: the fields of the TE login form.
  * Immutable; the connection's name is derived from it as the PHP version did,

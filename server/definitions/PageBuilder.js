@@ -1,3 +1,4 @@
+// Copyright 2026 Jaroslav Peter Prib, Purveyor of Excellence. Licensed under the Apache License, Version 2.0 (see LICENSE).
 import { PhpCompat } from '../util/PhpCompat.js';
 
 const NO_CONTENT_PANEL = "<div id='title'>No content given!</div><table style='width:100%;height:100%'><tr><td align='center'><h2>No content was specified for the panel</h2></td></tr></table>'";

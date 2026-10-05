@@ -1,3 +1,4 @@
+// Copyright 2026 Jaroslav Peter Prib, Purveyor of Excellence. Licensed under the Apache License, Version 2.0 (see LICENSE).
 /**
  * Reads values from DRDA reply data. Numbers follow the server's byte order, which its
  * TYPDEFNAM announces (QTDSQLX86 is little-endian, QTDSQLASC and QTDSQL370 big-endian);

@@ -1,3 +1,4 @@
+// Copyright 2026 Jaroslav Peter Prib, Purveyor of Excellence. Licensed under the Apache License, Version 2.0 (see LICENSE).
 import { DOMParser, XMLSerializer } from '@xmldom/xmldom';
 
 const ELEMENT_NODE = 1;

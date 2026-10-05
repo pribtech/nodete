@@ -1,3 +1,4 @@
+// Copyright 2026 Jaroslav Peter Prib, Purveyor of Excellence. Licensed under the Apache License, Version 2.0 (see LICENSE).
 /**
  * Read-only view of an incoming request, with the parameter rules of the PHP version:
  * - getParameter() looks in the query string first, then the POST body (PHP $_GET then $_POST)
