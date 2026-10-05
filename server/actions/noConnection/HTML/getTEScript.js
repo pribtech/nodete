@@ -14,7 +14,7 @@ export default class GetTEScriptAction extends Action {
 	#baseDir;
 
 	async run() {
-		this.#builder = new MenuBuilder({ files: this.files, config: this.config, connections: this.connections });
+		this.#builder = MenuBuilder.forContext(this.context);
 		this.#baseDir = this.config.get('TE_SCRIPTS_BASE_DIRECTORY');
 		const lines = ['\t\nGLOBAL_TE_SCRIPT_STORE = $H();\n'];
 		this.#loadActionFolder(this.#baseDir, lines);

@@ -4,7 +4,9 @@ import { randomBytes } from 'node:crypto';
 import { AppFiles } from './AppFiles.js';
 import { ActionRegistry } from './ActionRegistry.js';
 import { ActionRouter } from './ActionRouter.js';
+import { ConnectionStore } from './ConnectionStore.js';
 import { IndexPage } from '../pages/IndexPage.js';
+import { DriverCatalog } from '../drivers/DriverCatalog.js';
 
 /** Files under db2te/ that must never be served as static content. */
 const PRIVATE_PATHS = [/\.php$/i, /^\/connectionStore\//i, /^\/jar\//i];
@@ -19,12 +21,18 @@ export class TEServer {
 	#app;
 	#log;
 
-	constructor(config, { log = console, sessionSecret = process.env.TE_SESSION_SECRET, sessionStore } = {}) {
+	/**
+	 * @param {object} options
+	 * @param {DriverCatalog} [options.drivers] database drivers (tests pass stand-ins)
+	 * @param {ConnectionStore} [options.connectionStore] saved connections
+	 */
+	constructor(config, { log = console, sessionSecret = process.env.TE_SESSION_SECRET, sessionStore, drivers = new DriverCatalog(), connectionStore } = {}) {
 		this.#config = config;
 		this.#log = log;
 		const files = new AppFiles(config.appRoot);
 		const registry = new ActionRegistry(undefined, files.resolve('./actions'));
-		const router = new ActionRouter({ config, registry, files, log });
+		const store = connectionStore ?? ConnectionStore.fromConfig(config, files);
+		const router = new ActionRouter({ config, registry, files, drivers, store, log });
 		this.#app = this.#buildApp({ files, router, sessionSecret, sessionStore });
 	}
 

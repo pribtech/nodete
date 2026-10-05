@@ -27,6 +27,20 @@ export class PhpCompat {
 	 */
 	static assoc(object) { return Object.keys(object).length === 0 ? [] : object; }
 
+	/**
+	 * json_encode() of a PHP array: a list when its keys are 0, 1, 2... in order, otherwise an object.
+	 * @param {[string|number, any][]} entries
+	 */
+	static array(entries) {
+		return entries.every(([key], i) => String(key) === String(i)) ? entries.map(([, value]) => value) : Object.fromEntries(entries);
+	}
+
+	/** ksort(): keys in PHP order, numbers numerically before other keys. */
+	static ksort(object) {
+		const numeric = (key) => /^-?\d+$/.test(key);
+		return Object.entries(object).sort(([a], [b]) => (numeric(a) && numeric(b) ? Number(a) - Number(b) : numeric(a) ? -1 : numeric(b) ? 1 : a < b ? -1 : a > b ? 1 : 0));
+	}
+
 	/** PHP loose `$value == null`: true for null, undefined, "", false, 0 and empty arrays. */
 	static isEmpty(value) {
 		return value === null || value === undefined || value === '' || value === false || value === 0

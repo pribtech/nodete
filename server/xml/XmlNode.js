@@ -3,7 +3,6 @@ import { DOMParser, XMLSerializer } from '@xmldom/xmldom';
 const ELEMENT_NODE = 1;
 
 /** PHP stripslashes(): drops one level of backslash escaping. */
-const stripSlashes = (value) => value.replace(/\\(.?)/gs, (_, char) => (char === '0' ? '\0' : char));
 
 /**
  * Simplified, read-only XML element tree used to read the TE's XML definitions
@@ -13,6 +12,9 @@ const stripSlashes = (value) => value.replace(/\\(.?)/gs, (_, char) => (char ===
  *  - attribute values have PHP stripslashes() applied, as the PHP loader did
  */
 export class XmlNode {
+	/** PHP stripslashes(): removes backslash escapes, "\\0" becomes NUL. */
+	static #stripSlashes(value) { return value.replace(/\\(.?)/gs, (_, char) => (char === '0' ? '\0' : char)); }
+
 	#nodeName;
 	#textContent;
 	#attributes;
@@ -25,7 +27,7 @@ export class XmlNode {
 		this.#textContent = element.textContent ?? '';
 		this.#attributes = new Map();
 		for (const attribute of Array.from(element.attributes ?? []))
-			this.#attributes.set(attribute.name, stripSlashes(attribute.value));
+			this.#attributes.set(attribute.name, XmlNode.#stripSlashes(attribute.value));
 		this.#childNodes = Array.from(element.childNodes ?? [])
 			.filter((node) => node.nodeType === ELEMENT_NODE)
 			.map((node) => new XmlNode(node));

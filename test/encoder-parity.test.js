@@ -6,7 +6,7 @@ import { AppFiles } from '../server/core/AppFiles.js';
 import { Messages } from '../server/core/Messages.js';
 import { XmlNode } from '../server/xml/XmlNode.js';
 import { MenuBuilder } from '../server/definitions/MenuBuilder.js';
-import { DefinitionConverter } from '../tools/convert/DefinitionConverter.js';
+import { DefinitionConverter } from '../server/xml/DefinitionConverter.js';
 import { PhpReference } from './helpers/PhpReference.js';
 
 const config = Config.load({ env: {} });

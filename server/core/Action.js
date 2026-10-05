@@ -22,7 +22,11 @@ export class Action {
 	get session() { return this.#context.session; }
 	get messages() { return this.#context.messages; }
 	get connections() { return this.#context.connections; }
+	get drivers() { return this.#context.drivers; }
 	get files() { return this.#context.files; }
+
+	/** The request's objects together, for collaborators built per request. */
+	get context() { return this.#context; }
 
 	param(name, defaultValue = null) { return this.request.getParameter(name, defaultValue); }
 

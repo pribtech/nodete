@@ -1,0 +1,64 @@
+
+			<menu type="embeddedBranch">
+				<description>SAMPLE</description>
+				
+	<menu type="leaf" branchDirectory="" >
+		<pageWindow target="_active">
+			<splitPane direction="h">
+				<topPane>
+					<panel name="main" PrimaryContainer="true">
+						<link type="action" target="_self" window="_self" connectionRequired="y">
+							<parameterList>
+								<parameter name="table">tablecat</parameter>
+								<parameter name="action">list_table</parameter>
+								<parameter name="dbName">SAMPLE</parameter>
+							    
+							</parameterList>
+						</link>				
+					</panel>
+				</topPane>
+				<bottomPane>
+					<panel name="detail"/>
+				</bottomPane>
+			</splitPane>
+		</pageWindow>
+		<description>Table Catalog List Detail</description>
+	</menu>
+
+	<menu type="leaf" branchDirectory="" >
+		<pageWindow target="_active">
+			<splitPane direction="h">
+				<topPane>
+					<panel name="main" PrimaryContainer="true">
+						<link type="action" target="_self" window="_self" connectionRequired="y">
+							<parameterList>
+								<parameter name="table">tableOnlycat</parameter>
+								<parameter name="action">list_table</parameter>
+								<parameter name="dbName">SAMPLE</parameter>
+							    
+							</parameterList>
+						</link>				
+					</panel>
+				</topPane>
+				<bottomPane>
+					<panel name="detail"/>
+				</bottomPane>
+			</splitPane>
+		</pageWindow>
+		<description>Table Only List Detail</description>
+	</menu>
+
+	<menu type="branch" 
+		branchSQLXML='select XMLELEMENT( NAME @@@schemas@@@ , XMLAGG(XMLELEMENT(NAME @@@schema@@@ ,XMLATTRIBUTES( CREATOR as ID)) order by CREATOR) ) from (select distinct CREATOR FROM SYSIBM.SYSTABLES) as t'
+		branchXSL="XSL/object2Menu"
+		
+			branchSQLPredicate="DBNAME = ?!value=SAMPLE?"
+		
+		delayLoad="mouse"
+		replacement="true">
+		dropParent="false">
+		<description>Schemas</description>
+	</menu>
+	
+			</menu>
+		

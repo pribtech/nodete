@@ -18,22 +18,34 @@ export class ActionRouter {
 	#registry;
 	#files;
 	#log;
+	#drivers;
+	#store;
 
-	constructor({ config, registry, files, log = console }) {
+	/**
+	 * @param {object} options
+	 * @param {import('../drivers/DriverCatalog.js').DriverCatalog} options.drivers
+	 * @param {import('./ConnectionStore.js').ConnectionStore} options.store saved connections
+	 */
+	constructor({ config, registry, files, drivers, store, log = console }) {
 		this.#config = config;
 		this.#registry = registry;
 		this.#files = files;
+		this.#drivers = drivers;
+		this.#store = store;
 		this.#log = log;
 	}
 
 	/** Builds the per-request objects every action works with. */
 	createContext(req, res) {
 		const request = ActionRequest.fromExpress(req);
-		const session = TESession.begin(req.session, this.#config, request);
+		const renew = () => new Promise((resolve, reject) => req.session.regenerate((error) => (error ? reject(error) : resolve(req.session))));
+		const session = TESession.begin(req.session, this.#config, request, Date.now(), renew);
 		const messages = session.messages;
 		const response = new ActionResponse(res, request.returnType, messages);
-		const connections = new ConnectionManager({ session, config: this.#config, messages, connectionName: request.connectionName });
-		return { config: this.#config, files: this.#files, request, response, session, messages, connections };
+		const connections = new ConnectionManager({
+			session, config: this.#config, messages, connectionName: request.connectionName, drivers: this.#drivers, store: this.#store,
+		});
+		return { config: this.#config, files: this.#files, drivers: this.#drivers, request, response, session, messages, connections };
 	}
 
 	async handle(req, res) {
@@ -60,6 +72,8 @@ export class ActionRouter {
 		} catch (error) {
 			this.#log.error(`action ${name} failed: ${error.stack ?? error}`);
 			if (!response.sent) response.sendError(error);
+		} finally {
+			await connections.closeAll();
 		}
 	}
 

@@ -1,0 +1,12 @@
+<database DB_NAME="SAMPLE">
+	<schemas><schema SCHEMANAME="APP" OWNER="DB2INST1"/><schema SCHEMANAME="SYSCAT"/></schemas>
+	<bufferpools><bufferpool BPNAME="IBMDEFAULTBP"/><bufferpool BPNAME="BP8K"/></bufferpools>
+	<tablespaces><tablespace TBSPACE="USERSPACE1" BPNAME="IBMDEFAULTBP"/><tablespace TBSPACE="TEMPSPACE1"/></tablespaces>
+	<tables><table TABSCHEMA="APP" TABNAME="EMPLOYEE"/><table TABSCHEMA="APP" TABNAME="DEPT &amp; CO"/></tables>
+	<views><view TABSCHEMA="APP" TABNAME="V1"/></views>
+	<aliases><alias SCHEMA="APP" NAME="A1"/></aliases>
+	<nicknames><nickname TABSCHEMA="APP" TABNAME="N1"/></nicknames>
+	<functions><function FUNCSCHEMA="APP" FUNCNAME="F1"/></functions>
+	<procedures><procedure PROCSCHEMA="APP" PROCNAME="P1"/></procedures>
+	<sequences><sequence SEQSCHEMA="APP" SEQNAME="S1"/></sequences>
+</database>

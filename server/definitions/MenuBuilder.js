@@ -2,9 +2,10 @@ import path from 'node:path';
 import { PageBuilder } from './PageBuilder.js';
 import { Requirements } from './Requirements.js';
 import { ScriptDefinition } from './ScriptDefinition.js';
+import { XmlMenuSource, MenuSourceError } from './XmlMenuSource.js';
 import { PhpCompat } from '../util/PhpCompat.js';
+import { Messages } from '../core/Messages.js';
 
-const SQL_PREFIXES = ['select ', 'xquery ', 'values(', 'values ', 'with '];
 const MENU_FILE = /^menu_.*\.json$/i;
 
 /**
@@ -14,18 +15,37 @@ const MENU_FILE = /^menu_.*\.json$/i;
  *
  * A menu definition is {"type": "leaf" | "branch" | "embeddedBranch" | "table" | "line", ...};
  * see README "Definition files" for the fields.
+ *
+ * Branches made from database queries or XSL transforms need asynchronous work. Building
+ * leaves an empty list in their place and queues the work; resolveDeferred() then fills
+ * the lists in, so the menu tree itself is built in one synchronous pass.
  */
 export class MenuBuilder {
 	#files;
 	#connections;
 	#log;
 	#pages;
+	#xmlMenus;
+	#requestValue;
+	#deferred = [];
 
-	constructor({ files, config, connections, log = console }) {
+	/**
+	 * @param {object} options
+	 * @param {(name: string) => any} [options.requestValue] request parameters, for bind markers in branch queries
+	 * @param {XmlMenuSource} [options.xmlMenus] reads database and XSL branches
+	 */
+	constructor({ files, config, connections, log = console, messages = Messages.for(config.get('TE_LANGUAGE')), requestValue = () => null, xmlMenus = null }) {
 		this.#files = files;
 		this.#connections = connections;
 		this.#log = log;
+		this.#requestValue = requestValue;
 		this.#pages = new PageBuilder({ config, buildMenu: (definition) => this.node(definition, null, null, null, null) });
+		this.#xmlMenus = xmlMenus ?? new XmlMenuSource({ files, connections, config, messages });
+	}
+
+	/** A builder for one action request: its files, settings, connections, language and parameters. */
+	static forContext({ files, config, connections, messages, request }) {
+		return new MenuBuilder({ files, config, connections, messages, requestValue: (name) => request.getParameter(name) });
 	}
 
 	/** Link and layout builder sharing this request's defaults. */
@@ -92,25 +112,66 @@ export class MenuBuilder {
 
 	// ---- database and inline branches ----------------------------------------------
 
-	sqlBranch(branch, rootNode, menuLocation) {
-		const source = branch.branchSQLXML;
-		const lower = source.toLowerCase();
-		const isSQL = SQL_PREFIXES.some((prefix) => lower.startsWith(prefix)) || source.startsWith('(');
-		if (!isSQL && !this.#files.isFile(`${source}.sql`) && !this.#files.isFile(source))
-			return this.menuError(`branchSQLXML "${source}" not found`, rootNode, branch.onErrorMenu, menuLocation);
+	/** branchSQLXML: a query (or .sql file) whose XML result branchXSL turns into the branch's menus. */
+	sqlBranch(branch, rootNode, menuLocation, filterList = null) {
+		let sql;
+		try {
+			sql = this.#xmlMenus.sqlOf(branch.branchSQLXML);
+		} catch (error) {
+			return this.menuError(error.message, rootNode, branch.onErrorMenu, menuLocation);
+		}
 		if (!this.#connections.isConnected()) return this.menuMessage('No connection found');
-		return this.menuError('Database menus are not available yet in the Node.js server', rootNode, branch.onErrorMenu, menuLocation);
+		return this.#defer({ sql, branch, rootNode, menuLocation, filterList });
 	}
 
-	/** branchXML is an inline menu definition (JSON text), optionally transformed by branchXSL. */
+	/**
+	 * branchXML: an inline menu definition (JSON text); or, with branchXSL, XML (inline or a
+	 * file) that the stylesheet turns into the branch's menus.
+	 */
 	xmlBranch(branch, rootNode, filterList, menuLocation) {
 		if (!branch.branchXML) return this.menuError('nil', rootNode, branch.onErrorMenu, menuLocation);
-		if (branch.branchXSL)
-			return this.menuError('XSL menu transforms are not available yet in the Node.js server', rootNode, branch.onErrorMenu, menuLocation);
+		if (branch.branchXSL) return this.#defer({ xml: branch.branchXML, branch, rootNode, menuLocation, filterList });
 		let definition;
 		try { definition = JSON.parse(branch.branchXML); } catch { definition = null; }
 		const menu = definition ? this.node(definition, menuLocation, rootNode, filterList, null) : {};
 		return branch.dropParent === 'true' ? menu : [menu];
+	}
+
+	/** Queues a branch made asynchronously; returns the list resolveDeferred() fills. */
+	#defer(work) {
+		const subNodes = [];
+		this.#deferred.push({ ...work, subNodes });
+		return subNodes;
+	}
+
+	#isDeferred(subNodes) { return this.#deferred.some((work) => work.subNodes === subNodes); }
+
+	/** Runs the queued database queries and transforms, filling in their branches (and any they queue in turn). */
+	async resolveDeferred() {
+		while (this.#deferred.length) {
+			const work = this.#deferred[0];
+			const nodes = await this.#build(work);
+			this.#deferred.shift();
+			work.subNodes.push(...nodes);
+		}
+	}
+
+	async #build({ sql, xml, branch, rootNode, menuLocation, filterList, subNodes }) {
+		try {
+			const source = sql === undefined ? xml : await this.#xmlMenus.queryXml(sql, branch.branchSQLPredicate, this.#requestValue);
+			const menuXml = branch.branchXSL ? await this.#xmlMenus.transform(source, branch.branchXSL) : source;
+			const menu = this.node(this.#xmlMenus.definition(menuXml), menuLocation, rootNode, filterList, null);
+			if (branch.dropParent !== 'true') return [menu];
+			const children = menu?.elementSubNodes;
+			if (!Array.isArray(children) || (children.length === 0 && !this.#isDeferred(children)))
+				return this.menuError('Nil', rootNode, branch.onErrorMenu, menuLocation);
+			// a dropped parent's own deferred branch fills this branch's list instead
+			for (const work of this.#deferred) if (work.subNodes === children) work.subNodes = subNodes;
+			return children;
+		} catch (error) {
+			if (!(error instanceof MenuSourceError)) this.#log.error(error.stack ?? error);
+			return this.menuError(error.message, rootNode, branch.onErrorMenu, menuLocation);
+		}
 	}
 
 	// ---- menu nodes ------------------------------------------------------------------
@@ -148,9 +209,9 @@ export class MenuBuilder {
 				} else {
 					if (branch.rootDirectory !== '') subNodes = this.folder(menuLocation, branch.rootDirectory, filterList);
 					else if (branch.branchDirectory !== '') subNodes = this.folder(`${menuLocation}/${branch.branchDirectory}`, rootNode, filterList);
-					else if (branch.branchSQLXML !== '') { nodeType = 'SQL_BRANCH'; subNodes = this.sqlBranch(branch, rootNode, menuLocation); }
+					else if (branch.branchSQLXML !== '') { nodeType = 'SQL_BRANCH'; subNodes = this.sqlBranch(branch, rootNode, menuLocation, filterList); }
 					else if (branch.branchXML !== '') { nodeType = 'XML_BRANCH'; subNodes = this.xmlBranch(branch, rootNode, filterList, menuLocation); }
-					if (PhpCompat.isEmpty(subNodes)) return null;
+					if (PhpCompat.isEmpty(subNodes) && !this.#isDeferred(subNodes)) return null;
 				}
 				break;
 			case 'LEAF':

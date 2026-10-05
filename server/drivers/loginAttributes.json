@@ -1,0 +1,62 @@
+{
+	"usePersistentConnection": {
+		"title": "Persistent",
+		"name": "TE_DATABASE_USE_PERSISTENT_CONNECTION",
+		"type": "checkbox",
+		"style": "text-align:left;"
+	},
+	"database": {
+		"title": "Database",
+		"name": "TE_DATABASE_LOGIN_DATABASE",
+		"nameActive": "ACTIVE_DATABASE",
+		"type": "text",
+		"style": "width:25em;",
+		"value": ""
+	},
+	"hostname": {
+		"title": "Host Name",
+		"name": "TE_DATABASE_LOGIN_HOSTNAME",
+		"nameActive": "ACTIVE_DATABASE_HOSTNAME",
+		"type": "text",
+		"style": "width:25em;"
+	},
+	"portnumber": {
+		"title": "Port Number",
+		"name": "TE_DATABASE_LOGIN_PORTNUMBER",
+		"nameActive": "ACTIVE_DATABASE_PORTNUMBER",
+		"type": "text",
+		"style": "width:25em;"
+	},
+	"group": {
+		"title": "Group",
+		"name": "TE_DATABASE_LOGIN_GROUP",
+		"nameActive": "ACTIVE_DATABASE_LOGIN_GROUP",
+		"type": "text",
+		"style": "width:25em;",
+		"value": ""
+	},
+	"username": {
+		"title": "User Name",
+		"name": "TE_DATABASE_LOGIN_USERNAME",
+		"nameActive": "ACTIVE_DATABASE_LOGIN_USERNAME",
+		"type": "text",
+		"style": "width:25em;",
+		"value": ""
+	},
+	"password": {
+		"title": "Password",
+		"name": "TE_DATABASE_LOGIN_PASSWORD",
+		"type": "password",
+		"style": "width:25em;background:#FF7777;",
+		"value": "",
+		"onkeyup": "checkPasswordForDB2Connect(this);"
+	},
+	"comment": {
+		"title": "Comment",
+		"name": "TE_DATABASE_LOGIN_COMMENT",
+		"nameActive": "ACTIVE_DATABASE_COMMENT",
+		"type": "text",
+		"style": "width:25em;",
+		"value": ""
+	}
+}

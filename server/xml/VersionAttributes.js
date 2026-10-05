@@ -1,4 +1,4 @@
-import { PhpCompat } from '../../server/util/PhpCompat.js';
+import { PhpCompat } from '../util/PhpCompat.js';
 
 /**
  * Version and feature gating attributes shared by menus, actions and tasks
