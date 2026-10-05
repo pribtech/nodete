@@ -13,7 +13,8 @@ import { TestServer } from './helpers/TestServer.js';
 /*
  * Every vendor driver extends the same generic classes, so one scenario runs against each:
  * SQLite always (a file in a temporary folder), and PostgreSQL, H2 and MySQL/MariaDB when a
- * server answers. Set TE_TEST_POSTGRES, TE_TEST_H2, TE_TEST_MYSQL to
+ * server answers, and Derby (over DRDA, the protocol DB2 speaks) likewise. Set TE_TEST_POSTGRES,
+ * TE_TEST_H2, TE_TEST_MYSQL, TE_TEST_DERBY to
  * "user:password@host:port/database" to point at other servers.
  */
 const dataDirectory = mkdtempSync(path.join(tmpdir(), 'te-data-'));
@@ -27,6 +28,7 @@ const DATABASES = {
 	PostgreSQL: server('TE_TEST_POSTGRES', 'te:te@localhost:5432/tetest'),
 	H2: server('TE_TEST_H2', 'sa:sa@localhost:5435/tetest'),
 	MYSQL: server('TE_TEST_MYSQL', 'te:te@localhost:3306/tetest'),
+	Derby: server('TE_TEST_DERBY', 'te:te@localhost:1527/tetest'),
 };
 const specOf = (id) => new ConnectionSpec({ databaseDriver: id, ...DATABASES[id] });
 const skip = Object.fromEntries(await Promise.all(Object.keys(DATABASES).map(async (id) => [id,
@@ -70,7 +72,7 @@ for (const id of Object.keys(DATABASES))
 			const tricky = "it's ? -- \\ not a comment";
 			await connection.rows('insert into te_vendor values (?, ?)', [IN(1, '9999', 'int'), IN(2, tricky)]);
 			assert.deepEqual(await connection.rows('select id, name from te_vendor where name = ? and id > ?', [IN(1, tricky), IN(2, '0', 'int')]), [['9999', tricky]]);
-			assert.deepEqual(await connection.rows("select '?' q, ? n", [IN(1, '5', 'int')]), [['?', '5']], 'a ? in a string is not a marker');
+			assert.deepEqual(await connection.rows("select count(*) from te_vendor where name = '?' or id = ?", [IN(1, '9999', 'int')]), [['1']], 'a ? in a string is not a marker');
 
 			const cursor = await connection.execute('select id, name from te_vendor where id < 1200 order by id');
 			assert.deepEqual(cursor.columns.map((c) => c.name.toLowerCase()), ['id', 'name']);

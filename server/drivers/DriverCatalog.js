@@ -1,4 +1,5 @@
 import { Db2Driver } from './Db2Driver.js';
+import { DerbyDriver } from './DerbyDriver.js';
 import { PostgresDriver } from './PostgresDriver.js';
 import { H2Driver } from './H2Driver.js';
 import { MySqlDriver } from './MySqlDriver.js';
@@ -33,7 +34,7 @@ export class DriverCatalog {
 	 * @param {{files?: DatabaseFiles, loadModule?: Function}} options files: where SQLite databases live
 	 */
 	static standardDrivers({ files = new DatabaseFiles('data'), ...options } = {}) {
-		return [new Db2Driver(options), new H2Driver(options), new MySqlDriver(options), new PostgresDriver(options), new SqliteDriver({ files, ...options })];
+		return [new Db2Driver(options), new DerbyDriver(options), new H2Driver(options), new MySqlDriver(options), new PostgresDriver(options), new SqliteDriver({ files, ...options })];
 	}
 
 	/** The standard drivers, with file databases in DATABASE_DATA_DIRECTORY (relative to the project folder). */

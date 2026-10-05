@@ -1,7 +1,6 @@
 import { test, before, after } from 'node:test';
 import assert from 'node:assert/strict';
 import { TestServer } from './helpers/TestServer.js';
-import { Db2Driver } from '../server/drivers/Db2Driver.js';
 
 let server;
 before(async () => { server = await TestServer.start(); });
@@ -73,7 +72,8 @@ test('getSupportedDrivers lists the drivers whose npm package is installed, with
 	const drivers = Object.fromEntries([...script.matchAll(/GLOBAL_TE_SUPPORTED_DRIVERS\.set\('([^']+)', (.*)\);\n/g)].map((m) => [m[1], JSON.parse(m[2])]));
 	assert.equal(drivers.PostgreSQL.default, false);
 	assert.equal(drivers.PostgreSQL.attributes.password.name, 'TE_DATABASE_LOGIN_PASSWORD');
-	assert.equal('IBM_DB2' in drivers, new Db2Driver().isInstalled, 'IBM_DB2 is listed only with ibm_db installed');
+	assert.equal(drivers.IBM_DB2.default, true, 'DB2, now in JavaScript, is always there and the default');
+	assert.equal(drivers.Derby.default, false);
 });
 
 test('welcome page reports the Node.js runtime and driver status', async () => {
